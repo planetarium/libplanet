@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
             blockChain.TipChanged += (_, __) => tipChanged.Set();
-            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            consensusContext.MessagePublished += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg proposalMsg)
                 {
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 }
             };
-            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            consensusContext.MessagePublished += (_, eventArgs) =>
             {
                 if (eventArgs.Message is ConsensusProposalMsg proposalMsg)
                 {
@@ -295,7 +295,7 @@ namespace Libplanet.Net.Tests.Consensus
                     heightOneEndCommit.Set();
                 }
             };
-            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            consensusContext.MessagePublished += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg)
                 {

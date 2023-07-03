@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _contextLock;
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
-
+        private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
@@ -27,14 +27,12 @@ namespace Libplanet.Net.Consensus
         private readonly Dictionary<long, Context> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
-        private bool _bootstrapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext"/> class.
         /// </summary>
-        /// <param name="broadcastMessage">A delegate method that will broadcasting given
-        /// <see cref="ConsensusMsg"/> to validators.
-        /// </param>
+        /// <param name="consensusMessageCommunicator">A communicator for receiving
+        /// <see cref="ConsensusMsg"/> from or publishing to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -46,13 +44,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
-            DelegateBroadcastMessage broadcastMessage,
+            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
-            BroadcastMessage = broadcastMessage;
+            _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
@@ -62,7 +60,6 @@ namespace Libplanet.Net.Consensus
 
             _contexts = new Dictionary<long, Context>();
             _blockChain.TipChanged += OnTipChanged;
-            _bootstrapping = true;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -73,15 +70,6 @@ namespace Libplanet.Net.Consensus
             _contextLock = new object();
             _newHeightLock = new object();
         }
-
-        /// <summary>
-        /// A delegate method for using as broadcasting a <see cref="Message"/> to
-        /// validators.
-        /// </summary>
-        /// <param name="message">A message to broadcast.</param>
-        public delegate void DelegateBroadcastMessage(ConsensusMsg message);
-
-        public DelegateBroadcastMessage BroadcastMessage { get; }
 
         /// <summary>
         /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
@@ -216,7 +204,7 @@ namespace Libplanet.Net.Consensus
                         _contexts[height] = CreateContext(height);
                     }
 
-                    _contexts[height].Start(lastCommit, _bootstrapping);
+                    _contexts[height].Start(lastCommit);
                 }
             }
         }
@@ -284,28 +272,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A handler to process <see cref="Context.StateChanged"/> <see langword="event"/>s.
-        /// In particular, this watches for a successful state change into
-        /// <see cref="ConsensusStep.EndCommit"/> for a <see cref="Context"/> to turn off
-        /// bootstrapping.
-        /// </summary>
-        /// <param name="sender">The source object invoking the event.</param>
-        /// <param name="e">The event arguments given by the source object.</param>
-        /// <remarks>
-        /// This is conditionally attached to <see cref="Context.StateChanged"/>
-        /// to reduce memory usage.
-        /// </remarks>
-        /// <seealso cref="AttachEventHandlers"/>
-        private void OnContextStateChanged(
-            object? sender, Context.ContextState e)
-        {
-            if (e.Step == ConsensusStep.EndCommit)
-            {
-                _bootstrapping = false;
-            }
-        }
-
-        /// <summary>
         /// A handler for <see cref="BlockChain.TipChanged"/> event that calls
         /// <see cref="NewHeight"/>.  Starting a new height will be delayed for
         /// <see cref="_newHeightDelay"/> in order to collect remaining delayed votes
@@ -361,7 +327,7 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             var context = new Context(
-                this,
+                _consensusMessageCommunicator,
                 _blockChain,
                 height,
                 _privateKey,

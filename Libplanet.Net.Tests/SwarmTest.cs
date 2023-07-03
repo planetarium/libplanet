@@ -479,7 +479,7 @@ namespace Libplanet.Net.Tests
                 // After swarm[1] comes online, eventually it'll catch up to vote PreCommit,
                 // at which point the round will move to 1 where swarm[2] is the proposer.
                 _ = swarms[1].StartAsync();
-                swarms[2].ConsensusReactor.ConsensusContext.MessageBroadcasted += (_, eventArgs) =>
+                swarms[2].ConsensusReactor.ConsensusContext.MessagePublished += (_, eventArgs) =>
                 {
                     if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
                         proposalMsg.Round == 1 &&

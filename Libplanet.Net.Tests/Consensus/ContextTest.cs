@@ -52,7 +52,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
                 if (message is ConsensusProposalMsg)
                 {
@@ -90,7 +90,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -148,7 +148,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToEndCommit.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -303,14 +303,14 @@ namespace Libplanet.Net.Tests.Consensus
                 });
 
             var consensusContext = new ConsensusContext(
-                BroadcastMessage,
+                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
 
             context = new Context(
-                consensusContext,
+                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
                 TestUtils.PrivateKeys[0],
