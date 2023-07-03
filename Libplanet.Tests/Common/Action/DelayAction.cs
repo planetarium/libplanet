@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Common.Action
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            var state = context.PreviousStates;
+            var state = context.PreviousState;
             var started = DateTimeOffset.UtcNow;
             Log.Debug(
                 "{MethodName} exec started. Delay target: {MilliSecond}",

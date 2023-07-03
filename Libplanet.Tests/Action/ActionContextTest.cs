@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousStates: new DumbAccountStateDelta(),
+                    previousState: new DumbAccountStateDelta(),
                     randomSeed: seed,
                     gasLimit: 0
                 );
@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: new DumbAccountStateDelta(),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: new DumbAccountStateDelta(),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: new DumbAccountStateDelta(),
                 randomSeed: 1,
                 gasLimit: 0
             );
@@ -117,7 +117,7 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousStates: new DumbAccountStateDelta(),
+                    previousState: new DumbAccountStateDelta(),
                     randomSeed: i,
                     gasLimit: 0
                 );
@@ -137,7 +137,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: new DumbAccountStateDelta(),
                 randomSeed: _random.Next(),
                 gasLimit: 0,
                 logs: new List<string>()

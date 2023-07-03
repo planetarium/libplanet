@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, renders[0].Context.BlockIndex);
             Assert.Equal(
                 new IValue[] { null, null, null, null, (Integer)1 },
-                addresses.Select(renders[0].Context.PreviousStates.GetState)
+                addresses.Select(renders[0].Context.PreviousState.GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", null, null, null, (Integer)1 },
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, renders[1].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(renders[0].NextStates.GetState),
-                addresses.Select(renders[1].Context.PreviousStates.GetState)
+                addresses.Select(renders[1].Context.PreviousState.GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", (Text)"bar", null, null, (Integer)1 },
@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, renders[2].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(renders[1].NextStates.GetState),
-                addresses.Select(renders[2].Context.PreviousStates.GetState)
+                addresses.Select(renders[2].Context.PreviousState.GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", null, (Integer)1 },
@@ -109,7 +109,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, renders[3].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(renders[2].NextStates.GetState),
-                addresses.Select(renders[3].Context.PreviousStates.GetState)
+                addresses.Select(renders[3].Context.PreviousState.GetState)
             );
             Assert.Equal(
                 new IValue[]
@@ -136,7 +136,7 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.Equal(
                 (Integer)1,
-                (Integer)blockRenders[1].Context.PreviousStates.GetState(minerAddress)
+                (Integer)blockRenders[1].Context.PreviousState.GetState(minerAddress)
             );
             Assert.Equal(
                 (Integer)2,

@@ -149,7 +149,7 @@ namespace Libplanet.Tests.Common.Action
                     RehearsalRecords.Value.Add((TargetAddress, Item));
             }
 
-            IAccountStateDelta states = context.PreviousStates;
+            IAccountStateDelta states = context.PreviousState;
             if (Item is null)
             {
                 return states;

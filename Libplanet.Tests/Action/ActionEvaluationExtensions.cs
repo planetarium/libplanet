@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Action
         ) =>
             evaluations.Aggregate(
                 ImmutableDictionary<Address, IValue>.Empty,
-                (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
+                (dirty, ev) => dirty.SetItems(ev.OutputState.GetUpdatedStates())
             );
 
         public static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
@@ -24,14 +24,14 @@ namespace Libplanet.Tests.Action
         ) =>
             evaluations.Aggregate(
                 ImmutableDictionary<(Address, Currency), FungibleAssetValue>.Empty,
-                (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedBalances())
+                (dirty, ev) => dirty.SetItems(ev.OutputState.GetUpdatedBalances())
             );
 
         public static IImmutableDictionary<Currency, FungibleAssetValue>
         GetDirtyTotalSupplies(this IEnumerable<IActionEvaluation> evaluations) =>
             evaluations.Aggregate(
                 ImmutableDictionary<Currency, FungibleAssetValue>.Empty,
-                (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedTotalSupplies())
+                (dirty, ev) => dirty.SetItems(ev.OutputState.GetUpdatedTotalSupplies())
             );
     }
 }

@@ -556,11 +556,11 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IBlockStates GetBlockStates() => GetBlockStates(Tip.Hash);
+        public IBlockState GetBlockStates() => GetBlockState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockStates" />
-        public IBlockStates GetBlockStates(BlockHash? offset) =>
-            _blockChainStates.GetBlockStates(offset);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockState" />
+        public IBlockState GetBlockState(BlockHash? offset) =>
+            _blockChainStates.GetBlockState(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

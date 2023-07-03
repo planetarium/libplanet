@@ -54,6 +54,12 @@ To be released.
      -  Removed `IAccountStateDelta.StateUpdatedAddresses` property.
      -  Removed `IAccountStateDelta.UpdatedFungibleAssets` property.
      -  Removed `IAccountStateDelta.UpdatedTotalSupplyCurrencies` property.
+ -  Changed `IBlockStates` to `IBlockState`.  [[#3259]]
+ -  Changed `IBlockChainStates.GetBlockStates()` to
+    `IBlockChainStates.GetBlockState()`.  [[#3259]]
+ -  Changes `IActionContext.PreviousStates` to `IActionContext.PreviousState`.
+ -  Changed `IActionEvaluation.OutputStates` to `IActionEvaluation.OutputState`.
+    [[#3259]]
 
 ### Behavioral changes
 
@@ -66,6 +72,7 @@ To be released.
 [#3249]: https://github.com/planetarium/libplanet/pull/3249
 [#3256]: https://github.com/planetarium/libplanet/pull/3256
 [#3257]: https://github.com/planetarium/libplanet/pull/3257
+[#3259]: https://github.com/planetarium/libplanet/pull/3259
 
 
 Version 2.3.0

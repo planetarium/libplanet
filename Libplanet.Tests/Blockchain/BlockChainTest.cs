@@ -1720,9 +1720,9 @@ namespace Libplanet.Tests.Blockchain
 
             // Build a store with incomplete states
             Block b = chain.Genesis;
-            IAccountStateDelta previousStates = actionEvaluator.PrepareInitialDelta(b);
+            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(b);
             ActionEvaluation[] evals =
-                actionEvaluator.EvaluateBlock(b, previousStates).ToArray();
+                actionEvaluator.EvaluateBlock(b, previousState).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
@@ -1747,9 +1747,9 @@ namespace Libplanet.Tests.Blockchain
                             miner: GenesisProposer.PublicKey,
                             lastCommit: CreateBlockCommit(b)),
                         GenesisProposer);
-                    previousStates = AccountStateDelta.Create(previousStates);
+                    previousState = AccountStateDelta.Create(previousState);
 
-                    dirty = actionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
+                    dirty = actionEvaluator.EvaluateBlock(b, previousState).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
                     BuildIndex(chain.Id, b);

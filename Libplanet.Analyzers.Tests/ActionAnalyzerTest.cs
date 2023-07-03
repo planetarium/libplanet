@@ -33,7 +33,7 @@ namespace Libplanet.Analyzers.Tests
                         public void LoadPlainValue(IValue plainValue) {}
                         public IAccountStateDelta Execute(IActionContext context) {
                             new Random().Next();
-                            return context.PreviousStates;
+                            return context.PreviousState;
                         }
                         public static void Main() {}
                     }
@@ -148,7 +148,7 @@ namespace Libplanet.Analyzers.Tests
                             v.ToImmutableHashSet();
                             var newSet = new HashSet<" + elemType + @">(v);
                             " + dictCode + @"
-                            return context.PreviousStates;
+                            return context.PreviousState;
                         }
                         public void ConsumeEnumerable(IEnumerable<" + elemType + @"> it) {}
                         public static void Main() {}

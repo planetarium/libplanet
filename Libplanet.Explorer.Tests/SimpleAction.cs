@@ -23,7 +23,7 @@ public abstract class SimpleAction : IAction
     {
     }
 
-    public virtual IAccountStateDelta Execute(IActionContext context) => context.PreviousStates;
+    public virtual IAccountStateDelta Execute(IActionContext context) => context.PreviousState;
 
     public static SimpleAction GetAction(int seed) =>
         (seed % 10) switch

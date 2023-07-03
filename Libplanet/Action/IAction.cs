@@ -24,9 +24,9 @@ namespace Libplanet.Action
     /// their own action code it won't affect other honest nodes in
     /// the network.</para>
     /// <para>For example, where honest nodes share the common action
-    /// <c>Heal(Target) => PreviousStates[Target] + 1</c>, suppose a malicious
+    /// <c>Heal(Target) => PreviousState[Target] + 1</c>, suppose a malicious
     /// node <c>m</c> changes their own <c>Heal</c> action code to
-    /// <c>Heal(Target) => PreviousStates[Target] + 2</c> (2 instead of 1),
+    /// <c>Heal(Target) => PreviousState[Target] + 2</c> (2 instead of 1),
     /// and then send an action <c>Heal(m)</c>.
     /// Fortunately, this action does not work as <c>m</c>'s intention,
     /// because the changed code in itself is not used by other honest nodes,
@@ -75,7 +75,7 @@ namespace Libplanet.Action
     ///         // As far as it is serializable, you can store any types.
     ///         // (We recommend to use immutable types though.)
     ///         var state =
-    ///             context.PreviousStates.GetState(TargetAddress);
+    ///             context.PreviousState.GetState(TargetAddress);
     ///         Dictionary dictionary;
     ///         // This variable purposes to store the state
     ///         // right after this action finishes.
@@ -123,7 +123,7 @@ namespace Libplanet.Action
     ///         }
     ///         // Builds a delta (dirty) from previous to next states, and
     ///         // returns it.
-    ///         return context.PreviousStates.SetState(TargetAddress,
+    ///         return context.PreviousState.SetState(TargetAddress,
     ///             (Dictionary)nextState);
     ///     }
     ///     // Serializes its "bound arguments" so that they are transmitted

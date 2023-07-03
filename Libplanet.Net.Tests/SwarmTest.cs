@@ -2043,7 +2043,7 @@ namespace Libplanet.Net.Tests
             public IAccountStateDelta Execute(IActionContext context)
             {
                 Thread.Sleep(10);
-                return context.PreviousStates;
+                return context.PreviousState;
             }
 
             public void LoadPlainValue(IValue plainValue)

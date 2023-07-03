@@ -64,11 +64,11 @@ namespace Libplanet.Tests.Action
             Assert.Equal(address, evaluation.InputContext.Miner);
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
-                evaluation.InputContext.PreviousStates.GetState(address)
+                evaluation.InputContext.PreviousState.GetState(address)
             );
             Assert.Equal(
                 (Text)"item",
-                evaluation.OutputStates.GetState(address)
+                evaluation.OutputState.GetState(address)
             );
         }
     }

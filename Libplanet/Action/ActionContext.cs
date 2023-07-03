@@ -23,7 +23,7 @@ namespace Libplanet.Action
             Address miner,
             long blockIndex,
             int blockProtocolVersion,
-            IAccountStateDelta previousStates,
+            IAccountStateDelta previousState,
             int randomSeed,
             long gasLimit,
             bool rehearsal = false,
@@ -35,7 +35,7 @@ namespace Libplanet.Action
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
-            PreviousStates = previousStates;
+            PreviousState = previousState;
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
@@ -64,8 +64,8 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.Rehearsal"/>
         public bool Rehearsal { get; }
 
-        /// <inheritdoc cref="IActionContext.PreviousStates"/>
-        public IAccountStateDelta PreviousStates { get; }
+        /// <inheritdoc cref="IActionContext.PreviousState"/>
+        public IAccountStateDelta PreviousState { get; }
 
         /// <inheritdoc cref="IActionContext.Random"/>
         public IRandom Random { get; }
@@ -89,7 +89,7 @@ namespace Libplanet.Action
                 Miner,
                 BlockIndex,
                 BlockProtocolVersion,
-                PreviousStates,
+                PreviousState,
                 _randomSeed,
                 _gasLimit,
                 Rehearsal,

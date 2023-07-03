@@ -233,7 +233,7 @@ namespace Libplanet.Blockchain
                         renderer.RenderAction(
                             evaluation.Action,
                             evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputStates);
+                            evaluation.OutputState);
                     }
                     else
                     {

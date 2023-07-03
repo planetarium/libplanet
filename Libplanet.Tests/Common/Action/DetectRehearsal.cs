@@ -24,9 +24,9 @@ namespace Libplanet.Tests.Common.Action
 
         public override IAccountStateDelta Execute(IActionContext context)
         {
-            IAccountStateDelta previousStates = context.PreviousStates;
+            IAccountStateDelta previousState = context.PreviousState;
             ResultState = context.Rehearsal;
-            return previousStates.SetState(
+            return previousState.SetState(
                 TargetAddress,
                 new Bencodex.Types.Boolean(context.Rehearsal)
             );

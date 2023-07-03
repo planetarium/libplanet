@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Common.Action
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            IAccountStateDelta states = context.PreviousStates;
+            IAccountStateDelta states = context.PreviousState;
             if (context.Rehearsal)
             {
                 return states.SetState(Address, Null.Value);

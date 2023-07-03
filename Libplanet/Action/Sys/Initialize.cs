@@ -67,7 +67,7 @@ namespace Libplanet.Action.Sys
                 );
             }
 
-            IAccountStateDelta states = context.PreviousStates;
+            IAccountStateDelta states = context.PreviousState;
             if (ValidatorSet is { } vs)
             {
                 foreach (Validator v in vs.Validators)

@@ -1312,7 +1312,7 @@ namespace Libplanet.Tests.Store
 
             public IAccountStateDelta Execute(IActionContext context)
             {
-                return context.PreviousStates;
+                return context.PreviousState;
             }
         }
     }

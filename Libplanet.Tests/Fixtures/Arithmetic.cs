@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Fixtures
                 throw new InvalidOperationException(Error);
             }
 
-            IValue v = context.PreviousStates.GetState(context.Signer) ?? (Bencodex.Types.Integer)0;
+            IValue v = context.PreviousState.GetState(context.Signer) ?? (Bencodex.Types.Integer)0;
             if (!(v is Bencodex.Types.Integer value))
             {
                 throw new InvalidOperationException(
@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Fixtures
 
             Func<BigInteger, BigInteger, BigInteger> func = Operator.ToFunc();
             BigInteger result = func(value, Operand);
-            return context.PreviousStates.SetState(context.Signer, (Bencodex.Types.Integer)result);
+            return context.PreviousState.SetState(context.Signer, (Bencodex.Types.Integer)result);
         }
 
         public bool Equals(Arithmetic other)
