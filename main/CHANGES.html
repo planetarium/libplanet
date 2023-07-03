@@ -77,6 +77,9 @@ to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/32
 <li>(Libplanet.Net) <code>ConsensusProposalMsg</code>, <code>ConsensusPreVoteMsg</code> and
 <code>ConsensusPreCommitMsg</code> became to inherit <code>ConsensusVoteMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>(Libplanet.Net) Removed <code>ConsensusMsg.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>TxResult.UpdatedStates</code>'s type to
+<code>IImmutableDictionary&lt;Address, IValue&gt;</code> from
+<code>IImmutableDictionary&lt;Address, IValue?&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3262">#3262</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
