@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Assets;
-using Libplanet.Explorer.GraphTypes;
 
 using FAV = Libplanet.Assets.FungibleAssetValue;
 
@@ -16,7 +15,7 @@ namespace Libplanet.Explorer.GraphTypes
             string? blockHash,
             string? exceptionName,
             IValue? exceptionMetadata,
-            IImmutableDictionary<Address, IValue?>? updatedStates,
+            IImmutableDictionary<Address, IValue>? updatedStates,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>? fungibleAssetsDelta,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>?
                 updatedFungibleAssets,
@@ -44,7 +43,7 @@ namespace Libplanet.Explorer.GraphTypes
 
         public IValue? ExceptionMetadata { get; private set; }
 
-        public IImmutableDictionary<Address, IValue?>? UpdatedStates { get; }
+        public IImmutableDictionary<Address, IValue>? UpdatedStates { get; }
 
         public IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>?
             FungibleAssetsDelta { get; }
