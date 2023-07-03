@@ -90,7 +90,7 @@ proposing, validating, voting a block and committing the voted block to the bloc
 There are five states:</p>
 <ul><li>
 <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
-the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_">Start(BlockCommit, Boolean)</a> is not called (i.e., round has not been started).
+the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_">Start(BlockCommit)</a> is not called (i.e., round has not been started).
 </li><li>
 <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
 the round has been started and waiting for the block proposal. If a validator is a
@@ -113,7 +113,7 @@ moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#L
 <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
 committing vote has been received from other validators. Block will be committed
 to the blockchain and consensus for this height is stopped. (responsibility of next
-height handling is at <span class="xref">Libplanet.Net.Consensus.Context.ConsensusContext</span>).
+height handling is at <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html">ConsensusContext</a>).
 </li><li>
     In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
     receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
@@ -134,6 +134,9 @@ for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">Conse
 </section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.Gossip.html">Gossip</a></h4>
       <section><p>A class gossips messages into network. Peers will be stored and managed by Kademlia DHT.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html">GossipConsensusMessageCommunicator</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Net.Consensus.IConsensusMessageCommunicator.html">IConsensusMessageCommunicator</a> implementation using <span class="xref">Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.Gossip</span>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.HeightVoteSet.html">HeightVoteSet</a></h4>
       <section></section>
@@ -173,6 +176,9 @@ does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Con
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.IConsensusMessageCommunicator.html">IConsensusMessageCommunicator</a></h4>
+      <section><p>Interface for communicating <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>s with peers.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.IReactor.html">IReactor</a></h4>
       <section><p>A interface of consensus reactors.</p>
 </section>
@@ -180,12 +186,6 @@ does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Con
 </h3>
       <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a></h4>
       <section></section>
-    <h3 id="delegates">Delegates
-</h3>
-      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage.html">ConsensusContext.DelegateBroadcastMessage</a></h4>
-      <section><p>A delegate method for using as broadcasting a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to
-validators.</p>
-</section>
 </article>
           </div>
 

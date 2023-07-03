@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "O9LTYfIqEK+T1w4GrmIfinVSQiWaHd6vHJ6g5c/gilE="
+          "hash": "RD6EJWiVxe+Vkkf3d+SUYtOUQXQhArnAxljqhk3L0nY="
         }
       },
       "is_incremental": false,
@@ -2369,23 +2369,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage.html",
-          "hash": "+Tu/obCkN+PRz3V5IUzRwDPz5fMHHjXkOj4BULN32eo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Consensus.ConsensusContext.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.ConsensusContext.html",
-          "hash": "JapB1Ri5gqFmuBYGgN+DvLO5Eg0soyUhTKJPNWc/Rw8="
+          "hash": "2GF1e0ot2sLUgqmSbovJWSWvCoechlZKXvCGCGU+cRo="
         }
       },
       "is_incremental": false,
@@ -2397,7 +2385,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.ConsensusReactor.html",
-          "hash": "oOa0M0he9jk7nZxlMc/37znN2VocPo6iPJ6VThnMWyE="
+          "hash": "sryY8vErUR2XSoCp8D4zfp14yLzAb5PVAu2E9eNWUe0="
         }
       },
       "is_incremental": false,
@@ -2433,7 +2421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.Context.html",
-          "hash": "ZoO6bMJBFIoL9XAA71uFJAuLx1u4jMEDR8WITWdJbu8="
+          "hash": "I9EPBKK193KCfs4szG5gj1dA2SEEqxKZC/IFpat5Y5Y="
         }
       },
       "is_incremental": false,
@@ -2457,7 +2445,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.Gossip.html",
-          "hash": "7j+N2cB6mueYi/c0PpcG2uxCzLdCb+bYsZ8CpKcIT2U="
+          "hash": "zxFNRcL6KTFFt8s+bA+ZwRQk7e+q67C7COAA8vRYVyc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html",
+          "hash": "Sz6zBCp3tEjN6qY6ZLCA3RoAcnttg4j7qYbQDivUHPY="
         }
       },
       "is_incremental": false,
@@ -2469,7 +2469,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.HeightVoteSet.html",
-          "hash": "ytMBSXWIx2NSotc5Snn5zdgnu4P2E0aN1EzwrLpQqtI="
+          "hash": "F4Fyr5zAPQEQ5eXA1Wy1Ve9mJ7DnrxWDBGCNAb+/R4s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html",
+          "hash": "kS/M5yEkRlM/FhGyJStUNIaQ6+WywJr14Y7T+8eq4HI="
         }
       },
       "is_incremental": false,
@@ -2553,7 +2565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.MessageCache.html",
-          "hash": "9DL78S2jrzUzrEhf9dphzHnUnaUlvEI48IVb0Tx9Ktc="
+          "hash": "BXNqUx5r66exRu8iVJX7vKjYXyvshFwk4t+pkW4uGJQ="
         }
       },
       "is_incremental": false,
@@ -2577,7 +2589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.html",
-          "hash": "ieesPJOIvyt/roDGDQz06BJCczJOOH6hA+KzjFpz8HY="
+          "hash": "KIJS8GJWfbMcQNW135EOP5Ff/YStiO45qjL2xKjoQtU="
         }
       },
       "is_incremental": false,
@@ -2637,7 +2649,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusMsg.html",
-          "hash": "jssJ8fhbhavxs5CA6mMjaYjo2OordWhggF5rZPYt5AM="
+          "hash": "Vn3O0o1ar3KxVRXAHM+binoresSo3++IHAiK5lecZuk="
         }
       },
       "is_incremental": false,
@@ -2649,7 +2661,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusPreCommitMsg.html",
-          "hash": "uDGsf2+ruf4chYzsMFx6Ifc4ycmdDBm8cwnPUmaNSww="
+          "hash": "XBrhdvI6VbEea40mt0PpUcUp7WWZNIAlO3uUDhqZzKU="
         }
       },
       "is_incremental": false,
@@ -2661,7 +2673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusPreVoteMsg.html",
-          "hash": "sX6rvWFpgKh4fGWjBOknjogQcpfkNYviT/XfwewxHfM="
+          "hash": "XMugPb8cg09oNKPpFEdz3IBLHh4GeYrbpVZfCzeh5+E="
         }
       },
       "is_incremental": false,
@@ -2673,7 +2685,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusProposalMsg.html",
-          "hash": "eoFtzwqZT1qC8a+NpiqvnJpTjY7ZSHZhpJeQFdAgfuU="
+          "hash": "i2g3xJQDOPcpHtnshYjGp38sA3ZhNbzxQR2Spf/NX7E="
         }
       },
       "is_incremental": false,
@@ -2685,7 +2697,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.ConsensusVoteMsg.html",
-          "hash": "eylpFhRCz5iRtOBeWEvuG33tMJNRPcimZjvgSUO5Gwk="
+          "hash": "wbgdwgVN9ZC2V3Lr4YmUDzBx7IqIl5aF2HU5KUXiwzM="
         }
       },
       "is_incremental": false,
@@ -4701,7 +4713,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "OpsHOXqCmAaGfMLFXrobYwm16VFCnbCtnjy3anJHxL8="
+          "hash": "T8E6ptXphdLLESqmSSzihCdcnSQ76s8v8LzSRnHMzLw="
         }
       },
       "is_incremental": false,
@@ -4810,7 +4822,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 381,
+          "total_file_count": 382,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

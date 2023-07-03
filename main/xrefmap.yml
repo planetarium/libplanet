@@ -14500,12 +14500,12 @@ references:
   commentId: T:Libplanet.Net.Consensus.ConsensusContext
   fullName: Libplanet.Net.Consensus.ConsensusContext
   nameWithType: ConsensusContext
-- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: ConsensusContext(ConsensusContext.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_ConsensusContext_DelegateBroadcastMessage_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext(Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: ConsensusContext.ConsensusContext(ConsensusContext.DelegateBroadcastMessage, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext(Libplanet.Net.Consensus.IConsensusMessageCommunicator, Libplanet.Blockchain.BlockChain, Libplanet.Crypto.PrivateKey, System.TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: ConsensusContext.ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
 - uid: Libplanet.Net.Consensus.ConsensusContext.#ctor*
   name: ConsensusContext
   href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_
@@ -14513,25 +14513,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext
   nameWithType: ConsensusContext.ConsensusContext
-- uid: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
-  name: BroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_BroadcastMessage
-  commentId: P:Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
-  fullName: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
-  nameWithType: ConsensusContext.BroadcastMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage*
-  name: BroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_BroadcastMessage_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
-  isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusContext.BroadcastMessage
-  nameWithType: ConsensusContext.BroadcastMessage
-- uid: Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
-  name: ConsensusContext.DelegateBroadcastMessage
-  href: api/Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage.html
-  commentId: T:Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
-  fullName: Libplanet.Net.Consensus.ConsensusContext.DelegateBroadcastMessage
-  nameWithType: ConsensusContext.DelegateBroadcastMessage
 - uid: Libplanet.Net.Consensus.ConsensusContext.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Dispose
@@ -14881,12 +14862,12 @@ references:
   commentId: T:Libplanet.Net.Consensus.Context
   fullName: Libplanet.Net.Consensus.Context
   nameWithType: Context
-- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.ConsensusContext,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: Context(ConsensusContext, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Net_Consensus_ConsensusContext_Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.ConsensusContext,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Net.Consensus.ConsensusContext, Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Crypto.PrivateKey, Libplanet.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: Context.Context(ConsensusContext, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: Context(IConsensusMessageCommunicator, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Crypto_PrivateKey_Libplanet_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Crypto.PrivateKey,Libplanet.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Net.Consensus.IConsensusMessageCommunicator, Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Crypto.PrivateKey, Libplanet.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: Context.Context(IConsensusMessageCommunicator, BlockChain, Int64, PrivateKey, ValidatorSet, ContextTimeoutOption)
 - uid: Libplanet.Net.Consensus.Context.#ctor*
   name: Context
   href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_
@@ -14959,12 +14940,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Context.Round
   nameWithType: Context.Round
-- uid: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
-  name: Start(BlockCommit, Boolean)
-  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_System_Boolean_
-  commentId: M:Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit,System.Boolean)
-  fullName: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit, System.Boolean)
-  nameWithType: Context.Start(BlockCommit, Boolean)
+- uid: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit)
+  name: Start(BlockCommit)
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_Libplanet_Blocks_BlockCommit_
+  commentId: M:Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit)
+  fullName: Libplanet.Net.Consensus.Context.Start(Libplanet.Blocks.BlockCommit)
+  nameWithType: Context.Start(BlockCommit)
 - uid: Libplanet.Net.Consensus.Context.Start*
   name: Start
   href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start_
@@ -15101,15 +15082,15 @@ references:
   commentId: T:Libplanet.Net.Consensus.Gossip
   fullName: Libplanet.Net.Consensus.Gossip
   nameWithType: Gossip
-- uid: Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent},System.TimeSpan,System.Nullable{System.Int64})
-  name: Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>, TimeSpan, Nullable<Int64>)
-  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_MessageContent__System_TimeSpan_System_Nullable_System_Int64__
-  commentId: M:Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent},System.TimeSpan,System.Nullable{System.Int64})
-  name.vb: Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent), TimeSpan, Nullable(Of Int64))
-  fullName: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Action<Libplanet.Net.Messages.MessageContent>, System.TimeSpan, System.Nullable<System.Int64>)
-  fullName.vb: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Action(Of Libplanet.Net.Messages.MessageContent), System.TimeSpan, System.Nullable(Of System.Int64))
-  nameWithType: Gossip.Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>, TimeSpan, Nullable<Int64>)
-  nameWithType.vb: Gossip.Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent), TimeSpan, Nullable(Of Int64))
+- uid: Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.Action{Libplanet.Net.Messages.MessageContent})
+  name: Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<Message>, Action<MessageContent>)
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_Action_Libplanet_Net_Messages_MessageContent__
+  commentId: M:Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.Action{Libplanet.Net.Messages.MessageContent})
+  name.vb: Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of Message), Action(Of MessageContent))
+  fullName: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Action<Libplanet.Net.Messages.Message>, System.Action<Libplanet.Net.Messages.MessageContent>)
+  fullName.vb: Libplanet.Net.Consensus.Gossip.Gossip(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Action(Of Libplanet.Net.Messages.Message), System.Action(Of Libplanet.Net.Messages.MessageContent))
+  nameWithType: Gossip.Gossip(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<Message>, Action<MessageContent>)
+  nameWithType.vb: Gossip.Gossip(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of Message), Action(Of MessageContent))
 - uid: Libplanet.Net.Consensus.Gossip.#ctor*
   name: Gossip
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip__ctor_
@@ -15146,6 +15127,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.AddMessages
   nameWithType: Gossip.AddMessages
+- uid: Libplanet.Net.Consensus.Gossip.AllowPeer(Libplanet.Net.BoundPeer)
+  name: AllowPeer(BoundPeer)
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AllowPeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Consensus.Gossip.AllowPeer(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Consensus.Gossip.AllowPeer(Libplanet.Net.BoundPeer)
+  nameWithType: Gossip.AllowPeer(BoundPeer)
+- uid: Libplanet.Net.Consensus.Gossip.AllowPeer*
+  name: AllowPeer
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AllowPeer_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.AllowPeer
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.AllowPeer
+  nameWithType: Gossip.AllowPeer
 - uid: Libplanet.Net.Consensus.Gossip.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_AsPeer
@@ -15159,6 +15153,45 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.AsPeer
   nameWithType: Gossip.AsPeer
+- uid: Libplanet.Net.Consensus.Gossip.ClearCache
+  name: ClearCache()
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_ClearCache
+  commentId: M:Libplanet.Net.Consensus.Gossip.ClearCache
+  fullName: Libplanet.Net.Consensus.Gossip.ClearCache()
+  nameWithType: Gossip.ClearCache()
+- uid: Libplanet.Net.Consensus.Gossip.ClearCache*
+  name: ClearCache
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_ClearCache_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.ClearCache
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.ClearCache
+  nameWithType: Gossip.ClearCache
+- uid: Libplanet.Net.Consensus.Gossip.ClearDenySet
+  name: ClearDenySet()
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_ClearDenySet
+  commentId: M:Libplanet.Net.Consensus.Gossip.ClearDenySet
+  fullName: Libplanet.Net.Consensus.Gossip.ClearDenySet()
+  nameWithType: Gossip.ClearDenySet()
+- uid: Libplanet.Net.Consensus.Gossip.ClearDenySet*
+  name: ClearDenySet
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_ClearDenySet_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.ClearDenySet
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.ClearDenySet
+  nameWithType: Gossip.ClearDenySet
+- uid: Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)
+  name: DenyPeer(BoundPeer)
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_DenyPeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)
+  nameWithType: Gossip.DenyPeer(BoundPeer)
+- uid: Libplanet.Net.Consensus.Gossip.DenyPeer*
+  name: DenyPeer
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_DenyPeer_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.DenyPeer
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.DenyPeer
+  nameWithType: Gossip.DenyPeer
 - uid: Libplanet.Net.Consensus.Gossip.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_Dispose
@@ -15250,6 +15283,67 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.WaitForRunningAsync
   nameWithType: Gossip.WaitForRunningAsync
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator
+  name: GossipConsensusMessageCommunicator
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html
+  commentId: T:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator
+  nameWithType: GossipConsensusMessageCommunicator
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent})
+  name: GossipConsensusMessageCommunicator(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>)
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_MessageContent__
+  commentId: M:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.MessageContent})
+  name.vb: GossipConsensusMessageCommunicator(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent))
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Collections.Immutable.ImmutableArray<Libplanet.Net.BoundPeer>, System.Action<Libplanet.Net.Messages.MessageContent>)
+  fullName.vb: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator(Libplanet.Net.Transports.ITransport, System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Collections.Immutable.ImmutableArray(Of Libplanet.Net.BoundPeer), System.Action(Of Libplanet.Net.Messages.MessageContent))
+  nameWithType: GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator(ITransport, ImmutableArray<BoundPeer>, ImmutableArray<BoundPeer>, Action<MessageContent>)
+  nameWithType.vb: GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator(ITransport, ImmutableArray(Of BoundPeer), ImmutableArray(Of BoundPeer), Action(Of MessageContent))
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.#ctor*
+  name: GossipConsensusMessageCommunicator
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator
+  nameWithType: GossipConsensusMessageCommunicator.GossipConsensusMessageCommunicator
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  name: OnStartHeight(Int64)
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_OnStartHeight_System_Int64_
+  commentId: M:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  nameWithType: GossipConsensusMessageCommunicator.OnStartHeight(Int64)
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight*
+  name: OnStartHeight
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_OnStartHeight_
+  commentId: Overload:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartHeight
+  nameWithType: GossipConsensusMessageCommunicator.OnStartHeight
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound(System.Int32)
+  name: OnStartRound(Int32)
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_OnStartRound_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound(System.Int32)
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound(System.Int32)
+  nameWithType: GossipConsensusMessageCommunicator.OnStartRound(Int32)
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound*
+  name: OnStartRound
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_OnStartRound_
+  commentId: Overload:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.OnStartRound
+  nameWithType: GossipConsensusMessageCommunicator.OnStartRound
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  name: PublishMessage(ConsensusMsg)
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_PublishMessage_Libplanet_Net_Messages_ConsensusMsg_
+  commentId: M:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  nameWithType: GossipConsensusMessageCommunicator.PublishMessage(ConsensusMsg)
+- uid: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage*
+  name: PublishMessage
+  href: api/Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html#Libplanet_Net_Consensus_GossipConsensusMessageCommunicator_PublishMessage_
+  commentId: Overload:Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.PublishMessage
+  nameWithType: GossipConsensusMessageCommunicator.PublishMessage
 - uid: Libplanet.Net.Consensus.HeightVoteSet
   name: HeightVoteSet
   href: api/Libplanet.Net.Consensus.HeightVoteSet.html
@@ -15425,6 +15519,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.HeightVoteSet.SetRound
   nameWithType: HeightVoteSet.SetRound
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator
+  name: IConsensusMessageCommunicator
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html
+  commentId: T:Libplanet.Net.Consensus.IConsensusMessageCommunicator
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator
+  nameWithType: IConsensusMessageCommunicator
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  name: OnStartHeight(Int64)
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_OnStartHeight_System_Int64_
+  commentId: M:Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight(System.Int64)
+  nameWithType: IConsensusMessageCommunicator.OnStartHeight(Int64)
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight*
+  name: OnStartHeight
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_OnStartHeight_
+  commentId: Overload:Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartHeight
+  nameWithType: IConsensusMessageCommunicator.OnStartHeight
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound(System.Int32)
+  name: OnStartRound(Int32)
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_OnStartRound_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound(System.Int32)
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound(System.Int32)
+  nameWithType: IConsensusMessageCommunicator.OnStartRound(Int32)
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound*
+  name: OnStartRound
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_OnStartRound_
+  commentId: Overload:Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.OnStartRound
+  nameWithType: IConsensusMessageCommunicator.OnStartRound
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  name: PublishMessage(ConsensusMsg)
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_PublishMessage_Libplanet_Net_Messages_ConsensusMsg_
+  commentId: M:Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage(Libplanet.Net.Messages.ConsensusMsg)
+  nameWithType: IConsensusMessageCommunicator.PublishMessage(ConsensusMsg)
+- uid: Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage*
+  name: PublishMessage
+  href: api/Libplanet.Net.Consensus.IConsensusMessageCommunicator.html#Libplanet_Net_Consensus_IConsensusMessageCommunicator_PublishMessage_
+  commentId: Overload:Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.IConsensusMessageCommunicator.PublishMessage
+  nameWithType: IConsensusMessageCommunicator.PublishMessage
 - uid: Libplanet.Net.Consensus.InvalidConsensusMessageException
   name: InvalidConsensusMessageException
   href: api/Libplanet.Net.Consensus.InvalidConsensusMessageException.html
@@ -15690,12 +15829,12 @@ references:
   commentId: T:Libplanet.Net.Consensus.MessageCache
   fullName: Libplanet.Net.Consensus.MessageCache
   nameWithType: MessageCache
-- uid: Libplanet.Net.Consensus.MessageCache.#ctor(System.Int32,System.Int32)
-  name: MessageCache(Int32, Int32)
-  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache__ctor_System_Int32_System_Int32_
-  commentId: M:Libplanet.Net.Consensus.MessageCache.#ctor(System.Int32,System.Int32)
-  fullName: Libplanet.Net.Consensus.MessageCache.MessageCache(System.Int32, System.Int32)
-  nameWithType: MessageCache.MessageCache(Int32, Int32)
+- uid: Libplanet.Net.Consensus.MessageCache.#ctor
+  name: MessageCache()
+  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache__ctor
+  commentId: M:Libplanet.Net.Consensus.MessageCache.#ctor
+  fullName: Libplanet.Net.Consensus.MessageCache.MessageCache()
+  nameWithType: MessageCache.MessageCache()
 - uid: Libplanet.Net.Consensus.MessageCache.#ctor*
   name: MessageCache
   href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache__ctor_
@@ -15703,6 +15842,35 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.MessageCache.MessageCache
   nameWithType: MessageCache.MessageCache
+- uid: Libplanet.Net.Consensus.MessageCache.Clear
+  name: Clear()
+  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_Clear
+  commentId: M:Libplanet.Net.Consensus.MessageCache.Clear
+  fullName: Libplanet.Net.Consensus.MessageCache.Clear()
+  nameWithType: MessageCache.Clear()
+- uid: Libplanet.Net.Consensus.MessageCache.Clear*
+  name: Clear
+  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_Clear_
+  commentId: Overload:Libplanet.Net.Consensus.MessageCache.Clear
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.MessageCache.Clear
+  nameWithType: MessageCache.Clear
+- uid: Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.MessageId})
+  name: DiffFrom(IEnumerable<MessageId>)
+  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_DiffFrom_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageId__
+  commentId: M:Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.MessageId})
+  name.vb: DiffFrom(IEnumerable(Of MessageId))
+  fullName: Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable<Libplanet.Net.Messages.MessageId>)
+  fullName.vb: Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Messages.MessageId))
+  nameWithType: MessageCache.DiffFrom(IEnumerable<MessageId>)
+  nameWithType.vb: MessageCache.DiffFrom(IEnumerable(Of MessageId))
+- uid: Libplanet.Net.Consensus.MessageCache.DiffFrom*
+  name: DiffFrom
+  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_DiffFrom_
+  commentId: Overload:Libplanet.Net.Consensus.MessageCache.DiffFrom
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.MessageCache.DiffFrom
+  nameWithType: MessageCache.DiffFrom
 - uid: Libplanet.Net.Consensus.MessageCache.Get(Libplanet.Net.Messages.MessageId)
   name: Get(MessageId)
   href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_Get_Libplanet_Net_Messages_MessageId_
@@ -15742,19 +15910,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.MessageCache.Put
   nameWithType: MessageCache.Put
-- uid: Libplanet.Net.Consensus.MessageCache.Shift
-  name: Shift()
-  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_Shift
-  commentId: M:Libplanet.Net.Consensus.MessageCache.Shift
-  fullName: Libplanet.Net.Consensus.MessageCache.Shift()
-  nameWithType: MessageCache.Shift()
-- uid: Libplanet.Net.Consensus.MessageCache.Shift*
-  name: Shift
-  href: api/Libplanet.Net.Consensus.MessageCache.html#Libplanet_Net_Consensus_MessageCache_Shift_
-  commentId: Overload:Libplanet.Net.Consensus.MessageCache.Shift
-  isSpec: "True"
-  fullName: Libplanet.Net.Consensus.MessageCache.Shift
-  nameWithType: MessageCache.Shift
 - uid: Libplanet.Net.Consensus.VoteSet
   name: VoteSet
   href: api/Libplanet.Net.Consensus.VoteSet.html
@@ -16498,6 +16653,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.ConsensusProposalMsg.ConsensusProposalMsg
   nameWithType: ConsensusProposalMsg.ConsensusProposalMsg
+- uid: Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Net.Messages.ConsensusProposalMsg.html#Libplanet_Net_Messages_ConsensusProposalMsg_BlockHash
+  commentId: P:Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash
+  fullName: Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash
+  nameWithType: ConsensusProposalMsg.BlockHash
+- uid: Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Net.Messages.ConsensusProposalMsg.html#Libplanet_Net_Messages_ConsensusProposalMsg_BlockHash_
+  commentId: Overload:Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.ConsensusProposalMsg.BlockHash
+  nameWithType: ConsensusProposalMsg.BlockHash
 - uid: Libplanet.Net.Messages.ConsensusProposalMsg.DataFrames
   name: DataFrames
   href: api/Libplanet.Net.Messages.ConsensusProposalMsg.html#Libplanet_Net_Messages_ConsensusProposalMsg_DataFrames
@@ -16575,12 +16743,12 @@ references:
   commentId: T:Libplanet.Net.Messages.ConsensusVoteMsg
   fullName: Libplanet.Net.Messages.ConsensusVoteMsg
   nameWithType: ConsensusVoteMsg
-- uid: Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash)
-  name: ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash)
-  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.ConsensusVoteMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32, Libplanet.Blocks.BlockHash)
-  nameWithType: ConsensusVoteMsg.ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash)
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash,Libplanet.Consensus.VoteFlag)
+  name: ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash, VoteFlag)
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_Libplanet_Blocks_BlockHash_Libplanet_Consensus_VoteFlag_
+  commentId: M:Libplanet.Net.Messages.ConsensusVoteMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32,Libplanet.Blocks.BlockHash,Libplanet.Consensus.VoteFlag)
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.ConsensusVoteMsg(Libplanet.Crypto.PublicKey, System.Int64, System.Int32, Libplanet.Blocks.BlockHash, Libplanet.Consensus.VoteFlag)
+  nameWithType: ConsensusVoteMsg.ConsensusVoteMsg(PublicKey, Int64, Int32, BlockHash, VoteFlag)
 - uid: Libplanet.Net.Messages.ConsensusVoteMsg.#ctor*
   name: ConsensusVoteMsg
   href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg__ctor_
@@ -16601,6 +16769,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.ConsensusVoteMsg.BlockHash
   nameWithType: ConsensusVoteMsg.BlockHash
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.Flag
+  name: Flag
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg_Flag
+  commentId: P:Libplanet.Net.Messages.ConsensusVoteMsg.Flag
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.Flag
+  nameWithType: ConsensusVoteMsg.Flag
+- uid: Libplanet.Net.Messages.ConsensusVoteMsg.Flag*
+  name: Flag
+  href: api/Libplanet.Net.Messages.ConsensusVoteMsg.html#Libplanet_Net_Messages_ConsensusVoteMsg_Flag_
+  commentId: Overload:Libplanet.Net.Messages.ConsensusVoteMsg.Flag
+  isSpec: "True"
+  fullName: Libplanet.Net.Messages.ConsensusVoteMsg.Flag
+  nameWithType: ConsensusVoteMsg.Flag
 - uid: Libplanet.Net.Messages.DifferentVersionMsg
   name: DifferentVersionMsg
   href: api/Libplanet.Net.Messages.DifferentVersionMsg.html

@@ -64,6 +64,10 @@
 <h2 id="version-240">Version 2.4.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet.Net) Removed <code>ConsensusContext.BroadcastMessage</code> property.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li><code>Vote.BlockHash</code> property became <code>BlockHash</code> type. (was <code>BlockHash?</code>)
@@ -77,6 +81,22 @@ to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/32
 <li>(Libplanet.Net) <code>ConsensusProposalMsg</code>, <code>ConsensusPreVoteMsg</code> and
 <code>ConsensusPreCommitMsg</code> became to inherit <code>ConsensusVoteMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>(Libplanet.Net) Removed <code>ConsensusMsg.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>Flag</code> property to <code>ConsensusVoteMsg</code> abstract class.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>ConsensusProposalMsg</code> no longer inherits
+<code>ConsensusVoteMsg</code>. Instead, inherits <code>ConsensusMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added parameter
+<code>IConsensusMessageCommunicator consensusMessageCommunicator</code> to
+<code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Removed parameter
+<code>DelegateBroadcastMessage broadcastMessage</code> from <code>ConsensusContext</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added parameter
+<code>IConsensusMessageCommunicator consensusMessageCommunicator</code> to
+<code>Context</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Renamed <code>Context.BroadcastMessage(ConsensusMsg)</code>
+as <code>Context.PublishMessage(ConsensusMsg)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Removed constructor of <code>MessageCache</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
 <li>(Libplanet.Explorer) Changed <code>TxResult.UpdatedStates</code>'s type to
 <code>IImmutableDictionary&lt;Address, IValue&gt;</code> from
 <code>IImmutableDictionary&lt;Address, IValue?&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3262">#3262</a>]</li>
@@ -126,8 +146,31 @@ through <code>IAccountStateDelta.Delta</code> instead.  [<a href="https://github
 <li>Changes <code>IActionContext.PreviousStates</code> to <code>IActionContext.PreviousState</code>.</li>
 <li>Changed <code>IActionEvaluation.OutputStates</code> to <code>IActionEvaluation.OutputState</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>(Libplanet.Net) Added <code>IConsensusMessageCommunicator</code> interface
+and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]
+<ul>
+<li>(Libplanet.Net) Added <code>GossipConsensusMessageCommunicator</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>Gossip.DenyPeer(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.AllowPeer(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.ClearCache()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.ClearDenySet(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) <code>Gossip</code> now maintains single message cache,
+and contents of this cache does not decayed by time or new messages.
+This cache is cleared only by <code>Gossip.ClearCache()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) There are no mechanism for bootstrapping conensus
+any more. Instead, logic change on <code>Gossip</code> solves bootstrapping
+problem.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>Context.Start()</code> now triggers
+<code>IConsensusMessageCommunicator.OnStartHeight()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>Context.StartRound()</code> now triggers
+<code>IConsensusMessageCommunicator.OnStartRound()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
