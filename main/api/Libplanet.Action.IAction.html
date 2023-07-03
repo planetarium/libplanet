@@ -91,9 +91,9 @@ honest node can do in the network.  Even if a malicious node changes
 their own action code it won&apos;t affect other honest nodes in
 the network.</p>
 <p>For example, where honest nodes share the common action
-<code>Heal(Target) => PreviousStates[Target] + 1</code>, suppose a malicious
+<code>Heal(Target) => PreviousState[Target] + 1</code>, suppose a malicious
 node <code>m</code> changes their own <code>Heal</code> action code to
-<code>Heal(Target) => PreviousStates[Target] + 2</code> (2 instead of 1),
+<code>Heal(Target) => PreviousState[Target] + 2</code> (2 instead of 1),
 and then send an action <code>Heal(m)</code>.
 Fortunately, this action does not work as <code>m</code>&apos;s intention,
 because the changed code in itself is not used by other honest nodes,
@@ -148,7 +148,7 @@ public class MyAction : IAction
         // As far as it is serializable, you can store any types.
         // (We recommend to use immutable types though.)
         var state =
-            context.PreviousStates.GetState(TargetAddress);
+            context.PreviousState.GetState(TargetAddress);
         Dictionary dictionary;
         // This variable purposes to store the state
         // right after this action finishes.
@@ -196,7 +196,7 @@ public class MyAction : IAction
         }
         // Builds a delta (dirty) from previous to next states, and
         // returns it.
-        return context.PreviousStates.SetState(TargetAddress,
+        return context.PreviousState.SetState(TargetAddress,
             (Dictionary)nextState);
     }
     // Serializes its &quot;bound arguments&quot; so that they are transmitted

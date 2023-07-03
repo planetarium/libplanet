@@ -1657,7 +1657,7 @@ block when it's instantiated.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a> at
+        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> at
 <code data-dev-comment-type="paramref" class="paramref">offset</code> cannot be created.</p>
 </td>
       </tr>
@@ -1931,63 +1931,20 @@ block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockStates.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockStates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L559">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_BlockChain_GetBlockStates_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_GetBlockStates" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates">GetBlockStates()</h4>
-  <div class="markdown level1 summary"><p>
-A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
-information.
-</p>
-<p>
-In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
-and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain__ctor_Libplanet_Blockchain_Policies_IBlockPolicy_Libplanet_Blockchain_Policies_IStagePolicy_Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
-constructor.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IBlockStates GetBlockStates()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockStates_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
-block when it's instantiated.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L562">View Source</a>
   </span>
-  <a id="Libplanet_Blockchain_BlockChain_GetBlockStates_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})">GetBlockStates(Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a> in the <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>
+  <a id="Libplanet_Blockchain_BlockChain_GetBlockState_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockState*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})">GetBlockState(Nullable&lt;BlockHash&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> in the <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>
 at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IBlockStates GetBlockStates(BlockHash? offset)</code></pre>
+    <pre><code class="lang-csharp hljs">public IBlockState GetBlockState(BlockHash? offset)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2003,7 +1960,7 @@ at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">offset</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> to create
-for which to create an <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a>.</p>
+for which to create an <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -2018,13 +1975,13 @@ for which to create an <a class="xref" href="Libplanet.Blocks.IBlockStates.html"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a></td>
-        <td><p>The <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+        <td><a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash___remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -2051,10 +2008,53 @@ block when it's instantiated.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash___seealso">See Also</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash___seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a></div>
+      <div><a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a></div>
   </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockStates.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockStates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChain.cs/#L559">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_GetBlockStates_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_GetBlockStates" data-uid="Libplanet.Blockchain.BlockChain.GetBlockStates">GetBlockStates()</h4>
+  <div class="markdown level1 summary"><p>
+A class have <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>s, <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>s, and the chain
+information.
+</p>
+<p>
+In order to watch its state changes, implement <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface
+and pass it to the <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain__ctor_Libplanet_Blockchain_Policies_IBlockPolicy_Libplanet_Blockchain_Policies_IStagePolicy_Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_IActionEvaluator_System_Collections_Generic_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__">BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable&lt;IRenderer&gt;)</a>
+constructor.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBlockState GetBlockStates()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_BlockChain_GetBlockStates_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
+block when it's instantiated.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetNextTxNonce_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetNextTxNonce(Libplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -2510,7 +2510,7 @@ block when it's instantiated.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a> at
+        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> at
 <code data-dev-comment-type="paramref" class="paramref">offset</code> cannot be created.</p>
 </td>
       </tr>
@@ -2525,7 +2525,7 @@ is <span class="xref">false</span>.</p>
   </table>
   <h5 id="Libplanet_Blockchain_BlockChain_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash___seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__">GetBlockStates</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;)</div>
+      <div><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__">GetBlockState</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -2829,7 +2829,7 @@ block when it's instantiated.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockStates.html">IBlockStates</a> at
+        <td><p>Thrown when <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> at
 <code data-dev-comment-type="paramref" class="paramref">offset</code> cannot be created.</p>
 </td>
       </tr>
@@ -2837,7 +2837,7 @@ block when it's instantiated.</p>
   </table>
   <h5 id="Libplanet_Blockchain_BlockChain_GetValidatorSet_System_Nullable_Libplanet_Blocks_BlockHash___seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__">GetBlockStates</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;)</div>
+      <div><a class="xref" href="Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__">GetBlockState</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>

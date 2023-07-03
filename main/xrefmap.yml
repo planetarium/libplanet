@@ -104,19 +104,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluation.Logs
   nameWithType: ActionEvaluation.Logs
-- uid: Libplanet.Action.ActionEvaluation.OutputStates
-  name: OutputStates
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputStates
-  commentId: P:Libplanet.Action.ActionEvaluation.OutputStates
-  fullName: Libplanet.Action.ActionEvaluation.OutputStates
-  nameWithType: ActionEvaluation.OutputStates
-- uid: Libplanet.Action.ActionEvaluation.OutputStates*
-  name: OutputStates
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputStates_
-  commentId: Overload:Libplanet.Action.ActionEvaluation.OutputStates
+- uid: Libplanet.Action.ActionEvaluation.OutputState
+  name: OutputState
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputState
+  commentId: P:Libplanet.Action.ActionEvaluation.OutputState
+  fullName: Libplanet.Action.ActionEvaluation.OutputState
+  nameWithType: ActionEvaluation.OutputState
+- uid: Libplanet.Action.ActionEvaluation.OutputState*
+  name: OutputState
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputState_
+  commentId: Overload:Libplanet.Action.ActionEvaluation.OutputState
   isSpec: "True"
-  fullName: Libplanet.Action.ActionEvaluation.OutputStates
-  nameWithType: ActionEvaluation.OutputStates
+  fullName: Libplanet.Action.ActionEvaluation.OutputState
+  nameWithType: ActionEvaluation.OutputState
 - uid: Libplanet.Action.ActionEvaluator
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html
@@ -521,19 +521,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.Miner
   nameWithType: IActionContext.Miner
-- uid: Libplanet.Action.IActionContext.PreviousStates
-  name: PreviousStates
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
-  commentId: P:Libplanet.Action.IActionContext.PreviousStates
-  fullName: Libplanet.Action.IActionContext.PreviousStates
-  nameWithType: IActionContext.PreviousStates
-- uid: Libplanet.Action.IActionContext.PreviousStates*
-  name: PreviousStates
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates_
-  commentId: Overload:Libplanet.Action.IActionContext.PreviousStates
+- uid: Libplanet.Action.IActionContext.PreviousState
+  name: PreviousState
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousState
+  commentId: P:Libplanet.Action.IActionContext.PreviousState
+  fullName: Libplanet.Action.IActionContext.PreviousState
+  nameWithType: IActionContext.PreviousState
+- uid: Libplanet.Action.IActionContext.PreviousState*
+  name: PreviousState
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousState_
+  commentId: Overload:Libplanet.Action.IActionContext.PreviousState
   isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.PreviousStates
-  nameWithType: IActionContext.PreviousStates
+  fullName: Libplanet.Action.IActionContext.PreviousState
+  nameWithType: IActionContext.PreviousState
 - uid: Libplanet.Action.IActionContext.PutLog(System.String)
   name: PutLog(String)
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_System_String_
@@ -670,19 +670,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionEvaluation.Logs
   nameWithType: IActionEvaluation.Logs
-- uid: Libplanet.Action.IActionEvaluation.OutputStates
-  name: OutputStates
-  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_OutputStates
-  commentId: P:Libplanet.Action.IActionEvaluation.OutputStates
-  fullName: Libplanet.Action.IActionEvaluation.OutputStates
-  nameWithType: IActionEvaluation.OutputStates
-- uid: Libplanet.Action.IActionEvaluation.OutputStates*
-  name: OutputStates
-  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_OutputStates_
-  commentId: Overload:Libplanet.Action.IActionEvaluation.OutputStates
+- uid: Libplanet.Action.IActionEvaluation.OutputState
+  name: OutputState
+  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_OutputState
+  commentId: P:Libplanet.Action.IActionEvaluation.OutputState
+  fullName: Libplanet.Action.IActionEvaluation.OutputState
+  nameWithType: IActionEvaluation.OutputState
+- uid: Libplanet.Action.IActionEvaluation.OutputState*
+  name: OutputState
+  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_OutputState_
+  commentId: Overload:Libplanet.Action.IActionEvaluation.OutputState
   isSpec: "True"
-  fullName: Libplanet.Action.IActionEvaluation.OutputStates
-  nameWithType: IActionEvaluation.OutputStates
+  fullName: Libplanet.Action.IActionEvaluation.OutputState
+  nameWithType: IActionEvaluation.OutputState
 - uid: Libplanet.Action.IActionEvaluator
   name: IActionEvaluator
   href: api/Libplanet.Action.IActionEvaluator.html
@@ -2515,21 +2515,28 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetBlockLocator
   nameWithType: BlockChain.GetBlockLocator
+- uid: Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBlockState(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBlockState(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChain.GetBlockState(Nullable<BlockHash>)
+  nameWithType.vb: BlockChain.GetBlockState(Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChain.GetBlockState*
+  name: GetBlockState
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockState_
+  commentId: Overload:Libplanet.Blockchain.BlockChain.GetBlockState
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain.GetBlockState
+  nameWithType: BlockChain.GetBlockState
 - uid: Libplanet.Blockchain.BlockChain.GetBlockStates
   name: GetBlockStates()
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockStates
   commentId: M:Libplanet.Blockchain.BlockChain.GetBlockStates
   fullName: Libplanet.Blockchain.BlockChain.GetBlockStates()
   nameWithType: BlockChain.GetBlockStates()
-- uid: Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name: GetBlockStates(Nullable<BlockHash>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: GetBlockStates(Nullable(Of BlockHash))
-  fullName: Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.GetBlockStates(System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: BlockChain.GetBlockStates(Nullable<BlockHash>)
-  nameWithType.vb: BlockChain.GetBlockStates(Nullable(Of BlockHash))
 - uid: Libplanet.Blockchain.BlockChain.GetBlockStates*
   name: GetBlockStates
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockStates_
@@ -2888,22 +2895,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.GetBalance
   nameWithType: BlockChainStates.GetBalance
-- uid: Libplanet.Blockchain.BlockChainStates.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name: GetBlockStates(Nullable<BlockHash>)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: GetBlockStates(Nullable(Of BlockHash))
-  fullName: Libplanet.Blockchain.BlockChainStates.GetBlockStates(System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetBlockStates(System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: BlockChainStates.GetBlockStates(Nullable<BlockHash>)
-  nameWithType.vb: BlockChainStates.GetBlockStates(Nullable(Of BlockHash))
-- uid: Libplanet.Blockchain.BlockChainStates.GetBlockStates*
-  name: GetBlockStates
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBlockStates_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetBlockStates
+- uid: Libplanet.Blockchain.BlockChainStates.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBlockState(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBlockState(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetBlockState(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetBlockState(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockChainStates.GetBlockState(Nullable<BlockHash>)
+  nameWithType.vb: BlockChainStates.GetBlockState(Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockChainStates.GetBlockState*
+  name: GetBlockState
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetBlockState_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetBlockState
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates.GetBlockStates
-  nameWithType: BlockChainStates.GetBlockStates
+  fullName: Libplanet.Blockchain.BlockChainStates.GetBlockState
+  nameWithType: BlockChainStates.GetBlockState
 - uid: Libplanet.Blockchain.BlockChainStates.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetState(Address, Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -3093,22 +3100,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.IBlockChainStates.GetBalance
   nameWithType: IBlockChainStates.GetBalance
-- uid: Libplanet.Blockchain.IBlockChainStates.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name: GetBlockStates(Nullable<BlockHash>)
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockStates_System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetBlockStates(System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: GetBlockStates(Nullable(Of BlockHash))
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetBlockStates(System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetBlockStates(System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: IBlockChainStates.GetBlockStates(Nullable<BlockHash>)
-  nameWithType.vb: IBlockChainStates.GetBlockStates(Nullable(Of BlockHash))
-- uid: Libplanet.Blockchain.IBlockChainStates.GetBlockStates*
-  name: GetBlockStates
-  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockStates_
-  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetBlockStates
+- uid: Libplanet.Blockchain.IBlockChainStates.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name: GetBlockState(Nullable<BlockHash>)
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: GetBlockState(Nullable(Of BlockHash))
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetBlockState(System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates.GetBlockState(System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: IBlockChainStates.GetBlockState(Nullable<BlockHash>)
+  nameWithType.vb: IBlockChainStates.GetBlockState(Nullable(Of BlockHash))
+- uid: Libplanet.Blockchain.IBlockChainStates.GetBlockState*
+  name: GetBlockState
+  href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetBlockState_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates.GetBlockState
   isSpec: "True"
-  fullName: Libplanet.Blockchain.IBlockChainStates.GetBlockStates
-  nameWithType: IBlockChainStates.GetBlockStates
+  fullName: Libplanet.Blockchain.IBlockChainStates.GetBlockState
+  nameWithType: IBlockChainStates.GetBlockState
 - uid: Libplanet.Blockchain.IBlockChainStates.GetState(Libplanet.Address,System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetState(Address, Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.IBlockChainStates.html#Libplanet_Blockchain_IBlockChainStates_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -6413,93 +6420,93 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockPolicyViolationException.BlockPolicyViolationException
   nameWithType: BlockPolicyViolationException.BlockPolicyViolationException
-- uid: Libplanet.Blocks.BlockStates
-  name: BlockStates
-  href: api/Libplanet.Blocks.BlockStates.html
-  commentId: T:Libplanet.Blocks.BlockStates
-  fullName: Libplanet.Blocks.BlockStates
-  nameWithType: BlockStates
-- uid: Libplanet.Blocks.BlockStates.BlockHash
+- uid: Libplanet.Blocks.BlockState
+  name: BlockState
+  href: api/Libplanet.Blocks.BlockState.html
+  commentId: T:Libplanet.Blocks.BlockState
+  fullName: Libplanet.Blocks.BlockState
+  nameWithType: BlockState
+- uid: Libplanet.Blocks.BlockState.BlockHash
   name: BlockHash
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_BlockHash
-  commentId: P:Libplanet.Blocks.BlockStates.BlockHash
-  fullName: Libplanet.Blocks.BlockStates.BlockHash
-  nameWithType: BlockStates.BlockHash
-- uid: Libplanet.Blocks.BlockStates.BlockHash*
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_BlockHash
+  commentId: P:Libplanet.Blocks.BlockState.BlockHash
+  fullName: Libplanet.Blocks.BlockState.BlockHash
+  nameWithType: BlockState.BlockHash
+- uid: Libplanet.Blocks.BlockState.BlockHash*
   name: BlockHash
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_BlockHash_
-  commentId: Overload:Libplanet.Blocks.BlockStates.BlockHash
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_BlockHash_
+  commentId: Overload:Libplanet.Blocks.BlockState.BlockHash
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.BlockHash
-  nameWithType: BlockStates.BlockHash
-- uid: Libplanet.Blocks.BlockStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.Blocks.BlockState.BlockHash
+  nameWithType: BlockState.BlockHash
+- uid: Libplanet.Blocks.BlockState.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
   name: GetBalance(Address, Currency)
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Blocks.BlockStates.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
-  fullName: Libplanet.Blocks.BlockStates.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
-  nameWithType: BlockStates.GetBalance(Address, Currency)
-- uid: Libplanet.Blocks.BlockStates.GetBalance*
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Blocks.BlockState.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.Blocks.BlockState.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
+  nameWithType: BlockState.GetBalance(Address, Currency)
+- uid: Libplanet.Blocks.BlockState.GetBalance*
   name: GetBalance
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetBalance_
-  commentId: Overload:Libplanet.Blocks.BlockStates.GetBalance
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetBalance_
+  commentId: Overload:Libplanet.Blocks.BlockState.GetBalance
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.GetBalance
-  nameWithType: BlockStates.GetBalance
-- uid: Libplanet.Blocks.BlockStates.GetState(Libplanet.Address)
+  fullName: Libplanet.Blocks.BlockState.GetBalance
+  nameWithType: BlockState.GetBalance
+- uid: Libplanet.Blocks.BlockState.GetState(Libplanet.Address)
   name: GetState(Address)
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetState_Libplanet_Address_
-  commentId: M:Libplanet.Blocks.BlockStates.GetState(Libplanet.Address)
-  fullName: Libplanet.Blocks.BlockStates.GetState(Libplanet.Address)
-  nameWithType: BlockStates.GetState(Address)
-- uid: Libplanet.Blocks.BlockStates.GetState*
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetState_Libplanet_Address_
+  commentId: M:Libplanet.Blocks.BlockState.GetState(Libplanet.Address)
+  fullName: Libplanet.Blocks.BlockState.GetState(Libplanet.Address)
+  nameWithType: BlockState.GetState(Address)
+- uid: Libplanet.Blocks.BlockState.GetState*
   name: GetState
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetState_
-  commentId: Overload:Libplanet.Blocks.BlockStates.GetState
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetState_
+  commentId: Overload:Libplanet.Blocks.BlockState.GetState
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.GetState
-  nameWithType: BlockStates.GetState
-- uid: Libplanet.Blocks.BlockStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  fullName: Libplanet.Blocks.BlockState.GetState
+  nameWithType: BlockState.GetState
+- uid: Libplanet.Blocks.BlockState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
   name: GetStates(IReadOnlyList<Address>)
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__
-  commentId: M:Libplanet.Blocks.BlockStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__
+  commentId: M:Libplanet.Blocks.BlockState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Address})
   name.vb: GetStates(IReadOnlyList(Of Address))
-  fullName: Libplanet.Blocks.BlockStates.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>)
-  fullName.vb: Libplanet.Blocks.BlockStates.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address))
-  nameWithType: BlockStates.GetStates(IReadOnlyList<Address>)
-  nameWithType.vb: BlockStates.GetStates(IReadOnlyList(Of Address))
-- uid: Libplanet.Blocks.BlockStates.GetStates*
+  fullName: Libplanet.Blocks.BlockState.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Address>)
+  fullName.vb: Libplanet.Blocks.BlockState.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Address))
+  nameWithType: BlockState.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: BlockState.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.Blocks.BlockState.GetStates*
   name: GetStates
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetStates_
-  commentId: Overload:Libplanet.Blocks.BlockStates.GetStates
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetStates_
+  commentId: Overload:Libplanet.Blocks.BlockState.GetStates
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.GetStates
-  nameWithType: BlockStates.GetStates
-- uid: Libplanet.Blocks.BlockStates.GetTotalSupply(Libplanet.Assets.Currency)
+  fullName: Libplanet.Blocks.BlockState.GetStates
+  nameWithType: BlockState.GetStates
+- uid: Libplanet.Blocks.BlockState.GetTotalSupply(Libplanet.Assets.Currency)
   name: GetTotalSupply(Currency)
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetTotalSupply_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Blocks.BlockStates.GetTotalSupply(Libplanet.Assets.Currency)
-  fullName: Libplanet.Blocks.BlockStates.GetTotalSupply(Libplanet.Assets.Currency)
-  nameWithType: BlockStates.GetTotalSupply(Currency)
-- uid: Libplanet.Blocks.BlockStates.GetTotalSupply*
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetTotalSupply_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Blocks.BlockState.GetTotalSupply(Libplanet.Assets.Currency)
+  fullName: Libplanet.Blocks.BlockState.GetTotalSupply(Libplanet.Assets.Currency)
+  nameWithType: BlockState.GetTotalSupply(Currency)
+- uid: Libplanet.Blocks.BlockState.GetTotalSupply*
   name: GetTotalSupply
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetTotalSupply_
-  commentId: Overload:Libplanet.Blocks.BlockStates.GetTotalSupply
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetTotalSupply_
+  commentId: Overload:Libplanet.Blocks.BlockState.GetTotalSupply
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.GetTotalSupply
-  nameWithType: BlockStates.GetTotalSupply
-- uid: Libplanet.Blocks.BlockStates.GetValidatorSet
+  fullName: Libplanet.Blocks.BlockState.GetTotalSupply
+  nameWithType: BlockState.GetTotalSupply
+- uid: Libplanet.Blocks.BlockState.GetValidatorSet
   name: GetValidatorSet()
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetValidatorSet
-  commentId: M:Libplanet.Blocks.BlockStates.GetValidatorSet
-  fullName: Libplanet.Blocks.BlockStates.GetValidatorSet()
-  nameWithType: BlockStates.GetValidatorSet()
-- uid: Libplanet.Blocks.BlockStates.GetValidatorSet*
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetValidatorSet
+  commentId: M:Libplanet.Blocks.BlockState.GetValidatorSet
+  fullName: Libplanet.Blocks.BlockState.GetValidatorSet()
+  nameWithType: BlockState.GetValidatorSet()
+- uid: Libplanet.Blocks.BlockState.GetValidatorSet*
   name: GetValidatorSet
-  href: api/Libplanet.Blocks.BlockStates.html#Libplanet_Blocks_BlockStates_GetValidatorSet_
-  commentId: Overload:Libplanet.Blocks.BlockStates.GetValidatorSet
+  href: api/Libplanet.Blocks.BlockState.html#Libplanet_Blocks_BlockState_GetValidatorSet_
+  commentId: Overload:Libplanet.Blocks.BlockState.GetValidatorSet
   isSpec: "True"
-  fullName: Libplanet.Blocks.BlockStates.GetValidatorSet
-  nameWithType: BlockStates.GetValidatorSet
+  fullName: Libplanet.Blocks.BlockState.GetValidatorSet
+  nameWithType: BlockState.GetValidatorSet
 - uid: Libplanet.Blocks.IBlockContent
   name: IBlockContent
   href: api/Libplanet.Blocks.IBlockContent.html
@@ -6731,25 +6738,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp
   nameWithType: IBlockMetadataExtensions.ValidateTimestamp
-- uid: Libplanet.Blocks.IBlockStates
-  name: IBlockStates
-  href: api/Libplanet.Blocks.IBlockStates.html
-  commentId: T:Libplanet.Blocks.IBlockStates
-  fullName: Libplanet.Blocks.IBlockStates
-  nameWithType: IBlockStates
-- uid: Libplanet.Blocks.IBlockStates.BlockHash
+- uid: Libplanet.Blocks.IBlockState
+  name: IBlockState
+  href: api/Libplanet.Blocks.IBlockState.html
+  commentId: T:Libplanet.Blocks.IBlockState
+  fullName: Libplanet.Blocks.IBlockState
+  nameWithType: IBlockState
+- uid: Libplanet.Blocks.IBlockState.BlockHash
   name: BlockHash
-  href: api/Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash
-  commentId: P:Libplanet.Blocks.IBlockStates.BlockHash
-  fullName: Libplanet.Blocks.IBlockStates.BlockHash
-  nameWithType: IBlockStates.BlockHash
-- uid: Libplanet.Blocks.IBlockStates.BlockHash*
+  href: api/Libplanet.Blocks.IBlockState.html#Libplanet_Blocks_IBlockState_BlockHash
+  commentId: P:Libplanet.Blocks.IBlockState.BlockHash
+  fullName: Libplanet.Blocks.IBlockState.BlockHash
+  nameWithType: IBlockState.BlockHash
+- uid: Libplanet.Blocks.IBlockState.BlockHash*
   name: BlockHash
-  href: api/Libplanet.Blocks.IBlockStates.html#Libplanet_Blocks_IBlockStates_BlockHash_
-  commentId: Overload:Libplanet.Blocks.IBlockStates.BlockHash
+  href: api/Libplanet.Blocks.IBlockState.html#Libplanet_Blocks_IBlockState_BlockHash_
+  commentId: Overload:Libplanet.Blocks.IBlockState.BlockHash
   isSpec: "True"
-  fullName: Libplanet.Blocks.IBlockStates.BlockHash
-  nameWithType: IBlockStates.BlockHash
+  fullName: Libplanet.Blocks.IBlockState.BlockHash
+  nameWithType: IBlockState.BlockHash
 - uid: Libplanet.Blocks.InvalidBlockBytesLengthException
   name: InvalidBlockBytesLengthException
   href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html

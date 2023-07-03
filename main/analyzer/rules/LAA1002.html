@@ -85,7 +85,7 @@ since <a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419"
 <p>The following code is warned by the rule LAA1002:</p>
 <pre><code class="lang-csharp">public IAccountStateDelta Execute(IActionContext context)
 {
-    var states = context.PreviousStates;
+    var states = context.PreviousState;
     if (states.GetState(_address) is Bencodex.Types.Dictionary d)
     {
         string list = d.Keys
@@ -99,7 +99,7 @@ since <a href="https://www.nuget.org/packages/Bencodex/0.4.0-dev.20211116020419"
 <p>This can be addressed like below:</p>
 <pre><code class="lang-csharp">public IAccountStateDelta Execute(IActionContext context)
 {
-    var states = context.PreviousStates;
+    var states = context.PreviousState;
     if (states.GetState(_address) is Bencodex.Types.Dictionary d)
     {
         string list = d.Keys

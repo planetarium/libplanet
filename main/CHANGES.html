@@ -117,6 +117,12 @@ through <code>IAccountStateDelta.Delta</code> instead.  [<a href="https://github
 <li>Removed <code>IAccountStateDelta.UpdatedTotalSupplyCurrencies</code> property.</li>
 </ul>
 </li>
+<li>Changed <code>IBlockStates</code> to <code>IBlockState</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>Changed <code>IBlockChainStates.GetBlockStates()</code> to
+<code>IBlockChainStates.GetBlockState()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>Changes <code>IActionContext.PreviousStates</code> to <code>IActionContext.PreviousState</code>.</li>
+<li>Changed <code>IActionEvaluation.OutputStates</code> to <code>IActionEvaluation.OutputState</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
