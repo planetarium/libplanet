@@ -146,15 +146,18 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
+                VoteSet voteSet;
                 try
                 {
-                    GetVoteSet(vote.Round, vote.Flag).AddVote(vote);
+                    voteSet = GetVoteSet(vote.Round, vote.Flag);
                 }
                 catch (KeyNotFoundException)
                 {
-                    throw new InvalidVoteException(
-                        $"Got vote from unwanted round {vote.Round}", vote);
+                    AddRound(vote.Round);
+                    voteSet = GetVoteSet(vote.Round, vote.Flag);
                 }
+
+                voteSet.AddVote(vote);
             }
         }
 
