@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 
@@ -13,6 +10,9 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     public class GossipConsensusMessageCommunicator : IConsensusMessageCommunicator
     {
+        private long _height;
+        private int _round;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GossipConsensusMessageCommunicator"/>
         /// class.
@@ -32,7 +32,9 @@ namespace Libplanet.Net.Consensus
             Action<MessageContent> processMessage)
         {
             Gossip = new Gossip(
-                consensusTransport, validatorPeers, seedPeers, ValidateMessage, processMessage);
+                consensusTransport, validatorPeers, seedPeers, _ => { }, processMessage);
+            _height = 0;
+            _round = 0;
         }
 
         /// <summary>
@@ -44,42 +46,16 @@ namespace Libplanet.Net.Consensus
         public void PublishMessage(ConsensusMsg message)
             => Gossip.PublishMessage(message);
 
-        /// <inheritdoc/>
-        public void DenyPublicKey(PublicKey publicKey)
+        public void OnStartHeight(long height)
         {
-            IEnumerable<BoundPeer> peers = Gossip.Peers.Where(p => p.PublicKey == publicKey);
-            foreach (BoundPeer peer in peers)
-            {
-                Gossip.DenyPeer(peer);
-            }
+            _height = height;
+            Gossip.ClearDenySet();
         }
 
-        /// <inheritdoc/>
-        public void AllowPublicKey(PublicKey publicKey)
+        public void OnStartRound(int round)
         {
-            IEnumerable<BoundPeer> peers = Gossip.Peers.Where(p => p.PublicKey == publicKey);
-            foreach (BoundPeer peer in peers)
-            {
-                Gossip.AllowPeer(peer);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ClearCache() => Gossip.ClearCache();
-
-        /// <inheritdoc/>
-        public void ClearDenySet() => Gossip.ClearDenySet();
-
-        private void ValidateMessage(Message message)
-        {
-            if (message.Content is ConsensusMsg consensusMsg
-                && message.Remote.PublicKey.Equals(consensusMsg.ValidatorPublicKey))
-            {
-                throw new InvalidConsensusMessageException(
-                    $"Public key of ConsensusMessage is different from" +
-                    $"Peer's public key that has been sent : {message.Remote.PublicKey}",
-                    consensusMsg);
-            }
+            _round = round;
+            Gossip.ClearCache();
         }
     }
 }

@@ -329,24 +329,16 @@ namespace Libplanet.Net.Tests
                 _publishMessage = publishMessage;
             }
 
-            public void AllowPublicKey(PublicKey publicKey)
-            {
-            }
-
-            public void ClearCache()
-            {
-            }
-
-            public void ClearDenySet()
-            {
-            }
-
-            public void DenyPublicKey(PublicKey publicKey)
-            {
-            }
-
             public void PublishMessage(ConsensusMsg message)
                 => _publishMessage(message);
+
+            public void OnStartHeight(long height)
+            {
+            }
+
+            public void OnStartRound(int round)
+            {
+            }
         }
     }
 }

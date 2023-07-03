@@ -105,7 +105,6 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
-        private Dictionary<PublicKey, List<int>> _peerCatchupRounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -180,7 +179,6 @@ namespace Libplanet.Net.Consensus
             _validRound = -1;
             _decision = null;
             _committedRound = -1;
-            _peerCatchupRounds = new Dictionary<PublicKey, List<int>>();
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();

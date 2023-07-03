@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
                 round,
                 Round,
                 ToString());
-            _consensusMessageCommunicator.ClearCache();
+            _consensusMessageCommunicator.OnStartRound(round);
 
             Round = round;
             _heightVoteSet.SetRound(round);
@@ -107,11 +107,9 @@ namespace Libplanet.Net.Consensus
                     switch (voteMsg)
                     {
                         case ConsensusPreVoteMsg preVote:
-                            FilterSpam(preVote);
                             _heightVoteSet.AddVote(preVote.PreVote);
                             break;
                         case ConsensusPreCommitMsg preCommit:
-                            FilterSpam(preCommit);
                             _heightVoteSet.AddVote(preCommit.PreCommit);
                             break;
                     }
@@ -160,36 +158,6 @@ namespace Libplanet.Net.Consensus
                 _logger.Error(icme, msg);
                 ExceptionOccurred?.Invoke(this, icme);
                 return false;
-            }
-        }
-
-        private void FilterSpam(ConsensusVoteMsg msg)
-        {
-            try
-            {
-                _heightVoteSet.GetVoteSet(msg.Round, msg.Flag);
-            }
-            catch (KeyNotFoundException)
-            {
-                if (!_peerCatchupRounds.ContainsKey(msg.ValidatorPublicKey))
-                {
-                    _peerCatchupRounds[msg.ValidatorPublicKey] = new List<int>();
-                }
-
-                List<int> rounds = _peerCatchupRounds[msg.ValidatorPublicKey];
-                if (rounds.Count < 2)
-                {
-                    _heightVoteSet.AddRound(msg.Round);
-                    rounds.Add(msg.Round);
-                    _peerCatchupRounds[msg.ValidatorPublicKey] = rounds;
-                }
-                else
-                {
-                    _consensusMessageCommunicator.DenyPublicKey(msg.ValidatorPublicKey);
-                    _logger.Information(
-                        "Repetitively found heigher rounds, add {PublicKey} to deny set.",
-                        msg.ValidatorPublicKey);
-                }
             }
         }
 

@@ -1,4 +1,3 @@
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -15,25 +14,19 @@ namespace Libplanet.Net.Consensus
         public void PublishMessage(ConsensusMsg message);
 
         /// <summary>
-        /// Deny <see cref="ConsensusMsg"/>s from given <paramref name="publicKey"/>.
+        /// Method that will be called on the
+        /// <see cref="Context.Start(Blocks.BlockCommit?)"/> call.
         /// </summary>
-        /// <param name="publicKey"><see cref="PublicKey"/> to deny.</param>
-        public void DenyPublicKey(PublicKey publicKey);
+        /// <param name="height"><see cref="Context.Height"/>
+        /// to trigger this method.</param>
+        public void OnStartHeight(long height);
 
         /// <summary>
-        /// Allow <see cref="ConsensusMsg"/>s from given <paramref name="publicKey"/>.
+        /// Method that will be called on the
+        /// <see cref="Context.StartRound(int)"/> call.
         /// </summary>
-        /// <param name="publicKey"><see cref="PublicKey"/> to allow.</param>
-        public void AllowPublicKey(PublicKey publicKey);
-
-        /// <summary>
-        /// Clear cache of consensus message communicator.
-        /// </summary>
-        public void ClearCache();
-
-        /// <summary>
-        /// Clear deny set to allow messages from any peers.
-        /// </summary>
-        public void ClearDenySet();
+        /// <param name="round"><see cref="Context.Round"/>
+        /// to trigger this method.</param>
+        public void OnStartRound(int round);
     }
 }

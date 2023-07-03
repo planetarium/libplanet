@@ -20,7 +20,7 @@ namespace Libplanet.Net.Consensus
                 Height,
                 lastCommit);
             _lastCommit = lastCommit;
-            _consensusMessageCommunicator.ClearDenySet();
+            _consensusMessageCommunicator.OnStartHeight(Height);
             ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.

@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _contextLock;
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
-        private readonly IConsensusMessageCommunicator _consensusMessageHandler;
+        private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
@@ -50,7 +50,7 @@ namespace Libplanet.Net.Consensus
             TimeSpan newHeightDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
-            _consensusMessageHandler = consensusMessageCommunicator;
+            _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
@@ -327,7 +327,7 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             var context = new Context(
-                _consensusMessageHandler,
+                _consensusMessageCommunicator,
                 _blockChain,
                 height,
                 _privateKey,
