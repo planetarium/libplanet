@@ -8,7 +8,6 @@ To be released.
 
 ### Deprecated APIs
 
- -  (Libplanet.Net) Removed `MessageCache` class.  [[#3260]]
  -  (Libplanet.Net) Removed `ConsensusContext.BroadcastMessage` property.
     [[#3260]]
 
@@ -40,6 +39,7 @@ To be released.
     `Context`.  [[#3260]]
  -  (Libplanet.Net) Renamed `Context.BroadcastMessage(ConsensusMsg)`
     as `Context.PublishMessage(ConsensusMsg)`.  [[#3260]]
+ -  (Libplanet.Net) Removed constructor of `MessageCache` class.  [[#3260]]
  -  (Libplanet.Explorer) Changed `TxResult.UpdatedStates`'s type to
     `IImmutableDictionary<Address, IValue>` from
     `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
@@ -100,9 +100,9 @@ To be released.
     any more. Instead, logic change on `Gossip` solves bootstrapping
     problem.  [[#3260]]
  -  (Libplanet.Net) `Context.Start()` now triggers
-    `IConsensusMessageCommunicator.ClearDenySet()`.  [[#3260]]
- -  (Libplanet.Net) Spam filter logic now denies messages by
-    `Message.ValidatorPublicKey`.  [[#3260]]
+    `IConsensusMessageCommunicator.OnStartHeight()`.  [[#3260]]
+ -  (Libplanet.Net) `Context.StartRound()` now triggers
+    `IConsensusMessageCommunicator.OnStartRound()`.  [[#3260]]
 
 ### Bug fixes
 
