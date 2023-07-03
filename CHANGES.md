@@ -4,7 +4,7 @@ Libplanet changelog
 Version 2.4.0
 -------------
 
-To be released.
+Released on July 3, 2023.
 
 ### Deprecated APIs
 
@@ -43,10 +43,6 @@ To be released.
  -  (Libplanet.Explorer) Changed `TxResult.UpdatedStates`'s type to
     `IImmutableDictionary<Address, IValue>` from
     `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -103,12 +99,6 @@ To be released.
     `IConsensusMessageCommunicator.OnStartHeight()`.  [[#3260]]
  -  (Libplanet.Net) `Context.StartRound()` now triggers
     `IConsensusMessageCommunicator.OnStartRound()`.  [[#3260]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3249]: https://github.com/planetarium/libplanet/pull/3249
 [#3256]: https://github.com/planetarium/libplanet/pull/3256
