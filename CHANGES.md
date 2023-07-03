@@ -21,6 +21,9 @@ To be released.
  -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
     `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
  -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
+ -  Changed `TxResult.UpdatedStates`'s type to
+    `IImmutableDictionary<Address, IValue>` from
+    `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
 
 ### Backward-incompatible network protocol changes
 
@@ -73,6 +76,7 @@ To be released.
 [#3256]: https://github.com/planetarium/libplanet/pull/3256
 [#3257]: https://github.com/planetarium/libplanet/pull/3257
 [#3259]: https://github.com/planetarium/libplanet/pull/3259
+[#3262]: https://github.com/planetarium/libplanet/pull/3262
 
 
 Version 2.3.0
