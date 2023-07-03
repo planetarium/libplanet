@@ -21,7 +21,7 @@ To be released.
  -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
     `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
  -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
- -  Changed `TxResult.UpdatedStates`'s type to
+ -  (Libplanet.Explorer) Changed `TxResult.UpdatedStates`'s type to
     `IImmutableDictionary<Address, IValue>` from
     `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
 
