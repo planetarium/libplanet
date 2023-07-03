@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _refreshLifespan = TimeSpan.FromSeconds(60);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly ITransport _transport;
-        private readonly Dictionary<MessageId, MessageContent> _cache;
+        private readonly MessageCache _cache;
         private readonly Action<Message> _validateMessage;
         private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
@@ -54,7 +54,7 @@ namespace Libplanet.Net.Consensus
             Action<MessageContent> processMessage)
         {
             _transport = transport;
-            _cache = new Dictionary<MessageId, MessageContent>();
+            _cache = new MessageCache();
             _validateMessage = validateMessage;
             _processMessage = processMessage;
             _table = new RoutingTable(transport.AsPeer.Address);
@@ -202,17 +202,17 @@ namespace Libplanet.Net.Consensus
         /// process and gossip.</param>
         public void AddMessage(MessageContent content)
         {
-            if (_cache.TryGetValue(content.Id, out _))
+            try
+            {
+                _cache.Put(content);
+            }
+            catch (ArgumentException)
             {
                 _logger.Verbose(
                     "Message of content {Content} with id {Id} seen recently, ignored",
                     content,
                     content.Id);
-            }
-
-            try
-            {
-                _cache.Add(content.Id, content);
+                return;
             }
             catch (Exception)
             {
@@ -345,7 +345,7 @@ namespace Libplanet.Net.Consensus
             while (!ctx.IsCancellationRequested)
             {
                 _logger.Debug("{FName}() has invoked.", nameof(HeartbeatTask));
-                MessageId[] ids = _cache.Keys.ToArray();
+                MessageId[] ids = _cache.GetGossipIds();
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
@@ -371,8 +371,7 @@ namespace Libplanet.Net.Consensus
             var haveMessage = (HaveMessage)msg.Content;
 
             await ReplyMessagePongAsync(msg, ctx);
-            MessageId[] idsToGet =
-                haveMessage.Ids.Where(id => !_cache.TryGetValue(id, out _)).ToArray();
+            MessageId[] idsToGet = _cache.DiffFrom(haveMessage.Ids);
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
                 haveMessage.Ids.Count(),
@@ -461,7 +460,7 @@ namespace Libplanet.Net.Consensus
         {
             // FIXME: Message may have been discarded.
             var wantMessage = (WantMessage)msg.Content;
-            MessageContent[] contents = wantMessage.Ids.Select(id => _cache[id]).ToArray();
+            MessageContent[] contents = wantMessage.Ids.Select(id => _cache.Get(id)).ToArray();
             MessageId[] ids = contents.Select(c => c.Id).ToArray();
 
             _logger.Debug(
