@@ -216,19 +216,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
   nameWithType: ActionTypeAttribute.TypeIdentifier
-- uid: Libplanet.Action.ActionTypeAttribute.ValueOf(System.Type)
-  name: ValueOf(Type)
-  href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_ValueOf_System_Type_
-  commentId: M:Libplanet.Action.ActionTypeAttribute.ValueOf(System.Type)
-  fullName: Libplanet.Action.ActionTypeAttribute.ValueOf(System.Type)
-  nameWithType: ActionTypeAttribute.ValueOf(Type)
-- uid: Libplanet.Action.ActionTypeAttribute.ValueOf*
-  name: ValueOf
-  href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_ValueOf_
-  commentId: Overload:Libplanet.Action.ActionTypeAttribute.ValueOf
-  isSpec: "True"
-  fullName: Libplanet.Action.ActionTypeAttribute.ValueOf
-  nameWithType: ActionTypeAttribute.ValueOf
 - uid: Libplanet.Action.DuplicateActionTypeIdentifierException
   name: DuplicateActionTypeIdentifierException
   href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html
