@@ -188,6 +188,12 @@ namespace Libplanet.Net.Consensus
                                     maj23Msg.Round,
                                     maj23Msg.Maj23.BlockHash,
                                     maj23Msg.Maj23.Flag);
+                            if (voteSetBits.VoteBits.All(b => b))
+                            {
+                                // No any votes to received, so no need to send reply.
+                                break;
+                            }
+
                             var sender = _gossip.Peers.First(
                                 peer => peer.PublicKey.Equals(maj23Msg.ValidatorPublicKey));
 
