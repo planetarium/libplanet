@@ -181,26 +181,17 @@ namespace Libplanet.Net.Consensus
                 case ConsensusMaj23Msg maj23Msg:
                     try
                     {
-                        if (_consensusContext.HandleMessage(maj23Msg))
+                        VoteSetBits? voteSetBits = _consensusContext.HandleMaj23(maj23Msg.Maj23);
+                        if (voteSetBits is null)
                         {
-                            VoteSetBits voteSetBits = _consensusContext.Contexts[maj23Msg.Height]
-                                .GetVoteSetBits(
-                                    maj23Msg.Round,
-                                    maj23Msg.Maj23.BlockHash,
-                                    maj23Msg.Maj23.Flag);
-                            if (voteSetBits.VoteBits.All(b => b))
-                            {
-                                // No any votes to received, so no need to send reply.
-                                break;
-                            }
-
-                            var sender = _gossip.Peers.First(
-                                peer => peer.PublicKey.Equals(maj23Msg.ValidatorPublicKey));
-
-                            _gossip.PublishMessage(
-                                new ConsensusVoteSetBitsMsg(voteSetBits),
-                                new[] { sender });
+                            break;
                         }
+
+                        var sender = _gossip.Peers.First(
+                            peer => peer.PublicKey.Equals(maj23Msg.ValidatorPublicKey));
+                        _gossip.PublishMessage(
+                            new ConsensusVoteSetBitsMsg(voteSetBits),
+                            new[] { sender });
                     }
                     catch (InvalidOperationException)
                     {

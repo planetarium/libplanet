@@ -267,6 +267,34 @@ namespace Libplanet.Net.Consensus
                 voteBits).Sign(_privateKey);
         }
 
+        /// <summary>
+        /// Add a <see cref="ConsensusMsg"/> to the context.
+        /// </summary>
+        /// <param name="maj23">A <see cref="ConsensusMsg"/> to add.</param>
+        /// <returns>A <see cref="VoteSetBits"/> if given <paramref name="maj23"/> is valid and
+        /// required.</returns>
+        public VoteSetBits? AddMaj23(Maj23 maj23)
+        {
+            try
+            {
+                if (_heightVoteSet.SetPeerMaj23(maj23))
+                {
+                    var voteSetBits = GetVoteSetBits(maj23.Round, maj23.BlockHash, maj23.Flag);
+                    return voteSetBits.VoteBits.All(b => b) ? null : voteSetBits;
+                }
+
+                return null;
+            }
+            catch (InvalidMaj23Exception ime)
+            {
+                var msg = $"Failed to add invalid maj23 {ime} to the " +
+                          $"{nameof(HeightVoteSet)}";
+                _logger.Error(ime, msg);
+                ExceptionOccurred?.Invoke(this, ime);
+                return null;
+            }
+        }
+
         public IEnumerable<ConsensusMsg> GetVoteSetBitsResponse(VoteSetBits voteSetBits)
         {
             IEnumerable<Vote> votes = voteSetBits.Flag switch

@@ -531,15 +531,14 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Validator 1 (key1) collected +2/3 pre-vote messages,
             // sends maj23 message to context.
-            var maj23 = new ConsensusMaj23Msg(
-                new Maj23Metadata(
-                    1,
-                    0,
-                    blockB.Hash,
-                    DateTimeOffset.UtcNow,
-                    key1.PublicKey,
-                    VoteFlag.PreVote).Sign(key1));
-            context.ProduceMessage(maj23);
+            var maj23 = new Maj23Metadata(
+                1,
+                0,
+                blockB.Hash,
+                DateTimeOffset.UtcNow,
+                key1.PublicKey,
+                VoteFlag.PreVote).Sign(key1);
+            context.AddMaj23(maj23);
 
             var preVoteB0 = new ConsensusPreVoteMsg(
                 new VoteMetadata(

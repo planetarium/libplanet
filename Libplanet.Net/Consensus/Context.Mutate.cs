@@ -126,28 +126,10 @@ namespace Libplanet.Net.Consensus
                         voteMsg.ValidatorPublicKey.ToAddress(),
                         voteMsg.BlockHash,
                         ToString());
-                }
-                else
-                {
-                    switch (message)
-                    {
-                        case ConsensusMaj23Msg maj23:
-                            _heightVoteSet.SetPeerMaj23(maj23.Maj23);
-                            break;
-                    }
-
-                    _logger.Debug(
-                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                        "Validator Address: {VAddress}. (context: {Context})",
-                        nameof(AddMessage),
-                        message,
-                        message.Height,
-                        message.Round,
-                        message.ValidatorPublicKey.ToAddress(),
-                        ToString());
+                    return true;
                 }
 
-                return true;
+                return false;
             }
             catch (InvalidProposalException ipe)
             {
@@ -164,17 +146,6 @@ namespace Libplanet.Net.Consensus
             {
                 var icme = new InvalidConsensusMessageException(
                     ive.Message,
-                    message);
-                var msg = $"Failed to add invalid message {message} to the " +
-                          $"{nameof(HeightVoteSet)}";
-                _logger.Error(icme, msg);
-                ExceptionOccurred?.Invoke(this, icme);
-                return false;
-            }
-            catch (InvalidMaj23Exception ime)
-            {
-                var icme = new InvalidConsensusMessageException(
-                    ime.Message,
                     message);
                 var msg = $"Failed to add invalid message {message} to the " +
                           $"{nameof(HeightVoteSet)}";
