@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3267]: https://github.com/planetarium/libplanet/pull/3267
 
 
 Version 2.4.0
