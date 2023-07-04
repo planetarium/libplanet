@@ -6,6 +6,7 @@ using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
@@ -41,6 +42,14 @@ namespace Libplanet.Net.Tests.Messages
         [InlineData(MessageContent.MessageType.GetChainStatus)]
         [InlineData(MessageContent.MessageType.ChainStatus)]
         [InlineData(MessageContent.MessageType.DifferentVersion)]
+        [InlineData(MessageContent.MessageType.HaveMessage)]
+        [InlineData(MessageContent.MessageType.WantMessage)]
+        [InlineData(MessageContent.MessageType.ConsensusProposal)]
+        [InlineData(MessageContent.MessageType.ConsensusVote)]
+        [InlineData(MessageContent.MessageType.ConsensusCommit)]
+        [InlineData(MessageContent.MessageType.ConsensusMaj23Msg)]
+        [InlineData(MessageContent.MessageType.ConsensusVoteSetBitsMsg)]
+        [InlineData(MessageContent.MessageType.ConsensusProposalClaimMsg)]
         public void CheckMessages(MessageContent.MessageType type)
         {
             var privateKey = new PrivateKey();
@@ -117,6 +126,66 @@ namespace Libplanet.Net.Tests.Messages
                         chain.Tip.Hash);
                 case MessageContent.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
+                case MessageContent.MessageType.HaveMessage:
+                    return new HaveMessage(
+                        new[] { new MessageId(TestUtils.GetRandomBytes(MessageId.Size)) });
+                case MessageContent.MessageType.WantMessage:
+                    return new WantMessage(
+                        new[] { new MessageId(TestUtils.GetRandomBytes(MessageId.Size)) });
+                case MessageContent.MessageType.ConsensusProposal:
+                    return new ConsensusProposalMsg(
+                        new ProposalMetadata(
+                            0,
+                            0,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            codec.Encode(genesis.MarshalBlock()),
+                            -1).Sign(privateKey));
+                case MessageContent.MessageType.ConsensusVote:
+                    return new ConsensusPreVoteMsg(
+                            new VoteMetadata(
+                            0,
+                            0,
+                            genesis.Hash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreVote).Sign(privateKey));
+                case MessageContent.MessageType.ConsensusCommit:
+                    return new ConsensusPreCommitMsg(
+                        new VoteMetadata(
+                            0,
+                            0,
+                            genesis.Hash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreCommit).Sign(privateKey));
+                case MessageContent.MessageType.ConsensusMaj23Msg:
+                    return new ConsensusMaj23Msg(
+                        new Maj23Metadata(
+                            0,
+                            0,
+                            genesis.Hash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreVote).Sign(privateKey));
+                case MessageContent.MessageType.ConsensusVoteSetBitsMsg:
+                    return new ConsensusVoteSetBitsMsg(
+                        new VoteSetBitsMetadata(
+                            0,
+                            0,
+                            genesis.Hash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreVote,
+                            new[] { true, true, false, false }).Sign(privateKey));
+                case MessageContent.MessageType.ConsensusProposalClaimMsg:
+                    return new ConsensusProposalClaimMsg(
+                        new ProposalClaimMetadata(
+                            0,
+                            0,
+                            genesis.Hash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey).Sign(privateKey));
                 default:
                     throw new Exception($"Cannot create a message of invalid type {type}");
             }

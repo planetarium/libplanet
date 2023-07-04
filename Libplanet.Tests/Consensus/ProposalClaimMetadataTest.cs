@@ -6,23 +6,20 @@ using Xunit;
 
 namespace Libplanet.Tests.Consensus
 {
-    public class VoteSetBitsMetadataTest
+    public class ProposalClaimMetadataTest
     {
         [Fact]
         public void Bencoded()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
-            var voteBits = new[] { true, true, false, false };
-            var expected = new VoteSetBitsMetadata(
+            var expected = new ProposalClaimMetadata(
                 1,
                 2,
                 hash,
                 DateTimeOffset.UtcNow,
-                key.PublicKey,
-                VoteFlag.PreCommit,
-                voteBits);
-            var decoded = new VoteSetBitsMetadata(expected.Encoded);
+                key.PublicKey);
+            var decoded = new ProposalClaimMetadata(expected.Encoded);
             Assert.Equal(expected, decoded);
         }
     }
