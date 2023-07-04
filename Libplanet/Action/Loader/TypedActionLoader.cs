@@ -137,29 +137,29 @@ namespace Libplanet.Action.Loader
         {
             var types = new Dictionary<IValue, Type>();
             var actionType = typeof(IAction);
-            foreach (Type t in LoadAllActionTypes(assembly))
+            foreach (Type type in LoadAllActionTypes(assembly))
             {
-                if (baseType is { } type && !baseType.IsAssignableFrom(t))
+                if (baseType is { } bType && !bType.IsAssignableFrom(type))
                 {
                     continue;
                 }
 
-                if (ActionTypeAttribute.ValueOf(t) is IValue typeId)
+                if (type.GetCustomAttribute<ActionTypeAttribute>()?.TypeIdentifier is { } typeId)
                 {
                     if (types.TryGetValue(typeId, out Type? existing))
                     {
-                        if (existing != t)
+                        if (existing != type)
                         {
                             throw new DuplicateActionTypeIdentifierException(
                                 "Multiple action types are associated with the same type ID.",
                                 typeId.ToString() ?? "null",
-                                ImmutableHashSet.Create(existing, t));
+                                ImmutableHashSet.Create(existing, type));
                         }
 
                         continue;
                     }
 
-                    types[typeId] = t;
+                    types[typeId] = type;
                 }
             }
 
