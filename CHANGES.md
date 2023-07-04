@@ -14,8 +14,11 @@ To be released.
  -  (Libplanet.Net) Added
     `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
     [[#3206]]
+ -  (Libplanet.Net) Added `Context.AddMaj23()` method.  [[#3206]]
  -  (Libplanet.Net) Added `Context.GetVoteSetBits()` method.  [[#3206]]
  -  (Libplanet.Net) Added `Context.GetVoteSetBitsResponse()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleMaj23()` method.
+    [[#3206]]
  -  (Libplanet.Net) Added `ConsensusContext.HandleVoteSetBits()` method.
     [[#3206]]
  -  (Libplanet.Net) Added `ConsensusContext.HandleProposalClaim()` method.
