@@ -25,7 +25,8 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly ITransport _transport;
         private readonly MessageCache _cache;
-        private readonly Action<Message> _validateMessage;
+        private readonly Action<Message> _validateMessageToReceive;
+        private readonly Action<MessageContent> _validateMessageToSend;
         private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
@@ -44,18 +45,23 @@ namespace Libplanet.Net.Consensus
         /// An <see cref="ITransport"/> used for communicating messages.</param>
         /// <param name="peers">A list of <see cref="BoundPeer"/> composing network.</param>
         /// <param name="seeds">A list of <see cref="BoundPeer"/> for lookup network.</param>
-        /// <param name="validateMessage">Action to be called to validate a new message.</param>
+        /// <param name="validateMessageToReceive">Action to be called to validate
+        /// a received message to add. Validates on <see cref="HandleMessageAsync"/>.</param>
+        /// <param name="validateMessageToSend">Action to be called to validate a new message
+        /// to send. Validates on <see cref="HandleWantAsync"/>.</param>
         /// <param name="processMessage">Action to be called when receiving a new message.</param>
         public Gossip(
             ITransport transport,
             ImmutableArray<BoundPeer> peers,
             ImmutableArray<BoundPeer> seeds,
-            Action<Message> validateMessage,
+            Action<Message> validateMessageToReceive,
+            Action<MessageContent> validateMessageToSend,
             Action<MessageContent> processMessage)
         {
             _transport = transport;
             _cache = new MessageCache();
-            _validateMessage = validateMessage;
+            _validateMessageToReceive = validateMessageToReceive;
+            _validateMessageToSend = validateMessageToSend;
             _processMessage = processMessage;
             _table = new RoutingTable(transport.AsPeer.Address);
 
@@ -306,7 +312,7 @@ namespace Libplanet.Net.Consensus
 
             try
             {
-                _validateMessage(msg);
+                _validateMessageToReceive(msg);
             }
             catch (Exception e)
             {
@@ -443,7 +449,22 @@ namespace Libplanet.Net.Consensus
                         replies.Length,
                         replies,
                         replies.Select(m => m.Content.Id).ToArray());
-                    AddMessages(replies.Select(m => m.Content));
+                    replies.AsParallel().ForAll(
+                        r =>
+                        {
+                            try
+                            {
+                                _validateMessageToReceive(r);
+                                AddMessage(r.Content);
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.Error(
+                                    "Invalid message, rejecting: {Message}, {Exception}",
+                                    r,
+                                    e.Message);
+                            }
+                        });
                 },
                 ctx);
         }
@@ -471,7 +492,18 @@ namespace Libplanet.Net.Consensus
 
             await contents.ParallelForEachAsync(
                 async c =>
-                    await _transport.ReplyMessageAsync(c, msg.Identity, ctx), ctx);
+                {
+                    try
+                    {
+                        _validateMessageToSend(c);
+                        await _transport.ReplyMessageAsync(c, msg.Identity, ctx);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
+                    }
+                }, ctx);
 
             var id = msg is { Identity: null } ? "unknown" : new Guid(msg.Identity).ToString();
             _logger.Debug("Finished replying WantMessage. {RequestId}", id);
