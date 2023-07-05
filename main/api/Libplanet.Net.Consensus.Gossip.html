@@ -118,19 +118,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_Action_Libplanet_Net_Messages_MessageContent__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.%23ctor(Libplanet.Net.Transports.ITransport%2CSystem.Collections.Immutable.ImmutableArray%7BLibplanet.Net.BoundPeer%7D%2CSystem.Collections.Immutable.ImmutableArray%7BLibplanet.Net.BoundPeer%7D%2CSystem.Action%7BLibplanet.Net.Messages.Message%7D%2CSystem.Action%7BLibplanet.Net.Messages.MessageContent%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_Action_Libplanet_Net_Messages_MessageContent__System_Action_Libplanet_Net_Messages_MessageContent__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.%23ctor(Libplanet.Net.Transports.ITransport%2CSystem.Collections.Immutable.ImmutableArray%7BLibplanet.Net.BoundPeer%7D%2CSystem.Collections.Immutable.ImmutableArray%7BLibplanet.Net.BoundPeer%7D%2CSystem.Action%7BLibplanet.Net.Messages.Message%7D%2CSystem.Action%7BLibplanet.Net.Messages.MessageContent%7D%2CSystem.Action%7BLibplanet.Net.Messages.MessageContent%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L49">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip__ctor_" data-uid="Libplanet.Net.Consensus.Gossip.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_Action_Libplanet_Net_Messages_MessageContent__" data-uid="Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.Action{Libplanet.Net.Messages.MessageContent})">Gossip(ITransport, ImmutableArray&lt;BoundPeer&gt;, ImmutableArray&lt;BoundPeer&gt;, Action&lt;Message&gt;, Action&lt;MessageContent&gt;)</h4>
+  <h4 id="Libplanet_Net_Consensus_Gossip__ctor_Libplanet_Net_Transports_ITransport_System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableArray_Libplanet_Net_BoundPeer__System_Action_Libplanet_Net_Messages_Message__System_Action_Libplanet_Net_Messages_MessageContent__System_Action_Libplanet_Net_Messages_MessageContent__" data-uid="Libplanet.Net.Consensus.Gossip.#ctor(Libplanet.Net.Transports.ITransport,System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableArray{Libplanet.Net.BoundPeer},System.Action{Libplanet.Net.Messages.Message},System.Action{Libplanet.Net.Messages.MessageContent},System.Action{Libplanet.Net.Messages.MessageContent})">Gossip(ITransport, ImmutableArray&lt;BoundPeer&gt;, ImmutableArray&lt;BoundPeer&gt;, Action&lt;Message&gt;, Action&lt;MessageContent&gt;, Action&lt;MessageContent&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Net.Consensus.Gossip.html">Gossip</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Gossip(ITransport transport, ImmutableArray&lt;BoundPeer&gt; peers, ImmutableArray&lt;BoundPeer&gt; seeds, Action&lt;Message&gt; validateMessage, Action&lt;MessageContent&gt; processMessage)</code></pre>
+    <pre><code class="lang-csharp hljs">public Gossip(ITransport transport, ImmutableArray&lt;BoundPeer&gt; peers, ImmutableArray&lt;BoundPeer&gt; seeds, Action&lt;Message&gt; validateMessageToReceive, Action&lt;MessageContent&gt; validateMessageToSend, Action&lt;MessageContent&gt; processMessage)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,8 +162,16 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
-        <td><span class="parametername">validateMessage</span></td>
-        <td><p>Action to be called to validate a new message.</p>
+        <td><span class="parametername">validateMessageToReceive</span></td>
+        <td><p>Action to be called to validate
+a received message to add. Validates on <span class="xref">Libplanet.Net.Consensus.Gossip.HandleMessageAsync(System.Threading.CancellationToken)</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a>&gt;</td>
+        <td><span class="parametername">validateMessageToSend</span></td>
+        <td><p>Action to be called to validate a new message
+to send. Validates on <span class="xref">Libplanet.Net.Consensus.Gossip.HandleWantAsync(Libplanet.Net.Messages.Message,System.Threading.CancellationToken)</span>.</p>
 </td>
       </tr>
       <tr>
@@ -181,7 +189,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.AsPeer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L107">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L113">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_AsPeer_" data-uid="Libplanet.Net.Consensus.Gossip.AsPeer*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_AsPeer" data-uid="Libplanet.Net.Consensus.Gossip.AsPeer">AsPeer</h4>
@@ -212,7 +220,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_Peers.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.Peers%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L112">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L118">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_Peers_" data-uid="Libplanet.Net.Consensus.Gossip.Peers*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_Peers" data-uid="Libplanet.Net.Consensus.Gossip.Peers">Peers</h4>
@@ -243,7 +251,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.Running%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L87">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_Running_" data-uid="Libplanet.Net.Consensus.Gossip.Running*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_Running" data-uid="Libplanet.Net.Consensus.Gossip.Running">Running</h4>
@@ -277,7 +285,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_AddMessage_Libplanet_Net_Messages_MessageContent_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.MessageContent)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L210">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L216">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_AddMessage_" data-uid="Libplanet.Net.Consensus.Gossip.AddMessage*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_AddMessage_Libplanet_Net_Messages_MessageContent_" data-uid="Libplanet.Net.Consensus.Gossip.AddMessage(Libplanet.Net.Messages.MessageContent)">AddMessage(MessageContent)</h4>
@@ -312,7 +320,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_AddMessages_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageContent__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Messages.MessageContent%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L245">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L251">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_AddMessages_" data-uid="Libplanet.Net.Consensus.Gossip.AddMessages*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_AddMessages_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageContent__" data-uid="Libplanet.Net.Consensus.Gossip.AddMessages(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.MessageContent})">AddMessages(IEnumerable&lt;MessageContent&gt;)</h4>
@@ -347,7 +355,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_AllowPeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.AllowPeer(Libplanet.Net.BoundPeer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L265">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L271">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_AllowPeer_" data-uid="Libplanet.Net.Consensus.Gossip.AllowPeer*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_AllowPeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.Consensus.Gossip.AllowPeer(Libplanet.Net.BoundPeer)">AllowPeer(BoundPeer)</h4>
@@ -382,7 +390,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_ClearCache.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.ClearCache%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L165">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L171">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_ClearCache_" data-uid="Libplanet.Net.Consensus.Gossip.ClearCache*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_ClearCache" data-uid="Libplanet.Net.Consensus.Gossip.ClearCache">ClearCache()</h4>
@@ -398,7 +406,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_ClearDenySet.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.ClearDenySet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L273">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L279">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_ClearDenySet_" data-uid="Libplanet.Net.Consensus.Gossip.ClearDenySet*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_ClearDenySet" data-uid="Libplanet.Net.Consensus.Gossip.ClearDenySet">ClearDenySet()</h4>
@@ -414,7 +422,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_DenyPeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L255">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L261">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_DenyPeer_" data-uid="Libplanet.Net.Consensus.Gossip.DenyPeer*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_DenyPeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)">DenyPeer(BoundPeer)</h4>
@@ -449,7 +457,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L171">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_Dispose_" data-uid="Libplanet.Net.Consensus.Gossip.Dispose*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_Dispose" data-uid="Libplanet.Net.Consensus.Gossip.Dispose">Dispose()</h4>
@@ -465,7 +473,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_PublishMessage_Libplanet_Net_Messages_MessageContent_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.BoundPeer%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L199">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_PublishMessage_" data-uid="Libplanet.Net.Consensus.Gossip.PublishMessage*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_PublishMessage_Libplanet_Net_Messages_MessageContent_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__" data-uid="Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent,System.Collections.Generic.IEnumerable{Libplanet.Net.BoundPeer})">PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</h4>
@@ -505,7 +513,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_PublishMessage_Libplanet_Net_Messages_MessageContent_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L190">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L196">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_PublishMessage_" data-uid="Libplanet.Net.Consensus.Gossip.PublishMessage*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_PublishMessage_Libplanet_Net_Messages_MessageContent_" data-uid="Libplanet.Net.Consensus.Gossip.PublishMessage(Libplanet.Net.Messages.MessageContent)">PublishMessage(MessageContent)</h4>
@@ -539,7 +547,7 @@ process and gossip.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_StartAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.StartAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_StartAsync_" data-uid="Libplanet.Net.Consensus.Gossip.StartAsync*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_StartAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Consensus.Gossip.StartAsync(System.Threading.CancellationToken)">StartAsync(CancellationToken)</h4>
@@ -590,7 +598,7 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_StopAsync_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.StopAsync(System.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L156">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_StopAsync_" data-uid="Libplanet.Net.Consensus.Gossip.StopAsync*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_StopAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Consensus.Gossip.StopAsync(System.TimeSpan,System.Threading.CancellationToken)">StopAsync(TimeSpan, CancellationToken)</h4>
@@ -647,7 +655,7 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_Gossip_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.Gossip.WaitForRunningAsync%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L184">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Consensus/Gossip.cs/#L190">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_Gossip_WaitForRunningAsync_" data-uid="Libplanet.Net.Consensus.Gossip.WaitForRunningAsync*"></a>
   <h4 id="Libplanet_Net_Consensus_Gossip_WaitForRunningAsync" data-uid="Libplanet.Net.Consensus.Gossip.WaitForRunningAsync">WaitForRunningAsync()</h4>

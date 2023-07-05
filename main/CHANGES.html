@@ -66,7 +66,6 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>Removed <code>ActionTypeAttribute.ValueOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3267">#3267</a>]</li>
 <li>(Libplanet.Net) Added
 <code>Gossip.PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
@@ -79,6 +78,13 @@
 [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
 <li>(Libplanet.Net) Added <code>ConsensusContext.HandleProposalClaim()</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>Removed <code>ActionTypeAttribute.ValueOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3267">#3267</a>]</li>
+<li>Added <code>Action&lt;Message&gt; validateMessageToReceive</code> parameter
+to <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li>Added <code>Action&lt;MessageContent&gt; validateMessageToSend</code> parameter
+to <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li>Removed <code>Action&lt;Message&gt; validateMessage</code> parameter
+from <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -98,7 +104,7 @@
 <li>(Libplanet.Net) Added <code>ConsensusProposalClaimMsg</code> class.</li>
 </ul>
 </li>
-<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
 <li>(Libplanet.Net) Added enumeration items to <code>MessageType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
 <ul>
 <li>Added <code>ConsensusMaj23Msg</code> of value <code>0x53</code>.</li>
@@ -111,6 +117,16 @@
 <ul>
 <li>(Libplanet.Net) <code>Context</code> became to remove its proposal
 when +2/3 valid votes were collected.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li><code>Gossip.HandleMessageAsync()</code> now executes <code>_validateMessageToReceive</code>
+on given message received.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>Gossip.SendWantAsync()</code> now executes <code>_validateMessageToReceive</code>
+on replies of <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>Gossip.HandleWantAsync()</code> now executes <code>_validateMessageToSend</code>
+on given message to send as a reply of <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>GossipConsensusMessageCommunicator</code> now prevents sending a message
+with a round other than its own as a reply to a <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>GossipConsensusMessageCommunicator</code> now executes anti-spam logic
+when messages are received.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
