@@ -81,11 +81,12 @@ namespace Libplanet.Net.Tests.Consensus
                 communicator1.OnStartRound(2);
                 communicator2.OnStartRound(4);
 
-                // Add message of higher round to communicator1
+                // Add message of same round to communicator1
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreVote)));
 
+                // Add message of higher round to communicator1
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 3, fx.Hash1, VoteFlag.PreVote)));
@@ -93,6 +94,8 @@ namespace Libplanet.Net.Tests.Consensus
                 await receivedPreVotes.WaitAsync();
                 await Task.Delay(1500);
 
+                // Only message of same round has been transmitted,
+                // message of higher round has been rejected to be sent.
                 Assert.Equal(1, nPreVoteReceived);
             }
             finally
@@ -128,15 +131,20 @@ namespace Libplanet.Net.Tests.Consensus
                     {
                         if (preVote.Round > 2)
                         {
+                            // If received message of higher round, counts.
                             nHigherPreVoteReceived++;
                         }
                         else
                         {
+                            // If received message of same or lower round, counts,
                             nValidPreVoteReceived++;
                         }
 
                         if (nHigherPreVoteReceived >= 2)
                         {
+                            // If received two higher round messages,
+                            // Spam filter logic will be activated on third
+                            // higher round message encounter.
                             receivedTwoHigherPreVotes.Set();
                         }
                     }
@@ -147,6 +155,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                         if (preCommit.Round == 2)
                         {
+                            // Check if received message from communicator3.
                             receivedPreCommitFrom3.Set();
                         }
                     }
@@ -180,45 +189,56 @@ namespace Libplanet.Net.Tests.Consensus
                 communicator2.OnStartRound(2);
                 communicator3.OnStartRound(2);
 
-                // Add message of higher round to communicator1
+                // This message will be accepted, since its round is valid.
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreVote)));
 
+                // Higher round messages. These will trigger spam filter,
+                // and only two will be received.
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 3, fx.Hash1, VoteFlag.PreVote)));
-
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 4, fx.Hash1, VoteFlag.PreVote)));
-
+                // Higher round message. This will trigger spam filter, if encounter three times.
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 5, fx.Hash1, VoteFlag.PreVote)));
 
+                // Wait for third higher round message encounter.
                 await receivedTwoHigherPreVotes.WaitAsync();
                 await Task.Delay(1500);
 
+                // These messages will be rejected, since spam filter logic has been activated
+                // to communicator1, and gossip denies messages from it.
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 1, fx.Hash1, VoteFlag.PreVote)));
-
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreCommitMsg(
                         TestUtils.CreateVote(
                             new PrivateKey(), 1, 1, fx.Hash1, VoteFlag.PreCommit)));
 
+                // Since communicator3 wasn't denied, this message will be received without block.
                 communicator3.Gossip.AddMessage(
                     new ConsensusPreCommitMsg(
                         TestUtils.CreateVote(
                             new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreCommit)));
 
+                // Wait for message from communicator1's precommit encounter,
+                // but this message will be rejected by spam filter logic.
                 await receivedPreCommitFrom3.WaitAsync();
                 await Task.Delay(1500);
 
+                // Accepted 1, Rejected 1
                 Assert.Equal(1, nValidPreVoteReceived);
+
+                // Accepted 2, Rejected 1
                 Assert.Equal(2, nHigherPreVoteReceived);
+
+                // Accepted 1, Rejected 1
                 Assert.Equal(1, nPreCommitReceived);
             }
             finally
