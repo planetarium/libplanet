@@ -691,6 +691,10 @@ namespace Libplanet.Tests.Action
                     .ToImmutableArray()).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
+            Assert.Equal(
+                new Integer(15),
+                evalsA.Last().OutputState.GetState(txA.Signer));
+
             for (int i = 0; i < evalsA.Length; i++)
             {
                 IActionEvaluation eval = evalsA[i];
@@ -715,8 +719,8 @@ namespace Libplanet.Tests.Action
                 Assert.Null(eval.Exception);
             }
 
-            // txB: error(10 - 3) + -3 =
-            //           (10 - 3)      = 7  (only input of error() is left)
+            // txB: error(10 - 3) + -1 =
+            //           (10 - 3) + -1 = 6  (error() does nothing)
             (Transaction txB, var deltaB) = fx.Sign(
                 1,
                 Arithmetic.Sub(3),
@@ -739,6 +743,9 @@ namespace Libplanet.Tests.Action
                     .ToImmutableArray()).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
+            Assert.Equal(
+                new Integer(6),
+                evalsB.Last().OutputState.GetState(txB.Signer));
 
             for (int i = 0; i < evalsB.Length; i++)
             {

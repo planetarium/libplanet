@@ -6,6 +6,9 @@ Version 2.5.0
 
 To be released.
 
+Due to changes in [[#3272]], a network ran with a prior version may not
+be compatible with this version.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -54,6 +57,9 @@ To be released.
 
  -  (Libplanet.Net) `Context` became to remove its proposal
     when +2/3 valid votes were collected.  [[#3206]]
+ -  Changed `ActionEvaluator` to evaluate all `IAction`s in a `Transaction`
+    without early termination even if an `IAction` throws an `Exception`.
+    [[#3272]]
  -  `Gossip.HandleMessageAsync()` now executes `_validateMessageToReceive`
     on given message received.  [[#3273]]
  -  `Gossip.SendWantAsync()` now executes `_validateMessageToReceive`
@@ -73,6 +79,7 @@ To be released.
 
 [#3206]: https://github.com/planetarium/libplanet/pull/3206
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
+[#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
 
 

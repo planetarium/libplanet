@@ -318,11 +318,6 @@ namespace Libplanet.Action
                     exception: exc,
                     logs: context.Logs);
 
-                if (exc is { })
-                {
-                    yield break;
-                }
-
                 states = nextStates;
                 gasLimit = nextGasLimit;
                 unchecked
