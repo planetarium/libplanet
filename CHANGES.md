@@ -10,7 +10,6 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
  -  (Libplanet.Net) Added
     `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
     [[#3206]]
@@ -23,6 +22,13 @@ To be released.
     [[#3206]]
  -  (Libplanet.Net) Added `ConsensusContext.HandleProposalClaim()` method.
     [[#3206]]
+ -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
+ -  Added `Action<Message> validateMessageToReceive` parameter
+    to `Gossip`'s constructor.  [[#3273]]
+ -  Added `Action<MessageContent> validateMessageToSend` parameter
+    to `Gossip`'s constructor.  [[#3273]]
+ -  Removed `Action<Message> validateMessage` parameter
+    from `Gossip`'s constructor.  [[#3273]]
 
 ### Backward-incompatible network protocol changes
 
@@ -38,7 +44,7 @@ To be released.
      -  Added `ProposalClaim` class.
      -  Added `ProposalClaimMetadata` class.
      -  (Libplanet.Net) Added `ConsensusProposalClaimMsg` class.
- -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.
+ -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.  [[#3206]]
  -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#3206]]
      -  Added `ConsensusMaj23Msg` of value `0x53`.
      -  Added `ConsensusVoteSetBitsMsg` of value `0x54`.
@@ -48,6 +54,16 @@ To be released.
 
  -  (Libplanet.Net) `Context` became to remove its proposal
     when +2/3 valid votes were collected.  [[#3206]]
+ -  `Gossip.HandleMessageAsync()` now executes `_validateMessageToReceive`
+    on given message received.  [[#3273]]
+ -  `Gossip.SendWantAsync()` now executes `_validateMessageToReceive`
+    on replies of `WantMessage`.  [[#3273]]
+ -  `Gossip.HandleWantAsync()` now executes `_validateMessageToSend`
+    on given message to send as a reply of `WantMessage`.  [[#3273]]
+ -  `GossipConsensusMessageCommunicator` now prevents sending a message
+    with a round other than its own as a reply to a `WantMessage`.  [[#3273]]
+ -  `GossipConsensusMessageCommunicator` now executes anti-spam logic
+    when messages are received.  [[#3273]]
 
 ### Bug fixes
 
@@ -57,6 +73,7 @@ To be released.
 
 [#3206]: https://github.com/planetarium/libplanet/pull/3206
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
+[#3273]: https://github.com/planetarium/libplanet/pull/3273
 
 
 Version 2.4.0
