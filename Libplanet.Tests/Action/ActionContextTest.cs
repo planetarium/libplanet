@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.State;
