@@ -11,6 +11,12 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
+ -  Added `Action<Message> validateMessageToReceive` parameter
+    to `Gossip`'s constructor.  [[#3269]]
+ -  Added `Action<MessageContent> validateMessageToSend` parameter
+    to `Gossip`'s constructor.  [[#3269]]
+ -  Removed `Action<Message> validateMessage` parameter
+    from `Gossip`'s constructor.  [[#3269]]
 
 ### Backward-incompatible network protocol changes
 
@@ -20,6 +26,17 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Gossip.HandleMessageAsync()` now executes `_validateMessageToReceive`
+    on given message received.
+ -  `Gossip.SendWantAsync()` now executes `_validateMessageToReceive`
+    on replies of `WantMessage`.
+ -  `Gossip.HandleWantAsync()` now executes `_validateMessageToSend`
+    on given message to send as a reply of `WantMessage`.
+ -  `GossipConsensusMessageCommunicator` now prevents sending a message
+    with a round other than its own as a reply to a `WantMessage`.
+ -  `GossipConsensusMessageCommunicator` now executes anti-spam logic
+    when messages are received.
+
 ### Bug fixes
 
 ### Dependencies
@@ -27,6 +44,7 @@ To be released.
 ### CLI tools
 
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
+[#3269]: https://github.com/planetarium/libplanet/pull/3269
 
 
 Version 2.4.0
