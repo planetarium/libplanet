@@ -245,6 +245,82 @@ namespace Libplanet.Net.Consensus
             return blockCommit;
         }
 
+        public VoteSetBits GetVoteSetBits(int round, BlockHash blockHash, VoteFlag flag)
+        {
+            bool[] voteBits = flag switch
+            {
+                VoteFlag.PreVote => _heightVoteSet.PreVotes(round).BitArrayByBlockHash(blockHash),
+                VoteFlag.PreCommit
+                    => _heightVoteSet.PreCommits(round).BitArrayByBlockHash(blockHash),
+                _ => throw new ArgumentException(
+                    "VoteFlag should be either PreVote or PreCommit.",
+                    nameof(flag)),
+            };
+
+            return new VoteSetBitsMetadata(
+                Height,
+                round,
+                blockHash,
+                DateTimeOffset.UtcNow,
+                _privateKey.PublicKey,
+                flag,
+                voteBits).Sign(_privateKey);
+        }
+
+        /// <summary>
+        /// Add a <see cref="ConsensusMsg"/> to the context.
+        /// </summary>
+        /// <param name="maj23">A <see cref="ConsensusMsg"/> to add.</param>
+        /// <returns>A <see cref="VoteSetBits"/> if given <paramref name="maj23"/> is valid and
+        /// required.</returns>
+        public VoteSetBits? AddMaj23(Maj23 maj23)
+        {
+            try
+            {
+                if (_heightVoteSet.SetPeerMaj23(maj23))
+                {
+                    var voteSetBits = GetVoteSetBits(maj23.Round, maj23.BlockHash, maj23.Flag);
+                    return voteSetBits.VoteBits.All(b => b) ? null : voteSetBits;
+                }
+
+                return null;
+            }
+            catch (InvalidMaj23Exception ime)
+            {
+                var msg = $"Failed to add invalid maj23 {ime} to the " +
+                          $"{nameof(HeightVoteSet)}";
+                _logger.Error(ime, msg);
+                ExceptionOccurred?.Invoke(this, ime);
+                return null;
+            }
+        }
+
+        public IEnumerable<ConsensusMsg> GetVoteSetBitsResponse(VoteSetBits voteSetBits)
+        {
+            IEnumerable<Vote> votes = voteSetBits.Flag switch
+            {
+                VoteFlag.PreVote =>
+                _heightVoteSet.PreVotes(voteSetBits.Round).MappedList().Where(
+                    (vote, index)
+                    => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
+                VoteFlag.PreCommit =>
+                _heightVoteSet.PreCommits(voteSetBits.Round).MappedList().Where(
+                    (vote, index)
+                    => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
+                _ => throw new ArgumentException(
+                    "VoteFlag should be PreVote or PreCommit.",
+                    nameof(voteSetBits.Flag)),
+            };
+
+            return votes.Select(
+                vote => vote.Flag switch
+            {
+                VoteFlag.PreVote => (ConsensusMsg)new ConsensusPreVoteMsg(vote),
+                VoteFlag.PreCommit => (ConsensusMsg)new ConsensusPreCommitMsg(vote),
+                _ => throw new ArgumentException(),
+            });
+        }
+
         /// <summary>
         /// Returns the summary of context in JSON-formatted string.
         /// </summary>
@@ -452,6 +528,37 @@ namespace Libplanet.Net.Consensus
             }
 
             return new VoteMetadata(
+                Height,
+                round,
+                hash,
+                DateTimeOffset.UtcNow,
+                _privateKey.PublicKey,
+                flag).Sign(_privateKey);
+        }
+
+        /// <summary>
+        /// Creates a signed <see cref="Maj23"/> for a <see cref="ConsensusMaj23Msg"/>.
+        /// </summary>
+        /// <param name="round">Current context round.</param>
+        /// <param name="hash">Current context locked <see cref="BlockHash"/>.</param>
+        /// <param name="flag"><see cref="VoteFlag"/> of <see cref="Maj23"/> to create.
+        /// Set to <see cref="VoteFlag.PreVote"/> if +2/3 <see cref="ConsensusPreVoteMsg"/>
+        /// messages that votes to the same block with proposal are collected.
+        /// If +2/3 <see cref="ConsensusPreCommitMsg"/> messages that votes to the same block
+        /// with proposal are collected, Set to <see cref="VoteFlag.PreCommit"/>.</param>
+        /// <returns>Returns a signed <see cref="Maj23"/> with consensus private key.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
+        /// <see cref="VoteFlag.Null"/> or <see cref="VoteFlag.Unknown"/>.</exception>
+        private Maj23 MakeMaj23(int round, BlockHash hash, VoteFlag flag)
+        {
+            if (flag == VoteFlag.Null || flag == VoteFlag.Unknown)
+            {
+                throw new ArgumentException(
+                    $"{nameof(flag)} must be either {VoteFlag.PreVote} or {VoteFlag.PreCommit}" +
+                    $"to create a valid signed maj23.");
+            }
+
+            return new Maj23Metadata(
                 Height,
                 round,
                 hash,

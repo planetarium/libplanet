@@ -120,6 +120,21 @@ namespace Libplanet.Net.Messages
             /// Consensus commit message.
             /// </summary>
             ConsensusCommit = 0x52,
+
+            /// <summary>
+            /// Consensus message that informs other peer that the peer has a vote of majority 2/3.
+            /// </summary>
+            ConsensusMaj23Msg = 0x53,
+
+            /// <summary>
+            /// Consensus message that informs vote sets that the peer have to other peer.
+            /// </summary>
+            ConsensusVoteSetBitsMsg = 0x54,
+
+            /// <summary>
+            /// Consensus message that informs vote sets that the peer received new maj23 block.
+            /// </summary>
+            ConsensusProposalClaimMsg = 0x55,
         }
 
         /// <summary>
