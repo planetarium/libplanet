@@ -67,11 +67,51 @@
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>ActionTypeAttribute.ValueOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3267">#3267</a>]</li>
+<li>(Libplanet.Net) Added
+<code>Gossip.PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.AddMaj23()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.GetVoteSetBits()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.GetVoteSetBitsResponse()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleMaj23()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleVoteSetBits()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleProposalClaim()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>VoteSetBits</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>VoteSetBits</code> class.</li>
+<li>Added <code>VoteSetBitsMetadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusVoteSetBitsMsg</code> class.</li>
+</ul>
+</li>
+<li>Added <code>ProposalClaim</code> and its related class.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>ProposalClaim</code> class.</li>
+<li>Added <code>ProposalClaimMetadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusProposalClaimMsg</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.</li>
+<li>(Libplanet.Net) Added enumeration items to <code>MessageType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>ConsensusMaj23Msg</code> of value <code>0x53</code>.</li>
+<li>Added <code>ConsensusVoteSetBitsMsg</code> of value <code>0x54</code>.</li>
+<li>Added <code>ConsensusProposalClaimMsg</code> of value <code>0x55</code>.</li>
+</ul>
+</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) <code>Context</code> became to remove its proposal
+when +2/3 valid votes were collected.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
@@ -95,6 +135,14 @@ to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/32
 <li>(Libplanet.Net) <code>ConsensusProposalMsg</code>, <code>ConsensusPreVoteMsg</code> and
 <code>ConsensusPreCommitMsg</code> became to inherit <code>ConsensusVoteMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>(Libplanet.Net) Removed <code>ConsensusMsg.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Some enumeration items to <code>MessageType</code> enum has modified.
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
+<ul>
+<li><code>ConsensusProposal</code> changed to <code>0x50</code> (was <code>0x40</code>).</li>
+<li><code>ConsensusVote</code> changed to <code>0x51</code> (was <code>0x41</code>).</li>
+<li><code>ConsensusCommit</code> changed to <code>0x52</code> (was <code>0x42</code>).</li>
+</ul>
+</li>
 <li>(Libplanet.Net) Added <code>Flag</code> property to <code>ConsensusVoteMsg</code> abstract class.
 [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
 <li>(Libplanet.Net) <code>ConsensusProposalMsg</code> no longer inherits
@@ -121,14 +169,6 @@ as <code>Context.PublishMessage(ConsensusMsg)</code>.  [<a href="https://github.
 <ul>
 <li>Added <code>Maj23</code> class.</li>
 <li>Added <code>Maj23Metadata</code> class.</li>
-<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.</li>
-</ul>
-</li>
-<li>Added <code>VoteSetBits</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
-<ul>
-<li>Added <code>VoteSetBits</code> class.</li>
-<li>Added <code>VoteSetBitsMetadata</code> class.</li>
-<li>(Libplanet.Net) Added <code>ConsensusVoteSetBitsMsg</code> class.</li>
 </ul>
 </li>
 <li>(Libplanet.Net) Added <code>VoteSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
@@ -137,9 +177,6 @@ as <code>Context.PublishMessage(ConsensusMsg)</code>.  [<a href="https://github.
 <li>(Libplanet.Net) Added <code>InvalidProposalException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>(Libplanet.Net) Added <code>InvalidVoteException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>(Libplanet.Net) Added <code>InvalidMaj23Exception</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
-<li>(Libplanet.Net) Added
-<code>Gossip.PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</code> method.
-[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
 <li>Added <code>IAccountDelta.OrderedSum()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
 <li>Added <code>IAccountDelta.ToRawDelta()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
 <li>Removed several properties from <code>IAccountStateDelta</code> pertaining to
