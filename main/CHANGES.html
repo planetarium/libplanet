@@ -63,6 +63,8 @@
 
 <h2 id="version-250">Version 2.5.0</h2>
 <p>To be released.</p>
+<p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/3272">#3272</a>], a network ran with a prior version may not
+be compatible with this version.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -117,6 +119,9 @@ from <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetariu
 <ul>
 <li>(Libplanet.Net) <code>Context</code> became to remove its proposal
 when +2/3 valid votes were collected.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>Changed <code>ActionEvaluator</code> to evaluate all <code>IAction</code>s in a <code>Transaction</code>
+without early termination even if an <code>IAction</code> throws an <code>Exception</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3272">#3272</a>]</li>
 <li><code>Gossip.HandleMessageAsync()</code> now executes <code>_validateMessageToReceive</code>
 on given message received.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
 <li><code>Gossip.SendWantAsync()</code> now executes <code>_validateMessageToReceive</code>
