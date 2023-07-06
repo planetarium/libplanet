@@ -183,7 +183,7 @@ namespace Libplanet.Tx
             ImmutableArray<byte> sig
                 = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
                 ? bin
-                : new Binary(new byte[0]);
+                : new Binary(Array.Empty<byte>());
             return UnmarshalUnsignedTx(dictionary).CombineWithoutVerification(sig);
         }
 

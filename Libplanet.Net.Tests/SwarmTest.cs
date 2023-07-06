@@ -650,7 +650,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 chainB.Genesis.Hash,
-                new DumbAction[0]
+                Array.Empty<DumbAction>()
             );
             chainB.StageTransaction(tx);
             Block block = chainB.ProposeBlock(keyB);

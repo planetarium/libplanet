@@ -286,7 +286,7 @@ namespace Libplanet.Net
                         payloads.Add(blockPayload);
                         byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
                             ? Codec.Encode(commit.Bencoded)
-                            : new byte[0];
+                            : Array.Empty<byte>();
                         payloads.Add(commitPayload);
                         count++;
                     }

@@ -739,17 +739,17 @@ namespace Libplanet.Blockchain
             BlockHash? tip = Store.IndexBlockHash(Id, -1);
             if (tip is null)
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             if (!(FindBranchpoint(locator) is BlockHash branchpoint))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             if (!(Store.GetBlockIndex(branchpoint) is long branchpointIndex))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             var result = new List<BlockHash>();

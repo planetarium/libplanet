@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -36,7 +36,7 @@ namespace Libplanet.Benchmarks
                 for (int j = 0; j < i % 5; j++)
                 {
                     blockTxs.Add(Transaction.Create(
-                        nonce++, key, genesis.Hash, new DumbAction[0]));
+                        nonce++, key, genesis.Hash, Array.Empty<DumbAction>()));
                 }
                 block = TestUtils.ProposeNextBlock(
                     block, TestUtils.GenesisProposer, blockTxs);
