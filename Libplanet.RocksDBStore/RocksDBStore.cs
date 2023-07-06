@@ -119,7 +119,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ChainBlockCommitKeyPrefix = { (byte)'M' };
         private static readonly byte[] BlockCommitKeyPrefix = { (byte)'m' };
 
-        private static readonly byte[] EmptyBytes = new byte[0];
+        private static readonly byte[] EmptyBytes = Array.Empty<byte>();
 
         private static readonly Codec Codec = new Codec();
 
@@ -402,7 +402,7 @@ namespace Libplanet.RocksDBStore
             _indexCache.Remove(chainId);
             if (HasFork(chainId))
             {
-                _chainDb.Put(DeletedChainKey(chainId), new byte[0]);
+                _chainDb.Put(DeletedChainKey(chainId), Array.Empty<byte>());
 
                 // We need only chain indexes, not tx nonces at this time because they already had
                 // been copied on .ForkTxNonces().
@@ -1587,7 +1587,7 @@ namespace Libplanet.RocksDBStore
 
         private void AddFork(Guid chainId, Guid forkedChainId)
         {
-            _chainDb.Put(ForkedChainsKey(chainId, forkedChainId), new byte[0]);
+            _chainDb.Put(ForkedChainsKey(chainId, forkedChainId), Array.Empty<byte>());
         }
 
         private void RemoveFork(Guid chainId, Guid forkedChainId)

@@ -104,7 +104,7 @@ namespace Libplanet.Net.Tests.Messages
                     {
                         BitConverter.GetBytes(2),
                         codec.Encode(genesis.MarshalBlock()),
-                        new byte[0],
+                        Array.Empty<byte>(),
                     });
                 case MessageContent.MessageType.Tx:
                     return new Libplanet.Net.Messages.TxMsg(transaction.Serialize());

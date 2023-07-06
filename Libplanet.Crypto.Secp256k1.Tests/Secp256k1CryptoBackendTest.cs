@@ -13,7 +13,7 @@ public class Secp256k1CryptoBackendTest
     public static IEnumerable<object[]> GenerateRandomBytes()
     {
         Random random = new ();
-        yield return new object[] { new byte[0] };
+        yield return new object[] { Array.Empty<byte>() };
         for (int i = 1; i < 100; i++)
         {
             byte[] bytes = new byte[i];

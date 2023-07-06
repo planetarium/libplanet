@@ -352,19 +352,19 @@ namespace Libplanet.Tests.Blockchain
                     2,
                     key,
                     _blockChain.Genesis.Hash,
-                    new DumbAction[0]
+                    Array.Empty<DumbAction>()
                 ),
                 Transaction.Create(
                     1,
                     key,
                     _blockChain.Genesis.Hash,
-                    new DumbAction[0]
+                    Array.Empty<DumbAction>()
                 ),
                 Transaction.Create(
                     0,
                     key,
                     _blockChain.Genesis.Hash,
-                    new DumbAction[0]
+                    Array.Empty<DumbAction>()
                 ),
             };
             StageTransactions(txs);
@@ -383,7 +383,7 @@ namespace Libplanet.Tests.Blockchain
                         0,
                         key,
                         _blockChain.Genesis.Hash,
-                        new DumbAction[0]
+                        Array.Empty<DumbAction>()
                     ),
                 }
             );
@@ -398,7 +398,7 @@ namespace Libplanet.Tests.Blockchain
                         0,
                         key,
                         _blockChain.Genesis.Hash,
-                        new DumbAction[0]
+                        Array.Empty<DumbAction>()
                     ),
                 }
             );
