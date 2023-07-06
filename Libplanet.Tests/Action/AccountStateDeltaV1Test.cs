@@ -93,11 +93,8 @@ namespace Libplanet.Tests.Action
             Assert.Empty(stateDelta.Delta.UpdatedTotalSupplyCurrencies);
 
             Assert.Equal(
-                FungibleAssetValue.FromRawValue(
-                    _currencies[3],
-                    _totalSupplies[_currencies[3]]),
-                _initStateDelta.GetTotalSupply(_currencies[3])
-            );
+                _initState.GetTotalSupply(_currencies[3]),
+                _initStateDelta.GetTotalSupply(_currencies[3]));
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 _initStateDelta.GetTotalSupply(_currencies[0]));

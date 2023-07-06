@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
@@ -27,10 +26,6 @@ namespace Libplanet.Tests.Action
         protected readonly PrivateKey[] _keys;
         protected readonly Address[] _addr;
         protected readonly Currency[] _currencies;
-        protected readonly IImmutableDictionary<Address, IValue> _states;
-        protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _fungibles;
-        protected readonly IImmutableDictionary<Currency, BigInteger> _totalSupplies;
-        protected readonly ValidatorSet _validatorSet;
         protected readonly IAccountState _initState;
         protected readonly IAccountStateDelta _initStateDelta;
         protected readonly IActionContext _initContext;
@@ -57,33 +52,18 @@ namespace Libplanet.Tests.Action
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
-            _states = new Dictionary<Address, IValue>
-            {
-                [_addr[0]] = (Text)"a",
-                [_addr[1]] = (Text)"b",
-            }.ToImmutableDictionary();
-
-            _fungibles = new Dictionary<(Address, Currency), BigInteger>
-            {
-                [(_addr[0], _currencies[0])] = 5,
-                [(_addr[0], _currencies[1])] = -10,
-                [(_addr[0], _currencies[3])] = 5,
-                [(_addr[1], _currencies[1])] = 15,
-                [(_addr[1], _currencies[2])] = 20,
-            }.ToImmutableDictionary();
-
-            _totalSupplies = new Dictionary<Currency, BigInteger>
-            {
-                [_currencies[3]] = 5,
-            }.ToImmutableDictionary();
-
-            _validatorSet =
-                new ValidatorSet(new[]
-                {
-                    new Validator(_keys[0].PublicKey, 1),
-                    new Validator(_keys[1].PublicKey, 1),
-                    new Validator(_keys[2].PublicKey, 1),
-                }.ToList());
+            _initState = MockAccountState.Empty
+                .SetState(_addr[0], (Text)"a")
+                .SetState(_addr[1], (Text)"b")
+                .SetBalance(_addr[0], _currencies[0], 5)
+                .SetBalance(_addr[0], _currencies[1], -10)
+                .SetBalance(_addr[0], _currencies[3], 5)
+                .SetBalance(_addr[1], _currencies[1], 15)
+                .SetBalance(_addr[1], _currencies[2], 20)
+                .SetTotalSupply(_currencies[3], 5)
+                .SetValidator(new Validator(_keys[0].PublicKey, 1))
+                .SetValidator(new Validator(_keys[1].PublicKey, 1))
+                .SetValidator(new Validator(_keys[2].PublicKey, 1));
 
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;
@@ -93,20 +73,15 @@ namespace Libplanet.Tests.Action
                     "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3} {6}  {7}",
                     i++,
                     a,
-                    GetBalance(a, _currencies[0]),
-                    GetBalance(a, _currencies[1]),
-                    GetBalance(a, _currencies[2]),
-                    GetBalance(a, _currencies[3]),
-                    GetStates(new[] { a })[0],
-                    GetValidatorSet()
+                    _initState.GetBalance(a, _currencies[0]),
+                    _initState.GetBalance(a, _currencies[1]),
+                    _initState.GetBalance(a, _currencies[2]),
+                    _initState.GetBalance(a, _currencies[3]),
+                    _initState.GetStates(new[] { a })[0],
+                    _initState.GetValidatorSet()
                 );
             }
 
-            _initState = new MockAccountState(
-                _states,
-                _fungibles,
-                _totalSupplies,
-                _validatorSet);
             _initStateDelta = CreateInstance(_initState);
             _initContext = CreateContext(
                 _initStateDelta, _addr[0]);
@@ -417,33 +392,5 @@ namespace Libplanet.Tests.Action
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
 
         protected FungibleAssetValue Zero(int currencyIndex) => Value(currencyIndex, 0);
-
-        protected IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) => addresses
-            .Select(address => _states.TryGetValue(address, out IValue v) ? v : null)
-            .ToArray();
-
-        protected FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            new FungibleAssetValue(
-                currency,
-                _fungibles.TryGetValue((address, currency), out BigInteger balance) ? balance : 0,
-                0
-            );
-
-        protected FungibleAssetValue GetTotalSupply(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            return _totalSupplies.TryGetValue(currency, out var totalSupply)
-                ? FungibleAssetValue.FromRawValue(currency, totalSupply)
-                : currency * 0;
-        }
-
-        protected ValidatorSet GetValidatorSet()
-        {
-            return _validatorSet ?? new ValidatorSet();
-        }
     }
 }
