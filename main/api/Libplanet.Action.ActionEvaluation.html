@@ -119,20 +119,20 @@ a single action.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_List_System_String__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.State.IAccountStateDelta%2CSystem.Exception%2CSystem.Collections.Generic.List%7BSystem.String%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_IReadOnlyList_System_String__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.State.IAccountStateDelta%2CSystem.Exception%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluation.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation__ctor_" data-uid="Libplanet.Action.ActionEvaluation.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_List_System_String__" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.List{System.String})">ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, List&lt;String&gt;)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_IReadOnlyList_System_String__" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.IReadOnlyList{System.String})">ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, IReadOnlyList&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a> instance
 with filling properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputState, Exception exception = null, List&lt;string&gt; logs = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputState, Exception exception = null, IReadOnlyList&lt;string&gt; logs = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +172,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">logs</span></td>
         <td><p>The logs recorded while executing action.</p>
 </td>
@@ -288,13 +288,13 @@ is not consumed yet.</p>
   </span>
   <a id="Libplanet_Action_ActionEvaluation_Logs_" data-uid="Libplanet.Action.ActionEvaluation.Logs*"></a>
   <h4 id="Libplanet_Action_ActionEvaluation_Logs" data-uid="Libplanet.Action.ActionEvaluation.Logs">Logs</h4>
-  <div class="markdown level1 summary"><p>Logs recorded while executing an action through
+  <div class="markdown level1 summary"><p>Logs recorded while executing an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> through
 <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_System_String_">PutLog(String)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Logs { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;string&gt; Logs { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -306,7 +306,7 @@ is not consumed yet.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>

@@ -114,6 +114,13 @@ from <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetariu
 <li>Added <code>ConsensusProposalClaimMsg</code> of value <code>0x55</code>.</li>
 </ul>
 </li>
+<li>Added <code>IActionContext.Logs</code> interface property.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>Changed the type for <code>IActionEvaluation.Logs</code> to
+<code>IReadOnlyList&lt;string&gt;</code> from <code>List&lt;string&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>Changed the type for <code>TxExecution.ActionsLogList</code> to
+<code>List&lt;IReadOnlyList&lt;string&gt;&gt;?</code> from <code>List&lt;List&lt;string&gt;&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>(Libplanet.Explorer) Changed the type for <code>TxResult.ActionsLogList</code> to
+<code>List&lt;IReadOnlyList&lt;string&gt;&gt;?</code> from <code>List&lt;List&lt;string&gt;&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
