@@ -428,7 +428,7 @@ namespace Libplanet.Tests.Store
                 Fx.Hash1,
                 Fx.TxId1,
                 actionsLogsList
-                    ? new List<List<string>>
+                    ? new List<IReadOnlyList<string>>
                     {
                         new List<string>
                         {
@@ -467,7 +467,7 @@ namespace Libplanet.Tests.Store
             var inputB = new TxFailure(
                 Fx.Hash1,
                 Fx.TxId2,
-                actionsLogsList ? new List<List<string>>() : null,
+                actionsLogsList ? new List<IReadOnlyList<string>>() : null,
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
@@ -481,7 +481,7 @@ namespace Libplanet.Tests.Store
             var inputC = new TxFailure(
                 Fx.Hash2,
                 Fx.TxId1,
-                actionsLogsList ? new List<List<string>>() : null,
+                actionsLogsList ? new List<IReadOnlyList<string>>() : null,
                 "AnotherExceptionName",
                 null
             );

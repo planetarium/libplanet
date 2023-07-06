@@ -37,6 +37,6 @@ namespace Libplanet.Action
         /// Logs recorded while executing an action through
         /// <see cref="IActionContext.PutLog(string)"/>.
         /// </summary>
-        public List<string> Logs { get; }
+        public IReadOnlyList<string> Logs { get; }
     }
 }

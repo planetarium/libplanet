@@ -30,7 +30,7 @@ namespace Libplanet.Tx
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
-            List<List<string>>? actionsLogsList,
+            List<IReadOnlyList<string>>? actionsLogsList,
             string exceptionName,
             IValue? exceptionMetadata
         )
@@ -53,7 +53,7 @@ namespace Libplanet.Tx
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
-            List<List<string>>? actionsLogsList,
+            List<IReadOnlyList<string>>? actionsLogsList,
             Exception exception)
             : this(
                 blockHash,

@@ -202,8 +202,7 @@ namespace Libplanet.Action
             ActionContext CreateActionContext(
                 IAccountStateDelta prevState,
                 int randomSeed,
-                long actionGasLimit = long.MaxValue,
-                List<string>? logs = null
+                long actionGasLimit = long.MaxValue
             )
             {
                 return new ActionContext(
@@ -214,8 +213,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: blockProtocolVersion,
                     previousState: prevState,
                     randomSeed: randomSeed,
-                    gasLimit: actionGasLimit,
-                    logs: logs);
+                    gasLimit: actionGasLimit);
             }
 
             byte[] hashedSignature;
