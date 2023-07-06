@@ -2515,6 +2515,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetBlockLocator
   nameWithType: BlockChain.GetBlockLocator
+- uid: Libplanet.Blockchain.BlockChain.GetBlockState
+  name: GetBlockState()
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockState
+  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockState
+  fullName: Libplanet.Blockchain.BlockChain.GetBlockState()
+  nameWithType: BlockChain.GetBlockState()
 - uid: Libplanet.Blockchain.BlockChain.GetBlockState(System.Nullable{Libplanet.Blocks.BlockHash})
   name: GetBlockState(Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockState_System_Nullable_Libplanet_Blocks_BlockHash__
@@ -2531,19 +2537,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetBlockState
   nameWithType: BlockChain.GetBlockState
-- uid: Libplanet.Blockchain.BlockChain.GetBlockStates
-  name: GetBlockStates()
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockStates
-  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockStates
-  fullName: Libplanet.Blockchain.BlockChain.GetBlockStates()
-  nameWithType: BlockChain.GetBlockStates()
-- uid: Libplanet.Blockchain.BlockChain.GetBlockStates*
-  name: GetBlockStates
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockStates_
-  commentId: Overload:Libplanet.Blockchain.BlockChain.GetBlockStates
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain.GetBlockStates
-  nameWithType: BlockChain.GetBlockStates
 - uid: Libplanet.Blockchain.BlockChain.GetNextTxNonce(Libplanet.Address)
   name: GetNextTxNonce(Address)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetNextTxNonce_Libplanet_Address_
