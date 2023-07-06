@@ -236,7 +236,7 @@ namespace Libplanet.Store
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
 
-                List<List<string>> actionsLogsList = null;
+                List<IReadOnlyList<string>> actionsLogsList = null;
                 if (d.ContainsKey("actionsLogsList"))
                 {
                     actionsLogsList =
@@ -298,13 +298,16 @@ namespace Libplanet.Store
             );
 
         private static Bencodex.Types.List SerializeLogs(
-            List<List<string>> logs
+            List<IReadOnlyList<string>> logs
         ) =>
             new List(logs.Select(l => new List(l.Select(x => (Text)x))));
 
-        private static List<List<string>> DeserializeLogs(
+        private static List<IReadOnlyList<string>> DeserializeLogs(
             Bencodex.Types.List serialized) =>
-            serialized.Cast<List>().Select(l => l.Select(x => (string)(Text)x).ToList()).ToList();
+            serialized
+                .Cast<List>()
+                .Select(l => (IReadOnlyList<string>)l.Select(e => (string)(Text)e).ToList())
+                .ToList();
 
         private static Bencodex.Types.List SerializeFAVs(
             IImmutableDictionary<Currency, FungibleAssetValue> favs

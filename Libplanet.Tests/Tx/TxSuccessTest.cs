@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Tx
         private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
             _updatedFungibleAssets;
 
-        private readonly List<List<string>> _actionsLogsList;
+        private readonly List<IReadOnlyList<string>> _actionsLogsList;
 
         private readonly TxSuccess _fx;
 
@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Tx
                     fav => fav.Currency * random.Next(1, int.MaxValue)
                 ).ToImmutableDictionary()
             ).ToImmutableDictionary();
-            _actionsLogsList = new List<List<string>>
+            _actionsLogsList = new List<IReadOnlyList<string>>
             {
                 new List<string>
                 {

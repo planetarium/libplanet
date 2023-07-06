@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -89,6 +90,13 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        /// <summary>
+        /// Logs recorded while executing an <see cref="IAction"/> through
+        /// <see cref="IActionContext.PutLog(string)"/>.
+        /// </summary>
+        [Pure]
+        IReadOnlyList<string> Logs { get; }
 
         /// <summary>
         /// Record a log in <see cref="TxExecution"/>.

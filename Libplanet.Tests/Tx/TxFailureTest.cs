@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Tx
             _fxWithLogs = new TxFailure(
                 _blockHash,
                 _txid,
-                new List<List<string>>
+                new List<IReadOnlyList<string>>
                 {
                     new List<string>
                     {
