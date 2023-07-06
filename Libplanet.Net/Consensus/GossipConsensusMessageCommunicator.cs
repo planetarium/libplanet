@@ -86,7 +86,7 @@ namespace Libplanet.Net.Consensus
         {
             if (message.Content is ConsensusVoteMsg voteMsg)
             {
-                FilterSpam(voteMsg, message.Remote);
+                FilterHigherRoundVoteSpam(voteMsg, message.Remote);
             }
         }
 
@@ -108,10 +108,10 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Spam filter logic for higher round <see cref="ConsensusVoteMsg"/>s.
         /// </summary>
-        /// <param name="voteMsg"><see cref="Message"/> to filter.</param>
+        /// <param name="voteMsg"><see cref="ConsensusVoteMsg"/> to filter.</param>
         /// <param name="peer"><see cref="BoundPeer"/> who sent <paramref name="voteMsg"/>.
         /// </param>
-        private void FilterSpam(ConsensusVoteMsg voteMsg, BoundPeer peer)
+        private void FilterHigherRoundVoteSpam(ConsensusVoteMsg voteMsg, BoundPeer peer)
         {
             if (voteMsg.Round > _round)
             {
