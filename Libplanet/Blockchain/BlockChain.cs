@@ -556,7 +556,7 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IBlockState GetBlockStates() => GetBlockState(Tip.Hash);
+        public IBlockState GetBlockState() => GetBlockState(Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetBlockState" />
         public IBlockState GetBlockState(BlockHash? offset) =>
