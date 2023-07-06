@@ -315,11 +315,15 @@ namespace Libplanet.Net.Consensus
                     VoteFlag.PreVote =>
                     _heightVoteSet.PreVotes(voteSetBits.Round).MappedList().Where(
                         (vote, index)
-                        => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
+                        => !voteSetBits.VoteBits[index]
+                        && vote is { }
+                        && vote.Flag == VoteFlag.PreVote).Select(vote => vote!),
                     VoteFlag.PreCommit =>
                     _heightVoteSet.PreCommits(voteSetBits.Round).MappedList().Where(
                         (vote, index)
-                        => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
+                        => !voteSetBits.VoteBits[index]
+                        && vote is { }
+                        && vote.Flag == VoteFlag.PreCommit).Select(vote => vote!),
                     _ => throw new ArgumentException(
                         "VoteFlag should be PreVote or PreCommit.",
                         nameof(voteSetBits.Flag)),
@@ -330,15 +334,15 @@ namespace Libplanet.Net.Consensus
                 votes = Array.Empty<Vote>();
             }
 
-            return votes.Select(
-                vote => vote.Flag switch
-            {
-                VoteFlag.PreVote => (ConsensusMsg)new ConsensusPreVoteMsg(vote),
-                VoteFlag.PreCommit => (ConsensusMsg)new ConsensusPreCommitMsg(vote),
-                _ => throw new ArgumentException(
-                    "VoteFlag should be PreVote or PreCommit.",
-                    nameof(vote.Flag)),
-            });
+            return from vote in votes
+                   select vote.Flag switch
+                   {
+                       VoteFlag.PreVote => (ConsensusMsg)new ConsensusPreVoteMsg(vote),
+                       VoteFlag.PreCommit => (ConsensusMsg)new ConsensusPreCommitMsg(vote),
+                       _ => throw new ArgumentException(
+                           "VoteFlag should be PreVote or PreCommit.",
+                           nameof(vote.Flag)),
+                   };
         }
 
         /// <summary>
