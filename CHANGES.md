@@ -52,6 +52,13 @@ be compatible with this version.
      -  Added `ConsensusMaj23Msg` of value `0x53`.
      -  Added `ConsensusVoteSetBitsMsg` of value `0x54`.
      -  Added `ConsensusProposalClaimMsg` of value `0x55`.
+ -  Added `IActionContext.Logs` interface property.  [[#3274]]
+ -  Changed the type for `IActionEvaluation.Logs` to
+    `IReadOnlyList<string>` from `List<string>`.  [[#3274]]
+ -  Changed the type for `TxExecution.ActionsLogList` to
+    `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
+ -  (Libplanet.Explorer) Changed the type for `TxResult.ActionsLogList` to
+    `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
 
 ### Behavioral changes
 
@@ -81,6 +88,7 @@ be compatible with this version.
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
 [#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
+[#3274]: https://github.com/planetarium/libplanet/pull/3274
 
 
 Version 2.4.0
