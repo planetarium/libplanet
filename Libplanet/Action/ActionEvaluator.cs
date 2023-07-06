@@ -174,52 +174,6 @@ namespace Libplanet.Action
             IImmutableList<IAction> actions,
             ILogger? logger = null)
         {
-            long gasLimit = tx?.GasLimit ?? long.MaxValue;
-
-            byte[] signature = tx?.Signature ?? new byte[0];
-            byte[] hashedSignature;
-            using (var hasher = SHA1.Create())
-            {
-                hashedSignature = hasher.ComputeHash(signature);
-            }
-
-            byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
-            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
-
-            IAccountStateDelta state = previousState;
-            foreach (IAction action in actions)
-            {
-                (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
-                    blockHeader,
-                    tx,
-                    state,
-                    action,
-                    gasLimit,
-                    seed,
-                    logger);
-
-                yield return result.Evaluation;
-
-                state = result.Evaluation.OutputState;
-                gasLimit = result.NextGasLimit;
-
-                unchecked
-                {
-                    seed++;
-                }
-            }
-        }
-
-        [Pure]
-        internal static (ActionEvaluation Evaluation, long NextGasLimit) EvaluateAction(
-            IPreEvaluationBlockHeader blockHeader,
-            ITransaction? tx,
-            IAccountStateDelta previousState,
-            IAction action,
-            long gasLimit,
-            int seed,
-            ILogger? logger = null)
-        {
             IActionContext CreateActionContext(
                 IAccountStateDelta prevState,
                 int randomSeed,
@@ -236,18 +190,73 @@ namespace Libplanet.Action
                     gasLimit: actionGasLimit);
             }
 
-            IAccountStateDelta state = previousState;
-            Exception? exc = null;
+            long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            IActionContext context = CreateActionContext(state, seed, gasLimit);
+            byte[] signature = tx?.Signature ?? new byte[0];
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(signature);
+            }
+
+            byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
+            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
+
+            IAccountStateDelta state = previousState;
+            foreach (IAction action in actions)
+            {
+                IActionContext context = CreateActionContext(state, seed, gasLimit);
+                (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
+                    blockHeader,
+                    tx,
+                    context,
+                    action,
+                    logger);
+
+                yield return result.Evaluation;
+
+                state = result.Evaluation.OutputState;
+                gasLimit = result.NextGasLimit;
+
+                unchecked
+                {
+                    seed++;
+                }
+            }
+        }
+
+        internal static (ActionEvaluation Evaluation, long NextGasLimit) EvaluateAction(
+            IPreEvaluationBlockHeader blockHeader,
+            ITransaction? tx,
+            IActionContext context,
+            IAction action,
+            ILogger? logger = null)
+        {
+            // Make a copy since ActionContext is stateful.
             IActionContext inputContext = context.GetUnconsumedContext();
+            IAccountStateDelta state = inputContext.PreviousState;
+            Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
+
+            IActionContext CreateActionContext(IAccountStateDelta newPrevState)
+            {
+                return new ActionContext(
+                    signer: inputContext.Signer,
+                    txid: inputContext.TxId,
+                    miner: inputContext.Miner,
+                    blockIndex: inputContext.BlockIndex,
+                    blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    previousState: newPrevState,
+                    randomSeed: inputContext.Random.Seed,
+                    gasLimit: inputContext.GasLimit());
+            }
+
             try
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 state = feeCollector.Mortgage(state);
-                context = CreateActionContext(state, seed, gasLimit);
+                context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
                 logger?
