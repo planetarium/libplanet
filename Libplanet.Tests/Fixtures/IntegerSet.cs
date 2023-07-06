@@ -16,7 +16,6 @@ using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Mocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Fixtures
@@ -180,15 +179,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
-        {
-            offset = offset ?? Tip.Hash;
-            return AccountStateDelta.Create(
-                new MockAccountState(
-                    a => Chain.GetStates(a, offset),
-                    (a, c) => Chain.GetBalance(a, c, offset),
-                    c => Chain.GetTotalSupply(c),
-                    () => Chain.GetValidatorSet()));
-        }
+            => AccountStateDelta.Create(Chain.GetBlockState(offset ?? Tip.Hash));
 
         public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
             => CreateAccountStateDelta(Addresses[signerIndex], offset);

@@ -1,9 +1,6 @@
-using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
@@ -47,13 +44,8 @@ namespace Libplanet.Tests.Action
                     false
                 ),
                 AccountStateDelta.Create(
-                    new MockAccountState(
-                        addrs => addrs
-                            .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
-                            .ToArray(),
-                        (_, c) => new FungibleAssetValue(c),
-                        c => c * 0,
-                        () => new ValidatorSet()))
+                    MockAccountState.Empty
+                        .SetState(address, (Text)"item"))
             );
             var action = (DumbAction)evaluation.Action;
 

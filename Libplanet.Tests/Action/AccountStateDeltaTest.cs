@@ -31,6 +31,7 @@ namespace Libplanet.Tests.Action
         protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _fungibles;
         protected readonly IImmutableDictionary<Currency, BigInteger> _totalSupplies;
         protected readonly ValidatorSet _validatorSet;
+        protected readonly IAccountState _initState;
         protected readonly IAccountStateDelta _initStateDelta;
         protected readonly IActionContext _initContext;
 
@@ -101,28 +102,20 @@ namespace Libplanet.Tests.Action
                 );
             }
 
-            _initStateDelta = CreateInstance(
-                GetStates,
-                GetBalance,
-                GetTotalSupply,
-                GetValidatorSet);
+            _initState = new MockAccountState(
+                _states,
+                _fungibles,
+                _totalSupplies,
+                _validatorSet);
+            _initStateDelta = CreateInstance(_initState);
             _initContext = CreateContext(
                 _initStateDelta, _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }
 
-        public virtual IAccountStateDelta CreateInstance(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter) =>
-            AccountStateDelta.Create(
-                new MockAccountState(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    totalSupplyGetter,
-                    validatorSetGetter));
+        public virtual IAccountStateDelta CreateInstance(IAccountState state) =>
+            AccountStateDelta.Create(state);
 
         public abstract IActionContext CreateContext(
             IAccountStateDelta delta,
@@ -311,8 +304,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
-            IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
+            IAccountStateDelta delta1 = CreateInstance(_initState);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
@@ -354,8 +346,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
-            IAccountStateDelta delta1 =
-                CreateInstance(GetStates, GetBalance, GetTotalSupply, GetValidatorSet);
+            IAccountStateDelta delta1 = CreateInstance(_initState);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
