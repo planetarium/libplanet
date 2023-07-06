@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IAccountStateDelta a = _initDelta.TransferAsset(
+            IAccountStateDelta a = _initStateDelta.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],
@@ -86,41 +86,33 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void TotalSupplyTracking()
         {
-            IAccountStateDelta stateDelta = _initDelta;
+            IAccountStateDelta stateDelta = _initStateDelta;
             IActionContext context = _initContext;
 
             Assert.Empty(stateDelta.GetUpdatedTotalSupplies());
             Assert.Empty(stateDelta.Delta.UpdatedTotalSupplyCurrencies);
 
             Assert.Equal(
-                new FungibleAssetValue(
+                FungibleAssetValue.FromRawValue(
                     _currencies[3],
-                    _totalSupplies[_currencies[3]].Item1,
-                    _totalSupplies[_currencies[3]].Item2),
-                _initDelta.GetTotalSupply(_currencies[3])
-            );
-            Assert.Equal(
-                new FungibleAssetValue(
-                    _currencies[3],
-                    _totalSupplies[_currencies[3]].Item1,
-                    _totalSupplies[_currencies[3]].Item2),
-                _initDelta.GetTotalSupply(_currencies[3])
+                    _totalSupplies[_currencies[3]]),
+                _initStateDelta.GetTotalSupply(_currencies[3])
             );
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initDelta.GetTotalSupply(_currencies[0]));
+                _initStateDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[0], Value(0, 5)),
                 stateDelta.GetUpdatedTotalSupplies());
             Assert.DoesNotContain(_currencies[0], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
 
-            Assert.Equal(Value(4, 0), _initDelta.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 0), _initStateDelta.GetTotalSupply(_currencies[4]));
             Assert.DoesNotContain(_currencies[4], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
 
             stateDelta = stateDelta.MintAsset(context, _addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initDelta.GetTotalSupply(_currencies[0]));
+                _initStateDelta.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(_currencies[0], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
 
             stateDelta = stateDelta.MintAsset(context, _addr[0], Value(4, 10));
@@ -146,13 +138,13 @@ namespace Libplanet.Tests.Action
             base.MintAsset();
 
             Assert.Throws<SupplyOverflowException>(
-                () => _initDelta.MintAsset(_initContext, _addr[0], Value(4, 200)));
+                () => _initStateDelta.MintAsset(_initContext, _addr[0], Value(4, 200)));
         }
 
         [Fact]
         public virtual void TotalUpdatedFungibleAssets()
         {
-            IAccountStateDelta delta0 = _initDelta;
+            IAccountStateDelta delta0 = _initStateDelta;
             IActionContext context0 = _initContext;
 
             // currencies[0] (FOO) allows only _addr[0] to burn
