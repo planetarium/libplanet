@@ -1,3 +1,4 @@
+using System;
 using GraphQL.Types;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
@@ -79,6 +80,10 @@ public class BlockType : ObjectGraphType<Block>
             deprecationReason: "Block does not have Nonce field in PBFT.",
             resolve: _ => new byte[] { }
         );
+        Field<NonNullGraphType<ByteStringType>>(
+            name: "PreEvaluationHash",
+            description: "Hi",
+            resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
 
         Name = "Block";
     }
