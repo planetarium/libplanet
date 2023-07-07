@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IAccountStateDelta a = _initDelta.TransferAsset(
+            IAccountStateDelta a = _initStateDelta.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],
