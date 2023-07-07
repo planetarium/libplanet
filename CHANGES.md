@@ -48,6 +48,7 @@ Released on June 28, 2023.
  -  Added `IBlockChainStates.GetState()` interface method.  [[#3250]]
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
  -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
+ -  Added `BlockType.PreEvaluationHash` field. [[#3281]]
 
 ### Added APIs
 
