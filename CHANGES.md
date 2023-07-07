@@ -85,6 +85,7 @@ be compatible with this version.
     when messages are received.  [[#3273]]
 
 ### Bug fixes
+ -  Fixed a broken backwards compatibility of Currency  [[#3268], [#3284]]
 
 ### Dependencies
 
@@ -92,6 +93,7 @@ be compatible with this version.
 
 [#3206]: https://github.com/planetarium/libplanet/pull/3206
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
+[#3268]: https://github.com/planetarium/libplanet/issues/3268
 [#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
 [#3274]: https://github.com/planetarium/libplanet/pull/3274
@@ -99,6 +101,7 @@ be compatible with this version.
 [#3281]: https://github.com/planetarium/libplanet/pull/3281
 [#3282]: https://github.com/planetarium/libplanet/pull/3282
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
+[#3284]: https://github.com/planetarium/libplanet/pull/3284
 
 
 Version 2.4.0
