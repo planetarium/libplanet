@@ -57,6 +57,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     timestamp
                     stateRootHash
                     signature
+                    preEvaluationHash
                     lastCommit
                     {
                         height
@@ -98,6 +99,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 ByteUtil.Hex(block.StateRootHash.ToByteArray()),
                 resultData["stateRootHash"]);
+            Assert.Equal(
+                ByteUtil.Hex(block.PreEvaluationHash.ToByteArray()),
+                resultData["preEvaluationHash"]);
 
             var expectedLastCommit = new Dictionary<string, object>()
             {
