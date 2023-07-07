@@ -483,15 +483,15 @@ namespace Libplanet.Net.Consensus
 
             public List<Vote> MappedList(long height, int round, ValidatorSet validatorSet) =>
                 validatorSet.PublicKeys.Select(
-                        key => Votes.ContainsKey(key)
-                            ? Votes[key]
-                            : new VoteMetadata(
-                                height,
-                                round,
-                                BlockHash,
-                                DateTimeOffset.UtcNow,
-                                key,
-                                VoteFlag.Null).Sign(null))
+                    key => Votes.ContainsKey(key)
+                        ? Votes[key]
+                        : new VoteMetadata(
+                            height,
+                            round,
+                            BlockHash,
+                            DateTimeOffset.UtcNow,
+                            key,
+                            VoteFlag.Null).Sign(null))
                     .ToList();
         }
     }

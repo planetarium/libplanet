@@ -234,19 +234,29 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         public BlockCommit? GetBlockCommit()
         {
-            var blockCommit = _heightVoteSet.PreCommits(Round)?.ToBlockCommit();
-            _logger.Debug(
-                "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
-                "BlockCommit: {BlockCommit}",
-                nameof(GetBlockCommit),
-                _committedRound,
-                _decision,
-                blockCommit);
-            return blockCommit;
+            try
+            {
+                var blockCommit = _heightVoteSet.PreCommits(Round)?.ToBlockCommit();
+                _logger.Debug(
+                    "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
+                    "BlockCommit: {BlockCommit}",
+                    nameof(GetBlockCommit),
+                    _committedRound,
+                    _decision,
+                    blockCommit);
+                return blockCommit;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
         }
 
         public VoteSetBits GetVoteSetBits(int round, BlockHash blockHash, VoteFlag flag)
         {
+            // If executed in correct manner (called by Maj23),
+            // _heightVoteSet.PreVotes(round) on below cannot throw KeyNotFoundException,
+            // since RoundVoteSet has been already created on SetPeerMaj23.
             bool[] voteBits = flag switch
             {
                 VoteFlag.PreVote => _heightVoteSet.PreVotes(round).BitArrayByBlockHash(blockHash),
@@ -297,28 +307,42 @@ namespace Libplanet.Net.Consensus
 
         public IEnumerable<ConsensusMsg> GetVoteSetBitsResponse(VoteSetBits voteSetBits)
         {
-            IEnumerable<Vote> votes = voteSetBits.Flag switch
+            IEnumerable<Vote> votes;
+            try
             {
-                VoteFlag.PreVote =>
-                _heightVoteSet.PreVotes(voteSetBits.Round).MappedList().Where(
-                    (vote, index)
-                    => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
-                VoteFlag.PreCommit =>
-                _heightVoteSet.PreCommits(voteSetBits.Round).MappedList().Where(
-                    (vote, index)
-                    => !voteSetBits.VoteBits[index] && vote is { }).Select(vote => vote!),
-                _ => throw new ArgumentException(
-                    "VoteFlag should be PreVote or PreCommit.",
-                    nameof(voteSetBits.Flag)),
-            };
+                votes = voteSetBits.Flag switch
+                {
+                    VoteFlag.PreVote =>
+                    _heightVoteSet.PreVotes(voteSetBits.Round).MappedList().Where(
+                        (vote, index)
+                        => !voteSetBits.VoteBits[index]
+                        && vote is { }
+                        && vote.Flag == VoteFlag.PreVote).Select(vote => vote!),
+                    VoteFlag.PreCommit =>
+                    _heightVoteSet.PreCommits(voteSetBits.Round).MappedList().Where(
+                        (vote, index)
+                        => !voteSetBits.VoteBits[index]
+                        && vote is { }
+                        && vote.Flag == VoteFlag.PreCommit).Select(vote => vote!),
+                    _ => throw new ArgumentException(
+                        "VoteFlag should be PreVote or PreCommit.",
+                        nameof(voteSetBits.Flag)),
+                };
+            }
+            catch (KeyNotFoundException)
+            {
+                votes = Array.Empty<Vote>();
+            }
 
-            return votes.Select(
-                vote => vote.Flag switch
-            {
-                VoteFlag.PreVote => (ConsensusMsg)new ConsensusPreVoteMsg(vote),
-                VoteFlag.PreCommit => (ConsensusMsg)new ConsensusPreCommitMsg(vote),
-                _ => throw new ArgumentException(),
-            });
+            return from vote in votes
+                   select vote.Flag switch
+                   {
+                       VoteFlag.PreVote => (ConsensusMsg)new ConsensusPreVoteMsg(vote),
+                       VoteFlag.PreCommit => (ConsensusMsg)new ConsensusPreCommitMsg(vote),
+                       _ => throw new ArgumentException(
+                           "VoteFlag should be PreVote or PreCommit.",
+                           nameof(vote.Flag)),
+                   };
         }
 
         /// <summary>

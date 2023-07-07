@@ -185,11 +185,18 @@ namespace Libplanet.Net.Consensus
             {
                 for (int r = _round; r >= 0; r--)
                 {
-                    VoteSet voteSet = GetVoteSet(r, VoteFlag.PreVote);
-                    bool exists = voteSet.TwoThirdsMajority(out BlockHash polBlockHash);
-                    if (exists)
+                    try
                     {
-                        return (r, polBlockHash);
+                        VoteSet voteSet = GetVoteSet(r, VoteFlag.PreVote);
+                        bool exists = voteSet.TwoThirdsMajority(out BlockHash polBlockHash);
+                        if (exists)
+                        {
+                            return (r, polBlockHash);
+                        }
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        continue;
                     }
                 }
 
@@ -240,7 +247,17 @@ namespace Libplanet.Net.Consensus
                         maj23);
                 }
 
-                VoteSet voteSet = GetVoteSet(maj23.Round, maj23.Flag);
+                VoteSet voteSet;
+                try
+                {
+                    voteSet = GetVoteSet(maj23.Round, maj23.Flag);
+                }
+                catch (KeyNotFoundException)
+                {
+                    AddRound(maj23.Round);
+                    voteSet = GetVoteSet(maj23.Round, maj23.Flag);
+                }
+
                 return voteSet.SetPeerMaj23(maj23);
             }
         }
