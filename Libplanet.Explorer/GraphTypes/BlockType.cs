@@ -1,4 +1,3 @@
-using System;
 using GraphQL.Types;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
