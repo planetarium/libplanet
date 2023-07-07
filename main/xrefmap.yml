@@ -123,12 +123,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
-  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader, IFeeCalculator)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_Loader_IActionLoader_Libplanet_Action_IFeeCalculator_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader,Libplanet.Action.IFeeCalculator)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.Loader.IActionLoader, Libplanet.Action.IFeeCalculator)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader, IFeeCalculator)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader)
+  name: ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Blockchain_IBlockChainStates_Libplanet_Action_Loader_IActionLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Blockchain.IBlockChainStates,Libplanet.Action.Loader.IActionLoader)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Blockchain.IBlockChainStates, Libplanet.Action.Loader.IActionLoader)
+  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IBlockChainStates, IActionLoader)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -753,25 +753,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IExtractableException.Metadata
   nameWithType: IExtractableException.Metadata
-- uid: Libplanet.Action.IFeeCalculator
-  name: IFeeCalculator
-  href: api/Libplanet.Action.IFeeCalculator.html
-  commentId: T:Libplanet.Action.IFeeCalculator
-  fullName: Libplanet.Action.IFeeCalculator
-  nameWithType: IFeeCalculator
-- uid: Libplanet.Action.IFeeCalculator.CalculateFee(Libplanet.Action.IAction)
-  name: CalculateFee(IAction)
-  href: api/Libplanet.Action.IFeeCalculator.html#Libplanet_Action_IFeeCalculator_CalculateFee_Libplanet_Action_IAction_
-  commentId: M:Libplanet.Action.IFeeCalculator.CalculateFee(Libplanet.Action.IAction)
-  fullName: Libplanet.Action.IFeeCalculator.CalculateFee(Libplanet.Action.IAction)
-  nameWithType: IFeeCalculator.CalculateFee(IAction)
-- uid: Libplanet.Action.IFeeCalculator.CalculateFee*
-  name: CalculateFee
-  href: api/Libplanet.Action.IFeeCalculator.html#Libplanet_Action_IFeeCalculator_CalculateFee_
-  commentId: Overload:Libplanet.Action.IFeeCalculator.CalculateFee
-  isSpec: "True"
-  fullName: Libplanet.Action.IFeeCalculator.CalculateFee
-  nameWithType: IFeeCalculator.CalculateFee
 - uid: Libplanet.Action.InvalidActionException
   name: InvalidActionException
   href: api/Libplanet.Action.InvalidActionException.html
@@ -3265,19 +3246,6 @@ references:
   commentId: F:Libplanet.Blockchain.Policies.BlockPolicy.DefaultTargetBlockInterval
   fullName: Libplanet.Blockchain.Policies.BlockPolicy.DefaultTargetBlockInterval
   nameWithType: BlockPolicy.DefaultTargetBlockInterval
-- uid: Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_FeeCalculator
-  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator
-  nameWithType: BlockPolicy.FeeCalculator
-- uid: Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator*
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_FeeCalculator_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy.FeeCalculator
-  nameWithType: BlockPolicy.FeeCalculator
 - uid: Libplanet.Blockchain.Policies.BlockPolicy.GetMaxTransactionsBytes(System.Int64)
   name: GetMaxTransactionsBytes(Int64)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_GetMaxTransactionsBytes_System_Int64_
@@ -3375,19 +3343,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Policies.IBlockPolicy.BlockAction
   nameWithType: IBlockPolicy.BlockAction
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_FeeCalculator
-  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator
-  nameWithType: IBlockPolicy.FeeCalculator
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator*
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_FeeCalculator_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy.FeeCalculator
-  nameWithType: IBlockPolicy.FeeCalculator
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy.GetMaxTransactionsBytes(System.Int64)
   name: GetMaxTransactionsBytes(Int64)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_GetMaxTransactionsBytes_System_Int64_
@@ -3608,19 +3563,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.BlockedMiners
   nameWithType: NullBlockPolicy.BlockedMiners
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_FeeCalculator
-  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator
-  nameWithType: NullBlockPolicy.FeeCalculator
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator*
-  name: FeeCalculator
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_FeeCalculator_
-  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.FeeCalculator
-  nameWithType: NullBlockPolicy.FeeCalculator
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy.GetMaxTransactionsBytes(System.Int64)
   name: GetMaxTransactionsBytes(Int64)
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_GetMaxTransactionsBytes_System_Int64_
