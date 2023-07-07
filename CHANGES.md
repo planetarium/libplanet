@@ -32,6 +32,8 @@ be compatible with this version.
     to `Gossip`'s constructor.  [[#3273]]
  -  Removed `Action<Message> validateMessage` parameter
     from `Gossip`'s constructor.  [[#3273]]
+ -  Removed `IFeeCalculator` interface.  [[#3283]]
+ -  Removed `IBlockPolicy.FeeCalculator` interface property.  [[#3283]]
 
 ### Backward-incompatible network protocol changes
 
@@ -89,6 +91,7 @@ be compatible with this version.
 [#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
 [#3274]: https://github.com/planetarium/libplanet/pull/3274
+[#3283]: https://github.com/planetarium/libplanet/pull/3283
 
 
 Version 2.4.0
