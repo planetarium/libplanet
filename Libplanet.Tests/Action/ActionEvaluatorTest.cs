@@ -255,22 +255,6 @@ namespace Libplanet.Tests.Action
                         : null);
             }
 
-            var totalSupplyGetterFromDict = new Func<
-                IReadOnlyDictionary<Currency, FungibleAssetValue>,
-                TotalSupplyGetter>(
-                totalSupplies =>
-                    currency =>
-                    {
-                        if (!currency.TotalSupplyTrackable)
-                        {
-                            throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-                        }
-
-                        return totalSupplies.TryGetValue(currency, out FungibleAssetValue v)
-                            ? v
-                            : currency * 0;
-                    });
-
             Address[] addresses =
             {
                 _txFx.Address1,
