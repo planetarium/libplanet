@@ -41,9 +41,7 @@ namespace Libplanet.Benchmarks
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null)
-            );
+                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             var key = new PrivateKey();
             for (var i = 0; i < 500; i++)
             {

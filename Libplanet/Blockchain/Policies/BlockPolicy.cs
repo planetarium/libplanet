@@ -160,9 +160,6 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan BlockInterval { get; }
 
         /// <inheritdoc/>
-        public IFeeCalculator? FeeCalculator => null;
-
-        /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
             BlockChain blockChain, Transaction transaction)
         {
