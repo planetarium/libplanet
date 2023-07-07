@@ -76,8 +76,7 @@ namespace Libplanet.Tests.Fixtures
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 new BlockChainStates(Store, StateStore),
-                new SingleActionLoader(typeof(Arithmetic)),
-                null);
+                new SingleActionLoader(typeof(Arithmetic)));
             Genesis = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
                 TestUtils.ProposeGenesis(

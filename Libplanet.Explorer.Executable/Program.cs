@@ -228,8 +228,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         new ActionEvaluator(
                             _ => policy.BlockAction,
                             blockChainStates,
-                            new SingleActionLoader(typeof(NullAction)),
-                            null));
+                            new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
                 Startup.StoreSingleton = store;
@@ -443,8 +442,6 @@ If omitted (default) explorer only the local blockchain store.")]
             }
 
             public IAction BlockAction => _impl.BlockAction;
-
-            public IFeeCalculator FeeCalculator => null;
 
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);

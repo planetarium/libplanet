@@ -25,9 +25,6 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         IAction? BlockAction { get; }
 
-        [Pure]
-        IFeeCalculator? FeeCalculator { get; }
-
         /// <summary>
         /// Checks if a <see cref="Transaction"/> can be included in a yet to be mined
         /// <see cref="Block"/> that can be appended to the given <see cref="BlockChain"/>.

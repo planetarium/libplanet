@@ -30,8 +30,7 @@ namespace Libplanet.Benchmarks
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
                     blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             _privateKey = new PrivateKey();
         }
 
