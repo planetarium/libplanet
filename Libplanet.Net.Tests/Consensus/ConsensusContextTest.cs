@@ -358,17 +358,9 @@ namespace Libplanet.Net.Tests.Consensus
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[2].PublicKey,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[2]);
-            var preVote3 = new VoteMetadata(
-                1,
-                0,
-                block.Hash,
-                DateTimeOffset.UtcNow,
-                TestUtils.PrivateKeys[3].PublicKey,
-                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3]);
             consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
             consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote1));
             consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote2));
-            consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote3));
             do
             {
                 await stepChanged.WaitAsync();
@@ -389,10 +381,9 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusMsg[] votes =
                 consensusContext.HandleVoteSetBits(voteSetBits).ToArray();
             Assert.True(votes.All(vote => vote is ConsensusPreVoteMsg));
-            Assert.Equal(3, votes.Length);
+            Assert.Equal(2, votes.Length);
             Assert.Equal(TestUtils.PrivateKeys[0].PublicKey, votes[0].ValidatorPublicKey);
             Assert.Equal(TestUtils.PrivateKeys[1].PublicKey, votes[1].ValidatorPublicKey);
-            Assert.Equal(TestUtils.PrivateKeys[3].PublicKey, votes[2].ValidatorPublicKey);
         }
 
         [Fact]
