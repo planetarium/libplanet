@@ -90,6 +90,8 @@ be compatible with this version.
 [#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
 [#3274]: https://github.com/planetarium/libplanet/pull/3274
+[#3280]: https://github.com/planetarium/libplanet/pull/3280
+[#3281]: https://github.com/planetarium/libplanet/pull/3281
 
 
 Version 2.4.0
