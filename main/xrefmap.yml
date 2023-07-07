@@ -22648,12 +22648,6 @@ references:
   commentId: N:Libplanet.State
   fullName: Libplanet.State
   nameWithType: Libplanet.State
-- uid: Libplanet.State.AccountBalanceGetter
-  name: AccountBalanceGetter
-  href: api/Libplanet.State.AccountBalanceGetter.html
-  commentId: T:Libplanet.State.AccountBalanceGetter
-  fullName: Libplanet.State.AccountBalanceGetter
-  nameWithType: AccountBalanceGetter
 - uid: Libplanet.State.AccountDeltaExtensions
   name: AccountDeltaExtensions
   href: api/Libplanet.State.AccountDeltaExtensions.html
@@ -22689,12 +22683,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.AccountDeltaExtensions.ToRawDelta
   nameWithType: AccountDeltaExtensions.ToRawDelta
-- uid: Libplanet.State.AccountStateGetter
-  name: AccountStateGetter
-  href: api/Libplanet.State.AccountStateGetter.html
-  commentId: T:Libplanet.State.AccountStateGetter
-  fullName: Libplanet.State.AccountStateGetter
-  nameWithType: AccountStateGetter
 - uid: Libplanet.State.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.State.CurrencyPermissionException.html
@@ -23137,12 +23125,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.SupplyOverflowException.GetObjectData
   nameWithType: SupplyOverflowException.GetObjectData
-- uid: Libplanet.State.TotalSupplyGetter
-  name: TotalSupplyGetter
-  href: api/Libplanet.State.TotalSupplyGetter.html
-  commentId: T:Libplanet.State.TotalSupplyGetter
-  fullName: Libplanet.State.TotalSupplyGetter
-  nameWithType: TotalSupplyGetter
 - uid: Libplanet.State.TotalSupplyNotTrackableException
   name: TotalSupplyNotTrackableException
   href: api/Libplanet.State.TotalSupplyNotTrackableException.html
@@ -23188,12 +23170,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.State.TotalSupplyNotTrackableException.GetObjectData
   nameWithType: TotalSupplyNotTrackableException.GetObjectData
-- uid: Libplanet.State.ValidatorSetGetter
-  name: ValidatorSetGetter
-  href: api/Libplanet.State.ValidatorSetGetter.html
-  commentId: T:Libplanet.State.ValidatorSetGetter
-  fullName: Libplanet.State.ValidatorSetGetter
-  nameWithType: ValidatorSetGetter
 - uid: Libplanet.Store
   name: Libplanet.Store
   href: api/Libplanet.Store.html
