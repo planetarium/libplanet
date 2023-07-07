@@ -50,7 +50,7 @@ namespace Libplanet.Net.Tests.Consensus
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stateChangedToRoundOnePreVote.Set();
                 }
@@ -58,8 +58,9 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[2], round: 1));
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2], 1, 1, hash: block.Hash, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -67,7 +68,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Wait for round 1 prevote step.
             await stateChangedToRoundOnePreVote.WaitAsync();
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }
@@ -85,12 +86,12 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
                 if (message is ConsensusPreCommitMsg preCommitMsg)
                 {
@@ -118,7 +119,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(block.Hash, preCommit?.BlockHash);
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
 
@@ -155,14 +156,15 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreCommit)
+                if (eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
-                if (message is ConsensusPreCommitMsg preCommitMsg && preCommitMsg.BlockHash is null)
+                if (message is ConsensusPreCommitMsg preCommitMsg &&
+                    preCommitMsg.BlockHash.Equals(default))
                 {
                     preCommitSent.Set();
                 }
@@ -174,18 +176,18 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[1], 1, 0, hash: null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[1], 1, 0, hash: default, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 0, hash: null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: default, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 0, hash: default, VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -201,7 +203,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -210,9 +212,9 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
-                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
                     nilPreVoteSent.Set();
                 }
@@ -242,7 +244,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -274,7 +276,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -283,9 +285,9 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
-                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
                     nilPreVoteSent.Set();
                 }
@@ -313,7 +315,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -336,7 +338,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
-                if (evnetArgs.Step == Step.PreVote)
+                if (evnetArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -345,14 +347,15 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
-                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
                     nilPreVoteSent.Set();
                 }
                 else if (
-                    message is ConsensusPreCommitMsg commit && commit.PreCommit.BlockHash is null)
+                    message is ConsensusPreCommitMsg commit &&
+                    commit.PreCommit.BlockHash.Equals(default))
                 {
                     nilPreCommitSent.Set();
                 }
@@ -393,7 +396,7 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.PrivateKeys[1]));
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
 
@@ -404,13 +407,13 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 0, null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, default, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 0, default, VoteFlag.PreVote)));
             await nilPreCommitSent.WaitAsync();
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -423,7 +426,7 @@ namespace Libplanet.Net.Tests.Consensus
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToRoundOnePreVote.Set();
                 }
@@ -431,18 +434,16 @@ namespace Libplanet.Net.Tests.Consensus
             context.Start();
 
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[1], round: 0));
-            context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[2], round: 1));
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2], 1, 1, hash: default, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 1, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 1, hash: default, flag: VoteFlag.PreVote)));
 
             await stepChangedToRoundOnePreVote.WaitAsync();
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }
@@ -459,12 +460,12 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Step == Step.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessageBroadcasted += (_, message) =>
+            context.MessagePublished += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg)
                 {
@@ -474,7 +475,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.Start();
             await Task.WhenAll(preVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -493,7 +494,7 @@ namespace Libplanet.Net.Tests.Consensus
             var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == ConsensusStep.PreVote)
                 {
                     roundOneStepChangedToPreVote.Set();
                 }
@@ -511,21 +512,21 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: default, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 0, hash: default, flag: VoteFlag.PreVote)));
 
             // Two additional votes should be enough to trigger precommit timeout timer.
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: default, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[3], 1, 0, hash: default, flag: VoteFlag.PreCommit)));
 
             context.Start();
 
@@ -538,7 +539,7 @@ namespace Libplanet.Net.Tests.Consensus
             await roundOneStepChangedToPreVote.WaitAsync();
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
-            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -564,15 +565,15 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: default, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 0, hash: default, flag: VoteFlag.PreVote)));
 
             // Wait for timeout.
             await timeoutProcessed.WaitAsync();
-            Assert.Equal(Step.PreCommit, context.Step);
+            Assert.Equal(ConsensusStep.PreCommit, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -598,14 +599,14 @@ namespace Libplanet.Net.Tests.Consensus
                     TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                    TestUtils.PrivateKeys[2], 1, 0, hash: default, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                    TestUtils.PrivateKeys[3], 1, 0, hash: default, flag: VoteFlag.PreCommit)));
 
             // Wait for timeout.
             await timeoutProcessed.WaitAsync();
-            Assert.Equal(Step.Propose, context.Step);
+            Assert.Equal(ConsensusStep.Propose, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
         }

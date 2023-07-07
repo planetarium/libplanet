@@ -1,26 +1,27 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Consensus;
+using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Consensus.Step.PreVote"/>.
+    /// A message class for <see cref="ConsensusStep.PreVote"/>.
     /// </summary>
-    public class ConsensusPreVoteMsg : ConsensusMsg
+    public class ConsensusPreVoteMsg : ConsensusVoteMsg
     {
         private static Bencodex.Codec _codec = new Bencodex.Codec();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusPreVoteMsg"/> class.
         /// </summary>
-        /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreVote"/>
+        /// <param name="vote">The <see cref="Vote"/> for <see cref="ConsensusStep.PreVote"/>
         /// to attach.
         /// </param>
         /// <exception cref="ArgumentException">Thrown when given <paramref name="vote"/>'s
         /// <see cref="Vote.Flag"/> is not <see cref="VoteFlag.PreVote"/>.</exception>
         public ConsensusPreVoteMsg(Vote vote)
-            : base(vote.ValidatorPublicKey, vote.Height, vote.Round, vote.BlockHash)
+            : base(vote.ValidatorPublicKey, vote.Height, vote.Round, vote.BlockHash, vote.Flag)
         {
             if (vote.Flag != VoteFlag.PreVote)
             {
@@ -42,7 +43,7 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// A <see cref="Vote"/> for <see cref="Consensus.Step.PreVote"/>.  This will always
+        /// A <see cref="Vote"/> for <see cref="ConsensusStep.PreVote"/>.  This will always
         /// have its <see cref="Vote.Flag"/> set to <see cref="VoteFlag.PreVote"/>.
         /// </summary>
         public Vote PreVote { get; }
@@ -54,17 +55,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusVote;
 
+        /// <inheritdoc/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusPreVoteMsg message &&
                 PreVote.Equals(message.PreVote);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, PreVote);

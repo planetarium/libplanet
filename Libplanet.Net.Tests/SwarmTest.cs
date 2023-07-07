@@ -438,7 +438,7 @@ namespace Libplanet.Net.Tests
 
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.MessageLogSize == 2)
+                    if (eventArgs.VoteCount == 2)
                     {
                         collectedTwoMessages[0].Set();
                     }
@@ -454,14 +454,14 @@ namespace Libplanet.Net.Tests
                 _ = swarms[2].StartAsync();
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreCommit)
+                    if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         stepChangedToPreCommits[0].Set();
                     }
                 };
                 swarms[2].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
-                    if (eventArgs.Step == Step.PreCommit)
+                    if (eventArgs.Step == ConsensusStep.PreCommit)
                     {
                         stepChangedToPreCommits[2].Set();
                     }
@@ -479,7 +479,7 @@ namespace Libplanet.Net.Tests
                 // After swarm[1] comes online, eventually it'll catch up to vote PreCommit,
                 // at which point the round will move to 1 where swarm[2] is the proposer.
                 _ = swarms[1].StartAsync();
-                swarms[2].ConsensusReactor.ConsensusContext.MessageBroadcasted += (_, eventArgs) =>
+                swarms[2].ConsensusReactor.ConsensusContext.MessagePublished += (_, eventArgs) =>
                 {
                     if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
                         proposalMsg.Round == 1 &&
@@ -650,7 +650,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 chainB.Genesis.Hash,
-                new DumbAction[0]
+                Array.Empty<DumbAction>()
             );
             chainB.StageTransaction(tx);
             Block block = chainB.ProposeBlock(keyB);
@@ -2043,7 +2043,7 @@ namespace Libplanet.Net.Tests
             public IAccountStateDelta Execute(IActionContext context)
             {
                 Thread.Sleep(10);
-                return context.PreviousStates;
+                return context.PreviousState;
             }
 
             public void LoadPlainValue(IValue plainValue)

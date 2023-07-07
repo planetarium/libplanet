@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.State;
+using Libplanet.Tests.Mocks;
 using Libplanet.Tx;
 using Xunit;
 
@@ -41,7 +37,7 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousStates: new DumbAccountStateDelta(),
+                    previousState: AccountStateDelta.Create(MockAccountState.Empty),
                     randomSeed: seed,
                     gasLimit: 0
                 );
@@ -59,7 +55,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: AccountStateDelta.Create(MockAccountState.Empty),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -70,7 +66,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: AccountStateDelta.Create(MockAccountState.Empty),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -81,7 +77,7 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: AccountStateDelta.Create(MockAccountState.Empty),
                 randomSeed: 1,
                 gasLimit: 0
             );
@@ -117,7 +113,7 @@ namespace Libplanet.Tests.Action
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousStates: new DumbAccountStateDelta(),
+                    previousState: AccountStateDelta.Create(MockAccountState.Empty),
                     randomSeed: i,
                     gasLimit: 0
                 );
@@ -137,11 +133,9 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: new DumbAccountStateDelta(),
+                previousState: AccountStateDelta.Create(MockAccountState.Empty),
                 randomSeed: _random.Next(),
-                gasLimit: 0,
-                logs: new List<string>()
-            );
+                gasLimit: 0);
 
             // Consume original's random state...
             int[] values =
@@ -158,66 +152,29 @@ namespace Libplanet.Tests.Action
             );
         }
 
-        private class DumbAccountStateDelta :
-            IAccountStateDelta
+        [Fact]
+        public void ActionContextLogs()
         {
-            public IAccountDelta Delta => new AccountDelta();
+            var context = new ActionContext(
+                signer: _address,
+                txid: _txid,
+                miner: _address,
+                blockIndex: 1,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
+                previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                randomSeed: _random.Next(),
+                gasLimit: 0);
 
-            public IImmutableSet<Address> UpdatedAddresses =>
-                ImmutableHashSet<Address>.Empty;
+            string[] logs = new[] { "foo", "bar" };
+            context.PutLog(logs[0]);
+            context.PutLog(logs[1]);
+            Assert.Equal(2, context.Logs.Count);
+            Assert.Equal("foo", context.Logs[0]);
+            Assert.Equal("bar", context.Logs[1]);
 
-            public IImmutableSet<Address> StateUpdatedAddresses =>
-                ImmutableHashSet<Address>.Empty;
-
-            public IImmutableSet<Currency> UpdatedTotalSupplyCurrencies =>
-                ImmutableHashSet<Currency>.Empty;
-
-            public IImmutableSet<(Address, Currency)> UpdatedFungibleAssets =>
-                ImmutableHashSet<(Address, Currency)>.Empty;
-
-            public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
-                ImmutableHashSet<(Address, Currency)>.Empty;
-
-            public IValue GetState(Address address) => null;
-
-            public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
-                new IValue[addresses.Count];
-
-            public IAccountStateDelta SetState(Address address, IValue state) => this;
-
-            public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-                new FungibleAssetValue(currency);
-
-            public FungibleAssetValue GetTotalSupply(Currency currency)
-            {
-                if (!currency.TotalSupplyTrackable)
-                {
-                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-                }
-
-                return currency * 0;
-            }
-
-            public virtual ValidatorSet GetValidatorSet()
-            {
-                return new ValidatorSet();
-            }
-
-            public IAccountStateDelta MintAsset(
-                IActionContext context, Address recipient, FungibleAssetValue value) => this;
-
-            public IAccountStateDelta TransferAsset(
-                IActionContext context,
-                Address sender,
-                Address recipient,
-                FungibleAssetValue value,
-                bool allowNegativeBalance = false
-            ) => this;
-
-            public IAccountStateDelta BurnAsset(
-                IActionContext context, Address owner, FungibleAssetValue value) => this;
-
-            public IAccountStateDelta SetValidator(Validator validator) => this;
+            // Unconsumed context should have empty logs.
+            var unconsumed = context.GetUnconsumedContext();
+            Assert.Empty(unconsumed.Logs);
         }
     }
 }

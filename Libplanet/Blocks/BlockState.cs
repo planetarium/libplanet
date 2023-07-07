@@ -6,27 +6,27 @@ using Libplanet.Consensus;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A default implementation of <see cref="IBlockStates"/> interface.
+    /// A default implementation of <see cref="IBlockState"/> interface.
     /// </summary>
-    public class BlockStates : IBlockStates
+    public class BlockState : IBlockState
     {
         private BlockHash? _blockHash;
         private ITrie _stateRoot;
-        private BlockStatesCache _cache;
+        private BlockStateCache _cache;
 
-        internal BlockStates(BlockHash? blockHash, ITrie stateRoot)
+        internal BlockState(BlockHash? blockHash, ITrie stateRoot)
         {
             _blockHash = blockHash;
             _stateRoot = stateRoot;
-            _cache = new BlockStatesCache();
+            _cache = new BlockStateCache();
         }
 
-        /// <inheritdoc cref="IBlockStates.BlockHash"/>
+        /// <inheritdoc cref="IBlockState.BlockHash"/>
         public BlockHash? BlockHash => _blockHash;
 
         /// <inheritdoc cref="IAccountState.GetState"/>

@@ -27,7 +27,7 @@ namespace Libplanet.Action
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            return context.PreviousStates;
+            return context.PreviousState;
         }
     }
 }

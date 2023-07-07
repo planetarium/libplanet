@@ -11,8 +11,8 @@ using Libplanet.Consensus;
 namespace Libplanet.State
 {
     /// <summary>
-    /// An interface to manipulate account states with
-    /// maintaining the set of <see cref="UpdatedAddresses"/>.
+    /// An interface to manipulate an account state with
+    /// maintaining <see cref="Delta"/>.
     /// <para>It is like a map which is virtually initialized such
     /// that every possible <see cref="Address"/> exists and
     /// is mapped to <see langword="null"/>.  That means that:</para>
@@ -48,50 +48,12 @@ namespace Libplanet.State
         IAccountDelta Delta { get; }
 
         /// <summary>
-        /// <seealso cref="Address"/>es of the accounts that have
-        /// been updated since then.
-        /// </summary>
-        [Pure]
-        IImmutableSet<Address> UpdatedAddresses { get; }
-
-        /// <summary>
-        /// <see cref="Address"/>es of the accounts whose states have been updated since then.
-        /// </summary>
-        [Pure]
-        IImmutableSet<Address> StateUpdatedAddresses { get; }
-
-        /// <summary>
-        /// <para>
-        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
-        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed.
-        /// </para>
-        /// <para>
-        /// For example, if A transfers 10 FOO to B and B transfers 20 BAR to C,
-        /// <see cref="UpdatedFungibleAssets"/> become likes
-        /// <c>{ (A, FOO), (B, FOO), (B, BAR), (C, BAR) }</c>.
-        /// </para>
-        /// <para>
-        /// Furthermore, this represents any pair that has been "touched", i.e.,
-        /// if A transfers 10 FOO to B and B transfers 10 FOO back to A,
-        /// this becomes <c>{ (A, FOO), (B, BAR) }</c> not an empty set.
-        /// </para>
-        /// </summary>
-        [Pure]
-        IImmutableSet<(Address, Currency)> UpdatedFungibleAssets { get; }
-
-        /// <summary>
         /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
         /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
         /// since the previous <see cref="Block"/>'s output states.
         /// </summary>
         [Pure]
         IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
-
-        /// <summary>
-        /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
-        /// </summary>
-        [Pure]
-        IImmutableSet<Currency> UpdatedTotalSupplyCurrencies { get; }
 
         /// <summary>
         /// Gets a new instance that the account state of the given

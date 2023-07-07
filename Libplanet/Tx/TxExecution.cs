@@ -25,14 +25,14 @@ namespace Libplanet.Tx
             : this(
                 info.GetValue<BlockHash>(nameof(BlockHash)),
                 info.GetValue<TxId>(nameof(TxId)),
-                info.GetValue<List<List<string>>>(nameof(ActionsLogsList)))
+                info.GetValue<List<IReadOnlyList<string>>>(nameof(ActionsLogsList)))
         {
         }
 
         private protected TxExecution(
             BlockHash blockHash,
             TxId txId,
-            List<List<string>>? actionsLogsList)
+            List<IReadOnlyList<string>>? actionsLogsList)
         {
             BlockHash = blockHash;
             TxId = txId;
@@ -56,7 +56,7 @@ namespace Libplanet.Tx
         /// The logs recorded while executing <see cref="Transaction"/>'s actions.
         /// </summary>
         [Pure]
-        public List<List<string>>? ActionsLogsList { get; }
+        public List<IReadOnlyList<string>>? ActionsLogsList { get; }
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)

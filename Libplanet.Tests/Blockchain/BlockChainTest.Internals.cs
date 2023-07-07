@@ -11,6 +11,7 @@ using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 using FAV = Libplanet.Assets.FungibleAssetValue;
 
@@ -132,7 +133,7 @@ namespace Libplanet.Tests.Blockchain
                     pair.Value,
                     _fx.StateStore.GetStates(
                         block1.StateRootHash,
-                        new[] { KeyConverters.ToStateKey(pair.Key) }
+                        new[] { ToStateKey(pair.Key) }
                     )[0]
                 );
             }

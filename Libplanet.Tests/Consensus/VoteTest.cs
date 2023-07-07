@@ -124,7 +124,12 @@ namespace Libplanet.Tests.Consensus
         public void DefaultSignatureIsInvalid()
         {
             var voteMetadata = new VoteMetadata(
-                0, 0, null, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.PreCommit);
+                0,
+                0,
+                default,
+                DateTimeOffset.UtcNow,
+                new PrivateKey().PublicKey,
+                VoteFlag.PreCommit);
             Assert.Throws<ArgumentException>(() => new Vote(voteMetadata, default));
         }
 

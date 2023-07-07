@@ -21,9 +21,9 @@ namespace Libplanet.Consensus
         int Round { get; }
 
         /// <summary>
-        /// <see cref="BlockHash"/> of the block in vote. If null, vote nil.
+        /// <see cref="BlockHash"/> of the block in vote. If default, vote nil.
         /// </summary>
-        BlockHash? BlockHash { get; }
+        BlockHash BlockHash { get; }
 
         /// <summary>
         /// The time at which the voting took place.

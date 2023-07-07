@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -35,21 +33,5 @@ namespace Libplanet.Action
         /// deserialization.
         /// </summary>
         public IValue TypeIdentifier { get; }
-
-        /// <summary>
-        /// Gets the <see cref="TypeIdentifier"/> for a given action class.
-        /// </summary>
-        /// <param name="actionType">A <see cref="Type"/> object of an action
-        /// class to know its annotated <see cref="TypeIdentifier"/>.</param>
-        /// <returns>The <see cref="TypeIdentifier"/> of the given
-        /// <paramref name="actionType"/> if it's annotated with
-        /// <see cref="ActionTypeAttribute"/>.  If it's not annotated returns
-        /// <see langword="null"/>.</returns>
-        public static IValue? ValueOf(Type actionType) =>
-            actionType
-                .GetCustomAttributes()
-                .OfType<ActionTypeAttribute>()
-                .Select(attr => attr.TypeIdentifier)
-                .FirstOrDefault();
     }
 }

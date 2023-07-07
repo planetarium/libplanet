@@ -16,6 +16,7 @@ namespace Libplanet.Action
 
         private readonly int _randomSeed;
         private readonly long _gasLimit;
+        private readonly List<string> _logs;
 
         public ActionContext(
             Address signer,
@@ -23,11 +24,10 @@ namespace Libplanet.Action
             Address miner,
             long blockIndex,
             int blockProtocolVersion,
-            IAccountStateDelta previousStates,
+            IAccountStateDelta previousState,
             int randomSeed,
             long gasLimit,
-            bool rehearsal = false,
-            List<string>? logs = null)
+            bool rehearsal = false)
         {
             Signer = signer;
             TxId = txid;
@@ -35,11 +35,11 @@ namespace Libplanet.Action
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
-            PreviousStates = previousStates;
+            PreviousState = previousState;
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
-            Logs = logs ?? new List<string>();
+            _logs = new List<string>();
 
             GetStateTimer.Value = new Stopwatch();
             GetStateCount.Value = 0;
@@ -64,8 +64,8 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.Rehearsal"/>
         public bool Rehearsal { get; }
 
-        /// <inheritdoc cref="IActionContext.PreviousStates"/>
-        public IAccountStateDelta PreviousStates { get; }
+        /// <inheritdoc cref="IActionContext.PreviousState"/>
+        public IAccountStateDelta PreviousState { get; }
 
         /// <inheritdoc cref="IActionContext.Random"/>
         public IRandom Random { get; }
@@ -73,10 +73,11 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.BlockAction"/>
         public bool BlockAction => TxId is null;
 
-        internal List<string> Logs { get; }
+        /// <inheritdoc cref="IActionContext.Logs"/>
+        public IReadOnlyList<string> Logs => _logs;
 
         /// <inheritdoc cref="IActionContext.PutLog(string)"/>
-        public void PutLog(string log) => Logs.Add(log);
+        public void PutLog(string log) => _logs.Add(log);
 
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
@@ -89,11 +90,10 @@ namespace Libplanet.Action
                 Miner,
                 BlockIndex,
                 BlockProtocolVersion,
-                PreviousStates,
+                PreviousState,
                 _randomSeed,
                 _gasLimit,
-                Rehearsal,
-                new List<string>());
+                Rehearsal);
 
         /// <summary>
         /// Returns the elapsed gas of the current action.

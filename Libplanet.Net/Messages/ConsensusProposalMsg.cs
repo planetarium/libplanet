@@ -1,27 +1,26 @@
 using System;
 using System.Collections.Generic;
-using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Consensus.Step.Propose"/>.
+    /// A message class for <see cref="ConsensusStep.Propose"/>.
     /// </summary>
     public class ConsensusProposalMsg : ConsensusMsg
     {
-        private static Codec _codec = new Codec();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusProposalMsg"/> class.
         /// </summary>
         /// <param name="proposal">A <see cref="Proposal"/> of given height and round.</param>
         public ConsensusProposalMsg(
             Proposal proposal)
-            : base(proposal.ValidatorPublicKey, proposal.Height, proposal.Round, proposal.BlockHash)
+            : base(proposal.ValidatorPublicKey, proposal.Height, proposal.Round)
         {
             Proposal = proposal;
+            BlockHash = proposal.BlockHash;
         }
 
         /// <summary>
@@ -35,9 +34,14 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// A marshalled <see cref="Block"/>.
+        /// A <see cref="Proposal"/> of the message.
         /// </summary>
         public Proposal Proposal { get; }
+
+        /// <summary>
+        /// A <see cref="BlockHash"/> the message is written for.
+        /// </summary>
+        public BlockHash BlockHash { get; }
 
         /// <inheritdoc cref="MessageContent.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames =>
@@ -46,17 +50,20 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc cref="MessageContent.MessageType"/>
         public override MessageType Type => MessageType.ConsensusProposal;
 
+        /// <inheritdoc/>
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusProposalMsg message &&
                    message.Proposal.Equals(Proposal);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is ConsensusMsg other && Equals(other);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, Proposal);

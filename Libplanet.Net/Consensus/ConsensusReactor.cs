@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -43,7 +44,7 @@ namespace Libplanet.Net.Consensus
         /// block.
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain blockChain,
@@ -56,16 +57,17 @@ namespace Libplanet.Net.Consensus
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
             seedPeers ??= ImmutableList<BoundPeer>.Empty;
 
-            _gossip = new Gossip(
-                consensusTransport,
-                validatorPeers.ToImmutableArray(),
-                seedPeers.ToImmutableArray(),
-                ProcessMessage,
-                TimeSpan.FromMinutes(2));
+            GossipConsensusMessageCommunicator consensusMessageHandler =
+                new GossipConsensusMessageCommunicator(
+                    consensusTransport,
+                    validatorPeers.ToImmutableArray(),
+                    seedPeers.ToImmutableArray(),
+                    ProcessMessage);
+            _gossip = consensusMessageHandler.Gossip;
             _blockChain = blockChain;
 
             _consensusContext = new ConsensusContext(
-                PublishMessage,
+                consensusMessageHandler,
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -83,7 +85,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public bool Running => _gossip.Running;
 
-        /// <inheritdoc cref="ConsensusContext.Height"/>
+        /// <summary>
+        /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
+        /// changed by starting a consensus or appending a block.
+        /// </summary>
         public long Height => _consensusContext.Height;
 
         /// <summary>
@@ -144,12 +149,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Adds <see cref="ConsensusMsg"/> to gossip.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
-        private void PublishMessage(ConsensusMsg message) => _gossip.PublishMessage(message);
-
-        /// <summary>
         /// A handler for received <see cref="Message"/>s.
         /// </summary>
         /// <param name="content">A message to process.</param>
@@ -157,6 +156,77 @@ namespace Libplanet.Net.Consensus
         {
             switch (content)
             {
+                case ConsensusVoteSetBitsMsg voteSetBits:
+                    // Note: ConsensusVoteSetBitsMsg will not be stored to context's message log.
+                    var messages = _consensusContext.HandleVoteSetBits(voteSetBits.VoteSetBits);
+                    try
+                    {
+                        var sender = _gossip.Peers.First(
+                            peer => peer.PublicKey.Equals(voteSetBits.ValidatorPublicKey));
+                        foreach (var msg in messages)
+                        {
+                            _gossip.PublishMessage(msg, new[] { sender });
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusVoteSetBitsMsg message" +
+                            " {Message} since there is no corresponding peer in the table",
+                            voteSetBits);
+                    }
+
+                    break;
+
+                case ConsensusMaj23Msg maj23Msg:
+                    try
+                    {
+                        VoteSetBits? voteSetBits = _consensusContext.HandleMaj23(maj23Msg.Maj23);
+                        if (voteSetBits is null)
+                        {
+                            break;
+                        }
+
+                        var sender = _gossip.Peers.First(
+                            peer => peer.PublicKey.Equals(maj23Msg.ValidatorPublicKey));
+                        _gossip.PublishMessage(
+                            new ConsensusVoteSetBitsMsg(voteSetBits),
+                            new[] { sender });
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusMaj23Msg message " +
+                            "{Message} since there is no corresponding peer in the table",
+                            maj23Msg);
+                    }
+
+                    break;
+
+                case ConsensusProposalClaimMsg proposalClaimMsg:
+                    try
+                    {
+                        Proposal? proposal = _consensusContext.HandleProposalClaim(
+                            proposalClaimMsg.ProposalClaim);
+                        if (proposal is { } proposalNotNull)
+                        {
+                            var reply = new ConsensusProposalMsg(proposalNotNull);
+                            var sender = _gossip.Peers.First(
+                                peer => peer.PublicKey.Equals(proposalClaimMsg.ValidatorPublicKey));
+
+                            _gossip.PublishMessage(reply, new[] { sender });
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        _logger.Debug(
+                            "Cannot respond received ConsensusProposalClaimMsg message " +
+                            "{Message} since there is no corresponding peer in the table",
+                            proposalClaimMsg);
+                    }
+
+                    break;
+
                 case ConsensusMsg consensusMsg:
                     _consensusContext.HandleMessage(consensusMsg);
                     break;

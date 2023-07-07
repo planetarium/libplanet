@@ -25,14 +25,14 @@ namespace Libplanet.Tests.Consensus
             Assert.Throws<ArgumentException>(() => new VoteMetadata(
                 2,
                 2,
-                null,
+                default,
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
                 VoteFlag.Null));
             Assert.Throws<ArgumentException>(() => new VoteMetadata(
                 2,
                 2,
-                null,
+                default,
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
                 VoteFlag.Unknown));

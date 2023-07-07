@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -19,7 +20,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _contextLock;
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
-
+        private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
@@ -27,14 +28,12 @@ namespace Libplanet.Net.Consensus
         private readonly Dictionary<long, Context> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
-        private bool _bootstrapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext"/> class.
         /// </summary>
-        /// <param name="broadcastMessage">A delegate method that will broadcasting given
-        /// <see cref="ConsensusMsg"/> to validators.
-        /// </param>
+        /// <param name="consensusMessageCommunicator">A communicator for receiving
+        /// <see cref="ConsensusMsg"/> from or publishing to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -46,13 +45,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
-            DelegateBroadcastMessage broadcastMessage,
+            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             ContextTimeoutOption contextTimeoutOption)
         {
-            BroadcastMessage = broadcastMessage;
+            _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
@@ -62,7 +61,6 @@ namespace Libplanet.Net.Consensus
 
             _contexts = new Dictionary<long, Context>();
             _blockChain.TipChanged += OnTipChanged;
-            _bootstrapping = true;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -73,15 +71,6 @@ namespace Libplanet.Net.Consensus
             _contextLock = new object();
             _newHeightLock = new object();
         }
-
-        /// <summary>
-        /// A delegate method for using as broadcasting a <see cref="Message"/> to
-        /// validators.
-        /// </summary>
-        /// <param name="message">A message to broadcast.</param>
-        public delegate void DelegateBroadcastMessage(ConsensusMsg message);
-
-        public DelegateBroadcastMessage BroadcastMessage { get; }
 
         /// <summary>
         /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
@@ -114,15 +103,17 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the step
         /// of current <see cref="Context"/>, or otherwise returns
-        /// <see cref="Libplanet.Net.Consensus.Step.Null"/>.
+        /// <see cref="ConsensusStep.Null"/>.
         /// </returns>
-        public Step Step
+        public ConsensusStep Step
         {
             get
             {
                 lock (_contextLock)
                 {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
+                    return _contexts.ContainsKey(Height)
+                        ? _contexts[Height].Step
+                        : ConsensusStep.Null;
                 }
             }
         }
@@ -214,7 +205,7 @@ namespace Libplanet.Net.Consensus
                         _contexts[height] = CreateContext(height);
                     }
 
-                    _contexts[height].Start(lastCommit, _bootstrapping);
+                    _contexts[height].Start(lastCommit);
                 }
             }
         }
@@ -266,6 +257,112 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Handles a received <see cref="Maj23"/> and return message to fetch.
+        /// </summary>
+        /// <param name="maj23">The <see cref="Maj23"/> received from any validator.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{ConsensusMsg}"/> to reply back.
+        /// </returns>
+        /// <remarks>This method does not update state of the context.</remarks>
+        public VoteSetBits? HandleMaj23(Maj23 maj23)
+        {
+            long height = maj23.Height;
+            if (height < Height)
+            {
+                _logger.Debug(
+                    "Ignore a received VoteSetBits as its height " +
+                    "#{Height} is lower than the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        return _contexts[height].AddMaj23(maj23);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Handles a received <see cref="VoteSetBits"/> and return message to fetch.
+        /// </summary>
+        /// <param name="voteSetBits">The <see cref="VoteSetBits"/> received from any validator.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{ConsensusMsg}"/> to reply back.
+        /// </returns>
+        /// <remarks>This method does not update state of the context.</remarks>
+        public IEnumerable<ConsensusMsg> HandleVoteSetBits(VoteSetBits voteSetBits)
+        {
+            long height = voteSetBits.Height;
+            if (height < Height)
+            {
+                _logger.Debug(
+                    "Ignore a received VoteSetBits as its height " +
+                    "#{Height} is lower than the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        // NOTE: Should check if collected messages have same BlockHash with
+                        // VoteSetBit's BlockHash?
+                        return _contexts[height].GetVoteSetBitsResponse(voteSetBits);
+                    }
+                }
+            }
+
+            return Array.Empty<ConsensusMsg>();
+        }
+
+        public Proposal? HandleProposalClaim(ProposalClaim proposalClaim)
+        {
+            long height = proposalClaim.Height;
+            int round = proposalClaim.Round;
+            if (height != Height)
+            {
+                _logger.Debug(
+                    "Ignore a received ProposalClaim as its height " +
+                    "#{Height} does not match with the current context's height #{ContextHeight}",
+                    height,
+                    Height);
+            }
+            else if (round != Round)
+            {
+                _logger.Debug(
+                    "Ignore a received ProposalClaim as its round " +
+                    "#{Round} does not match with the current context's round #{ContextRound}",
+                    round,
+                    Round);
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    if (_contexts.ContainsKey(height))
+                    {
+                        // NOTE: Should check if collected messages have same BlockHash with
+                        // VoteSetBit's BlockHash?
+                        return _contexts[height].Proposal;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns the summary for <see cref="ConsensusContext"/>.
         /// </summary>
         /// <returns>Returns the current height <see cref="Context"/>. if there's no instance of
@@ -278,28 +375,6 @@ namespace Libplanet.Net.Consensus
                 return _contexts.ContainsKey(Height)
                     ? _contexts[Height].ToString()
                     : "No context";
-            }
-        }
-
-        /// <summary>
-        /// A handler to process <see cref="Context.StateChanged"/> <see langword="event"/>s.
-        /// In particular, this watches for a successful state change into
-        /// <see cref="Step.EndCommit"/> for a <see cref="Context"/> to turn off
-        /// bootstrapping.
-        /// </summary>
-        /// <param name="sender">The source object invoking the event.</param>
-        /// <param name="e">The event arguments given by the source object.</param>
-        /// <remarks>
-        /// This is conditionally attached to <see cref="Context.StateChanged"/>
-        /// to reduce memory usage.
-        /// </remarks>
-        /// <seealso cref="AttachEventHandlers"/>
-        private void OnContextStateChanged(
-            object? sender, (int MessageLogSize, int Round, Step Step) e)
-        {
-            if (e.Step == Step.EndCommit)
-            {
-                _bootstrapping = false;
             }
         }
 
@@ -359,7 +434,7 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             var context = new Context(
-                this,
+                _consensusMessageCommunicator,
                 _blockChain,
                 height,
                 _privateKey,

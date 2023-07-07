@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -54,7 +55,7 @@ namespace Libplanet.Action
         /// <summary>
         /// Whether an <see cref="IAction"/> is being executed during
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
-        /// in <see cref="PreviousStates"/>.
+        /// in <see cref="PreviousState"/>.
         /// </summary>
         [Pure]
         bool Rehearsal { get; }
@@ -70,7 +71,7 @@ namespace Libplanet.Action
         /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
         [Pure]
-        IAccountStateDelta PreviousStates { get; }
+        IAccountStateDelta PreviousState { get; }
 
         /// <summary>
         /// An initialized pseudorandom number generator.  Its seed (state)
@@ -89,6 +90,13 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        /// <summary>
+        /// Logs recorded while executing an <see cref="IAction"/> through
+        /// <see cref="IActionContext.PutLog(string)"/>.
+        /// </summary>
+        [Pure]
+        IReadOnlyList<string> Logs { get; }
 
         /// <summary>
         /// Record a log in <see cref="TxExecution"/>.

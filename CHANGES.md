@@ -1,6 +1,200 @@
 Libplanet changelog
 ===================
 
+Version 2.5.0
+-------------
+
+To be released.
+
+Due to changes in [[#3272]], a network ran with a prior version may not
+be compatible with this version.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Net) Added
+    `Gossip.PublishMessage(MessageContent, IEnumerable<BoundPeer>)` method.
+    [[#3206]]
+ -  (Libplanet.Net) Added `Context.AddMaj23()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `Context.GetVoteSetBits()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `Context.GetVoteSetBitsResponse()` method.  [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleMaj23()` method.
+    [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleVoteSetBits()` method.
+    [[#3206]]
+ -  (Libplanet.Net) Added `ConsensusContext.HandleProposalClaim()` method.
+    [[#3206]]
+ -  Removed `ActionTypeAttribute.ValueOf()` method.  [[#3267]]
+ -  Added `Action<Message> validateMessageToReceive` parameter
+    to `Gossip`'s constructor.  [[#3273]]
+ -  Added `Action<MessageContent> validateMessageToSend` parameter
+    to `Gossip`'s constructor.  [[#3273]]
+ -  Removed `Action<Message> validateMessage` parameter
+    from `Gossip`'s constructor.  [[#3273]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `VoteSetBits` and its related classes.  [[#3206]]
+     -  Added `VoteSetBits` class.
+     -  Added `VoteSetBitsMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusVoteSetBitsMsg` class.
+ -  Added `ProposalClaim` and its related class.  [[#3206]]
+     -  Added `ProposalClaim` class.
+     -  Added `ProposalClaimMetadata` class.
+     -  (Libplanet.Net) Added `ConsensusProposalClaimMsg` class.
+ -  (Libplanet.Net) Added `ConsensusMaj23Msg` class.  [[#3206]]
+ -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#3206]]
+     -  Added `ConsensusMaj23Msg` of value `0x53`.
+     -  Added `ConsensusVoteSetBitsMsg` of value `0x54`.
+     -  Added `ConsensusProposalClaimMsg` of value `0x55`.
+ -  Added `IActionContext.Logs` interface property.  [[#3274]]
+ -  Changed the type for `IActionEvaluation.Logs` to
+    `IReadOnlyList<string>` from `List<string>`.  [[#3274]]
+ -  Changed the type for `TxExecution.ActionsLogList` to
+    `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
+ -  (Libplanet.Explorer) Changed the type for `TxResult.ActionsLogList` to
+    `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
+
+### Behavioral changes
+
+ -  (Libplanet.Net) `Context` became to remove its proposal
+    when +2/3 valid votes were collected.  [[#3206]]
+ -  Changed `ActionEvaluator` to evaluate all `IAction`s in a `Transaction`
+    without early termination even if an `IAction` throws an `Exception`.
+    [[#3272]]
+ -  `Gossip.HandleMessageAsync()` now executes `_validateMessageToReceive`
+    on given message received.  [[#3273]]
+ -  `Gossip.SendWantAsync()` now executes `_validateMessageToReceive`
+    on replies of `WantMessage`.  [[#3273]]
+ -  `Gossip.HandleWantAsync()` now executes `_validateMessageToSend`
+    on given message to send as a reply of `WantMessage`.  [[#3273]]
+ -  `GossipConsensusMessageCommunicator` now prevents sending a message
+    with a round other than its own as a reply to a `WantMessage`.  [[#3273]]
+ -  `GossipConsensusMessageCommunicator` now executes anti-spam logic
+    when messages are received.  [[#3273]]
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#3206]: https://github.com/planetarium/libplanet/pull/3206
+[#3267]: https://github.com/planetarium/libplanet/pull/3267
+[#3272]: https://github.com/planetarium/libplanet/pull/3272
+[#3273]: https://github.com/planetarium/libplanet/pull/3273
+[#3274]: https://github.com/planetarium/libplanet/pull/3274
+
+
+Version 2.4.0
+-------------
+
+Released on July 3, 2023.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Removed `ConsensusContext.BroadcastMessage` property.
+    [[#3260]]
+
+### Backward-incompatible API changes
+
+ -  `Vote.BlockHash` property became `BlockHash` type. (was `BlockHash?`)
+    [[#3249]]
+ -  `VoteMetadata(long, int, BlockHash?, DateTimeOffset, PublicKey, VoteFlag)`
+    constructor became
+    `VoteMetadata(long, int, BlockHash, DateTimeOffset, PublicKey, VoteFlag)`
+    [[#3249]]
+ -  (Libplanet.Net) Renamed `Step` enum to `ConsensusStep`
+    to remove ambiguity.  [[#3249]]
+ -  (Libplanet.Net) `ConsensusProposalMsg`, `ConsensusPreVoteMsg` and
+    `ConsensusPreCommitMsg` became to inherit `ConsensusVoteMsg`.  [[#3249]]
+ -  (Libplanet.Net) Removed `ConsensusMsg.BlockHash` property.  [[#3249]]
+ -  (Libplanet.Net) Some enumeration items to `MessageType` enum has modified.
+    [[#3249]]
+     -  `ConsensusProposal` changed to `0x50` (was `0x40`).
+     -  `ConsensusVote` changed to `0x51` (was `0x41`).
+     -  `ConsensusCommit` changed to `0x52` (was `0x42`).
+ -  (Libplanet.Net) Added `Flag` property to `ConsensusVoteMsg` abstract class.
+    [[#3260]]
+ -  (Libplanet.Net) `ConsensusProposalMsg` no longer inherits
+    `ConsensusVoteMsg`. Instead, inherits `ConsensusMsg`.  [[#3260]]
+ -  (Libplanet.Net) Added parameter
+    `IConsensusMessageCommunicator consensusMessageCommunicator` to
+    `ConsensusContext`.  [[#3260]]
+ -  (Libplanet.Net) Removed parameter
+    `DelegateBroadcastMessage broadcastMessage` from `ConsensusContext`.
+    [[#3260]]
+ -  (Libplanet.Net) Added parameter
+    `IConsensusMessageCommunicator consensusMessageCommunicator` to
+    `Context`.  [[#3260]]
+ -  (Libplanet.Net) Renamed `Context.BroadcastMessage(ConsensusMsg)`
+    as `Context.PublishMessage(ConsensusMsg)`.  [[#3260]]
+ -  (Libplanet.Net) Removed constructor of `MessageCache` class.  [[#3260]]
+ -  (Libplanet.Explorer) Changed `TxResult.UpdatedStates`'s type to
+    `IImmutableDictionary<Address, IValue>` from
+    `IImmutableDictionary<Address, IValue?>`.  [[#3262]]
+
+### Added APIs
+
+ -  Added `Maj23` and its related classes.  [[#3249]]
+     -  Added `Maj23` class.
+     -  Added `Maj23Metadata` class.
+ -  (Libplanet.Net) Added `VoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `HeightVoteSet` class.  [[#3249]]
+ -  (Libplanet.Net) Added `ConsensusVoteMsg` abstract class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidProposalException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidVoteException` class.  [[#3249]]
+ -  (Libplanet.Net) Added `InvalidMaj23Exception` class.  [[#3249]]
+ -  Added `IAccountDelta.OrderedSum()` extension method.  [[#3256]]
+ -  Added `IAccountDelta.ToRawDelta()` extension method.  [[#3256]]
+ -  Removed several properties from `IAccountStateDelta` pertaining to
+    the delta part of `IAccountStateDelta`.  Access the equivalent data
+    through `IAccountStateDelta.Delta` instead.  [[#3257]]
+     -  Removed `IAccountStateDelta.UpdatedAddresses` property.
+     -  Removed `IAccountStateDelta.StateUpdatedAddresses` property.
+     -  Removed `IAccountStateDelta.UpdatedFungibleAssets` property.
+     -  Removed `IAccountStateDelta.UpdatedTotalSupplyCurrencies` property.
+ -  Changed `IBlockStates` to `IBlockState`.  [[#3259]]
+ -  Changed `IBlockChainStates.GetBlockStates()` to
+    `IBlockChainStates.GetBlockState()`.  [[#3259]]
+ -  Changes `IActionContext.PreviousStates` to `IActionContext.PreviousState`.
+ -  Changed `IActionEvaluation.OutputStates` to `IActionEvaluation.OutputState`.
+    [[#3259]]
+ -  (Libplanet.Net) Added `IConsensusMessageCommunicator` interface
+    and its related classes.  [[#3260]]
+     -  (Libplanet.Net) Added `GossipConsensusMessageCommunicator` class.
+        [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.DenyPeer(BoundPeer)` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.AllowPeer(BoundPeer)` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.ClearCache()` method.  [[#3260]]
+ -  (Libplanet.Net) Added `Gossip.ClearDenySet(BoundPeer)` method.  [[#3260]]
+
+### Behavioral changes
+
+ -  (Libplanet.Net) `Gossip` now maintains single message cache,
+    and contents of this cache does not decayed by time or new messages.
+    This cache is cleared only by `Gossip.ClearCache()` method.  [[#3260]]
+ -  (Libplanet.Net) There are no mechanism for bootstrapping conensus
+    any more. Instead, logic change on `Gossip` solves bootstrapping
+    problem.  [[#3260]]
+ -  (Libplanet.Net) `Context.Start()` now triggers
+    `IConsensusMessageCommunicator.OnStartHeight()`.  [[#3260]]
+ -  (Libplanet.Net) `Context.StartRound()` now triggers
+    `IConsensusMessageCommunicator.OnStartRound()`.  [[#3260]]
+
+[#3249]: https://github.com/planetarium/libplanet/pull/3249
+[#3256]: https://github.com/planetarium/libplanet/pull/3256
+[#3257]: https://github.com/planetarium/libplanet/pull/3257
+[#3259]: https://github.com/planetarium/libplanet/pull/3259
+[#3260]: https://github.com/planetarium/libplanet/pull/3260
+[#3262]: https://github.com/planetarium/libplanet/pull/3262
+
+
 Version 2.3.0
 -------------
 

@@ -16,7 +16,6 @@ using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Mocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Fixtures
@@ -123,33 +122,44 @@ namespace Libplanet.Tests.Fixtures
                 .Where(t => t.Signer.Equals(signerAddress))
                 .OrderBy(t => t.Nonce)
                 .SelectMany(t => t.Actions)
-                .TakeWhile(a => TestUtils.ToAction<Arithmetic>(a).Error is null)
                 .Aggregate(prevPair, (prev, act) =>
                 {
                     var a = TestUtils.ToAction<Arithmetic>(act);
-                    BigInteger nextState = a.Operator.ToFunc()(prev.Item1, a.Operand);
-                    var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
-                        .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
-                    HashDigest<SHA256> nextRootHash =
-                        prevTrie.Set(updatedRawStates).Commit().Hash;
-                    return (nextState, nextRootHash);
+                    if (a.PlainValue is Text error)
+                    {
+                        return (prev.Item1, prev.Item2);
+                    }
+                    else
+                    {
+                        BigInteger nextState = a.Operator.ToFunc()(prev.Item1, a.Operand);
+                        var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
+                            .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
+                        HashDigest<SHA256> nextRootHash =
+                            prevTrie.Set(updatedRawStates).Commit().Hash;
+                        return (nextState, nextRootHash);
+                    }
                 });
             Chain.StageTransaction(tx);
             ImmutableArray<(BigInteger, HashDigest<SHA256>)> expectedDelta = tx.Actions
-                .Take(tx.Actions
-                    .TakeWhile(a => TestUtils.ToAction<Arithmetic>(a).Error is null).Count() + 1)
                 .Aggregate(
                     ImmutableArray.Create(stagedStates),
                     (delta, act) =>
                     {
                         var a = TestUtils.ToAction<Arithmetic>(act);
-                        BigInteger nextState =
-                            a.Operator.ToFunc()(delta[delta.Length - 1].Item1, a.Operand);
-                        var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
-                            .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
-                        HashDigest<SHA256> nextRootHash =
-                            prevTrie.Set(updatedRawStates).Commit().Hash;
-                        return delta.Add((nextState, nextRootHash));
+                        if (a.PlainValue is Text error)
+                        {
+                            return delta.Add(delta[delta.Length - 1]);
+                        }
+                        else
+                        {
+                            BigInteger nextState =
+                                a.Operator.ToFunc()(delta[delta.Length - 1].Item1, a.Operand);
+                            var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
+                                .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
+                            HashDigest<SHA256> nextRootHash =
+                                prevTrie.Set(updatedRawStates).Commit().Hash;
+                            return delta.Add((nextState, nextRootHash));
+                        }
                     }
                 );
             return new TxWithContext()
@@ -169,15 +179,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
-        {
-            offset = offset ?? Tip.Hash;
-            return AccountStateDelta.Create(
-                new MockAccountState(
-                    a => Chain.GetStates(a, offset),
-                    (a, c) => Chain.GetBalance(a, c, offset),
-                    c => Chain.GetTotalSupply(c),
-                    () => Chain.GetValidatorSet()));
-        }
+            => AccountStateDelta.Create(Chain.GetBlockState(offset ?? Tip.Hash));
 
         public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
             => CreateAccountStateDelta(Addresses[signerIndex], offset);

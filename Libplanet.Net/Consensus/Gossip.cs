@@ -9,7 +9,6 @@ using Dasync.Collections;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -24,10 +23,10 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(10);
         private readonly TimeSpan _refreshLifespan = TimeSpan.FromSeconds(60);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
-        private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
         private readonly MessageCache _cache;
-        private readonly MemoryCache _seen;
+        private readonly Action<Message> _validateMessageToReceive;
+        private readonly Action<MessageContent> _validateMessageToSend;
         private readonly Action<MessageContent> _processMessage;
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
@@ -35,6 +34,7 @@ namespace Libplanet.Net.Consensus
         private TaskCompletionSource<object?> _runningEvent;
         private CancellationTokenSource? _cancellationTokenSource;
         private RoutingTable _table;
+        private HashSet<BoundPeer> _denySet;
         private IProtocol _protocol;
         private ConcurrentDictionary<BoundPeer, HashSet<MessageId>> _haveDict;
 
@@ -45,26 +45,23 @@ namespace Libplanet.Net.Consensus
         /// An <see cref="ITransport"/> used for communicating messages.</param>
         /// <param name="peers">A list of <see cref="BoundPeer"/> composing network.</param>
         /// <param name="seeds">A list of <see cref="BoundPeer"/> for lookup network.</param>
+        /// <param name="validateMessageToReceive">Action to be called to validate
+        /// a received message to add. Validates on <see cref="HandleMessageAsync"/>.</param>
+        /// <param name="validateMessageToSend">Action to be called to validate a new message
+        /// to send. Validates on <see cref="HandleWantAsync"/>.</param>
         /// <param name="processMessage">Action to be called when receiving a new message.</param>
-        /// <param name="seenTtl">Time To Live of each entry of the seen cache.
-        /// 2 minutes is recommended.</param>
-        /// <param name="seenCacheLimit">The size limit of the seen cache in byte.</param>
         public Gossip(
             ITransport transport,
             ImmutableArray<BoundPeer> peers,
             ImmutableArray<BoundPeer> seeds,
-            Action<MessageContent> processMessage,
-            TimeSpan seenTtl,
-            long? seenCacheLimit = null)
+            Action<Message> validateMessageToReceive,
+            Action<MessageContent> validateMessageToSend,
+            Action<MessageContent> processMessage)
         {
             _transport = transport;
-            _cache = new MessageCache(5, 3);
-            _seenTtl = seenTtl;
-            _seen = new MemoryCache(
-                new MemoryCacheOptions
-                {
-                    SizeLimit = seenCacheLimit,
-                });
+            _cache = new MessageCache();
+            _validateMessageToReceive = validateMessageToReceive;
+            _validateMessageToSend = validateMessageToSend;
             _processMessage = processMessage;
             _table = new RoutingTable(transport.AsPeer.Address);
 
@@ -79,6 +76,7 @@ namespace Libplanet.Net.Consensus
 
             _runningEvent = new TaskCompletionSource<object?>();
             _haveDict = new ConcurrentDictionary<BoundPeer, HashSet<MessageId>>();
+            _denySet = new HashSet<BoundPeer>();
             Running = false;
 
             _logger = Log
@@ -167,12 +165,20 @@ namespace Libplanet.Net.Consensus
             await _transport.StopAsync(waitFor, ctx);
         }
 
+        /// <summary>
+        /// Clear message cache.
+        /// </summary>
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
+
         /// <inheritdoc/>
         public void Dispose()
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
-            _seen.Dispose();
+            _cache.Clear();
             _transport.Dispose();
         }
 
@@ -187,12 +193,19 @@ namespace Libplanet.Net.Consensus
         /// Publish given <see cref="MessageContent"/> to peers.
         /// </summary>
         /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
-        public void PublishMessage(MessageContent content)
+        public void PublishMessage(MessageContent content) => PublishMessage(
+            content,
+            PeersToBroadcast(_table.Peers, DLazy));
+
+        /// <summary>
+        /// Publish given <see cref="MessageContent"/> to given <paramref name="targetPeers"/>.
+        /// </summary>
+        /// <param name="content">A <see cref="MessageContent"/> instance to publish.</param>
+        /// <param name="targetPeers"><see cref="BoundPeer"/>s to publish to.</param>
+        public void PublishMessage(MessageContent content, IEnumerable<BoundPeer> targetPeers)
         {
             AddMessage(content);
-            _transport.BroadcastMessage(
-                PeersToBroadcast(_table.Peers, DLazy),
-                content);
+            _transport.BroadcastMessage(targetPeers, content);
         }
 
         /// <summary>
@@ -202,25 +215,23 @@ namespace Libplanet.Net.Consensus
         /// process and gossip.</param>
         public void AddMessage(MessageContent content)
         {
-            if (_seen.TryGetValue(content.Id, out _))
+            try
+            {
+                _cache.Put(content);
+            }
+            catch (ArgumentException)
             {
                 _logger.Verbose(
                     "Message of content {Content} with id {Id} seen recently, ignored",
                     content,
                     content.Id);
-            }
-
-            try
-            {
-                _cache.Put(content);
+                return;
             }
             catch (Exception)
             {
                 return;
             }
 
-            // Message instance does not have to be stored.
-            _seen.Set(content.Id, content.Id, _seenTtl);
             try
             {
                 _processMessage(content);
@@ -240,6 +251,34 @@ namespace Libplanet.Net.Consensus
         public void AddMessages(IEnumerable<MessageContent> contents)
         {
             contents.AsParallel().ForAll(AddMessage);
+        }
+
+        /// <summary>
+        /// Adds <paramref name="peer"/> to the <see cref="_denySet"/> to reject
+        /// <see cref="Message"/>s from.
+        /// </summary>
+        /// <param name="peer"><see cref="BoundPeer"/> to deny.</param>
+        public void DenyPeer(BoundPeer peer)
+        {
+            _denySet.Add(peer);
+        }
+
+        /// <summary>
+        /// Remove <paramref name="peer"/> frin the <see cref="_denySet"/> to allow
+        /// <see cref="Message"/>s from.
+        /// </summary>
+        /// <param name="peer"><see cref="BoundPeer"/> to allow.</param>
+        public void AllowPeer(BoundPeer peer)
+        {
+            _denySet.Remove(peer);
+        }
+
+        /// <summary>
+        /// Clear <see cref="_denySet"/> to allow all <see cref="BoundPeer"/>.
+        /// </summary>
+        public void ClearDenySet()
+        {
+            _denySet.Clear();
         }
 
         /// <summary>
@@ -270,6 +309,25 @@ namespace Libplanet.Net.Consensus
         private Func<Message, Task> HandleMessageAsync(CancellationToken ctx) => async msg =>
         {
             _logger.Verbose("HandleMessage: {Message}", msg);
+
+            if (_denySet.Contains(msg.Remote))
+            {
+                _logger.Verbose("Message from denied peer, rejecting: {Message}", msg);
+                await ReplyMessagePongAsync(msg, ctx);
+                return;
+            }
+
+            try
+            {
+                _validateMessageToReceive(msg);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
+                return;
+            }
+
             switch (msg.Content)
             {
                 case PingMsg _:
@@ -283,6 +341,7 @@ namespace Libplanet.Net.Consensus
                     await HandleWantAsync(msg, ctx);
                     break;
                 default:
+                    await ReplyMessagePongAsync(msg, ctx);
                     AddMessage(msg.Content);
                     break;
             }
@@ -307,8 +366,6 @@ namespace Libplanet.Net.Consensus
                         new HaveMessage(ids));
                 }
 
-                _cache.Shift();
-
                 _ = SendWantAsync(ctx);
                 await Task.Delay(_heartbeatInterval, ctx);
             }
@@ -327,8 +384,7 @@ namespace Libplanet.Net.Consensus
             var haveMessage = (HaveMessage)msg.Content;
 
             await ReplyMessagePongAsync(msg, ctx);
-            MessageId[] idsToGet =
-                haveMessage.Ids.Where(id => !_seen.TryGetValue(id, out _)).ToArray();
+            MessageId[] idsToGet = _cache.DiffFrom(haveMessage.Ids);
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
                 haveMessage.Ids.Count(),
@@ -400,7 +456,22 @@ namespace Libplanet.Net.Consensus
                         replies.Length,
                         replies,
                         replies.Select(m => m.Content.Id).ToArray());
-                    AddMessages(replies.Select(m => m.Content));
+                    replies.AsParallel().ForAll(
+                        r =>
+                        {
+                            try
+                            {
+                                _validateMessageToReceive(r);
+                                AddMessage(r.Content);
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.Error(
+                                    "Invalid message, rejecting: {Message}, {Exception}",
+                                    r,
+                                    e.Message);
+                            }
+                        });
                 },
                 ctx);
         }
@@ -428,7 +499,18 @@ namespace Libplanet.Net.Consensus
 
             await contents.ParallelForEachAsync(
                 async c =>
-                    await _transport.ReplyMessageAsync(c, msg.Identity, ctx), ctx);
+                {
+                    try
+                    {
+                        _validateMessageToSend(c);
+                        await _transport.ReplyMessageAsync(c, msg.Identity, ctx);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
+                    }
+                }, ctx);
 
             var id = msg is { Identity: null } ? "unknown" : new Guid(msg.Identity).ToString();
             _logger.Debug("Finished replying WantMessage. {RequestId}", id);

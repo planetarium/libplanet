@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = AccountStateDelta.Create(MockAccountState.Empty);
+            var prevState = AccountStateDelta.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Action.Sys
                 miner: random.NextAddress(),
                 blockIndex: 0,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: prevStates,
+                previousState: prevState,
                 randomSeed: 123,
                 gasLimit: 0,
                 rehearsal: false);
@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            var prevStates = AccountStateDelta.Create(MockAccountState.Empty);
+            var prevState = AccountStateDelta.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Action.Sys
                 miner: random.NextAddress(),
                 blockIndex: 10,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousStates: prevStates,
+                previousState: prevState,
                 randomSeed: 123,
                 gasLimit: long.MaxValue,
                 rehearsal: false);

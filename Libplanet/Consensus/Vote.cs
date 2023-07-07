@@ -92,7 +92,7 @@ namespace Libplanet.Consensus
         public int Round => _metadata.Round;
 
         /// <inheritdoc/>
-        public BlockHash? BlockHash => _metadata.BlockHash;
+        public BlockHash BlockHash => _metadata.BlockHash;
 
         /// <inheritdoc/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;
@@ -162,7 +162,7 @@ namespace Libplanet.Consensus
             {
                 { "validator_public_key", ValidatorPublicKey.ToString() },
                 { "vote_flag", Flag.ToString() },
-                { "block_hash", BlockHash?.ToString() ?? string.Empty },
+                { "block_hash", BlockHash.ToString() },
                 { "height", Height },
                 { "round", Round },
                 { "timestamp", Timestamp.ToString(CultureInfo.InvariantCulture) },

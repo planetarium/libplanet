@@ -236,7 +236,8 @@ namespace Libplanet.Net.Tests.Consensus
                 ImmutableArray<BoundPeer>.Empty,
                 ImmutableArray<BoundPeer>.Empty,
                 _ => { },
-                TimeSpan.FromMinutes(2));
+                _ => { },
+                _ => { });
             var transport2 = CreateTransport(key2, 6002);
             try
             {
@@ -371,8 +372,9 @@ namespace Libplanet.Net.Tests.Consensus
                 transport,
                 peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
                 seeds?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
-                processMessage,
-                TimeSpan.FromMinutes(2));
+                _ => { },
+                _ => { },
+                processMessage);
         }
 
         private NetMQTransport CreateTransport(

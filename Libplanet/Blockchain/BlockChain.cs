@@ -19,7 +19,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
-using static Libplanet.Blockchain.KeyConverters;
+using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -409,8 +409,7 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetTotalDelta(
-                ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey, ValidatorSetKey);
+            var delta = evals.GetRawTotalDelta();
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
@@ -557,11 +556,11 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IBlockStates GetBlockStates() => GetBlockStates(Tip.Hash);
+        public IBlockState GetBlockState() => GetBlockState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockStates" />
-        public IBlockStates GetBlockStates(BlockHash? offset) =>
-            _blockChainStates.GetBlockStates(offset);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockState" />
+        public IBlockState GetBlockState(BlockHash? offset) =>
+            _blockChainStates.GetBlockState(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
@@ -740,17 +739,17 @@ namespace Libplanet.Blockchain
             BlockHash? tip = Store.IndexBlockHash(Id, -1);
             if (tip is null)
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             if (!(FindBranchpoint(locator) is BlockHash branchpoint))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             if (!(Store.GetBlockIndex(branchpoint) is long branchpointIndex))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
             var result = new List<BlockHash>();

@@ -26,7 +26,7 @@ namespace Libplanet.Action
         /// <summary>
         /// The result states that <see cref="Action"/> makes.
         /// </summary>
-        public IAccountStateDelta OutputStates { get; }
+        public IAccountStateDelta OutputState { get; }
 
         /// <summary>
         /// An exception that had risen during evaluation.
@@ -37,6 +37,6 @@ namespace Libplanet.Action
         /// Logs recorded while executing an action through
         /// <see cref="IActionContext.PutLog(string)"/>.
         /// </summary>
-        public List<string> Logs { get; }
+        public IReadOnlyList<string> Logs { get; }
     }
 }

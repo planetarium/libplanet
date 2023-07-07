@@ -57,7 +57,7 @@ namespace Libplanet.Net.Tests
             PrivateKey privateKey,
             long height = 0,
             int round = 0,
-            BlockHash? hash = null,
+            BlockHash hash = default,
             VoteFlag flag = VoteFlag.Null) =>
             new VoteMetadata(
                 height,
@@ -222,8 +222,6 @@ namespace Libplanet.Net.Tests
                 TimeSpan newHeightDelay,
                 IBlockPolicy? policy = null,
                 PrivateKey? privateKey = null,
-                ConsensusContext.DelegateBroadcastMessage? broadcastMessage = null,
-                long blockCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
@@ -240,10 +238,8 @@ namespace Libplanet.Net.Tests
                     consensusContext!.HandleMessage(message);
                 });
 
-            broadcastMessage ??= BroadcastMessage;
-
             consensusContext = new ConsensusContext(
-                broadcastMessage,
+                new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 privateKey,
                 newHeightDelay,
@@ -273,11 +269,10 @@ namespace Libplanet.Net.Tests
             var (blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 policy,
-                PrivateKeys[1],
-                broadcastMessage: BroadcastMessage);
+                PrivateKeys[1]);
 
             context = new Context(
-                consensusContext,
+                new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 height,
                 privateKey,
@@ -323,6 +318,27 @@ namespace Libplanet.Net.Tests
             Random.NextBytes(bytes);
 
             return bytes;
+        }
+
+        public class DummyConsensusMessageHandler : IConsensusMessageCommunicator
+        {
+            private Action<ConsensusMsg> _publishMessage;
+
+            public DummyConsensusMessageHandler(Action<ConsensusMsg> publishMessage)
+            {
+                _publishMessage = publishMessage;
+            }
+
+            public void PublishMessage(ConsensusMsg message)
+                => _publishMessage(message);
+
+            public void OnStartHeight(long height)
+            {
+            }
+
+            public void OnStartRound(int round)
+            {
+            }
         }
     }
 }
