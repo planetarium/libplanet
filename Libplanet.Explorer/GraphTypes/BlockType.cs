@@ -81,7 +81,7 @@ public class BlockType : ObjectGraphType<Block>
         );
         Field<NonNullGraphType<ByteStringType>>(
             name: "PreEvaluationHash",
-            description: "Hi",
+            description: "The hash of PreEvaluationBlock.",
             resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
 
         Name = "Block";
