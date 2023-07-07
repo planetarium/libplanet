@@ -17,27 +17,17 @@ namespace Libplanet.State
     [Pure]
     internal class AccountStateDelta : IAccountStateDelta
     {
-        /// <summary>
-        /// Creates a null state delta from the given <paramref name="accountStateGetter"/>.
-        /// </summary>
-        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
-        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
-        /// </param>
-        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
-        /// currencies.</param>
-        /// <param name="validatorSetGetter">A view to the &#x201c;epoch&#x201d; validator
-        /// set.</param>
-        private AccountStateDelta(
-            AccountStateGetter accountStateGetter,
-            AccountBalanceGetter accountBalanceGetter,
-            TotalSupplyGetter totalSupplyGetter,
-            ValidatorSetGetter validatorSetGetter)
+        private readonly IAccountState _baseState;
+
+        private AccountStateDelta(IAccountState baseState)
+            : this(baseState, new AccountDelta())
         {
-            Delta = new AccountDelta();
-            StateGetter = accountStateGetter;
-            BalanceGetter = accountBalanceGetter;
-            TotalSupplyGetter = totalSupplyGetter;
-            ValidatorSetGetter = validatorSetGetter;
+        }
+
+        private AccountStateDelta(IAccountState baseState, IAccountDelta delta)
+        {
+            _baseState = baseState;
+            Delta = delta;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
         }
 
@@ -49,15 +39,7 @@ namespace Libplanet.State
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
-            { get; protected set; }
-
-        private AccountStateGetter StateGetter { get; set; }
-
-        private AccountBalanceGetter BalanceGetter { get; set; }
-
-        private TotalSupplyGetter TotalSupplyGetter { get; set; }
-
-        private ValidatorSetGetter ValidatorSetGetter { get; set; }
+            { get; private set; }
 
         /// <inheritdoc/>
         [Pure]
@@ -94,7 +76,7 @@ namespace Libplanet.State
 
             if (notFoundIndices.Count > 0)
             {
-                IReadOnlyList<IValue?> restValues = StateGetter(
+                IReadOnlyList<IValue?> restValues = _baseState.GetStates(
                     notFoundIndices.Select(index => addresses[index]).ToArray());
                 foreach ((var v, var i) in notFoundIndices.Select((v, i) => (v, i)))
                 {
@@ -131,13 +113,13 @@ namespace Libplanet.State
                 return FungibleAssetValue.FromRawValue(currency, totalSupplyValue);
             }
 
-            return TotalSupplyGetter(currency);
+            return _baseState.GetTotalSupply(currency);
         }
 
         /// <inheritdoc/>
         [Pure]
         public ValidatorSet GetValidatorSet() =>
-            Delta.ValidatorSet ?? ValidatorSetGetter();
+            Delta.ValidatorSet ?? _baseState.GetValidatorSet();
 
         /// <inheritdoc/>
         [Pure]
@@ -266,14 +248,8 @@ namespace Libplanet.State
         /// a basis.</param>
         /// <returns>A null state delta created from <paramref name="previousState"/>.
         /// </returns>
-        internal static IAccountStateDelta Create(IAccountState previousState)
-        {
-            return new AccountStateDelta(
-                previousState.GetStates,
-                previousState.GetBalance,
-                previousState.GetTotalSupply,
-                previousState.GetValidatorSet);
-        }
+        internal static IAccountStateDelta Create(IAccountState previousState) =>
+            new AccountStateDelta(previousState);
 
         /// <summary>
         /// Creates a null state delta while inheriting <paramref name="stateDelta"/>s
@@ -289,26 +265,14 @@ namespace Libplanet.State
         /// This inherits <paramref name="stateDelta"/>'s
         /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
         /// </remarks>
-        internal static IAccountStateDelta Flush(
-            IAccountStateDelta stateDelta)
-        {
-            if (stateDelta is AccountStateDelta impl)
-            {
-                return new AccountStateDelta(
-                    stateDelta.GetStates,
-                    stateDelta.GetBalance,
-                    stateDelta.GetTotalSupply,
-                    stateDelta.GetValidatorSet)
+        internal static IAccountStateDelta Flush(IAccountStateDelta stateDelta) =>
+            stateDelta is AccountStateDelta impl
+                ? new AccountStateDelta(stateDelta)
                     {
                         TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
-                    };
-            }
-            else
-            {
-                throw new ArgumentException(
+                    }
+                : throw new ArgumentException(
                     $"Unknown type for {nameof(stateDelta)}: {stateDelta.GetType()}");
-            }
-        }
 
         [Pure]
         private FungibleAssetValue GetBalance(
@@ -317,23 +281,19 @@ namespace Libplanet.State
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
             balances.TryGetValue((address, currency), out BigInteger balance)
                 ? FungibleAssetValue.FromRawValue(currency, balance)
-                : BalanceGetter(address, currency);
+                : _baseState.GetBalance(address, currency);
 
         [Pure]
         private AccountStateDelta UpdateStates(
-            IImmutableDictionary<Address, IValue> updatedStates
-        ) =>
+            IImmutableDictionary<Address, IValue> updatedStates) =>
             new AccountStateDelta(
-                StateGetter,
-                BalanceGetter,
-                TotalSupplyGetter,
-                ValidatorSetGetter)
-            {
-                Delta = new AccountDelta(
+                _baseState,
+                new AccountDelta(
                     updatedStates,
                     Delta.Fungibles,
                     Delta.TotalSupplies,
-                    Delta.ValidatorSet),
+                    Delta.ValidatorSet))
+            {
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
@@ -354,34 +314,27 @@ namespace Libplanet.State
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
             new AccountStateDelta(
-                StateGetter,
-                BalanceGetter,
-                TotalSupplyGetter,
-                ValidatorSetGetter)
-            {
-                Delta = new AccountDelta(
+                _baseState,
+                new AccountDelta(
                     Delta.States,
                     updatedFungibleAssets,
                     updatedTotalSupply,
-                    Delta.ValidatorSet),
+                    Delta.ValidatorSet))
+            {
                 TotalUpdatedFungibles = totalUpdatedFungibles,
             };
 
         [Pure]
         private AccountStateDelta UpdateValidatorSet(
-            ValidatorSet updatedValidatorSet
-        ) =>
+            ValidatorSet updatedValidatorSet) =>
             new AccountStateDelta(
-                StateGetter,
-                BalanceGetter,
-                TotalSupplyGetter,
-                ValidatorSetGetter)
-            {
-                Delta = new AccountDelta(
+                _baseState,
+                new AccountDelta(
                     Delta.States,
                     Delta.Fungibles,
                     Delta.TotalSupplies,
-                    updatedValidatorSet),
+                    updatedValidatorSet))
+            {
                 TotalUpdatedFungibles = TotalUpdatedFungibles,
             };
 
