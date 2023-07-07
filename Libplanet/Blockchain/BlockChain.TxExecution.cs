@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -31,11 +32,18 @@ namespace Libplanet.Blockchain
             foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
             {
                 TxId txid = txEvals.Key;
-                IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousState;
+                IAccountStateDelta inputState = txEvals.First().InputContext.PreviousState;
                 IActionEvaluation evalSum = txEvals.Last();
+                IAccountDelta deltaSum = txEvals
+                    .Select(eval => eval.OutputState.Delta)
+                    .ToList()
+                    .OrderedSum();
                 var actionsLogsList = txEvals.Select(ae => ae.Logs).ToList();
                 TxExecution txExecution;
-                if (evalSum.Exception is { } e)
+
+                if (txEvals
+                    .Select(eval => eval.Exception)
+                    .FirstOrDefault() is { } e)
                 {
                     txExecution = new TxFailure(
                         block.Hash,
@@ -45,41 +53,31 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    IAccountStateDelta outputStates = evalSum.OutputState;
+                    IAccountStateDelta outputState = evalSum.OutputState;
                     txExecution = new TxSuccess(
                         block.Hash,
                         txid,
                         actionsLogsList,
-                        outputStates.GetUpdatedStates(),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2) -
-                                        prevStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
-                            .GroupBy(triple => triple.Item1)
+                        deltaSum.States,
+                        deltaSum.Fungibles
+                            .GroupBy(kv => kv.Key.Item1)
                             .ToImmutableDictionary(
                                 group => group.Key,
                                 group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
                                     .ToImmutableDictionary(
-                                        triple => triple.Item2,
-                                        triple => triple.Item3)),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
-                            .GroupBy(triple => triple.Item1)
+                                        kv => kv.Key.Item2,
+                                        kv => FungibleAssetValue.FromRawValue(
+                                            kv.Key.Item2, kv.Value) -
+                                            inputState.GetBalance(group.Key, kv.Key.Item2))),
+                        deltaSum.Fungibles
+                            .GroupBy(kv => kv.Key.Item1)
                             .ToImmutableDictionary(
                                 group => group.Key,
                                 group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
                                     .ToImmutableDictionary(
-                                        triple => triple.Item2,
-                                        triple => triple.Item3)));
+                                        kv => kv.Key.Item2,
+                                        kv => FungibleAssetValue.FromRawValue(
+                                            kv.Key.Item2, kv.Value))));
                 }
 
                 yield return txExecution;
