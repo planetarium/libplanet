@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.State;
@@ -136,8 +135,7 @@ namespace Libplanet.Tests.Action
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: AccountStateDelta.Create(MockAccountState.Empty),
                 randomSeed: _random.Next(),
-                gasLimit: 0
-            );
+                gasLimit: 0);
 
             // Consume original's random state...
             int[] values =

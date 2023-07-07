@@ -678,14 +678,9 @@ namespace Libplanet.Tests.Action
             Block blockA = fx.Propose();
             fx.Append(blockA);
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockA.PreEvaluationHash,
-                blockIndex: blockA.Index,
-                blockProtocolVersion: blockA.ProtocolVersion,
-                txid: txA.Id,
+                blockHeader: blockA,
+                tx: txA,
                 previousState: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
-                miner: blockA.Miner,
-                signer: txA.Signer,
-                signature: txA.Signature,
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();
@@ -730,14 +725,9 @@ namespace Libplanet.Tests.Action
             Block blockB = fx.Propose();
             fx.Append(blockB);
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
-                blockB.PreEvaluationHash,
-                blockIndex: blockB.Index,
-                blockProtocolVersion: blockB.ProtocolVersion,
-                txid: txB.Id,
+                blockHeader: blockB,
+                tx: txB,
                 previousState: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
-                miner: blockB.Miner,
-                signer: txB.Signer,
-                signature: txB.Signature,
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();
@@ -1296,14 +1286,9 @@ namespace Libplanet.Tests.Action
 
             Block blockA = fx.Propose();
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockA.PreEvaluationHash,
-                blockIndex: blockA.Index,
-                blockProtocolVersion: blockA.ProtocolVersion,
-                txid: txA.Id,
+                blockHeader: blockA,
+                tx: txA,
                 previousState: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
-                miner: blockA.Miner,
-                signer: txA.Signer,
-                signature: txA.Signature,
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();

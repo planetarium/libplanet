@@ -8,7 +8,6 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Loader;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -29,8 +28,6 @@ namespace Libplanet.Action
         private readonly IActionLoader _actionLoader;
         private readonly IFeeCalculator? _feeCalculator;
 
-#pragma warning disable MEN002
-#pragma warning disable CS1573
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator"/>.
         /// </summary>
@@ -38,16 +35,14 @@ namespace Libplanet.Action
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
-        /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using action type lookup.</param>
+        /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
+        /// action type lookup.</param>
         /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
             IActionLoader actionTypeLoader,
-            IFeeCalculator? feeCalculator
-        )
-#pragma warning restore MEN002
-#pragma warning restore CS1573
+            IFeeCalculator? feeCalculator)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
@@ -135,28 +130,15 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
-        /// <param name="preEvaluationHash">The
-        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> of
-        /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
-        /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
-        /// that <paramref name="actions"/> belong to.</param>
-        /// <param name="blockProtocolVersion">The <see cref="Block.ProtocolVersion"/> of the
-        /// <see cref="Block"/> that <paramref name="actions"/> belong to.</param>
-        /// <param name="txid">The <see cref="ITransaction.Id"/> of the
-        /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.</param>
+        /// <param name="blockHeader">The <see cref="IPreEvaluationBlockHeader"/> of
+        /// the <see cref="Block"/> that <paramref name="actions"/> belong to.</param>
+        /// <param name="tx">The <see cref="Transaction"/> that <paramref name="actions"/>
+        /// belong to.  This should be <see langword="null"/> if <paramref name="actions"/>
+        /// do not belong to a <see cref="Transaction"/>, i.e.
+        /// <see cref="IBlockPolicy.BlockAction"/>.</param>
         /// <param name="previousState">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
-        /// <param name="miner">An address of block miner.</param>
-        /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
-        /// <param name="signature"><see cref="ITransaction"/> signature used to generate random
-        /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
-        /// <param name="gasLimit">
-        /// The maximum amount of gas that can be consumed by the transaction.
-        /// </param>
-        /// <param name="maxGasPrice">
-        /// The maximum gas price that can be used by the transaction.
-        /// </param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -186,143 +168,168 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
-            HashDigest<SHA256> preEvaluationHash,
-            long blockIndex,
-            int blockProtocolVersion,
-            TxId? txid,
+            IPreEvaluationBlockHeader blockHeader,
+            ITransaction? tx,
             IAccountStateDelta previousState,
-            Address miner,
-            Address signer,
-            byte[] signature,
             IImmutableList<IAction> actions,
-            long gasLimit = long.MaxValue,
-            FungibleAssetValue? maxGasPrice = null,
             ILogger? logger = null)
         {
-            ActionContext CreateActionContext(
+            IActionContext CreateActionContext(
                 IAccountStateDelta prevState,
                 int randomSeed,
-                long actionGasLimit = long.MaxValue
-            )
+                long actionGasLimit)
             {
                 return new ActionContext(
-                    signer: signer,
-                    txid: txid,
-                    miner: miner,
-                    blockIndex: blockIndex,
-                    blockProtocolVersion: blockProtocolVersion,
+                    signer: tx?.Signer ?? blockHeader.Miner,
+                    txid: tx?.Id ?? null,
+                    miner: blockHeader.Miner,
+                    blockIndex: blockHeader.Index,
+                    blockProtocolVersion: blockHeader.ProtocolVersion,
                     previousState: prevState,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit);
             }
 
+            long gasLimit = tx?.GasLimit ?? long.MaxValue;
+
+            byte[] signature = tx?.Signature ?? new byte[0];
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
+            byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
-            IAccountStateDelta states = previousState;
+            IAccountStateDelta state = previousState;
             foreach (IAction action in actions)
             {
-                Exception? exc = null;
-                IAccountStateDelta nextStates = states;
-                long nextGasLimit = gasLimit;
+                IActionContext context = CreateActionContext(state, seed, gasLimit);
+                (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
+                    blockHeader,
+                    tx,
+                    context,
+                    action,
+                    logger);
 
-                ActionContext context = CreateActionContext(nextStates, seed, nextGasLimit);
-                IFeeCollector feeCollector = new FeeCollector(context, maxGasPrice);
-                try
-                {
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    nextStates = feeCollector.Mortgage(nextStates);
-                    context = CreateActionContext(nextStates, seed, nextGasLimit);
-                    feeCollector = feeCollector.Next(context);
-                    nextStates = action.Execute(context);
-                    logger?
-                        .ForContext("Tag", "Metric")
-                        .ForContext("Subtag", "ActionExecutionTime")
-                        .Information(
-                            "Action {Action} took {DurationMs} ms to execute, " +
-                            "GetState called {GetStateCount} times " +
-                            "and took {GetStateDurationMs} ms",
-                            action,
-                            stopwatch.ElapsedMilliseconds,
-                            ActionContext.GetStateCount.Value,
-                            ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
-                }
-                catch (OutOfMemoryException e)
-                {
-                    // Because OutOfMemory is thrown non-deterministically depending on the state
-                    // of the node, we should throw without further handling.
-                    var message =
-                        "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                        "pre-evaluation hash {PreEvaluationHash} threw an exception " +
-                        "during execution";
-                    logger?.Error(
-                        e,
-                        message,
-                        action,
-                        txid,
-                        blockIndex,
-                        ByteUtil.Hex(preEvaluationHash.ByteArray));
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    var message =
-                        "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                        "pre-evaluation hash {PreEvaluationHash} threw an exception " +
-                        "during execution";
-                    logger?.Error(
-                        e,
-                        message,
-                        action,
-                        txid,
-                        blockIndex,
-                        ByteUtil.Hex(preEvaluationHash.ByteArray));
-                    var innerMessage =
-                        $"The action {action} (block #{blockIndex}, " +
-                        $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash.ByteArray)}, " +
-                        $"tx {txid} threw an exception during execution.  " +
-                        "See also this exception's InnerException property";
-                    logger?.Error(
-                        "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
-                    exc = new UnexpectedlyTerminatedActionException(
-                        innerMessage,
-                        preEvaluationHash,
-                        blockIndex,
-                        txid,
-                        null,
-                        action,
-                        e);
-                }
+                yield return result.Evaluation;
 
-                nextStates = feeCollector.Refund(nextStates);
-                nextStates = feeCollector.Reward(nextStates);
-                nextGasLimit = context.GasLimit() - context.GasUsed();
+                state = result.Evaluation.OutputState;
+                gasLimit = result.NextGasLimit;
 
-                // As IActionContext.Random is stateful, we cannot reuse
-                // the context which is once consumed by Execute().
-                ActionContext equivalentContext = CreateActionContext(states, seed);
-
-                yield return new ActionEvaluation(
-                    action: action,
-                    inputContext: equivalentContext,
-                    outputState: nextStates,
-                    exception: exc,
-                    logs: context.Logs);
-
-                states = nextStates;
-                gasLimit = nextGasLimit;
                 unchecked
                 {
                     seed++;
                 }
             }
+        }
+
+        internal static (ActionEvaluation Evaluation, long NextGasLimit) EvaluateAction(
+            IPreEvaluationBlockHeader blockHeader,
+            ITransaction? tx,
+            IActionContext context,
+            IAction action,
+            ILogger? logger = null)
+        {
+            // Make a copy since ActionContext is stateful.
+            IActionContext inputContext = context.GetUnconsumedContext();
+            IAccountStateDelta state = inputContext.PreviousState;
+            Exception? exc = null;
+            IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
+
+            IActionContext CreateActionContext(IAccountStateDelta newPrevState)
+            {
+                return new ActionContext(
+                    signer: inputContext.Signer,
+                    txid: inputContext.TxId,
+                    miner: inputContext.Miner,
+                    blockIndex: inputContext.BlockIndex,
+                    blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    previousState: newPrevState,
+                    randomSeed: inputContext.Random.Seed,
+                    gasLimit: inputContext.GasLimit());
+            }
+
+            try
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                state = feeCollector.Mortgage(state);
+                context = CreateActionContext(state);
+                feeCollector = feeCollector.Next(context);
+                state = action.Execute(context);
+                logger?
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "ActionExecutionTime")
+                    .Information(
+                        "Action {Action} took {DurationMs} ms to execute, " +
+                        "GetState called {GetStateCount} times " +
+                        "and took {GetStateDurationMs} ms",
+                        action,
+                        stopwatch.ElapsedMilliseconds,
+                        ActionContext.GetStateCount.Value,
+                        ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
+            }
+            catch (OutOfMemoryException e)
+            {
+                // Because OutOfMemory is thrown non-deterministically depending on the state
+                // of the node, we should throw without further handling.
+                var message =
+                    "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
+                    "pre-evaluation hash {PreEvaluationHash} threw an exception " +
+                    "during execution";
+                logger?.Error(
+                    e,
+                    message,
+                    action,
+                    tx?.Id,
+                    blockHeader.Index,
+                    ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray));
+                throw;
+            }
+            catch (Exception e)
+            {
+                var message =
+                    "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
+                    "pre-evaluation hash {PreEvaluationHash} threw an exception " +
+                    "during execution";
+                logger?.Error(
+                    e,
+                    message,
+                    action,
+                    tx?.Id,
+                    blockHeader.Index,
+                    ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray));
+                var innerMessage =
+                    $"The action {action} (block #{blockHeader.Index}, " +
+                    $"pre-evaluation hash " +
+                    $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}, " +
+                    $"tx {tx?.Id} threw an exception during execution.  " +
+                    "See also this exception's InnerException property";
+                logger?.Error(
+                    "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
+                exc = new UnexpectedlyTerminatedActionException(
+                    innerMessage,
+                    blockHeader.PreEvaluationHash,
+                    blockHeader.Index,
+                    tx?.Id,
+                    null,
+                    action,
+                    e);
+            }
+
+            state = feeCollector.Refund(state);
+            state = feeCollector.Reward(state);
+
+            return (
+                new ActionEvaluation(
+                    action: action,
+                    inputContext: inputContext,
+                    outputState: state,
+                    exception: exc,
+                    logs: context.Logs),
+                context.GasLimit() - context.GasUsed());
         }
 
         /// <summary>
@@ -434,17 +441,10 @@ namespace Libplanet.Action
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
             return EvaluateActions(
-                preEvaluationHash: blockHeader.PreEvaluationHash,
-                blockIndex: blockHeader.Index,
-                blockProtocolVersion: blockHeader.ProtocolVersion,
-                txid: tx.Id,
+                blockHeader: blockHeader,
+                tx: tx,
                 previousState: previousState,
-                miner: blockHeader.Miner,
-                signer: tx.Signer,
-                signature: tx.Signature,
                 actions: actions,
-                gasLimit: tx.GasLimit ?? long.MaxValue,
-                maxGasPrice: tx.MaxGasPrice,
                 logger: _logger);
         }
 
@@ -478,14 +478,9 @@ namespace Libplanet.Action
                 $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}");
 
             return EvaluateActions(
-                preEvaluationHash: blockHeader.PreEvaluationHash,
-                blockIndex: blockHeader.Index,
-                blockProtocolVersion: blockHeader.ProtocolVersion,
-                txid: null,
+                blockHeader: blockHeader,
+                tx: null,
                 previousState: previousState,
-                miner: blockHeader.Miner,
-                signer: blockHeader.Miner,
-                signature: Array.Empty<byte>(),
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
