@@ -59,6 +59,7 @@ be compatible with this version.
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
  -  (Libplanet.Explorer) Changed the type for `TxResult.ActionsLogList` to
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
+ -  (Libplanet.Explorer) Added `BlockType.PreEvaluationHash` field. [[#3281]]
 
 ### Behavioral changes
 
@@ -242,7 +243,6 @@ Released on June 28, 2023.
  -  Added `IBlockChainStates.GetState()` interface method.  [[#3250]]
  -  Added `IBlockStates.GetState()` interface method.  [[#3250]]
  -  Changed `IBlockStates` to inherit `IAccountState` interface.  [[#3251]]
- -  Added `BlockType.PreEvaluationHash` field. [[#3281]]
 
 ### Added APIs
 
