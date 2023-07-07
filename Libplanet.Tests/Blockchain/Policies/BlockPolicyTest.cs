@@ -45,8 +45,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 new ActionEvaluator(
                     _ => _policy.BlockAction,
                     blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                    feeCalculator: null));
+                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
         }
 
         public void Dispose()

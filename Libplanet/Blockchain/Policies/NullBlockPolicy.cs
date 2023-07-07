@@ -23,8 +23,6 @@ namespace Libplanet.Blockchain.Policies
 
         public IAction BlockAction => null;
 
-        public IFeeCalculator FeeCalculator => null;
-
         public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;

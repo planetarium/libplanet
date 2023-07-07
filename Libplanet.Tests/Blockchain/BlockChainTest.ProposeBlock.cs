@@ -126,8 +126,7 @@ namespace Libplanet.Tests.Blockchain
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     new BlockChainStates(fx.Store, fx.StateStore),
-                    new SingleActionLoader(typeof(DumbAction)),
-                    null);
+                    new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
                     actionEvaluator,
                     new PrivateKey(),
@@ -167,8 +166,7 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null));
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
                 {
                     Transaction.Create(
@@ -323,8 +321,7 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         _ => policy.BlockAction,
                         blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null));
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
@@ -436,8 +433,7 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates,
-                    new SingleActionLoader(typeof(DumbAction)),
-                    null));
+                    new SingleActionLoader(typeof(DumbAction))));
 
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });
             var block = blockChain.ProposeBlock(privateKey1, CreateBlockCommit(_blockChain.Tip));

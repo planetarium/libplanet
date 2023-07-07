@@ -152,8 +152,7 @@ public class BlockCommand
             _ => blockAction,
             new BlockChainStates(
                 new MemoryStore(), new TrieStateStore(new DefaultKeyValueStore(null))),
-            new SingleActionLoader(typeof(NullAction)),
-            null);
+            new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(
             actionEvaluator, privateKey: key, transactions: txs);
         using Stream stream = file == "-"

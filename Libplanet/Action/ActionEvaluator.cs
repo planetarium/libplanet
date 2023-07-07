@@ -26,7 +26,6 @@ namespace Libplanet.Action
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
         private readonly IActionLoader _actionLoader;
-        private readonly IFeeCalculator? _feeCalculator;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator"/>.
@@ -37,19 +36,16 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
-        /// <param name="feeCalculator">Fee calculator.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
-            IActionLoader actionTypeLoader,
-            IFeeCalculator? feeCalculator)
+            IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
-            _feeCalculator = feeCalculator;
         }
 
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>

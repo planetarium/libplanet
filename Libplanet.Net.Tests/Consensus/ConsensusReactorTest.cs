@@ -68,8 +68,7 @@ namespace Libplanet.Net.Tests.Consensus
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
                         blockChainStates: new BlockChainStates(stores[i], stateStore),
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                        feeCalculator: null));
+                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             }
 
             for (var i = 0; i < 4; i++)

@@ -87,8 +87,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 NullChainStates.Instance,
-                new SingleActionLoader(typeof(RandomAction)),
-                null);
+                new SingleActionLoader(typeof(RandomAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain.DetermineGenesisStateRootHash(
@@ -285,8 +284,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                feeCalculator: null);
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             Transaction[] block1Txs =
             {
@@ -539,8 +537,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)),
-                feeCalculator: null);
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
@@ -642,8 +639,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: NullChainStates.Instance,
-                actionTypeLoader: new SingleActionLoader(typeof(ThrowException)),
-                feeCalculator: null
+                actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
             var block = new BlockContent(
                 new BlockMetadata(
