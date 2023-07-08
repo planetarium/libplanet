@@ -1,4 +1,3 @@
-#nullable disable
 using System.Security.Cryptography;
 
 namespace Libplanet.Crypto
@@ -8,7 +7,7 @@ namespace Libplanet.Crypto
     /// </summary>
     public static class CryptoConfig
     {
-        private static ICryptoBackend<SHA256> _cryptoBackend;
+        private static ICryptoBackend<SHA256>? _cryptoBackend;
 
         /// <summary>
         /// Global cryptography backend to sign and verify messages.
