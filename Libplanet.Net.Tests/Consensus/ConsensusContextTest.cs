@@ -259,6 +259,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
             AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent committed = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
@@ -300,11 +301,19 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChanged.Set();
                 }
             };
+            consensusContext.Contexts[1].VoteSetModified += (_, eventArgs) =>
+            {
+                if (eventArgs.Flag == VoteFlag.PreCommit)
+                {
+                    committed.Set();
+                }
+            };
 
             consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
             consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote1));
             consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote3));
             await stepChanged.WaitAsync();
+            await committed.WaitAsync();
 
             // VoteSetBits expects missing votes
             VoteSetBits voteSetBits = consensusContext.Contexts[1]
