@@ -120,6 +120,21 @@ namespace Libplanet.Net.Consensus
             _votesByBlock[blockHash].Votes.Values;
 
         /// <summary>
+        /// Gets all collected <see cref="Vote"/>s.
+        /// </summary>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="Vote"/>.</returns>
+        public IEnumerable<Vote> GetAllVotes()
+        {
+            var list = new List<Vote>();
+            foreach (var votes in _votesByBlock.Values)
+            {
+                list.AddRange(votes.Votes.Values);
+            }
+
+            return list;
+        }
+
+        /// <summary>
         /// If a peer claims that it has 2/3 majority for given <see cref="BlockHash"/>,
         /// modify state by calling this method.
         /// </summary>

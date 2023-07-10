@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -43,5 +45,11 @@ namespace Libplanet.Net.Consensus
         /// An event that is invoked when a queued <see cref="System.Action"/> is consumed.
         /// </summary>
         internal event EventHandler<System.Action>? MutationConsumed;
+
+        /// <summary>
+        /// An event that is invoked when the <see cref="HeightVoteSet"/> is modified.
+        /// </summary>
+        internal event EventHandler<(int Round, VoteFlag Flag, IEnumerable<Vote> Votes)>?
+            VoteSetModified;
     }
 }
