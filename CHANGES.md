@@ -63,6 +63,8 @@ be compatible with this version.
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
  -  (Libplanet.Explorer) Changed the type for `TxResult.ActionsLogList` to
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
+ -  (Libplanet.Explorer) Added `BlockType.PreEvaluationHash` field.
+    [[#3280], [#3281]]
 
 ### Behavioral changes
 
@@ -93,6 +95,8 @@ be compatible with this version.
 [#3272]: https://github.com/planetarium/libplanet/pull/3272
 [#3273]: https://github.com/planetarium/libplanet/pull/3273
 [#3274]: https://github.com/planetarium/libplanet/pull/3274
+[#3280]: https://github.com/planetarium/libplanet/issues/3280
+[#3281]: https://github.com/planetarium/libplanet/pull/3281
 [#3282]: https://github.com/planetarium/libplanet/pull/3282
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
 

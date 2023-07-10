@@ -79,6 +79,10 @@ public class BlockType : ObjectGraphType<Block>
             deprecationReason: "Block does not have Nonce field in PBFT.",
             resolve: _ => new byte[] { }
         );
+        Field<NonNullGraphType<ByteStringType>>(
+            name: "PreEvaluationHash",
+            description: "The hash of PreEvaluationBlock.",
+            resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
 
         Name = "Block";
     }
