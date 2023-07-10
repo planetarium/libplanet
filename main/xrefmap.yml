@@ -16804,6 +16804,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.VoteSet.Count
   nameWithType: VoteSet.Count
+- uid: Libplanet.Net.Consensus.VoteSet.GetAllVotes
+  name: GetAllVotes()
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetAllVotes
+  commentId: M:Libplanet.Net.Consensus.VoteSet.GetAllVotes
+  fullName: Libplanet.Net.Consensus.VoteSet.GetAllVotes()
+  nameWithType: VoteSet.GetAllVotes()
+- uid: Libplanet.Net.Consensus.VoteSet.GetAllVotes*
+  name: GetAllVotes
+  href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetAllVotes_
+  commentId: Overload:Libplanet.Net.Consensus.VoteSet.GetAllVotes
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.VoteSet.GetAllVotes
+  nameWithType: VoteSet.GetAllVotes
 - uid: Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)
   name: GetByPublicKey(PublicKey)
   href: api/Libplanet.Net.Consensus.VoteSet.html#Libplanet_Net_Consensus_VoteSet_GetByPublicKey_Libplanet_Crypto_PublicKey_
