@@ -65,6 +65,7 @@ be compatible with this version.
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
  -  (Libplanet.Explorer) Added `BlockType.PreEvaluationHash` field.
     [[#3280], [#3281]]
+ -  (Libplanet.Net) Added `VoteSet.GetAllVotes()` method.  [[#3288]]
 
 ### Behavioral changes
 
@@ -99,6 +100,7 @@ be compatible with this version.
 [#3281]: https://github.com/planetarium/libplanet/pull/3281
 [#3282]: https://github.com/planetarium/libplanet/pull/3282
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
+[#3288]: https://github.com/planetarium/libplanet/pull/3288
 
 
 Version 2.4.0
