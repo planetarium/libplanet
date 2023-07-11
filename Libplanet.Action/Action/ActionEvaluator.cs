@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
@@ -266,8 +265,8 @@ namespace Libplanet.Action
                         "and took {GetStateDurationMs} ms",
                         action,
                         stopwatch.ElapsedMilliseconds,
-                        ActionContext.GetStateCount.Value,
-                        ActionContext.GetStateTimer.Value?.ElapsedMilliseconds);
+                        AccountStateDeltaMetrics.GetStateCount.Value,
+                        AccountStateDeltaMetrics.GetStateTimer.Value?.ElapsedMilliseconds);
             }
             catch (OutOfMemoryException e)
             {

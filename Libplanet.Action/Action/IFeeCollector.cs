@@ -11,7 +11,7 @@ namespace Libplanet.Action
     /// The third call is to reward the proposer of the block.
     /// The fee collector is called only when the transaction is collectible.
     /// </summary>
-    internal interface IFeeCollector
+    public interface IFeeCollector
     {
         /// <summary>
         /// Mortgage the fee from the sender of the transaction.

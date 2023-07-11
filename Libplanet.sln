@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Common", "Libplan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Store", "Libplanet.Store\Libplanet.Store.csproj", "{2BC01C4C-288B-4768-BAD0-9BC441D82505}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Action", "Libplanet.Action\Libplanet.Action.csproj", "{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -485,6 +487,24 @@ Global
 		{A3D3DD9B-1037-4746-834F-2248E1C5187A}.ReleaseMono|x64.Build.0 = Release|Any CPU
 		{A3D3DD9B-1037-4746-834F-2248E1C5187A}.ReleaseMono|x86.ActiveCfg = Release|Any CPU
 		{A3D3DD9B-1037-4746-834F-2248E1C5187A}.ReleaseMono|x86.Build.0 = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|x64.Build.0 = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Debug|x86.Build.0 = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|x64.ActiveCfg = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|x64.Build.0 = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|x86.ActiveCfg = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.Release|x86.Build.0 = Release|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|Any CPU.Build.0 = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|x64.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|x64.Build.0 = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|x86.ActiveCfg = Debug|Any CPU
+		{DDD598B2-005F-4CB2-B26B-A40CC0F9DE8E}.ReleaseMono|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

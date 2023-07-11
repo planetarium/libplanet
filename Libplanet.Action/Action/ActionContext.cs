@@ -10,8 +10,6 @@ namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext
     {
-        public static readonly AsyncLocal<Stopwatch> GetStateTimer = new AsyncLocal<Stopwatch>();
-        public static readonly AsyncLocal<int> GetStateCount = new AsyncLocal<int>();
         public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
 
         private readonly int _randomSeed;
@@ -39,8 +37,6 @@ namespace Libplanet.Action
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
 
-            GetStateTimer.Value = new Stopwatch();
-            GetStateCount.Value = 0;
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
 

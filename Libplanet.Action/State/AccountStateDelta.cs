@@ -46,10 +46,10 @@ namespace Libplanet.State
         [Pure]
         public IValue? GetState(Address address)
         {
-            ActionContext.GetStateTimer.Value?.Start();
-            ActionContext.GetStateCount.Value += 1;
+            AccountStateDeltaMetrics.GetStateTimer.Value?.Start();
+            AccountStateDeltaMetrics.GetStateCount.Value += 1;
             IValue? state = GetStates(new[] { address })[0];
-            ActionContext.GetStateTimer.Value?.Stop();
+            AccountStateDeltaMetrics.GetStateTimer.Value?.Stop();
             return state;
         }
 
@@ -57,9 +57,9 @@ namespace Libplanet.State
         [Pure]
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {
-            ActionContext.GetStateTimer.Value?.Start();
+            AccountStateDeltaMetrics.GetStateTimer.Value?.Start();
             int length = addresses.Count;
-            ActionContext.GetStateCount.Value += length;
+            AccountStateDeltaMetrics.GetStateCount.Value += length;
             IValue?[] values = new IValue?[length];
             var notFoundIndices = new List<int>(length);
             for (int i = 0; i < length; i++)
@@ -85,7 +85,7 @@ namespace Libplanet.State
                 }
             }
 
-            ActionContext.GetStateTimer.Value?.Stop();
+            AccountStateDeltaMetrics.GetStateTimer.Value?.Stop();
             return values;
         }
 

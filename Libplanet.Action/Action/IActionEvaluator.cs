@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.Loader;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Action
@@ -21,7 +20,7 @@ namespace Libplanet.Action
         /// <param name="block">The block to evaluate.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
-        /// <see cref="ActionEvaluation"/>s.</returns>
+        /// <see cref="IActionEvaluation"/>s.</returns>
         /// <remarks>
         /// <para>Publicly exposed for benchmarking.</para>
         /// <para>First evaluates all <see cref="IAction"/>s in

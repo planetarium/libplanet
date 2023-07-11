@@ -3,7 +3,7 @@ namespace Libplanet.Action
     /// <summary>
     /// An interface to provide a transition of the gas usage.
     /// </summary>
-    internal interface IGasMeter
+    public interface IGasMeter
     {
         /// <summary>
         /// The available gas of the action.

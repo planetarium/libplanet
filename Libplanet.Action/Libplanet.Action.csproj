@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bencodex" Version="0.10.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.10.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
+    <PackageReference Include="System.Text.Json" Version="6.0.7" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
+    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+  </ItemGroup>
+
+</Project>

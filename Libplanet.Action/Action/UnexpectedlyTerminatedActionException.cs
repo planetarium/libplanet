@@ -3,13 +3,10 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Common.Serialization;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
 
 namespace Libplanet.Action
 {

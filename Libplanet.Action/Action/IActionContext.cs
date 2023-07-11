@@ -1,5 +1,4 @@
 using System.Diagnostics.Contracts;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;

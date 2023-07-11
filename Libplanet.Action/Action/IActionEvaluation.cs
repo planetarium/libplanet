@@ -1,6 +1,5 @@
 using System;
 using Bencodex.Types;
-using Libplanet.Blockchain.Policies;
 using Libplanet.State;
 
 namespace Libplanet.Action
