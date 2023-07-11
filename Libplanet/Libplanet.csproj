@@ -110,4 +110,8 @@ https://docs.libplanet.io/</Description>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Action\Libplanet.Action.csproj" />
+  </ItemGroup>
 </Project>

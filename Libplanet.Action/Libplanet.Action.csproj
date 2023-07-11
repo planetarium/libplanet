@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+    <RootNamespace>Libplanet.Action</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bencodex" Version="0.10.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.10.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
+    <PackageReference Include="System.Text.Json" Version="6.0.7" />
+  </ItemGroup>
+
+</Project>
