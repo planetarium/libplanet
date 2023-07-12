@@ -39,6 +39,9 @@ be compatible with this version.
  -  Removed `TxExecution.ActionsLogsList`, `TxFailure.ActionsLogsList`,
     and `TxSuccess.ActionsLogsList` properties.  [[#3291]]
  -  (Libplanet.Explorer) Removed `TxResult.ActionsLogsList` property.  [[#3291]]
+ -  Removed `IActionContext.Logs` property and `IActionContext.PutLog()` method.
+    [[#3292]]
+ -  Removed `IActionEvaluation.Logs` property. [[#3292]]
 
 ### Backward-incompatible network protocol changes
 
@@ -105,6 +108,7 @@ be compatible with this version.
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
 [#3288]: https://github.com/planetarium/libplanet/pull/3288
 [#3291]: https://github.com/planetarium/libplanet/pull/3291
+[#3292]: https://github.com/planetarium/libplanet/pull/3292
 
 
 Version 2.4.0
