@@ -323,8 +323,7 @@ namespace Libplanet.Action
                     action: action,
                     inputContext: inputContext,
                     outputState: state,
-                    exception: exc,
-                    logs: context.Logs),
+                    exception: exc),
                 context.GasLimit() - context.GasUsed());
         }
 

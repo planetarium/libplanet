@@ -16,7 +16,6 @@ namespace Libplanet.Action
 
         private readonly int _randomSeed;
         private readonly long _gasLimit;
-        private readonly List<string> _logs;
 
         public ActionContext(
             Address signer,
@@ -39,7 +38,6 @@ namespace Libplanet.Action
             Random = new Random(randomSeed);
             _randomSeed = randomSeed;
             _gasLimit = gasLimit;
-            _logs = new List<string>();
 
             GetStateTimer.Value = new Stopwatch();
             GetStateCount.Value = 0;
@@ -72,12 +70,6 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.BlockAction"/>
         public bool BlockAction => TxId is null;
-
-        /// <inheritdoc cref="IActionContext.Logs"/>
-        public IReadOnlyList<string> Logs => _logs;
-
-        /// <inheritdoc cref="IActionContext.PutLog(string)"/>
-        public void PutLog(string log) => _logs.Add(log);
 
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
