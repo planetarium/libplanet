@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.State;
@@ -32,11 +31,5 @@ namespace Libplanet.Action
         /// An exception that had risen during evaluation.
         /// </summary>
         public Exception? Exception { get; }
-
-        /// <summary>
-        /// Logs recorded while executing an action through
-        /// <see cref="IActionContext.PutLog(string)"/>.
-        /// </summary>
-        public IReadOnlyList<string> Logs { get; }
     }
 }
