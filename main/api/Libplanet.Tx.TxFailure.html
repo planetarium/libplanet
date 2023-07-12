@@ -98,9 +98,6 @@ actions.</p>
       <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId">TxExecution.TxId</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_ActionsLogsList">TxExecution.ActionsLogsList</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
@@ -133,19 +130,19 @@ public sealed class TxFailure : TxExecution, ISerializable</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.%23ctor(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId%2CSystem.Collections.Generic.List%7BSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%7D%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.%23ctor(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxFailure__ctor_" data-uid="Libplanet.Tx.TxFailure.#ctor*"></a>
-  <h4 id="Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_Exception_" data-uid="Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.Exception)">TxFailure(BlockHash, TxId, List&lt;IReadOnlyList&lt;String&gt;&gt;, Exception)</h4>
+  <h4 id="Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Exception_" data-uid="Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Exception)">TxFailure(BlockHash, TxId, Exception)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, List&lt;IReadOnlyList&lt;string&gt;&gt; actionsLogsList, Exception exception)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, Exception exception)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,12 +165,6 @@ that the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> is
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txId</span></td>
         <td><p>The executed <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Id">Id</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><span class="parametername">actionsLogsList</span></td>
-        <td><p>The logs recorded while executing actions.</p>
 </td>
       </tr>
       <tr>
@@ -186,19 +177,19 @@ that the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> is
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_String_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.%23ctor(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId%2CSystem.Collections.Generic.List%7BSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%7D%2CSystem.String%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_String_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.%23ctor(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId%2CSystem.String%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L28">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxFailure__ctor_" data-uid="Libplanet.Tx.TxFailure.#ctor*"></a>
-  <h4 id="Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_String_Bencodex_Types_IValue_" data-uid="Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.String,Bencodex.Types.IValue)">TxFailure(BlockHash, TxId, List&lt;IReadOnlyList&lt;String&gt;&gt;, String, IValue)</h4>
+  <h4 id="Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_String_Bencodex_Types_IValue_" data-uid="Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,Bencodex.Types.IValue)">TxFailure(BlockHash, TxId, String, IValue)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, List&lt;IReadOnlyList&lt;string&gt;&gt; actionsLogsList, string exceptionName, IValue exceptionMetadata)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, string exceptionName, IValue exceptionMetadata)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,12 +212,6 @@ that the <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a> is
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txId</span></td>
         <td><p>The executed <a class="xref" href="Libplanet.Tx.Transaction.html">Transaction</a>'s <a class="xref" href="Libplanet.Tx.Transaction.html#Libplanet_Tx_Transaction_Id">Id</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
-        <td><span class="parametername">actionsLogsList</span></td>
-        <td><p>The logs recorded while executing actions.</p>
 </td>
       </tr>
       <tr>
@@ -251,7 +236,7 @@ e.g., <code>System.ArgumentException</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure_ExceptionMetadata.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.ExceptionMetadata%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L87">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxFailure_ExceptionMetadata_" data-uid="Libplanet.Tx.TxFailure.ExceptionMetadata*"></a>
   <h4 id="Libplanet_Tx_TxFailure_ExceptionMetadata" data-uid="Libplanet.Tx.TxFailure.ExceptionMetadata">ExceptionMetadata</h4>
@@ -283,7 +268,7 @@ public IValue ExceptionMetadata { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure_ExceptionName.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.ExceptionName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxFailure_ExceptionName_" data-uid="Libplanet.Tx.TxFailure.ExceptionName*"></a>
   <h4 id="Libplanet_Tx_TxFailure_ExceptionName" data-uid="Libplanet.Tx.TxFailure.ExceptionName">ExceptionName</h4>
@@ -317,7 +302,7 @@ public string ExceptionName { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L91">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxFailure_GetObjectData_" data-uid="Libplanet.Tx.TxFailure.GetObjectData*"></a>
   <h4 id="Libplanet_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -368,7 +353,7 @@ actions.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Tx_TxFailure.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxFailure%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Tx/TxFailure.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

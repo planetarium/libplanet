@@ -30643,19 +30643,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxExecution.TxExecution
   nameWithType: TxExecution.TxExecution
-- uid: Libplanet.Tx.TxExecution.ActionsLogsList
-  name: ActionsLogsList
-  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_ActionsLogsList
-  commentId: P:Libplanet.Tx.TxExecution.ActionsLogsList
-  fullName: Libplanet.Tx.TxExecution.ActionsLogsList
-  nameWithType: TxExecution.ActionsLogsList
-- uid: Libplanet.Tx.TxExecution.ActionsLogsList*
-  name: ActionsLogsList
-  href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_ActionsLogsList_
-  commentId: Overload:Libplanet.Tx.TxExecution.ActionsLogsList
-  isSpec: "True"
-  fullName: Libplanet.Tx.TxExecution.ActionsLogsList
-  nameWithType: TxExecution.ActionsLogsList
 - uid: Libplanet.Tx.TxExecution.BlockHash
   name: BlockHash
   href: api/Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash
@@ -30701,24 +30688,18 @@ references:
   commentId: T:Libplanet.Tx.TxFailure
   fullName: Libplanet.Tx.TxFailure
   nameWithType: TxFailure
-- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.Exception)
-  name: TxFailure(BlockHash, TxId, List<IReadOnlyList<String>>, Exception)
-  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_Exception_
-  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.Exception)
-  name.vb: TxFailure(BlockHash, TxId, List(Of IReadOnlyList(Of String)), Exception)
-  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List<System.Collections.Generic.IReadOnlyList<System.String>>, System.Exception)
-  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List(Of System.Collections.Generic.IReadOnlyList(Of System.String)), System.Exception)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, List<IReadOnlyList<String>>, Exception)
-  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, List(Of IReadOnlyList(Of String)), Exception)
-- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.String,Bencodex.Types.IValue)
-  name: TxFailure(BlockHash, TxId, List<IReadOnlyList<String>>, String, IValue)
-  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_String_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.String,Bencodex.Types.IValue)
-  name.vb: TxFailure(BlockHash, TxId, List(Of IReadOnlyList(Of String)), String, IValue)
-  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List<System.Collections.Generic.IReadOnlyList<System.String>>, System.String, Bencodex.Types.IValue)
-  fullName.vb: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List(Of System.Collections.Generic.IReadOnlyList(Of System.String)), System.String, Bencodex.Types.IValue)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, List<IReadOnlyList<String>>, String, IValue)
-  nameWithType.vb: TxFailure.TxFailure(BlockHash, TxId, List(Of IReadOnlyList(Of String)), String, IValue)
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Exception)
+  name: TxFailure(BlockHash, TxId, Exception)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Exception_
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Exception)
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Exception)
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Exception)
+- uid: Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,Bencodex.Types.IValue)
+  name: TxFailure(BlockHash, TxId, String, IValue)
+  href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_String_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Tx.TxFailure.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.String,Bencodex.Types.IValue)
+  fullName: Libplanet.Tx.TxFailure.TxFailure(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.String, Bencodex.Types.IValue)
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String, IValue)
 - uid: Libplanet.Tx.TxFailure.#ctor*
   name: TxFailure
   href: api/Libplanet.Tx.TxFailure.html#Libplanet_Tx_TxFailure__ctor_
@@ -31612,15 +31593,15 @@ references:
   commentId: T:Libplanet.Tx.TxSuccess
   fullName: Libplanet.Tx.TxSuccess
   nameWithType: TxSuccess
-- uid: Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
-  name: TxSuccess(BlockHash, TxId, List<IReadOnlyList<String>>, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Generic_List_System_Collections_Generic_IReadOnlyList_System_String___System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___
-  commentId: M:Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Generic.List{System.Collections.Generic.IReadOnlyList{System.String}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
-  name.vb: TxSuccess(BlockHash, TxId, List(Of IReadOnlyList(Of String)), IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
-  fullName: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List<System.Collections.Generic.IReadOnlyList<System.String>>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>)
-  fullName.vb: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Generic.List(Of System.Collections.Generic.IReadOnlyList(Of System.String)), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, Bencodex.Types.IValue), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)))
-  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, List<IReadOnlyList<String>>, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, List(Of IReadOnlyList(Of String)), IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+- uid: Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Assets_Currency_Libplanet_Assets_FungibleAssetValue___
+  commentId: M:Libplanet.Tx.TxSuccess.#ctor(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Assets.Currency,Libplanet.Assets.FungibleAssetValue}})
+  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+  fullName: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue>>)
+  fullName.vb: Libplanet.Tx.TxSuccess.TxSuccess(Libplanet.Blocks.BlockHash, Libplanet.Tx.TxId, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, Bencodex.Types.IValue), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Assets.Currency, Libplanet.Assets.FungibleAssetValue)))
+  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
 - uid: Libplanet.Tx.TxSuccess.#ctor*
   name: TxSuccess
   href: api/Libplanet.Tx.TxSuccess.html#Libplanet_Tx_TxSuccess__ctor_
