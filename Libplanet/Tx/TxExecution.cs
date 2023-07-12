@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Bencodex;
@@ -24,19 +23,14 @@ namespace Libplanet.Tx
         protected TxExecution(SerializationInfo info, StreamingContext context)
             : this(
                 info.GetValue<BlockHash>(nameof(BlockHash)),
-                info.GetValue<TxId>(nameof(TxId)),
-                info.GetValue<List<IReadOnlyList<string>>>(nameof(ActionsLogsList)))
+                info.GetValue<TxId>(nameof(TxId)))
         {
         }
 
-        private protected TxExecution(
-            BlockHash blockHash,
-            TxId txId,
-            List<IReadOnlyList<string>>? actionsLogsList)
+        private protected TxExecution(BlockHash blockHash, TxId txId)
         {
             BlockHash = blockHash;
             TxId = txId;
-            ActionsLogsList = actionsLogsList;
         }
 
         /// <summary>
@@ -52,18 +46,11 @@ namespace Libplanet.Tx
         [Pure]
         public TxId TxId { get; }
 
-        /// <summary>
-        /// The logs recorded while executing <see cref="Transaction"/>'s actions.
-        /// </summary>
-        [Pure]
-        public List<IReadOnlyList<string>>? ActionsLogsList { get; }
-
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(BlockHash), BlockHash);
             info.AddValue(nameof(TxId), TxId);
-            info.AddValue(nameof(ActionsLogsList), ActionsLogsList);
         }
     }
 }

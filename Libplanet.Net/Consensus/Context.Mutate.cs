@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -108,11 +107,22 @@ namespace Libplanet.Net.Consensus
                     switch (voteMsg)
                     {
                         case ConsensusPreVoteMsg preVote:
+                        {
                             _heightVoteSet.AddVote(preVote.PreVote);
+                            var args = (preVote.Round, VoteFlag.PreVote,
+                                _heightVoteSet.PreVotes(preVote.Round).GetAllVotes());
+                            VoteSetModified?.Invoke(this, args);
                             break;
+                        }
+
                         case ConsensusPreCommitMsg preCommit:
+                        {
                             _heightVoteSet.AddVote(preCommit.PreCommit);
+                            var args = (preCommit.Round, VoteFlag.PreCommit,
+                                _heightVoteSet.PreCommits(preCommit.Round).GetAllVotes());
+                            VoteSetModified?.Invoke(this, args);
                             break;
+                        }
                     }
 
                     _logger.Debug(

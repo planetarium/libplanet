@@ -151,30 +151,5 @@ namespace Libplanet.Tests.Action
                 new[] { clone.Random.Next(), clone.Random.Next(), clone.Random.Next() }
             );
         }
-
-        [Fact]
-        public void ActionContextLogs()
-        {
-            var context = new ActionContext(
-                signer: _address,
-                txid: _txid,
-                miner: _address,
-                blockIndex: 1,
-                blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: AccountStateDelta.Create(MockAccountState.Empty),
-                randomSeed: _random.Next(),
-                gasLimit: 0);
-
-            string[] logs = new[] { "foo", "bar" };
-            context.PutLog(logs[0]);
-            context.PutLog(logs[1]);
-            Assert.Equal(2, context.Logs.Count);
-            Assert.Equal("foo", context.Logs[0]);
-            Assert.Equal("bar", context.Logs[1]);
-
-            // Unconsumed context should have empty logs.
-            var unconsumed = context.GetUnconsumedContext();
-            Assert.Empty(unconsumed.Logs);
-        }
     }
 }

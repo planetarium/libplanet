@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -15,7 +14,6 @@ namespace Libplanet.Tests.Tx
         private readonly BlockHash _blockHash;
         private readonly TxId _txid;
         private readonly TxFailure _fx;
-        private readonly TxFailure _fxWithLogs;
 
         [SuppressMessage(
             "Major Code Smell",
@@ -30,39 +28,18 @@ namespace Libplanet.Tests.Tx
             _fx = new TxFailure(
                 _blockHash,
                 _txid,
-                null,
-                new ArgumentNullException("foo"));
-            _fxWithLogs = new TxFailure(
-                _blockHash,
-                _txid,
-                new List<IReadOnlyList<string>>
-                {
-                    new List<string>
-                    {
-                        "LOG",
-                    },
-                },
                 new ArgumentNullException("foo"));
         }
 
         [Fact]
         public void ConstructorWithExceptionObject()
         {
-            var fxs = new[]
-            {
-                _fx,
-                _fxWithLogs,
-            };
-
-            foreach (var fx in fxs)
-            {
-                Assert.Equal(_blockHash, fx.BlockHash);
-                Assert.Equal(_txid, fx.TxId);
-                Assert.Equal(
-                    $"{nameof(System)}.{nameof(ArgumentNullException)}",
-                    fx.ExceptionName);
-                Assert.Equal(Dictionary.Empty.Add("parameterName", "foo"), fx.ExceptionMetadata);
-            }
+            Assert.Equal(_blockHash, _fx.BlockHash);
+            Assert.Equal(_txid, _fx.TxId);
+            Assert.Equal(
+                $"{nameof(System)}.{nameof(ArgumentNullException)}",
+                _fx.ExceptionName);
+            Assert.Equal(Dictionary.Empty.Add("parameterName", "foo"), _fx.ExceptionMetadata);
         }
 
         [Fact]
@@ -71,7 +48,6 @@ namespace Libplanet.Tests.Tx
             var f = new TxFailure(
                 _blockHash,
                 _txid,
-                null,
                 nameof(ArgumentNullException),
                 (Text)"foo"
             );
@@ -79,33 +55,22 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_txid, f.TxId);
             Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
             Assert.Equal((Text)"foo", f.ExceptionMetadata);
-            Assert.Null(f.ActionsLogsList);
         }
 
         [Fact]
         public void Serialization()
         {
-            var fxs = new[]
-            {
-                _fx,
-                _fxWithLogs,
-            };
-
-            foreach (var fx in fxs)
-            {
-                var formatter = new BinaryFormatter();
-                var stream = new MemoryStream();
-                formatter.Serialize(stream, fx);
-                stream.Seek(0, SeekOrigin.Begin);
-                object deserialized = formatter.Deserialize(stream);
-                Assert.IsType<TxFailure>(deserialized);
-                var f = (TxFailure)deserialized;
-                Assert.Equal(_blockHash, f.BlockHash);
-                Assert.Equal(_txid, f.TxId);
-                Assert.Equal(fx.ExceptionName, f.ExceptionName);
-                Assert.Equal(fx.ExceptionMetadata, f.ExceptionMetadata);
-                Assert.Equal(fx.ActionsLogsList, f.ActionsLogsList);
-            }
+            var formatter = new BinaryFormatter();
+            var stream = new MemoryStream();
+            formatter.Serialize(stream, _fx);
+            stream.Seek(0, SeekOrigin.Begin);
+            object deserialized = formatter.Deserialize(stream);
+            Assert.IsType<TxFailure>(deserialized);
+            var f = (TxFailure)deserialized;
+            Assert.Equal(_blockHash, f.BlockHash);
+            Assert.Equal(_txid, f.TxId);
+            Assert.Equal(_fx.ExceptionName, f.ExceptionName);
+            Assert.Equal(_fx.ExceptionMetadata, f.ExceptionMetadata);
         }
     }
 }

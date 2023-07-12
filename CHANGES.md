@@ -36,6 +36,12 @@ be compatible with this version.
     and `ValidatorSetGetter` delegates.  [[#3282]]
  -  Removed `IFeeCalculator` interface.  [[#3283]]
  -  Removed `IBlockPolicy.FeeCalculator` interface property.  [[#3283]]
+ -  Removed `TxExecution.ActionsLogsList`, `TxFailure.ActionsLogsList`,
+    and `TxSuccess.ActionsLogsList` properties.  [[#3291]]
+ -  (Libplanet.Explorer) Removed `TxResult.ActionsLogsList` property.  [[#3291]]
+ -  Removed `IActionContext.Logs` property and `IActionContext.PutLog()` method.
+    [[#3292]]
+ -  Removed `IActionEvaluation.Logs` property. [[#3292]]
 
 ### Backward-incompatible network protocol changes
 
@@ -65,6 +71,7 @@ be compatible with this version.
     `List<IReadOnlyList<string>>?` from `List<List<string>>?`.  [[#3274]]
  -  (Libplanet.Explorer) Added `BlockType.PreEvaluationHash` field.
     [[#3280], [#3281]]
+ -  (Libplanet.Net) Added `VoteSet.GetAllVotes()` method.  [[#3288]]
 
 ### Behavioral changes
 
@@ -102,6 +109,9 @@ be compatible with this version.
 [#3282]: https://github.com/planetarium/libplanet/pull/3282
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
 [#3284]: https://github.com/planetarium/libplanet/pull/3284
+[#3288]: https://github.com/planetarium/libplanet/pull/3288
+[#3291]: https://github.com/planetarium/libplanet/pull/3291
+[#3292]: https://github.com/planetarium/libplanet/pull/3292
 
 
 Version 2.4.0
