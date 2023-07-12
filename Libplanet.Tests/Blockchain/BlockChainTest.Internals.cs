@@ -179,7 +179,6 @@ namespace Libplanet.Tests.Blockchain
             var inputA = new TxSuccess(
                 _fx.Hash1,
                 _fx.TxId1,
-                null,
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"
@@ -204,14 +203,12 @@ namespace Libplanet.Tests.Blockchain
             var inputB = new TxFailure(
                 _fx.Hash1,
                 _fx.TxId2,
-                null,
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
             var inputC = new TxFailure(
                 _fx.Hash2,
                 _fx.TxId1,
-                null,
                 "AnotherExceptionName",
                 null
             );

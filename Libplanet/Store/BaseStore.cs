@@ -195,11 +195,6 @@ namespace Libplanet.Store
                 .Add("favDelta", new Dictionary(favDelta))
                 .Add("updatedFAVs", new Dictionary(updatedFAVs));
 
-            if (txSuccess.ActionsLogsList is { } actionsLogsList)
-            {
-                serialized = serialized.Add("actionsLogsList", SerializeLogs(actionsLogsList));
-            }
-
             return serialized;
         }
 
@@ -208,11 +203,6 @@ namespace Libplanet.Store
             Dictionary d = Dictionary.Empty
                 .Add("fail", true)
                 .Add("exc", txFailure.ExceptionName);
-
-            if (txFailure.ActionsLogsList is { } actionsLogsList)
-            {
-                d = d.Add("actionsLogsList", SerializeLogs(txFailure.ActionsLogsList));
-            }
 
             return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
         }
@@ -236,18 +226,11 @@ namespace Libplanet.Store
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
 
-                List<IReadOnlyList<string>> actionsLogsList = null;
-                if (d.ContainsKey("actionsLogsList"))
-                {
-                    actionsLogsList =
-                        DeserializeLogs(d.GetValue<List>("actionsLogsList"));
-                }
-
                 if (fail)
                 {
                     string excName = d.GetValue<Text>("exc");
                     IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
-                    return new TxFailure(blockHash, txid, actionsLogsList, excName, excMetadata);
+                    return new TxFailure(blockHash, txid, excName, excMetadata);
                 }
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
@@ -263,7 +246,6 @@ namespace Libplanet.Store
                 return new TxSuccess(
                     blockHash,
                     txid,
-                    actionsLogsList,
                     sDelta,
                     favDelta,
                     updatedFAVs
