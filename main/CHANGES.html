@@ -297,7 +297,7 @@ from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</c
 <li>Changed the type for <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code>
 to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
 from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
-<li>Added <code>IAccountStateDelta.Delta</code> propery.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
+<li>Added <code>IAccountStateDelta.Delta</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
 <li>Removed <code>IValidatorSupportStateDelta</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3247">#3247</a>]</li>
 <li>Added <code>IAccountStateDeltaView.GetValidatorSet()</code> interface method.
 [<a href="https://github.com/planetarium/libplanet/pull/3247">#3247</a>]</li>
@@ -572,7 +572,7 @@ from <code>string</code> to <code>IValue</code>.  [<a href="https://github.com/p
 <code>string?</code> to <code>IValue?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
 <li>Changed the return type for <code>IActionTypeLoader.Load()</code> from
 <code>IDictionary&lt;string, Type&gt;</code> to <code>IDictionary&lt;IValue, Type&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
-<li>Changed return types and parameter types of serveral methods from
+<li>Changed return types and parameter types of several methods from
 <code>IReadOnlyList&lt;ActionEvaluation&gt;</code> to <code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]
 <ul>
@@ -899,7 +899,7 @@ require unlocking <code>Web3Account</code> are called, such as <code>sign()</cod
 </li>
 <li><p>(Libplanet.Explorer) Now, when an <code>IBlockChainIndex</code> instance is available
 in the optional <code>Index</code> property of the injected <code>IBlockChainContext</code>
-instance, GraphQL queries can benefit from the improved lookup performace
+instance, GraphQL queries can benefit from the improved lookup performance
 of the index.  Applications willing to take advantage of the index should
 provide an instance of <code>IBlockChainIndex</code> to the <code>IBlockChainContext</code>
 implementation and add the <code>IndexingService</code> hosted service to sync the
@@ -1594,7 +1594,7 @@ had lacked the content of its <code>&quot;publicKey&quot;</code>.  [<a href="htt
 <li>General changes to log output for readability.  [<a href="https://github.com/planetarium/libplanet/pull/2769">#2769</a>]</li>
 </ul>
 <h2 id="version-0460">Version 0.46.0</h2>
-<p>Released on Janurary 18th, 2023.</p>
+<p>Released on January 18th, 2023.</p>
 <h3 id="backward-incompatible-api-changes-18">Backward-incompatible API changes</h3>
 <ul>
 <li>Changed <code>BlockLocator</code> to throw an <code>ArgumentException</code> if an empty set of
@@ -1678,7 +1678,7 @@ number of <code>BlockHash</code>es regardless of the result.
 <li>Changed <code>BlockChain&lt;T&gt;.FindNextHashes()</code> to return zero <code>BlockHash</code>es
 if no branch point <code>BlockHash</code> is found instead of returning
 <code>BlockHash</code>es starting with the genesis <code>BlockHash</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2582">#2582</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
-<li>Chnaged the behavior of <code>BlockLocator</code> index selection and sampling when
+<li>Changed the behavior of <code>BlockLocator</code> index selection and sampling when
 creating an instance.  [<a href="https://github.com/planetarium/libplanet/issues/2583">#2583</a>, <a href="https://github.com/planetarium/libplanet/pull/2584">#2584</a>]</li>
 <li>Changed the default <code>VolatileStagePolicy&lt;T&gt;.Lifetime</code> from 3 hours
 to 10 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/2718">#2718</a>]</li>
@@ -1967,7 +1967,7 @@ can be accessed from any &quot;larger&quot; type object through properties.  [<a
 or <code>PreEvaluationBlockHeader.Metadata</code>.</li>
 <li><code>PreEvaluationBlockHeader</code> can be accessed through
 <code>PreEvaluationBlock&lt;T&gt;.Header</code> or <code>BlockHeader.Header</code>.</li>
-<li><code>BlockHeader</code> can be accessed thorugh <code>Block&lt;T&gt;.Header</code> (this has not
+<li><code>BlockHeader</code> can be accessed through <code>Block&lt;T&gt;.Header</code> (this has not
 changed, but only listed here for completeness in narrative).</li>
 </ul>
 </li>
@@ -2265,9 +2265,9 @@ instance.</li>
 replies as soon as it is created through <code>NetMQTransport.Create()</code>
 factory method.</li>
 <li><code>NetMQTransport.StartAsync()</code> enables a <code>NetMQTransport</code> instance
-to recieve requests and send replies.</li>
+to receive requests and send replies.</li>
 <li><code>NetMQTransport.StopAsync()</code> only disables a <code>NetMQTransport</code> instance
-to stop recieving requests and sending replies.</li>
+to stop receiving requests and sending replies.</li>
 </ul>
 </li>
 </ul>
@@ -2520,7 +2520,7 @@ which utilizes values stored in <code>BootstrapOptions</code>.  [<a href="https:
 <li>(Libplanet.Net) Removed <code>SwarmOptions.PreloadDialTimeout</code>.
 Use <code>SwarmOptions.PreloadOptions.DialTimeout</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
 <li>(Libplanet.Net) Added <code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, bool, CancellationToken)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
-<li>(Libplanet.Net) Changed the order of parameters from <code>Swarm&lt;T&gt;(TimeSpan, IProgresss&lt;PreloadState&gt;, bool, long, CancellationToken)</code> to <code>Swarm&lt;T&gt;( TimeSpan?, long, IProgress&lt;PreloadState&gt;, bool, CancellationToken)</code>
+<li>(Libplanet.Net) Changed the order of parameters from <code>Swarm&lt;T&gt;(TimeSpan, IProgress&lt;PreloadState&gt;, bool, long, CancellationToken)</code> to <code>Swarm&lt;T&gt;( TimeSpan?, long, IProgress&lt;PreloadState&gt;, bool, CancellationToken)</code>
 with default value for <code>tipDeltaThreshold</code> removed.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
 <li>(Libplanet.Net) Parameter name <code>Urls</code> changed to <code>Url</code> for <code>IceServer</code>
 and no longer accepts multiple Urls for single instance.  [<a href="https://github.com/planetarium/libplanet/pull/2026">#2026</a>]</li>
@@ -2548,12 +2548,12 @@ signature.  [<a href="https://github.com/planetarium/libplanet/pull/2005">#2005<
 <li>Removed <code>InvalidTxPublicKeyException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1164">#1164</a>, <a href="https://github.com/planetarium/libplanet/pull/1978">#1978</a>]</li>
 <li>(Libplanet.Net) Property <code>SwarmOptions.BlockDownloadTimeout</code> removed.
 [<a href="https://github.com/planetarium/libplanet/issues/1981">#1981</a>, <a href="https://github.com/planetarium/libplanet/pull/1982">#1982</a>]</li>
-<li>(Libplanet.Net) <code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, TimeSpan?, TimeSpan?, int, CancellationToken)</code> changed to <code>Swarm&lt;T&gt;.BoostrapAsync( IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code>.  Parameter
+<li>(Libplanet.Net) <code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, TimeSpan?, TimeSpan?, int, CancellationToken)</code> changed to <code>Swarm&lt;T&gt;.BootstrapAsync( IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code>.  Parameter
 <code>dialTimeout</code> now gets used for both old <code>pingSeedTimeout</code> and
-<code>findNeigborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
+<code>findNeighborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
 <li>(Libplanet.Net) <code>IProtocol.BootstrapAsync(IEnumerable&lt;BoundPeer&gt;, TimeSpan?, TimeSpan?, int, CancellationToken)</code> changed to <code>IProtocol.BootstrapAsync( IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code>.  Parameter
 <code>dialTimeout</code> now gets used for both old <code>pingSeedTimeout</code> and
-<code>findNeigborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
+<code>findNeighborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
 </ul>
 <h3 id="added-apis-26">Added APIs</h3>
 <ul>
@@ -2604,7 +2604,7 @@ present.  Instead, it silently returns an empty string now.  [<a href="https://g
 <h3 id="backward-incompatible-api-changes-28">Backward-incompatible API changes</h3>
 <ul>
 <li><code>BlockCompletion&lt;TPeer, TAction&gt;.Complete()</code> no longer accepts
-neither parmeter <code>TimeSpan singleSessionTimeout</code> nor
+neither parameter <code>TimeSpan singleSessionTimeout</code> nor
 <code>int millisecondsSingleSessionTimeout</code> to regulate a single session length.
 [<a href="https://github.com/planetarium/libplanet/pull/1961">#1961</a>]</li>
 <li>(Libplanet.Net) General API changes made to <code>Swarm&lt;T&gt;.BootstrapAsync()</code>,
@@ -3290,7 +3290,7 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>
 <p>Released on December 24, 2021.</p>
 <ul>
 <li>Fixed a bug of <code>NonblockRenderer&lt;T&gt;</code> and <code>NonblockActionRenderer&lt;T&gt;</code> where
-they had thrown <code>ThreadStateException</code> when any render events occured after
+they had thrown <code>ThreadStateException</code> when any render events occurred after
 disposed.  [<a href="https://github.com/planetarium/libplanet/pull/1682">#1682</a>]</li>
 <li>Log output compacted by removing duplicate exception messages.
 [<a href="https://github.com/planetarium/libplanet/issues/1632">#1632</a>, <a href="https://github.com/planetarium/libplanet/pull/1677">#1677</a>]</li>
@@ -3342,7 +3342,7 @@ it is expired or ignored.</li>
 <p>Released on December 24, 2021.</p>
 <ul>
 <li>Fixed a bug of <code>NonblockRenderer&lt;T&gt;</code> and <code>NonblockActionRenderer&lt;T&gt;</code> where
-they had thrown <code>ThreadStateException</code> when any render events occured after
+they had thrown <code>ThreadStateException</code> when any render events occurred after
 disposed.  [<a href="https://github.com/planetarium/libplanet/pull/1682">#1682</a>]</li>
 </ul>
 <h2 id="version-0233">Version 0.23.3</h2>
@@ -3506,7 +3506,7 @@ which is awaited until the reply message is sent.  [<a href="https://github.com/
 <code>AsyncDelegate&lt;T&gt;</code> (which was <code>EventHandler</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1523">#1523</a>]</li>
 <li>Removed unused <code>BlockChain&lt;T&gt;</code> type parameter from
 <code>IStagePolicy&lt;T&gt;.Iterate()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1553">#1553</a>, <a href="https://github.com/planetarium/libplanet/pull/1556">#1556</a>]</li>
-<li>Removed unsued <code>HashAlgorithmTable</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
+<li>Removed unused <code>HashAlgorithmTable</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GatherTransactionsToMine()</code>
 now additionally accepts <code>maxBlockBytes</code> parameter of type <code>int</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1600">#1600</a>]</li>
 <li>Removed <code>BlockInsufficientTxsException</code> and
@@ -3761,7 +3761,7 @@ instead.</li>
 [<a href="https://github.com/planetarium/libplanet/issues/1457">#1457</a>, <a href="https://github.com/planetarium/libplanet/pull/1507">#1507</a>]</li>
 </ul>
 </li>
-<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> have no more marshaling/unmarshaling methods.
+<li><code>Block&lt;T&gt;</code> and <code>BlockHeader</code> have no more marshaling/unmarshalling methods.
 <ul>
 <li>Removed <code>Block&lt;T&gt;(Bencodex.Types.Dictionary)</code> overloaded constructor.
 Use <code>BlockMarshaler.UnmarshalBlock()</code> static method instead.</li>
@@ -4697,9 +4697,9 @@ Please use this class if you need to migrate.   [<a href="https://github.com/pla
 <li>Added <code>BlockHeader.ProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1142">#1142</a>, <a href="https://github.com/planetarium/libplanet/pull/1147">#1147</a>]</li>
 <li>Added <code>IBlockExcerpt</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li>Added <code>BlockExcerpt</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>, <a href="https://github.com/planetarium/libplanet/pull/1184">#1184</a>]</li>
-<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockExceprt</code> interface.
+<li><code>Block&lt;T&gt;</code> became to implement <code>IBlockExcerpt</code> interface.
 [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
-<li><code>BlockHeader</code> became to implement <code>IBlockExceprt</code> interface.
+<li><code>BlockHeader</code> became to implement <code>IBlockExcerpt</code> interface.
 [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1165">#1165</a>, <a href="https://github.com/planetarium/libplanet/pull/1170">#1170</a>]</li>
 <li>Added <code>BlockPerception</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1184">#1184</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.PerceiveBlock()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1155">#1155</a>, <a href="https://github.com/planetarium/libplanet/pull/1184">#1184</a>]</li>
