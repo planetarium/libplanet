@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain
         /// <returns>The state root hash calculated by committing <paramref name="evaluations"/> to
         /// an empty <see cref="IStateStore"/>.</returns>
         /// <remarks>
-        /// This method computes the state root hash by commiting <paramref name="evaluations"/>
+        /// This method computes the state root hash by committing <paramref name="evaluations"/>
         /// to an ephemeral empty <see cref="IStateStore"/>.
         /// </remarks>
         /// <seealso cref="EvaluateGenesis"/>
@@ -91,7 +91,7 @@ namespace Libplanet.Blockchain
         /// Since the state root hash can only be calculated by making a commit
         /// to an <see cref="IStateStore"/>, this always has a side-effect to
         /// <see cref="StateStore"/> regardless of whether the state root hash
-        /// obdatined through commiting to <see cref="StateStore"/>
+        /// obdatined through committing to <see cref="StateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
         /// <seealso cref="EvaluateBlock"/>

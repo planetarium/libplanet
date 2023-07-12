@@ -16,7 +16,7 @@ namespace Libplanet.Net.Transports
     /// </summary>
     /// <remarks>
     /// An instance of a transport implementing <see cref="ITransport"/> should always be able to
-    /// send requests and recieve replies.
+    /// send requests and receive replies.
     /// </remarks>
     public interface ITransport : IDisposable
     {
@@ -47,9 +47,9 @@ namespace Libplanet.Net.Transports
         /// Whether this <see cref="ITransport"/> instance is running.
         /// </para>
         /// <para>
-        /// When the value is <see langword="true"/>, the <see cref="ITransport"/> can recieve
+        /// When the value is <see langword="true"/>, the <see cref="ITransport"/> can receive
         /// outside requests.  When the value is <see langword="false"/>,
-        /// the <see cref="ITransport"/> stops recieving outside requests.
+        /// the <see cref="ITransport"/> stops receiving outside requests.
         /// </para>
         /// </summary>
         /// <value>The value indicating whether the instance is running.</value>

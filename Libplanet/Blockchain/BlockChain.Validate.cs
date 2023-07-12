@@ -305,13 +305,13 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
         /// from which to extract the states to commit.</param>
         /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
-        /// calculated by commiting to the <see cref="IStateStore"/> does not match
+        /// calculated by committing to the <see cref="IStateStore"/> does not match
         /// the <paramref name="block"/>'s <see cref="Block.StateRootHash"/>.</exception>
         /// <remarks>
         /// Since the state root hash for can only be calculated from making a commit
         /// to an <see cref="IStateStore"/>, this always has a side-effect to the
         /// <see cref="IStateStore"/> regardless of whether the state root hash
-        /// obdatined through commiting to the <see cref="IStateStore"/>
+        /// obdatined through committing to the <see cref="IStateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
         /// <seealso cref="EvaluateBlock"/>

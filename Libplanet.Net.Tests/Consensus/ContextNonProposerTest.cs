@@ -201,9 +201,9 @@ namespace Libplanet.Net.Tests.Consensus
 
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
-            context.StateChanged += (_, evnetArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
-                if (evnetArgs.Step == ConsensusStep.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -274,9 +274,9 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 policy: policy,
                 privateKey: TestUtils.PrivateKeys[0]);
-            context.StateChanged += (_, evnetArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
-                if (evnetArgs.Step == ConsensusStep.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -336,9 +336,9 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 policy: policy,
                 privateKey: TestUtils.PrivateKeys[0]);
-            context.StateChanged += (_, evnetArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
-                if (evnetArgs.Step == ConsensusStep.PreVote)
+                if (eventArgs.Step == ConsensusStep.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }

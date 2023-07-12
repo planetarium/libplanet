@@ -79,7 +79,7 @@ namespace Libplanet.Stun
         /// the <see cref="IceServer"/>s given.
         /// </summary>
         /// <remarks>
-        /// This is a blocking operation with a non-negligable amount of execution time as
+        /// This is a blocking operation with a non-negligible amount of execution time as
         /// each <see cref="IceServer"/> in <paramref name="iceServers"/> is checked over
         /// the network to see if it can be connected to.
         /// </remarks>

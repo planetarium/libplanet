@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Libplanet.Stun.Tests.Messages
 {
-    public class BindingRequestSucessTest
+    public class BindingRequestSuccessTest
     {
         [Fact]
         public async Task ParseBytes()

@@ -252,7 +252,7 @@ Released on June 28, 2023.
  -  Changed the type for `IAccountStateDelta.TotalUpdatedFungibleAssets`
     to `IImmutableSet<(Address, Currency)>`
     from `IImmutableDictionary<Address, IImmutableSet<Currency>>`.  [[#3244]]
- -  Added `IAccountStateDelta.Delta` propery.  [[#3245]]
+ -  Added `IAccountStateDelta.Delta` property.  [[#3245]]
  -  Removed `IValidatorSupportStateDelta` interface.  [[#3247]]
  -  Added `IAccountStateDeltaView.GetValidatorSet()` interface method.
     [[#3247]]
@@ -606,7 +606,7 @@ Released on May 9, 2023.
     `string?` to `IValue?`.  [[#3111]]
  -  Changed the return type for `IActionTypeLoader.Load()` from
     `IDictionary<string, Type>` to `IDictionary<IValue, Type>`.  [[#3111]]
- -  Changed return types and parameter types of serveral methods from
+ -  Changed return types and parameter types of several methods from
     `IReadOnlyList<ActionEvaluation>` to `IReadOnlyList<IActionEvaluation>`.
     [[#3089]]
      -  `BlockChain<T>.DetermineGenesisStateRootHash()`
@@ -962,7 +962,7 @@ Released on April 18, 2023.
     `getPublicKey()`.  [[#3061]]
  -  (Libplanet.Explorer) Now, when an `IBlockChainIndex` instance is available
     in the optional `Index` property of the injected `IBlockChainContext`
-    instance, GraphQL queries can benefit from the improved lookup performace
+    instance, GraphQL queries can benefit from the improved lookup performance
     of the index.  Applications willing to take advantage of the index should
     provide an instance of `IBlockChainIndex` to the `IBlockChainContext`
     implementation and add the `IndexingService` hosted service to sync the
@@ -1887,7 +1887,7 @@ Released on February 3, 2023.
 Version 0.46.0
 --------------
 
-Released on Janurary 18th, 2023.
+Released on January 18th, 2023.
 
 ### Backward-incompatible API changes
 
@@ -1966,7 +1966,7 @@ Released on Janurary 18th, 2023.
  -  Changed `BlockChain<T>.FindNextHashes()` to return zero `BlockHash`es
     if no branch point `BlockHash` is found instead of returning
     `BlockHash`es starting with the genesis `BlockHash`.  [[#2582], [#2584]]
- -  Chnaged the behavior of `BlockLocator` index selection and sampling when
+ -  Changed the behavior of `BlockLocator` index selection and sampling when
     creating an instance.  [[#2583], [#2584]]
  -  Changed the default `VolatileStagePolicy<T>.Lifetime` from 3 hours
     to 10 minutes.  [[#2718]]
@@ -2393,7 +2393,7 @@ a system action, its features will be added more in the future.
         or `PreEvaluationBlockHeader.Metadata`.
      -  `PreEvaluationBlockHeader` can be accessed through
         `PreEvaluationBlock<T>.Header` or `BlockHeader.Header`.
-     -  `BlockHeader` can be accessed thorugh `Block<T>.Header` (this has not
+     -  `BlockHeader` can be accessed through `Block<T>.Header` (this has not
         changed, but only listed here for completeness in narrative).
  -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
     `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
@@ -2732,9 +2732,9 @@ Released on August 26, 2022.
         replies as soon as it is created through `NetMQTransport.Create()`
         factory method.
      -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
-        to recieve requests and send replies.
+        to receive requests and send replies.
      -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
-        to stop recieving requests and sending replies.
+        to stop receiving requests and sending replies.
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
@@ -3080,7 +3080,7 @@ Released on May 30th, 2022.
  -  (Libplanet.Net) Added `Swarm<T>.PreloadAsync(IProgress<PreloadState>, bool,
     CancellationToken)`.  [[#2025]]
  -  (Libplanet.Net) Changed the order of parameters from `Swarm<T>(TimeSpan,
-    IProgresss<PreloadState>, bool, long, CancellationToken)` to `Swarm<T>(
+    IProgress<PreloadState>, bool, long, CancellationToken)` to `Swarm<T>(
     TimeSpan?, long, IProgress<PreloadState>, bool, CancellationToken)`
     with default value for `tipDeltaThreshold` removed.  [[#2025]]
  -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
@@ -3123,15 +3123,15 @@ Released on May 25th, 2022.
  -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
     [[#1981], [#1982]]
  -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?,
-    TimeSpan?, int, CancellationToken)` changed to `Swarm<T>.BoostrapAsync(
+    TimeSpan?, int, CancellationToken)` changed to `Swarm<T>.BootstrapAsync(
     IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
     `dialTimeout` now gets used for both old `pingSeedTimeout` and
-    `findNeigborsTimeout`.  [[#1990]]
+    `findNeighborsTimeout`.  [[#1990]]
  -  (Libplanet.Net) `IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, TimeSpan?,
     TimeSpan?, int, CancellationToken)` changed to `IProtocol.BootstrapAsync(
     IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
     `dialTimeout` now gets used for both old `pingSeedTimeout` and
-    `findNeigborsTimeout`.  [[#1990]]
+    `findNeighborsTimeout`.  [[#1990]]
 
 ### Added APIs
 
@@ -3200,7 +3200,7 @@ Released on May 20th, 2022.
 ### Backward-incompatible API changes
 
  -  `BlockCompletion<TPeer, TAction>.Complete()` no longer accepts
-    neither parmeter `TimeSpan singleSessionTimeout` nor
+    neither parameter `TimeSpan singleSessionTimeout` nor
     `int millisecondsSingleSessionTimeout` to regulate a single session length.
     [[#1961]]
  -  (Libplanet.Net) General API changes made to `Swarm<T>.BootstrapAsync()`,
@@ -4119,7 +4119,7 @@ Version 0.24.2
 Released on December 24, 2021.
 
  -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
-    they had thrown `ThreadStateException` when any render events occured after
+    they had thrown `ThreadStateException` when any render events occurred after
     disposed.  [[#1682]]
  -  Log output compacted by removing duplicate exception messages.
     [[#1632], [#1677]]
@@ -4184,7 +4184,7 @@ Version 0.23.4
 Released on December 24, 2021.
 
  -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
-    they had thrown `ThreadStateException` when any render events occured after
+    they had thrown `ThreadStateException` when any render events occurred after
     disposed.  [[#1682]]
 
 [#1682]: https://github.com/planetarium/libplanet/pull/1682
@@ -4414,7 +4414,7 @@ Released on November 16, 2021.
     `AsyncDelegate<T>` (which was `EventHandler`).  [[#1523]]
  -  Removed unused `BlockChain<T>` type parameter from
     `IStagePolicy<T>.Iterate()` method.  [[#1553], [#1556]]
- -  Removed unsued `HashAlgorithmTable` class.  [[#1600]]
+ -  Removed unused `HashAlgorithmTable` class.  [[#1600]]
  -  `BlockChain<T>.MineBlock()` and `BlockChain<T>.GatherTransactionsToMine()`
     now additionally accepts `maxBlockBytes` parameter of type `int`.  [[#1600]]
  -  Removed `BlockInsufficientTxsException` and
@@ -4765,7 +4765,7 @@ Released on October 13, 2021.
      -  Added `BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>,
         ImmutableArray<byte>?, BlockHash)` overloaded constructor.
         [[#1457], [#1507]]
- -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshaling methods.
+ -  `Block<T>` and `BlockHeader` have no more marshaling/unmarshalling methods.
      -  Removed `Block<T>(Bencodex.Types.Dictionary)` overloaded constructor.
         Use `BlockMarshaler.UnmarshalBlock()` static method instead.
      -  Removed `Block<T>.Deserialize()` static method.  Instead, use
@@ -5834,9 +5834,9 @@ Released on March 30, 2021.
  -  Added `BlockHeader.ProtocolVersion` property.  [[#1142], [#1147]]
  -  Added `IBlockExcerpt` interface.  [[#1155], [#1165], [#1170]]
  -  Added `BlockExcerpt` static class.  [[#1155], [#1165], [#1170], [#1184]]
- -  `Block<T>` became to implement `IBlockExceprt` interface.
+ -  `Block<T>` became to implement `IBlockExcerpt` interface.
     [[#1155], [#1165], [#1170]]
- -  `BlockHeader` became to implement `IBlockExceprt` interface.
+ -  `BlockHeader` became to implement `IBlockExcerpt` interface.
     [[#1155], [#1165], [#1170]]
  -  Added `BlockPerception` struct.  [[#1155], [#1184]]
  -  Added `BlockChain<T>.PerceiveBlock()` method.  [[#1155], [#1184]]

@@ -73,7 +73,7 @@ namespace Libplanet.Blockchain
         /// </para>
         /// <para>
         /// By default, if successful, a policy adhering <see cref="Block"/> is produced with
-        /// current timestamp that can be appeneded to the current chain.
+        /// current timestamp that can be appended to the current chain.
         /// </para>
         /// </summary>
         /// <param name="proposer">The proposer's <see cref="PublicKey"/> that proposes the block.
@@ -175,7 +175,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block"/> for
         /// index <pararef name="index"/>.  Gathered <see cref="Transaction"/>s are
-        /// guaranteed to satisified the following <see cref="Transaction"/> related
+        /// guaranteed to satisfied the following <see cref="Transaction"/> related
         /// policies:
         /// <list type="bullet">
         ///     <item><description>
@@ -278,7 +278,7 @@ namespace Libplanet.Blockchain
                     _logger.Information(
                         "Ignoring tx {Iter}/{Total} {TxId} and the rest of the " +
                         "staged transactions due to the maximum number of " +
-                        "transactions per block allowed hsa been reached: {Max}",
+                        "transactions per block allowed has been reached: {Max}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
