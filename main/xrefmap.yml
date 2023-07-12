@@ -19,15 +19,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluation
   fullName: Libplanet.Action.ActionEvaluation
   nameWithType: ActionEvaluation
-- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.IReadOnlyList{System.String})
-  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, IReadOnlyList<String>)
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_System_Collections_Generic_IReadOnlyList_System_String__
-  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception,System.Collections.Generic.IReadOnlyList{System.String})
-  name.vb: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, IReadOnlyList(Of String))
-  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Exception, System.Collections.Generic.IReadOnlyList<System.String>)
-  fullName.vb: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Exception, System.Collections.Generic.IReadOnlyList(Of System.String))
-  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, IReadOnlyList<String>)
-  nameWithType.vb: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception, IReadOnlyList(Of String))
+- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception)
+  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_State_IAccountStateDelta_System_Exception_
+  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.State.IAccountStateDelta,System.Exception)
+  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.State.IAccountStateDelta, System.Exception)
+  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
 - uid: Libplanet.Action.ActionEvaluation.#ctor*
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_
@@ -91,19 +88,6 @@ references:
   fullName: Libplanet.Action.ActionEvaluation.Libplanet.Action.IActionEvaluation.Action
   nameWithType: ActionEvaluation.IActionEvaluation.Action
   nameWithType.vb: ActionEvaluation.Libplanet.Action.IActionEvaluation.Action
-- uid: Libplanet.Action.ActionEvaluation.Logs
-  name: Logs
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Logs
-  commentId: P:Libplanet.Action.ActionEvaluation.Logs
-  fullName: Libplanet.Action.ActionEvaluation.Logs
-  nameWithType: ActionEvaluation.Logs
-- uid: Libplanet.Action.ActionEvaluation.Logs*
-  name: Logs
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Logs_
-  commentId: Overload:Libplanet.Action.ActionEvaluation.Logs
-  isSpec: "True"
-  fullName: Libplanet.Action.ActionEvaluation.Logs
-  nameWithType: ActionEvaluation.Logs
 - uid: Libplanet.Action.ActionEvaluation.OutputState
   name: OutputState
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_OutputState
@@ -495,19 +479,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.GetUnconsumedContext
   nameWithType: IActionContext.GetUnconsumedContext
-- uid: Libplanet.Action.IActionContext.Logs
-  name: Logs
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Logs
-  commentId: P:Libplanet.Action.IActionContext.Logs
-  fullName: Libplanet.Action.IActionContext.Logs
-  nameWithType: IActionContext.Logs
-- uid: Libplanet.Action.IActionContext.Logs*
-  name: Logs
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Logs_
-  commentId: Overload:Libplanet.Action.IActionContext.Logs
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.Logs
-  nameWithType: IActionContext.Logs
 - uid: Libplanet.Action.IActionContext.Miner
   name: Miner
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Miner
@@ -534,19 +505,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.PreviousState
   nameWithType: IActionContext.PreviousState
-- uid: Libplanet.Action.IActionContext.PutLog(System.String)
-  name: PutLog(String)
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_System_String_
-  commentId: M:Libplanet.Action.IActionContext.PutLog(System.String)
-  fullName: Libplanet.Action.IActionContext.PutLog(System.String)
-  nameWithType: IActionContext.PutLog(String)
-- uid: Libplanet.Action.IActionContext.PutLog*
-  name: PutLog
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PutLog_
-  commentId: Overload:Libplanet.Action.IActionContext.PutLog
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.PutLog
-  nameWithType: IActionContext.PutLog
 - uid: Libplanet.Action.IActionContext.Random
   name: Random
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random
@@ -657,19 +615,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionEvaluation.InputContext
   nameWithType: IActionEvaluation.InputContext
-- uid: Libplanet.Action.IActionEvaluation.Logs
-  name: Logs
-  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_Logs
-  commentId: P:Libplanet.Action.IActionEvaluation.Logs
-  fullName: Libplanet.Action.IActionEvaluation.Logs
-  nameWithType: IActionEvaluation.Logs
-- uid: Libplanet.Action.IActionEvaluation.Logs*
-  name: Logs
-  href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_Logs_
-  commentId: Overload:Libplanet.Action.IActionEvaluation.Logs
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionEvaluation.Logs
-  nameWithType: IActionEvaluation.Logs
 - uid: Libplanet.Action.IActionEvaluation.OutputState
   name: OutputState
   href: api/Libplanet.Action.IActionEvaluation.html#Libplanet_Action_IActionEvaluation_OutputState
