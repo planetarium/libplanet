@@ -112,10 +112,21 @@ namespace Libplanet.Assets
                 );
             }
 
-            if (!(d.ContainsKey("decimalPlaces") && d["decimalPlaces"] is Binary decimals))
+            byte? nullableDecimals = null;
+            if (d.ContainsKey("decimals") && d["decimals"] is Integer decimals)
+            {
+                nullableDecimals = (byte)(long)decimals;
+            }
+
+            if (d.ContainsKey("decimalPlaces") && d["decimalPlaces"] is Binary decimalPlacesBinary)
+            {
+                nullableDecimals = decimalPlacesBinary.ByteArray[0];
+            }
+
+            if (!(nullableDecimals is { } decimalPlaces))
             {
                 throw new ArgumentException(
-                    "Expected an integer field named \"decimals\".",
+                    "Expected a byte field named \"decimalPlaces\" or \"decimals\".",
                     nameof(serialized)
                 );
             }
@@ -206,7 +217,7 @@ namespace Libplanet.Assets
             }
 
             Ticker = ticker;
-            DecimalPlaces = decimals.First();
+            DecimalPlaces = decimalPlaces;
 
             if (_maximumSupply is var (_, minor) && minor > 0 &&
                 Math.Floor(BigInteger.Log10(minor)) >= DecimalPlaces)
