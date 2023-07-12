@@ -56,15 +56,6 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.FungibleAssetsDelta?
                     .Select(pair => new FungibleAssetBalances(pair.Key, pair.Value.Values))
             );
-
-            Field<ListGraphType<
-                NonNullGraphType<ListGraphType<
-                    NonNullGraphType<StringGraphType>
-                >>
-            >>(
-                nameof(TxResult.ActionsLogsList),
-                resolve: context => context.Source.ActionsLogsList
-            );
         }
 
         public record UpdatedState(Address Address, Bencodex.Types.IValue? State);

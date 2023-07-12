@@ -33,14 +33,12 @@ namespace Libplanet.Blockchain
                 TxId txid = txEvals.Key;
                 IAccountStateDelta prevStates = txEvals.First().InputContext.PreviousState;
                 IActionEvaluation evalSum = txEvals.Last();
-                var actionsLogsList = txEvals.Select(ae => ae.Logs).ToList();
                 TxExecution txExecution;
                 if (evalSum.Exception is { } e)
                 {
                     txExecution = new TxFailure(
                         block.Hash,
                         txid,
-                        actionsLogsList,
                         e.InnerException ?? e);
                 }
                 else
@@ -49,7 +47,6 @@ namespace Libplanet.Blockchain
                     txExecution = new TxSuccess(
                         block.Hash,
                         txid,
-                        actionsLogsList,
                         outputStates.GetUpdatedStates(),
                         outputStates.Delta.UpdatedFungibleAssets
                             .Select(pair =>
