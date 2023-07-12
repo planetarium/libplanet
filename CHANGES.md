@@ -4,12 +4,10 @@ Libplanet changelog
 Version 2.5.0
 -------------
 
-To be released.
+Released on July 12, 2023.
 
 Due to changes in [[#3272]], a network ran with a prior version may not
 be compatible with this version.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -42,10 +40,6 @@ be compatible with this version.
  -  Removed `IActionContext.Logs` property and `IActionContext.PutLog()` method.
     [[#3292]]
  -  Removed `IActionEvaluation.Logs` property. [[#3292]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -93,10 +87,6 @@ be compatible with this version.
 
 ### Bug fixes
  -  Fixed a broken backwards compatibility of Currency  [[#3268], [#3284]]
-
-### Dependencies
-
-### CLI tools
 
 [#3206]: https://github.com/planetarium/libplanet/pull/3206
 [#3267]: https://github.com/planetarium/libplanet/pull/3267
