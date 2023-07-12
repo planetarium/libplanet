@@ -36,6 +36,9 @@ be compatible with this version.
     and `ValidatorSetGetter` delegates.  [[#3282]]
  -  Removed `IFeeCalculator` interface.  [[#3283]]
  -  Removed `IBlockPolicy.FeeCalculator` interface property.  [[#3283]]
+ -  Removed `TxExecution.ActionsLogsList`, `TxFailure.ActionsLogsList`,
+    and `TxSuccess.ActionsLogsList` properties.  [[#3291]]
+ -  (Libplanet.Explorer) Removed `TxResult.ActionsLogsList` property.  [[#3291]]
 
 ### Backward-incompatible network protocol changes
 
@@ -101,6 +104,7 @@ be compatible with this version.
 [#3282]: https://github.com/planetarium/libplanet/pull/3282
 [#3283]: https://github.com/planetarium/libplanet/pull/3283
 [#3288]: https://github.com/planetarium/libplanet/pull/3288
+[#3291]: https://github.com/planetarium/libplanet/pull/3291
 
 
 Version 2.4.0
