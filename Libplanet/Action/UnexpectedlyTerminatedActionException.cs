@@ -4,11 +4,12 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Serialization;
+using Libplanet.Common;
+using Libplanet.Common.Serialization;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 
 namespace Libplanet.Action
 {

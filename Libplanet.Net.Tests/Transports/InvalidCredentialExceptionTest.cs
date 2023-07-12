@@ -1,10 +1,11 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Net.Transports;
 using Xunit;
 
-namespace Libplanet.Net.Transports.Tests
+namespace Libplanet.Net.Tests.Transports
 {
     public class InvalidCredentialExceptionTest
     {

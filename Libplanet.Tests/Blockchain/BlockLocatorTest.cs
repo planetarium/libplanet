@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Xunit;
 using Xunit.Abstractions;
 

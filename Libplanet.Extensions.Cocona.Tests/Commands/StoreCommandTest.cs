@@ -1,17 +1,20 @@
 #nullable disable
+
+using Libplanet.Action;
+
 namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
 using System;
 using System.Collections.Immutable;
 using System.IO;
 using global::Cocona;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.RocksDBStore.Tests;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -352,7 +355,7 @@ public class StoreCommandTest : IDisposable
             0,
             new PrivateKey(),
             _genesisBlock.Hash,
-            new[] { new Utils.DummyAction() },
+            new[] { new Utils.DummyAction() }.ToPlainValues(),
             null,
             null,
             null,

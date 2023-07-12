@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Libplanet.Tx;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {

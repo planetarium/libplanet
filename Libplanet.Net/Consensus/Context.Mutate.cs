@@ -1,5 +1,7 @@
 using System;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
@@ -36,7 +38,7 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
-                if ((_validValue ?? GetValue()) is Block proposalValue)
+                if ((_validValue ?? GetValue()) is Common.Types.Blocks.Block proposalValue)
                 {
                     Proposal proposal = new ProposalMetadata(
                         Height,
@@ -235,7 +237,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            (Block Block, int ValidRound)? propose = GetProposal();
+            (Common.Types.Blocks.Block Block, int ValidRound)? propose = GetProposal();
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
                 Step == ConsensusStep.Propose)

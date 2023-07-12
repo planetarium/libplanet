@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
 using Serilog;

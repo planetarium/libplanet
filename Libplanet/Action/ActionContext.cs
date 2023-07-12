@@ -2,8 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
-using Libplanet.Tx;
 
 namespace Libplanet.Action
 {

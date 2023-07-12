@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Libplanet.Common;
 
 namespace Libplanet.Store.Trie
 {

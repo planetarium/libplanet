@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <TargetFrameworks>netstandard2.1;netcoreapp3.1;netstandard2.0</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bencodex" Version="0.10.0" />
+      <PackageReference Include="Bencodex.Json" Version="0.10.0" />
+      <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
+      <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+      <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+      <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+      <PackageReference Include="System.IO" Version="4.3.0" />
+      <PackageReference Include="System.Linq" Version="4.3.0" />
+      <PackageReference Include="System.Text.Json" Version="6.0.7" />
+    </ItemGroup>
+
+</Project>

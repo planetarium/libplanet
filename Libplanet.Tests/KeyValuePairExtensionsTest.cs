@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Libplanet.Common;
 using Xunit;
 
 namespace Libplanet.Tests

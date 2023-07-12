@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus

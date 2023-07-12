@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using global::Cocona;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 
 public class BlockPolicyParams : ICommandParameterSet

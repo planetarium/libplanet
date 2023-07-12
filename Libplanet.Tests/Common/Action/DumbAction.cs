@@ -7,9 +7,9 @@ using System.Numerics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.State;
 using Boolean = Bencodex.Types.Boolean;
 

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.KeyStore;
 using Xunit;
 

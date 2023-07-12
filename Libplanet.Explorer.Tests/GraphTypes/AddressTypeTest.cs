@@ -1,4 +1,5 @@
 using System;
+using Libplanet.Common.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;
 

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 using Libplanet.Consensus;
 
 namespace Libplanet.State

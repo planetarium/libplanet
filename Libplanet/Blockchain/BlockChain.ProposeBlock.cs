@@ -6,9 +6,9 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
-using Libplanet.Tx;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 
 namespace Libplanet.Blockchain
 {

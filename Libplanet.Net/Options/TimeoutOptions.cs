@@ -1,8 +1,8 @@
 using System;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
-using Libplanet.Tx;
 
 namespace Libplanet.Net.Options
 {
@@ -69,7 +69,7 @@ namespace Libplanet.Net.Options
 
         /// <summary>
         /// The base timeout used when sending a request with <see cref="GetTxsMsg"/>
-        /// to receive <see cref="Tx"/> messages.
+        /// to receive <see cref="Transaction"/> messages.
         /// Set to <see cref="DefaultGetTxsBaseTimeout"/> seconds by default.
         /// </summary>
         /// <seealso cref="GetTxsPerTxIdTimeout"/>
@@ -78,7 +78,7 @@ namespace Libplanet.Net.Options
 
         /// <summary>
         /// The additional amount to wait for each <see cref="TxId"/> in <see cref="GetTxsMsg"/>
-        /// to receive <see cref="Tx"/> messages.
+        /// to receive <see cref="Transaction"/> messages.
         /// Set to <see cref="DefaultGetTxsPerTxIdTimeout"/> seconds by default.
         /// </summary>
         /// <seealso cref="GetTxsBaseTimeout"/>

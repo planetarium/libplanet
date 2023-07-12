@@ -3,8 +3,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Common;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Action

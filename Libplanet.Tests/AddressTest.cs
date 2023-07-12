@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

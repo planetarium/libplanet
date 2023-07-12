@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using BenchmarkDotNet.Attributes;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Bencodex.Types;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Tests;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 
 namespace Libplanet.Benchmarks
 {
@@ -36,7 +35,7 @@ namespace Libplanet.Benchmarks
                 for (int j = 0; j < i % 5; j++)
                 {
                     blockTxs.Add(Transaction.Create(
-                        nonce++, key, genesis.Hash, Array.Empty<DumbAction>()));
+                        nonce++, key, genesis.Hash, List.Empty));
                 }
                 block = TestUtils.ProposeNextBlock(
                     block, TestUtils.GenesisProposer, blockTxs);

@@ -13,16 +13,18 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Action;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
 using Xunit;
@@ -198,7 +200,7 @@ namespace Libplanet.Tests.Blockchain
                             new Initialize(
                                 validatorSet: TestUtils.ValidatorSet,
                                 states: ImmutableDictionary.Create<Address, IValue>()),
-                        },
+                        }.ToPlainValues(),
                     timestamp: DateTimeOffset.UtcNow))
                 .OrderBy(tx => tx.Id)
                 .ToImmutableList();
@@ -237,7 +239,7 @@ namespace Libplanet.Tests.Blockchain
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
-                actions1
+                actions1.ToPlainValues()
             );
 
             chain.StageTransaction(tx1);
@@ -265,7 +267,7 @@ namespace Libplanet.Tests.Blockchain
                 0,
                 new PrivateKey(),
                 genesisBlock.Hash,
-                actions2
+                actions2.ToPlainValues()
             );
 
             chain.StageTransaction(tx2);
@@ -289,7 +291,7 @@ namespace Libplanet.Tests.Blockchain
                         Target = "orc",
                         TargetAddress = _fx.Address1,
                     },
-                }
+                }.ToPlainValues()
             );
             Block block3 = chain.ProposeBlock(
                 new PrivateKey(), CreateBlockCommit(chain.Tip));
@@ -608,7 +610,7 @@ namespace Libplanet.Tests.Blockchain
                                 nonce: 0,
                                 privateKey: new PrivateKey(),
                                 genesisHash: null,
-                                actions: new[] { action },
+                                actions: new[] { action }.ToPlainValues(),
                                 maxGasPrice: null,
                                 gasLimit: null,
                                 updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
@@ -1086,7 +1088,7 @@ namespace Libplanet.Tests.Blockchain
                             0,
                             new PrivateKey(),
                             null,
-                            Array.Empty<DumbAction>()
+                            Array.Empty<DumbAction>().ToPlainValues()
                         ),
                     }),
                 GenesisProposer);
@@ -1134,7 +1136,7 @@ namespace Libplanet.Tests.Blockchain
                 };
                 Transaction[] txs =
                 {
-                    Transaction.Create(0, privateKey, chain.Genesis.Hash, actions),
+                    Transaction.Create(0, privateKey, chain.Genesis.Hash, actions.ToPlainValues()),
                 };
                 b = chain.ProposeBlock(
                     _fx.Proposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
@@ -1724,7 +1726,7 @@ namespace Libplanet.Tests.Blockchain
                         store.GetTxNonce(chain.Id, signer),
                         privateKey,
                         chain.Genesis.Hash,
-                        new[] { new DumbAction(addresses[j], index.ToString()) }
+                        new[] { new DumbAction(addresses[j], index.ToString()) }.ToPlainValues()
                     );
                     b = chain.EvaluateAndSign(
                         ProposeNext(
@@ -1885,7 +1887,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    actions: new IAction[] { systemAction }))
+                    actions: new IAction[] { systemAction }.ToPlainValues()))
                 .ToArray();
             var customTxs = new[]
             {
@@ -1893,7 +1895,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: systemTxs.Length,
                     privateKey: privateKey,
                     genesisHash: null,
-                    actions: customActions,
+                    actions: customActions.ToPlainValues(),
                     updatedAddresses: addresses.ToImmutableHashSet()
                 ),
             };
@@ -2040,7 +2042,7 @@ namespace Libplanet.Tests.Blockchain
                 0,
                 new PrivateKey(),
                 null,
-                Array.Empty<DumbAction>());
+                Array.Empty<DumbAction>().ToPlainValues());
             var block = ProposeNextBlock(chain.Genesis, GenesisProposer, new[] { blockTx });
 
             var e = Assert.Throws<TxPolicyViolationException>(
@@ -2079,7 +2081,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: i,
                     privateKey: privateKey,
                     genesisHash: null,
-                    actions: new IAction[] { systemAction }))
+                    actions: new IAction[] { systemAction }.ToPlainValues()))
                 .ToImmutableList();
 
             var actionEvaluator = new ActionEvaluator(

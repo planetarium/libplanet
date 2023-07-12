@@ -9,10 +9,12 @@ using System.Security.Cryptography;
 using System.Web;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Misc;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
 using Serilog;
@@ -495,7 +497,7 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <inheritdoc cref="BaseStore.PutTxExecution(TxSuccess)"/>
         public override void PutTxExecution(TxSuccess txSuccess)
         {
             UPath path = TxExecutionPath(txSuccess);
@@ -506,7 +508,7 @@ namespace Libplanet.Store
             Codec.Encode(SerializeTxExecution(txSuccess), f);
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <inheritdoc cref="BaseStore.PutTxExecution(TxFailure)"/>
         public override void PutTxExecution(TxFailure txFailure)
         {
             UPath path = TxExecutionPath(txFailure);

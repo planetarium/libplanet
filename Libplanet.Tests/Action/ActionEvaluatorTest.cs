@@ -8,11 +8,12 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -21,11 +22,9 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Tests.Store;
 using Libplanet.Tests.Tx;
-using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
-using static Libplanet.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
@@ -70,7 +69,7 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
-                    actions: new[] { new RandomAction(txAddress), }),
+                    actions: new[] { new RandomAction(txAddress), }.ToPlainValues()),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent(
@@ -139,7 +138,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
+                actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -175,7 +174,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
+                actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
             Block block = chain.ProposeBlock(new PrivateKey());
@@ -218,7 +217,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
-                actions: new[] { action });
+                actions: new[] { action }.ToPlainValues());
             var txs = new Transaction[] { tx };
             PreEvaluationBlock block = new BlockContent(
                 new BlockMetadata(
@@ -280,20 +279,23 @@ namespace Libplanet.Tests.Action
                     {
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
-                    },
+                    }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
-                    actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
+                    actions: new[]
+                    {
+                        MakeAction(addresses[2], 'C', addresses[3]),
+                    }.ToPlainValues(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
                 Transaction.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
-                    actions: new DumbAction[0],
+                    actions: Array.Empty<DumbAction>().ToPlainValues(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
@@ -380,14 +382,14 @@ namespace Libplanet.Tests.Action
                     0,
                     _txFx.PrivateKey1,
                     genesis.Hash,
-                    new[] { MakeAction(addresses[0], 'D') },
+                    new[] { MakeAction(addresses[0], 'D') }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
                 Transaction.Create(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
-                    new[] { MakeAction(addresses[3], 'E') },
+                    new[] { MakeAction(addresses[3], 'E') }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
                 Transaction.Create(
@@ -404,7 +406,7 @@ namespace Libplanet.Tests.Action
                             transferAmount: 8,
                             recordRehearsal: true,
                             recordRandom: true),
-                    },
+                    }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
@@ -507,7 +509,7 @@ namespace Libplanet.Tests.Action
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
             var tx =
-                Transaction.Create(0, _txFx.PrivateKey1, null, actions);
+                Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
             var txs = new Transaction[] { tx };
             var block = new BlockContent(
                 new BlockMetadata(
@@ -613,7 +615,7 @@ namespace Libplanet.Tests.Action
                 0,
                 _txFx.PrivateKey1,
                 null,
-                new[] { action },
+                new[] { action }.ToPlainValues(),
                 null,
                 null,
                 ImmutableHashSet<Address>.Empty,
@@ -835,7 +837,10 @@ namespace Libplanet.Tests.Action
                             nonce: signerNoncePair.nonce,
                             privateKey: signerNoncePair.signer,
                             genesisHash: null,
-                            actions: new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
+                            actions: new[]
+                            {
+                                new RandomAction(signerNoncePair.signer.ToAddress()),
+                            }.ToPlainValues(),
                             updatedAddresses: ImmutableHashSet.Create(targetAddress),
                             timestamp: epoch
                         );
@@ -905,7 +910,7 @@ namespace Libplanet.Tests.Action
             mintAction.LoadPlainValue(currency.Serialize());
             var txs = privateKeys.Select(privateKey =>
                 Transaction.Create(
-                    0, privateKey, chain.Genesis.Hash, new[] { mintAction }))
+                    0, privateKey, chain.Genesis.Hash, new[] { mintAction }.ToPlainValues()))
                 .ToList();
 
             var genesis = chain.Genesis;
@@ -942,7 +947,7 @@ namespace Libplanet.Tests.Action
             {
                 GasUsage = 0,
                 Memo = "FREE",
-                MintValue = new FungibleAssetValue(foo, 10),
+                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
                 Receiver = address,
             };
 
@@ -963,12 +968,12 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                maxGasPrice: new FungibleAssetValue(foo, 1),
+                maxGasPrice: FungibleAssetValue.FromRawValue(foo, 1),
                 gasLimit: 2,
                 actions: new[]
                 {
                     payGasAction,
-                });
+                }.ToPlainValues());
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -980,10 +985,10 @@ namespace Libplanet.Tests.Action
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
-                new FungibleAssetValue(foo, 9),
+                FungibleAssetValue.FromRawValue(foo, 9),
                 evaluations.Single().OutputState.GetBalance(address, foo));
             Assert.Equal(
-                new FungibleAssetValue(foo, 1),
+                FungibleAssetValue.FromRawValue(foo, 1),
                 evaluations.Single().OutputState.GetBalance(miner.ToAddress(), foo));
         }
 
@@ -1002,7 +1007,7 @@ namespace Libplanet.Tests.Action
             {
                 GasUsage = 0,
                 Memo = "FREE",
-                MintValue = new FungibleAssetValue(foo, 10),
+                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
                 Receiver = address,
             };
 
@@ -1026,12 +1031,12 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                maxGasPrice: new FungibleAssetValue(foo, 1),
+                maxGasPrice: FungibleAssetValue.FromRawValue(foo, 1),
                 gasLimit: 5,
                 actions: new[]
                 {
                     payGasAction,
-                });
+                }.ToPlainValues());
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -1047,10 +1052,10 @@ namespace Libplanet.Tests.Action
                 typeof(GasLimitExceededException),
                 evaluations.Single().Exception?.InnerException?.GetType());
             Assert.Equal(
-                new FungibleAssetValue(foo, 5),
+                FungibleAssetValue.FromRawValue(foo, 5),
                 evaluations.Single().OutputState.GetBalance(address, foo));
             Assert.Equal(
-                new FungibleAssetValue(foo, 5),
+                FungibleAssetValue.FromRawValue(foo, 5),
                 evaluations.Single().OutputState.GetBalance(miner.ToAddress(), foo));
         }
 
@@ -1069,7 +1074,7 @@ namespace Libplanet.Tests.Action
             {
                 GasUsage = 0,
                 Memo = "FREE",
-                MintValue = new FungibleAssetValue(foo, 10),
+                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
                 Receiver = address,
             };
 
@@ -1093,12 +1098,12 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                maxGasPrice: new FungibleAssetValue(foo, 10),
+                maxGasPrice: FungibleAssetValue.FromRawValue(foo, 10),
                 gasLimit: 5,
                 actions: new[]
                 {
                     payGasAction,
-                });
+                }.ToPlainValues());
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -1130,7 +1135,7 @@ namespace Libplanet.Tests.Action
             {
                 GasUsage = 0,
                 Memo = "FREE",
-                MintValue = new FungibleAssetValue(foo, 10),
+                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
                 Receiver = address,
             };
 
@@ -1154,12 +1159,12 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                maxGasPrice: new FungibleAssetValue(foo, -10),
+                maxGasPrice: FungibleAssetValue.FromRawValue(foo, -10),
                 gasLimit: 5,
                 actions: new[]
                 {
                     payGasAction,
-                });
+                }.ToPlainValues());
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -1382,7 +1387,7 @@ namespace Libplanet.Tests.Action
 
             public IAccountStateDelta Execute(IActionContext context) =>
                 context.PreviousState.MintAsset(
-                    context, context.Signer, new FungibleAssetValue(Currency, 1));
+                    context, context.Signer, FungibleAssetValue.FromRawValue(Currency, 1));
         }
     }
 
@@ -1437,9 +1442,7 @@ namespace Libplanet.Tests.Action
             {
                 BlockMetadata.CurrentProtocolVersion,
                 OriginalAddresses,
-                BlockMetadata.CurrentProtocolVersion < 3
-                    ? OrderedAddressesV0
-                    : OrderedAddressesV3,
+                OrderedAddressesV3,
             };
         }
 

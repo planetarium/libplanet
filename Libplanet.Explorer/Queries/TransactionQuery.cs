@@ -1,17 +1,18 @@
 #nullable disable
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
 {
@@ -152,7 +153,10 @@ namespace Libplanet.Explorer.Queries
                     var sigMeta = new TxSigningMetadata(publicKey, nonce);
                     var invoice = new TxInvoice(
                         chain.Genesis.Hash,
-                        actions: new TxActionList(List.Empty.Add(plainValue)));
+                        actions: new TxActionList(new List<IValue>
+                        {
+                            plainValue,
+                        }));
                     var unsignedTx = new UnsignedTx(invoice, sigMeta);
                     return unsignedTx.SerializeUnsignedTx();
                 }

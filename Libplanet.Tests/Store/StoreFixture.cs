@@ -5,12 +5,13 @@ using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
 {
@@ -216,7 +217,7 @@ namespace Libplanet.Tests.Store
                 nonce,
                 privateKey,
                 GenesisBlock.Hash,
-                actions ?? new DumbAction[0],
+                actions?.ToPlainValues() ?? Array.Empty<DumbAction>().ToPlainValues(),
                 null,
                 null,
                 updatedAddresses,

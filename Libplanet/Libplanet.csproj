@@ -95,8 +95,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
-                         '$(TargetFramework)' == 'netstandard2.1'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or&#xA;                         '$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
   </ItemGroup>
 
@@ -109,5 +108,9 @@ https://docs.libplanet.io/</Description>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
   </ItemGroup>
 </Project>

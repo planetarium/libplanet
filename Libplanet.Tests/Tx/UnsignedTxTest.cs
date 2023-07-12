@@ -2,10 +2,11 @@ using System;
 using System.Collections.Immutable;
 using Bencodex;
 using Libplanet.Action;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx
@@ -35,7 +36,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
-            });
+            }.ToPlainValues());
             _invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Blockchain
 {

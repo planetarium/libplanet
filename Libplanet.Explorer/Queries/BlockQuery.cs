@@ -2,6 +2,8 @@
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Queries

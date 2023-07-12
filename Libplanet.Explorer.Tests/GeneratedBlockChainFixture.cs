@@ -5,15 +5,16 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Tests;
 
@@ -102,7 +103,7 @@ public class GeneratedBlockChainFixture
                                         ImmutableList<Validator>.Empty.Add(
                                             new Validator(pk.PublicKey, 1)).ToList()),
                                     ImmutableDictionary<Address, IValue>.Empty),
-                            }))
+                            }.ToPlainValues()))
                 .ToImmutableList());
         Chain = BlockChain.Create(
             policy,
@@ -128,7 +129,7 @@ public class GeneratedBlockChainFixture
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
-                                actions))
+                                actions.ToPlainValues()))
                         .ToImmutableArray());
             }
         }
@@ -152,7 +153,7 @@ public class GeneratedBlockChainFixture
                                 Chain.GetNextTxNonce(pk.ToAddress()),
                                 pk,
                                 Chain.Genesis.Hash,
-                                actions))
+                                actions.ToPlainValues()))
                         .ToImmutableArray());
             }
         }
@@ -193,8 +194,8 @@ public class GeneratedBlockChainFixture
             pk,
             Chain.Genesis.Hash,
             random.Next() % 2 == 0
-                ? GetRandomActions(random.Next())
-                : ImmutableHashSet<SimpleAction>.Empty,
+                ? GetRandomActions(random.Next()).ToPlainValues()
+                : ImmutableHashSet<SimpleAction>.Empty.ToPlainValues(),
             null,
             null,
             GetRandomAddresses(random.Next()));

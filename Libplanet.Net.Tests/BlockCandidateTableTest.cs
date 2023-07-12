@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Store;
 using Xunit;
 

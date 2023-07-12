@@ -2,9 +2,10 @@ using System;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Blockchain;
+using Libplanet.Common;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Mutations
 {

@@ -1,3 +1,5 @@
+using Libplanet.Common.Types.Blocks;
+
 namespace Libplanet.Extensions.Cocona.Commands;
 
 using System;

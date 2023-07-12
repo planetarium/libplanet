@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 

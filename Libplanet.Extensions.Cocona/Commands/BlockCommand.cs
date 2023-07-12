@@ -15,18 +15,25 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 
 public class BlockCommand
 {
     public enum OutputFormat
     {
+        /// <summary>
+        /// Bencode Extensible Binary Object Notation
+        /// </summary>
         Bencodex,
+
+        /// <summary>
+        /// Json (Human-readable)
+        /// </summary>
         Json,
     }
 
@@ -144,7 +151,7 @@ public class BlockCommand
                 new IAction[]
                 {
                     new Initialize(validatorSet, ImmutableTrieDictionary<Address, IValue>.Empty),
-                }))
+                }.Select(x => x.PlainValue)))
             .ToImmutableList();
 
         var blockAction = blockPolicyParams.GetBlockAction();

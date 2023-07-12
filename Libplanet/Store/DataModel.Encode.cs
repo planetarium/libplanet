@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using Libplanet.Common.Crypto;
 using BTypes = Bencodex.Types;
 
 namespace Libplanet.Store

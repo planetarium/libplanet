@@ -1,16 +1,17 @@
 #nullable disable
-namespace Libplanet.Tools.Tests;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Store.Trie;
 using Libplanet.Tools.Tests.Services;
 using Xunit;
+
+namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
 public class MptCommandTest : IDisposable
 {

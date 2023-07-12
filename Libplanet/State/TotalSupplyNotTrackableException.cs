@@ -1,13 +1,14 @@
 using System;
 using System.Runtime.Serialization;
-using Libplanet.Assets;
-using Libplanet.Serialization;
+using Libplanet.Common.Serialization;
+using Libplanet.Common.Types.Assets;
 
 namespace Libplanet.State
 {
     /// <summary>
     /// The exception thrown when <see cref="IAccountState.GetTotalSupply"/> was called on a
-    /// legacy untracked currency with <see cref="Assets.Currency.TotalSupplyTrackable"/> set to
+    /// legacy untracked currency with
+    /// <see cref="Common.Types.Assets.Currency.TotalSupplyTrackable"/> set to
     /// <see langword="false"/>.
     /// </summary>
     /// <seealso cref="IAccountState.GetTotalSupply"/>

@@ -1,7 +1,7 @@
 using System;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Tests.Consensus

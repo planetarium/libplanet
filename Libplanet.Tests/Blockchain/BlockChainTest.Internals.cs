@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Assets;
-using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Action;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
-using FAV = Libplanet.Assets.FungibleAssetValue;
+using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce,
                     key,
                     _blockChain.Genesis.Hash,
-                    new DumbAction[0],
+                    Array.Empty<DumbAction>().ToPlainValues(),
                     null,
                     null,
                     null,

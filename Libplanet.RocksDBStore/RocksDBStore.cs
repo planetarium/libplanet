@@ -7,10 +7,12 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using Bencodex;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Misc;
 using Libplanet.Store;
-using Libplanet.Tx;
 using LruCacheNet;
 using RocksDbSharp;
 using Serilog;
@@ -977,14 +979,14 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <inheritdoc cref="BaseStore.PutTxExecution(TxSuccess)"/>
         public override void PutTxExecution(TxSuccess txSuccess) =>
             _txExecutionDb.Put(
                 TxExecutionKey(txSuccess),
                 Codec.Encode(SerializeTxExecution(txSuccess))
             );
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <inheritdoc cref="BaseStore.PutTxExecution(TxFailure)"/>
         public override void PutTxExecution(TxFailure txFailure) =>
             _txExecutionDb.Put(
                 TxExecutionKey(txFailure),

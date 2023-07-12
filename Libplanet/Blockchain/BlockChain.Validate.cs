@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
 using Libplanet.Store;
-using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {

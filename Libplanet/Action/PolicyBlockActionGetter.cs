@@ -1,4 +1,4 @@
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Action
 {

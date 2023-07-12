@@ -1,15 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
-using Libplanet.Assets;
-using Libplanet.Blocks;
-using Libplanet.Tx;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Xunit;
-using FAV = Libplanet.Assets.FungibleAssetValue;
+using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Tx
 {

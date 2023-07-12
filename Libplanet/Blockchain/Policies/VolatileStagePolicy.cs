@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Libplanet.Tx;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Blockchain.Policies

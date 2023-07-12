@@ -4,8 +4,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Consensus;
 
 namespace Libplanet.State

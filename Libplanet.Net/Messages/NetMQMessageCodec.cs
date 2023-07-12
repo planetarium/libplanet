@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bencodex;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Transports;
 using NetMQ;
 

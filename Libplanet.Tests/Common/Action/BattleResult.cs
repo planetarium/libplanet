@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using Bencodex.Types;
-using Libplanet.Serialization;
+using Libplanet.Common.Serialization;
 
 namespace Libplanet.Tests.Common.Action
 {

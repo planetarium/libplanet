@@ -5,17 +5,19 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -360,7 +362,7 @@ namespace Libplanet.Net.Tests.Consensus
                 nonce: 0,
                 privateKey: TestUtils.PrivateKeys[1],
                 genesisHash: blockChain.Genesis.Hash,
-                actions: new[] { action },
+                actions: new[] { action }.ToPlainValues(),
                 updatedAddresses: ImmutableHashSet.Create(DelayAction.TrivialUpdatedAddress)
             );
             blockChain.StageTransaction(tx);

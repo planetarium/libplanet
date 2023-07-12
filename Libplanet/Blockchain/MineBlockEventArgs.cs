@@ -1,5 +1,5 @@
 #nullable disable
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Blockchain
 {

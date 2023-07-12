@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
-using Libplanet.JsonConverters;
+using Libplanet.Common.JsonConverters;
 using Xunit;
 
 namespace Libplanet.Tests.JsonConverters

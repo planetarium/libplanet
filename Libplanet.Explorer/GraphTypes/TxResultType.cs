@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Types;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 
 namespace Libplanet.Explorer.GraphTypes
 {

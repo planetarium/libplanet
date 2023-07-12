@@ -1,9 +1,10 @@
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -58,7 +59,7 @@ namespace Libplanet.Tests.Action
                 chain.GetNextTxNonce(_addr[0]),
                 _keys[0],
                 chain.Genesis.Hash,
-                new[] { action }
+                new[] { action }.ToPlainValues()
             );
             PreEvaluationBlock preEval = TestUtils.ProposeNext(
                 chain.Tip,

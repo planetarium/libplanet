@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Immutable;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Action;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 
 namespace Libplanet.Tests.Tx
 {
@@ -63,7 +64,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 PrivateKey1,
                 genesisHash,
-                new BaseAction[0],
+                Array.Empty<BaseAction>().ToPlainValues(),
                 timestamp: timestamp
             );
             BaseAction[] actions =
@@ -83,7 +84,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 PrivateKey1,
                 genesisHash,
-                actions,
+                actions.ToPlainValues(),
                 updatedAddresses: ImmutableHashSet.Create(
                     new Address("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc")
                 ),

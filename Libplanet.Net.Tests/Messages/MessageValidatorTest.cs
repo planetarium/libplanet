@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Xunit;
 

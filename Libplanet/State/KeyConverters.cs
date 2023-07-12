@@ -1,4 +1,6 @@
-using Libplanet.Assets;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 
 namespace Libplanet.State
 {

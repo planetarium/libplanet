@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
 

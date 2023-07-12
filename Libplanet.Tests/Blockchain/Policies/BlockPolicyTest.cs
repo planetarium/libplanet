@@ -4,13 +4,12 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 

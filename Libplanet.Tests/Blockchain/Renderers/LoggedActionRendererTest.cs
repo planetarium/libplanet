@@ -5,7 +5,6 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Mocks;
@@ -14,7 +13,7 @@ using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
 using Xunit;
 using Constants = Serilog.Core.Constants;
-using DumbBlock = Libplanet.Blocks.Block;
+using DumbBlock = Libplanet.Common.Types.Blocks.Block;
 
 namespace Libplanet.Tests.Blockchain.Renderers
 {
@@ -75,7 +74,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     default,
                     default,
-                    Block.CurrentProtocolVersion,
+                    DumbBlock.CurrentProtocolVersion,
                     123,
                     _stateDelta,
                     default,

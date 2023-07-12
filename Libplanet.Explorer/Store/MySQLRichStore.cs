@@ -1,12 +1,11 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
-using Libplanet.Tx;
 using LruCacheNet;
 using MySqlConnector;
 using Serilog;
@@ -54,11 +53,11 @@ namespace Libplanet.Explorer.Store
         public long? GetBlockIndex(BlockHash blockHash) =>
             _store.GetBlockIndex(blockHash);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <inheritdoc cref="IStore.PutTxExecution(TxSuccess)"/>
         public void PutTxExecution(TxSuccess txSuccess) =>
             _store.PutTxExecution(txSuccess);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <inheritdoc cref="IStore.PutTxExecution(TxFailure)"/>
         public void PutTxExecution(TxFailure txFailure) =>
             _store.PutTxExecution(txFailure);
 

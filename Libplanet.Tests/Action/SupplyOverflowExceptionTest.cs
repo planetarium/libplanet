@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 using Libplanet.State;
 using Xunit;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Destructurama.Attributed;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Net.Messages
 {

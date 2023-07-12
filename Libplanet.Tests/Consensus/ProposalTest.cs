@@ -1,8 +1,8 @@
 using System;
 using Bencodex;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Tests.Store;
 using Serilog;
 using Xunit;

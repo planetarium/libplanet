@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using StoreDataModel = Libplanet.Store.DataModel;
 
 namespace Libplanet.Benchmarks.DataModel

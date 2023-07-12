@@ -1,10 +1,12 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Queries;

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.Json;
+using Libplanet.Common;
 
 namespace Libplanet.KeyStore.Kdfs
 {

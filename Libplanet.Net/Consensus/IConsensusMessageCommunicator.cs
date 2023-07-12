@@ -1,3 +1,4 @@
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -15,7 +16,7 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// Method that will be called on the
-        /// <see cref="Context.Start(Blocks.BlockCommit?)"/> call.
+        /// <see cref="Context.Start(BlockCommit?)"/> call.
         /// </summary>
         /// <param name="height"><see cref="Context.Height"/>
         /// to trigger this method.</param>

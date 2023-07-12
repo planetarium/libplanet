@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Libplanet.Tx;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx

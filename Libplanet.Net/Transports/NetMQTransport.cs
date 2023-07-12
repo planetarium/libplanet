@@ -10,7 +10,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using AsyncIO;
 using Dasync.Collections;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Stun;

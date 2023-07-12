@@ -5,11 +5,12 @@ using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Tests.Queries;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
@@ -26,7 +27,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 0,
                 privateKey,
                 new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new[] { new NullAction() });
+                new[] { new NullAction() }.ToPlainValues());
             var query =
                 @"{
                     id

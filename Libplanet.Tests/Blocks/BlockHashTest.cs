@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Types.Blocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

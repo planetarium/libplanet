@@ -12,8 +12,10 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
@@ -25,7 +27,6 @@ using Libplanet.Store.Trie;
 using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using NetMQ;
 using Nito.AsyncEx;
 using Nito.AsyncEx.Synchronous;
@@ -650,7 +651,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 chainB.Genesis.Hash,
-                Array.Empty<DumbAction>()
+                Array.Empty<DumbAction>().ToPlainValues()
             );
             chainB.StageTransaction(tx);
             Block block = chainB.ProposeBlock(keyB);
@@ -978,7 +979,7 @@ namespace Libplanet.Net.Tests
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,
-                        actions: new[] { new Sleep() }
+                        actions: new[] { new Sleep() }.ToPlainValues()
                     )
                 );
                 var b = miner1.BlockChain.ProposeBlock(

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Immutable;
 using Libplanet.Action;
-using Libplanet.Assets;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx
@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(random.NextAddress(), "foo"),
                 new DumbAction(random.NextAddress(), "bar"),
-            });
+            }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(random.NextAddress(), "foo"),
                 new DumbAction(random.NextAddress(), "bar"),
-            });
+            }.ToPlainValues());
             var original = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
-            });
+            }.ToPlainValues());
             var invoice1 = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
@@ -134,7 +134,7 @@ namespace Libplanet.Tests.Tx
                    i == 1 ? null : updatedAddresses,
                    i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
                    i == 3 ? null : actions,
-                   i == 4 ? (FungibleAssetValue?)null : new FungibleAssetValue(
+                   i == 4 ? (FungibleAssetValue?)null : FungibleAssetValue.FromRawValue(
                        Currency.Uncapped(
                            "FOO",
                            18,
@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
-            });
+            }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
@@ -228,7 +228,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
-            });
+            }.ToPlainValues());
 
             public FungibleAssetValue? MaxGasPrice => null;
 

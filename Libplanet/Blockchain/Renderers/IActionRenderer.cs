@@ -1,10 +1,10 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Store;
-using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Renderers
 {

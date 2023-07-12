@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 
 namespace Libplanet.Consensus
 {
@@ -21,7 +21,7 @@ namespace Libplanet.Consensus
         /// Creates an instance of <see cref="Validator"/>, with given <paramref name="publicKey"/>
         /// and <paramref name="power"/>.
         /// </summary>
-        /// <param name="publicKey">The <see cref="Libplanet.Crypto.PublicKey"/>
+        /// <param name="publicKey">The <see cref="Libplanet.Common.Crypto.PublicKey"/>
         /// of validator operator.</param>
         /// <param name="power">The <see langword="Power"/> of validator operator.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="power"/> is
