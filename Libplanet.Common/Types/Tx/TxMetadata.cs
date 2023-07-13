@@ -115,7 +115,7 @@ namespace Libplanet.Common.Types.Tx
         public PublicKey PublicKey { get; }
 
         /// <summary>
-        /// A <see cref="HashDigest{T}"/> value of the genesis which this transaction is made
+        /// A <see cref="BlockHash"/> value of the genesis which this transaction is made
         /// from.  This can be <see langword="null"/> iff the transaction is contained in
         /// the genesis block.
         /// </summary>

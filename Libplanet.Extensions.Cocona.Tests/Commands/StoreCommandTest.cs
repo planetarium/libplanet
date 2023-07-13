@@ -1,13 +1,9 @@
 #nullable disable
-
-using Libplanet.Action;
-
-namespace Libplanet.Extensions.Cocona.Tests.Commands;
-
 using System;
 using System.Collections.Immutable;
 using System.IO;
 using global::Cocona;
+using Libplanet.Action;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
@@ -17,6 +13,8 @@ using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Xunit;
 using Xunit.Abstractions;
+
+namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
 public class StoreCommandTest : IDisposable
 {

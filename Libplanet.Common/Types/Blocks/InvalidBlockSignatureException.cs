@@ -27,7 +27,9 @@ namespace Libplanet.Common.Types.Blocks
             : base(
                 message +
                 (publicKey is { } pubKey ? $"\nPublic key: {pubKey}" : string.Empty) +
-                (invalidSignature is { } sig ? $"\nInvalid signature: {ByteUtil.Hex(sig)}" : string.Empty)
+                (invalidSignature is { } sig
+                    ? $"\nInvalid signature: {ByteUtil.Hex(sig)}"
+                    : string.Empty)
             )
         {
             PublicKey = publicKey;
