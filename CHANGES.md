@@ -9,7 +9,13 @@ To be released.
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
-
+-  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3300]]
+  - `Libplanet.Transaction`
+  - `Libplanet.Blocks`
+  - `Libplanet.Crypto`
+  - `Libplanet.Serialization`
+  - `Libplanet.JsonConverters`  
+  
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -24,6 +30,8 @@ To be released.
 
 ### CLI tools
 
+
+[#3300]: https://github.com/planetarium/libplanet/pull/3300
 
 Version 2.5.0
 -------------
