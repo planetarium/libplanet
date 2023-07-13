@@ -73,6 +73,11 @@ be compatible with this version.
     [[#3292]]
  -  Removed `IActionEvaluation.Logs` property. [[#3292]]
 
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
 ### Added APIs
 
  -  Added `VoteSetBits` and its related classes.  [[#3206]]
