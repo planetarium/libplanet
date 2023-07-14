@@ -6,6 +6,11 @@ Version 2.4.1
 
 To be released.
 
+ -  (Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
+    [[#3298]]
+
+[#3298]: https://github.com/planetarium/libplanet/pull/3298
+
 
 Version 2.4.0
 -------------
