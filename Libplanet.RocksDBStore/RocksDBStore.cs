@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -1339,7 +1340,7 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, new byte[] { });
+                IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, Array.Empty<byte>());
 
                 // FIXME: Somehow key value comes with 0x76 prefix at the first index of
                 // byte array.
@@ -1385,66 +1386,114 @@ namespace Libplanet.RocksDBStore
             return (store, stateStore);
         }
 
-        private static byte[] DeletedChainKey(Guid chainId)
-            => DeletedKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] DeletedChainKey(Guid chainId) =>
+            Concat(DeletedKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] PreviousChainIndexKey(Guid chainId)
-            => PreviousChainIndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] PreviousChainIndexKey(Guid chainId) =>
+            Concat(PreviousChainIndexKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] PreviousChainIdKey(Guid chainId)
-            => PreviousChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] PreviousChainIdKey(Guid chainId) =>
+            Concat(PreviousChainIdKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] IndexKey(Guid chainId)
-            => IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] IndexKey(Guid chainId) =>
+            Concat(IndexKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] IndexKey(Guid chainId, byte[] indexBytes)
-            => IndexKey(chainId).Concat(indexBytes).ToArray();
+        private static byte[] IndexKey(Guid chainId, byte[] indexBytes) =>
+            Concat(IndexKeyPrefix, chainId.ToByteArray(), indexBytes);
 
-        private static byte[] IndexCountKey(Guid chainId)
-            => IndexCountKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] IndexCountKey(Guid chainId) =>
+            Concat(IndexCountKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] ChainIdKey(Guid chainId)
-            => ChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] ChainIdKey(Guid chainId) =>
+            Concat(ChainIdKeyPrefix, chainId.ToByteArray());
 
         private static byte[] BlockKey(in BlockHash blockHash) =>
-            BlockKeyPrefix.Concat(blockHash.ByteArray).ToArray();
+            Concat(BlockKeyPrefix, blockHash.ByteArray);
 
         private static byte[] TxKey(in TxId txId) =>
-            TxKeyPrefix.Concat(txId.ByteArray).ToArray();
+            Concat(TxKeyPrefix, txId.ByteArray);
 
-        private static byte[] TxNonceKey(Guid chainId)
-            => TxNonceKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+        private static byte[] TxNonceKey(Guid chainId) =>
+            Concat(TxNonceKeyPrefix, chainId.ToByteArray());
 
-        private static byte[] TxNonceKey(Guid chainId, Address address)
-            => TxNonceKey(chainId, address.ToByteArray());
+        private static byte[] TxNonceKey(Guid chainId, Address address) =>
+            Concat(TxNonceKeyPrefix, chainId.ToByteArray(), address.ByteArray);
 
-        private static byte[] TxNonceKey(Guid chainId, byte[] addressBytes)
-            => TxNonceKey(chainId).Concat(addressBytes).ToArray();
+        private static byte[] TxNonceKey(Guid chainId, byte[] addressBytes) =>
+            Concat(TxNonceKeyPrefix, chainId.ToByteArray(), addressBytes);
 
         private static byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
 
             // As BlockHash is not fixed size, place TxId first.
-            TxExecutionKeyPrefix.Concat(txId.ByteArray).Concat(blockHash.ByteArray).ToArray();
+            Concat(TxExecutionKeyPrefix, txId.ByteArray, blockHash.ByteArray);
 
         private static byte[] TxExecutionKey(TxExecution txExecution) =>
-            TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
+            Concat(
+                TxExecutionKeyPrefix, txExecution.TxId.ByteArray, txExecution.BlockHash.ByteArray);
 
         private static byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
-            TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
+            Concat(TxIdBlockHashIndexPrefix, txId.ByteArray, blockHash.ByteArray);
 
         private static byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
-            TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
+            Concat(TxIdBlockHashIndexPrefix, txId.ByteArray);
 
         private static byte[] ForkedChainsKey(Guid chainId, Guid forkedChainId) =>
-            ForkedChainsKeyPrefix
-            .Concat(chainId.ToByteArray())
-            .Concat(forkedChainId.ToByteArray()).ToArray();
+            Concat(ForkedChainsKeyPrefix, chainId.ToByteArray(), forkedChainId.ToByteArray());
 
         private static byte[] ChainBlockCommitKey(Guid chainId) =>
-            ChainBlockCommitKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+            Concat(ChainBlockCommitKeyPrefix, chainId.ToByteArray());
 
         private static byte[] BlockCommitKey(in BlockHash blockHash) =>
-            BlockCommitKeyPrefix.Concat(blockHash.ByteArray).ToArray();
+            Concat(BlockCommitKeyPrefix, blockHash.ByteArray);
+
+        private static byte[] Concat(byte[] first, byte[] second)
+        {
+            byte[] result = new byte[first.Length + second.Length];
+            first.CopyTo(result, 0);
+            second.CopyTo(result, first.Length);
+            return result;
+        }
+
+        private static byte[] Concat(byte[] first, ImmutableArray<byte> second)
+        {
+            byte[] result = new byte[first.Length + second.Length];
+            first.CopyTo(result, 0);
+            second.CopyTo(result, first.Length);
+            return result;
+        }
+
+        private static byte[] Concat(byte[] first, byte[] second, byte[] third)
+        {
+            byte[] result = new byte[first.Length + second.Length + third.Length];
+            first.CopyTo(result, 0);
+            second.CopyTo(result, first.Length);
+            third.CopyTo(result, first.Length + second.Length);
+            return result;
+        }
+
+        private static byte[] Concat(
+            byte[] first,
+            byte[] second,
+            ImmutableArray<byte> third)
+        {
+            byte[] result = new byte[first.Length + second.Length + third.Length];
+            first.CopyTo(result, 0);
+            second.CopyTo(result, first.Length);
+            third.CopyTo(result, first.Length + second.Length);
+            return result;
+        }
+
+        private static byte[] Concat(
+            byte[] first,
+            ImmutableArray<byte> second,
+            ImmutableArray<byte> third)
+        {
+            byte[] result = new byte[first.Length + second.Length + third.Length];
+            first.CopyTo(result, 0);
+            second.CopyTo(result, first.Length);
+            third.CopyTo(result, first.Length + second.Length);
+            return result;
+        }
 
         private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {
@@ -1573,7 +1622,7 @@ namespace Libplanet.RocksDBStore
         private IEnumerable<BlockHash> IterateIndexesInner(Guid chainId, long expectedCount)
         {
             long count = 0;
-            byte[] prefix = IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+            byte[] prefix = Concat(IndexKeyPrefix, chainId.ToByteArray());
             foreach (Iterator it in IterateDb(_chainDb, prefix))
             {
                 if (count >= expectedCount)
@@ -1599,7 +1648,7 @@ namespace Libplanet.RocksDBStore
 
         private bool HasFork(Guid chainId)
         {
-            byte[] prefix = ForkedChainsKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+            byte[] prefix = Concat(ForkedChainsKeyPrefix, chainId.ToByteArray());
             return IterateDb(_chainDb, prefix).Any();
         }
 
