@@ -201,7 +201,7 @@ namespace Libplanet.Common.Types.Blocks
                 { "round", Round },
                 {
                     "votes",
-                    Votes.ToArray().Select(
+                    Votes.Select(
                         v => new Dictionary<string, object>
                         {
                             { "validator_public_key", v.ValidatorPublicKey.ToString() },

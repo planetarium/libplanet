@@ -11,10 +11,6 @@ using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
 using Serilog;
 using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
-using Transaction = Libplanet.Common.Types.Tx.Transaction;
-using TxExecution = Libplanet.Common.Types.Tx.TxExecution;
-using TxFailure = Libplanet.Common.Types.Tx.TxFailure;
-using TxSuccess = Libplanet.Common.Types.Tx.TxSuccess;
 
 namespace Libplanet.Store
 {

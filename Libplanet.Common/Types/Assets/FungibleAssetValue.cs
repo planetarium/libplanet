@@ -112,7 +112,7 @@ namespace Libplanet.Common.Types.Assets
         /// one of <c>1</c>, <c>0</c>, and <c>-1</c>, or <paramref name="majorUnit"/> or
         /// <paramref name="minorUnit"/> is negative.
         /// </exception>
-        /// <seealso cref="Libplanet.Assets.Currency.DecimalPlaces"/>
+        /// <seealso cref="Libplanet.Common.Types.Assets.Currency.DecimalPlaces"/>
         public FungibleAssetValue(
             Currency currency,
             int sign,

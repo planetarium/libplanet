@@ -1,10 +1,10 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 #if !NETSTANDARD2_1
+using System.Diagnostics;
 #endif
+using System.Linq;
 
 namespace Libplanet.Common
 {

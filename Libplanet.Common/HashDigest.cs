@@ -1,6 +1,3 @@
-#if NETSTANDARD2_0
-using System.Runtime.CompilerServices;
-#endif
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
@@ -10,6 +7,9 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+#if NETSTANDARD2_0
+using System.Runtime.CompilerServices;
+#endif
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text.Json;
