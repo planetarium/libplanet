@@ -4,7 +4,7 @@ Libplanet changelog
 Version 2.4.1
 -------------
 
-To be released.
+Released on July 14, 2023.
 
  -  Slight speed and memory optimization for `ByteUtil.Hex()`.  [[#3297]]
  -  (Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
