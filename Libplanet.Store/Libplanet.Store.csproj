@@ -28,7 +28,7 @@
     </PackageReference>
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>    
+    </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
