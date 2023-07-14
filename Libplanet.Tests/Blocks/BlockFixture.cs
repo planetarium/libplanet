@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Tx;
-using Libplanet.Tx;
 
 namespace Libplanet.Tests.Blocks
 {

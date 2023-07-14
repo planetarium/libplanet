@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
-using Libplanet.Assets;
-
-using FAV = Libplanet.Assets.FungibleAssetValue;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Explorer.GraphTypes
 {

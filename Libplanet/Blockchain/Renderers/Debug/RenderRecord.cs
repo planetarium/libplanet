@@ -1,7 +1,7 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.State;
 
 namespace Libplanet.Blockchain.Renderers.Debug

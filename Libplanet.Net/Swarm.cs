@@ -11,15 +11,16 @@ using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
-using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 
@@ -933,7 +934,7 @@ namespace Libplanet.Net
                 else
                 {
                     string errorMessage =
-                        $"Expected {nameof(Tx)} messages as response of " +
+                        $"Expected {nameof(Transaction)} messages as response of " +
                         $"the {nameof(GetTxsMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
                     throw new InvalidMessageContentException(errorMessage, message.Content);

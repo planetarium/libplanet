@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 
@@ -75,7 +77,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 privateKey,
                 null,
-                actions: new IAction[] { action },
+                actions: new IAction[] { action }.Select(x => x.PlainValue),
                 timestamp: timestamp
             );
 
@@ -129,7 +131,10 @@ namespace Libplanet.Tests.Tx
                 0,
                 privateKey,
                 null,
-                new[] { new DumbAction(stateStore, "RecordRehearsal", true) },
+                new[]
+                {
+                    new DumbAction(stateStore, "RecordRehearsal", true),
+                }.Select(x => x.PlainValue),
                 null,
                 null,
                 ImmutableHashSet<Address>.Empty,
@@ -174,7 +179,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                new DumbAction[0]
+                Array.Empty<DumbAction>().Select(x => x.PlainValue)
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
@@ -203,7 +208,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                new DumbAction[0],
+                Array.Empty<DumbAction>().Select(x => x.PlainValue),
                 null,
                 null,
                 ImmutableHashSet<Address>.Empty
@@ -222,7 +227,7 @@ namespace Libplanet.Tests.Tx
                     0,
                     null,
                     null,
-                    new DumbAction[0],
+                    Array.Empty<DumbAction>().Select(x => x.PlainValue),
                     null,
                     null,
                     ImmutableHashSet<Address>.Empty,
@@ -315,7 +320,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                actions
+                actions.ToPlainValues()
             );
             actions.Add(new DumbAction());
             Assert.Empty(tx.Actions);
@@ -334,7 +339,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(addressA, "foo"),
                 new DumbAction(addressB, "bar"),
-            });
+            }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
@@ -412,7 +417,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(addressA, "foo"),
                 new DumbAction(addressB, "bar"),
-            });
+            }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,

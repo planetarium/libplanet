@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
-using Libplanet.Blocks;
-using Libplanet.Tx;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx

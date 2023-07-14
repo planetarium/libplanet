@@ -1,4 +1,5 @@
 using System;
+using Libplanet.Common.Crypto;
 
 namespace Libplanet.KeyStore
 {

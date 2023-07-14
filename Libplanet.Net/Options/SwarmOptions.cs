@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Immutable;
 using Libplanet.Blockchain;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using Libplanet.Tx;
 
 namespace Libplanet.Net.Options
 {

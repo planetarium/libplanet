@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.Serialization;
-using Libplanet.Serialization;
+using Libplanet.Common;
+using Libplanet.Common.Serialization;
 
 namespace Libplanet.Net.Messages
 {

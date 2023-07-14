@@ -16,6 +16,9 @@ namespace Libplanet.Analyzers.Tests.Verifiers
         /// <summary>
         /// Gets the analyzer being tested, to be implemented in non-abstract class.
         /// </summary>
+        /// <returns>
+        /// The <see cref="DiagnosticAnalyzer"/> to be used for testing.
+        /// </returns>
         protected abstract DiagnosticAnalyzer GetDiagnosticAnalyzer();
 
         /// <summary>

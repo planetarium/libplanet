@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;

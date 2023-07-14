@@ -1,10 +1,10 @@
-namespace Libplanet.Extensions.Cocona.Commands;
-
 using System;
 using System.Collections.Generic;
 using global::Cocona;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Store;
+
+namespace Libplanet.Extensions.Cocona.Commands;
 
 public class StatsCommand
 {

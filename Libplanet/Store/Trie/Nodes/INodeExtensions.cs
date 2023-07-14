@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using Bencodex;
+using Libplanet.Common;
 
 namespace Libplanet.Store.Trie.Nodes
 {

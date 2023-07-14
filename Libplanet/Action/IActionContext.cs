@@ -1,8 +1,9 @@
 using System.Diagnostics.Contracts;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
-using Libplanet.Tx;
 
 namespace Libplanet.Action
 {

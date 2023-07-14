@@ -4,15 +4,16 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
-using Libplanet.Tx;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 
 namespace Libplanet.Store
 {
     /// <summary>
     /// Class that store uses to save blocks. This contains:
-    /// <see cref="BlockHeader"/>, and list of <see cref="Libplanet.Tx.TxId"/>s.
+    /// <see cref="BlockHeader"/>, and list of <see cref="TxId"/>s.
     /// </summary>
     public readonly struct BlockDigest : IBlockMetadata, IBlockExcerpt
     {

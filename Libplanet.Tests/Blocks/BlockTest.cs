@@ -2,11 +2,12 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Action;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Fixtures;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
@@ -65,7 +66,10 @@ namespace Libplanet.Tests.Blocks
                     0,
                     signer,
                     null,
-                    new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
+                    new[]
+                    {
+                        new RandomAction(signer.ToAddress()),
+                    }.ToPlainValues())).ToImmutableArray();
             var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
             var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
 

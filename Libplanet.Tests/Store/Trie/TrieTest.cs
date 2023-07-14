@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Store.Trie;
 using Xunit;
 

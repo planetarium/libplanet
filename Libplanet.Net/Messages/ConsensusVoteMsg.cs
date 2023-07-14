@@ -1,6 +1,6 @@
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages

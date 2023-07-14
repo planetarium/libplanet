@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -8,9 +7,10 @@ using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.Queries;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
@@ -57,7 +57,7 @@ public class TransactionQueryGeneratedTest
             Fx.Chain.GetNextTxNonce(pk.ToAddress()),
             pk,
             Fx.Chain.Genesis.Hash,
-            ImmutableArray<SimpleAction>.Empty.Add(new SimpleAction1()));
+            ImmutableArray<SimpleAction>.Empty.Add(new SimpleAction1()).ToPlainValues());
         Fx.Chain.StageTransaction(stagingTx);
 
         var queryResult = await ExecuteTransactionResultQueryAsync(successTx.Id);

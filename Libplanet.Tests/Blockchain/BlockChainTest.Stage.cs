@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Action;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain
@@ -32,17 +33,17 @@ namespace Libplanet.Tests.Blockchain
                 0,
                 new PrivateKey(),
                 _blockChain.Genesis.Hash,
-                new List<DumbAction>());
+                new List<DumbAction>().ToPlainValues());
             Transaction tx2 = Transaction.Create(
                 0,
                 new PrivateKey(),
                 null,
-                new List<DumbAction>());
+                new List<DumbAction>().ToPlainValues());
             Transaction tx3 = Transaction.Create(
                 0,
                 new PrivateKey(),
                 default(BlockHash),
-                new List<DumbAction>());
+                new List<DumbAction>().ToPlainValues());
 
             Assert.True(_blockChain.StageTransaction(tx1));
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);

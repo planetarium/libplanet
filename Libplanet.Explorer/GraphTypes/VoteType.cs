@@ -1,6 +1,6 @@
 using System.Linq;
 using GraphQL.Types;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Explorer.GraphTypes
 {

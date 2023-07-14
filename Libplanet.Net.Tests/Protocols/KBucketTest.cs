@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;

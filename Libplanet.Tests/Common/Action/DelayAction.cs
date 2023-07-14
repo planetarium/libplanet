@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Common.Crypto;
 using Libplanet.State;
 using Serilog;
 

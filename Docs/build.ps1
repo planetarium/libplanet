@@ -47,7 +47,7 @@ try {
 Set-Location $BaseDir
 dotnet tool run docfx docfx.json @args
 
-if (-not (Test-Path "$BaseDir/_site/api/Libplanet.html")) {
+if (-not (Test-Path "$BaseDir/_site/api/index.html")) {
       Write-Error @"
 Failed to build: _site/api/Libplanet.html doesn't exist.
 "@

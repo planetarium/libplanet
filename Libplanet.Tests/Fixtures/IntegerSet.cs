@@ -11,12 +11,13 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 
 namespace Libplanet.Tests.Fixtures
 {
@@ -60,7 +61,7 @@ namespace Libplanet.Tests.Fixtures
                         0,
                         pair.Key,
                         null,
-                        new[] { pair.Action },
+                        new[] { pair.Action }.ToPlainValues(),
                         null,
                         null,
                         ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
@@ -110,7 +111,7 @@ namespace Libplanet.Tests.Fixtures
             string rawStateKey = KeyConverters.ToStateKey(signerAddress);
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
-                Transaction.Create(nonce, signer, Genesis.Hash, actions);
+                Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
             BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
                 ? i.Value
                 : 0;

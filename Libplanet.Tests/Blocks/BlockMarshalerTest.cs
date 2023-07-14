@@ -1,14 +1,13 @@
 using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Blocks;
-using Libplanet.Tests.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests
+namespace Libplanet.Tests.Blocks
 {
     public class BlockMarshalerTest
         : IClassFixture<BlockFixture>, IClassFixture<BlockContentFixture>

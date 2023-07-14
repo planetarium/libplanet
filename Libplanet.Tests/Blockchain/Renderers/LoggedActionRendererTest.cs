@@ -5,7 +5,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Mocks;
@@ -14,7 +14,6 @@ using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
 using Xunit;
 using Constants = Serilog.Core.Constants;
-using DumbBlock = Libplanet.Blocks.Block;
 
 namespace Libplanet.Tests.Blockchain.Renderers
 {
@@ -27,13 +26,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static Exception _exception = new Exception();
 
-        private static DumbBlock _genesis =
+        private static Block _genesis =
             TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
 
-        private static DumbBlock _blockA =
+        private static Block _blockA =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
-        private static DumbBlock _blockB =
+        private static Block _blockB =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private ILogger _logger;
@@ -259,7 +258,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             bool called = false;
             LogEvent firstLog = null;
 
-            void Callback(DumbBlock oldTip, DumbBlock newTip)
+            void Callback(Block oldTip, Block newTip)
             {
                 LogEvent[] logs = LogEvents.ToArray();
                 Assert.Single(logs);
@@ -275,15 +274,15 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             IActionRenderer actionRenderer = new AnonymousActionRenderer
             {
-                BlockRenderer = end ? (Action<DumbBlock, DumbBlock>)null : Callback,
-                BlockEndRenderer = end ? Callback : (Action<DumbBlock, DumbBlock>)null,
+                BlockRenderer = end ? (Action<Block, Block>)null : Callback,
+                BlockEndRenderer = end ? Callback : (Action<Block, Block>)null,
             };
             actionRenderer = new LoggedActionRenderer(actionRenderer, _logger);
             var invoke = end
-                ? (Action<DumbBlock, DumbBlock>)actionRenderer.RenderBlockEnd
+                ? (Action<Block, Block>)actionRenderer.RenderBlockEnd
                 : actionRenderer.RenderBlock;
             var invokeOpposite = end
-                ? (Action<DumbBlock, DumbBlock>)actionRenderer.RenderBlock
+                ? (Action<Block, Block>)actionRenderer.RenderBlock
                 : actionRenderer.RenderBlockEnd;
             var methodName = end ? "RenderBlockEnd" : "RenderBlock";
 

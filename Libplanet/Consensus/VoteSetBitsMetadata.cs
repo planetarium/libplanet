@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Consensus
 {
@@ -92,7 +93,7 @@ namespace Libplanet.Consensus
         public int Round { get; }
 
         /// <summary>
-        /// The <see cref="Libplanet.Blocks.BlockHash"/> of the votes in the vote sets.
+        /// The <see cref="Common.Types.Blocks.BlockHash"/> of the votes in the vote sets.
         /// </summary>
         public BlockHash BlockHash { get; }
 

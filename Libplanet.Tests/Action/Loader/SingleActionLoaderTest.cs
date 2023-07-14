@@ -1,10 +1,11 @@
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Common.Crypto;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
-namespace Libplanet.Tests.Action
+namespace Libplanet.Tests.Action.Loader
 {
     public class SingleActionLoaderTest
     {

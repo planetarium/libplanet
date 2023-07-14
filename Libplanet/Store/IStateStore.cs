@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Store

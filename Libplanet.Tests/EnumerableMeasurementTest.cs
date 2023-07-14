@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using Libplanet.Common;
 using Xunit;
 
 namespace Libplanet.Tests

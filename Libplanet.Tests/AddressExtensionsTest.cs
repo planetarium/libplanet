@@ -1,4 +1,4 @@
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Xunit;
 
 namespace Libplanet.Tests

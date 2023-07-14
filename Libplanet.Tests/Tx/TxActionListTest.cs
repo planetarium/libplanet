@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 
@@ -32,7 +33,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Constructor()
         {
-            var emptyList = new TxActionList(new IAction[0]);
+            var emptyList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             Assert.Equal(TxActionList.Empty, emptyList);
 
             IAction[] actions =
@@ -40,7 +41,7 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(default, "foo"),
                 new DumbAction(default, "bar"),
             };
-            var list = new TxActionList(actions);
+            var list = new TxActionList(actions.ToPlainValues());
             Assert.Equal(2, list.Count);
             Assert.Equal<IEnumerable<IValue>>(actions.Select(action => action.PlainValue), list);
         }
@@ -48,7 +49,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Index()
         {
-            var emptyList = new TxActionList(new IAction[0]);
+            var emptyList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             Assert.Throws<ArgumentOutOfRangeException>(() => emptyList[-1]);
             Assert.Throws<IndexOutOfRangeException>(() => emptyList[0]);
 
@@ -57,7 +58,7 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(default, "foo"),
                 new DumbAction(default, "bar"),
             };
-            var list = new TxActionList(actions);
+            var list = new TxActionList(actions.ToPlainValues());
             Assert.Throws<ArgumentOutOfRangeException>(() => list[-1]);
             Assert.Equal(actions[0].PlainValue, list[0]);
             Assert.Equal(actions[1].PlainValue, list[1]);
@@ -84,23 +85,23 @@ namespace Libplanet.Tests.Tx
             };
 
             AssertEquality(
-                new TxActionList(actions1),
-                new TxActionList(actions1),
+                new TxActionList(actions1.ToPlainValues()),
+                new TxActionList(actions1.ToPlainValues()),
                 true);
             AssertEquality(
-                new TxActionList(actions1),
-                new TxActionList(actions2),
+                new TxActionList(actions1.ToPlainValues()),
+                new TxActionList(actions2.ToPlainValues()),
                 true);
             AssertEquality(
-                new TxActionList(actions1),
-                new TxActionList(actions3),
+                new TxActionList(actions1.ToPlainValues()),
+                new TxActionList(actions3.ToPlainValues()),
                 false);
         }
 
         [Fact]
         public void Enumeration()
         {
-            var emptyList = new TxActionList(new IAction[0]);
+            var emptyList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             Assert.Empty(emptyList);
 
             IAction[] actions =
@@ -108,14 +109,14 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(default, "foo"),
                 new DumbAction(default, "bar"),
             };
-            var list = new TxActionList(actions);
+            var list = new TxActionList(actions.ToPlainValues());
             Assert.Equal<IEnumerable<IValue>>(actions.Select(action => action.PlainValue), list);
         }
 
         [Fact]
         public void Bencoded()
         {
-            var emptyList = new TxActionList(new IAction[0]);
+            var emptyList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             AssertBencodexEqual(
                 Bencodex.Types.List.Empty,
                 emptyList.Bencoded);
@@ -126,7 +127,7 @@ namespace Libplanet.Tests.Tx
                 new DumbAction(default, "foo"),
                 new DumbAction(default, "bar"),
             };
-            var actionList = new TxActionList(actions);
+            var actionList = new TxActionList(actions.ToPlainValues());
             var expected = new List(actions.Select(action => action.PlainValue));
             AssertBencodexEqual(expected, actionList.Bencoded);
 
@@ -145,8 +146,8 @@ namespace Libplanet.Tests.Tx
                 {
                     new DumbAction(default, "foo"),
                     new DumbAction(AddressA, "bar"),
-                });
-            var emptyActionList = new TxActionList(Array.Empty<IAction>());
+                }.ToPlainValues());
+            var emptyActionList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             const string actionListJson = @"
                 [
                   {

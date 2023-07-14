@@ -1,6 +1,6 @@
 using System;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Consensus;
 using Xunit;
 

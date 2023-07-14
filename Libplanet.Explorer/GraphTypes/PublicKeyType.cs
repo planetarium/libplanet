@@ -2,7 +2,7 @@
 using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 
 namespace Libplanet.Explorer.GraphTypes
 {

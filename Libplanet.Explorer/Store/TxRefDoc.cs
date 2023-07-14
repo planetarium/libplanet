@@ -1,5 +1,5 @@
-using Libplanet.Blocks;
-using Libplanet.Tx;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using LiteDB;
 
 namespace Libplanet.Explorer.Store

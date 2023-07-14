@@ -4,11 +4,11 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.Indexing;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Explorer.Tests.Indexing;

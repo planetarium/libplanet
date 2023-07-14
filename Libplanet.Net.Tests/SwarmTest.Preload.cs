@@ -7,18 +7,19 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
 using xRetry;
@@ -462,7 +463,7 @@ namespace Libplanet.Net.Tests
                     0,
                     new PrivateKey(),
                     minerSwarm.BlockChain.Genesis.Hash,
-                    new[] { action },
+                    new[] { action }.ToPlainValues(),
                     null,
                     null,
                     ImmutableHashSet<Address>.Empty,

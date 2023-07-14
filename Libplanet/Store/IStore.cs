@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
-using Libplanet.Tx;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 
 namespace Libplanet.Store
 {
@@ -169,7 +171,7 @@ namespace Libplanet.Store
         /// Must not be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txSuccess"/> is
         /// <see langword="null"/>.</exception>
-        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <seealso cref="PutTxExecution(TxFailure)"/>
         /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
         void PutTxExecution(TxSuccess txSuccess);
 
@@ -182,7 +184,7 @@ namespace Libplanet.Store
         /// Must not be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txFailure"/> is
         /// <see langword="null"/>.</exception>
-        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <seealso cref="PutTxExecution(TxSuccess)"/>
         /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
         void PutTxExecution(TxFailure txFailure);
 
@@ -195,8 +197,8 @@ namespace Libplanet.Store
         /// execution to retrieve.</param>
         /// <returns>The recorded transaction execution summary.  If it has been never recorded
         /// <see langword="null"/> is returned instead.</returns>
-        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
-        /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <seealso cref="PutTxExecution(TxFailure)"/>
+        /// <seealso cref="PutTxExecution(TxSuccess)"/>
         TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
 
         /// <summary>

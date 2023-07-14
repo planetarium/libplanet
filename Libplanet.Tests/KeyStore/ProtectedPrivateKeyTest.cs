@@ -2,7 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Text;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.KeyStore;
 using Libplanet.KeyStore.Ciphers;
 using Libplanet.KeyStore.Kdfs;

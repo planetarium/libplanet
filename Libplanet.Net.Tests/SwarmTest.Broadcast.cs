@@ -12,8 +12,9 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
@@ -21,7 +22,6 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Serilog;
 using Serilog.Events;
 using xRetry;
@@ -312,7 +312,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 chainA.Genesis.Hash,
-                new DumbAction[] { }
+                new DumbAction[] { }.ToPlainValues()
             );
 
             chainA.StageTransaction(tx);
@@ -421,7 +421,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 chainA.Genesis.Hash,
-                new DumbAction[] { }
+                new DumbAction[] { }.ToPlainValues()
             );
 
             chainA.StageTransaction(tx);
@@ -484,7 +484,7 @@ namespace Libplanet.Net.Tests
                 0,
                 new PrivateKey(),
                 blockChains[size - 1].Genesis.Hash,
-                new DumbAction[] { }
+                new DumbAction[] { }.ToPlainValues()
             );
 
             blockChains[size - 1].StageTransaction(tx);
@@ -985,7 +985,7 @@ namespace Libplanet.Net.Tests
                 4,
                 privateKey,
                 swarm1.BlockChain.Genesis.Hash,
-                new[] { new DumbAction(address, "qux") });
+                new[] { new DumbAction(address, "qux") }.ToPlainValues());
 
             try
             {

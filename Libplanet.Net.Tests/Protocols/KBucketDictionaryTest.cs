@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;

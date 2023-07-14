@@ -1,3 +1,4 @@
+using Libplanet.Common.Types.Blocks;
 using Libplanet.State;
 
 namespace Libplanet.Blocks

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Tests;
 
 namespace Libplanet.Benchmarks

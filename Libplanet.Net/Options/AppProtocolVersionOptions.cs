@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Options
 {
     /// <summary>
     /// Various options for a <see cref="Swarm"/>'s

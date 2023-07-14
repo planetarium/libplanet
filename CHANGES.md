@@ -10,6 +10,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3300]]
+     -  `Libplanet.Transaction`
+     -  `Libplanet.Blocks`
+     -  `Libplanet.Crypto`
+     -  `Libplanet.Serialization`
+     -  `Libplanet.JsonConverters`
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +30,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3300]: https://github.com/planetarium/libplanet/pull/3300
 
 
 Version 2.5.0
@@ -110,6 +119,7 @@ be compatible with this version.
     when messages are received.  [[#3273]]
 
 ### Bug fixes
+
  -  Fixed a broken backwards compatibility of Currency  [[#3268], [#3284]]
 
 [#3206]: https://github.com/planetarium/libplanet/pull/3206

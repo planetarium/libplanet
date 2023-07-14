@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus

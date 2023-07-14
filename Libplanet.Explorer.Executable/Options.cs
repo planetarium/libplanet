@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Bencodex;
-using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Net;
 
 namespace Libplanet.Explorer.Executable

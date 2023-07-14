@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading;
+using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Policies
@@ -23,7 +24,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
-                Enumerable.Empty<DumbAction>(),
+                Enumerable.Empty<DumbAction>().ToPlainValues(),
                 timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) + timeBuffer
             );
             Assert.True(_stagePolicy.Stage(_chain, tx));
@@ -45,7 +46,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
-                Enumerable.Empty<DumbAction>(),
+                Enumerable.Empty<DumbAction>().ToPlainValues(),
                 timestamp: DateTimeOffset.UtcNow);
             Assert.True(stagePolicy.Stage(_chain, tx));
         }
@@ -58,14 +59,14 @@ namespace Libplanet.Tests.Blockchain.Policies
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
-                Enumerable.Empty<DumbAction>(),
+                Enumerable.Empty<DumbAction>().ToPlainValues(),
                 timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) + timeBuffer
             );
             Transaction staleTx = Transaction.Create(
                 0,
                 _key,
                 _fx.GenesisBlock.Hash,
-                Enumerable.Empty<DumbAction>(),
+                Enumerable.Empty<DumbAction>().ToPlainValues(),
                 timestamp: (DateTimeOffset.UtcNow - _stagePolicy.Lifetime) - timeBuffer
             );
 

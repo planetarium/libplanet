@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Bencodex.Types;
+using Libplanet.Action;
+using Libplanet.Common.Crypto;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Emit;
@@ -181,6 +183,7 @@ namespace Libplanet.Analyzers.Tests.Verifiers
                 typeof(Enumerable),
                 typeof(Compilation),
                 typeof(Address),
+                typeof(IAction),
                 typeof(IValue)
             );
             foreach (Assembly assembly in assemblies)

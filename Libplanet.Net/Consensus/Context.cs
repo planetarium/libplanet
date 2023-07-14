@@ -10,11 +10,12 @@ using Bencodex.Types;
 using Caching;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
-using Libplanet.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -227,9 +228,9 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Returns a <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed.
+        /// Returns a <see cref="BlockCommit"/> if the context is committed.
         /// </summary>
-        /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed
+        /// <returns>Returns <see cref="BlockCommit"/> if the context is committed
         /// otherwise returns <see langword="null"/>.
         /// </returns>
         public BlockCommit? GetBlockCommit()

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Libplanet.Action;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx
@@ -28,7 +29,7 @@ namespace Libplanet.Tests.Tx
             {
                 new DumbAction(AddressA, "foo"),
                 new DumbAction(AddressB, "bar"),
-            });
+            }.Select(x => x.PlainValue));
             var invoice = new TxInvoice(
                 genesisHash,
                 updatedAddresses,

@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -368,7 +369,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockChain.Genesis.Hash,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
-                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                    new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 0));
             var invalidTx = new Transaction(
                 unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));

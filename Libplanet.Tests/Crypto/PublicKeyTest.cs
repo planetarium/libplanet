@@ -2,7 +2,8 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Text;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
 using Xunit;
 using Xunit.Abstractions;
 

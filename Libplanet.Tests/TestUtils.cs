@@ -23,13 +23,15 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -427,7 +429,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                                 new Initialize(
                                     validatorSet: validatorSet,
                                     states: ImmutableDictionary.Create<Address, IValue>()),
-                            },
+                            }.Select(x => x.PlainValue),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
@@ -601,7 +603,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     0,
                     privateKey,
                     null,
-                    actions,
+                    actions.Select(x => x.PlainValue),
                     timestamp: timestamp ?? DateTimeOffset.MinValue),
             };
 

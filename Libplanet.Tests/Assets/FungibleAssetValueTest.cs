@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Assets;
+using Libplanet.Common.Types.Assets;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

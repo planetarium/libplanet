@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Nito.AsyncEx;
 
 namespace Libplanet.Net

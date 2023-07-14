@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
-using FAV = Libplanet.Assets.FungibleAssetValue;
+using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Store
 {
@@ -766,7 +766,7 @@ namespace Libplanet.Tests.Store
                     txNonce,
                     key,
                     null,
-                    new[] { action },
+                    new[] { action }.ToPlainValues(),
                     null,
                     null,
                     ImmutableHashSet<Address>.Empty,

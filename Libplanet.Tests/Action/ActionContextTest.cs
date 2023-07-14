@@ -1,9 +1,10 @@
 using System;
 using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.State;
 using Libplanet.Tests.Mocks;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Action

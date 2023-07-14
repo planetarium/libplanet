@@ -10,19 +10,21 @@ using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Tx;
 using Serilog;
-using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
+ #pragma warning disable MEN002
     /// <summary>
     /// <para>
     /// A class have <see cref="Block"/>s, <see cref="Transaction"/>s, and the chain
@@ -30,13 +32,14 @@ namespace Libplanet.Blockchain
     /// </para>
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
-    /// and pass it to the <see cref="BlockChain(IBlockPolicy, IStagePolicy,
-    /// IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
+    /// and pass it to the
+    /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
     /// constructor.
     /// </para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
+ #pragma warning restore MEN002
     public partial class BlockChain : IBlockChainStates
     {
         // FIXME: The _rwlock field should be private.
@@ -195,16 +198,17 @@ namespace Libplanet.Blockchain
         // alternatives.
         internal event EventHandler<(Block OldTip, Block NewTip)> TipChanged;
 
+ #pragma warning disable MEN002
         /// <summary>
         /// The list of registered renderers listening the state changes.
         /// </summary>
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
-        /// cref="BlockChain"/> object is instantiated; use <c>renderers</c> option of <see cref=
-        /// "BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block,
-        /// IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
+        /// cref="BlockChain"/> object is instantiated; use <c>renderers</c> option of
+        /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
+ #pragma warning restore MEN002
         public IImmutableList<IRenderer> Renderers { get; }
 
         /// <summary>
@@ -689,7 +693,7 @@ namespace Libplanet.Blockchain
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,
-                    actions,
+                    actions.Select(x => x.PlainValue),
                     maxGasPrice,
                     gasLimit,
                     updatedAddresses,

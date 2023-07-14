@@ -1,3 +1,5 @@
+using Libplanet.Common;
+
 namespace Libplanet.Extensions.Cocona.Commands;
 
 using System;
@@ -18,8 +20,11 @@ using Libplanet.Store.Trie;
 
 internal enum SchemeType
 {
+    // For extensibility.
+ #pragma warning disable SA1602
     // This is set to 0 for `default` value.
     File = 0,
+ #pragma warning restore SA1602
 }
 
 public class MptCommand

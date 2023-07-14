@@ -8,17 +8,17 @@ using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tx;
 using Xunit;
-using static Libplanet.ByteUtil;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
 namespace Libplanet.Explorer.Tests.Queries;
@@ -49,14 +49,14 @@ public class TransactionQueryTest
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,
-            Enumerable.Empty<NullAction>()
+            Enumerable.Empty<NullAction>().ToPlainValues()
         );
         tx.MarshalUnsignedTx();
         ExecutionResult result = await ExecuteQueryAsync(@$"
         {{
             bindSignature(
-                unsignedTransaction: ""{Hex(tx.SerializeUnsignedTx())}"",
-                signature: ""{Hex(tx.Signature)}""
+                unsignedTransaction: ""{ByteUtil.Hex(tx.SerializeUnsignedTx())}"",
+                signature: ""{ByteUtil.Hex(tx.Signature)}""
             )
          }}
          ", QueryGraph, source: Source);
@@ -64,7 +64,7 @@ public class TransactionQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        Assert.Equal(tx.Serialize(), ParseHex((string)resultDict["bindSignature"]));
+        Assert.Equal(tx.Serialize(), ByteUtil.ParseHex((string)resultDict["bindSignature"]));
     }
 
     [Fact]
@@ -80,13 +80,13 @@ public class TransactionQueryTest
             0L,
             new PrivateKey(),
             Source.BlockChain.Genesis.Hash,
-            new IAction[] { action }
+            new IAction[] { action }.ToPlainValues()
         );
         ExecutionResult result = await ExecuteQueryAsync(@$"
         {{
             bindSignature(
-                unsignedTransaction: ""{Hex(tx.SerializeUnsignedTx())}"",
-                signature: ""{Hex(tx.Signature)}""
+                unsignedTransaction: ""{ByteUtil.Hex(tx.SerializeUnsignedTx())}"",
+                signature: ""{ByteUtil.Hex(tx.Signature)}""
             )
          }}
          ", QueryGraph, source: Source);
@@ -94,7 +94,7 @@ public class TransactionQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        Assert.Equal(tx.Serialize(), ParseHex((string)resultDict["bindSignature"]));
+        Assert.Equal(tx.Serialize(), ByteUtil.ParseHex((string)resultDict["bindSignature"]));
     }
 
     [Fact]

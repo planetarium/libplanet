@@ -4,8 +4,8 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Consensus
 {
@@ -98,7 +98,7 @@ namespace Libplanet.Consensus
         public int Round { get; }
 
         /// <summary>
-        /// The <see cref="Libplanet.Blocks.BlockHash"/> of <see cref="Proposal"/> to claim.
+        /// The <see cref="Common.Types.Blocks.BlockHash"/> of <see cref="Proposal"/> to claim.
         /// </summary>
         public BlockHash BlockHash { get; }
 

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
-using static Libplanet.ByteUtil;
+using static Libplanet.Common.ByteUtil;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks

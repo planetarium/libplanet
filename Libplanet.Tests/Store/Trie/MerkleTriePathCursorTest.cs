@@ -2,7 +2,7 @@ using System;
 using System.Collections.Immutable;
 using Libplanet.Store.Trie;
 using Xunit;
-using static Libplanet.ByteUtil;
+using static Libplanet.Common.ByteUtil;
 using static Libplanet.Tests.TestUtils;
 using PathCursor = Libplanet.Store.Trie.MerkleTrie.PathCursor;
 

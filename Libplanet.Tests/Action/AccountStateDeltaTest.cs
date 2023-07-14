@@ -4,18 +4,18 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Mocks;
-using Libplanet.Tx;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -227,7 +227,7 @@ namespace Libplanet.Tests.Action
                 0,
                 _keys[0],
                 chain.Genesis.Hash,
-                new[] { action }
+                new[] { action }.ToPlainValues()
             );
             var preEvalBlock = TestUtils.ProposeNext(
                 chain.Tip,

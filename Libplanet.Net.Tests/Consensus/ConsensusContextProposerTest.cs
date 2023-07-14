@@ -1,5 +1,5 @@
 using System;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Messages;
 using Nito.AsyncEx;
 using Serilog;

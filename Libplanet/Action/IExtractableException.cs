@@ -1,6 +1,6 @@
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
-using Libplanet.Tx;
+using Libplanet.Common.Types.Tx;
 
 namespace Libplanet.Action
 {

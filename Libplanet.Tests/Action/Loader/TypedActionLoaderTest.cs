@@ -4,13 +4,13 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
-using Libplanet.Assets;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 
-namespace Libplanet.Tests.Action
+namespace Libplanet.Tests.Action.Loader
 {
     public class TypedActionLoaderTest
     {

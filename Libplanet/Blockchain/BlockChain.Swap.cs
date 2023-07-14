@@ -6,9 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
-using Libplanet.Tx;
 
 namespace Libplanet.Blockchain
 {

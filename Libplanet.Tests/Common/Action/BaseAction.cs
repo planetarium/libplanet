@@ -54,6 +54,9 @@ namespace Libplanet.Tests.Common.Action
         /// <exception cref="ArgumentException">Thrown for any of the reasons mentioned in
         /// the method description.
         /// </exception>
+        /// <returns>
+        /// The <c>"values"</c> value from <paramref name="plainValue"/>.
+        /// </returns>
         protected IValue GetValues(IValue plainValue)
         {
             if (!(plainValue is Dictionary dictionary))

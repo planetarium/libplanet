@@ -1,7 +1,7 @@
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Mocks;

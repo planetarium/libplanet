@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Store;
 using Xunit;
 using static Libplanet.Tests.TestUtils;

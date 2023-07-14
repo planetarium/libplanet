@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Serilog;

@@ -7,6 +7,7 @@ using Bencodex;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Types;
+using Libplanet.Common;
 
 namespace Libplanet.Explorer.GraphTypes
 {

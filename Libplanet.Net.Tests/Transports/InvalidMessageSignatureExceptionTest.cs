@@ -3,10 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Net.Transports;
 using Xunit;
 
-namespace Libplanet.Net.Transports.Tests
+namespace Libplanet.Net.Tests.Transports
 {
     public class InvalidMessageSignatureExceptionTest
     {

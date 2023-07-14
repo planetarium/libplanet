@@ -1,5 +1,5 @@
 using GraphQL.Types;
-using Libplanet.Assets;
+using Libplanet.Common.Types.Assets;
 
 namespace Libplanet.Explorer.GraphTypes;
 

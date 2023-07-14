@@ -1,6 +1,6 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Blocks;
+using Libplanet.Common.Types.Blocks;
 using Xunit;
 
 namespace Libplanet.Tests.Blocks

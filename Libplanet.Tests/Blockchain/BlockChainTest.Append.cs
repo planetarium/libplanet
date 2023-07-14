@@ -6,19 +6,20 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Assets;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Xunit;
-using FAV = Libplanet.Assets.FungibleAssetValue;
+using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -547,7 +548,7 @@ namespace Libplanet.Tests.Blockchain
             var signerA = new PrivateKey();
             var signerB = new PrivateKey();
             BlockHash genesis = _blockChain.Genesis.Hash;
-            DumbAction[] emptyActions = new DumbAction[0];
+            var emptyActions = Array.Empty<IValue>();
             Transaction
                 txA0 = Transaction.Create(0, signerA, genesis, emptyActions),
                 txA1 = Transaction.Create(1, signerA, genesis, emptyActions);
@@ -616,7 +617,7 @@ namespace Libplanet.Tests.Blockchain
                     {
                         new DumbAction(
                             dummy.ToAddress(), "foo", dummy.ToAddress(), dummy.ToAddress(), 10),
-                    }),
+                    }.ToPlainValues()),
                 txA1 = Transaction.Create(
                     1,
                     signer,
@@ -625,7 +626,7 @@ namespace Libplanet.Tests.Blockchain
                     {
                         new DumbAction(
                             dummy.ToAddress(), "bar", dummy.ToAddress(), dummy.ToAddress(), 20),
-                    });
+                    }.ToPlainValues());
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
             Block block = _blockChain.ProposeBlock(miner);
@@ -650,7 +651,7 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
-                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                    new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 1));
             var invalidTx = new Transaction(
                 unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
@@ -660,7 +661,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 0,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>(),
+                    actions: Array.Empty<DumbAction>().ToPlainValues(),
                     updatedAddresses: ImmutableHashSet<Address>.Empty
                 ),
                 invalidTx,
@@ -668,7 +669,7 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 2,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>(),
+                    actions: Array.Empty<DumbAction>().ToPlainValues(),
                     updatedAddresses: ImmutableHashSet<Address>.Empty
                 ),
             }.OrderBy(tx => tx.Id);

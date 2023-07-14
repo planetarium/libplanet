@@ -4,10 +4,10 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Policies
@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     i,
                     _key,
                     _fx.GenesisBlock.Hash,
-                    Enumerable.Empty<DumbAction>()
+                    Enumerable.Empty<DumbAction>().ToPlainValues()
                 )
             ).ToArray();
         }
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 2,
                 _key,
                 _fx.GenesisBlock.Hash,
-                Enumerable.Empty<DumbAction>()
+                Enumerable.Empty<DumbAction>().ToPlainValues()
             );
 
             Assert.Empty(StagePolicy.Iterate(_chain));

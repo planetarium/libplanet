@@ -1,14 +1,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Libplanet.Action;
-using Libplanet.Blocks;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
-using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
 using FileMode = LiteDB.FileMode;
@@ -91,11 +90,11 @@ namespace Libplanet.Explorer.Store
             return _store.GetBlockIndex(blockHash);
         }
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <inheritdoc cref="IStore.PutTxExecution(TxSuccess)"/>
         public void PutTxExecution(TxSuccess txSuccess) =>
             _store.PutTxExecution(txSuccess);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <inheritdoc cref="IStore.PutTxExecution(TxFailure)"/>
         public void PutTxExecution(TxFailure txFailure) =>
             _store.PutTxExecution(txFailure);
 

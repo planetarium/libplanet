@@ -1,3 +1,4 @@
+using Libplanet.Common.Crypto;
 using Libplanet.KeyStore;
 using Xunit;
 

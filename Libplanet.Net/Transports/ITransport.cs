@@ -5,8 +5,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Options;
 
 namespace Libplanet.Net.Transports
 {

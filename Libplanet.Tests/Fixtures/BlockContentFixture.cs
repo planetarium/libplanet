@@ -6,9 +6,10 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Sys;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
-using Libplanet.Tx;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Fixtures
@@ -48,7 +49,7 @@ namespace Libplanet.Tests.Fixtures
                         new Initialize(
                             validatorSet: TestUtils.ValidatorSet,
                             states: ImmutableDictionary.Create<Address, IValue>()),
-                    },
+                    }.ToPlainValues(),
                 timestamp: DateTimeOffset.MinValue
             );
             Transaction[] genTxs = new[] { genTx };
@@ -78,7 +79,7 @@ namespace Libplanet.Tests.Fixtures
                         actions: new TxActionList(new IAction[]
                         {
                             Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
-                        })
+                        }.ToPlainValues())
                     ),
                     new TxSigningMetadata(Block1Tx0Key.PublicKey, nonce: 0L)
                 ),
@@ -95,7 +96,10 @@ namespace Libplanet.Tests.Fixtures
                         genesisHash: GenesisHash,
                         updatedAddresses: new[] { Block1Tx1Key.ToAddress() },
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
-                        actions: new TxActionList(new IAction[] { Arithmetic.Add(30) })
+                        actions: new TxActionList(new IAction[]
+                        {
+                            Arithmetic.Add(30),
+                        }.ToPlainValues())
                     ),
                     new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)
                 ),

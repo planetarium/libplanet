@@ -1,9 +1,8 @@
 using System;
-using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Fixtures;
 using Xunit;
-using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {

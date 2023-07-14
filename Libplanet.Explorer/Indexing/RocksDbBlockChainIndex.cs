@@ -7,9 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blocks;
+using Libplanet.Common;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
-using Libplanet.Tx;
 using RocksDbSharp;
 
 namespace Libplanet.Explorer.Indexing;

@@ -7,12 +7,12 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
+using Libplanet.Common.Crypto;
+using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
+using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 using Random = System.Random;
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blockchain
                             actions: new[]
                             {
                                 new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
-                            }),
+                            }.ToPlainValues()),
                     }.ToImmutableList());
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
                     policy,
@@ -173,7 +173,10 @@ namespace Libplanet.Tests.Blockchain
                         5,  // Invalid nonce
                         new PrivateKey(),
                         _blockChain.Genesis.Hash,
-                        new[] { new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo") }),
+                        new[]
+                        {
+                            new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
+                        }.ToPlainValues()),
                 }.ToImmutableList();
 
                 var block = blockChain.ProposeBlock(new PrivateKey(), txs, null);
@@ -203,13 +206,21 @@ namespace Libplanet.Tests.Blockchain
                     0,
                     keys[0],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrA, "1a"), new DumbAction(addrB, "1b") }
+                    new[]
+                    {
+                        new DumbAction(addrA, "1a"),
+                        new DumbAction(addrB, "1b"),
+                    }.ToPlainValues()
                 ),
                 Transaction.Create(
                     1,
                     keys[0],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrC, "2a"), new DumbAction(addrD, "2b") }
+                    new[]
+                    {
+                        new DumbAction(addrC, "2a"),
+                        new DumbAction(addrD, "2b"),
+                    }.ToPlainValues()
                 ),
 
                 // pending txs1
@@ -217,13 +228,21 @@ namespace Libplanet.Tests.Blockchain
                     1,
                     keys[1],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrE, "3a"), new DumbAction(addrA, "3b") }
+                    new[]
+                    {
+                        new DumbAction(addrE, "3a"),
+                        new DumbAction(addrA, "3b"),
+                    }.ToPlainValues()
                 ),
                 Transaction.Create(
                     2,
                     keys[1],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrB, "4a"), new DumbAction(addrC, "4b") }
+                    new[]
+                    {
+                        new DumbAction(addrB, "4a"),
+                        new DumbAction(addrC, "4b"),
+                    }.ToPlainValues()
                 ),
 
                 // pending txs2
@@ -231,13 +250,21 @@ namespace Libplanet.Tests.Blockchain
                     0,
                     keys[2],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrD, "5a"), new DumbAction(addrE, "5b") }
+                    new[]
+                    {
+                        new DumbAction(addrD, "5a"),
+                        new DumbAction(addrE, "5b"),
+                    }.ToPlainValues()
                 ),
                 Transaction.Create(
                     2,
                     keys[2],
                     _blockChain.Genesis.Hash,
-                    new[] { new DumbAction(addrA, "6a"), new DumbAction(addrB, "6b") }
+                    new[]
+                    {
+                        new DumbAction(addrA, "6a"),
+                        new DumbAction(addrB, "6b"),
+                    }.ToPlainValues()
                 ),
             };
 
@@ -349,19 +376,19 @@ namespace Libplanet.Tests.Blockchain
                     2,
                     key,
                     _blockChain.Genesis.Hash,
-                    Array.Empty<DumbAction>()
+                    Array.Empty<DumbAction>().ToPlainValues()
                 ),
                 Transaction.Create(
                     1,
                     key,
                     _blockChain.Genesis.Hash,
-                    Array.Empty<DumbAction>()
+                    Array.Empty<DumbAction>().ToPlainValues()
                 ),
                 Transaction.Create(
                     0,
                     key,
                     _blockChain.Genesis.Hash,
-                    Array.Empty<DumbAction>()
+                    Array.Empty<DumbAction>().ToPlainValues()
                 ),
             };
             StageTransactions(txs);
@@ -380,7 +407,7 @@ namespace Libplanet.Tests.Blockchain
                         0,
                         key,
                         _blockChain.Genesis.Hash,
-                        Array.Empty<DumbAction>()
+                        Array.Empty<DumbAction>().ToPlainValues()
                     ),
                 }
             );
@@ -395,7 +422,7 @@ namespace Libplanet.Tests.Blockchain
                         0,
                         key,
                         _blockChain.Genesis.Hash,
-                        Array.Empty<DumbAction>()
+                        Array.Empty<DumbAction>().ToPlainValues()
                     ),
                 }
             );
@@ -640,20 +667,36 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
-                    new TxActionList(List.Empty.Add(new Text("Foo")))), // Invalid action
+                    new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(keyB.PublicKey, 1));
             var txWithInvalidAction = new Transaction(
                 unsignedInvalidTx, unsignedInvalidTx.CreateSignature(keyB)
             );
             Transaction txWithInvalidNonce = Transaction.Create(
-                2, keyB, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()
+                2, keyB, _blockChain.Genesis.Hash, Array.Empty<DumbAction>().ToPlainValues()
             );
             var txs = new[]
             {
-                Transaction.Create(0, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
-                Transaction.Create(1, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
-                Transaction.Create(2, keyA, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
-                Transaction.Create(0, keyB, _blockChain.Genesis.Hash, Array.Empty<DumbAction>()),
+                Transaction.Create(
+                    0,
+                    keyA,
+                    _blockChain.Genesis.Hash,
+                    Array.Empty<DumbAction>().ToPlainValues()),
+                Transaction.Create(
+                    1,
+                    keyA,
+                    _blockChain.Genesis.Hash,
+                    Array.Empty<DumbAction>().ToPlainValues()),
+                Transaction.Create(
+                    2,
+                    keyA,
+                    _blockChain.Genesis.Hash,
+                    Array.Empty<DumbAction>().ToPlainValues()),
+                Transaction.Create(
+                    0,
+                    keyB,
+                    _blockChain.Genesis.Hash,
+                    Array.Empty<DumbAction>().ToPlainValues()),
                 txWithInvalidAction,
                 txWithInvalidNonce,
             };
