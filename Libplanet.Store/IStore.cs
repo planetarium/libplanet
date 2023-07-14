@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Libplanet.Blockchain;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
