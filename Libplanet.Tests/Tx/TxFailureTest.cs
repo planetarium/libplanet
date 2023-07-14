@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Bencodex.Types;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
 using Xunit;
@@ -39,7 +38,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(
                 $"{nameof(System)}.{nameof(ArgumentNullException)}",
                 _fx.ExceptionName);
-            Assert.Equal(Dictionary.Empty.Add("parameterName", "foo"), _fx.ExceptionMetadata);
+            Assert.Null(_fx.ExceptionMetadata);
         }
 
         [Fact]
@@ -53,7 +52,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_blockHash, f.BlockHash);
             Assert.Equal(_txid, f.TxId);
             Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
-            Assert.Equal((Text)"foo", f.ExceptionMetadata);
+            Assert.Null(f.ExceptionMetadata);
         }
 
         [Fact]
