@@ -195,9 +195,9 @@ may account for changing endpoint.</p>
   <h4 id="Libplanet_Net_Transports_NetMQTransport_DifferentAppProtocolVersionEncountered" data-uid="Libplanet.Net.Transports.NetMQTransport.DifferentAppProtocolVersionEncountered">DifferentAppProtocolVersionEncountered</h4>
   <div class="markdown level1 summary"><p>The callback triggered when a node encounters
 an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different from
-<a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html#Libplanet_Net_AppProtocolVersionOptions_AppProtocolVersion">AppProtocolVersion</a> that is signed by
+<a class="xref" href="Libplanet.Net.Options.AppProtocolVersionOptions.html#Libplanet_Net_Options_AppProtocolVersionOptions_AppProtocolVersion">AppProtocolVersion</a> that is signed by
 a <em>trusted party</em>, that is, one of
-<a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html#Libplanet_Net_AppProtocolVersionOptions_TrustedAppProtocolVersionSigners">TrustedAppProtocolVersionSigners</a>.  Does nothing by default.</p>
+<a class="xref" href="Libplanet.Net.Options.AppProtocolVersionOptions.html#Libplanet_Net_Options_AppProtocolVersionOptions_TrustedAppProtocolVersionSigners">TrustedAppProtocolVersionSigners</a>.  Does nothing by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -330,11 +330,11 @@ the <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</
   </span>
   <a id="Libplanet_Net_Transports_NetMQTransport_TrustedAppProtocolVersionSigners_" data-uid="Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners*"></a>
   <h4 id="Libplanet_Net_Transports_NetMQTransport_TrustedAppProtocolVersionSigners" data-uid="Libplanet.Net.Transports.NetMQTransport.TrustedAppProtocolVersionSigners">TrustedAppProtocolVersionSigners</h4>
-  <div class="markdown level1 summary"><p>The set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s to trust when a node encounters
+  <div class="markdown level1 summary"><p>The set of <a class="xref" href="Libplanet.Common.Crypto.PublicKey.html">PublicKey</a>s to trust when a node encounters
 a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different
-from <a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html#Libplanet_Net_AppProtocolVersionOptions_AppProtocolVersion">AppProtocolVersion</a>.  Any <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with an untrusted
+from <a class="xref" href="Libplanet.Net.Options.AppProtocolVersionOptions.html#Libplanet_Net_Options_AppProtocolVersionOptions_AppProtocolVersion">AppProtocolVersion</a>.  Any <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with an untrusted
 <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is ignored by the node.  Set to an
-empty set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>s by default, i.e. not to trust any
+empty set of <a class="xref" href="Libplanet.Common.Crypto.PublicKey.html">PublicKey</a>s by default, i.e. not to trust any
 <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with a different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -352,7 +352,7 @@ empty set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Common.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -419,13 +419,13 @@ is already disposed.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_Libplanet_Net_Options_HostOptions_System_Nullable_System_TimeSpan__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey%2CLibplanet.Net.AppProtocolVersionOptions%2CLibplanet.Net.Options.HostOptions%2CSystem.Nullable%7BSystem.TimeSpan%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Common_Crypto_PrivateKey_Libplanet_Net_Options_AppProtocolVersionOptions_Libplanet_Net_Options_HostOptions_System_Nullable_System_TimeSpan__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Common.Crypto.PrivateKey%2CLibplanet.Net.Options.AppProtocolVersionOptions%2CLibplanet.Net.Options.HostOptions%2CSystem.Nullable%7BSystem.TimeSpan%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/NetMQTransport.cs/#L171">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_NetMQTransport_Create_" data-uid="Libplanet.Net.Transports.NetMQTransport.Create*"></a>
-  <h4 id="Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersionOptions_Libplanet_Net_Options_HostOptions_System_Nullable_System_TimeSpan__" data-uid="Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersionOptions,Libplanet.Net.Options.HostOptions,System.Nullable{System.TimeSpan})">Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable&lt;TimeSpan&gt;)</h4>
+  <h4 id="Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Common_Crypto_PrivateKey_Libplanet_Net_Options_AppProtocolVersionOptions_Libplanet_Net_Options_HostOptions_System_Nullable_System_TimeSpan__" data-uid="Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Common.Crypto.PrivateKey,Libplanet.Net.Options.AppProtocolVersionOptions,Libplanet.Net.Options.HostOptions,System.Nullable{System.TimeSpan})">Create(PrivateKey, AppProtocolVersionOptions, HostOptions, Nullable&lt;TimeSpan&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an initialized <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -444,15 +444,15 @@ is already disposed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><a class="xref" href="Libplanet.Common.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">privateKey</span></td>
-        <td><p><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> of the transport layer.</p>
+        <td><p><a class="xref" href="Libplanet.Common.Crypto.PrivateKey.html">PrivateKey</a> of the transport layer.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html">AppProtocolVersionOptions</a></td>
+        <td><a class="xref" href="Libplanet.Net.Options.AppProtocolVersionOptions.html">AppProtocolVersionOptions</a></td>
         <td><span class="parametername">appProtocolVersionOptions</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.AppProtocolVersionOptions.html">AppProtocolVersionOptions</a>
+        <td><p>The <a class="xref" href="Libplanet.Net.Options.AppProtocolVersionOptions.html">AppProtocolVersionOptions</a>
 to use when handling an <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_AppProtocolVersion">AppProtocolVersion</a> attached to
 a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>

@@ -223,7 +223,7 @@ which means it is equivalent to the states <code data-dev-comment-type="paramref
 and only after applied to the blockchain, unless an exception is thrown during executing
 the <code data-dev-comment-type="paramref" class="paramref">action</code> (in that case <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> is called instead) or
 once the <code data-dev-comment-type="paramref" class="paramref">action</code> has been unrendered.</p>
-<p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> method is called
+<p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_">RenderBlock(Block, Block)</a> method is called
 (where its second parameter <code>newTip</code> contains a transaction the <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to).</p>
 </div>
   <span class="small pull-right mobile-hide">
@@ -279,19 +279,19 @@ That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RecordingActionRenderer.RenderActionError(IValue, IActionContext, Exception)</a></div>
   <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RenderBlock(Block, Block)</a> method is called
+  <div class="markdown level1 remarks"><p>Also note that this method is invoked after <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_">RenderBlock(Block, Block)</a> method is called
 (where its second parameter <code>newTip</code> contains a transaction the <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to).</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Blocks.Block%2CLibplanet.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Common.Types.Blocks.Block%2CLibplanet.Common.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Blocks.Block,Libplanet.Blocks.Block)">RenderBlock(Block, Block)</h4>
-  <div class="markdown level1 summary"><p>Does things that should be done right after a new <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> is appended to
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlock(Libplanet.Common.Types.Blocks.Block,Libplanet.Common.Types.Blocks.Block)">RenderBlock(Block, Block)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right after a new <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a> is appended to
 a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> (so that its <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a> has changed).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -310,13 +310,13 @@ a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> (so
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
+        <td><a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">oldTip</span></td>
         <td><p>The previous <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
+        <td><a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">newTip</span></td>
         <td><p>The current <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
 </td>
@@ -324,21 +324,21 @@ a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> (so
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RecordingActionRenderer.RenderBlock(Block, Block)</a></div>
-  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Blocks_Block_Libplanet_Blocks_Block__remarks">Remarks</h5>
+  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_">RecordingActionRenderer.RenderBlock(Block, Block)</a></div>
+  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlock_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for a block, and only after applied to
 the blockchain, unless it has been stale due to reorg.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Blocks.Block%2CLibplanet.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Common.Types.Blocks.Block%2CLibplanet.Common.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/ValidatingActionRenderer.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Blocks.Block,Libplanet.Blocks.Block)">RenderBlockEnd(Block, Block)</h4>
-  <div class="markdown level1 summary"><p>Does things that should be done right all actions in a new <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> are
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderBlockEnd(Libplanet.Common.Types.Blocks.Block,Libplanet.Common.Types.Blocks.Block)">RenderBlockEnd(Block, Block)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right all actions in a new <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a> are
 rendered.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -357,13 +357,13 @@ rendered.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
+        <td><a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">oldTip</span></td>
         <td><p>The previous <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Blocks.Block.html">Block</a></td>
+        <td><a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a></td>
         <td><span class="parametername">newTip</span></td>
         <td><p>The current <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
 </td>
@@ -371,8 +371,8 @@ rendered.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block_">RecordingActionRenderer.RenderBlockEnd(Block, Block)</a></div>
-  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Blocks_Block_Libplanet_Blocks_Block__remarks">Remarks</h5>
+  <div><a class="xref" href="Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderBlockEnd_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block_">RecordingActionRenderer.RenderBlockEnd(Block, Block)</a></div>
+  <h5 id="Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderBlockEnd_Libplanet_Common_Types_Blocks_Block_Libplanet_Common_Types_Blocks_Block__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for a block.</p>
 </div>
   <h3 id="implements">Implements</h3>

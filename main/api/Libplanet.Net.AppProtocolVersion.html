@@ -78,7 +78,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -108,13 +108,13 @@ is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolV
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion__ctor_System_Int32_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.%23ctor(System.Int32%2CBencodex.Types.IValue%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%2CLibplanet.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion__ctor_System_Int32_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__Libplanet_Common_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.%23ctor(System.Int32%2CBencodex.Types.IValue%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%2CLibplanet.Common.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L54">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion__ctor_" data-uid="Libplanet.Net.AppProtocolVersion.#ctor*"></a>
-  <h4 id="Libplanet_Net_AppProtocolVersion__ctor_System_Int32_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__Libplanet_Address_" data-uid="Libplanet.Net.AppProtocolVersion.#ctor(System.Int32,Bencodex.Types.IValue,System.Collections.Immutable.ImmutableArray{System.Byte},Libplanet.Address)">AppProtocolVersion(Int32, IValue, ImmutableArray&lt;Byte&gt;, Address)</h4>
+  <h4 id="Libplanet_Net_AppProtocolVersion__ctor_System_Int32_Bencodex_Types_IValue_System_Collections_Immutable_ImmutableArray_System_Byte__Libplanet_Common_Crypto_Address_" data-uid="Libplanet.Net.AppProtocolVersion.#ctor(System.Int32,Bencodex.Types.IValue,System.Collections.Immutable.ImmutableArray{System.Byte},Libplanet.Common.Crypto.Address)">AppProtocolVersion(Int32, IValue, ImmutableArray&lt;Byte&gt;, Address)</h4>
   <div class="markdown level1 summary"><p>Initializes an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> value with field values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -151,7 +151,7 @@ is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolV
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">signer</span></td>
         <td><p>Gets the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
 </td>
@@ -165,7 +165,7 @@ is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolV
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Extra.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Extra%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L37">View Source</a>
   </span>
   <h4 id="Libplanet_Net_AppProtocolVersion_Extra" data-uid="Libplanet.Net.AppProtocolVersion.Extra">Extra</h4>
   <div class="markdown level1 summary"><p>Optional extra data about the version.  This can be used for any purpose
@@ -196,7 +196,7 @@ by apps, such as a URL to download the software.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L41">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L42">View Source</a>
   </span>
   <h4 id="Libplanet_Net_AppProtocolVersion_Signer" data-uid="Libplanet.Net.AppProtocolVersion.Signer">Signer</h4>
   <div class="markdown level1 summary"><p>A signer who claims presence of a version.</p>
@@ -216,7 +216,7 @@ by apps, such as a URL to download the software.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -226,7 +226,7 @@ by apps, such as a URL to download the software.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Version.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Version%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L31">View Source</a>
   </span>
   <h4 id="Libplanet_Net_AppProtocolVersion_Version" data-uid="Libplanet.Net.AppProtocolVersion.Version">Version</h4>
   <div class="markdown level1 summary"><p>The version number.  This does not have to be increased by only 1, but can be more
@@ -259,7 +259,7 @@ than that.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L70">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L71">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Signature_" data-uid="Libplanet.Net.AppProtocolVersion.Signature*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_Signature" data-uid="Libplanet.Net.AppProtocolVersion.Signature">Signature</h4>
@@ -290,7 +290,7 @@ than that.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Token.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Token%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Token_" data-uid="Libplanet.Net.AppProtocolVersion.Token*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_Token" data-uid="Libplanet.Net.AppProtocolVersion.Token">Token</h4>
@@ -332,7 +332,7 @@ public readonly string Token { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Equals_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L236">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L237">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Equals_" data-uid="Libplanet.Net.AppProtocolVersion.Equals*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_Equals_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)">Equals(AppProtocolVersion)</h4>
@@ -342,7 +342,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -388,7 +388,7 @@ public readonly bool Equals(AppProtocolVersion other)</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L247">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L248">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Equals_" data-uid="Libplanet.Net.AppProtocolVersion.Equals*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_Equals_System_Object_" data-uid="Libplanet.Net.AppProtocolVersion.Equals(System.Object)">Equals(Object)</h4>
@@ -398,7 +398,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -446,7 +446,7 @@ public override readonly bool Equals(object obj)</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_FromToken_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.FromToken(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L148">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L149">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_FromToken_" data-uid="Libplanet.Net.AppProtocolVersion.FromToken*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_FromToken_System_String_" data-uid="Libplanet.Net.AppProtocolVersion.FromToken(System.String)">FromToken(String)</h4>
@@ -523,7 +523,7 @@ format is invalid.  The detailed reason is in the message.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L252">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L253">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_GetHashCode_" data-uid="Libplanet.Net.AppProtocolVersion.GetHashCode*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_GetHashCode" data-uid="Libplanet.Net.AppProtocolVersion.GetHashCode">GetHashCode()</h4>
@@ -533,7 +533,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -561,13 +561,13 @@ public override readonly int GetHashCode()</code></pre>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Crypto_PrivateKey_System_Int32_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey%2CSystem.Int32%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Common_Crypto_PrivateKey_System_Int32_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Common.Crypto.PrivateKey%2CSystem.Int32%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L123">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Sign_" data-uid="Libplanet.Net.AppProtocolVersion.Sign*"></a>
-  <h4 id="Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Crypto_PrivateKey_System_Int32_Bencodex_Types_IValue_" data-uid="Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey,System.Int32,Bencodex.Types.IValue)">Sign(PrivateKey, Int32, IValue)</h4>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Common_Crypto_PrivateKey_System_Int32_Bencodex_Types_IValue_" data-uid="Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Common.Crypto.PrivateKey,System.Int32,Bencodex.Types.IValue)">Sign(PrivateKey, Int32, IValue)</h4>
   <div class="markdown level1 summary"><p>Claim a <code data-dev-comment-type="paramref" class="paramref">version</code> with <code data-dev-comment-type="paramref" class="paramref">extra</code> data and sign it
 using the given private key.</p>
 </div>
@@ -587,7 +587,7 @@ using the given private key.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><a class="xref" href="Libplanet.Common.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">signer</span></td>
         <td><p>A private key to sign the claim.</p>
 </td>
@@ -644,7 +644,7 @@ using the given private key.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L268">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L269">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_ToString_" data-uid="Libplanet.Net.AppProtocolVersion.ToString*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_ToString" data-uid="Libplanet.Net.AppProtocolVersion.ToString">ToString()</h4>
@@ -654,7 +654,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -682,13 +682,13 @@ public override readonly string ToString()</code></pre>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Common.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L230">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L231">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_Verify_" data-uid="Libplanet.Net.AppProtocolVersion.Verify*"></a>
-  <h4 id="Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)">Verify(PublicKey)</h4>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_" data-uid="Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Common.Crypto.PublicKey)">Verify(PublicKey)</h4>
   <div class="markdown level1 summary"><p>Verifies whether the claim is certainly signed by the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -708,7 +708,7 @@ public readonly bool Verify(PublicKey publicKey)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><a class="xref" href="Libplanet.Common.Crypto.PublicKey.html">PublicKey</a></td>
         <td><span class="parametername">publicKey</span></td>
         <td><p>A public key of the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
 </td>
@@ -740,7 +740,7 @@ the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_Ap
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_op_Equality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L105">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L106">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_op_Equality_" data-uid="Libplanet.Net.AppProtocolVersion.op_Equality*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_op_Equality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)">Equality(AppProtocolVersion, AppProtocolVersion)</h4>
@@ -750,7 +750,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -801,7 +801,7 @@ public static bool operator ==(AppProtocolVersion left, AppProtocolVersion right
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_op_Inequality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L109">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L110">View Source</a>
   </span>
   <a id="Libplanet_Net_AppProtocolVersion_op_Inequality_" data-uid="Libplanet.Net.AppProtocolVersion.op_Inequality*"></a>
   <h4 id="Libplanet_Net_AppProtocolVersion_op_Inequality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)">Inequality(AppProtocolVersion, AppProtocolVersion)</h4>
@@ -811,7 +811,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Common_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -872,7 +872,7 @@ public static bool operator !=(AppProtocolVersion left, AppProtocolVersion right
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/AppProtocolVersion.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

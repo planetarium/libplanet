@@ -72,22 +72,22 @@
 
   <h1 id="Libplanet_Blocks_IBlockState" data-uid="Libplanet.Blocks.IBlockState" class="text-break">Interface IBlockState
 </h1>
-  <div class="markdown level0 summary"><p>A minimal interface to get states from the output state of a <a class="xref" href="Libplanet.Blocks.Block.html">Block</a>.</p>
+  <div class="markdown level0 summary"><p>A minimal interface to get states from the output state of a <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetState_Libplanet_Address_">IAccountState.GetState(Address)</a>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetState_Libplanet_Common_Crypto_Address_">IAccountState.GetState(Address)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Common_Crypto_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_">IAccountState.GetBalance(Address, Currency)</a>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetBalance_Libplanet_Common_Crypto_Address_Libplanet_Common_Types_Assets_Currency_">IAccountState.GetBalance(Address, Currency)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetTotalSupply_Libplanet_Assets_Currency_">IAccountState.GetTotalSupply(Currency)</a>
+      <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetTotalSupply_Libplanet_Common_Types_Assets_Currency_">IAccountState.GetTotalSupply(Currency)</a>
     </div>
     <div>
       <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetValidatorSet">IAccountState.GetValidatorSet()</a>
@@ -106,11 +106,11 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockState_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockState.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockState.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockState.cs/#L16">View Source</a>
   </span>
   <a id="Libplanet_Blocks_IBlockState_BlockHash_" data-uid="Libplanet.Blocks.IBlockState.BlockHash*"></a>
   <h4 id="Libplanet_Blocks_IBlockState_BlockHash" data-uid="Libplanet.Blocks.IBlockState.BlockHash">BlockHash</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.Block.html#Libplanet_Blocks_Block_Hash">Hash</a> of the <a class="xref" href="Libplanet.Blocks.Block.html">Block</a> that this
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html#Libplanet_Common_Types_Blocks_Block_Hash">Hash</a> of the <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a> that this
 <a class="xref" href="Libplanet.Blocks.IBlockState.html">IBlockState</a> represents.  This can be <span class="xref">null</span>
 in which case represents initial default states.</p>
 </div>
@@ -129,7 +129,7 @@ in which case represents initial default states.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -145,7 +145,7 @@ in which case represents initial default states.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_IBlockState.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.IBlockState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockState.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/IBlockState.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
