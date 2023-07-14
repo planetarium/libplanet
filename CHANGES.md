@@ -110,6 +110,23 @@ be compatible with this version.
 [#3292]: https://github.com/planetarium/libplanet/pull/3292
 
 
+Version 2.4.1
+-------------
+
+Released on July 14, 2023.
+
+ -  Slight speed and memory optimization for `ByteUtil.Hex()`.  [[#3297]]
+ -  (Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
+    [[#3298]]
+ -  Upgrade *Bencodex* from [0.10.0][Bencodex 0.10.0] to
+    [0.11.0][Bencodex 0.11.0].  [[#3302]]
+
+[#3297]: https://github.com/planetarium/libplanet/pull/3297
+[#3298]: https://github.com/planetarium/libplanet/pull/3298
+[#3302]: https://github.com/planetarium/libplanet/pull/3302
+[Bencodex 0.11.0]: https://www.nuget.org/packages/Bencodex/0.11.0
+
+
 Version 2.4.0
 -------------
 
