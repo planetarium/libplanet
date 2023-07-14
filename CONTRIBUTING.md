@@ -100,6 +100,10 @@ on GitHub consists of several projects.  There are two types of projects:
     This is distributed as a distinct NuGet package:
     *[Libplanet.Common][NuGet package]*.
 
+ -  *Libplanet.Store*: The store related functionalities for *Libplanet*.
+    This is distributed as a distinct NuGet package:
+    *[Libplanet.Store][NuGet package]*.
+
  -  *Libplanet.Net*: The peer-to-peer networking layer built on top of
     *Libplanet*.  This is distributed as a distinct NuGet package:
     *[Libplanet.Net]*.

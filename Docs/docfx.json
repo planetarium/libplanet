@@ -6,6 +6,7 @@
           "files": [
             "Libplanet/Libplanet.csproj",
             "Libplanet.Common/Libplanet.Common.csproj",
+            "Libplanet.Store/Libplanet.Store.csproj",
             "Libplanet.Net/Libplanet.Net.csproj",
             "Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
             "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
