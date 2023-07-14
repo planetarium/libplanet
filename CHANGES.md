@@ -9,9 +9,13 @@ To be released.
  -  Slight speed and memory optimization for `ByteUtil.Hex()`.  [[#3297]]
  -  (Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
     [[#3298]]
+ -  Upgrade *Bencodex* from [0.10.0][Bencodex 0.10.0] to
+    [0.11.0][Bencodex 0.11.0].  [[#3302]]
 
-[#3298]: https://github.com/planetarium/libplanet/pull/3298
 [#3297]: https://github.com/planetarium/libplanet/pull/3297
+[#3298]: https://github.com/planetarium/libplanet/pull/3298
+[#3302]: https://github.com/planetarium/libplanet/pull/3302
+[Bencodex 0.11.0]: https://www.nuget.org/packages/Bencodex/0.11.0
 
 
 Version 2.4.0
