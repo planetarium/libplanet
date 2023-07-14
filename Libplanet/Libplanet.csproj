@@ -68,6 +68,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
+    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
@@ -95,7 +96,8 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or&#xA;                         '$(TargetFramework)' == 'netstandard2.1'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
+                         '$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
   </ItemGroup>
 
@@ -108,9 +110,5 @@ https://docs.libplanet.io/</Description>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
   </ItemGroup>
 </Project>

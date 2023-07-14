@@ -1,7 +1,3 @@
-using Libplanet.Common.Types.Tx;
-
-namespace Libplanet.Extensions.Cocona.Commands;
-
 using System;
 using System.Collections.Immutable;
 using System.IO;
@@ -10,6 +6,9 @@ using Bencodex;
 using Bencodex.Types;
 using global::Cocona;
 using global::Cocona.Help;
+using Libplanet.Common.Types.Tx;
+
+namespace Libplanet.Extensions.Cocona.Commands;
 
 public class TxCommand
 {

@@ -1,8 +1,3 @@
-using Libplanet.Common.JsonConverters;
-using Libplanet.State;
-
-namespace Libplanet.Extensions.Cocona;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,7 +8,11 @@ using System.Text.Json.Serialization;
 using Bencodex.Types;
 using global::Cocona;
 using Libplanet.Action;
+using Libplanet.Common.JsonConverters;
+using Libplanet.State;
 using Libplanet.Store;
+
+namespace Libplanet.Extensions.Cocona;
 
 public static class Utils
 {

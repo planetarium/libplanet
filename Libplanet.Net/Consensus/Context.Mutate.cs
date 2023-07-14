@@ -38,7 +38,7 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
-                if ((_validValue ?? GetValue()) is Common.Types.Blocks.Block proposalValue)
+                if ((_validValue ?? GetValue()) is Block proposalValue)
                 {
                     Proposal proposal = new ProposalMetadata(
                         Height,
@@ -237,7 +237,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            (Common.Types.Blocks.Block Block, int ValidRound)? propose = GetProposal();
+            (Block Block, int ValidRound)? propose = GetProposal();
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
                 Step == ConsensusStep.Propose)

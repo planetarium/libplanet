@@ -78,7 +78,7 @@ namespace Libplanet.Common.Types.Assets
         /// <exception cref="ArgumentException">Thrown when the negativity sign is ambiguous
         /// (e.g., both units have signs) or too big for the <paramref name="currency"/>.
         /// </exception>
-        /// <seealso cref="Libplanet.Assets.Currency.DecimalPlaces"/>
+        /// <seealso cref="Currency.DecimalPlaces"/>
         public FungibleAssetValue(Currency currency, BigInteger majorUnit, BigInteger minorUnit)
             : this(
                 currency,
@@ -112,7 +112,7 @@ namespace Libplanet.Common.Types.Assets
         /// one of <c>1</c>, <c>0</c>, and <c>-1</c>, or <paramref name="majorUnit"/> or
         /// <paramref name="minorUnit"/> is negative.
         /// </exception>
-        /// <seealso cref="Libplanet.Common.Types.Assets.Currency.DecimalPlaces"/>
+        /// <seealso cref="Currency.DecimalPlaces"/>
         public FungibleAssetValue(
             Currency currency,
             int sign,
@@ -228,7 +228,7 @@ namespace Libplanet.Common.Types.Assets
         /// separator, in absolute value.
         /// </summary>
         /// <remarks>It is absolute value, which lacks <see cref="Sign"/>.</remarks>
-        /// <seealso cref="Libplanet.Assets.Currency.DecimalPlaces"/>
+        /// <seealso cref="Currency.DecimalPlaces"/>
         [Pure]
         public BigInteger MajorUnit =>
             BigInteger.Abs(RawValue) / BigInteger.Pow(10, Currency.DecimalPlaces);
@@ -238,7 +238,7 @@ namespace Libplanet.Common.Types.Assets
         /// separator, in absolute value.
         /// </summary>
         /// <remarks>It is absolute value, which lacks <see cref="Sign"/>.</remarks>
-        /// <seealso cref="Libplanet.Assets.Currency.DecimalPlaces"/>
+        /// <seealso cref="Currency.DecimalPlaces"/>
         [Pure]
         public BigInteger MinorUnit =>
             BigInteger.Abs(RawValue) % BigInteger.Pow(10, Currency.DecimalPlaces);

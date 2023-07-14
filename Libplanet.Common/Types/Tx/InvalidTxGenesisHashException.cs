@@ -20,7 +20,7 @@ namespace Libplanet.Common.Types.Tx
         /// <param name="txid">The invalid <see cref="Transaction"/>'s
         /// <see cref="Transaction.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
-        /// <param name="expectedGenesisHash">The <see cref="HashDigest{SHA256}"/>
+        /// <param name="expectedGenesisHash">The <see cref="BlockHash"/>
         /// value of <see cref="BlockChain.Genesis"/>.</param>
         /// <param name="improperGenesisHash">The actual
         /// <see cref="Transaction.GenesisHash"/>.  This can be <see langword="null"/>.</param>
