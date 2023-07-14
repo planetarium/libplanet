@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Common.Crypto;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.State;
 
 namespace Libplanet.Action.Sys

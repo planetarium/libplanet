@@ -6,7 +6,7 @@ using Libplanet.State;
 
 namespace Libplanet.Action
 {
-    internal static class ActionEvaluationsExtensions
+    public static class ActionEvaluationsExtensions
     {
         public static IImmutableDictionary<string, IValue> GetRawTotalDelta(
             this IReadOnlyList<IActionEvaluation> actionEvaluations)

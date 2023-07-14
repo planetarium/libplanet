@@ -9,7 +9,7 @@ using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
 
-namespace Libplanet.Consensus
+namespace Libplanet.Common.Types.Consensus
 {
     /// <summary>
     /// A wrapper class for a <see cref="List{T}"/> of <see cref="Validator"/>s.

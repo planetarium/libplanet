@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Consensus
 {

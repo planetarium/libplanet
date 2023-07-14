@@ -4,7 +4,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.State
 {

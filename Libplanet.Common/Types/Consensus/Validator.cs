@@ -5,7 +5,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common.Crypto;
 
-namespace Libplanet.Consensus
+namespace Libplanet.Common.Types.Consensus
 {
     /// <summary>
     /// A class designed for a <see langword="Validator"/> of consensus.

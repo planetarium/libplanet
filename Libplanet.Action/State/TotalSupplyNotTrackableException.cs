@@ -49,7 +49,7 @@ namespace Libplanet.State
             info.AddValue(nameof(Currency), Currency);
         }
 
-        internal static TotalSupplyNotTrackableException WithDefaultMessage(Currency currency)
+        public static TotalSupplyNotTrackableException WithDefaultMessage(Currency currency)
         {
             var msg =
                 $"The total supply value of the currency {currency} is not trackable because it"

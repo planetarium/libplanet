@@ -4,7 +4,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.State
 {
@@ -112,8 +112,8 @@ namespace Libplanet.State
         IImmutableDictionary<Currency, BigInteger> TotalSupplies { get; }
 
         /// <summary>
-        /// A <see cref="Consensus.ValidatorSet"/> representing a change in
-        /// <see cref="Consensus.ValidatorSet"/>, if not <see langword="null"/>.
+        /// A <see cref="Common.Types.Consensus.ValidatorSet"/> representing a change in
+        /// <see cref="Common.Types.Consensus.ValidatorSet"/>, if not <see langword="null"/>.
         /// </summary>
         ValidatorSet? ValidatorSet { get; }
     }

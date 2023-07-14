@@ -8,9 +8,9 @@ using static Libplanet.State.KeyConverters;
 
 namespace Libplanet.State
 {
-    internal static class AccountStateDeltaExtensions
+    public static class AccountStateDeltaExtensions
     {
-        internal static IImmutableDictionary<Address, IValue> GetUpdatedStates(
+        public static IImmutableDictionary<Address, IValue> GetUpdatedStates(
             this IAccountStateDelta stateDelta) => stateDelta.Delta.States;
 
         internal static IImmutableDictionary<(Address, Currency), FungibleAssetValue>

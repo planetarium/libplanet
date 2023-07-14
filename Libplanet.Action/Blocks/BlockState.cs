@@ -4,7 +4,7 @@ using Bencodex.Types;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -21,7 +21,7 @@ namespace Libplanet.Blocks
         private ITrie _stateRoot;
         private BlockStateCache _cache;
 
-        internal BlockState(BlockHash? blockHash, ITrie stateRoot)
+        public BlockState(BlockHash? blockHash, ITrie stateRoot)
         {
             _blockHash = blockHash;
             _stateRoot = stateRoot;

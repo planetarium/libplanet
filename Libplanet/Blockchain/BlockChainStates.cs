@@ -5,7 +5,7 @@ using Libplanet.Blocks;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 

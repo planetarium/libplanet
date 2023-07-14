@@ -17,8 +17,8 @@ using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 
