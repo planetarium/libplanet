@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Bencodex.Types;
-using Libplanet.Common.Serialization;
 using Libplanet.Common.Types.Blocks;
 
 namespace Libplanet.Common.Types.Tx
@@ -27,13 +26,11 @@ namespace Libplanet.Common.Types.Tx
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
-            string exceptionName,
-            IValue? exceptionMetadata
+            string exceptionName
         )
             : base(blockHash, txId)
         {
             ExceptionName = exceptionName;
-            ExceptionMetadata = exceptionMetadata;
         }
 
         /// <summary>
@@ -52,8 +49,7 @@ namespace Libplanet.Common.Types.Tx
             : this(
                 blockHash,
                 txId,
-                exception.GetType().FullName ?? string.Empty,
-                exception.ExtractMetadata()
+                exception.GetType().FullName ?? string.Empty
             )
         {
         }
@@ -62,10 +58,6 @@ namespace Libplanet.Common.Types.Tx
             : base(info, context)
         {
             ExceptionName = info.GetString(nameof(ExceptionName)) ?? string.Empty;
-            ExceptionMetadata
-                = info.GetValue<byte[]?>(nameof(ExceptionMetadata)) is { } bytes
-                ? _codec.Decode(bytes)
-                : null;
         }
 
         /// <summary>
@@ -78,7 +70,7 @@ namespace Libplanet.Common.Types.Tx
         /// Optional metadata about the exception.
         /// </summary>
         [Pure]
-        public IValue? ExceptionMetadata { get; }
+        public IValue? ExceptionMetadata => null;
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

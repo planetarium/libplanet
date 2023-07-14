@@ -454,8 +454,7 @@ namespace Libplanet.Tests.Store
             var inputB = new TxFailure(
                 Fx.Hash1,
                 Fx.TxId2,
-                "AnExceptionName",
-                Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
+                "AnExceptionName"
             );
             Fx.Store.PutTxExecution(inputB);
 
@@ -467,8 +466,7 @@ namespace Libplanet.Tests.Store
             var inputC = new TxFailure(
                 Fx.Hash2,
                 Fx.TxId1,
-                "AnotherExceptionName",
-                null
+                "AnotherExceptionName"
             );
             Fx.Store.PutTxExecution(inputC);
 

@@ -48,8 +48,7 @@ namespace Libplanet.Tests.Tx
             var f = new TxFailure(
                 _blockHash,
                 _txid,
-                nameof(ArgumentNullException),
-                (Text)"foo"
+                nameof(ArgumentNullException)
             );
             Assert.Equal(_blockHash, f.BlockHash);
             Assert.Equal(_txid, f.TxId);

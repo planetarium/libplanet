@@ -230,8 +230,7 @@ namespace Libplanet.Store
                 if (fail)
                 {
                     string excName = d.GetValue<Text>("exc");
-                    IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
-                    return new TxFailure(blockHash, txid, excName, excMetadata);
+                    return new TxFailure(blockHash, txid, excName);
                 }
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")

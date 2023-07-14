@@ -203,14 +203,12 @@ namespace Libplanet.Tests.Blockchain
             var inputB = new TxFailure(
                 _fx.Hash1,
                 _fx.TxId2,
-                "AnExceptionName",
-                Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
+                "AnExceptionName"
             );
             var inputC = new TxFailure(
                 _fx.Hash2,
                 _fx.TxId1,
-                "AnotherExceptionName",
-                null
+                "AnotherExceptionName"
             );
             _blockChain.UpdateTxExecutions(new TxExecution[] { inputA, inputB, inputC });
 
