@@ -1,4 +1,7 @@
 using System;
+#if !NETSTANDARD2_0
+using System.Buffers;
+#endif
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -98,6 +101,7 @@ namespace Libplanet
         [Pure]
         public static string Hex(byte[] bytes)
         {
+#if NETSTANDARD2_0
             char[] chars = new char[bytes.Length * 2];
             for (int i = 0; i < bytes.Length; i++)
             {
@@ -106,6 +110,19 @@ namespace Libplanet
             }
 
             return new string(chars);
+#else
+            int length = bytes.Length * 2;
+            char[] chars = ArrayPool<char>.Shared.Rent(length);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                chars[i * 2] = _hexCharLookup[bytes[i] >> 4];
+                chars[i * 2 + 1] = _hexCharLookup[bytes[i] & 0xf];
+            }
+
+            string result = new string(chars, 0, length);
+            ArrayPool<char>.Shared.Return(chars);
+            return result;
+#endif
         }
 
         /// <summary>
