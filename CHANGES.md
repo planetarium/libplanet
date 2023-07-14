@@ -6,10 +6,12 @@ Version 2.4.1
 
 To be released.
 
+ -  Slight speed and memory optimization for `ByteUtil.Hex()`.  [[#3297]]
  -  (Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
     [[#3298]]
 
 [#3298]: https://github.com/planetarium/libplanet/pull/3298
+[#3297]: https://github.com/planetarium/libplanet/pull/3297
 
 
 Version 2.4.0
