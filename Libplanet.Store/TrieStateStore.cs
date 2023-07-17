@@ -39,7 +39,7 @@ namespace Libplanet.Store
         /// </summary>
         public bool Secure { get; }
 
-        internal IKeyValueStore StateKeyValueStore { get; }
+        public IKeyValueStore StateKeyValueStore { get; }
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)

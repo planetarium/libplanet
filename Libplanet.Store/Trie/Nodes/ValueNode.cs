@@ -6,7 +6,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// <summary>
     /// Wrapper class.
     /// </summary>
-    internal class ValueNode : INode, IEquatable<ValueNode>
+    public class ValueNode : INode, IEquatable<ValueNode>
     {
         public ValueNode(IValue value)
         {

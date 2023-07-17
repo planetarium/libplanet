@@ -8,7 +8,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// <summary>
     /// <see cref="HashDigest{T}"/>'s wrapper class, used in <see cref="ITrie"/> interface.
     /// </summary>
-    internal class HashNode : INode, IEquatable<HashNode>
+    public class HashNode : INode, IEquatable<HashNode>
     {
         public HashNode(HashDigest<SHA256> hashDigest)
         {

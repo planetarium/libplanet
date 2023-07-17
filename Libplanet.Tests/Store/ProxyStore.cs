@@ -170,27 +170,27 @@ namespace Libplanet.Tests.Store
         public void PruneOutdatedChains(bool noopWithoutCanon = false) =>
             Store.PruneOutdatedChains(noopWithoutCanon);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.GetChainBlockCommit" />
         public BlockCommit GetChainBlockCommit(Guid chainId) =>
             Store.GetChainBlockCommit(chainId);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.PutChainBlockCommit" />
         public void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit) =>
             Store.PutChainBlockCommit(chainId, blockCommit);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.GetBlockCommit"/>
         public BlockCommit GetBlockCommit(BlockHash blockHash) =>
             Store.GetBlockCommit(blockHash);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.PutBlockCommit"/>
         public void PutBlockCommit(BlockCommit blockCommit) =>
             Store.PutBlockCommit(blockCommit);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.DeleteBlockCommit"/>
         public void DeleteBlockCommit(BlockHash blockHash) =>
             Store.DeleteBlockCommit(blockHash);
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IStore.GetBlockCommitHashes"/>
         public IEnumerable<BlockHash> GetBlockCommitHashes() =>
             Store.GetBlockCommitHashes();
     }

@@ -5,7 +5,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal sealed class FullNode : BaseNode, IEquatable<FullNode>
+    public sealed class FullNode : BaseNode, IEquatable<FullNode>
     {
         // Children 0x10 + Value 0x1
         public const byte ChildrenCount = 0x11;
