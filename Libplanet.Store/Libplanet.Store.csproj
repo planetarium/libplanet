@@ -26,6 +26,9 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>    
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -39,6 +42,7 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
