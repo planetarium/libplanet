@@ -7,9 +7,9 @@ using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Consensus;
 using Libplanet.Store;
-using static Libplanet.State.KeyConverters;
+using static Libplanet.Action.State.KeyConverters;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     public static class AccountDeltaExtensions
     {

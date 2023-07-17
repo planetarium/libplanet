@@ -879,7 +879,7 @@ namespace Libplanet.Net
                 else
                 {
                     string errorMessage =
-                        $"Expected a {nameof(Blocks)} message as a response of " +
+                        $"Expected a {nameof(BlocksMsg)} message as a response of " +
                         $"the {nameof(GetBlocksMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
                     throw new InvalidMessageContentException(errorMessage, message.Content);

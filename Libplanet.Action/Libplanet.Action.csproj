@@ -4,6 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>8.0</LangVersion>
+    <RootNamespace>Libplanet.Action</RootNamespace>
+    <AssemblyName>Libplanet.Action</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

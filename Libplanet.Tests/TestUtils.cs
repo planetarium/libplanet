@@ -28,7 +28,6 @@ using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;

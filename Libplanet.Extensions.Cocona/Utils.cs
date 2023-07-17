@@ -8,8 +8,8 @@ using System.Text.Json.Serialization;
 using Bencodex.Types;
 using global::Cocona;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.JsonConverters;
-using Libplanet.State;
 using Libplanet.Store;
 
 namespace Libplanet.Extensions.Cocona;

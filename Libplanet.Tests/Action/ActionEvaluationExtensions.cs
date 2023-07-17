@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.State;
 
 namespace Libplanet.Tests.Action
 {

@@ -1,7 +1,7 @@
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
-using Libplanet.State;
 
 namespace Libplanet.Tests.Common.Action
 {

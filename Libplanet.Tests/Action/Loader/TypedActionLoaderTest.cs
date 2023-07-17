@@ -6,7 +6,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 

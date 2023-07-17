@@ -1,8 +1,8 @@
 using System.Diagnostics.Contracts;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 
 namespace Libplanet.Action
 {

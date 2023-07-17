@@ -6,7 +6,6 @@ using System.Numerics;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
-using Libplanet.Consensus;
 using Xunit;
 
 namespace Libplanet.Tests.Consensus

@@ -1,7 +1,6 @@
 using Libplanet.Common.Types.Blocks;
-using Libplanet.State;
 
-namespace Libplanet.Blocks
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// A minimal interface to get states from the output state of a <see cref="Block"/>.

@@ -5,12 +5,11 @@ using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
-using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using static Libplanet.State.KeyConverters;
+using static Libplanet.Action.State.KeyConverters;
 
-namespace Libplanet.Blocks
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// A default implementation of <see cref="IBlockState"/> interface.

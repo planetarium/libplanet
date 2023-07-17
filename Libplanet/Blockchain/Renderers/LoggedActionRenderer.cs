@@ -1,8 +1,8 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.State;
 using Serilog;
 using Serilog.Events;
 

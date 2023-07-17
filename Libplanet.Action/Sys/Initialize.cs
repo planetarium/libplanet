@@ -4,9 +4,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Bencodex.Types;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Consensus;
-using Libplanet.State;
 
 namespace Libplanet.Action.Sys
 {

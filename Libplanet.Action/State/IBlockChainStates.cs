@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Bencodex.Types;
-using Libplanet.Blocks;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
-using Libplanet.State;
 using Libplanet.Store;
 
-namespace Libplanet.Blockchain
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// A minimal interface to get states from a <see cref="BlockChain"/>.

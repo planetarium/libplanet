@@ -6,7 +6,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Action.Sys
 {
-    internal static class Registry
+    public static class Registry
     {
         public static readonly Dictionary<IValue, Type> Types;
 

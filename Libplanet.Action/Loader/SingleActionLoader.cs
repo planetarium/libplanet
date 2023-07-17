@@ -1,7 +1,6 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
-using Libplanet.Blockchain;
 
 namespace Libplanet.Action.Loader
 {

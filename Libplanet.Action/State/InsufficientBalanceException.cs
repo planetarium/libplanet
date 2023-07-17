@@ -4,7 +4,7 @@ using Libplanet.Common.Crypto;
 using Libplanet.Common.Serialization;
 using Libplanet.Common.Types.Assets;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// The exception that is thrown when a sender has less <see cref="Balance"/> than amount to

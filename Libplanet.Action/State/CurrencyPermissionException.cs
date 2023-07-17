@@ -2,7 +2,7 @@ using System;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// The exception that is thrown when a <see cref="TransactionSigner"/> has no rights

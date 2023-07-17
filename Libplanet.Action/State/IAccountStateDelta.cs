@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// An interface to manipulate an account state with

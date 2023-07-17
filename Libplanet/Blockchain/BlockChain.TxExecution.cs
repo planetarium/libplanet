@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 
 namespace Libplanet.Blockchain
 {

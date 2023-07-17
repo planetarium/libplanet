@@ -4,9 +4,9 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using static Libplanet.State.KeyConverters;
+using static Libplanet.Action.State.KeyConverters;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     public static class AccountStateDeltaExtensions
     {

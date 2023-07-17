@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Libplanet.Common.Serialization;
 using Libplanet.Common.Types.Assets;
 
-namespace Libplanet.State
+namespace Libplanet.Action.State
 {
     /// <summary>
     /// The exception thrown when a minter tries to mint a currency such that the resulting total

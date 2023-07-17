@@ -9,7 +9,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Consensus;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;

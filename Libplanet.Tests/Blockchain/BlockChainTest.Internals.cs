@@ -11,7 +11,7 @@ using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Xunit;
-using static Libplanet.State.KeyConverters;
+using static Libplanet.Action.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
 

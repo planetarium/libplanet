@@ -8,12 +8,11 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.Loader;
-using Libplanet.Blockchain;
+using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 using Serilog;
 
 namespace Libplanet.Action

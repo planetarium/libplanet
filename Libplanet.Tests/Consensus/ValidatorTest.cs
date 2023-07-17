@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 using Libplanet.Common.Crypto;
-using Libplanet.Consensus;
+using Libplanet.Common.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Tests.Consensus

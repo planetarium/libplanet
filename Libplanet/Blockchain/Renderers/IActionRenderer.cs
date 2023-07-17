@@ -1,9 +1,9 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 using Libplanet.Store;
 
 namespace Libplanet.Blockchain.Renderers
