@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Libplanet.State
+    <title>Namespace Libplanet.Action.State
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Libplanet.State
+    <meta name="title" content="Namespace Libplanet.Action.State
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,40 +67,45 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.State">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.State">
 
-  <h1 id="Libplanet_State" data-uid="Libplanet.State" class="text-break">Namespace Libplanet.State
+  <h1 id="Libplanet_Action_State" data-uid="Libplanet.Action.State" class="text-break">Namespace Libplanet.Action.State
 </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
 </h3>
-      <h4><a class="xref" href="Libplanet.State.AccountDeltaExtensions.html">AccountDeltaExtensions</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountDeltaExtensions.html">AccountDeltaExtensions</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.State.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
-      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
-to mint a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.State.CurrencyPermissionException.html#Libplanet_State_CurrencyPermissionException_Currency">Currency</a>.</p>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountStateDeltaExtensions.html">AccountStateDeltaExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.BlockState.html">BlockState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IBlockState.html">IBlockState</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.State.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
-      <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Balance">Balance</a> than amount to
-transfer or an owner has less <a class="xref" href="Libplanet.State.InsufficientBalanceException.html#Libplanet_State_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
+      <h4><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
+      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
+to mint a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.State.SupplyOverflowException.html">SupplyOverflowException</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
+      <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to
+transfer or an owner has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.SupplyOverflowException.html">SupplyOverflowException</a></h4>
       <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
 supply exceed the maximum amount.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></h4>
-      <section><p>The exception thrown when <a class="xref" href="Libplanet.State.IAccountState.html#Libplanet_State_IAccountState_GetTotalSupply_Libplanet_Common_Types_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
+      <h4><a class="xref" href="Libplanet.Action.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></h4>
+      <section><p>The exception thrown when <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetTotalSupply_Libplanet_Common_Types_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
 legacy untracked currency with
 <a class="xref" href="Libplanet.Common.Types.Assets.Currency.html#Libplanet_Common_Types_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
 <span class="xref">false</span>.</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
-      <h4><a class="xref" href="Libplanet.State.IAccountDelta.html">IAccountDelta</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.IAccountDelta.html">IAccountDelta</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.State.IAccountState.html">IAccountState</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></h4>
       <section><p>An interface to fetch account states.</p>
 <p>It is like a readonly map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a> exists and
@@ -112,9 +117,9 @@ but returns <span class="xref">null</span> instead, and</li><li>filling an <a cl
 the <a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a> having never been set to
 any state.</li></ul>
 </section>
-      <h4><a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></h4>
       <section><p>An interface to manipulate an account state with
-maintaining <a class="xref" href="Libplanet.State.IAccountStateDelta.html#Libplanet_State_IAccountStateDelta_Delta">Delta</a>.</p>
+maintaining <a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_Delta">Delta</a>.</p>
 <p>It is like a map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
@@ -124,6 +129,13 @@ but returns <span class="xref">null</span> instead, and</li><li>filling an <a cl
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Common.Crypto.Address.html">Address</a> having never been set to
 any state.</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IBlockChainStates.html">IBlockChainStates</a></h4>
+      <section><p>A minimal interface to get states from a <see cref="!:BlockChain"></see>.</p>
+<p>Note that <see cref="!:BlockChain"></see> implements this interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IBlockState.html">IBlockState</a></h4>
+      <section><p>A minimal interface to get states from the output state of a <a class="xref" href="Libplanet.Common.Types.Blocks.Block.html">Block</a>.</p>
 </section>
 </article>
           </div>

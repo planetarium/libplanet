@@ -107,7 +107,7 @@ not code of an action.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
-  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_IAction_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IAction</code></pre>
@@ -226,7 +226,7 @@ public class MyAction : IAction
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAction.cs/#L163">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IAction.cs/#L163">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
@@ -234,7 +234,7 @@ public class MyAction : IAction
 (or fields) of an action, so that they can be transmitted over
 network or saved to persistent storage.</p>
 <p>Serialized values are deserialized by
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue(IValue)</a> method later.</p>
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IValue_">LoadPlainValue(IValue)</a> method later.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -251,7 +251,7 @@ network or saved to persistent storage.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><p>A Bencodex value which encodes this action's bound values (held
 by properties or fields).</p>
 </td>
@@ -260,7 +260,7 @@ by properties or fields).</p>
   </table>
   <h5 id="Libplanet_Action_IAction_PlainValue_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue(IValue)</a></div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IValue_">LoadPlainValue(IValue)</a></div>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -269,7 +269,7 @@ by properties or fields).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAction.cs/#L235">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IAction.cs/#L235">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -281,7 +281,7 @@ its states immediately before the execution,
 and a deterministic random seed.</p>
 <p>Other “bound” information resides in the action
 object in itself, as its properties (or fields).</p>
-<p>A returned <a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a> object functions as
+<p>A returned <a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a> object functions as
 a delta which shifts from previous states to next states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -320,7 +320,7 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
         <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
 </td>
       </tr>
@@ -333,8 +333,8 @@ Side effects should be avoided, because an action's
 <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
 than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
-implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface separately and
-attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> instance.</p>
+implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface separately and
+attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
 <p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
@@ -368,13 +368,13 @@ your project as a dependency.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAction.cs/#L174">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IAction.cs/#L174">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
+  <h4 id="Libplanet_Action_IAction_LoadPlainValue_IValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
   <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property made), and then fills this action's properties (or fields)
 with the deserialized values.</p>
@@ -395,7 +395,7 @@ with the deserialized values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">plainValue</span></td>
         <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property) to be deserialized and assigned to this action's
@@ -404,7 +404,7 @@ properties (or fields).</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue__seealso">See Also</h5>
+  <h5 id="Libplanet_Action_IAction_LoadPlainValue_IValue__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
   </div>
@@ -419,7 +419,7 @@ properties (or fields).</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAction.cs/#L150" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IAction.cs/#L150" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

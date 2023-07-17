@@ -76,10 +76,14 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
 </h3>
+      <h4><a class="xref" href="Libplanet.Action.AccountStateDeltaMetrics.html">AccountStateDeltaMetrics</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a></h4>
       <section><p>A record type to represent an evaluation plan and result of
 a single action.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.ActionEvaluationsExtensions.html">ActionEvaluationsExtensions</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Action.ActionEvaluator.html">ActionEvaluator</a></h4>
       <section><p>Class responsible for handling of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> evaluations.</p>
 </section>
@@ -102,7 +106,7 @@ serialization and deserialization.</p>
       <h4><a class="xref" href="Libplanet.Action.GasUseNegativeException.html">GasUseNegativeException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></h4>
-      <section><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> that is thrown when an <span class="xref">Bencodex.Types.IValue</span> that is
+      <section><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> that is thrown when an <see cref="!:IValue"></see> that is
 supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be deserialized via an
 <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>.</p>
 </section>
@@ -165,6 +169,18 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.IActionTypeLoaderContext.html">IActionTypeLoaderContext</a></h4>
       <section><p>An interface to provide contextual variables to load action types.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IFeeCollector.html">IFeeCollector</a></h4>
+      <section><p>Represents a fee collector.
+A fee collector is a class that collects fees from the sender of the transaction.
+The fee collector is called three times in a single block.
+The first call is to collect the fee from the sender of the transaction.
+The second call is to refund the fee to the sender of the transaction.
+The third call is to reward the proposer of the block.
+The fee collector is called only when the transaction is collectible.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IGasMeter.html">IGasMeter</a></h4>
+      <section><p>An interface to provide a transition of the gas usage.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to
