@@ -10,15 +10,15 @@ using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Blocks;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Serilog;
 

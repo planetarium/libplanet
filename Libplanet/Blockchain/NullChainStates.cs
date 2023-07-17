@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using Bencodex.Types;
-using Libplanet.Blocks;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.Consensus;
-using Libplanet.State;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Blockchain
 {

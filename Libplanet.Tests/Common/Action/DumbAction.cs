@@ -7,10 +7,10 @@ using System.Numerics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.Consensus;
-using Libplanet.State;
+using Libplanet.Common.Types.Consensus;
 using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Types;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;

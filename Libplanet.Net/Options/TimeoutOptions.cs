@@ -51,7 +51,7 @@ namespace Libplanet.Net.Options
 
         /// <summary>
         /// The base timeout used when sending a request with <see cref="GetBlocksMsg"/>
-        /// to receive <see cref="Blocks"/> messages.
+        /// to receive <see cref="BlocksMsg"/> messages.
         /// Set to <see cref="DefaultGetBlocksBaseTimeout"/> seconds by default.
         /// </summary>
         /// <seealso cref="GetBlocksPerBlockHashTimeout"/>
@@ -60,7 +60,7 @@ namespace Libplanet.Net.Options
 
         /// <summary>
         /// The additional amount to wait for each <see cref="BlockHash"/> in
-        /// <see cref="GetBlocksMsg"/> to receive <see cref="Blocks"/> messages.
+        /// <see cref="GetBlocksMsg"/> to receive <see cref="BlocksMsg"/> messages.
         /// Set to <see cref="DefaultGetBlocksPerBlockHashTimeout"/> seconds by default.
         /// </summary>
         /// <seealso cref="GetBlocksBaseTimeout"/>

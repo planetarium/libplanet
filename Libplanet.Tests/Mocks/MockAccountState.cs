@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
+using Libplanet.Action.State;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
-using Libplanet.Consensus;
-using Libplanet.State;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Tests.Mocks
 {

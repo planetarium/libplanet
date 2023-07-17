@@ -96,6 +96,10 @@ on GitHub consists of several projects.  There are two types of projects:
     code.  It is distributed as a NuGet package with the same name:
     *[Libplanet][NuGet package]*.
 
+ -  *Libplanet.Action*: The action evaluation layer for *Libplanet*.
+    This is distributed as a distinct NuGet package:
+    *[Libplanet.Action][NuGet package]*.
+
  -  *Libplanet.Common*: The common types and extensions for *Libplanet*.
     This is distributed as a distinct NuGet package:
     *[Libplanet.Common][NuGet package]*.

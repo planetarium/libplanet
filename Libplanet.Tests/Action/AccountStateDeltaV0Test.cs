@@ -1,9 +1,9 @@
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 using Xunit.Abstractions;

@@ -1,8 +1,8 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Consensus;
-using Libplanet.State;
+using Libplanet.Action.State;
+using Libplanet.Common.Types.Consensus;
 
 namespace Libplanet.Tests.Common.Action
 {

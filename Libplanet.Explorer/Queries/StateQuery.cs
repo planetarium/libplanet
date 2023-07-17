@@ -1,9 +1,8 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Blockchain;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Blocks;

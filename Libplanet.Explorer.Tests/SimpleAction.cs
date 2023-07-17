@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.State;
+using Libplanet.Action.State;
 
 namespace Libplanet.Explorer.Tests;
 

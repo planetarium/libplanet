@@ -25,7 +25,7 @@ namespace Libplanet.Analyzers.Tests
                 using System;
                 using Bencodex.Types;
                 using Libplanet.Action;
-                using Libplanet.State;
+                using Libplanet.Action.State;
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}
@@ -124,7 +124,7 @@ namespace Libplanet.Analyzers.Tests
                 using Bencodex.Types;
                 using Libplanet;
                 using Libplanet.Action;
-                using Libplanet.State;
+                using Libplanet.Action.State;
                 namespace SampleGame {
                     public class SampleAction : IAction {
                         public SampleAction() {}

@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -15,7 +16,6 @@ using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 

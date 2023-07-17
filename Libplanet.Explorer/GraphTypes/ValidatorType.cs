@@ -1,4 +1,5 @@
 using GraphQL.Types;
+using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
 
 namespace Libplanet.Explorer.GraphTypes;

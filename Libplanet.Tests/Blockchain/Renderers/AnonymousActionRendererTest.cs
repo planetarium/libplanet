@@ -1,9 +1,9 @@
 using System;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Mocks;
 using Xunit;
