@@ -16,6 +16,7 @@ To be released.
      -  `Libplanet.Crypto`
      -  `Libplanet.Serialization`
      -  `Libplanet.JsonConverters`
+ -  Removed `IExtractableException` and `ExtractableException`.  [[#3304]]
 
 ### Backward-incompatible network protocol changes
 
@@ -25,6 +26,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `TxFailure` no longer tracks `ExceptionMetadata` and is always
+    set to `null` even for already stored `TxFailure`.  [[#3304]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -32,6 +36,7 @@ To be released.
 ### CLI tools
 
 [#3300]: https://github.com/planetarium/libplanet/pull/3300
+[#3304]: https://github.com/planetarium/libplanet/pull/3304
 
 
 Version 2.5.0
