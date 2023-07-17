@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Delegate StoreLoader
+    <title>Class NodeDecoder
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Delegate StoreLoader
+    <meta name="title" content="Class NodeDecoder
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,20 +67,64 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Store.StoreLoader">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder">
 
 
-  <h1 id="Libplanet_Store_StoreLoader" data-uid="Libplanet.Store.StoreLoader" class="text-break">Delegate StoreLoader
+  <h1 id="Libplanet_Store_Trie_Nodes_NodeDecoder" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder" class="text-break">Class NodeDecoder
 </h1>
-  <div class="markdown level0 summary"><p>A function that parses a URI and returns a pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and
-<a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">NodeDecoder</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.Nodes.html">Libplanet.Store.Trie.Nodes</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
-  <h5 id="Libplanet_Store_StoreLoader_syntax">Syntax</h5>
+  <h5 id="Libplanet_Store_Trie_Nodes_NodeDecoder_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate (IStore Store, IStateStore StateStore) StoreLoader(Uri storeUri);</code></pre>
+    <pre><code class="lang-csharp hljs">public static class NodeDecoder</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L11">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*"></a>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)">Decode(IValue)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static INode Decode(IValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -93,10 +137,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></td>
-        <td><span class="parametername">storeUri</span></td>
-        <td><p>A URI referring to a store.</p>
-</td>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -110,9 +153,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(T1 Item1, T2 Item2)</a>&lt;<a class="xref" href="Libplanet.Store.IStore.html">IStore</a>, <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>&gt;</td>
-        <td><p>A pair of loaded <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> instances.</p>
-</td>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -124,10 +166,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StoreLoader.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreLoader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/StoreLoader.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

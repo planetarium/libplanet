@@ -5530,6 +5530,149 @@ references:
   fullName.vb: Libplanet.Common.KeyValuePairExtensions.SelectWithinValues(Of TKey, TOldValue, TNewValue)(System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of TKey, TOldValue)), System.Func(Of TOldValue, TNewValue))
   nameWithType: KeyValuePairExtensions.SelectWithinValues<TKey, TOldValue, TNewValue>(IEnumerable<KeyValuePair<TKey, TOldValue>>, Func<TOldValue, TNewValue>)
   nameWithType.vb: KeyValuePairExtensions.SelectWithinValues(Of TKey, TOldValue, TNewValue)(IEnumerable(Of KeyValuePair(Of TKey, TOldValue)), Func(Of TOldValue, TNewValue))
+- uid: Libplanet.Common.Misc
+  name: Libplanet.Common.Misc
+  href: api/Libplanet.Common.Misc.html
+  commentId: N:Libplanet.Common.Misc
+  fullName: Libplanet.Common.Misc
+  nameWithType: Libplanet.Common.Misc
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1
+  name: ArrayEqualityComparer<T>
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html
+  commentId: T:Libplanet.Common.Misc.ArrayEqualityComparer`1
+  name.vb: ArrayEqualityComparer(Of T)
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T)
+  nameWithType: ArrayEqualityComparer<T>
+  nameWithType.vb: ArrayEqualityComparer(Of T)
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
+  name: ArrayEqualityComparer(IEqualityComparer<T>)
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1__ctor_System_Collections_Generic_IEqualityComparer__0__
+  commentId: M:Libplanet.Common.Misc.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
+  name.vb: ArrayEqualityComparer(IEqualityComparer(Of T))
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer<T>)
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer(Of T))
+  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer(IEqualityComparer<T>)
+  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer(IEqualityComparer(Of T))
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.#ctor*
+  name: ArrayEqualityComparer
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1__ctor_
+  commentId: Overload:Libplanet.Common.Misc.ArrayEqualityComparer`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer
+  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.ElementComparer
+  name: ElementComparer
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_ElementComparer
+  commentId: P:Libplanet.Common.Misc.ArrayEqualityComparer`1.ElementComparer
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.ElementComparer
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).ElementComparer
+  nameWithType: ArrayEqualityComparer<T>.ElementComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.ElementComparer*
+  name: ElementComparer
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_ElementComparer_
+  commentId: Overload:Libplanet.Common.Misc.ArrayEqualityComparer`1.ElementComparer
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.ElementComparer
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).ElementComparer
+  nameWithType: ArrayEqualityComparer<T>.ElementComparer
+  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
+  name: Equals(T[], T[])
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_Equals__0____0___
+  commentId: M:Libplanet.Common.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
+  name.vb: Equals(T(), T())
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.Equals(T[], T[])
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).Equals(T(), T())
+  nameWithType: ArrayEqualityComparer<T>.Equals(T[], T[])
+  nameWithType.vb: ArrayEqualityComparer(Of T).Equals(T(), T())
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.Equals*
+  name: Equals
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_Equals_
+  commentId: Overload:Libplanet.Common.Misc.ArrayEqualityComparer`1.Equals
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.Equals
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).Equals
+  nameWithType: ArrayEqualityComparer<T>.Equals
+  nameWithType.vb: ArrayEqualityComparer(Of T).Equals
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
+  name: GetHashCode(T[])
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_GetHashCode__0___
+  commentId: M:Libplanet.Common.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
+  name.vb: GetHashCode(T())
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.GetHashCode(T[])
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).GetHashCode(T())
+  nameWithType: ArrayEqualityComparer<T>.GetHashCode(T[])
+  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode(T())
+- uid: Libplanet.Common.Misc.ArrayEqualityComparer`1.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Common.Misc.ArrayEqualityComparer-1.html#Libplanet_Common_Misc_ArrayEqualityComparer_1_GetHashCode_
+  commentId: Overload:Libplanet.Common.Misc.ArrayEqualityComparer`1.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.ArrayEqualityComparer<T>.GetHashCode
+  fullName.vb: Libplanet.Common.Misc.ArrayEqualityComparer(Of T).GetHashCode
+  nameWithType: ArrayEqualityComparer<T>.GetHashCode
+  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions
+  name: NameValueCollectionExtensions
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html
+  commentId: T:Libplanet.Common.Misc.NameValueCollectionExtensions
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions
+  nameWithType: NameValueCollectionExtensions
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
+  name: GetBoolean(NameValueCollection, String, Boolean)
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetBoolean_System_Collections_Specialized_NameValueCollection_System_String_System_Boolean_
+  commentId: M:Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection, System.String, System.Boolean)
+  nameWithType: NameValueCollectionExtensions.GetBoolean(NameValueCollection, String, Boolean)
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean*
+  name: GetBoolean
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetBoolean_
+  commentId: Overload:Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetBoolean
+  nameWithType: NameValueCollectionExtensions.GetBoolean
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
+  name: GetInt32(NameValueCollection, String, Int32)
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_
+  commentId: M:Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String, System.Int32)
+  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String, Int32)
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
+  name: GetInt32(NameValueCollection, String)
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String)
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32*
+  name: GetInt32
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetInt32_
+  commentId: Overload:Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetInt32
+  nameWithType: NameValueCollectionExtensions.GetInt32
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
+  name: GetUInt64(NameValueCollection, String, UInt64)
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_System_UInt64_
+  commentId: M:Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String, System.UInt64)
+  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String, UInt64)
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
+  name: GetUInt64(NameValueCollection, String)
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String)
+- uid: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64*
+  name: GetUInt64
+  href: api/Libplanet.Common.Misc.NameValueCollectionExtensions.html#Libplanet_Common_Misc_NameValueCollectionExtensions_GetUInt64_
+  commentId: Overload:Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64
+  isSpec: "True"
+  fullName: Libplanet.Common.Misc.NameValueCollectionExtensions.GetUInt64
+  nameWithType: NameValueCollectionExtensions.GetUInt64
 - uid: Libplanet.Common.Nonce
   name: Nonce
   href: api/Libplanet.Common.Nonce.html
@@ -16740,149 +16883,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.Web3KeyStore.Remove
   nameWithType: Web3KeyStore.Remove
-- uid: Libplanet.Misc
-  name: Libplanet.Misc
-  href: api/Libplanet.Misc.html
-  commentId: N:Libplanet.Misc
-  fullName: Libplanet.Misc
-  nameWithType: Libplanet.Misc
-- uid: Libplanet.Misc.ArrayEqualityComparer`1
-  name: ArrayEqualityComparer<T>
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html
-  commentId: T:Libplanet.Misc.ArrayEqualityComparer`1
-  name.vb: ArrayEqualityComparer(Of T)
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T)
-  nameWithType: ArrayEqualityComparer<T>
-  nameWithType.vb: ArrayEqualityComparer(Of T)
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
-  name: ArrayEqualityComparer(IEqualityComparer<T>)
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1__ctor_System_Collections_Generic_IEqualityComparer__0__
-  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
-  name.vb: ArrayEqualityComparer(IEqualityComparer(Of T))
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer<T>)
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer(Of T))
-  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer(IEqualityComparer<T>)
-  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer(IEqualityComparer(Of T))
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.#ctor*
-  name: ArrayEqualityComparer
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1__ctor_
-  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ArrayEqualityComparer
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ArrayEqualityComparer
-  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer
-  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
-  name: ElementComparer
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_ElementComparer
-  commentId: P:Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ElementComparer
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ElementComparer
-  nameWithType: ArrayEqualityComparer<T>.ElementComparer
-  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer*
-  name: ElementComparer
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_ElementComparer_
-  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.ElementComparer
-  isSpec: "True"
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.ElementComparer
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).ElementComparer
-  nameWithType: ArrayEqualityComparer<T>.ElementComparer
-  nameWithType.vb: ArrayEqualityComparer(Of T).ElementComparer
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
-  name: Equals(T[], T[])
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_Equals__0____0___
-  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.Equals(`0[],`0[])
-  name.vb: Equals(T(), T())
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.Equals(T[], T[])
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).Equals(T(), T())
-  nameWithType: ArrayEqualityComparer<T>.Equals(T[], T[])
-  nameWithType.vb: ArrayEqualityComparer(Of T).Equals(T(), T())
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.Equals*
-  name: Equals
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_Equals_
-  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.Equals
-  isSpec: "True"
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.Equals
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).Equals
-  nameWithType: ArrayEqualityComparer<T>.Equals
-  nameWithType.vb: ArrayEqualityComparer(Of T).Equals
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
-  name: GetHashCode(T[])
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_GetHashCode__0___
-  commentId: M:Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode(`0[])
-  name.vb: GetHashCode(T())
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.GetHashCode(T[])
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).GetHashCode(T())
-  nameWithType: ArrayEqualityComparer<T>.GetHashCode(T[])
-  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode(T())
-- uid: Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_GetHashCode_
-  commentId: Overload:Libplanet.Misc.ArrayEqualityComparer`1.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Misc.ArrayEqualityComparer<T>.GetHashCode
-  fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).GetHashCode
-  nameWithType: ArrayEqualityComparer<T>.GetHashCode
-  nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode
-- uid: Libplanet.Misc.NameValueCollectionExtensions
-  name: NameValueCollectionExtensions
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html
-  commentId: T:Libplanet.Misc.NameValueCollectionExtensions
-  fullName: Libplanet.Misc.NameValueCollectionExtensions
-  nameWithType: NameValueCollectionExtensions
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
-  name: GetBoolean(NameValueCollection, String, Boolean)
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetBoolean_System_Collections_Specialized_NameValueCollection_System_String_System_Boolean_
-  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection, System.String, System.Boolean)
-  nameWithType: NameValueCollectionExtensions.GetBoolean(NameValueCollection, String, Boolean)
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean*
-  name: GetBoolean
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetBoolean_
-  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetBoolean
-  isSpec: "True"
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean
-  nameWithType: NameValueCollectionExtensions.GetBoolean
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
-  name: GetInt32(NameValueCollection, String, Int32)
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_
-  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String, System.Int32)
-  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String, Int32)
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
-  name: GetInt32(NameValueCollection, String)
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_
-  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String)
-  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String)
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32*
-  name: GetInt32
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_
-  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetInt32
-  isSpec: "True"
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32
-  nameWithType: NameValueCollectionExtensions.GetInt32
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
-  name: GetUInt64(NameValueCollection, String, UInt64)
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_System_UInt64_
-  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String, System.UInt64)
-  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String, UInt64)
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
-  name: GetUInt64(NameValueCollection, String)
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_
-  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String)
-  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String)
-- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64*
-  name: GetUInt64
-  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_
-  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64
-  isSpec: "True"
-  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64
-  nameWithType: NameValueCollectionExtensions.GetUInt64
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html
@@ -24845,22 +24845,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(KeyBytes@)
   name: Delete(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(KeyBytes@)
   name.vb: Delete(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(in KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef KeyBytes)
   nameWithType: RocksDBKeyValueStore.Delete(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Delete(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{KeyBytes})
   name: Delete(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{KeyBytes})
   name.vb: Delete(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of KeyBytes))
   nameWithType: RocksDBKeyValueStore.Delete(IEnumerable<KeyBytes>)
   nameWithType.vb: RocksDBKeyValueStore.Delete(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*
@@ -24883,13 +24883,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose
   nameWithType: RocksDBKeyValueStore.Dispose
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(KeyBytes@)
   name: Exists(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(KeyBytes@)
   name.vb: Exists(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(in KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(ByRef KeyBytes)
   nameWithType: RocksDBKeyValueStore.Exists(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists*
@@ -24899,22 +24899,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists
   nameWithType: RocksDBKeyValueStore.Exists
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(KeyBytes@)
   name: Get(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(KeyBytes@)
   name.vb: Get(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(in KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef KeyBytes)
   nameWithType: RocksDBKeyValueStore.Get(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Get(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{KeyBytes})
   name: Get(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{KeyBytes})
   name.vb: Get(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of KeyBytes))
   nameWithType: RocksDBKeyValueStore.Get(IEnumerable<KeyBytes>)
   nameWithType.vb: RocksDBKeyValueStore.Get(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get*
@@ -24937,22 +24937,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys
   nameWithType: RocksDBKeyValueStore.ListKeys
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(KeyBytes@,System.Byte[])
   name: Set(in KeyBytes, Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_KeyBytes__System_Byte___
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(KeyBytes@,System.Byte[])
   name.vb: Set(ByRef KeyBytes, Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(in KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef KeyBytes, System.Byte())
   nameWithType: RocksDBKeyValueStore.Set(in KeyBytes, Byte[])
   nameWithType.vb: RocksDBKeyValueStore.Set(ByRef KeyBytes, Byte())
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{KeyBytes,System.Byte[]})
   name: Set(IDictionary<KeyBytes, Byte[]>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_KeyBytes_System_Byte____
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{KeyBytes,System.Byte[]})
   name.vb: Set(IDictionary(Of KeyBytes, Byte()))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of KeyBytes, System.Byte()))
   nameWithType: RocksDBKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
   nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*
@@ -29947,6 +29947,12 @@ references:
   fullName.vb: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Boolean)
   nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest<SHA256>, Boolean)
   nameWithType.vb: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest(Of SHA256), Boolean)
+- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)
+  name: MerkleTrie(IKeyValueStore, INode, Boolean)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_System_Boolean_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)
+  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.Nodes.INode, System.Boolean)
+  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, INode, Boolean)
 - uid: Libplanet.Store.Trie.MerkleTrie.#ctor*
   name: MerkleTrie
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_
@@ -30002,6 +30008,185 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Hash
   nameWithType: MerkleTrie.Hash
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateNodes
+  name: IterateNodes()
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateNodes
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.IterateNodes
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateNodes()
+  nameWithType: MerkleTrie.IterateNodes()
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateNodes*
+  name: IterateNodes
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateNodes_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.IterateNodes
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateNodes
+  nameWithType: MerkleTrie.IterateNodes
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor
+  name: MerkleTrie.PathCursor
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html
+  commentId: T:Libplanet.Store.Trie.MerkleTrie.PathCursor
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor
+  nameWithType: MerkleTrie.PathCursor
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@,System.Boolean)
+  name: PathCursor(in KeyBytes, Boolean)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor__ctor_Libplanet_Store_Trie_KeyBytes__System_Boolean_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@,System.Boolean)
+  name.vb: PathCursor(ByRef KeyBytes, Boolean)
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.PathCursor(in Libplanet.Store.Trie.KeyBytes, System.Boolean)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.PathCursor.PathCursor(ByRef Libplanet.Store.Trie.KeyBytes, System.Boolean)
+  nameWithType: MerkleTrie.PathCursor.PathCursor(in KeyBytes, Boolean)
+  nameWithType.vb: MerkleTrie.PathCursor.PathCursor(ByRef KeyBytes, Boolean)
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.#ctor*
+  name: PathCursor
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor__ctor_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.PathCursor
+  nameWithType: MerkleTrie.PathCursor.PathCursor
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.Bytes
+  name: Bytes
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_Bytes
+  commentId: F:Libplanet.Store.Trie.MerkleTrie.PathCursor.Bytes
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.Bytes
+  nameWithType: MerkleTrie.PathCursor.Bytes
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@)
+  name: CountCommonStartingNibbles(in ImmutableArray<Byte>)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_CountCommonStartingNibbles_System_Collections_Immutable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@)
+  name.vb: CountCommonStartingNibbles(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles(in System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: MerkleTrie.PathCursor.CountCommonStartingNibbles(in ImmutableArray<Byte>)
+  nameWithType.vb: MerkleTrie.PathCursor.CountCommonStartingNibbles(ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles*
+  name: CountCommonStartingNibbles
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_CountCommonStartingNibbles_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles
+  nameWithType: MerkleTrie.PathCursor.CountCommonStartingNibbles
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@,System.Int32)
+  name: FromNibbles(in ImmutableArray<Byte>, Int32)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_FromNibbles_System_Collections_Immutable_ImmutableArray_System_Byte___System_Int32_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@,System.Int32)
+  name.vb: FromNibbles(ByRef ImmutableArray(Of Byte), Int32)
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(in System.Collections.Immutable.ImmutableArray<System.Byte>, System.Int32)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte), System.Int32)
+  nameWithType: MerkleTrie.PathCursor.FromNibbles(in ImmutableArray<Byte>, Int32)
+  nameWithType.vb: MerkleTrie.PathCursor.FromNibbles(ByRef ImmutableArray(Of Byte), Int32)
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles*
+  name: FromNibbles
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_FromNibbles_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles
+  nameWithType: MerkleTrie.PathCursor.FromNibbles
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles
+  name: GetRemainingNibbles()
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_GetRemainingNibbles
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles()
+  nameWithType: MerkleTrie.PathCursor.GetRemainingNibbles()
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles*
+  name: GetRemainingNibbles
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_GetRemainingNibbles_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles
+  nameWithType: MerkleTrie.PathCursor.GetRemainingNibbles
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.Next(System.Int32)
+  name: Next(Int32)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_Next_System_Int32_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.Next(System.Int32)
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.Next(System.Int32)
+  nameWithType: MerkleTrie.PathCursor.Next(Int32)
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.Next*
+  name: Next
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_Next_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.Next
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.Next
+  nameWithType: MerkleTrie.PathCursor.Next
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble
+  name: NextNibble
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NextNibble
+  commentId: P:Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble
+  nameWithType: MerkleTrie.PathCursor.NextNibble
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble*
+  name: NextNibble
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NextNibble_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NextNibble
+  nameWithType: MerkleTrie.PathCursor.NextNibble
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt(System.Int32)
+  name: NibbleAt(Int32)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NibbleAt_System_Int32_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt(System.Int32)
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt(System.Int32)
+  nameWithType: MerkleTrie.PathCursor.NibbleAt(Int32)
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt*
+  name: NibbleAt
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NibbleAt_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleAt
+  nameWithType: MerkleTrie.PathCursor.NibbleAt
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleLength
+  name: NibbleLength
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NibbleLength
+  commentId: F:Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleLength
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleLength
+  nameWithType: MerkleTrie.PathCursor.NibbleLength
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleOffset
+  name: NibbleOffset
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_NibbleOffset
+  commentId: F:Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleOffset
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.NibbleOffset
+  nameWithType: MerkleTrie.PathCursor.NibbleOffset
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles
+  name: RemainingAnyNibbles
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingAnyNibbles
+  commentId: P:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles
+  nameWithType: MerkleTrie.PathCursor.RemainingAnyNibbles
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles*
+  name: RemainingAnyNibbles
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingAnyNibbles_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingAnyNibbles
+  nameWithType: MerkleTrie.PathCursor.RemainingAnyNibbles
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength
+  name: RemainingNibbleLength
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingNibbleLength
+  commentId: P:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength
+  nameWithType: MerkleTrie.PathCursor.RemainingNibbleLength
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength*
+  name: RemainingNibbleLength
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingNibbleLength_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibbleLength
+  nameWithType: MerkleTrie.PathCursor.RemainingNibbleLength
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith(System.Collections.Immutable.ImmutableArray{System.Byte}@)
+  name: RemainingNibblesStartWith(in ImmutableArray<Byte>)
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingNibblesStartWith_System_Collections_Immutable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith(System.Collections.Immutable.ImmutableArray{System.Byte}@)
+  name.vb: RemainingNibblesStartWith(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith(in System.Collections.Immutable.ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
+  nameWithType: MerkleTrie.PathCursor.RemainingNibblesStartWith(in ImmutableArray<Byte>)
+  nameWithType.vb: MerkleTrie.PathCursor.RemainingNibblesStartWith(ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith*
+  name: RemainingNibblesStartWith
+  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_RemainingNibblesStartWith_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.RemainingNibblesStartWith
+  nameWithType: MerkleTrie.PathCursor.RemainingNibblesStartWith
 - uid: Libplanet.Store.Trie.MerkleTrie.Recorded
   name: Recorded
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Recorded
@@ -30015,6 +30200,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Recorded
   nameWithType: MerkleTrie.Recorded
+- uid: Libplanet.Store.Trie.MerkleTrie.Root
+  name: Root
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Root
+  commentId: P:Libplanet.Store.Trie.MerkleTrie.Root
+  fullName: Libplanet.Store.Trie.MerkleTrie.Root
+  nameWithType: MerkleTrie.Root
+- uid: Libplanet.Store.Trie.MerkleTrie.Root*
+  name: Root
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Root_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Root
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.Root
+  nameWithType: MerkleTrie.Root
 - uid: Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)
   name: Set(in KeyBytes, IValue)
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_
@@ -30063,6 +30261,555 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates
   nameWithType: MerkleTrieExtensions.ListAllStates
+- uid: Libplanet.Store.Trie.Nodes
+  name: Libplanet.Store.Trie.Nodes
+  href: api/Libplanet.Store.Trie.Nodes.html
+  commentId: N:Libplanet.Store.Trie.Nodes
+  fullName: Libplanet.Store.Trie.Nodes
+  nameWithType: Libplanet.Store.Trie.Nodes
+- uid: Libplanet.Store.Trie.Nodes.BaseNode
+  name: BaseNode
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.BaseNode
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode
+  nameWithType: BaseNode
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.#ctor(Libplanet.Store.Trie.Nodes.INode)
+  name: BaseNode(INode)
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode__ctor_Libplanet_Store_Trie_Nodes_INode_
+  commentId: M:Libplanet.Store.Trie.Nodes.BaseNode.#ctor(Libplanet.Store.Trie.Nodes.INode)
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.BaseNode(Libplanet.Store.Trie.Nodes.INode)
+  nameWithType: BaseNode.BaseNode(INode)
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.#ctor*
+  name: BaseNode
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode__ctor_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.BaseNode
+  nameWithType: BaseNode.BaseNode
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex()
+  nameWithType: BaseNode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
+  nameWithType: BaseNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.Value
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_Value
+  commentId: P:Libplanet.Store.Trie.Nodes.BaseNode.Value
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.Value
+  nameWithType: BaseNode.Value
+- uid: Libplanet.Store.Trie.Nodes.BaseNode.Value*
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_Value_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.Value
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.BaseNode.Value
+  nameWithType: BaseNode.Value
+- uid: Libplanet.Store.Trie.Nodes.FullNode
+  name: FullNode
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.FullNode
+  fullName: Libplanet.Store.Trie.Nodes.FullNode
+  nameWithType: FullNode
+- uid: Libplanet.Store.Trie.Nodes.FullNode.#ctor
+  name: FullNode()
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode__ctor
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.#ctor
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.FullNode()
+  nameWithType: FullNode.FullNode()
+- uid: Libplanet.Store.Trie.Nodes.FullNode.#ctor(System.Collections.Immutable.ImmutableArray{Libplanet.Store.Trie.Nodes.INode})
+  name: FullNode(ImmutableArray<INode>)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode__ctor_System_Collections_Immutable_ImmutableArray_Libplanet_Store_Trie_Nodes_INode__
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.#ctor(System.Collections.Immutable.ImmutableArray{Libplanet.Store.Trie.Nodes.INode})
+  name.vb: FullNode(ImmutableArray(Of INode))
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.FullNode(System.Collections.Immutable.ImmutableArray<Libplanet.Store.Trie.Nodes.INode>)
+  fullName.vb: Libplanet.Store.Trie.Nodes.FullNode.FullNode(System.Collections.Immutable.ImmutableArray(Of Libplanet.Store.Trie.Nodes.INode))
+  nameWithType: FullNode.FullNode(ImmutableArray<INode>)
+  nameWithType.vb: FullNode.FullNode(ImmutableArray(Of INode))
+- uid: Libplanet.Store.Trie.Nodes.FullNode.#ctor*
+  name: FullNode
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode__ctor_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.FullNode
+  nameWithType: FullNode.FullNode
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Children
+  name: Children
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Children
+  commentId: P:Libplanet.Store.Trie.Nodes.FullNode.Children
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Children
+  nameWithType: FullNode.Children
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Children*
+  name: Children
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Children_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.Children
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Children
+  nameWithType: FullNode.Children
+- uid: Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
+  name: ChildrenCount
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_ChildrenCount
+  commentId: F:Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
+  nameWithType: FullNode.ChildrenCount
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Equals_System_Object_
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.Equals(System.Object)
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Equals(System.Object)
+  nameWithType: FullNode.Equals(Object)
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Equals*
+  name: Equals
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.Equals
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Equals
+  nameWithType: FullNode.Equals
+- uid: Libplanet.Store.Trie.Nodes.FullNode.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_GetHashCode
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.GetHashCode
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.GetHashCode()
+  nameWithType: FullNode.GetHashCode()
+- uid: Libplanet.Store.Trie.Nodes.FullNode.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_GetHashCode_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.GetHashCode
+  nameWithType: FullNode.GetHashCode
+- uid: Libplanet.Store.Trie.Nodes.FullNode.SetChild(System.Int32,Libplanet.Store.Trie.Nodes.INode)
+  name: SetChild(Int32, INode)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_SetChild_System_Int32_Libplanet_Store_Trie_Nodes_INode_
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.SetChild(System.Int32,Libplanet.Store.Trie.Nodes.INode)
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.SetChild(System.Int32, Libplanet.Store.Trie.Nodes.INode)
+  nameWithType: FullNode.SetChild(Int32, INode)
+- uid: Libplanet.Store.Trie.Nodes.FullNode.SetChild*
+  name: SetChild
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_SetChild_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.SetChild
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.SetChild
+  nameWithType: FullNode.SetChild
+- uid: Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  name: IEquatable<FullNode>.Equals(FullNode)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_System_IEquatable_Libplanet_Store_Trie_Nodes_FullNode__Equals_Libplanet_Store_Trie_Nodes_FullNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(FullNode)
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  nameWithType: FullNode.IEquatable<FullNode>.Equals(FullNode)
+  nameWithType.vb: FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(FullNode)
+- uid: Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals*
+  name: IEquatable<FullNode>.Equals
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_System_IEquatable_Libplanet_Store_Trie_Nodes_FullNode__Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
+  nameWithType: FullNode.IEquatable<FullNode>.Equals
+  nameWithType.vb: FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
+- uid: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex()
+  nameWithType: FullNode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
+  nameWithType: FullNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.HashNode
+  name: HashNode
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.HashNode
+  fullName: Libplanet.Store.Trie.Nodes.HashNode
+  nameWithType: HashNode
+- uid: Libplanet.Store.Trie.Nodes.HashNode.#ctor(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: HashNode(HashDigest<SHA256>)
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode__ctor_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.#ctor(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: HashNode(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.HashNode(Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.Trie.Nodes.HashNode.HashNode(Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: HashNode.HashNode(HashDigest<SHA256>)
+  nameWithType.vb: HashNode.HashNode(HashDigest(Of SHA256))
+- uid: Libplanet.Store.Trie.Nodes.HashNode.#ctor*
+  name: HashNode
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode__ctor_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.HashNode
+  nameWithType: HashNode.HashNode
+- uid: Libplanet.Store.Trie.Nodes.HashNode.Equals(Libplanet.Store.Trie.Nodes.HashNode)
+  name: Equals(HashNode)
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Equals_Libplanet_Store_Trie_Nodes_HashNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.Equals(Libplanet.Store.Trie.Nodes.HashNode)
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Equals(Libplanet.Store.Trie.Nodes.HashNode)
+  nameWithType: HashNode.Equals(HashNode)
+- uid: Libplanet.Store.Trie.Nodes.HashNode.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Equals_System_Object_
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.Equals(System.Object)
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Equals(System.Object)
+  nameWithType: HashNode.Equals(Object)
+- uid: Libplanet.Store.Trie.Nodes.HashNode.Equals*
+  name: Equals
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.Equals
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Equals
+  nameWithType: HashNode.Equals
+- uid: Libplanet.Store.Trie.Nodes.HashNode.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_GetHashCode
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.GetHashCode
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.GetHashCode()
+  nameWithType: HashNode.GetHashCode()
+- uid: Libplanet.Store.Trie.Nodes.HashNode.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_GetHashCode_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.GetHashCode
+  nameWithType: HashNode.GetHashCode
+- uid: Libplanet.Store.Trie.Nodes.HashNode.HashDigest
+  name: HashDigest
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_HashDigest
+  commentId: P:Libplanet.Store.Trie.Nodes.HashNode.HashDigest
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.HashDigest
+  nameWithType: HashNode.HashDigest
+- uid: Libplanet.Store.Trie.Nodes.HashNode.HashDigest*
+  name: HashDigest
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_HashDigest_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.HashDigest
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.HashDigest
+  nameWithType: HashNode.HashDigest
+- uid: Libplanet.Store.Trie.Nodes.HashNode.op_Equality(Libplanet.Store.Trie.Nodes.HashNode,Libplanet.Store.Trie.Nodes.HashNode)
+  name: Equality(HashNode, HashNode)
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_op_Equality_Libplanet_Store_Trie_Nodes_HashNode_Libplanet_Store_Trie_Nodes_HashNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.op_Equality(Libplanet.Store.Trie.Nodes.HashNode,Libplanet.Store.Trie.Nodes.HashNode)
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Equality(Libplanet.Store.Trie.Nodes.HashNode, Libplanet.Store.Trie.Nodes.HashNode)
+  nameWithType: HashNode.Equality(HashNode, HashNode)
+- uid: Libplanet.Store.Trie.Nodes.HashNode.op_Equality*
+  name: Equality
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_op_Equality_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Equality
+  nameWithType: HashNode.Equality
+- uid: Libplanet.Store.Trie.Nodes.HashNode.op_Inequality(Libplanet.Store.Trie.Nodes.HashNode,Libplanet.Store.Trie.Nodes.HashNode)
+  name: Inequality(HashNode, HashNode)
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_op_Inequality_Libplanet_Store_Trie_Nodes_HashNode_Libplanet_Store_Trie_Nodes_HashNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.op_Inequality(Libplanet.Store.Trie.Nodes.HashNode,Libplanet.Store.Trie.Nodes.HashNode)
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Inequality(Libplanet.Store.Trie.Nodes.HashNode, Libplanet.Store.Trie.Nodes.HashNode)
+  nameWithType: HashNode.Inequality(HashNode, HashNode)
+- uid: Libplanet.Store.Trie.Nodes.HashNode.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_op_Inequality_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Inequality
+  nameWithType: HashNode.Inequality
+- uid: Libplanet.Store.Trie.Nodes.HashNode.Serialize
+  name: Serialize()
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Serialize
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.Serialize
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Serialize()
+  nameWithType: HashNode.Serialize()
+- uid: Libplanet.Store.Trie.Nodes.HashNode.Serialize*
+  name: Serialize
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Serialize_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.Serialize
+  nameWithType: HashNode.Serialize
+- uid: Libplanet.Store.Trie.Nodes.HashNode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.ToBencodex()
+  nameWithType: HashNode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.HashNode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.HashNode.ToBencodex
+  nameWithType: HashNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.INode
+  name: INode
+  href: api/Libplanet.Store.Trie.Nodes.INode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.INode
+  fullName: Libplanet.Store.Trie.Nodes.INode
+  nameWithType: INode
+- uid: Libplanet.Store.Trie.Nodes.INode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.INode.html#Libplanet_Store_Trie_Nodes_INode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.INode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.INode.ToBencodex()
+  nameWithType: INode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.INode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.INode.html#Libplanet_Store_Trie_Nodes_INode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.INode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.INode.ToBencodex
+  nameWithType: INode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder
+  name: NodeDecoder
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html
+  commentId: T:Libplanet.Store.Trie.Nodes.NodeDecoder
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder
+  nameWithType: NodeDecoder
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
+  name: Decode(IValue)
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
+  nameWithType: NodeDecoder.Decode(IValue)
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*
+  name: Decode
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.NodeDecoder.Decode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode
+  nameWithType: NodeDecoder.Decode
+- uid: Libplanet.Store.Trie.Nodes.ShortNode
+  name: ShortNode
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.ShortNode
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode
+  nameWithType: ShortNode
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@,Libplanet.Store.Trie.Nodes.INode)
+  name: ShortNode(in ImmutableArray<Byte>, INode)
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___Libplanet_Store_Trie_Nodes_INode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@,Libplanet.Store.Trie.Nodes.INode)
+  name.vb: ShortNode(ByRef ImmutableArray(Of Byte), INode)
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.ShortNode(in System.Collections.Immutable.ImmutableArray<System.Byte>, Libplanet.Store.Trie.Nodes.INode)
+  fullName.vb: Libplanet.Store.Trie.Nodes.ShortNode.ShortNode(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte), Libplanet.Store.Trie.Nodes.INode)
+  nameWithType: ShortNode.ShortNode(in ImmutableArray<Byte>, INode)
+  nameWithType.vb: ShortNode.ShortNode(ByRef ImmutableArray(Of Byte), INode)
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.#ctor*
+  name: ShortNode
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode__ctor_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.ShortNode
+  nameWithType: ShortNode.ShortNode
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Equals_System_Object_
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)
+  nameWithType: ShortNode.Equals(Object)
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Equals*
+  name: Equals
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.Equals
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Equals
+  nameWithType: ShortNode.Equals
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_GetHashCode
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode()
+  nameWithType: ShortNode.GetHashCode()
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_GetHashCode_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode
+  nameWithType: ShortNode.GetHashCode
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Key
+  name: Key
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Key
+  commentId: P:Libplanet.Store.Trie.Nodes.ShortNode.Key
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Key
+  nameWithType: ShortNode.Key
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Key*
+  name: Key
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Key_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.Key
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Key
+  nameWithType: ShortNode.Key
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  name: IEquatable<ShortNode>.Equals(ShortNode)
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_System_IEquatable_Libplanet_Store_Trie_Nodes_ShortNode__Equals_Libplanet_Store_Trie_Nodes_ShortNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(ShortNode)
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  nameWithType: ShortNode.IEquatable<ShortNode>.Equals(ShortNode)
+  nameWithType.vb: ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(ShortNode)
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals*
+  name: IEquatable<ShortNode>.Equals
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_System_IEquatable_Libplanet_Store_Trie_Nodes_ShortNode__Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals
+  isSpec: "True"
+  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
+  nameWithType: ShortNode.IEquatable<ShortNode>.Equals
+  nameWithType.vb: ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex()
+  nameWithType: ShortNode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
+  nameWithType: ShortNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.ValueNode
+  name: ValueNode
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html
+  commentId: T:Libplanet.Store.Trie.Nodes.ValueNode
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode
+  nameWithType: ValueNode
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.#ctor(Bencodex.Types.IValue)
+  name: ValueNode(IValue)
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.ValueNode(Bencodex.Types.IValue)
+  nameWithType: ValueNode.ValueNode(IValue)
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.#ctor*
+  name: ValueNode
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode__ctor_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.ValueNode
+  nameWithType: ValueNode.ValueNode
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.Equals(Libplanet.Store.Trie.Nodes.ValueNode)
+  name: Equals(ValueNode)
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_Equals_Libplanet_Store_Trie_Nodes_ValueNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.Equals(Libplanet.Store.Trie.Nodes.ValueNode)
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Equals(Libplanet.Store.Trie.Nodes.ValueNode)
+  nameWithType: ValueNode.Equals(ValueNode)
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_Equals_System_Object_
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.Equals(System.Object)
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Equals(System.Object)
+  nameWithType: ValueNode.Equals(Object)
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.Equals*
+  name: Equals
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_Equals_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.Equals
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Equals
+  nameWithType: ValueNode.Equals
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_GetHashCode
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode()
+  nameWithType: ValueNode.GetHashCode()
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_GetHashCode_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.GetHashCode
+  nameWithType: ValueNode.GetHashCode
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.op_Equality(Libplanet.Store.Trie.Nodes.ValueNode,Libplanet.Store.Trie.Nodes.ValueNode)
+  name: Equality(ValueNode, ValueNode)
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_op_Equality_Libplanet_Store_Trie_Nodes_ValueNode_Libplanet_Store_Trie_Nodes_ValueNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.op_Equality(Libplanet.Store.Trie.Nodes.ValueNode,Libplanet.Store.Trie.Nodes.ValueNode)
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Equality(Libplanet.Store.Trie.Nodes.ValueNode, Libplanet.Store.Trie.Nodes.ValueNode)
+  nameWithType: ValueNode.Equality(ValueNode, ValueNode)
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.op_Equality*
+  name: Equality
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_op_Equality_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Equality
+  nameWithType: ValueNode.Equality
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.op_Inequality(Libplanet.Store.Trie.Nodes.ValueNode,Libplanet.Store.Trie.Nodes.ValueNode)
+  name: Inequality(ValueNode, ValueNode)
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_op_Inequality_Libplanet_Store_Trie_Nodes_ValueNode_Libplanet_Store_Trie_Nodes_ValueNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.op_Inequality(Libplanet.Store.Trie.Nodes.ValueNode,Libplanet.Store.Trie.Nodes.ValueNode)
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Inequality(Libplanet.Store.Trie.Nodes.ValueNode, Libplanet.Store.Trie.Nodes.ValueNode)
+  nameWithType: ValueNode.Inequality(ValueNode, ValueNode)
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_op_Inequality_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Inequality
+  nameWithType: ValueNode.Inequality
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_ToBencodex
+  commentId: M:Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex()
+  nameWithType: ValueNode.ToBencodex()
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_ToBencodex_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.ToBencodex
+  nameWithType: ValueNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.Value
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_Value
+  commentId: P:Libplanet.Store.Trie.Nodes.ValueNode.Value
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Value
+  nameWithType: ValueNode.Value
+- uid: Libplanet.Store.Trie.Nodes.ValueNode.Value*
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.ValueNode.html#Libplanet_Store_Trie_Nodes_ValueNode_Value_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ValueNode.Value
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ValueNode.Value
+  nameWithType: ValueNode.Value
+- uid: Libplanet.Store.Trie.TrieExtensions
+  name: TrieExtensions
+  href: api/Libplanet.Store.Trie.TrieExtensions.html
+  commentId: T:Libplanet.Store.Trie.TrieExtensions
+  fullName: Libplanet.Store.Trie.TrieExtensions
+  nameWithType: TrieExtensions
+- uid: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue}})
+  name: Set(ITrie, IEnumerable<KeyValuePair<KeyBytes, IValue>>)
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue___
+  commentId: M:Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue}})
+  name.vb: Set(ITrie, IEnumerable(Of KeyValuePair(Of KeyBytes, IValue)))
+  fullName: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue>>)
+  fullName.vb: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue)))
+  nameWithType: TrieExtensions.Set(ITrie, IEnumerable<KeyValuePair<KeyBytes, IValue>>)
+  nameWithType.vb: TrieExtensions.Set(ITrie, IEnumerable(Of KeyValuePair(Of KeyBytes, IValue)))
+- uid: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,Bencodex.Types.IValue}})
+  name: Set(ITrie, IEnumerable<KeyValuePair<String, IValue>>)
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_Bencodex_Types_IValue___
+  commentId: M:Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,Bencodex.Types.IValue}})
+  name.vb: Set(ITrie, IEnumerable(Of KeyValuePair(Of String, IValue)))
+  fullName: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, Bencodex.Types.IValue>>)
+  fullName.vb: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, Bencodex.Types.IValue)))
+  nameWithType: TrieExtensions.Set(ITrie, IEnumerable<KeyValuePair<String, IValue>>)
+  nameWithType.vb: TrieExtensions.Set(ITrie, IEnumerable(Of KeyValuePair(Of String, IValue)))
+- uid: Libplanet.Store.Trie.TrieExtensions.Set*
+  name: Set
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_
+  commentId: Overload:Libplanet.Store.Trie.TrieExtensions.Set
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieExtensions.Set
+  nameWithType: TrieExtensions.Set
 - uid: Libplanet.Store.TrieStateStore
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html
@@ -30156,6 +30903,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.Secure
   nameWithType: TrieStateStore.Secure
+- uid: Libplanet.Store.TrieStateStore.StateKeyValueStore
+  name: StateKeyValueStore
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_StateKeyValueStore
+  commentId: P:Libplanet.Store.TrieStateStore.StateKeyValueStore
+  fullName: Libplanet.Store.TrieStateStore.StateKeyValueStore
+  nameWithType: TrieStateStore.StateKeyValueStore
+- uid: Libplanet.Store.TrieStateStore.StateKeyValueStore*
+  name: StateKeyValueStore
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_StateKeyValueStore_
+  commentId: Overload:Libplanet.Store.TrieStateStore.StateKeyValueStore
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.StateKeyValueStore
+  nameWithType: TrieStateStore.StateKeyValueStore
 - uid: Libplanet.Stun
   name: Libplanet.Stun
   href: api/Libplanet.Stun.html
