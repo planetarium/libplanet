@@ -64,7 +64,7 @@ namespace Libplanet.RocksDBStore.Tests
             var kvStore = typeof(TrieStateStore)
                 .GetProperty(
                     "StateKeyValueStore",
-                    BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.Instance)
+                    BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.Instance)
                 ?.GetMethod
                 ?.Invoke(stateStore, Array.Empty<object>());
             Assert.IsAssignableFrom<RocksDBKeyValueStore>(kvStore);

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Libplanet.Misc
+namespace Libplanet.Common.Misc
 {
     /// <summary>
     /// An <see cref="IEqualityComparer{T}"/> implementation to compare two arrays of the same

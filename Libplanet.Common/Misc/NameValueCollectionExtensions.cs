@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using static System.Convert;
 
-namespace Libplanet.Misc
+namespace Libplanet.Common.Misc
 {
     /// <summary>
     /// Useful extension methods for <see cref="NameValueCollection"/>.

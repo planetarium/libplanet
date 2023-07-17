@@ -16,6 +16,10 @@ To be released.
      -  `Libplanet.Crypto`
      -  `Libplanet.Serialization`
      -  `Libplanet.JsonConverters`
+ -  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3303]]
+     -  `Libplanet.Misc`
+ -  (Libplanet.Store) Moved packages from `Libplanet`.  [[#3303]]
+     -  `Libplanet.Store`
  -  Removed `IExtractableException` and `ExtractableException`.  [[#3304]]
 
 ### Backward-incompatible network protocol changes
@@ -36,6 +40,7 @@ To be released.
 ### CLI tools
 
 [#3300]: https://github.com/planetarium/libplanet/pull/3300
+[#3303]: https://github.com/planetarium/libplanet/pull/3303
 [#3304]: https://github.com/planetarium/libplanet/pull/3304
 
 

@@ -28,7 +28,7 @@ namespace Libplanet.Store.Trie
                 ),
             };
 
-        internal readonly struct PathCursor
+        public readonly struct PathCursor
         {
             public readonly ImmutableArray<byte> Bytes;
             public readonly int NibbleLength;

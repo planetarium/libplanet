@@ -5,6 +5,7 @@ solution="Libplanet"
 projects=(
   "Libplanet"
   "Libplanet.Common"
+  "Libplanet.Store"
   "Libplanet.Stun"
   "Libplanet.Net"
   "Libplanet.Crypto.Secp256k1"

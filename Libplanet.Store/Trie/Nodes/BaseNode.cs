@@ -2,7 +2,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal abstract class BaseNode : INode
+    public abstract class BaseNode : INode
     {
         protected BaseNode(INode? value)
         {

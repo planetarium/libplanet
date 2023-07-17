@@ -4,7 +4,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal sealed class ShortNode : BaseNode, IEquatable<ShortNode>
+    public sealed class ShortNode : BaseNode, IEquatable<ShortNode>
     {
         public ShortNode(in ImmutableArray<byte> key, INode? value)
             : base(value)

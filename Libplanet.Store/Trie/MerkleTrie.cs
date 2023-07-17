@@ -66,7 +66,7 @@ namespace Libplanet.Store.Trie
         /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
         /// result from the given key as the key. Keys will be hashed with SHA-256.</param>
-        internal MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
+        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
             KeyValueStore = keyValueStore;
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
@@ -81,7 +81,7 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.Recorded"/>
         public bool Recorded => Root is null || KeyValueStore.Exists(new KeyBytes(Hash.ByteArray));
 
-        internal INode? Root { get; }
+        public INode? Root { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -174,13 +174,7 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRoot);
         }
 
-        internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
-        {
-            return IterateNodes().Where(pair => pair.Node is HashNode)
-                .Select(pair => ((HashNode)pair.Node).HashDigest);
-        }
-
-        internal IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
+        public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
         {
             if (Root is null)
             {
@@ -233,6 +227,12 @@ namespace Libplanet.Store.Trie
                         break;
                 }
             }
+        }
+
+        internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
+        {
+            return IterateNodes().Where(pair => pair.Node is HashNode)
+                .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
         internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateNodeKeyValuePairs()

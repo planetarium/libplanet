@@ -6,9 +6,9 @@ using Libplanet.Common;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    internal static class NodeDecoder
+    public static class NodeDecoder
     {
-        internal static INode? Decode(IValue value)
+        public static INode? Decode(IValue value)
         {
             if (value is Bencodex.Types.List list)
             {
