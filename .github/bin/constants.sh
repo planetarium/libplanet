@@ -4,6 +4,7 @@
 solution="Libplanet"
 projects=(
   "Libplanet"
+  "Libplanet.Action"
   "Libplanet.Common"
   "Libplanet.Store"
   "Libplanet.Stun"

@@ -5,6 +5,7 @@
         {
           "files": [
             "Libplanet/Libplanet.csproj",
+            "Libplanet.Action/Libplanet.Action.csproj",
             "Libplanet.Common/Libplanet.Common.csproj",
             "Libplanet.Store/Libplanet.Store.csproj",
             "Libplanet.Net/Libplanet.Net.csproj",
