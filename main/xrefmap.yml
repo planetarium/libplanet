@@ -264,25 +264,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
   nameWithType: DuplicateActionTypeIdentifierException.TypeIdentifier
-- uid: Libplanet.Action.ExtractableException
-  name: ExtractableException
-  href: api/Libplanet.Action.ExtractableException.html
-  commentId: T:Libplanet.Action.ExtractableException
-  fullName: Libplanet.Action.ExtractableException
-  nameWithType: ExtractableException
-- uid: Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
-  name: ExtractMetadata(Exception)
-  href: api/Libplanet.Action.ExtractableException.html#Libplanet_Action_ExtractableException_ExtractMetadata_System_Exception_
-  commentId: M:Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
-  fullName: Libplanet.Action.ExtractableException.ExtractMetadata(System.Exception)
-  nameWithType: ExtractableException.ExtractMetadata(Exception)
-- uid: Libplanet.Action.ExtractableException.ExtractMetadata*
-  name: ExtractMetadata
-  href: api/Libplanet.Action.ExtractableException.html#Libplanet_Action_ExtractableException_ExtractMetadata_
-  commentId: Overload:Libplanet.Action.ExtractableException.ExtractMetadata
-  isSpec: "True"
-  fullName: Libplanet.Action.ExtractableException.ExtractMetadata
-  nameWithType: ExtractableException.ExtractMetadata
 - uid: Libplanet.Action.GasLimitExceededException
   name: GasLimitExceededException
   href: api/Libplanet.Action.GasLimitExceededException.html
@@ -695,25 +676,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionTypeLoaderContext.Index
   nameWithType: IActionTypeLoaderContext.Index
-- uid: Libplanet.Action.IExtractableException
-  name: IExtractableException
-  href: api/Libplanet.Action.IExtractableException.html
-  commentId: T:Libplanet.Action.IExtractableException
-  fullName: Libplanet.Action.IExtractableException
-  nameWithType: IExtractableException
-- uid: Libplanet.Action.IExtractableException.Metadata
-  name: Metadata
-  href: api/Libplanet.Action.IExtractableException.html#Libplanet_Action_IExtractableException_Metadata
-  commentId: P:Libplanet.Action.IExtractableException.Metadata
-  fullName: Libplanet.Action.IExtractableException.Metadata
-  nameWithType: IExtractableException.Metadata
-- uid: Libplanet.Action.IExtractableException.Metadata*
-  name: Metadata
-  href: api/Libplanet.Action.IExtractableException.html#Libplanet_Action_IExtractableException_Metadata_
-  commentId: Overload:Libplanet.Action.IExtractableException.Metadata
-  isSpec: "True"
-  fullName: Libplanet.Action.IExtractableException.Metadata
-  nameWithType: IExtractableException.Metadata
 - uid: Libplanet.Action.InvalidActionException
   name: InvalidActionException
   href: api/Libplanet.Action.InvalidActionException.html
@@ -10325,44 +10287,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.Types.Tx.AddressSet.Union
   nameWithType: AddressSet.Union
-- uid: Libplanet.Common.Types.Tx.ExtractableException
-  name: ExtractableException
-  href: api/Libplanet.Common.Types.Tx.ExtractableException.html
-  commentId: T:Libplanet.Common.Types.Tx.ExtractableException
-  fullName: Libplanet.Common.Types.Tx.ExtractableException
-  nameWithType: ExtractableException
-- uid: Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata(System.Exception)
-  name: ExtractMetadata(Exception)
-  href: api/Libplanet.Common.Types.Tx.ExtractableException.html#Libplanet_Common_Types_Tx_ExtractableException_ExtractMetadata_System_Exception_
-  commentId: M:Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata(System.Exception)
-  fullName: Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata(System.Exception)
-  nameWithType: ExtractableException.ExtractMetadata(Exception)
-- uid: Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata*
-  name: ExtractMetadata
-  href: api/Libplanet.Common.Types.Tx.ExtractableException.html#Libplanet_Common_Types_Tx_ExtractableException_ExtractMetadata_
-  commentId: Overload:Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata
-  isSpec: "True"
-  fullName: Libplanet.Common.Types.Tx.ExtractableException.ExtractMetadata
-  nameWithType: ExtractableException.ExtractMetadata
-- uid: Libplanet.Common.Types.Tx.IExtractableException
-  name: IExtractableException
-  href: api/Libplanet.Common.Types.Tx.IExtractableException.html
-  commentId: T:Libplanet.Common.Types.Tx.IExtractableException
-  fullName: Libplanet.Common.Types.Tx.IExtractableException
-  nameWithType: IExtractableException
-- uid: Libplanet.Common.Types.Tx.IExtractableException.Metadata
-  name: Metadata
-  href: api/Libplanet.Common.Types.Tx.IExtractableException.html#Libplanet_Common_Types_Tx_IExtractableException_Metadata
-  commentId: P:Libplanet.Common.Types.Tx.IExtractableException.Metadata
-  fullName: Libplanet.Common.Types.Tx.IExtractableException.Metadata
-  nameWithType: IExtractableException.Metadata
-- uid: Libplanet.Common.Types.Tx.IExtractableException.Metadata*
-  name: Metadata
-  href: api/Libplanet.Common.Types.Tx.IExtractableException.html#Libplanet_Common_Types_Tx_IExtractableException_Metadata_
-  commentId: Overload:Libplanet.Common.Types.Tx.IExtractableException.Metadata
-  isSpec: "True"
-  fullName: Libplanet.Common.Types.Tx.IExtractableException.Metadata
-  nameWithType: IExtractableException.Metadata
 - uid: Libplanet.Common.Types.Tx.InvalidTxException
   name: InvalidTxException
   href: api/Libplanet.Common.Types.Tx.InvalidTxException.html
@@ -11295,12 +11219,12 @@ references:
   commentId: M:Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.Exception)
   fullName: Libplanet.Common.Types.Tx.TxFailure.TxFailure(Libplanet.Common.Types.Blocks.BlockHash, Libplanet.Common.Types.Tx.TxId, System.Exception)
   nameWithType: TxFailure.TxFailure(BlockHash, TxId, Exception)
-- uid: Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String,Bencodex.Types.IValue)
-  name: TxFailure(BlockHash, TxId, String, IValue)
-  href: api/Libplanet.Common.Types.Tx.TxFailure.html#Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String,Bencodex.Types.IValue)
-  fullName: Libplanet.Common.Types.Tx.TxFailure.TxFailure(Libplanet.Common.Types.Blocks.BlockHash, Libplanet.Common.Types.Tx.TxId, System.String, Bencodex.Types.IValue)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String, IValue)
+- uid: Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String)
+  name: TxFailure(BlockHash, TxId, String)
+  href: api/Libplanet.Common.Types.Tx.TxFailure.html#Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_
+  commentId: M:Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String)
+  fullName: Libplanet.Common.Types.Tx.TxFailure.TxFailure(Libplanet.Common.Types.Blocks.BlockHash, Libplanet.Common.Types.Tx.TxId, System.String)
+  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String)
 - uid: Libplanet.Common.Types.Tx.TxFailure.#ctor*
   name: TxFailure
   href: api/Libplanet.Common.Types.Tx.TxFailure.html#Libplanet_Common_Types_Tx_TxFailure__ctor_

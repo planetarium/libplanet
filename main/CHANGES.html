@@ -75,11 +75,16 @@
 <li><code>Libplanet.JsonConverters</code></li>
 </ul>
 </li>
+<li>Removed <code>IExtractableException</code> and <code>ExtractableException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3304">#3304</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>TxFailure</code> no longer tracks <code>ExceptionMetadata</code> and is always
+set to <code>null</code> even for already stored <code>TxFailure</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3304">#3304</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>

@@ -133,7 +133,7 @@ public sealed class TxFailure : TxExecution, ISerializable</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.%23ctor(Libplanet.Common.Types.Blocks.BlockHash%2CLibplanet.Common.Types.Tx.TxId%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Common_Types_Tx_TxFailure__ctor_" data-uid="Libplanet.Common.Types.Tx.TxFailure.#ctor*"></a>
   <h4 id="Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_Exception_" data-uid="Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.Exception)">TxFailure(BlockHash, TxId, Exception)</h4>
@@ -177,19 +177,19 @@ that the <a class="xref" href="Libplanet.Common.Types.Tx.Transaction.html">Trans
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.%23ctor(Libplanet.Common.Types.Blocks.BlockHash%2CLibplanet.Common.Types.Tx.TxId%2CSystem.String%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.%23ctor(Libplanet.Common.Types.Blocks.BlockHash%2CLibplanet.Common.Types.Tx.TxId%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Common_Types_Tx_TxFailure__ctor_" data-uid="Libplanet.Common.Types.Tx.TxFailure.#ctor*"></a>
-  <h4 id="Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_Bencodex_Types_IValue_" data-uid="Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String,Bencodex.Types.IValue)">TxFailure(BlockHash, TxId, String, IValue)</h4>
+  <h4 id="Libplanet_Common_Types_Tx_TxFailure__ctor_Libplanet_Common_Types_Blocks_BlockHash_Libplanet_Common_Types_Tx_TxId_System_String_" data-uid="Libplanet.Common.Types.Tx.TxFailure.#ctor(Libplanet.Common.Types.Blocks.BlockHash,Libplanet.Common.Types.Tx.TxId,System.String)">TxFailure(BlockHash, TxId, String)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Common.Types.Tx.TxFailure.html">TxFailure</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, string exceptionName, IValue exceptionMetadata)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxFailure(BlockHash blockHash, TxId txId, string exceptionName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,12 +221,6 @@ that the <a class="xref" href="Libplanet.Common.Types.Tx.Transaction.html">Trans
 e.g., <code>System.ArgumentException</code>.</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td><span class="parametername">exceptionMetadata</span></td>
-        <td><p>Optional metadata about the exception.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -236,7 +230,7 @@ e.g., <code>System.ArgumentException</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure_ExceptionMetadata.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.ExceptionMetadata%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L80">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L72">View Source</a>
   </span>
   <a id="Libplanet_Common_Types_Tx_TxFailure_ExceptionMetadata_" data-uid="Libplanet.Common.Types.Tx.TxFailure.ExceptionMetadata*"></a>
   <h4 id="Libplanet_Common_Types_Tx_TxFailure_ExceptionMetadata" data-uid="Libplanet.Common.Types.Tx.TxFailure.ExceptionMetadata">ExceptionMetadata</h4>
@@ -268,7 +262,7 @@ public IValue ExceptionMetadata { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure_ExceptionName.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.ExceptionName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Common_Types_Tx_TxFailure_ExceptionName_" data-uid="Libplanet.Common.Types.Tx.TxFailure.ExceptionName*"></a>
   <h4 id="Libplanet_Common_Types_Tx_TxFailure_ExceptionName" data-uid="Libplanet.Common.Types.Tx.TxFailure.ExceptionName">ExceptionName</h4>
@@ -302,7 +296,7 @@ public string ExceptionName { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L84">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L76">View Source</a>
   </span>
   <a id="Libplanet_Common_Types_Tx_TxFailure_GetObjectData_" data-uid="Libplanet.Common.Types.Tx.TxFailure.GetObjectData*"></a>
   <h4 id="Libplanet_Common_Types_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Common.Types.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -353,7 +347,7 @@ actions.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Types_Tx_TxFailure.md&amp;value=---%0Auid%3A%20Libplanet.Common.Types.Tx.TxFailure%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L14" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/Types/Tx/TxFailure.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
