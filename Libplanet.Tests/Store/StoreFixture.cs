@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
@@ -11,7 +12,6 @@ using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Common.Action;
 
 namespace Libplanet.Tests.Store
 {

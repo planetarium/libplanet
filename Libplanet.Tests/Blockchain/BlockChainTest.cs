@@ -10,6 +10,8 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Sys;
+using Libplanet.Action.Tests;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
@@ -21,14 +23,11 @@ using Libplanet.Common.Types.Consensus;
 using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Action;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
-using static Libplanet.Tests.Common.Action.ThrowException;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blockchain
@@ -389,7 +388,7 @@ namespace Libplanet.Tests.Blockchain
                           dictionary.TryGetValue((Text)"type_id", out IValue typeId) &&
                           typeId.Equals((Integer)2)))
                     {
-                        throw new SomeException("thrown by renderer");
+                        throw new ThrowException.SomeException("thrown by renderer");
                     }
                 },
             };
@@ -403,7 +402,7 @@ namespace Libplanet.Tests.Blockchain
             blockChain.MakeTransaction(privateKey, actions);
             Block block = blockChain.ProposeBlock(new PrivateKey());
 
-            SomeException e = Assert.Throws<SomeException>(
+            ThrowException.SomeException e = Assert.Throws<ThrowException.SomeException>(
                 () => blockChain.Append(block, CreateBlockCommit(block)));
             Assert.Equal("thrown by renderer", e.Message);
             Assert.Equal(2, blockChain.Count);

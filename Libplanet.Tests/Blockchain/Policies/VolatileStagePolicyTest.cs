@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Threading;
 using Libplanet.Action;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Policies

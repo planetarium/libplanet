@@ -2,11 +2,11 @@ using System;
 using System.Collections.Immutable;
 using Bencodex;
 using Libplanet.Action;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Blocks;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 
 namespace Libplanet.Tests.Tx
@@ -177,8 +177,8 @@ namespace Libplanet.Tests.Tx
                       ""nonce"": 123,
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
                       ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
-                      ""maxGasPrice"": null, 
-                      ""gasLimit"": null, 
+                      ""maxGasPrice"": null,
+                      ""gasLimit"": null,
                     }
                 ",
                 false);
