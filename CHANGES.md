@@ -28,6 +28,8 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Net) Added `Gossip.DeniedPeers` property.  [[#3313]]
+
 ### Behavioral changes
 
  -  `TxFailure` no longer tracks `ExceptionMetadata` and is always
@@ -42,6 +44,7 @@ To be released.
 [#3300]: https://github.com/planetarium/libplanet/pull/3300
 [#3303]: https://github.com/planetarium/libplanet/pull/3303
 [#3304]: https://github.com/planetarium/libplanet/pull/3304
+[#3313]: https://github.com/planetarium/libplanet/pull/3313
 
 
 Version 2.5.0

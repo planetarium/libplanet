@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Libplanet.Common.Crypto;
@@ -81,15 +82,15 @@ namespace Libplanet.Net.Tests.Consensus
                 communicator1.OnStartRound(2);
                 communicator2.OnStartRound(4);
 
-                // Add message of same round to communicator1
-                communicator1.Gossip.AddMessage(
-                    new ConsensusPreVoteMsg(
-                        TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreVote)));
-
                 // Add message of higher round to communicator1
                 communicator1.Gossip.AddMessage(
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 3, fx.Hash1, VoteFlag.PreVote)));
+
+                // Add message of same round to communicator1
+                communicator1.Gossip.AddMessage(
+                    new ConsensusPreVoteMsg(
+                        TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreVote)));
 
                 await receivedPreVotes.WaitAsync();
                 await Task.Delay(1500);
@@ -117,13 +118,16 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var key3 = new PrivateKey();
+            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001));
+            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002));
+            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 6003));
             var receivedTwoHigherPreVotes = new AsyncAutoResetEvent();
             var receivedPreCommitFrom3 = new AsyncAutoResetEvent();
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key1,
                 6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                new[] { peer2 });
             var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
                 {
@@ -162,16 +166,22 @@ namespace Libplanet.Net.Tests.Consensus
                 },
                 key2,
                 6002,
-                new[]
-                {
-                    new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)),
-                    new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 6003)),
-                });
+                new[] { peer1, peer3 });
             var communicator3 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key3,
                 6003,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                new[] { peer2 });
+
+            async Task CheckDeniedAsync()
+            {
+                bool isPeer1Denied = false;
+                while (!isPeer1Denied)
+                {
+                    isPeer1Denied = communicator2!.Gossip.DeniedPeers.Contains(peer1);
+                    await Task.Delay(200);
+                }
+            }
 
             try
             {
@@ -209,7 +219,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 // Wait for third higher round message encounter.
                 await receivedTwoHigherPreVotes.WaitAsync();
-                await Task.Delay(1500);
+                await CheckDeniedAsync();
 
                 // These messages will be rejected, since spam filter logic has been activated
                 // to communicator1, and gossip denies messages from it.
