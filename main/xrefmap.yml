@@ -19696,6 +19696,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Gossip.ClearDenySet
   nameWithType: Gossip.ClearDenySet
+- uid: Libplanet.Net.Consensus.Gossip.DeniedPeers
+  name: DeniedPeers
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_DeniedPeers
+  commentId: P:Libplanet.Net.Consensus.Gossip.DeniedPeers
+  fullName: Libplanet.Net.Consensus.Gossip.DeniedPeers
+  nameWithType: Gossip.DeniedPeers
+- uid: Libplanet.Net.Consensus.Gossip.DeniedPeers*
+  name: DeniedPeers
+  href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_DeniedPeers_
+  commentId: Overload:Libplanet.Net.Consensus.Gossip.DeniedPeers
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.Gossip.DeniedPeers
+  nameWithType: Gossip.DeniedPeers
 - uid: Libplanet.Net.Consensus.Gossip.DenyPeer(Libplanet.Net.BoundPeer)
   name: DenyPeer(BoundPeer)
   href: api/Libplanet.Net.Consensus.Gossip.html#Libplanet_Net_Consensus_Gossip_DenyPeer_Libplanet_Net_BoundPeer_
