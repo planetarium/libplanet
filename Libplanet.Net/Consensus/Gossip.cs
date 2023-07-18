@@ -118,6 +118,11 @@ namespace Libplanet.Net.Consensus
         public IEnumerable<BoundPeer> Peers => _table.Peers;
 
         /// <summary>
+        /// The list of <see cref="BoundPeer"/>s written in <see cref="_denySet"/>.
+        /// </summary>
+        public IEnumerable<BoundPeer> DeniedPeers => _denySet.ToList();
+
+        /// <summary>
         /// Start the <see cref="Gossip"/> instance.
         /// </summary>
         /// <param name="ctx">A cancellation token used to propagate notification
