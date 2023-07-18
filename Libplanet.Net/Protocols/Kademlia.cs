@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 
 namespace Libplanet.Net.Protocols
 {

@@ -2,9 +2,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {

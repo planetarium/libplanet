@@ -1,8 +1,8 @@
 using System;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Net.Options
 {

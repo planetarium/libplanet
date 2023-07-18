@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Serilog;
 
 namespace Libplanet.Net.Consensus

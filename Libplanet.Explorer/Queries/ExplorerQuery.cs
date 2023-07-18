@@ -5,14 +5,14 @@ using System.Linq;
 using GraphQL.Types;
 using Libplanet.Action.State;
 using Libplanet.Blockchain;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Explorer.Queries
 {

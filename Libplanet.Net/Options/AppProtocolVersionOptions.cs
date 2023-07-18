@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Options

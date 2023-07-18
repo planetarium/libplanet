@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Serilog;

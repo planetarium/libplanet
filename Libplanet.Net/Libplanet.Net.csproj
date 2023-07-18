@@ -44,6 +44,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
+    <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -61,7 +63,6 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

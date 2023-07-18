@@ -5,7 +5,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 using Serilog;
 
 namespace Libplanet.Blockchain.Renderers.Debug

@@ -9,13 +9,13 @@ using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
+using Libplanet.Types.Tx;
 using Xunit;
 using Xunit.Abstractions;
 

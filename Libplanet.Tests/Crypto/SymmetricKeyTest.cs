@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using System.Text;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Xunit;
 
 using static Libplanet.Tests.TestUtils;

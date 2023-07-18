@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx

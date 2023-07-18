@@ -23,6 +23,7 @@
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
+    <PackageReference Include="Zio" Version="0.7.4" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -43,11 +44,10 @@
       </IncludeAssets>
     </PackageReference>
     <AdditionalFiles Include="..\stylecop.json" />
-    <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
+    <ProjectReference Include="..\Libplanet.Types\Libplanet.Types.csproj" />
   </ItemGroup>
 </Project>

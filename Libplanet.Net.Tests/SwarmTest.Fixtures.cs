@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
 using Serilog;
 using static Libplanet.Tests.TestUtils;
 

@@ -1,7 +1,7 @@
 using System;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Tx

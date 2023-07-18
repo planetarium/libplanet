@@ -10,12 +10,12 @@ using Bencodex.Types;
 using Caching;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
+using Libplanet.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus

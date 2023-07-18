@@ -1,9 +1,9 @@
 #nullable disable
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Explorer.Queries
 {

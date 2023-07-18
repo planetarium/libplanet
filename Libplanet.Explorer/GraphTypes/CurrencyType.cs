@@ -1,6 +1,6 @@
 using System.Linq;
 using GraphQL.Types;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Explorer.GraphTypes;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Consensus
 {

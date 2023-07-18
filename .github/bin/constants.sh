@@ -4,9 +4,11 @@
 solution="Libplanet"
 projects=(
   "Libplanet"
-  "Libplanet.Action"
   "Libplanet.Common"
+  "Libplanet.Crypto"
+  "Libplanet.Types"
   "Libplanet.Store"
+  "Libplanet.Action"
   "Libplanet.Stun"
   "Libplanet.Net"
   "Libplanet.Crypto.Secp256k1"

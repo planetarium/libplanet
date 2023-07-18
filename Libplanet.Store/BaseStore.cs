@@ -5,12 +5,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Serilog;
-using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
+using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Store
 {
@@ -46,7 +46,7 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        public abstract Transaction GetTransaction(Common.Types.Tx.TxId txid);
+        public abstract Transaction GetTransaction(TxId txid);
 
         public abstract void PutTransaction(Transaction tx);
 
@@ -59,13 +59,13 @@ namespace Libplanet.Store
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
                 BlockHeader header = blockDigest.GetHeader();
-                (Common.Types.Tx.TxId TxId, Transaction Tx)[] txs = blockDigest.TxIds
-                    .Select(bytes => new Common.Types.Tx.TxId(bytes.ToArray()))
+                (Types.Tx.TxId TxId, Transaction Tx)[] txs = blockDigest.TxIds
+                    .Select(bytes => new Types.Tx.TxId(bytes.ToArray()))
                     .OrderBy(txid => txid)
                     .Select(txid => (txid, GetTransaction(txid)))
                     .ToArray();
 
-                Common.Types.Tx.TxId[] missingTxIds =
+                Types.Tx.TxId[] missingTxIds =
                     txs.Where(pair => pair.Tx is null).Select(pair => pair.TxId).ToArray();
                 if (missingTxIds.Any())
                 {
@@ -105,12 +105,12 @@ namespace Libplanet.Store
         public abstract void PutTxExecution(TxFailure txFailure);
 
         /// <inheritdoc/>
-        public abstract TxExecution GetTxExecution(BlockHash blockHash, Common.Types.Tx.TxId txid);
+        public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
 
         /// <inheritdoc/>
-        public abstract void PutTxIdBlockHashIndex(Common.Types.Tx.TxId txId, BlockHash blockHash);
+        public abstract void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
-        public BlockHash? GetFirstTxIdBlockHashIndex(Common.Types.Tx.TxId txId)
+        public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId)
         {
             BlockHash? blockHash;
             try
@@ -146,7 +146,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public abstract bool ContainsTransaction(Common.Types.Tx.TxId txId);
+        public abstract bool ContainsTransaction(TxId txId);
 
         /// <inheritdoc/>
         public abstract void DeleteChainId(Guid chainId);
@@ -210,7 +210,7 @@ namespace Libplanet.Store
 
         protected static TxExecution DeserializeTxExecution(
             BlockHash blockHash,
-            Common.Types.Tx.TxId txid,
+            TxId txid,
             IValue decoded,
             ILogger logger
         )

@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Types.Assets;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;

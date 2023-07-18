@@ -1,8 +1,8 @@
 using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Common.Types.Blocks;
 using Libplanet.Tests.Fixtures;
+using Libplanet.Types.Blocks;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;

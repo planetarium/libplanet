@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 using Xunit;
 
 namespace Libplanet.Tests.Blocks

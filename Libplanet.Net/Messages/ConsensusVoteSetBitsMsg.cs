@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Messages
 {

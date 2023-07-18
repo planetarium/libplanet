@@ -1,9 +1,9 @@
 using System;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {

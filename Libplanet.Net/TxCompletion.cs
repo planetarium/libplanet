@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Types.Tx;
 using Nito.AsyncEx;
 using Serilog;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using BTypes = Bencodex.Types;
 
 namespace Libplanet.Store

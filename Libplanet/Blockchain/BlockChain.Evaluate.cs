@@ -9,10 +9,10 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain
 {

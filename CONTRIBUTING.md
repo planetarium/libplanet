@@ -96,17 +96,25 @@ on GitHub consists of several projects.  There are two types of projects:
     code.  It is distributed as a NuGet package with the same name:
     *[Libplanet][NuGet package]*.
 
- -  *Libplanet.Action*: The action evaluation layer for *Libplanet*.
-    This is distributed as a distinct NuGet package:
-    *[Libplanet.Action][NuGet package]*.
-
- -  *Libplanet.Common*: The common types and extensions for *Libplanet*.
+ -  *Libplanet.Common*: The common utilities and extensions for *Libplanet*.
     This is distributed as a distinct NuGet package:
     *[Libplanet.Common][NuGet package]*.
+
+ -  *Libplanet.Crypto*: The cryptography library for *Libplanet*.
+    This is distributed as a distinct NuGet package:
+    *[Libplanet.Crypto][NuGet package]*.
+
+ -  *Libplanet.Types*: The common types for *Libplanet*.
+    This is distributed as a distinct NuGet package:
+    *[Libplanet.Types][NuGet package]*.
 
  -  *Libplanet.Store*: The store related functionalities for *Libplanet*.
     This is distributed as a distinct NuGet package:
     *[Libplanet.Store][NuGet package]*.
+
+ -  *Libplanet.Action*: The action evaluation layer for *Libplanet*.
+    This is distributed as a distinct NuGet package:
+    *[Libplanet.Action][NuGet package]*.
 
  -  *Libplanet.Net*: The peer-to-peer networking layer built on top of
     *Libplanet*.  This is distributed as a distinct NuGet package:

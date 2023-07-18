@@ -1,6 +1,6 @@
 using System;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Consensus;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;

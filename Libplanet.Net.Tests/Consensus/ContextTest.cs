@@ -8,16 +8,16 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
+using Libplanet.Types.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -587,6 +587,7 @@ namespace Libplanet.Net.Tests.Consensus
         public struct ContextJson
         {
 #pragma warning disable SA1300
+#pragma warning disable IDE1006
             public string locked_value { get; set; }
 
             public int locked_round { get; set; }
@@ -594,6 +595,7 @@ namespace Libplanet.Net.Tests.Consensus
             public string valid_value { get; set; }
 
             public int valid_round { get; set; }
+#pragma warning restore IDE1006
 #pragma warning restore SA1300
         }
     }

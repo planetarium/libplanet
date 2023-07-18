@@ -3,9 +3,9 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.Sys;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Action.Tests.Sys

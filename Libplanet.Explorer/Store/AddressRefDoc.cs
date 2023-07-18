@@ -1,6 +1,6 @@
 #nullable disable
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Tx;
 using LiteDB;
 
 namespace Libplanet.Explorer.Store

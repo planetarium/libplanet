@@ -4,7 +4,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Tests.Store;
 
 namespace Libplanet.Benchmarks

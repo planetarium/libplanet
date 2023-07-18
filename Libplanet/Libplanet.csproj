@@ -62,15 +62,6 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bencodex" Version="0.11.0" />
-    <PackageReference Include="Bencodex.Json" Version="0.11.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
-    <PackageReference Include="Caching.dll" Version="1.4.0.1" />
-    <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
-    <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
-    <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -82,17 +73,13 @@ https://docs.libplanet.io/</Description>
     </PackageReference>
     <PackageReference Include="Norgerman.Cryptography.Scrypt" Version="2.0.1" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
-    <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
     <PackageReference Include="System.Linq.Async" Version="4.0.*" />
-    <PackageReference Include="System.Text.Json" Version="6.0.*" />
-    <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
@@ -112,8 +99,6 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
-    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\Libplanet.Action\Libplanet.Action.csproj" />
   </ItemGroup>
 </Project>

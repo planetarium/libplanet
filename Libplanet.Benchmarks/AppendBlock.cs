@@ -4,8 +4,8 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
 

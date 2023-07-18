@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie

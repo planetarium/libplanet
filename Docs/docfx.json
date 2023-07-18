@@ -5,9 +5,11 @@
         {
           "files": [
             "Libplanet/Libplanet.csproj",
-            "Libplanet.Action/Libplanet.Action.csproj",
             "Libplanet.Common/Libplanet.Common.csproj",
+            "Libplanet.Crypto/Libplanet.Crypto.csproj",
+            "Libplanet.Types/Libplanet.Types.csproj",
             "Libplanet.Store/Libplanet.Store.csproj",
+            "Libplanet.Action/Libplanet.Action.csproj",
             "Libplanet.Net/Libplanet.Net.csproj",
             "Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
             "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",

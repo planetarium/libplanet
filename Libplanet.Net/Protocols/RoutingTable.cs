@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Serilog;
 
 namespace Libplanet.Net.Protocols

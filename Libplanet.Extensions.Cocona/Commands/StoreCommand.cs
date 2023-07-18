@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using global::Cocona;
 using Libplanet.Common;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Extensions.Cocona.Commands;
 

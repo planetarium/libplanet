@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using BTypes = Bencodex.Types;
 using StoreDataModel = Libplanet.Store.DataModel;
 

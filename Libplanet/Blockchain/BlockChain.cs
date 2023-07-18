@@ -14,12 +14,12 @@ using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
+using Libplanet.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Blockchain

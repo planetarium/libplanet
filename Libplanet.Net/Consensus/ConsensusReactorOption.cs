@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 

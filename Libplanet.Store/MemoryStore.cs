@@ -7,10 +7,10 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using ImmutableTrie;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Misc;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Common;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Store

@@ -4,8 +4,8 @@ using System.Numerics;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Tests.Fixtures;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Renderers

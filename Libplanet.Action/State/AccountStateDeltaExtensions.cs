@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State

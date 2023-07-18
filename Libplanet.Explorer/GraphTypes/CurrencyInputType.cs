@@ -4,8 +4,8 @@ using System.Linq;
 using System.Numerics;
 using GraphQL;
 using GraphQL.Types;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Explorer.GraphTypes
 {

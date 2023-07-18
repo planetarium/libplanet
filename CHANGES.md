@@ -11,15 +11,21 @@ To be released.
 ### Backward-incompatible API changes
 
  -  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3300]]
-     -  `Libplanet.Transaction`
-     -  `Libplanet.Blocks`
-     -  `Libplanet.Crypto`
      -  `Libplanet.Serialization`
      -  `Libplanet.JsonConverters`
- -  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3303]]
+ -  (Libplanet.Common) Moved packages from `Libplanet`.  [[#3314]]
      -  `Libplanet.Misc`
+ -  (Libplanet.Crypto) Moved packages from `Libplanet`.  [[#3314]]
+     -  `Libplanet.Crypto`
+ -  (Libplanet.Types) Moved packages from `Libplanet`.  [[#3314]]
+     -  `Libplanet.Assets`
+     -  `Libplanet.Blocks`
+     -  `Libplanet.Consensus`
+     -  `Libplanet.Tx`
  -  (Libplanet.Store) Moved packages from `Libplanet`.  [[#3303]]
      -  `Libplanet.Store`
+ -  (Libplanet.Action) Moved packages from `Libplanet`.  [[#3303]]
+     -  `Libplanet.Action`
  -  Removed `IExtractableException` and `ExtractableException`.  [[#3304]]
 
 ### Backward-incompatible network protocol changes

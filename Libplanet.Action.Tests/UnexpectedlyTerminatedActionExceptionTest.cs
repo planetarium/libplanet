@@ -2,7 +2,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Action.Tests

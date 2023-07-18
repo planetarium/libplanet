@@ -1,6 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Action.State;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.Tests.Common
 {

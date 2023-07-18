@@ -1,9 +1,9 @@
 using System;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Consensus
 {

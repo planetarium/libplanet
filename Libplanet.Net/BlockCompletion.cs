@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 using Nito.AsyncEx;
 using Serilog;
 using Serilog.Events;

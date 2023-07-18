@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.Serialization;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Consensus
 {

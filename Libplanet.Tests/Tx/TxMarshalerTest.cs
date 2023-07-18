@@ -6,8 +6,8 @@ using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

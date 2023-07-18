@@ -8,10 +8,8 @@ using Bencodex;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
@@ -20,6 +18,8 @@ using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Random = System.Random;
 
 namespace Libplanet.Net.Tests

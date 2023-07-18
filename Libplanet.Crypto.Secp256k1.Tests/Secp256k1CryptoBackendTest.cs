@@ -1,5 +1,5 @@
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 
 namespace Libplanet.Crypto.Secp256k1.Tests;
 
