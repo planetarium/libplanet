@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
-using Libplanet.Crypto;
 using Libplanet.Common.Serialization;
+using Libplanet.Crypto;
 
 namespace Libplanet.Types.Blocks
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
-using Libplanet.Crypto;
 using Libplanet.Common.Serialization;
+using Libplanet.Crypto;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks

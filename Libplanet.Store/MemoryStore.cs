@@ -9,9 +9,9 @@ using System.Web;
 using ImmutableTrie;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
-using Libplanet.Store.Trie;
 
 namespace Libplanet.Store
 {
