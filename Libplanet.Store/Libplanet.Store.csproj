@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <PackageId>Libplanet.Store</PackageId>
     <Title>Libplanet.Store</Title>
@@ -19,10 +20,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.*" />
+    <PackageReference Include="Bencodex" Version="0.10.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Zio" Version="0.7.4" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -36,7 +40,6 @@
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -48,6 +51,9 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
+    <ProjectReference Include="..\Libplanet.Crypto\Libplanet.Crypto.csproj" />
     <ProjectReference Include="..\Libplanet.Types\Libplanet.Types.csproj" />
   </ItemGroup>
+  
 </Project>

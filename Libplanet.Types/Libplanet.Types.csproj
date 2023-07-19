@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <PackageId>Libplanet.Types</PackageId>
     <Title>Libplanet.Types</Title>
@@ -19,6 +20,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.*" />
+    <PackageReference Include="System.Text.Json" Version="6.0.*" />
+    <PackageReference Include="Bencodex" Version="0.10.0" />
     <PackageReference Include="Bencodex.Json" Version="0.10.0" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
@@ -43,6 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
     <ProjectReference Include="..\Libplanet.Crypto\Libplanet.Crypto.csproj" />
   </ItemGroup>
+  
 </Project>
