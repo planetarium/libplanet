@@ -57,13 +57,13 @@ namespace Libplanet.Store
         public static ITrie Commit(
             this IStateStore stateStore,
             HashDigest<SHA256>? previousStateRootHash,
-            IImmutableDictionary<string, IValue> rawStatesDelta
+            IImmutableDictionary<KeyBytes, IValue> rawStatesDelta
         )
         {
             ITrie trie = stateStore.GetStateRoot(previousStateRootHash);
-            foreach (KeyValuePair<string, IValue> pair in rawStatesDelta)
+            foreach (KeyValuePair<KeyBytes, IValue> pair in rawStatesDelta)
             {
-                trie = trie.Set(EncodeKey(pair.Key), pair.Value);
+                trie = trie.Set(pair.Key, pair.Value);
             }
 
             ITrie stage = trie.Commit();
@@ -89,6 +89,28 @@ namespace Libplanet.Store
         {
             ITrie trie = stateStore.GetStateRoot(stateRootHash);
             KeyBytes[] keys = rawStateKeys.Select(EncodeKey).ToArray();
+            return trie.Get(keys);
+        }
+
+        /// <summary>
+        /// Gets multiple states at once.
+        /// </summary>
+        /// <param name="stateStore">The <see cref="IStateStore"/> to get states.</param>
+        /// <param name="stateRootHash">The root hash of the state trie to look up states from.
+        /// </param>
+        /// <param name="rawStateKeys">State keys to get.</param>
+        /// <returns>The state values associated to the specified <paramref name="rawStateKeys"/>.
+        /// The associated values are ordered in the same way to the corresponding
+        /// <paramref name="rawStateKeys"/>.  Absent values are represented as
+        /// <see langword="null"/>.</returns>
+        public static IReadOnlyList<IValue?> GetStates(
+            this IStateStore stateStore,
+            HashDigest<SHA256>? stateRootHash,
+            IReadOnlyList<KeyBytes> rawStateKeys
+        )
+        {
+            ITrie trie = stateStore.GetStateRoot(stateRootHash);
+            KeyBytes[] keys = rawStateKeys.ToArray();
             return trie.Get(keys);
         }
 

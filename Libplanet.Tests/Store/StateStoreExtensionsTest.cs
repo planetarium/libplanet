@@ -31,22 +31,22 @@ namespace Libplanet.Tests.Store
         public static IEnumerable<object[]> StateStores =>
             StateStoreImpls.Select(pair => new object[] { pair.Item1, pair.Item2 });
 
-        public static IImmutableDictionary<string, IValue> ZeroDelta =>
-            ImmutableDictionary<string, IValue>.Empty;
-
-        public static IImmutableDictionary<string, IValue> DeltaA => ZeroDelta
-            .Add("foo", (Text)"abc")
-            .Add("bar", (Text)"def");
-
-        public static IImmutableDictionary<string, IValue> DeltaB => ZeroDelta
-            .Add("foo", (Text)"ABC")
-            .Add("baz", (Text)"ghi");
+        public static IImmutableDictionary<KeyBytes, IValue> ZeroDelta =>
+            ImmutableDictionary<KeyBytes, IValue>.Empty;
 
         public static KeyBytes KeyFoo => StateStoreExtensions.EncodeKey("foo");
 
         public static KeyBytes KeyBar => StateStoreExtensions.EncodeKey("bar");
 
         public static KeyBytes KeyBaz => StateStoreExtensions.EncodeKey("baz");
+
+        public static IImmutableDictionary<KeyBytes, IValue> DeltaA => ZeroDelta
+            .Add(KeyFoo, (Text)"abc")
+            .Add(KeyBar, (Text)"def");
+
+        public static IImmutableDictionary<KeyBytes, IValue> DeltaB => ZeroDelta
+            .Add(KeyFoo, (Text)"ABC")
+            .Add(KeyBaz, (Text)"ghi");
 
         [Theory]
         [MemberData(nameof(StateStores))]

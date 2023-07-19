@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            IImmutableDictionary<string, IValue> delta = evaluations.GetRawTotalDelta();
+            IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetRawTotalDelta();
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
             return trie.Hash;
