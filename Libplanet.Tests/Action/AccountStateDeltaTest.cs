@@ -5,6 +5,8 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
+using Libplanet.Action.Tests.Common;
+using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Crypto;
@@ -14,8 +16,6 @@ using Libplanet.Common.Types.Consensus;
 using Libplanet.Common.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Mocks;
 using Xunit;
 using Xunit.Abstractions;
 

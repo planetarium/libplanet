@@ -155,6 +155,8 @@ on GitHub consists of several projects.  There are two types of projects:
  -  *Libplanet.Tests*: Unit tests for the *Libplanet* project.  See the *Tests*
     section below.
 
+ -  *Libplanet.Action.Tests*: Unit tests for the *Libplanet.Action* project.
+
  -  *Libplanet.Net.Tests*: Unit tests for the *Libplanet.Net* project.
 
  -  *Libplanet.Stun.Tests*: Unit tests of the *Libplanet.Stun* project.

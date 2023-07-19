@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Assets;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

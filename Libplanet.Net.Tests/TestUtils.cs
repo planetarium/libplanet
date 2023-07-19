@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common.Crypto;
@@ -18,7 +19,6 @@ using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Random = System.Random;
 

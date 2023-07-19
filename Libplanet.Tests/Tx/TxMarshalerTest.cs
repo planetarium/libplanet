@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action.Loader;
+using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Common.Crypto;
 using Libplanet.Common.Types.Tx;
-using Libplanet.Tests.Common.Action;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

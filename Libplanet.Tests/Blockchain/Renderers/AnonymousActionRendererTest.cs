@@ -2,10 +2,10 @@ using System;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
+using Libplanet.Action.Tests.Common;
+using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common.Types.Blocks;
-using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Mocks;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Renderers
