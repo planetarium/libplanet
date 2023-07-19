@@ -150,13 +150,13 @@ game logic.</p>
 <p>Libplanet creates digital signatures to find which player node made each
 transaction, without relying on the authority of a centralized server.
 In the similar fashion to <a href="https://bitcoin.org/">Bitcoin</a> and <a href="https://www.ethereum.org/">Ethereum</a>, a transaction is signed
-with <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>, and a pair of each player's sole @&quot;Libplanet.Crypto.PrivateKey&quot;
-and @&quot;Libplanet.Crypto.PublicKey&quot; used to sign transactions construct
+with <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>, and a pair of each player's sole <a class="xref" href="../api/Libplanet.Crypto.PrivateKey.html">PrivateKey</a>
+and <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a> used to sign transactions construct
 an <em>account</em>.  Since a pair of keys for an account is <em>chosen</em> at offline,
 the process of so-called &quot;account creation&quot; can be omitted.</p>
 <p>An account can also be identified through the @&quot;Libplanet.Address&quot; which is
-derived from the corresponding @&quot;Libplanet.Crypto.PublicKey&quot;.  It is shorter
-than @&quot;Libplanet.Crypto.PublicKey&quot; and follows the same form to Ethereum's.
+derived from the corresponding <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a>.  It is shorter
+than <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a> and follows the same form to Ethereum's.
 This means key pairs that have used for Ethereum can be reused for
 Libplanet-backed games too.  For example, a game can raise funding or receive
 donations through Ethereum and then reward people when the game is released.</p>
