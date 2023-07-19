@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using Libplanet.Store;
 
 namespace Libplanet.Action.State
 {

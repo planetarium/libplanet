@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State

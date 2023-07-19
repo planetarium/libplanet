@@ -42,13 +42,6 @@ namespace Libplanet.Action.State
         /// </summary>
         public Currency Currency { get; }
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(Currency), Currency);
-        }
-
         public static TotalSupplyNotTrackableException WithDefaultMessage(Currency currency)
         {
             var msg =
@@ -56,6 +49,13 @@ namespace Libplanet.Action.State
                 + " is a legacy untracked currency which might have been established before"
                 + " the introduction of total supply tracking support.";
             return new TotalSupplyNotTrackableException(msg, currency);
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue(nameof(Currency), Currency);
         }
     }
 }
