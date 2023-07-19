@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using global::Cocona;
-using Libplanet.Common.Types.Blocks;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Extensions.Cocona.Commands;
 

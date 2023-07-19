@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Store
 {

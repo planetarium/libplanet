@@ -1,4 +1,4 @@
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Tests.Blocks
 {

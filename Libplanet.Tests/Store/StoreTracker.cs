@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Tests.Store
 {

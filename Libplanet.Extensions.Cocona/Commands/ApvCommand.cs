@@ -1,5 +1,5 @@
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 
 namespace Libplanet.Extensions.Cocona.Commands;
 

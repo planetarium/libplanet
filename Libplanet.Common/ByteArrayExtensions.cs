@@ -1,13 +1,11 @@
 using System;
 using System.Diagnostics.Contracts;
-using Libplanet.Common.Crypto;
 
 namespace Libplanet.Common
 {
     /// <summary>
     /// This extension class enables some convenient methods to deal with byte array.
     /// </summary>
-    /// <seealso cref="Address"/>
     public static class ByteArrayExtensions
     {
         /// <summary>

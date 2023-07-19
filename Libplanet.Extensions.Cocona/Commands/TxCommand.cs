@@ -6,7 +6,7 @@ using Bencodex;
 using Bencodex.Types;
 using global::Cocona;
 using global::Cocona.Help;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Extensions.Cocona.Commands;
 

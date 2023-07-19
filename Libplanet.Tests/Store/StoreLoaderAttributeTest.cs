@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 #if !NETFRAMEWORK
 using static System.Web.HttpUtility;
 #endif
-using Libplanet.Common.Misc;
+using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 #if NETFRAMEWORK

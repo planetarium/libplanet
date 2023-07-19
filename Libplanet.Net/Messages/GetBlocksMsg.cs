@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Net.Messages
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using Libplanet.Common.Serialization;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {

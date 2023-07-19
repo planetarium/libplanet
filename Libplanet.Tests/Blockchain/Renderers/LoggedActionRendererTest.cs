@@ -8,7 +8,7 @@ using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;

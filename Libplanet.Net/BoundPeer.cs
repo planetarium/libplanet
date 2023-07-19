@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Destructurama.Attributed;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 
 namespace Libplanet.Net
 {
@@ -79,7 +79,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// The corresponding <see cref="Libplanet.Common.Crypto.PublicKey"/> of
+        /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this peer.
         /// </summary>
         [LogAsScalar]

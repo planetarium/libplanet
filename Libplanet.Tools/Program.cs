@@ -8,7 +8,7 @@ using Cocona;
 using Libplanet.Crypto.Secp256k1;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Extensions;
-using CryptoConfig = Libplanet.Common.Crypto.CryptoConfig;
+using CryptoConfig = Libplanet.Crypto.CryptoConfig;
 
 [HasSubCommands(typeof(ApvCommand), "apv", Description = "App protocol version utilities.")]
 [HasSubCommands(typeof(KeyCommand), "key", Description = "Manage private keys.")]

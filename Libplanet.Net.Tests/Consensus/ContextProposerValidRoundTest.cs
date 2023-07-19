@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;

@@ -4,13 +4,13 @@ using System.Collections.Immutable;
 using System.IO;
 using global::Cocona;
 using Libplanet.Action;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.RocksDBStore.Tests;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Xunit;
 using Xunit.Abstractions;
 

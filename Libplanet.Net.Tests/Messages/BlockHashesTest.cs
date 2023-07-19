@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
 using NetMQ;
 using Xunit;
 

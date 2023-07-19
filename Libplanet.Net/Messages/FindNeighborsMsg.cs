@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 
 namespace Libplanet.Net.Messages
 {

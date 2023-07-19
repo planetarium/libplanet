@@ -5,12 +5,12 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Xunit;
-using FAV = Libplanet.Common.Types.Assets.FungibleAssetValue;
+using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Tx
 {

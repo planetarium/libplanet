@@ -4,9 +4,9 @@ using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Action.Tests.Mocks;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Action.Tests.Sys

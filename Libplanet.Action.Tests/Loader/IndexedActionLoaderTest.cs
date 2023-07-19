@@ -1,7 +1,7 @@
 using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Xunit;
 
 namespace Libplanet.Action.Tests.Loader

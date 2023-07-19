@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Xunit;
 
 namespace Libplanet.Net.Tests

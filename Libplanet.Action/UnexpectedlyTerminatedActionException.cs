@@ -5,8 +5,8 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Common.Serialization;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {

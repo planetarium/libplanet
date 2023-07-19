@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.Loader;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
 {

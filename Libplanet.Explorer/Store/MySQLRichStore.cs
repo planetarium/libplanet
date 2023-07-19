@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using LruCacheNet;
 using MySqlConnector;
 using Serilog;

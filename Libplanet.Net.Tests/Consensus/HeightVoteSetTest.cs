@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using Libplanet.Blockchain;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Net.Tests.Consensus

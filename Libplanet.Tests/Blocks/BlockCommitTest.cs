@@ -3,10 +3,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Xunit;
 using Xunit.Abstractions;
 

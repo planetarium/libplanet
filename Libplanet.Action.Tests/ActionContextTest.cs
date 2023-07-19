@@ -1,8 +1,8 @@
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Action.Tests

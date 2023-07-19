@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Bencodex.Types;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using LruCacheNet;
 using Serilog;
 

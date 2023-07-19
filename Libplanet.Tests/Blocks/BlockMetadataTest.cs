@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Common.ByteUtil;

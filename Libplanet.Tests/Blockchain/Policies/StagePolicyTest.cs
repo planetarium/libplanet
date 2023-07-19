@@ -5,9 +5,9 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Tests.Store;
+using Libplanet.Types.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Blockchain.Policies

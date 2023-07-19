@@ -1,7 +1,7 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Action.State;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Assets;
+using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Xunit;
 
 namespace Libplanet.Action.Tests

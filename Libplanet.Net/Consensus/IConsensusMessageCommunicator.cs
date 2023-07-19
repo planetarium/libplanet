@@ -1,5 +1,5 @@
-using Libplanet.Common.Types.Blocks;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Net.Consensus
 {

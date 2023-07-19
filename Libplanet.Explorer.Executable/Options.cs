@@ -5,9 +5,9 @@ using System.Net;
 using Bencodex;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Explorer.Executable
 {

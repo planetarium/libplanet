@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Destructurama.Attributed;
-using Libplanet.Common.Types.Blocks;
 using Libplanet.Net.Transports;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Net.Messages
 {

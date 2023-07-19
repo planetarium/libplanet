@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
 using Libplanet.Net.Messages;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Net
 {

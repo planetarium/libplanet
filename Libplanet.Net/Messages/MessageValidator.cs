@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
+using Libplanet.Crypto;
 using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 

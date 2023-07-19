@@ -12,15 +12,15 @@ using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Common;
-using Libplanet.Common.Crypto;
-using Libplanet.Common.Types.Blocks;
-using Libplanet.Common.Types.Tx;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 using Nito.AsyncEx;
 using Serilog;
 
