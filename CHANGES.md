@@ -1,12 +1,10 @@
 Libplanet changelog
 ===================
 
-Version 2.6.0
+Version 3.0.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on July 19, 2023.
 
 ### Backward-incompatible API changes
 
@@ -24,13 +22,9 @@ To be released.
      -  `Libplanet.Tx`
  -  (Libplanet.Store) Moved packages from `Libplanet`.  [[#3303]]
      -  `Libplanet.Store`
- -  (Libplanet.Action) Moved packages from `Libplanet`.  [[#3303]]
+ -  (Libplanet.Action) Moved packages from `Libplanet`.  [[#3310]]
      -  `Libplanet.Action`
  -  Removed `IExtractableException` and `ExtractableException`.  [[#3304]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -41,16 +35,12 @@ To be released.
  -  `TxFailure` no longer tracks `ExceptionMetadata` and is always
     set to `null` even for already stored `TxFailure`.  [[#3304]]
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#3300]: https://github.com/planetarium/libplanet/pull/3300
 [#3303]: https://github.com/planetarium/libplanet/pull/3303
 [#3304]: https://github.com/planetarium/libplanet/pull/3304
+[#3310]: https://github.com/planetarium/libplanet/pull/3310
 [#3313]: https://github.com/planetarium/libplanet/pull/3313
+[#3314]: https://github.com/planetarium/libplanet/pull/3314
 
 
 Version 2.5.0
