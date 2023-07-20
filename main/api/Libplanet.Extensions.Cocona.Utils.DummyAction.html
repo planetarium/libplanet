@@ -141,7 +141,12 @@
   </span>
   <a id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.PlainValue*"></a>
   <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.PlainValue">PlainValue</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
+(or fields) of an action, so that they can be transmitted over
+network or saved to persistent storage.</p>
+<p>Serialized values are deserialized by
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue(IValue)</a> method later.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -158,10 +163,16 @@
     <tbody>
       <tr>
         <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td></td>
+        <td><p>A Bencodex value which encodes this action's bound values (held
+by properties or fields).</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue</a>(<span class="xref">Bencodex.Types.IValue</span>)</div>
+  </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -275,7 +286,10 @@ your project as a dependency.</p>
   </span>
   <a id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue*"></a>
   <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -294,10 +308,17 @@ your project as a dependency.</p>
       <tr>
         <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">plainValue</span></td>
-        <td></td>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_Bencodex_Types_IValue__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
+  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>

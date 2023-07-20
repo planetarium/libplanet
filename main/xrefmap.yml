@@ -262,13 +262,13 @@ references:
   commentId: T:Libplanet.Action.DuplicateActionTypeIdentifierException
   fullName: Libplanet.Action.DuplicateActionTypeIdentifierException
   nameWithType: DuplicateActionTypeIdentifierException
-- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,System.String,IImmutableSet{System.Type})
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,System.String,System.Collections.Immutable.IImmutableSet{System.Type})
   name: DuplicateActionTypeIdentifierException(String, String, IImmutableSet<Type>)
-  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException__ctor_System_String_System_String_IImmutableSet_System_Type__
-  commentId: M:Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,System.String,IImmutableSet{System.Type})
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException__ctor_System_String_System_String_System_Collections_Immutable_IImmutableSet_System_Type__
+  commentId: M:Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,System.String,System.Collections.Immutable.IImmutableSet{System.Type})
   name.vb: DuplicateActionTypeIdentifierException(String, String, IImmutableSet(Of Type))
-  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, System.String, IImmutableSet<System.Type>)
-  fullName.vb: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, System.String, IImmutableSet(Of System.Type))
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, System.String, System.Collections.Immutable.IImmutableSet<System.Type>)
+  fullName.vb: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, System.String, System.Collections.Immutable.IImmutableSet(Of System.Type))
   nameWithType: DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(String, String, IImmutableSet<Type>)
   nameWithType.vb: DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(String, String, IImmutableSet(Of Type))
 - uid: Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor*
@@ -406,11 +406,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAction.Execute
   nameWithType: IAction.Execute
-- uid: Libplanet.Action.IAction.LoadPlainValue(IValue)
+- uid: Libplanet.Action.IAction.LoadPlainValue(Bencodex.Types.IValue)
   name: LoadPlainValue(IValue)
-  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IValue_
-  commentId: M:Libplanet.Action.IAction.LoadPlainValue(IValue)
-  fullName: Libplanet.Action.IAction.LoadPlainValue(IValue)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.IAction.LoadPlainValue(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.IAction.LoadPlainValue(Bencodex.Types.IValue)
   nameWithType: IAction.LoadPlainValue(IValue)
 - uid: Libplanet.Action.IAction.LoadPlainValue*
   name: LoadPlainValue
@@ -838,11 +838,11 @@ references:
   commentId: T:Libplanet.Action.InvalidActionException
   fullName: Libplanet.Action.InvalidActionException
   nameWithType: InvalidActionException
-- uid: Libplanet.Action.InvalidActionException.#ctor(System.String,IValue,System.Exception)
+- uid: Libplanet.Action.InvalidActionException.#ctor(System.String,Bencodex.Types.IValue,System.Exception)
   name: InvalidActionException(String, IValue, Exception)
-  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException__ctor_System_String_IValue_System_Exception_
-  commentId: M:Libplanet.Action.InvalidActionException.#ctor(System.String,IValue,System.Exception)
-  fullName: Libplanet.Action.InvalidActionException.InvalidActionException(System.String, IValue, System.Exception)
+  href: api/Libplanet.Action.InvalidActionException.html#Libplanet_Action_InvalidActionException__ctor_System_String_Bencodex_Types_IValue_System_Exception_
+  commentId: M:Libplanet.Action.InvalidActionException.#ctor(System.String,Bencodex.Types.IValue,System.Exception)
+  fullName: Libplanet.Action.InvalidActionException.InvalidActionException(System.String, Bencodex.Types.IValue, System.Exception)
   nameWithType: InvalidActionException.InvalidActionException(String, IValue, Exception)
 - uid: Libplanet.Action.InvalidActionException.#ctor*
   name: InvalidActionException
@@ -936,11 +936,11 @@ references:
   commentId: T:Libplanet.Action.Loader.IActionLoader
   fullName: Libplanet.Action.Loader.IActionLoader
   nameWithType: IActionLoader
-- uid: Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64,IValue)
+- uid: Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
   name: LoadAction(Int64, IValue)
-  href: api/Libplanet.Action.Loader.IActionLoader.html#Libplanet_Action_Loader_IActionLoader_LoadAction_System_Int64_IValue_
-  commentId: M:Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64,IValue)
-  fullName: Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64, IValue)
+  href: api/Libplanet.Action.Loader.IActionLoader.html#Libplanet_Action_Loader_IActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Loader.IActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
   nameWithType: IActionLoader.LoadAction(Int64, IValue)
 - uid: Libplanet.Action.Loader.IActionLoader.LoadAction*
   name: LoadAction
@@ -971,11 +971,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Loader.IndexedActionLoader.IndexedActionLoader
   nameWithType: IndexedActionLoader.IndexedActionLoader
-- uid: Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,IValue)
+- uid: Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
   name: LoadAction(Int64, IValue)
-  href: api/Libplanet.Action.Loader.IndexedActionLoader.html#Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_IValue_
-  commentId: M:Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,IValue)
-  fullName: Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64, IValue)
+  href: api/Libplanet.Action.Loader.IndexedActionLoader.html#Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
   nameWithType: IndexedActionLoader.LoadAction(Int64, IValue)
 - uid: Libplanet.Action.Loader.IndexedActionLoader.LoadAction*
   name: LoadAction
@@ -1003,11 +1003,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Loader.SingleActionLoader.SingleActionLoader
   nameWithType: SingleActionLoader.SingleActionLoader
-- uid: Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64,IValue)
+- uid: Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
   name: LoadAction(Int64, IValue)
-  href: api/Libplanet.Action.Loader.SingleActionLoader.html#Libplanet_Action_Loader_SingleActionLoader_LoadAction_System_Int64_IValue_
-  commentId: M:Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64,IValue)
-  fullName: Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64, IValue)
+  href: api/Libplanet.Action.Loader.SingleActionLoader.html#Libplanet_Action_Loader_SingleActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Loader.SingleActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
   nameWithType: SingleActionLoader.LoadAction(Int64, IValue)
 - uid: Libplanet.Action.Loader.SingleActionLoader.LoadAction*
   name: LoadAction
@@ -1035,13 +1035,13 @@ references:
   commentId: T:Libplanet.Action.Loader.TypedActionLoader
   fullName: Libplanet.Action.Loader.TypedActionLoader
   nameWithType: TypedActionLoader
-- uid: Libplanet.Action.Loader.TypedActionLoader.#ctor(System.Collections.Generic.IDictionary{IValue,System.Type})
+- uid: Libplanet.Action.Loader.TypedActionLoader.#ctor(System.Collections.Generic.IDictionary{Bencodex.Types.IValue,System.Type})
   name: TypedActionLoader(IDictionary<IValue, Type>)
-  href: api/Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_IValue_System_Type__
-  commentId: M:Libplanet.Action.Loader.TypedActionLoader.#ctor(System.Collections.Generic.IDictionary{IValue,System.Type})
+  href: api/Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type__
+  commentId: M:Libplanet.Action.Loader.TypedActionLoader.#ctor(System.Collections.Generic.IDictionary{Bencodex.Types.IValue,System.Type})
   name.vb: TypedActionLoader(IDictionary(Of IValue, Type))
-  fullName: Libplanet.Action.Loader.TypedActionLoader.TypedActionLoader(System.Collections.Generic.IDictionary<IValue, System.Type>)
-  fullName.vb: Libplanet.Action.Loader.TypedActionLoader.TypedActionLoader(System.Collections.Generic.IDictionary(Of IValue, System.Type))
+  fullName: Libplanet.Action.Loader.TypedActionLoader.TypedActionLoader(System.Collections.Generic.IDictionary<Bencodex.Types.IValue, System.Type>)
+  fullName.vb: Libplanet.Action.Loader.TypedActionLoader.TypedActionLoader(System.Collections.Generic.IDictionary(Of Bencodex.Types.IValue, System.Type))
   nameWithType: TypedActionLoader.TypedActionLoader(IDictionary<IValue, Type>)
   nameWithType.vb: TypedActionLoader.TypedActionLoader(IDictionary(Of IValue, Type))
 - uid: Libplanet.Action.Loader.TypedActionLoader.#ctor*
@@ -1064,11 +1064,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Loader.TypedActionLoader.Create
   nameWithType: TypedActionLoader.Create
-- uid: Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,IValue)
+- uid: Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
   name: LoadAction(Int64, IValue)
-  href: api/Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_IValue_
-  commentId: M:Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,IValue)
-  fullName: Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64, IValue)
+  href: api/Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64, Bencodex.Types.IValue)
   nameWithType: TypedActionLoader.LoadAction(Int64, IValue)
 - uid: Libplanet.Action.Loader.TypedActionLoader.LoadAction*
   name: LoadAction
@@ -1122,11 +1122,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.NullAction.Execute
   nameWithType: NullAction.Execute
-- uid: Libplanet.Action.NullAction.LoadPlainValue(IValue)
+- uid: Libplanet.Action.NullAction.LoadPlainValue(Bencodex.Types.IValue)
   name: LoadPlainValue(IValue)
-  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_LoadPlainValue_IValue_
-  commentId: M:Libplanet.Action.NullAction.LoadPlainValue(IValue)
-  fullName: Libplanet.Action.NullAction.LoadPlainValue(IValue)
+  href: api/Libplanet.Action.NullAction.html#Libplanet_Action_NullAction_LoadPlainValue_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.NullAction.LoadPlainValue(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.NullAction.LoadPlainValue(Bencodex.Types.IValue)
   nameWithType: NullAction.LoadPlainValue(IValue)
 - uid: Libplanet.Action.NullAction.LoadPlainValue*
   name: LoadPlainValue
@@ -1623,11 +1623,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccountStateDelta.MintAsset
   nameWithType: IAccountStateDelta.MintAsset
-- uid: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,IValue)
+- uid: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
   name: SetState(Address, IValue)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetState_Libplanet_Crypto_Address_IValue_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,IValue)
-  fullName: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address, IValue)
+  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address, Bencodex.Types.IValue)
   nameWithType: IAccountStateDelta.SetState(Address, IValue)
 - uid: Libplanet.Action.State.IAccountStateDelta.SetState*
   name: SetState
@@ -1975,13 +1975,13 @@ references:
   commentId: M:Libplanet.Action.Sys.Initialize.#ctor
   fullName: Libplanet.Action.Sys.Initialize.Initialize()
   nameWithType: Initialize.Initialize()
-- uid: Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,IImmutableDictionary{Libplanet.Crypto.Address,IValue})
+- uid: Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue})
   name: Initialize(ValidatorSet, IImmutableDictionary<Address, IValue>)
-  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_IImmutableDictionary_Libplanet_Crypto_Address_IValue__
-  commentId: M:Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,IImmutableDictionary{Libplanet.Crypto.Address,IValue})
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__
+  commentId: M:Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue})
   name.vb: Initialize(ValidatorSet, IImmutableDictionary(Of Address, IValue))
-  fullName: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Types.Consensus.ValidatorSet, IImmutableDictionary<Libplanet.Crypto.Address, IValue>)
-  fullName.vb: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Types.Consensus.ValidatorSet, IImmutableDictionary(Of Libplanet.Crypto.Address, IValue))
+  fullName: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Types.Consensus.ValidatorSet, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, Bencodex.Types.IValue>)
+  fullName.vb: Libplanet.Action.Sys.Initialize.Initialize(Libplanet.Types.Consensus.ValidatorSet, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, Bencodex.Types.IValue))
   nameWithType: Initialize.Initialize(ValidatorSet, IImmutableDictionary<Address, IValue>)
   nameWithType.vb: Initialize.Initialize(ValidatorSet, IImmutableDictionary(Of Address, IValue))
 - uid: Libplanet.Action.Sys.Initialize.#ctor*
@@ -2004,11 +2004,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Initialize.Execute
   nameWithType: Initialize.Execute
-- uid: Libplanet.Action.Sys.Initialize.LoadPlainValue(IValue)
+- uid: Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
   name: LoadPlainValue(IValue)
-  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_LoadPlainValue_IValue_
-  commentId: M:Libplanet.Action.Sys.Initialize.LoadPlainValue(IValue)
-  fullName: Libplanet.Action.Sys.Initialize.LoadPlainValue(IValue)
+  href: api/Libplanet.Action.Sys.Initialize.html#Libplanet_Action_Sys_Initialize_LoadPlainValue_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)
   nameWithType: Initialize.LoadPlainValue(IValue)
 - uid: Libplanet.Action.Sys.Initialize.LoadPlainValue*
   name: LoadPlainValue
@@ -2075,11 +2075,11 @@ references:
   commentId: T:Libplanet.Action.Sys.Registry
   fullName: Libplanet.Action.Sys.Registry
   nameWithType: Registry
-- uid: Libplanet.Action.Sys.Registry.Deserialize(IValue)
+- uid: Libplanet.Action.Sys.Registry.Deserialize(Bencodex.Types.IValue)
   name: Deserialize(IValue)
-  href: api/Libplanet.Action.Sys.Registry.html#Libplanet_Action_Sys_Registry_Deserialize_IValue_
-  commentId: M:Libplanet.Action.Sys.Registry.Deserialize(IValue)
-  fullName: Libplanet.Action.Sys.Registry.Deserialize(IValue)
+  href: api/Libplanet.Action.Sys.Registry.html#Libplanet_Action_Sys_Registry_Deserialize_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Sys.Registry.Deserialize(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Sys.Registry.Deserialize(Bencodex.Types.IValue)
   nameWithType: Registry.Deserialize(IValue)
 - uid: Libplanet.Action.Sys.Registry.Deserialize*
   name: Deserialize
@@ -2088,11 +2088,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Registry.Deserialize
   nameWithType: Registry.Deserialize
-- uid: Libplanet.Action.Sys.Registry.IsSystemAction(IValue)
+- uid: Libplanet.Action.Sys.Registry.IsSystemAction(Bencodex.Types.IValue)
   name: IsSystemAction(IValue)
-  href: api/Libplanet.Action.Sys.Registry.html#Libplanet_Action_Sys_Registry_IsSystemAction_IValue_
-  commentId: M:Libplanet.Action.Sys.Registry.IsSystemAction(IValue)
-  fullName: Libplanet.Action.Sys.Registry.IsSystemAction(IValue)
+  href: api/Libplanet.Action.Sys.Registry.html#Libplanet_Action_Sys_Registry_IsSystemAction_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.Sys.Registry.IsSystemAction(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.Sys.Registry.IsSystemAction(Bencodex.Types.IValue)
   nameWithType: Registry.IsSystemAction(IValue)
 - uid: Libplanet.Action.Sys.Registry.IsSystemAction(Libplanet.Action.IAction)
   name: IsSystemAction(IAction)
