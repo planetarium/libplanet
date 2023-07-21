@@ -3,12 +3,13 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Action
 {
     public static class ActionEvaluationsExtensions
     {
-        public static IImmutableDictionary<string, IValue> GetRawTotalDelta(
+        public static IImmutableDictionary<KeyBytes, IValue> GetRawTotalDelta(
             this IReadOnlyList<IActionEvaluation> actionEvaluations)
         {
             return actionEvaluations

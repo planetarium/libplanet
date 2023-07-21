@@ -44,18 +44,22 @@ namespace Libplanet.Tests.Store
             Assert.Null(empty.Get(new[] { KeyQux })[0]);
             Assert.Null(empty.Get(new[] { KeyQuux })[0]);
 
-            var values = ImmutableDictionary<string, IValue>.Empty
-                .Add("foo", (Binary)GetRandomBytes(32))
-                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(32)))
-                .Add("baz", (Bencodex.Types.Boolean)false)
-                .Add("qux", Bencodex.Types.Dictionary.Empty);
+            KeyBytes fooKey = StateStoreExtensions.EncodeKey("foo");
+            KeyBytes barKey = StateStoreExtensions.EncodeKey("bar");
+            KeyBytes bazKey = StateStoreExtensions.EncodeKey("baz");
+            KeyBytes quxKey = StateStoreExtensions.EncodeKey("qux");
+            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
+                .Add(fooKey, (Binary)GetRandomBytes(32))
+                .Add(barKey, (Text)ByteUtil.Hex(GetRandomBytes(32)))
+                .Add(bazKey, (Bencodex.Types.Boolean)false)
+                .Add(quxKey, Bencodex.Types.Dictionary.Empty);
             HashDigest<SHA256> hash = stateStore.Commit(null, values).Hash;
             ITrie found = stateStore.GetStateRoot(hash);
             Assert.True(found.Recorded);
-            AssertBencodexEqual(values["foo"], found.Get(new[] { KeyFoo })[0]);
-            AssertBencodexEqual(values["bar"], found.Get(new[] { KeyBar })[0]);
-            AssertBencodexEqual(values["baz"], found.Get(new[] { KeyBaz })[0]);
-            AssertBencodexEqual(values["qux"], found.Get(new[] { KeyQux })[0]);
+            AssertBencodexEqual(values[fooKey], found.Get(new[] { KeyFoo })[0]);
+            AssertBencodexEqual(values[barKey], found.Get(new[] { KeyBar })[0]);
+            AssertBencodexEqual(values[bazKey], found.Get(new[] { KeyBaz })[0]);
+            AssertBencodexEqual(values[quxKey], found.Get(new[] { KeyQux })[0]);
             Assert.Null(found.Get(new[] { KeyQuux })[0]);
         }
 
@@ -64,13 +68,15 @@ namespace Libplanet.Tests.Store
         [InlineData(false)]
         public void PruneStates(bool secure)
         {
-            var values = ImmutableDictionary<string, IValue>.Empty
-                .Add("foo", (Binary)GetRandomBytes(4096))
-                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add("baz", (Bencodex.Types.Boolean)false)
-                .Add("qux", Bencodex.Types.Dictionary.Empty)
+            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
+                .Add(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096))
                 .Add(
-                    "zzz",
+                    StateStoreExtensions.EncodeKey("bar"),
+                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
+                .Add(StateStoreExtensions.EncodeKey("baz"), (Bencodex.Types.Boolean)false)
+                .Add(StateStoreExtensions.EncodeKey("qux"), Bencodex.Types.Dictionary.Empty)
+                .Add(
+                    StateStoreExtensions.EncodeKey("zzz"),
                     Bencodex.Types.Dictionary.Empty
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
@@ -79,8 +85,8 @@ namespace Libplanet.Tests.Store
             ITrie first = stateStore.Commit(null, values);
 
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            ImmutableDictionary<string, IValue> nextStates =
-                values.SetItem("foo", (Binary)GetRandomBytes(4096));
+            ImmutableDictionary<KeyBytes, IValue> nextStates =
+                values.SetItem(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096));
             ITrie second = stateStore.Commit(first.Hash, nextStates);
 
             // foo = 0x666f6f
@@ -101,13 +107,15 @@ namespace Libplanet.Tests.Store
         [InlineData(false)]
         public void CopyStates(bool secure)
         {
-            var values = ImmutableDictionary<string, IValue>.Empty
-                .Add("foo", (Binary)GetRandomBytes(4096))
-                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add("baz", (Bencodex.Types.Boolean)false)
-                .Add("qux", Bencodex.Types.Dictionary.Empty)
+            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
+                .Add(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096))
                 .Add(
-                    "zzz",
+                    StateStoreExtensions.EncodeKey("bar"),
+                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
+                .Add(StateStoreExtensions.EncodeKey("baz"), (Bencodex.Types.Boolean)false)
+                .Add(StateStoreExtensions.EncodeKey("qux"), Bencodex.Types.Dictionary.Empty)
+                .Add(
+                    StateStoreExtensions.EncodeKey("zzz"),
                     Bencodex.Types.Dictionary.Empty
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));

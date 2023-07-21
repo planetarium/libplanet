@@ -62,9 +62,8 @@ namespace Libplanet.Action.State
             // Fetched uncached and update cache
             IReadOnlyList<Address> uncachedAddresses =
                 uncachedIndices.Select(index => addresses[index]).ToArray();
-            string[] uncachedStringKeys = uncachedAddresses.Select(ToStateKey).ToArray();
-            IReadOnlyList<IValue?> fetched = _stateRoot.Get(
-                uncachedStringKeys.Select(StateStoreExtensions.EncodeKey).ToList()).ToArray();
+            KeyBytes[] uncachedKeys = uncachedAddresses.Select(ToStateKey).ToArray();
+            IReadOnlyList<IValue?> fetched = _stateRoot.Get(uncachedKeys).ToArray();
             foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
             {
                 result[v] = fetched[i];
@@ -80,9 +79,8 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetBalance"/>
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
-            string[] stringKeys = new[] { ToFungibleAssetKey(address, currency) };
-            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(
-                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            KeyBytes[] keys = new[] { ToFungibleAssetKey(address, currency) };
+            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(keys);
             return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
@@ -96,9 +94,8 @@ namespace Libplanet.Action.State
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            string[] stringKeys = new[] { ToTotalSupplyKey(currency) };
-            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(
-                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            KeyBytes[] keys = new[] { ToTotalSupplyKey(currency) };
+            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(keys);
             return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
@@ -107,9 +104,8 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
-            string[] stringKeys = new[] { ValidatorSetKey };
-            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(
-                stringKeys.Select(StateStoreExtensions.EncodeKey).ToList());
+            KeyBytes[] keys = new[] { ValidatorSetKey };
+            IReadOnlyList<IValue?> rawValues = _stateRoot.Get(keys);
             return rawValues.Count > 0 && rawValues[0] is List list
                 ? new ValidatorSet(list)
                 : new ValidatorSet();

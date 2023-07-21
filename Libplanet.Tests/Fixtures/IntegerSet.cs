@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(PrivateKey signer, params Arithmetic[] actions)
         {
             Address signerAddress = signer.ToAddress();
-            string rawStateKey = KeyConverters.ToStateKey(signerAddress);
+            KeyBytes rawStateKey = KeyConverters.ToStateKey(signerAddress);
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
                 Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
@@ -132,7 +132,7 @@ namespace Libplanet.Tests.Fixtures
                     else
                     {
                         BigInteger nextState = a.Operator.ToFunc()(prev.Item1, a.Operand);
-                        var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
+                        var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                             .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                         HashDigest<SHA256> nextRootHash =
                             prevTrie.Set(updatedRawStates).Commit().Hash;
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Fixtures
                         {
                             BigInteger nextState =
                                 a.Operator.ToFunc()(delta[delta.Length - 1].Item1, a.Operand);
-                            var updatedRawStates = ImmutableDictionary<string, IValue>.Empty
+                            var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                                 .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                             HashDigest<SHA256> nextRootHash =
                                 prevTrie.Set(updatedRawStates).Commit().Hash;

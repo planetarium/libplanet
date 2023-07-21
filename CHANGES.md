@@ -10,6 +10,15 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `StateStoreExtensions.Commit()` to accept
+    `IImmutableDictionary<KeyBytes, IValue>` instead of
+    `IImmutableDictionary<string, IValue>`.  [[#3321]]
+ -  Changed `AccountDeltaExtensions.ToRawDelta()` to return
+    `IImmutableDictionary<KeyBytes, IValue>` instead of
+    `IImmutableDictionary<string, IValue>`.  [[#3321]]
+ -  Changed `ActionEvaluatorExtensions.GetRawTotalDelta()` to return
+    `IImmutableDictionary<KeyBytes, IValue>` instead of
+    `IImmutableDictionary<string, IValue>`.  [[#3321]]
  -  Removed `EnumerableMeasurement` class.  [[#3325]]
  -  Removed `KeyValueExtensions` class.  [[#3325]]
 
@@ -19,7 +28,13 @@ To be released.
 
 ### Added APIs
 
+ -  Added `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>,
+    IReadOnlyList<KeyBytes>)` method.  [[#3321]]
+
 ### Behavioral changes
+
+ -  Optimized read and write access to `IStateStore` both for memory and speed.
+    [[#3321]]
 
 ### Bug fixes
 
@@ -27,6 +42,7 @@ To be released.
 
 ### CLI tools
 
+[#3321]: https://github.com/planetarium/libplanet/pull/3321
 [#3325]: https://github.com/planetarium/libplanet/pull/3325
 
 
