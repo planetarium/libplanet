@@ -21852,35 +21852,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StateStoreExtensions.ContainsStateRoot
   nameWithType: StateStoreExtensions.ContainsStateRoot
-- uid: Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes@)
-  name: DecodeKey(in KeyBytes)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_DecodeKey_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes@)
-  name.vb: DecodeKey(ByRef KeyBytes)
-  fullName: Libplanet.Store.StateStoreExtensions.DecodeKey(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.Store.StateStoreExtensions.DecodeKey(ByRef Libplanet.Store.Trie.KeyBytes)
-  nameWithType: StateStoreExtensions.DecodeKey(in KeyBytes)
-  nameWithType.vb: StateStoreExtensions.DecodeKey(ByRef KeyBytes)
-- uid: Libplanet.Store.StateStoreExtensions.DecodeKey*
-  name: DecodeKey
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_DecodeKey_
-  commentId: Overload:Libplanet.Store.StateStoreExtensions.DecodeKey
-  isSpec: "True"
-  fullName: Libplanet.Store.StateStoreExtensions.DecodeKey
-  nameWithType: StateStoreExtensions.DecodeKey
-- uid: Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
-  name: EncodeKey(String)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_EncodeKey_System_String_
-  commentId: M:Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
-  fullName: Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
-  nameWithType: StateStoreExtensions.EncodeKey(String)
-- uid: Libplanet.Store.StateStoreExtensions.EncodeKey*
-  name: EncodeKey
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_EncodeKey_
-  commentId: Overload:Libplanet.Store.StateStoreExtensions.EncodeKey
-  isSpec: "True"
-  fullName: Libplanet.Store.StateStoreExtensions.EncodeKey
-  nameWithType: StateStoreExtensions.EncodeKey
 - uid: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
   name: GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<KeyBytes>)
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
@@ -21890,15 +21861,6 @@ references:
   fullName.vb: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Generic.IReadOnlyList(Of Libplanet.Store.Trie.KeyBytes))
   nameWithType: StateStoreExtensions.GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<KeyBytes>)
   nameWithType.vb: StateStoreExtensions.GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of KeyBytes))
-- uid: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{System.String})
-  name: GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<String>)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Generic_IReadOnlyList_System_String__
-  commentId: M:Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{System.String})
-  name.vb: GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of String))
-  fullName: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Collections.Generic.IReadOnlyList<System.String>)
-  fullName.vb: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Generic.IReadOnlyList(Of System.String))
-  nameWithType: StateStoreExtensions.GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<String>)
-  nameWithType.vb: StateStoreExtensions.GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of String))
 - uid: Libplanet.Store.StateStoreExtensions.GetStates*
   name: GetStates
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_
@@ -22525,12 +22487,12 @@ references:
   fullName.vb: Libplanet.Store.Trie.KeyBytes.KeyBytes(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
   nameWithType: KeyBytes.KeyBytes(in ImmutableArray<Byte>)
   nameWithType.vb: KeyBytes.KeyBytes(ByRef ImmutableArray(Of Byte))
-- uid: Libplanet.Store.Trie.KeyBytes.#ctor(System.String,System.Text.Encoding)
-  name: KeyBytes(String, Encoding)
-  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_System_String_System_Text_Encoding_
-  commentId: M:Libplanet.Store.Trie.KeyBytes.#ctor(System.String,System.Text.Encoding)
-  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.String, System.Text.Encoding)
-  nameWithType: KeyBytes.KeyBytes(String, Encoding)
+- uid: Libplanet.Store.Trie.KeyBytes.#ctor(System.String)
+  name: KeyBytes(String)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_System_String_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.#ctor(System.String)
+  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.String)
+  nameWithType: KeyBytes.KeyBytes(String)
 - uid: Libplanet.Store.Trie.KeyBytes.#ctor*
   name: KeyBytes
   href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_
@@ -22551,6 +22513,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.KeyBytes.ByteArray
   nameWithType: KeyBytes.ByteArray
+- uid: Libplanet.Store.Trie.KeyBytes.Encoding
+  name: Encoding
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Encoding
+  commentId: F:Libplanet.Store.Trie.KeyBytes.Encoding
+  fullName: Libplanet.Store.Trie.KeyBytes.Encoding
+  nameWithType: KeyBytes.Encoding
 - uid: Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)
   name: Equals(KeyBytes)
   href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_Libplanet_Store_Trie_KeyBytes_
@@ -23707,15 +23675,6 @@ references:
   fullName.vb: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue)))
   nameWithType: TrieExtensions.Set(ITrie, IEnumerable<KeyValuePair<KeyBytes, IValue>>)
   nameWithType.vb: TrieExtensions.Set(ITrie, IEnumerable(Of KeyValuePair(Of KeyBytes, IValue)))
-- uid: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,Bencodex.Types.IValue}})
-  name: Set(ITrie, IEnumerable<KeyValuePair<String, IValue>>)
-  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_System_String_Bencodex_Types_IValue___
-  commentId: M:Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,Bencodex.Types.IValue}})
-  name.vb: Set(ITrie, IEnumerable(Of KeyValuePair(Of String, IValue)))
-  fullName: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, Bencodex.Types.IValue>>)
-  fullName.vb: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.String, Bencodex.Types.IValue)))
-  nameWithType: TrieExtensions.Set(ITrie, IEnumerable<KeyValuePair<String, IValue>>)
-  nameWithType.vb: TrieExtensions.Set(ITrie, IEnumerable(Of KeyValuePair(Of String, IValue)))
 - uid: Libplanet.Store.Trie.TrieExtensions.Set*
   name: Set
   href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_

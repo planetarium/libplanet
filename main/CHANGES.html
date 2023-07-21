@@ -77,12 +77,19 @@
 <code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
 <li>Removed <code>EnumerableMeasurement</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
 <li>Removed <code>KeyValueExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
+<li>Removed <code>StateStoreExtensions.EncodeKey()</code> and
+<code>StateStoreExtensions.DecodeKey()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>StateStoreExtensions.GetStates(IStateStore, HashDigest&lt;SHA256&gt;?, IReadOnlyList&lt;string&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>TrieExtensions.Set(ITrie, IEnumerable&lt;KeyValuePair&lt;string, IValue?&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>KeyBytes(string, Encoding)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>StateStoreExtensions.GetStates(IStateStore, HashDigest&lt;SHA256&gt;, IReadOnlyList&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Added <code>KeyBytes.Encoding</code> static property.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Added <code>KeyBytes(string)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
