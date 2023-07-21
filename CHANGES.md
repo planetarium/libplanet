@@ -46,6 +46,16 @@ To be released.
 [#3325]: https://github.com/planetarium/libplanet/pull/3325
 
 
+Version 3.0.1
+-------------
+
+Released on July 21, 2023.
+
+ -  Fixed builds and tests.  [[#3326]]
+
+[#3326]: https://github.com/planetarium/libplanet/pull/3326
+
+
 Version 3.0.0
 -------------
 
