@@ -36,7 +36,7 @@ namespace Libplanet.Explorer.Tests
         {
             var documentExecutor = new DocumentExecuter();
 
-            // FIXME these codes are temporarly fix and should be replaced with unified provider.
+            // FIXME these codes are temporary fix and should be replaced with unified provider.
             // see also: https://github.com/planetarium/libplanet/discussions/2230
             var services = new ServiceCollection();
             System.Action addContext = source switch

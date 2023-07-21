@@ -25,7 +25,7 @@ namespace Libplanet.Tests.KeyStore.Kdfs
             T kdf = MakeInstance(randomBytes);
             ImmutableArray<byte> dFoo = kdf.Derive(passphrase);
             Assert.Equal(size, dFoo.Length);
-            ImmutableArray<byte> dBar = kdf.Derive($"diffrent-{passphrase}");
+            ImmutableArray<byte> dBar = kdf.Derive($"different-{passphrase}");
             Assert.NotEqual(dFoo, dBar);
             TestUtils.AssertBytesEqual(dFoo, kdf.Derive(passphrase));
         }

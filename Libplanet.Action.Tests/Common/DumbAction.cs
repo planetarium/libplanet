@@ -157,10 +157,10 @@ namespace Libplanet.Action.Tests.Common
 
             if (Idempotent)
             {
-                var splitedItems = items is null ? new[] { item } : (items + "," + item).Split(',');
+                var splitItems = items is null ? new[] { item } : (items + "," + item).Split(',');
                 items = string.Join(
                     ",",
-                    splitedItems.OrderBy(x =>
+                    splitItems.OrderBy(x =>
                         float.Parse(
                             x.Substring(4),
                             NumberStyles.Float,

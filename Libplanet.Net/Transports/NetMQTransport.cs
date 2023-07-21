@@ -927,7 +927,7 @@ namespace Libplanet.Net.Transports
                     catch (Exception e)
                     {
                         _logger.Error(
-                            e, "An unexpected exception ocurred during poller.Run()");
+                            e, "An unexpected exception occurred during poller.Run()");
                     }
                 },
                 CancellationToken.None,

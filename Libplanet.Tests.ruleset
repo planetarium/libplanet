@@ -25,7 +25,7 @@
     <Rule Id="SA1652" Action="None" />
     <!-- Allow field name to begin with an underscore. -->
     <Rule Id="SA1309" Action="None" />
-    <!-- Allow an expression not to declare parenthese. -->
+    <!-- Allow an expression not to declare parentheses. -->
     <Rule Id="SA1407" Action="None" />
     <!-- Allow a rich text in a XML doc comment's <summary>. -->
     <Rule Id="SA1462" Action="None" />
