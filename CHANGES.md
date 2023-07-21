@@ -13,8 +13,6 @@ To be released.
  -  Changed `StateStoreExtensions.Commit()` to accept
     `IImmutableDictionary<KeyBytes, IValue>` instead of
     `IImmutableDictionary<string, IValue>`.  [[#3321]]
- -  Added `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>,
-    IReadOnlyList<KeyBytes>)` method.  [[#3321]]
  -  Changed `AccountDeltaExtensions.ToRawDelta()` to return
     `IImmutableDictionary<KeyBytes, IValue>` instead of
     `IImmutableDictionary<string, IValue>`.  [[#3321]]
@@ -29,6 +27,9 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>,
+    IReadOnlyList<KeyBytes>)` method.  [[#3321]]
 
 ### Behavioral changes
 
