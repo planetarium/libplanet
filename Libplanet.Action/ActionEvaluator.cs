@@ -381,13 +381,7 @@ namespace Libplanet.Action
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
-                block.PreEvaluationHash.ByteArray
-            ).WithMeasuringTime(
-                sw => _logger.Verbose(
-                    "Took {ElapsedMilliseconds} ms to order transactions",
-                    sw.ElapsedMilliseconds
-                )
-            );
+                block.PreEvaluationHash.ByteArray);
 
             foreach (ITransaction tx in orderedTxs)
             {

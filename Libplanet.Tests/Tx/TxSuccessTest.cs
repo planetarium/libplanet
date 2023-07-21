@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Bencodex.Types;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -59,11 +58,13 @@ namespace Libplanet.Tests.Tx
                         c => c * random.Next()
                     )
             );
-            _fungibleAssetsDelta = _updatedFungibleAssets.SelectWithinValues(favs =>
-                (IImmutableDictionary<Currency, FAV>)favs.SelectWithinValues(
-                    fav => fav.Currency * random.Next(1, int.MaxValue)
-                ).ToImmutableDictionary()
-            ).ToImmutableDictionary();
+            _fungibleAssetsDelta = _updatedFungibleAssets
+                .ToImmutableDictionary(
+                    kv => kv.Key,
+                    kv => (IImmutableDictionary<Currency, FAV>)kv.Value
+                        .ToImmutableDictionary(
+                            pair => pair.Key,
+                            pair => pair.Key * random.Next(1, int.MaxValue)));
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,

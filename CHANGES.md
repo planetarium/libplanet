@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `EnumerableMeasurement` class.  [[#3325]]
+ -  Removed `KeyValueExtensions` class.  [[#3325]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3325]: https://github.com/planetarium/libplanet/pull/3325
 
 
 Version 3.0.0
