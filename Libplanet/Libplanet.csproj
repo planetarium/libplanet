@@ -111,5 +111,5 @@ https://docs.libplanet.io/</Description>
     <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\Libplanet.Action\Libplanet.Action.csproj" />
   </ItemGroup>
-  
+
 </Project>
