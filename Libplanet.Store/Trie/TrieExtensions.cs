@@ -26,15 +26,5 @@ namespace Libplanet.Store.Trie
 
             return trie;
         }
-
-        public static ITrie Set(this ITrie trie, IEnumerable<KeyValuePair<string, IValue?>> pairs)
-            => trie.Set(
-                pairs.Select(pair =>
-                    new KeyValuePair<KeyBytes, IValue?>(
-                        StateStoreExtensions.EncodeKey(pair.Key),
-                        pair.Value
-                    )
-                )
-            );
     }
 }

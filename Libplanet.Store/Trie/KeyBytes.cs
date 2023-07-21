@@ -13,6 +13,12 @@ namespace Libplanet.Store.Trie
     public readonly struct KeyBytes
         : IEquatable<KeyBytes>, IEquatable<ImmutableArray<byte>>, IEquatable<byte[]>
     {
+        /// <summary>
+        /// The default <see cref="System.Text.Encoding"/>, which is <see cref="Encoding.UTF8"/>,
+        /// to use when creating an instance from a <see langword="string"/>.
+        /// </summary>
+        public static readonly Encoding Encoding = Encoding.UTF8;
+
         private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
@@ -34,14 +40,25 @@ namespace Libplanet.Store.Trie
         }
 
         /// <summary>
-        /// Creates a new <seealso cref="KeyBytes"/> instance from the given <paramref
-        /// name="string"/>.
+        /// Creates a new <seealso cref="KeyBytes"/> instance from given
+        /// <paramref name="str"/> with <see cref="Encoding"/>.
         /// </summary>
-        /// <param name="string">A key string.  This is encoded to bytes.</param>
-        /// <param name="encoding">The text encoding used for the key string.</param>
-        public KeyBytes(string @string, Encoding encoding)
+        /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
+        public KeyBytes(string str)
+            : this(str, Encoding)
         {
-            byte[] neverReusedBuffer = encoding.GetBytes(@string);
+        }
+
+        /// <summary>
+        /// Creates a new <seealso cref="KeyBytes"/> instance from given <paramref name="str"/>
+        /// with <paramref name="encoding"/>.
+        /// </summary>
+        /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
+        /// <param name="encoding">The <see cref="System.Text.Encoding"/> to be used for
+        /// <paramref name="str">.</param>
+        private KeyBytes(string str, Encoding encoding)
+        {
+            byte[] neverReusedBuffer = encoding.GetBytes(str);
             ImmutableArray<byte> movedImmutable =
                 Unsafe.As<byte[], ImmutableArray<byte>>(ref neverReusedBuffer);
             _byteArray = movedImmutable;

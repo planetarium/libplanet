@@ -1,4 +1,3 @@
-using System.Text;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
@@ -20,21 +19,20 @@ namespace Libplanet.Action.State.Tests
             var currency = Currency.Uncapped("Foo", 2, new PrivateKey().ToAddress());
 
             Assert.Equal(
-                new KeyBytes(ByteUtil.Hex(address.ByteArray), Encoding.UTF8),
+                new KeyBytes(ByteUtil.Hex(address.ByteArray)),
                 KeyConverters.ToStateKey(address));
 
             Assert.Equal(
                 new KeyBytes(
-                    $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}",
-                    Encoding.UTF8),
+                    $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}"),
                 KeyConverters.ToFungibleAssetKey(address, currency));
 
             Assert.Equal(
-                new KeyBytes($"__{ByteUtil.Hex(currency.Hash.ByteArray)}", Encoding.UTF8),
+                new KeyBytes($"__{ByteUtil.Hex(currency.Hash.ByteArray)}"),
                 KeyConverters.ToTotalSupplyKey(currency));
 
             Assert.Equal(
-                new KeyBytes("___", Encoding.UTF8),
+                new KeyBytes("___"),
                 KeyConverters.ValidatorSetKey);
         }
     }

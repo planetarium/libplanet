@@ -34,11 +34,11 @@ namespace Libplanet.Tests.Store
         public static IImmutableDictionary<KeyBytes, IValue> ZeroDelta =>
             ImmutableDictionary<KeyBytes, IValue>.Empty;
 
-        public static KeyBytes KeyFoo => StateStoreExtensions.EncodeKey("foo");
+        public static KeyBytes KeyFoo => new KeyBytes("foo");
 
-        public static KeyBytes KeyBar => StateStoreExtensions.EncodeKey("bar");
+        public static KeyBytes KeyBar => new KeyBytes("bar");
 
-        public static KeyBytes KeyBaz => StateStoreExtensions.EncodeKey("baz");
+        public static KeyBytes KeyBaz => new KeyBytes("baz");
 
         public static IImmutableDictionary<KeyBytes, IValue> DeltaA => ZeroDelta
             .Add(KeyFoo, (Text)"abc")
@@ -78,13 +78,19 @@ namespace Libplanet.Tests.Store
             ITrie a = stateStore.Commit(null, DeltaA);
             ITrie b = stateStore.Commit(a.Hash, DeltaB);
 
-            AssertBencodexEqual((Text)"abc", stateStore.GetStates(a.Hash, new[] { "foo" })[0]);
-            AssertBencodexEqual((Text)"def", stateStore.GetStates(a.Hash, new[] { "bar" })[0]);
-            AssertBencodexEqual(null, stateStore.GetStates(a.Hash, new[] { "baz" })[0]);
+            AssertBencodexEqual(
+                (Text)"abc", stateStore.GetStates(a.Hash, new[] { new KeyBytes("foo") })[0]);
+            AssertBencodexEqual(
+                (Text)"def", stateStore.GetStates(a.Hash, new[] { new KeyBytes("bar") })[0]);
+            AssertBencodexEqual(
+                null, stateStore.GetStates(a.Hash, new[] { new KeyBytes("baz") })[0]);
 
-            AssertBencodexEqual((Text)"ABC", stateStore.GetStates(b.Hash, new[] { "foo" })[0]);
-            AssertBencodexEqual((Text)"def", stateStore.GetStates(b.Hash, new[] { "bar" })[0]);
-            AssertBencodexEqual((Text)"ghi", stateStore.GetStates(b.Hash, new[] { "baz" })[0]);
+            AssertBencodexEqual(
+                (Text)"ABC", stateStore.GetStates(b.Hash, new[] { new KeyBytes("foo") })[0]);
+            AssertBencodexEqual(
+                (Text)"def", stateStore.GetStates(b.Hash, new[] { new KeyBytes("bar") })[0]);
+            AssertBencodexEqual(
+                (Text)"ghi", stateStore.GetStates(b.Hash, new[] { new KeyBytes("baz") })[0]);
         }
 
         [Theory]

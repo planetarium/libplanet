@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Text;
 using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -15,7 +14,7 @@ namespace Libplanet.Tests.Store.Trie
             AssertBytesEqual(ImmutableArray<byte>.Empty, default(KeyBytes).ByteArray);
             AssertBytesEqual(
                 ImmutableArray<byte>.Empty,
-                new KeyBytes(string.Empty, Encoding.ASCII).ByteArray
+                new KeyBytes(string.Empty).ByteArray
             );
             AssertBytesEqual(
                 ImmutableArray<byte>.Empty.Add(1).Add(2).Add(3).Add(4),
@@ -27,7 +26,7 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBytesEqual(
                 new KeyBytes(ImmutableArray.Create<byte>(0x66, 0x6f, 0x6f)).ByteArray,
-                new KeyBytes("foo", Encoding.ASCII).ByteArray
+                new KeyBytes("foo").ByteArray
             );
         }
 
