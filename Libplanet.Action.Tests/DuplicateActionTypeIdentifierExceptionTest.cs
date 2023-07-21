@@ -32,7 +32,7 @@ namespace Libplanet.Action.Tests
         {
             const string expected =
                 "An error message.\n\nType ID: type_id\nAssociated types:\n" +
-                "  Libplanet.Action.NullAction\n  Libplanet.Tests.Common.Action.DumbAction";
+                "  Libplanet.Action.NullAction\n  Libplanet.Action.Tests.Common.DumbAction";
             Assert.Equal(expected, _exception.Message);
         }
     }

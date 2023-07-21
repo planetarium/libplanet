@@ -6,6 +6,10 @@ Version 3.0.1
 
 To be released.
 
+ -  Fixed builds and tests.  [[#3326]]
+
+[#3326]: https://github.com/planetarium/libplanet/pull/3326
+
 
 Version 3.0.0
 -------------
