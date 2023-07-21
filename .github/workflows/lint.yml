@@ -9,5 +9,3 @@ jobs:
 
       - name: Check spelling
         uses: crate-ci/typos@v1.15.5
-        with:
-          files: ./CHANGES.md

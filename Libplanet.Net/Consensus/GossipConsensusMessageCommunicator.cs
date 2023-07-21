@@ -130,7 +130,7 @@ namespace Libplanet.Net.Consensus
                 {
                     Gossip.DenyPeer(peer);
                     throw new InvalidConsensusMessageException(
-                        $"Repetitively found heigher rounds, add {peer} to deny set",
+                        $"Repetitively found higher rounds, add {peer} to deny set",
                         voteMsg);
                 }
             }

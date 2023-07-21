@@ -1,0 +1,14 @@
+[default]
+extend-ignore-re = [
+    "\\\"([a-zA-Z0-9][a-zA-Z0-9])+\\\"",  # for hexadecimal string values.
+    "2nd"
+]
+
+[default.extend-words]
+ba = "ba"  # byte array
+oce = "oce"  # OperationCanceledException
+
+[files]
+extend-exclude = [
+    "hooks/*"
+]

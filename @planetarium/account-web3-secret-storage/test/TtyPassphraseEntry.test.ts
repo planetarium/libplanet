@@ -12,7 +12,7 @@ async function waitUntilRead(
     typeof dataToWrite === "string"
       ? Buffer.from(dataToWrite, "utf8")
       : dataToWrite;
-  await setTimeout(0); // mimicks I/O interrupt
+  await setTimeout(0); // mimics I/O interrupt
   input.put(dataToWrite);
   return await new Promise((resolve) => {
     input.on("data", (chunk: Buffer) => {

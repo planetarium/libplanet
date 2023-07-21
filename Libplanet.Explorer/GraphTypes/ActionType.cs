@@ -55,7 +55,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<StringGraphType>>(
                 name: "json",
-                description: "A JSON representaion of action data",
+                description: "A JSON representation of action data",
                 resolve: ctx =>
                 {
                     var converter = new Bencodex.Json.BencodexJsonConverter();
