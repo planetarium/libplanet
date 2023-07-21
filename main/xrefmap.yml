@@ -21820,15 +21820,15 @@ references:
   commentId: T:Libplanet.Store.StateStoreExtensions
   fullName: Libplanet.Store.StateStoreExtensions
   nameWithType: StateStoreExtensions
-- uid: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue})
-  name: Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Immutable_IImmutableDictionary_System_String_Bencodex_Types_IValue__
-  commentId: M:Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Immutable.IImmutableDictionary{System.String,Bencodex.Types.IValue})
-  name.vb: Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue))
-  fullName: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Collections.Immutable.IImmutableDictionary<System.String, Bencodex.Types.IValue>)
-  fullName.vb: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Immutable.IImmutableDictionary(Of System.String, Bencodex.Types.IValue))
-  nameWithType: StateStoreExtensions.Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<String, IValue>)
-  nameWithType.vb: StateStoreExtensions.Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of String, IValue))
+- uid: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue})
+  name: Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<KeyBytes, IValue>)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Immutable_IImmutableDictionary_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue__
+  commentId: M:Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue})
+  name.vb: Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of KeyBytes, IValue))
+  fullName: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue>)
+  fullName.vb: Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue))
+  nameWithType: StateStoreExtensions.Commit(IStateStore, Nullable<HashDigest<SHA256>>, IImmutableDictionary<KeyBytes, IValue>)
+  nameWithType.vb: StateStoreExtensions.Commit(IStateStore, Nullable(Of HashDigest(Of SHA256)), IImmutableDictionary(Of KeyBytes, IValue))
 - uid: Libplanet.Store.StateStoreExtensions.Commit*
   name: Commit
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_Commit_
@@ -21881,6 +21881,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StateStoreExtensions.EncodeKey
   nameWithType: StateStoreExtensions.EncodeKey
+- uid: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name: GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<KeyBytes>)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name.vb: GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of KeyBytes))
+  fullName: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Collections.Generic.IReadOnlyList<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Collections.Generic.IReadOnlyList(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: StateStoreExtensions.GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<KeyBytes>)
+  nameWithType.vb: StateStoreExtensions.GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of KeyBytes))
 - uid: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Collections.Generic.IReadOnlyList{System.String})
   name: GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<String>)
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_Libplanet_Store_IStateStore_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Collections_Generic_IReadOnlyList_System_String__

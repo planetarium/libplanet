@@ -66,13 +66,29 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Changed <code>StateStoreExtensions.Commit()</code> to accept
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Changed <code>AccountDeltaExtensions.ToRawDelta()</code> to return
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Changed <code>ActionEvaluatorExtensions.GetRawTotalDelta()</code> to return
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
 <li>Removed <code>EnumerableMeasurement</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
 <li>Removed <code>KeyValueExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>StateStoreExtensions.GetStates(IStateStore, HashDigest&lt;SHA256&gt;, IReadOnlyList&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Optimized read and write access to <code>IStateStore</code> both for memory and speed.
+[<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
