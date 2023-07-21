@@ -32,12 +32,12 @@ public class MptCommandTest : IDisposable
         using var stateKeyValueStoreB = new DefaultKeyValueStore(_pathB);
         _trieA = new MerkleTrie(stateKeyValueStoreA).Set(
             ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(StateStoreExtensions.EncodeKey("deleted"), Null.Value)
-                .Add(StateStoreExtensions.EncodeKey("common"), (Text)"before")).Commit();
+                .Add(new KeyBytes("deleted"), Null.Value)
+                .Add(new KeyBytes("common"), (Text)"before")).Commit();
         _trieB = new MerkleTrie(stateKeyValueStoreB).Set(
             ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(StateStoreExtensions.EncodeKey("created"), Null.Value)
-                .Add(StateStoreExtensions.EncodeKey("common"), (Text)"after")).Commit();
+                .Add(new KeyBytes("created"), Null.Value)
+                .Add(new KeyBytes("common"), (Text)"after")).Commit();
     }
 
     [Fact]

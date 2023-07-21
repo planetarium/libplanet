@@ -118,9 +118,11 @@ public class MptCommand
             keyValueStore,
             HashDigest<SHA256>.FromString(stateRootHashHex));
         var codec = new Codec();
+
+        // This assumes the original key was encoded from a sensible string.
         ImmutableDictionary<string, byte[]> decoratedStates = trie.ListAllStates()
             .ToImmutableDictionary(
-                pair => StateStoreExtensions.DecodeKey(pair.Key),
+                pair => KeyBytes.DefaultEncoding.GetString(pair.Key.ToByteArray()),
                 pair => codec.Encode(pair.Value));
 
         Console.WriteLine(JsonSerializer.Serialize(decoratedStates));
@@ -227,7 +229,7 @@ public class MptCommand
         var trie = new MerkleTrie(
             keyValueStore,
             HashDigest<SHA256>.FromString(stateRootHashHex));
-        KeyBytes stateKeyBytes = StateStoreExtensions.EncodeKey(stateKey);
+        KeyBytes stateKeyBytes = new KeyBytes(stateKey);
         IReadOnlyList<IValue?> values = trie.Get(new[] { stateKeyBytes });
         if (values.Count > 0 && values[0] is { } value)
         {

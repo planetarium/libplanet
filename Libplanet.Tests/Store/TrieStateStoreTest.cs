@@ -20,15 +20,15 @@ namespace Libplanet.Tests.Store
             _stateKeyValueStore = new DefaultKeyValueStore(null);
         }
 
-        public static KeyBytes KeyFoo => StateStoreExtensions.EncodeKey("foo");
+        public static KeyBytes KeyFoo => new KeyBytes("foo");
 
-        public static KeyBytes KeyBar => StateStoreExtensions.EncodeKey("bar");
+        public static KeyBytes KeyBar => new KeyBytes("bar");
 
-        public static KeyBytes KeyBaz => StateStoreExtensions.EncodeKey("baz");
+        public static KeyBytes KeyBaz => new KeyBytes("baz");
 
-        public static KeyBytes KeyQux => StateStoreExtensions.EncodeKey("qux");
+        public static KeyBytes KeyQux => new KeyBytes("qux");
 
-        public static KeyBytes KeyQuux => StateStoreExtensions.EncodeKey("quux");
+        public static KeyBytes KeyQuux => new KeyBytes("quux");
 
         [Theory]
         [InlineData(true)]
@@ -44,10 +44,10 @@ namespace Libplanet.Tests.Store
             Assert.Null(empty.Get(new[] { KeyQux })[0]);
             Assert.Null(empty.Get(new[] { KeyQuux })[0]);
 
-            KeyBytes fooKey = StateStoreExtensions.EncodeKey("foo");
-            KeyBytes barKey = StateStoreExtensions.EncodeKey("bar");
-            KeyBytes bazKey = StateStoreExtensions.EncodeKey("baz");
-            KeyBytes quxKey = StateStoreExtensions.EncodeKey("qux");
+            KeyBytes fooKey = new KeyBytes("foo");
+            KeyBytes barKey = new KeyBytes("bar");
+            KeyBytes bazKey = new KeyBytes("baz");
+            KeyBytes quxKey = new KeyBytes("qux");
             var values = ImmutableDictionary<KeyBytes, IValue>.Empty
                 .Add(fooKey, (Binary)GetRandomBytes(32))
                 .Add(barKey, (Text)ByteUtil.Hex(GetRandomBytes(32)))
@@ -69,14 +69,14 @@ namespace Libplanet.Tests.Store
         public void PruneStates(bool secure)
         {
             var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096))
+                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
                 .Add(
-                    StateStoreExtensions.EncodeKey("bar"),
+                    new KeyBytes("bar"),
                     (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(StateStoreExtensions.EncodeKey("baz"), (Bencodex.Types.Boolean)false)
-                .Add(StateStoreExtensions.EncodeKey("qux"), Bencodex.Types.Dictionary.Empty)
+                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
+                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
                 .Add(
-                    StateStoreExtensions.EncodeKey("zzz"),
+                    new KeyBytes("zzz"),
                     Bencodex.Types.Dictionary.Empty
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
 
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
             ImmutableDictionary<KeyBytes, IValue> nextStates =
-                values.SetItem(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096));
+                values.SetItem(new KeyBytes("foo"), (Binary)GetRandomBytes(4096));
             ITrie second = stateStore.Commit(first.Hash, nextStates);
 
             // foo = 0x666f6f
@@ -108,14 +108,14 @@ namespace Libplanet.Tests.Store
         public void CopyStates(bool secure)
         {
             var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(StateStoreExtensions.EncodeKey("foo"), (Binary)GetRandomBytes(4096))
+                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
                 .Add(
-                    StateStoreExtensions.EncodeKey("bar"),
+                    new KeyBytes("bar"),
                     (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(StateStoreExtensions.EncodeKey("baz"), (Bencodex.Types.Boolean)false)
-                .Add(StateStoreExtensions.EncodeKey("qux"), Bencodex.Types.Dictionary.Empty)
+                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
+                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
                 .Add(
-                    StateStoreExtensions.EncodeKey("zzz"),
+                    new KeyBytes("zzz"),
                     Bencodex.Types.Dictionary.Empty
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));

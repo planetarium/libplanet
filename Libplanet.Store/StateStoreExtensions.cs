@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
@@ -14,36 +13,6 @@ namespace Libplanet.Store
     /// </summary>
     public static class StateStoreExtensions
     {
-        /// <summary>
-        /// The internal bytes encoding of raw state keys.
-        /// </summary>
-        internal static readonly Encoding KeyEncoding = Encoding.UTF8;
-
-        /// <summary>
-        /// Encodes a raw state key string to internal bytes representation.
-        /// </summary>
-        /// <param name="key">The raw state key to encode.</param>
-        /// <returns>An encoded key bytes.</returns>
-        public static KeyBytes EncodeKey(string key) =>
-            new KeyBytes(key, KeyEncoding);
-
-        /// <summary>
-        /// Decodes internal <paramref name="keyBytes"/> into a raw state key string.
-        /// </summary>
-        /// <param name="keyBytes">The key bytes to decode.</param>
-        /// <returns>A decoded raw state key string.</returns>
-        public static string DecodeKey(in KeyBytes keyBytes)
-        {
-            ImmutableArray<byte> immutableBytes = keyBytes.ByteArray;
-#if NETSTANDARD2_0
-            byte[] neverChangedBytes = System.Runtime.CompilerServices.Unsafe
-                .As<ImmutableArray<byte>, byte[]>(ref immutableBytes);
-            return KeyEncoding.GetString(neverChangedBytes);
-#else
-            return KeyEncoding.GetString(immutableBytes.AsSpan());
-#endif
-        }
-
         /// <summary>
         /// Records <paramref name="rawStatesDelta"/> which is based on the previous state
         /// root, and returns the new state root.
@@ -88,7 +57,7 @@ namespace Libplanet.Store
         )
         {
             ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            KeyBytes[] keys = rawStateKeys.Select(EncodeKey).ToArray();
+            KeyBytes[] keys = rawStateKeys.Select(str => new KeyBytes(str)).ToArray();
             return trie.Get(keys);
         }
 
