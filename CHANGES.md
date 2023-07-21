@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.0.1
 -------------
 
-To be released.
+Released on July 21, 2023.
 
  -  Fixed builds and tests.  [[#3326]]
 
