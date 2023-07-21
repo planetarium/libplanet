@@ -14,10 +14,10 @@ namespace Libplanet.Store.Trie
         : IEquatable<KeyBytes>, IEquatable<ImmutableArray<byte>>, IEquatable<byte[]>
     {
         /// <summary>
-        /// The default <see cref="Encoding"/>, which is <see cref="Encoding.UTF8"/>, to use
-        /// when creating an instance from a <see langword="string"/>.
+        /// The default <see cref="System.Text.Encoding"/>, which is <see cref="Encoding.UTF8"/>,
+        /// to use when creating an instance from a <see langword="string"/>.
         /// </summary>
-        public static readonly Encoding DefaultEncoding = Encoding.UTF8;
+        public static readonly Encoding Encoding = Encoding.UTF8;
 
         private readonly ImmutableArray<byte> _byteArray;
 
@@ -41,11 +41,11 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Creates a new <seealso cref="KeyBytes"/> instance from given
-        /// <paramref name="str"/> with <see cref="DefaultEncoding"/>.
+        /// <paramref name="str"/> with <see cref="Encoding"/>.
         /// </summary>
         /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
         public KeyBytes(string str)
-            : this(str, DefaultEncoding)
+            : this(str, Encoding)
         {
         }
 
@@ -54,9 +54,9 @@ namespace Libplanet.Store.Trie
         /// with <paramref name="encoding"/>.
         /// </summary>
         /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
-        /// <param name="encoding">The <see cref="Encoding"/> to be used for <paramref name="str">.
-        /// </param>
-        public KeyBytes(string str, Encoding encoding)
+        /// <param name="encoding">The <see cref="System.Text.Encoding"/> to be used for
+        /// <paramref name="str">.</param>
+        private KeyBytes(string str, Encoding encoding)
         {
             byte[] neverReusedBuffer = encoding.GetBytes(str);
             ImmutableArray<byte> movedImmutable =

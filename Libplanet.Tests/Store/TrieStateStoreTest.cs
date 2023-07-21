@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Store;
@@ -128,10 +127,10 @@ namespace Libplanet.Tests.Store
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             _stateKeyValueStore.Set(
-                new KeyBytes("alpha", Encoding.UTF8),
+                new KeyBytes("alpha"),
                 ByteUtil.ParseHex("00"));
             _stateKeyValueStore.Set(
-                new KeyBytes("beta", Encoding.UTF8),
+                new KeyBytes("beta"),
                 ByteUtil.ParseHex("00"));
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());

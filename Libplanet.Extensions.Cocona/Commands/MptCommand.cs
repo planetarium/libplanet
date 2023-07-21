@@ -122,7 +122,7 @@ public class MptCommand
         // This assumes the original key was encoded from a sensible string.
         ImmutableDictionary<string, byte[]> decoratedStates = trie.ListAllStates()
             .ToImmutableDictionary(
-                pair => KeyBytes.DefaultEncoding.GetString(pair.Key.ToByteArray()),
+                pair => KeyBytes.Encoding.GetString(pair.Key.ToByteArray()),
                 pair => codec.Encode(pair.Value));
 
         Console.WriteLine(JsonSerializer.Serialize(decoratedStates));

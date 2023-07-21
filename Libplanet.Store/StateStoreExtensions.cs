@@ -53,28 +53,6 @@ namespace Libplanet.Store
         public static IReadOnlyList<IValue?> GetStates(
             this IStateStore stateStore,
             HashDigest<SHA256>? stateRootHash,
-            IReadOnlyList<string> rawStateKeys
-        )
-        {
-            ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            KeyBytes[] keys = rawStateKeys.Select(str => new KeyBytes(str)).ToArray();
-            return trie.Get(keys);
-        }
-
-        /// <summary>
-        /// Gets multiple states at once.
-        /// </summary>
-        /// <param name="stateStore">The <see cref="IStateStore"/> to get states.</param>
-        /// <param name="stateRootHash">The root hash of the state trie to look up states from.
-        /// </param>
-        /// <param name="rawStateKeys">State keys to get.</param>
-        /// <returns>The state values associated to the specified <paramref name="rawStateKeys"/>.
-        /// The associated values are ordered in the same way to the corresponding
-        /// <paramref name="rawStateKeys"/>.  Absent values are represented as
-        /// <see langword="null"/>.</returns>
-        public static IReadOnlyList<IValue?> GetStates(
-            this IStateStore stateStore,
-            HashDigest<SHA256>? stateRootHash,
             IReadOnlyList<KeyBytes> rawStateKeys
         )
         {
