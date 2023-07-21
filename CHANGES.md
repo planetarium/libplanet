@@ -21,6 +21,13 @@ To be released.
     `IImmutableDictionary<string, IValue>`.  [[#3321]]
  -  Removed `EnumerableMeasurement` class.  [[#3325]]
  -  Removed `KeyValueExtensions` class.  [[#3325]]
+ -  Removed `StateStoreExtensions.EncodeKey()` and
+    `StateStoreExtensions.DecodeKey()` methods.  [[#3328]]
+ -  Removed `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>?,
+    IReadOnlyList<string>)` method.  [[#3328]]
+ -  Removed `TrieExtensions.Set(ITrie,
+    IEnumerable<KeyValuePair<string, IValue?>)` method.  [[#3328]]
+ -  Removed `KeyBytes(string, Encoding)` constructor.  [[#3328]]
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +37,8 @@ To be released.
 
  -  Added `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>,
     IReadOnlyList<KeyBytes>)` method.  [[#3321]]
+ -  Added `KeyBytes.Encoding` static property.  [[#3328]]
+ -  Added `KeyBytes(string)` constructor.  [[#3328]]
 
 ### Behavioral changes
 
@@ -44,6 +53,7 @@ To be released.
 
 [#3321]: https://github.com/planetarium/libplanet/pull/3321
 [#3325]: https://github.com/planetarium/libplanet/pull/3325
+[#3328]: https://github.com/planetarium/libplanet/pull/3328
 
 
 Version 3.0.1
