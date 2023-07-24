@@ -24,7 +24,6 @@ namespace Libplanet.Action
     {
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
-        private readonly IBlockChainStates _blockChainStates;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
@@ -38,13 +37,11 @@ namespace Libplanet.Action
         /// action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates blockChainStates,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
-            _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
         }
 
@@ -76,7 +73,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
+        public IReadOnlyList<IActionEvaluation> Evaluate(
+            IPreEvaluationBlock block,
+            IAccountState state)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -88,7 +87,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousState = PrepareInitialDelta(block);
+                IAccountStateDelta previousState = AccountStateDelta.Create(state);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -471,19 +470,6 @@ namespace Libplanet.Action
                 tx: null,
                 previousState: previousState,
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
-        }
-
-        /// <summary>
-        /// Prepares the initial <see cref="IAccountStateDelta"/> to for evaluating
-        /// <paramref name="block"/>.
-        /// </summary>
-        /// <param name="block">The <see cref="Block"/> to evaluate..</param>
-        /// <returns>The initial <see cref="IAccountStateDelta"/> to be used
-        /// for evaluating <paramref name="block"/>.
-        /// </returns>
-        internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
-        {
-            return AccountStateDelta.Create(_blockChainStates.GetBlockState(block.PreviousHash));
         }
 
         [Pure]

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
@@ -15,9 +16,11 @@ namespace Libplanet.Action
         IActionLoader ActionLoader { get; }
 
         /// <summary>
-        /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
+        /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/> on top of
+        /// a given <see cref="IAccountState"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
+        /// <param name="state">The state to evaluate on top of.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="IActionEvaluation"/>s.</returns>
@@ -29,6 +32,6 @@ namespace Libplanet.Action
         /// the end.</para>
         /// </remarks>
         [Pure]
-        IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block);
+        IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block, IAccountState state);
     }
 }
