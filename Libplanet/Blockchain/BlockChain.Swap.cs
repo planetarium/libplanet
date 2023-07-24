@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -174,8 +175,9 @@ namespace Libplanet.Blockchain
                 foreach (BlockHash hash in fastForwardPath)
                 {
                     Block block = Store.GetBlock(hash);
+                    IBlockState state = _blockChainStates.GetBlockState(block.PreviousHash);
                     ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList();
+                        ActionEvaluator.Evaluate(block, state).ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
@@ -215,7 +217,7 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block);
+                throw new NullReferenceException(nameof(evaluations));
             }
 
             long count = 0;

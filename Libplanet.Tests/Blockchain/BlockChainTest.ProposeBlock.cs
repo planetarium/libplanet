@@ -125,7 +125,6 @@ namespace Libplanet.Tests.Blockchain
                 var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    new BlockChainStates(fx.Store, fx.StateStore),
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
                     actionEvaluator,
@@ -165,7 +164,6 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
                 {
@@ -347,7 +345,6 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
@@ -459,7 +456,6 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates,
                     new SingleActionLoader(typeof(DumbAction))));
 
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });

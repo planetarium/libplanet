@@ -393,7 +393,6 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
@@ -525,7 +524,6 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)));

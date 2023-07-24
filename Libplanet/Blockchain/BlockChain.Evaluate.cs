@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -72,7 +73,10 @@ namespace Libplanet.Blockchain
                     nameof(preEvaluationBlock));
             }
 
-            return actionEvaluator.Evaluate(preEvaluationBlock);
+            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
+            ITrie rootTrie = stateStore.GetStateRoot(null);
+            IAccountState rootState = new BlockState(null, rootTrie);
+            return actionEvaluator.Evaluate(preEvaluationBlock, rootState);
         }
 
         /// <summary>
@@ -150,7 +154,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
         public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
-            ActionEvaluator.Evaluate(block);
+            ActionEvaluator.Evaluate(block, _blockChainStates.GetBlockState(block.PreviousHash));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and

@@ -87,7 +87,6 @@ namespace Libplanet.RocksDBStore.Tests
                     Fx.GenesisBlock,
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => null,
-                        blockChainStates: new BlockChainStates(store, stateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 store.Dispose();
 

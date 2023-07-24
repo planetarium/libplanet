@@ -1036,7 +1036,6 @@ namespace Libplanet.Tests.Store
                 var preEval = ProposeGenesis(proposer: GenesisProposer.PublicKey);
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    new BlockChainStates(s1, fx.StateStore),
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = preEval.Sign(
                     GenesisProposer,

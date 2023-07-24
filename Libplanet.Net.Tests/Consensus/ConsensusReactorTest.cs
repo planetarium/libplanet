@@ -67,7 +67,6 @@ namespace Libplanet.Net.Tests.Consensus
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => TestUtils.Policy.BlockAction,
-                        blockChainStates: new BlockChainStates(stores[i], stateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             }
 
