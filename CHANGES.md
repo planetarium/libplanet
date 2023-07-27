@@ -49,11 +49,16 @@ To be released.
 
 ### Dependencies
 
+ -  Upgrade *Bencodex* from [0.11.0][Bencodex 0.11.0] to
+    [0.12.0][Bencodex 0.12.0].  [[#3335]]
+
 ### CLI tools
 
 [#3321]: https://github.com/planetarium/libplanet/pull/3321
 [#3325]: https://github.com/planetarium/libplanet/pull/3325
 [#3328]: https://github.com/planetarium/libplanet/pull/3328
+[#3335]: https://github.com/planetarium/libplanet/pull/3335
+[Bencodex 0.12.0]: https://www.nuget.org/packages/Bencodex/0.12.0
 
 
 Version 3.0.1
