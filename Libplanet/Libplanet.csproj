@@ -64,7 +64,7 @@ https://docs.libplanet.io/</Description>
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
-    <PackageReference Include="Bencodex" Version="0.11.0" />
+    <PackageReference Include="Bencodex" Version="0.13.0-dev.20230726144702" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
@@ -88,8 +88,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="System.Linq.Async" Version="4.0.*" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
-                         '$(TargetFramework)' == 'netstandard2.1'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or&#xA;                         '$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
   </ItemGroup>
 
