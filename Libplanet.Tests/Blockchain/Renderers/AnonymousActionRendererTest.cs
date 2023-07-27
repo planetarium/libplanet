@@ -14,8 +14,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IAccountStateDelta _stateDelta =
-            AccountStateDelta.Create(MockAccountState.Empty);
+        private static IAccount _account =
+            Account.Create(MockAccountState.Empty);
 
         private static IActionContext _actionContext =
             new ActionContext(
@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 Block.CurrentProtocolVersion,
                 default,
-                _stateDelta,
+                _account,
                 default,
                 0);
 
@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionRenderer()
         {
-            (IValue, IActionContext, IAccountStateDelta)? record = null;
+            (IValue, IActionContext, IAccount)? record = null;
             var renderer = new AnonymousActionRenderer
             {
                 ActionRenderer = (action, context, nextStates) =>
@@ -54,11 +54,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _account);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
-            Assert.Same(_stateDelta, record?.Item3);
+            Assert.Same(_account, record?.Item3);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     record = (action, context, exception),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _account);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };
 
-            renderer.RenderAction(_action, _actionContext, _stateDelta);
+            renderer.RenderAction(_action, _actionContext, _account);
             Assert.Null(record);
             renderer.RenderActionError(_action, _actionContext, _exception);
             Assert.Null(record);

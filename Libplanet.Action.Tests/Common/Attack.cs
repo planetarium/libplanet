@@ -29,11 +29,11 @@ namespace Libplanet.Action.Tests.Common
             TargetAddress = new Address(values["target_address"]);
         }
 
-        public override IAccountStateDelta Execute(IActionContext context)
+        public override IAccount Execute(IActionContext context)
         {
             IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
             IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
-            IAccountStateDelta previousState = context.PreviousState;
+            IAccount previousState = context.PreviousState;
 
             object value = previousState.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))

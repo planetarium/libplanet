@@ -62,15 +62,15 @@ namespace Libplanet.Action
         /// <summary>
         /// A null delta of states, which means it represents the states
         /// before <see cref="IAction"/> executes.
-        /// <para>Although a <see cref="IAccountStateDelta"/> instance is
+        /// <para>Although a <see cref="IAccount"/> instance is
         /// immutable, it has several manipulative methods that returns
-        /// new <see cref="IAccountStateDelta"/> instances with some "dirty"
-        /// states.  These kinds of dirty <see cref="IAccountStateDelta"/>
+        /// new <see cref="IAccount"/> instances with some "dirty"
+        /// states.  These kinds of dirty <see cref="IAccount"/>
         /// instances can be returned by <see
         /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
         [Pure]
-        IAccountStateDelta PreviousState { get; }
+        IAccount PreviousState { get; }
 
         /// <summary>
         /// An initialized pseudorandom number generator.  Its seed (state)

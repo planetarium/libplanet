@@ -29,9 +29,9 @@ namespace Libplanet.Blockchain.Renderers
     {
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderAction(IValue, IActionContext, IAccountStateDelta)"/>.
+        /// <see cref="RenderAction(IValue, IActionContext, IAccount)"/>.
         /// </summary>
-        public Action<IValue, IActionContext, IAccountStateDelta>? ActionRenderer { get; set; }
+        public Action<IValue, IActionContext, IAccount>? ActionRenderer { get; set; }
 
         /// <summary>
         /// A callback function to be invoked together with
@@ -46,11 +46,11 @@ namespace Libplanet.Blockchain.Renderers
         public Action<Block, Block>? BlockEndRenderer { get; set; }
 
         /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
         public void RenderAction(
             IValue action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccount nextStates
         ) =>
             ActionRenderer?.Invoke(action, context, nextStates);
 

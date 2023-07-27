@@ -31,7 +31,7 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             var state = context.PreviousState;
             var started = DateTimeOffset.UtcNow;

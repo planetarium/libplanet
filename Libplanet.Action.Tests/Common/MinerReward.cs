@@ -36,9 +36,9 @@ namespace Libplanet.Action.Tests.Common
             Reward = plainValue.GetValue<Integer>("reward");
         }
 
-        public IAccountStateDelta Execute(IActionContext ctx)
+        public IAccount Execute(IActionContext ctx)
         {
-            IAccountStateDelta states = ctx.PreviousState;
+            IAccount states = ctx.PreviousState;
 
             string rewardRecord = (Text?)states.GetState(RewardRecordAddress);
 

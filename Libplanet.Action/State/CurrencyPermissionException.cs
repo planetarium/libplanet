@@ -8,8 +8,8 @@ namespace Libplanet.Action.State
     /// The exception that is thrown when a <see cref="TransactionSigner"/> has no rights
     /// to mint a <see cref="Currency"/> or burn assets of a <see cref="Currency"/>.
     /// </summary>
-    /// <seealso cref="IAccountStateDelta.MintAsset"/>
-    /// <seealso cref="IAccountStateDelta.BurnAsset"/>
+    /// <seealso cref="IAccount.MintAsset"/>
+    /// <seealso cref="IAccount.BurnAsset"/>
     [Serializable]
     public sealed class CurrencyPermissionException : Exception
     {

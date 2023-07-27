@@ -17,9 +17,9 @@ namespace Libplanet.Action.State
         /// <summary>
         /// Aggregates a list of <see cref="IAccountDelta"/>s in order.
         /// </summary>
-        /// <param name="deltas">The list of <see cref="IAccountStateDelta"/>s to aggregate.</param>
+        /// <param name="deltas">The list of <see cref="IAccount"/>s to aggregate.</param>
         /// <returns>The aggregate of <paramref name="deltas"/> as an
-        /// <see cref="IAccountStateDelta"/>.
+        /// <see cref="IAccount"/>.
         /// </returns>
         /// <remarks>
         /// As aggregation is done by partially overwriting previous values,

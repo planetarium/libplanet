@@ -88,7 +88,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccountStateDelta previousState = PrepareInitialDelta(block);
+                IAccount previousState = PrepareInitialDelta(block);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -147,15 +147,15 @@ namespace Libplanet.Action
         /// <item><description>
         ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
         ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccountStateDelta.Delta"/> that is a
+        ///     <see cref="IAccount.Delta"/> that is a
         ///     "superset" of <paramref name="previousState"/>'s
-        ///     <see cref="IAccountStateDelta.Delta"/> (possibly except for
+        ///     <see cref="IAccount.Delta"/> (possibly except for
         ///     <see cref="IAccountDelta.ValidatorSet"/>).
         /// </description></item>
         /// <item><description>
         ///     Each <see cref="ActionEvaluation"/> in the enumerated result
         ///     has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccountStateDelta.Delta"/> that is a "superset"
+        ///     <see cref="IAccount.Delta"/> that is a "superset"
         ///     of the previous one, if any (possibly except for
         ///     <see cref="IAccountDelta.ValidatorSet"/>).
         /// </description></item>
@@ -166,12 +166,12 @@ namespace Libplanet.Action
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
-            IAccountStateDelta previousState,
+            IAccount previousState,
             IImmutableList<IAction> actions,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
-                IAccountStateDelta prevState,
+                IAccount prevState,
                 int randomSeed,
                 long actionGasLimit)
             {
@@ -198,7 +198,7 @@ namespace Libplanet.Action
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
-            IAccountStateDelta state = previousState;
+            IAccount state = previousState;
             foreach (IAction action in actions)
             {
                 IActionContext context = CreateActionContext(state, seed, gasLimit);
@@ -230,11 +230,11 @@ namespace Libplanet.Action
         {
             // Make a copy since ActionContext is stateful.
             IActionContext inputContext = context.GetUnconsumedContext();
-            IAccountStateDelta state = inputContext.PreviousState;
+            IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
 
-            IActionContext CreateActionContext(IAccountStateDelta newPrevState)
+            IActionContext CreateActionContext(IAccount newPrevState)
             {
                 return new ActionContext(
                     signer: inputContext.Signer,
@@ -264,8 +264,8 @@ namespace Libplanet.Action
                         "and took {GetStateDurationMs} ms",
                         action,
                         stopwatch.ElapsedMilliseconds,
-                        AccountStateDeltaMetrics.GetStateCount.Value,
-                        AccountStateDeltaMetrics.GetStateTimer.Value?.ElapsedMilliseconds);
+                        AccountMetrics.GetStateCount.Value,
+                        AccountMetrics.GetStateTimer.Value?.ElapsedMilliseconds);
             }
             catch (OutOfMemoryException e)
             {
@@ -375,9 +375,9 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock block,
-            IAccountStateDelta previousState)
+            IAccount previousState)
         {
-            IAccountStateDelta delta = previousState;
+            IAccount delta = previousState;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
@@ -387,7 +387,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = AccountStateDelta.Flush(delta);
+                delta = Account.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -425,7 +425,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateTx(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
-            IAccountStateDelta previousState)
+            IAccount previousState)
         {
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
@@ -451,7 +451,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             IPreEvaluationBlockHeader blockHeader,
-            IAccountStateDelta previousState)
+            IAccount previousState)
         {
             var policyBlockAction = _policyBlockActionGetter(blockHeader);
             if (policyBlockAction is null)
@@ -474,16 +474,16 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Prepares the initial <see cref="IAccountStateDelta"/> to for evaluating
+        /// Prepares the initial <see cref="IAccount"/> to for evaluating
         /// <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block"/> to evaluate..</param>
-        /// <returns>The initial <see cref="IAccountStateDelta"/> to be used
+        /// <returns>The initial <see cref="IAccount"/> to be used
         /// for evaluating <paramref name="block"/>.
         /// </returns>
-        internal IAccountStateDelta PrepareInitialDelta(IPreEvaluationBlock block)
+        internal IAccount PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            return AccountStateDelta.Create(_blockChainStates.GetBlockState(block.PreviousHash));
+            return Account.Create(_blockChainStates.GetBlockState(block.PreviousHash));
         }
 
         [Pure]
