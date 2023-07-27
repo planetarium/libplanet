@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.1.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on July 27, 2023.
 
 ### Backward-incompatible API changes
 
@@ -29,10 +27,6 @@ To be released.
     IEnumerable<KeyValuePair<string, IValue?>)` method.  [[#3328]]
  -  Removed `KeyBytes(string, Encoding)` constructor.  [[#3328]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `StateStoreExtensions.GetStates(IStateStore, HashDigest<SHA256>,
@@ -45,14 +39,10 @@ To be released.
  -  Optimized read and write access to `IStateStore` both for memory and speed.
     [[#3321]]
 
-### Bug fixes
-
 ### Dependencies
 
  -  Upgrade *Bencodex* from [0.11.0][Bencodex 0.11.0] to
     [0.12.0][Bencodex 0.12.0].  [[#3335]]
-
-### CLI tools
 
 [#3321]: https://github.com/planetarium/libplanet/pull/3321
 [#3325]: https://github.com/planetarium/libplanet/pull/3325
