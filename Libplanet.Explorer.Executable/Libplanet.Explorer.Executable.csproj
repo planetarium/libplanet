@@ -32,8 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
+    <ProjectReference Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
     <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
   </ItemGroup>
   <ItemGroup>
