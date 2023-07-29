@@ -18277,22 +18277,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
   name: Delete(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
   name.vb: Delete(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(in KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
   nameWithType: RocksDBKeyValueStore.Delete(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Delete(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{KeyBytes})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
   name: Delete(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{KeyBytes})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
   name.vb: Delete(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
   nameWithType: RocksDBKeyValueStore.Delete(IEnumerable<KeyBytes>)
   nameWithType.vb: RocksDBKeyValueStore.Delete(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*
@@ -18315,13 +18315,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose
   nameWithType: RocksDBKeyValueStore.Dispose
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
   name: Exists(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
   name.vb: Exists(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(in KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
   nameWithType: RocksDBKeyValueStore.Exists(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists*
@@ -18331,22 +18331,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists
   nameWithType: RocksDBKeyValueStore.Exists
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(KeyBytes@)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
   name: Get(in KeyBytes)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(KeyBytes@)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
   name.vb: Get(ByRef KeyBytes)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(in KeyBytes)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
   nameWithType: RocksDBKeyValueStore.Get(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Get(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{KeyBytes})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
   name: Get(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{KeyBytes})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
   name.vb: Get(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
   nameWithType: RocksDBKeyValueStore.Get(IEnumerable<KeyBytes>)
   nameWithType.vb: RocksDBKeyValueStore.Get(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get*
@@ -18369,22 +18369,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys
   nameWithType: RocksDBKeyValueStore.ListKeys
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(KeyBytes@,System.Byte[])
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
   name: Set(in KeyBytes, Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_KeyBytes__System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(KeyBytes@,System.Byte[])
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
   name.vb: Set(ByRef KeyBytes, Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(in KeyBytes, System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef KeyBytes, System.Byte())
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
   nameWithType: RocksDBKeyValueStore.Set(in KeyBytes, Byte[])
   nameWithType.vb: RocksDBKeyValueStore.Set(ByRef KeyBytes, Byte())
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{KeyBytes,System.Byte[]})
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
   name: Set(IDictionary<KeyBytes, Byte[]>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_KeyBytes_System_Byte____
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{KeyBytes,System.Byte[]})
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
   name.vb: Set(IDictionary(Of KeyBytes, Byte()))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<KeyBytes, System.Byte[]>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of KeyBytes, System.Byte()))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
   nameWithType: RocksDBKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
   nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*
