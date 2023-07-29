@@ -62,6 +62,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\Libplanet.Action.Tests\Libplanet.Action.Tests.csproj" />
   </ItemGroup>
 
