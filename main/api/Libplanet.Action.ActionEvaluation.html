@@ -119,20 +119,20 @@ a single action.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IAccountStateDelta%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IAccount%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/ActionEvaluation.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation__ctor_" data-uid="Libplanet.Action.ActionEvaluation.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_System_Exception_" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta,System.Exception)">ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Exception_" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Exception)">ActionEvaluation(IAction, IActionContext, IAccount, Exception)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a> instance
 with filling properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputState, Exception exception = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccount outputState, Exception exception = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,7 +158,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
         <td><span class="parametername">outputState</span></td>
         <td><p>The result states that
 <code data-dev-comment-type="paramref" class="paramref">action</code> makes.</p>
@@ -287,7 +287,7 @@ is not consumed yet.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAccountStateDelta OutputState { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IAccount OutputState { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -299,7 +299,7 @@ is not consumed yet.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
         <td></td>
       </tr>
     </tbody>

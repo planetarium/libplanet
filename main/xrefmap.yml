@@ -7,36 +7,36 @@ references:
   commentId: N:Libplanet.Action
   fullName: Libplanet.Action
   nameWithType: Libplanet.Action
-- uid: Libplanet.Action.AccountStateDeltaMetrics
-  name: AccountStateDeltaMetrics
-  href: api/Libplanet.Action.AccountStateDeltaMetrics.html
-  commentId: T:Libplanet.Action.AccountStateDeltaMetrics
-  fullName: Libplanet.Action.AccountStateDeltaMetrics
-  nameWithType: AccountStateDeltaMetrics
-- uid: Libplanet.Action.AccountStateDeltaMetrics.GetStateCount
+- uid: Libplanet.Action.AccountMetrics
+  name: AccountMetrics
+  href: api/Libplanet.Action.AccountMetrics.html
+  commentId: T:Libplanet.Action.AccountMetrics
+  fullName: Libplanet.Action.AccountMetrics
+  nameWithType: AccountMetrics
+- uid: Libplanet.Action.AccountMetrics.GetStateCount
   name: GetStateCount
-  href: api/Libplanet.Action.AccountStateDeltaMetrics.html#Libplanet_Action_AccountStateDeltaMetrics_GetStateCount
-  commentId: F:Libplanet.Action.AccountStateDeltaMetrics.GetStateCount
-  fullName: Libplanet.Action.AccountStateDeltaMetrics.GetStateCount
-  nameWithType: AccountStateDeltaMetrics.GetStateCount
-- uid: Libplanet.Action.AccountStateDeltaMetrics.GetStateTimer
+  href: api/Libplanet.Action.AccountMetrics.html#Libplanet_Action_AccountMetrics_GetStateCount
+  commentId: F:Libplanet.Action.AccountMetrics.GetStateCount
+  fullName: Libplanet.Action.AccountMetrics.GetStateCount
+  nameWithType: AccountMetrics.GetStateCount
+- uid: Libplanet.Action.AccountMetrics.GetStateTimer
   name: GetStateTimer
-  href: api/Libplanet.Action.AccountStateDeltaMetrics.html#Libplanet_Action_AccountStateDeltaMetrics_GetStateTimer
-  commentId: F:Libplanet.Action.AccountStateDeltaMetrics.GetStateTimer
-  fullName: Libplanet.Action.AccountStateDeltaMetrics.GetStateTimer
-  nameWithType: AccountStateDeltaMetrics.GetStateTimer
+  href: api/Libplanet.Action.AccountMetrics.html#Libplanet_Action_AccountMetrics_GetStateTimer
+  commentId: F:Libplanet.Action.AccountMetrics.GetStateTimer
+  fullName: Libplanet.Action.AccountMetrics.GetStateTimer
+  nameWithType: AccountMetrics.GetStateTimer
 - uid: Libplanet.Action.ActionEvaluation
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html
   commentId: T:Libplanet.Action.ActionEvaluation
   fullName: Libplanet.Action.ActionEvaluation
   nameWithType: ActionEvaluation
-- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta,System.Exception)
-  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_System_Exception_
-  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta,System.Exception)
-  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta, System.Exception)
-  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
+- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Exception)
+  name: ActionEvaluation(IAction, IActionContext, IAccount, Exception)
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Exception_
+  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Exception)
+  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount, System.Exception)
+  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccount, Exception)
 - uid: Libplanet.Action.ActionEvaluation.#ctor*
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_
@@ -722,12 +722,12 @@ references:
   commentId: T:Libplanet.Action.IFeeCollector
   fullName: Libplanet.Action.IFeeCollector
   nameWithType: IFeeCollector
-- uid: Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccountStateDelta)
-  name: Mortgage(IAccountStateDelta)
-  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Mortgage_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: IFeeCollector.Mortgage(IAccountStateDelta)
+- uid: Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccount)
+  name: Mortgage(IAccount)
+  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Mortgage_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.IFeeCollector.Mortgage(Libplanet.Action.State.IAccount)
+  nameWithType: IFeeCollector.Mortgage(IAccount)
 - uid: Libplanet.Action.IFeeCollector.Mortgage*
   name: Mortgage
   href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Mortgage_
@@ -748,12 +748,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IFeeCollector.Next
   nameWithType: IFeeCollector.Next
-- uid: Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccountStateDelta)
-  name: Refund(IAccountStateDelta)
-  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Refund_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: IFeeCollector.Refund(IAccountStateDelta)
+- uid: Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccount)
+  name: Refund(IAccount)
+  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Refund_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.IFeeCollector.Refund(Libplanet.Action.State.IAccount)
+  nameWithType: IFeeCollector.Refund(IAccount)
 - uid: Libplanet.Action.IFeeCollector.Refund*
   name: Refund
   href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Refund_
@@ -761,12 +761,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IFeeCollector.Refund
   nameWithType: IFeeCollector.Refund
-- uid: Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccountStateDelta)
-  name: Reward(IAccountStateDelta)
-  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Reward_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: IFeeCollector.Reward(IAccountStateDelta)
+- uid: Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccount)
+  name: Reward(IAccount)
+  href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Reward_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.IFeeCollector.Reward(Libplanet.Action.State.IAccount)
+  nameWithType: IFeeCollector.Reward(IAccount)
 - uid: Libplanet.Action.IFeeCollector.Reward*
   name: Reward
   href: api/Libplanet.Action.IFeeCollector.html#Libplanet_Action_IFeeCollector_Reward_
@@ -1214,25 +1214,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta
   nameWithType: AccountDeltaExtensions.ToRawDelta
-- uid: Libplanet.Action.State.AccountStateDeltaExtensions
-  name: AccountStateDeltaExtensions
-  href: api/Libplanet.Action.State.AccountStateDeltaExtensions.html
-  commentId: T:Libplanet.Action.State.AccountStateDeltaExtensions
-  fullName: Libplanet.Action.State.AccountStateDeltaExtensions
-  nameWithType: AccountStateDeltaExtensions
-- uid: Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates(Libplanet.Action.State.IAccountStateDelta)
-  name: GetUpdatedStates(IAccountStateDelta)
-  href: api/Libplanet.Action.State.AccountStateDeltaExtensions.html#Libplanet_Action_State_AccountStateDeltaExtensions_GetUpdatedStates_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates(Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates(Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: AccountStateDeltaExtensions.GetUpdatedStates(IAccountStateDelta)
-- uid: Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates*
+- uid: Libplanet.Action.State.AccountExtensions
+  name: AccountExtensions
+  href: api/Libplanet.Action.State.AccountExtensions.html
+  commentId: T:Libplanet.Action.State.AccountExtensions
+  fullName: Libplanet.Action.State.AccountExtensions
+  nameWithType: AccountExtensions
+- uid: Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
+  name: GetUpdatedStates(IAccount)
+  href: api/Libplanet.Action.State.AccountExtensions.html#Libplanet_Action_State_AccountExtensions_GetUpdatedStates_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
+  nameWithType: AccountExtensions.GetUpdatedStates(IAccount)
+- uid: Libplanet.Action.State.AccountExtensions.GetUpdatedStates*
   name: GetUpdatedStates
-  href: api/Libplanet.Action.State.AccountStateDeltaExtensions.html#Libplanet_Action_State_AccountStateDeltaExtensions_GetUpdatedStates_
-  commentId: Overload:Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates
+  href: api/Libplanet.Action.State.AccountExtensions.html#Libplanet_Action_State_AccountExtensions_GetUpdatedStates_
+  commentId: Overload:Libplanet.Action.State.AccountExtensions.GetUpdatedStates
   isSpec: "True"
-  fullName: Libplanet.Action.State.AccountStateDeltaExtensions.GetUpdatedStates
-  nameWithType: AccountStateDeltaExtensions.GetUpdatedStates
+  fullName: Libplanet.Action.State.AccountExtensions.GetUpdatedStates
+  nameWithType: AccountExtensions.GetUpdatedStates
 - uid: Libplanet.Action.State.BlockState
   name: BlockState
   href: api/Libplanet.Action.State.BlockState.html
@@ -1381,6 +1381,103 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.CurrencyPermissionException.TransactionSigner
   nameWithType: CurrencyPermissionException.TransactionSigner
+- uid: Libplanet.Action.State.IAccount
+  name: IAccount
+  href: api/Libplanet.Action.State.IAccount.html
+  commentId: T:Libplanet.Action.State.IAccount
+  fullName: Libplanet.Action.State.IAccount
+  nameWithType: IAccount
+- uid: Libplanet.Action.State.IAccount.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.IAccount.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.IAccount.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: IAccount.BurnAsset(IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.IAccount.BurnAsset*
+  name: BurnAsset
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_BurnAsset_
+  commentId: Overload:Libplanet.Action.State.IAccount.BurnAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.BurnAsset
+  nameWithType: IAccount.BurnAsset
+- uid: Libplanet.Action.State.IAccount.Delta
+  name: Delta
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_Delta
+  commentId: P:Libplanet.Action.State.IAccount.Delta
+  fullName: Libplanet.Action.State.IAccount.Delta
+  nameWithType: IAccount.Delta
+- uid: Libplanet.Action.State.IAccount.Delta*
+  name: Delta
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_Delta_
+  commentId: Overload:Libplanet.Action.State.IAccount.Delta
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.Delta
+  nameWithType: IAccount.Delta
+- uid: Libplanet.Action.State.IAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: MintAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.IAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.IAccount.MintAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: IAccount.MintAsset(IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.IAccount.MintAsset*
+  name: MintAsset
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_MintAsset_
+  commentId: Overload:Libplanet.Action.State.IAccount.MintAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.MintAsset
+  nameWithType: IAccount.MintAsset
+- uid: Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
+  name: SetState(Address, IValue)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
+  fullName: Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address, Bencodex.Types.IValue)
+  nameWithType: IAccount.SetState(Address, IValue)
+- uid: Libplanet.Action.State.IAccount.SetState*
+  name: SetState
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_
+  commentId: Overload:Libplanet.Action.State.IAccount.SetState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.SetState
+  nameWithType: IAccount.SetState
+- uid: Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetValidator_Libplanet_Types_Consensus_Validator_
+  commentId: M:Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
+  fullName: Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
+  nameWithType: IAccount.SetValidator(Validator)
+- uid: Libplanet.Action.State.IAccount.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetValidator_
+  commentId: Overload:Libplanet.Action.State.IAccount.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.SetValidator
+  nameWithType: IAccount.SetValidator
+- uid: Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets
+  name: TotalUpdatedFungibleAssets
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_TotalUpdatedFungibleAssets
+  commentId: P:Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets
+  fullName: Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets
+  nameWithType: IAccount.TotalUpdatedFungibleAssets
+- uid: Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets*
+  name: TotalUpdatedFungibleAssets
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_TotalUpdatedFungibleAssets_
+  commentId: Overload:Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.TotalUpdatedFungibleAssets
+  nameWithType: IAccount.TotalUpdatedFungibleAssets
+- uid: Libplanet.Action.State.IAccount.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
+  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
+  commentId: M:Libplanet.Action.State.IAccount.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
+  fullName: Libplanet.Action.State.IAccount.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
+  nameWithType: IAccount.TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
+- uid: Libplanet.Action.State.IAccount.TransferAsset*
+  name: TransferAsset
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_TransferAsset_
+  commentId: Overload:Libplanet.Action.State.IAccount.TransferAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.TransferAsset
+  nameWithType: IAccount.TransferAsset
 - uid: Libplanet.Action.State.IAccountDelta
   name: IAccountDelta
   href: api/Libplanet.Action.State.IAccountDelta.html
@@ -1578,103 +1675,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccountState.GetValidatorSet
   nameWithType: IAccountState.GetValidatorSet
-- uid: Libplanet.Action.State.IAccountStateDelta
-  name: IAccountStateDelta
-  href: api/Libplanet.Action.State.IAccountStateDelta.html
-  commentId: T:Libplanet.Action.State.IAccountStateDelta
-  fullName: Libplanet.Action.State.IAccountStateDelta
-  nameWithType: IAccountStateDelta
-- uid: Libplanet.Action.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.IAccountStateDelta.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.BurnAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.IAccountStateDelta.BurnAsset*
-  name: BurnAsset
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_BurnAsset_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.BurnAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.BurnAsset
-  nameWithType: IAccountStateDelta.BurnAsset
-- uid: Libplanet.Action.State.IAccountStateDelta.Delta
-  name: Delta
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_Delta
-  commentId: P:Libplanet.Action.State.IAccountStateDelta.Delta
-  fullName: Libplanet.Action.State.IAccountStateDelta.Delta
-  nameWithType: IAccountStateDelta.Delta
-- uid: Libplanet.Action.State.IAccountStateDelta.Delta*
-  name: Delta
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_Delta_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.Delta
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.Delta
-  nameWithType: IAccountStateDelta.Delta
-- uid: Libplanet.Action.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: MintAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.IAccountStateDelta.MintAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: IAccountStateDelta.MintAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.IAccountStateDelta.MintAsset*
-  name: MintAsset
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_MintAsset_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.MintAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.MintAsset
-  nameWithType: IAccountStateDelta.MintAsset
-- uid: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
-  name: SetState(Address, IValue)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
-  fullName: Libplanet.Action.State.IAccountStateDelta.SetState(Libplanet.Crypto.Address, Bencodex.Types.IValue)
-  nameWithType: IAccountStateDelta.SetState(Address, IValue)
-- uid: Libplanet.Action.State.IAccountStateDelta.SetState*
-  name: SetState
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetState_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.SetState
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.SetState
-  nameWithType: IAccountStateDelta.SetState
-- uid: Libplanet.Action.State.IAccountStateDelta.SetValidator(Libplanet.Types.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetValidator_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.SetValidator(Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.IAccountStateDelta.SetValidator(Libplanet.Types.Consensus.Validator)
-  nameWithType: IAccountStateDelta.SetValidator(Validator)
-- uid: Libplanet.Action.State.IAccountStateDelta.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_SetValidator_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.SetValidator
-  nameWithType: IAccountStateDelta.SetValidator
-- uid: Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_TotalUpdatedFungibleAssets
-  commentId: P:Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets
-  fullName: Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.TotalUpdatedFungibleAssets
-- uid: Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets*
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_TotalUpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.TotalUpdatedFungibleAssets
-  nameWithType: IAccountStateDelta.TotalUpdatedFungibleAssets
-- uid: Libplanet.Action.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.Action.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.Action.State.IAccountStateDelta.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: IAccountStateDelta.TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-- uid: Libplanet.Action.State.IAccountStateDelta.TransferAsset*
-  name: TransferAsset
-  href: api/Libplanet.Action.State.IAccountStateDelta.html#Libplanet_Action_State_IAccountStateDelta_TransferAsset_
-  commentId: Overload:Libplanet.Action.State.IAccountStateDelta.TransferAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountStateDelta.TransferAsset
-  nameWithType: IAccountStateDelta.TransferAsset
 - uid: Libplanet.Action.State.IBlockChainStates
   name: IBlockChainStates
   href: api/Libplanet.Action.State.IBlockChainStates.html
@@ -3712,12 +3712,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.BlockEndRenderer
   nameWithType: AnonymousActionRenderer.BlockEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: AnonymousActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: AnonymousActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_
@@ -3815,12 +3815,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.ActionRenderer
   nameWithType: AtomicActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: AtomicActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: AtomicActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_
@@ -3953,12 +3953,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.Records
   nameWithType: RecordingActionRenderer.Records
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_
@@ -4172,12 +4172,12 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   nameWithType: RenderRecord.ActionSuccess
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta,System.Boolean)
-  name: ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta, System.Boolean)
-  nameWithType: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccountStateDelta, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Boolean)
+  name: ActionSuccess(Int64, String, IValue, IActionContext, IAccount, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount, System.Boolean)
+  nameWithType: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccount, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor*
   name: ActionSuccess
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_
@@ -4388,12 +4388,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.ValidatingActionRenderer
   nameWithType: ValidatingActionRenderer.ValidatingActionRenderer
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: ValidatingActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: ValidatingActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_
@@ -4446,12 +4446,12 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.IActionRenderer
   fullName: Libplanet.Blockchain.Renderers.IActionRenderer
   nameWithType: IActionRenderer
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: IActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_
@@ -4536,12 +4536,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.ActionRenderer
   nameWithType: LoggedActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  name: RenderAction(IValue, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccountStateDelta)
-  nameWithType: LoggedActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  name: RenderAction(IValue, IActionContext, IAccount)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
+  nameWithType: LoggedActionRenderer.RenderAction(IValue, IActionContext, IAccount)
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_

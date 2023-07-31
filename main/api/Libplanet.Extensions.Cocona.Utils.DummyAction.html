@@ -192,13 +192,13 @@ its states immediately before the execution,
 and a deterministic random seed.</p>
 <p>Other “bound” information resides in the action
 object in itself, as its properties (or fields).</p>
-<p>A returned <a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a> object functions as
+<p>A returned <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> object functions as
 a delta which shifts from previous states to next states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAccountStateDelta Execute(IActionContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public IAccount Execute(IActionContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -231,7 +231,7 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
         <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
 </td>
       </tr>

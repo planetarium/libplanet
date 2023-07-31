@@ -180,12 +180,12 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IAction
   <a id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_ActionRenderer_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.ActionRenderer*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_ActionRenderer" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.ActionRenderer">ActionRenderer</h4>
   <div class="markdown level1 summary"><p>A callback function to be invoked together with
-<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>.</p>
+<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_">RenderAction(IValue, IActionContext, IAccount)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;IValue, IActionContext, IAccountStateDelta&gt; ActionRenderer { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Action&lt;IValue, IActionContext, IAccount&gt; ActionRenderer { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,7 +197,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IAction
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<span class="xref">Bencodex.Types.IValue</span>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<span class="xref">Bencodex.Types.IValue</span>, <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>, <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -238,20 +238,20 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IAction
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IAccountStateDelta)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IAccount)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/AnonymousActionRenderer.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccountStateDelta)">RenderAction(IValue, IActionContext, IAccountStateDelta)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)">RenderAction(IValue, IActionContext, IAccount)</h4>
   <div class="markdown level1 summary"><p>Does things that should be done right after an <code data-dev-comment-type="paramref" class="paramref">action</code>
 is executed and applied to the blockchain.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RenderAction(IValue action, IActionContext context, IAccountStateDelta nextStates)</code></pre>
+    <pre><code class="lang-csharp hljs">public void RenderAction(IValue action, IActionContext context, IAccount nextStates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -280,7 +280,7 @@ use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
         <td><span class="parametername">nextStates</span></td>
         <td><p>The states right <em>after</em> this action executed,
 which means it is equivalent to the states <code data-dev-comment-type="paramref" class="paramref">action</code>'s
@@ -289,7 +289,7 @@ which means it is equivalent to the states <code data-dev-comment-type="paramref
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for an <code data-dev-comment-type="paramref" class="paramref">action</code>,
 and only after applied to the blockchain, unless an exception is thrown during executing
 the <code data-dev-comment-type="paramref" class="paramref">action</code> (in that case <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_">RenderActionError(IValue, IActionContext, Exception)</a> is called instead) or
@@ -306,7 +306,7 @@ once the <code data-dev-comment-type="paramref" class="paramref">action</code> h
   </span>
   <a id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderActionError_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_" data-uid="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)">RenderActionError(IValue, IActionContext, Exception)</h4>
-  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccountStateDelta_">RenderAction(IValue, IActionContext, IAccountStateDelta)</a>, except that this method
+  <div class="markdown level1 summary"><p>Does the similar things to <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_">RenderAction(IValue, IActionContext, IAccount)</a>, except that this method
 is invoked when <code data-dev-comment-type="paramref" class="paramref">action</code> has terminated with an exception.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
