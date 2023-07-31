@@ -47,5 +47,59 @@ namespace Libplanet.Explorer.GraphTypes
 
         public IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>?
             UpdatedFungibleAssets { get; }
+
+        public static TxResult Success(
+            long blockIndex,
+            string blockHash,
+            IImmutableDictionary<Address, IValue> updatedStates,
+            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> fungibleAssetsDelta,
+            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
+                updatedFungibleAssets
+        )
+        {
+            return new TxResult(
+                TxStatus.SUCCESS,
+                blockIndex,
+                blockHash,
+                null,
+                null,
+                updatedStates,
+                fungibleAssetsDelta,
+                updatedFungibleAssets
+            );
+        }
+
+        public static TxResult Failure(
+            long blockIndex,
+            string blockHash,
+            string exceptionName,
+            IValue exceptionMetadata
+        )
+        {
+            return new TxResult(
+                TxStatus.FAILURE,
+                blockIndex,
+                blockHash,
+                exceptionName,
+                exceptionMetadata,
+                null,
+                null,
+                null
+            );
+        }
+
+        public static TxResult FromStatus(TxStatus status)
+        {
+            return new TxResult(
+                status,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+        }
     }
 }
