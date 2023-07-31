@@ -42,7 +42,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = AccountStateDelta.Create(MockAccountState.Empty);
+            var prevState = Account.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -70,7 +70,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = AccountStateDelta.Create(MockAccountState.Empty);
+            var prevState = Account.Create(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,

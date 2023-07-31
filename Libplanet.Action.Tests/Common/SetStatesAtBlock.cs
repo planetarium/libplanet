@@ -34,9 +34,9 @@ namespace Libplanet.Action.Tests.Common
             _blockIndex = dict.GetValue<Bencodex.Types.Integer>("block_index");
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
-            IAccountStateDelta states = context.PreviousState;
+            IAccount states = context.PreviousState;
             if (context.BlockIndex == _blockIndex)
             {
                 states = states.SetState(_address, _value);

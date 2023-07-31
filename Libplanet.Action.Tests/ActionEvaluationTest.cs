@@ -37,12 +37,12 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    AccountStateDelta.Create(MockAccountState.Empty),
+                    Account.Create(MockAccountState.Empty),
                     123,
                     0,
                     false
                 ),
-                AccountStateDelta.Create(
+                Account.Create(
                     MockAccountState.Empty
                         .SetState(address, (Text)"item"))
             );

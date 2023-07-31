@@ -131,7 +131,7 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             if (RehearsalRecords.Value is null)
             {
@@ -144,7 +144,7 @@ namespace Libplanet.Action.Tests.Common
                     RehearsalRecords.Value.Add((TargetAddress, Item));
             }
 
-            IAccountStateDelta states = context.PreviousState;
+            IAccount states = context.PreviousState;
             if (Item is null)
             {
                 return states;
@@ -187,7 +187,7 @@ namespace Libplanet.Action.Tests.Common
                 Item = Item.ToUpperInvariant();
             }
 
-            IAccountStateDelta nextState = states.SetState(TargetAddress, (Text)items);
+            IAccount nextState = states.SetState(TargetAddress, (Text)items);
 
             if (!(Transfer is null))
             {

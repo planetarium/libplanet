@@ -10,8 +10,8 @@ namespace Libplanet.Action.State
     /// The exception that is thrown when a sender has less <see cref="Balance"/> than amount to
     /// transfer or an owner has less <see cref="Balance"/> than amount to burn.
     /// </summary>
-    /// <seealso cref="IAccountStateDelta.TransferAsset"/>
-    /// <seealso cref="IAccountStateDelta.BurnAsset"/>
+    /// <seealso cref="IAccount.TransferAsset"/>
+    /// <seealso cref="IAccount.BurnAsset"/>
     [Serializable]
     public sealed class InsufficientBalanceException : Exception
     {

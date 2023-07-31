@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests.Common
             Deterministic = plainValue.GetValue<Boolean>("deterministic");
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
             {

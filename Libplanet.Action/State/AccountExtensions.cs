@@ -8,20 +8,20 @@ using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
 {
-    public static class AccountStateDeltaExtensions
+    public static class AccountExtensions
     {
         public static IImmutableDictionary<Address, IValue> GetUpdatedStates(
-            this IAccountStateDelta stateDelta) => stateDelta.Delta.States;
+            this IAccount account) => account.Delta.States;
 
         internal static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
-            GetUpdatedBalances(this IAccountStateDelta stateDelta) =>
-            stateDelta.Delta.Fungibles.ToImmutableDictionary(
+            GetUpdatedBalances(this IAccount account) =>
+            account.Delta.Fungibles.ToImmutableDictionary(
                 kv => kv.Key,
                 kv => FungibleAssetValue.FromRawValue(kv.Key.Item2, kv.Value));
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
-            GetUpdatedTotalSupplies(this IAccountStateDelta stateDelta) =>
-            stateDelta.Delta.TotalSupplies.ToImmutableDictionary(
+            GetUpdatedTotalSupplies(this IAccount account) =>
+            account.Delta.TotalSupplies.ToImmutableDictionary(
                 kv => kv.Key,
                 kv => FungibleAssetValue.FromRawValue(kv.Key, kv.Value));
     }

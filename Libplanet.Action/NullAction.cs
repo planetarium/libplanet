@@ -25,7 +25,7 @@ namespace Libplanet.Action
             PlainValue = plainValue;
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             return context.PreviousState;
         }

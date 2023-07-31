@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </remarks>
     public sealed class AtomicActionRenderer : IActionRenderer
     {
-        private readonly List<(IValue, IActionContext, IAccountStateDelta)> _eventBuffer;
+        private readonly List<(IValue, IActionContext, IAccount)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -35,7 +35,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IValue, IActionContext, IAccountStateDelta)>();
+            _eventBuffer = new List<(IValue, IActionContext, IAccount)>();
             _errored = false;
         }
 
@@ -59,11 +59,11 @@ namespace Libplanet.Blockchain.Renderers
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
         public void RenderAction(
             IValue action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccount nextStates
         )
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -102,7 +102,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IValue, IActionContext, IAccountStateDelta> render
+            Action<IValue, IActionContext, IAccount> render
         )
         {
             if (!_errored)

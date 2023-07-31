@@ -107,7 +107,7 @@ namespace Libplanet.Tests.Fixtures
             Error = null;
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             if (Error != null)
             {

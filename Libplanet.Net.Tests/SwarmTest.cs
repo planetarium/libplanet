@@ -2041,7 +2041,7 @@ namespace Libplanet.Net.Tests
         {
             public IValue PlainValue => Null.Value;
 
-            public IAccountStateDelta Execute(IActionContext context)
+            public IAccount Execute(IActionContext context)
             {
                 Thread.Sleep(10);
                 return context.PreviousState;

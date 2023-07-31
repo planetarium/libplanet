@@ -37,7 +37,7 @@ namespace Libplanet.Action.Tests.Common
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             return context.PreviousState.SetValidator(Validator);
         }

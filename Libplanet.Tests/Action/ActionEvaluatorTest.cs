@@ -229,7 +229,7 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
-            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(block);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(block);
 
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
@@ -309,7 +309,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 GenesisProposer,
                 block1Txs);
-            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(block1);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(block1);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
@@ -426,7 +426,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(block1, true));
 
             // Forcefully reset to null delta
-            previousState = AccountStateDelta.Create(evals1.Last().OutputState);
+            previousState = Account.Create(evals1.Last().OutputState);
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousState).ToImmutableArray();
@@ -463,7 +463,7 @@ namespace Libplanet.Tests.Action
                     (Integer)randomValue);
             }
 
-            previousState = AccountStateDelta.Create(evals1.Last().OutputState);
+            previousState = Account.Create(evals1.Last().OutputState);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -528,7 +528,7 @@ namespace Libplanet.Tests.Action
 
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
-            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(block);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(block);
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -595,7 +595,7 @@ namespace Libplanet.Tests.Action
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
             previousState = actionEvaluator.PrepareInitialDelta(block);
-            IAccountStateDelta delta = actionEvaluator.EvaluateTx(
+            IAccount delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
@@ -637,7 +637,7 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
                 transactions: txs).Propose();
-            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(block);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(block);
             var nextStates = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
@@ -663,7 +663,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockHeader: blockA,
                 tx: txA,
-                previousState: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
+                previousState: fx.CreateAccount(0, blockA.PreviousHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();
@@ -677,8 +677,8 @@ namespace Libplanet.Tests.Action
             {
                 IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
-                IAccountStateDelta prevState = context.PreviousState;
-                IAccountStateDelta outputState = eval.OutputState;
+                IAccount prevState = context.PreviousState;
+                IAccount outputState = eval.OutputState;
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
                 _logger.Debug("txA.Actions[{0}] = {1}", i, txA.Actions[i]);
 
@@ -710,7 +710,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
                 blockHeader: blockB,
                 tx: txB,
-                previousState: fx.CreateAccountStateDelta(0, blockB.PreviousHash),
+                previousState: fx.CreateAccount(0, blockB.PreviousHash),
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();
@@ -724,8 +724,8 @@ namespace Libplanet.Tests.Action
             {
                 IActionEvaluation eval = evalsB[i];
                 IActionContext context = eval.InputContext;
-                IAccountStateDelta prevState = context.PreviousState;
-                IAccountStateDelta outputState = eval.OutputState;
+                IAccount prevState = context.PreviousState;
+                IAccount outputState = eval.OutputState;
 
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
                 _logger.Debug("txB.Actions[{0}] = {@1}", i, txB.Actions[i]);
@@ -768,7 +768,7 @@ namespace Libplanet.Tests.Action
             var block = chain.ProposeBlock(
                 GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
 
-            IAccountStateDelta previousState = actionEvaluator.PrepareInitialDelta(genesis);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(genesis);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -777,7 +777,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputState.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            previousState = AccountStateDelta.Create(evaluation.OutputState);
+            previousState = Account.Create(evaluation.OutputState);
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousState);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -1274,7 +1274,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockHeader: blockA,
                 tx: txA,
-                previousState: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
+                previousState: fx.CreateAccount(0, blockA.PreviousHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray()).ToArray();
@@ -1321,7 +1321,7 @@ namespace Libplanet.Tests.Action
                  BlockIndexKey = new Address(asList[2]);
             }
 
-            public IAccountStateDelta Execute(IActionContext context) =>
+            public IAccount Execute(IActionContext context) =>
                 context.PreviousState
                     .SetState(SignerKey, (Text)context.Signer.ToHex())
                     .SetState(MinerKey, (Text)context.Miner.ToHex())
@@ -1361,7 +1361,7 @@ namespace Libplanet.Tests.Action
                 }
             }
 
-            public IAccountStateDelta Execute(IActionContext context)
+            public IAccount Execute(IActionContext context)
             {
                 context.UseGas(GasUsage);
                 var state = context.PreviousState
@@ -1386,7 +1386,7 @@ namespace Libplanet.Tests.Action
                 Currency = new Currency(plainValue);
             }
 
-            public IAccountStateDelta Execute(IActionContext context) =>
+            public IAccount Execute(IActionContext context) =>
                 context.PreviousState.MintAsset(
                     context, context.Signer, FungibleAssetValue.FromRawValue(Currency, 1));
         }

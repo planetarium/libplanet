@@ -178,11 +178,11 @@ namespace Libplanet.Tests.Fixtures
         public void Append(Block block) =>
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
-        public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
-            => AccountStateDelta.Create(Chain.GetBlockState(offset ?? Tip.Hash));
+        public IAccount CreateAccount(Address signer, BlockHash? offset = null)
+            => Account.Create(Chain.GetBlockState(offset ?? Tip.Hash));
 
-        public IAccountStateDelta CreateAccountStateDelta(int signerIndex, BlockHash? offset = null)
-            => CreateAccountStateDelta(Addresses[signerIndex], offset);
+        public IAccount CreateAccount(int signerIndex, BlockHash? offset = null)
+            => CreateAccount(Addresses[signerIndex], offset);
 
         public ITrie GetTrie(BlockHash? blockHash)
         {

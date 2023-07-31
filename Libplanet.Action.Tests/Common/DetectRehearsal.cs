@@ -22,9 +22,9 @@ namespace Libplanet.Action.Tests.Common
             TargetAddress = new Address(values["target_address"]);
         }
 
-        public override IAccountStateDelta Execute(IActionContext context)
+        public override IAccount Execute(IActionContext context)
         {
-            IAccountStateDelta previousState = context.PreviousState;
+            IAccount previousState = context.PreviousState;
             ResultState = context.Rehearsal;
             return previousState.SetState(
                 TargetAddress,

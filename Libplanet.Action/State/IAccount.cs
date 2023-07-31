@@ -36,13 +36,13 @@ namespace Libplanet.Action.State
     /// <remarks>
     /// This interface is immutable.  <see cref="SetState(Address, IValue)"/>
     /// method does not manipulate the instance, but returns a new
-    /// <see cref="IAccountStateDelta"/> instance with updated states.
+    /// <see cref="IAccount"/> instance with updated states.
     /// </remarks>
-    public interface IAccountStateDelta : IAccountState
+    public interface IAccount : IAccountState
     {
         /// <summary>
         /// The <see cref="IAccountDelta"/> representing the delta part of
-        /// this <see cref="IAccountStateDelta"/>.
+        /// this <see cref="IAccount"/>.
         /// </summary>
         [Pure]
         IAccountDelta Delta { get; }
@@ -63,16 +63,16 @@ namespace Libplanet.Action.State
         /// <param name="address">The <see cref="Address"/> referring
         /// the account to set its state.</param>
         /// <param name="state">The new state to fill the account with.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance that
+        /// <returns>A new <see cref="IAccount"/> instance that
         /// the account state of the given <paramref name="address"/>
         /// is set to the given <paramref name="state"/>.</returns>
         /// <remarks>
         /// This method method does not manipulate the instance,
-        /// but returns a new <see cref="IAccountStateDelta"/> instance
+        /// but returns a new <see cref="IAccount"/> instance
         /// with updated states instead.
         /// </remarks>
         [Pure]
-        IAccountStateDelta SetState(Address address, IValue state);
+        IAccount SetState(Address address, IValue state);
 
         /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
@@ -82,7 +82,7 @@ namespace Libplanet.Action.State
         /// executing this method.</param>
         /// <param name="recipient">The address who receives the minted asset.</param>
         /// <param name="value">The asset value to mint.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
+        /// <returns>A new <see cref="IAccount"/> instance that the given <paramref
         /// name="value"/> is added to <paramref name="recipient"/>'s balance.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
         /// is less than or equal to 0.</exception>
@@ -94,7 +94,7 @@ namespace Libplanet.Action.State
         /// <see cref="FungibleAssetValue.Currency"/> exceeds the
         /// <see cref="Currency.MaximumSupply"/>.</exception>
         [Pure]
-        IAccountStateDelta MintAsset(
+        IAccount MintAsset(
             IActionContext context, Address recipient, FungibleAssetValue value);
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Libplanet.Action.State
         /// <param name="value">The asset value to transfer.</param>
         /// <param name="allowNegativeBalance">Turn on to allow <paramref name="sender"/>'s balance
         /// less than zero.  Turned off by default.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
+        /// <returns>A new <see cref="IAccount"/> instance that the given <paramref
         /// name="value"/>  is subtracted from <paramref name="sender"/>'s balance and added to
         /// <paramref name="recipient"/>'s balance.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
@@ -125,7 +125,7 @@ namespace Libplanet.Action.State
         /// compatibility.
         /// </remarks>
         [Pure]
-        IAccountStateDelta TransferAsset(
+        IAccount TransferAsset(
             IActionContext context,
             Address sender,
             Address recipient,
@@ -141,7 +141,7 @@ namespace Libplanet.Action.State
         /// executing this method.</param>
         /// <param name="owner">The address who owns the fungible asset to burn.</param>
         /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance that the given <paramref
+        /// <returns>A new <see cref="IAccount"/> instance that the given <paramref
         /// name="value"/> is subtracted from <paramref name="owner"/>'s balance.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
         /// is less than or equal to zero.</exception>
@@ -151,7 +151,7 @@ namespace Libplanet.Action.State
         /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
-        IAccountStateDelta BurnAsset(
+        IAccount BurnAsset(
             IActionContext context, Address owner, FungibleAssetValue value);
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace Libplanet.Action.State
         /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
         /// </summary>
         /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
-        /// <returns>A new <see cref="IAccountStateDelta"/> instance with
+        /// <returns>A new <see cref="IAccount"/> instance with
         /// <paramref name="validator"/> set.</returns>
         [Pure]
-        IAccountStateDelta SetValidator(Validator validator);
+        IAccount SetValidator(Validator validator);
     }
 }

@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                    previousState: Account.Create(MockAccountState.Empty),
                     randomSeed: seed,
                     gasLimit: 0
                 );
@@ -54,7 +54,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                previousState: Account.Create(MockAccountState.Empty),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -65,7 +65,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                previousState: Account.Create(MockAccountState.Empty),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -76,7 +76,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                previousState: Account.Create(MockAccountState.Empty),
                 randomSeed: 1,
                 gasLimit: 0
             );
@@ -112,7 +112,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                    previousState: Account.Create(MockAccountState.Empty),
                     randomSeed: i,
                     gasLimit: 0
                 );
@@ -132,7 +132,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: AccountStateDelta.Create(MockAccountState.Empty),
+                previousState: Account.Create(MockAccountState.Empty),
                 randomSeed: _random.Next(),
                 gasLimit: 0);
 

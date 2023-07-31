@@ -57,7 +57,7 @@ namespace Libplanet.Action
             _state = state;
         }
 
-        public IAccountStateDelta Mortgage(IAccountStateDelta state)
+        public IAccount Mortgage(IAccount state)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Mortgage))
@@ -80,7 +80,7 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(msg, _context.Signer, balance);
             }
 
-            IAccountStateDelta nextState = state.BurnAsset(
+            IAccount nextState = state.BurnAsset(
                 _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
@@ -88,7 +88,7 @@ namespace Libplanet.Action
             return nextState;
         }
 
-        public IAccountStateDelta Refund(IAccountStateDelta state)
+        public IAccount Refund(IAccount state)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Refund))
@@ -107,7 +107,7 @@ namespace Libplanet.Action
                 return state;
             }
 
-            IAccountStateDelta nextState = state.MintAsset(
+            IAccount nextState = state.MintAsset(
                 _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
@@ -115,7 +115,7 @@ namespace Libplanet.Action
             return nextState;
         }
 
-        public IAccountStateDelta Reward(IAccountStateDelta state)
+        public IAccount Reward(IAccount state)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Reward))
@@ -134,7 +134,7 @@ namespace Libplanet.Action
                 return state;
             }
 
-            IAccountStateDelta nextState = state.MintAsset(
+            IAccount nextState = state.MintAsset(
                 _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());

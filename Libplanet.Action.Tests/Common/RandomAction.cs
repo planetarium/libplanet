@@ -28,9 +28,9 @@ namespace Libplanet.Action.Tests.Common
             Address = new Address((string)dictionary.GetValue<Text>("address"));
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
-            IAccountStateDelta states = context.PreviousState;
+            IAccount states = context.PreviousState;
             if (context.Rehearsal)
             {
                 return states.SetState(Address, Null.Value);

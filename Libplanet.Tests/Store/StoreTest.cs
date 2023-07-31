@@ -1292,7 +1292,7 @@ namespace Libplanet.Tests.Store
                 Md5Digest = plainValue.GetValue<Binary>("md5").ByteArray;
             }
 
-            public IAccountStateDelta Execute(IActionContext context)
+            public IAccount Execute(IActionContext context)
             {
                 return context.PreviousState;
             }
