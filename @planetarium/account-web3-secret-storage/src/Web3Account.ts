@@ -313,7 +313,7 @@ async function deriveKey(
       },
     );
     if (derivedKey.length < dklen) {
-      throw new Error(`Too short key: ${toHex(derivedKey)}`);
+      throw new Error(`Key too short: ${toHex(derivedKey)}`);
     }
     return derivedKey;
   } else if (kdf.kdf === "scrypt") {
