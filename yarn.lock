@@ -1241,10 +1241,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@noble/hashes@npm:1.3.0"
-  checksum: d7ddb6d7c60f1ce1f87facbbef5b724cdea536fc9e7f59ae96e0fc9de96c8f1a2ae2bdedbce10f7dcc621338dfef8533daa73c873f2b5c87fa1a4e05a95c2e2e
+"@noble/hashes@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@noble/hashes@npm:1.3.1"
+  checksum: 7fdefc0f7a0c1ec27acc6ff88841793e3f93ec4ce6b8a6a12bfc0dd70ae6b7c4c82fe305fdfeda1735d5ad4a9eebe761e6693b3d355689c559e91242f4bc95b1
   languageName: node
   linkType: hard
 
@@ -1359,7 +1359,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@planetarium/account-web3-secret-storage@workspace:@planetarium/account-web3-secret-storage"
   dependencies:
-    "@noble/hashes": ^1.3.0
+    "@noble/hashes": ^1.3.1
     "@peculiar/webcrypto": ^1.4.3
     "@planetarium/account": "workspace:^"
     "@types/node": ^18.13.0
@@ -1368,7 +1368,6 @@ __metadata:
     "@vitest/ui": ^0.29.2
     fast-check: ^3.8.0
     nanobundle: ^1.5.0
-    scrypt-js: ^3.0.1
     stream-buffers: ^3.0.2
     vite: ^4.1.4
     vitest: ^0.29.2
@@ -4466,13 +4465,6 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: cab8f25ae6f1434abee8d80023d7e72b598cf1327164ddab31003c51215526801e40b66c5e65d658a0af1e9d6478cadcb4c745f4bd6751f97d8644786c0978b0
-  languageName: node
-  linkType: hard
-
-"scrypt-js@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "scrypt-js@npm:3.0.1"
-  checksum: b7c7d1a68d6ca946f2fbb0778e0c4ec63c65501b54023b2af7d7e9f48fdb6c6580d6f7675cd53bda5944c5ebc057560d5a6365079752546865defb3b79dea454
   languageName: node
   linkType: hard
 
