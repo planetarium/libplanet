@@ -41,19 +41,19 @@ const scryptKeyObject: Web3KeyObject = {
   crypto: {
     cipher: "aes-128-ctr",
     cipherparams: {
-      iv: "83dbcc02d8ccb40e466191a123791e0e",
+      iv: "740770fce12ce862af21264dab25f1da",
     },
     ciphertext:
-      "d172bf743a674da9cdad04534d56926ef8358534d458fffccd4e6ad2fbde479c",
+      "dd8a1132cf57db67c038c6763afe2cbe6ea1949a86abc5843f8ca656ebbb1ea2",
     kdf: "scrypt",
     kdfparams: {
       dklen: 32,
       n: 262144,
-      p: 8,
-      r: 1,
-      salt: "ab0c7876052600dd703518d6fc3fe8984592145b591fc8fb5c6d43190334ba19",
+      p: 1,
+      r: 8,
+      salt: "25710c2ccd7c610b24d068af83b959b7a0e5f40641f0c82daeb1345766191034",
     },
-    mac: "2103ac29920d71da29f15d75b4a16dbe95cfd7ff8faea1056c33131d846e3097",
+    mac: "337aeb86505d2d0bb620effe57f18381377d67d76dac1090626aa5cd20886a7c",
   },
   id: "3198bc9c-6672-5ab3-d995-4942343ae5b6",
   address: "008aeeda4d805471df9b2a5b0f38a0c3bcba786b",
