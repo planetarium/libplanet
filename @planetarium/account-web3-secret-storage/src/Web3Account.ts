@@ -320,7 +320,7 @@ async function deriveKey(
     const { dklen, n, p, r, salt } = kdf.kdfparams;
     const derivedKey = await scryptAsync(passphrase, salt, { N: n, r, p, dkLen: dklen});
     if (derivedKey.length < dklen) {
-      throw new Error(`Too Short key: ${toHex(derivedKey)}`);
+      throw new Error(`Key too short: ${toHex(derivedKey)}`);
     }
     return derivedKey;
   }
