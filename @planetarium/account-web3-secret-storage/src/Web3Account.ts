@@ -9,7 +9,7 @@ import {
 } from "@planetarium/account";
 import { crypto } from "#crypto";
 import { pbkdf2Async } from "@noble/hashes/pbkdf2";
-import { scrypt } from "scrypt-js";
+import { scryptAsync } from "@noble/hashes/scrypt";
 import { sha256 } from "@noble/hashes/sha256";
 import { keccak_256 } from "@noble/hashes/sha3";
 
@@ -318,11 +318,11 @@ async function deriveKey(
     return derivedKey;
   } else if (kdf.kdf === "scrypt") {
     const { dklen, n, p, r, salt } = kdf.kdfparams;
-    const passphraseBytes =
-      passphrase instanceof Uint8Array
-        ? passphrase
-        : new TextEncoder().encode(passphrase);
-    return scrypt(passphraseBytes, Buffer.from(salt, "hex"), n, r, p, dklen);
+    const derivedKey = await scryptAsync(passphrase, salt, { N: n, r, p, dkLen: dklen});
+    if (derivedKey.length < dklen) {
+      throw new Error(`Too Short key: ${toHex(derivedKey)}`);
+    }
+    return derivedKey;
   }
 
   throw new Error(`Unsupported kdf: ${kdf["kdf"]}`);
