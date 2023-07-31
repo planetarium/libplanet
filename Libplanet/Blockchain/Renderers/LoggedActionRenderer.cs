@@ -68,11 +68,11 @@ namespace Libplanet.Blockchain.Renderers
             );
 
         /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccountStateDelta)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
         public void RenderAction(
             IValue action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccount nextStates
         ) =>
             LogActionRendering(
                 nameof(RenderAction),

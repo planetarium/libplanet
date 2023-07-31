@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Renamed `IAccountStateDelta` as `IAccount`.
+    [[#3337]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3337]: https://github.com/planetarium/libplanet/pull/3337
 
 
 Version 3.1.0

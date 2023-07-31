@@ -21,16 +21,16 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public abstract class AccountStateDeltaTest
+    public abstract class AccountTest
     {
         protected readonly PrivateKey[] _keys;
         protected readonly Address[] _addr;
         protected readonly Currency[] _currencies;
         protected readonly IAccountState _initState;
-        protected readonly IAccountStateDelta _initStateDelta;
+        protected readonly IAccount _initAccount;
         protected readonly IActionContext _initContext;
 
-        protected AccountStateDeltaTest(ITestOutputHelper output)
+        protected AccountTest(ITestOutputHelper output)
         {
             _keys = new[]
             {
@@ -82,83 +82,83 @@ namespace Libplanet.Tests.Action
                 );
             }
 
-            _initStateDelta = CreateInstance(_initState);
+            _initAccount = CreateInstance(_initState);
             _initContext = CreateContext(
-                _initStateDelta, _addr[0]);
+                _initAccount, _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }
 
-        public virtual IAccountStateDelta CreateInstance(IAccountState state) =>
-            AccountStateDelta.Create(state);
+        public virtual IAccount CreateInstance(IAccountState state) =>
+            Account.Create(state);
 
         public abstract IActionContext CreateContext(
-            IAccountStateDelta delta,
+            IAccount delta,
             Address signer);
 
         [Fact]
         public virtual void NullDelta()
         {
-            Assert.Empty(_initStateDelta.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.UpdatedFungibleAssets);
-            Assert.Equal("a", (Text)_initStateDelta.GetState(_addr[0]));
-            Assert.Equal("b", (Text)_initStateDelta.GetState(_addr[1]));
-            Assert.Null(_initStateDelta.GetState(_addr[2]));
-            Assert.Equal(Value(0, 5), _initStateDelta.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(1, -10), _initStateDelta.GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(Zero(2), _initStateDelta.GetBalance(_addr[0], _currencies[2]));
-            Assert.Equal(Zero(0), _initStateDelta.GetBalance(_addr[1], _currencies[0]));
-            Assert.Equal(Value(1, 15), _initStateDelta.GetBalance(_addr[1], _currencies[1]));
-            Assert.Equal(Value(2, 20), _initStateDelta.GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(Zero(0), _initStateDelta.GetBalance(_addr[2], _currencies[0]));
-            Assert.Equal(Zero(1), _initStateDelta.GetBalance(_addr[2], _currencies[1]));
-            Assert.Equal(Zero(2), _initStateDelta.GetBalance(_addr[2], _currencies[2]));
+            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
+            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
+            Assert.Null(_initAccount.GetState(_addr[2]));
+            Assert.Equal(Value(0, 5), _initAccount.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(1, -10), _initAccount.GetBalance(_addr[0], _currencies[1]));
+            Assert.Equal(Zero(2), _initAccount.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Zero(0), _initAccount.GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(1, 15), _initAccount.GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Value(2, 20), _initAccount.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Zero(0), _initAccount.GetBalance(_addr[2], _currencies[0]));
+            Assert.Equal(Zero(1), _initAccount.GetBalance(_addr[2], _currencies[1]));
+            Assert.Equal(Zero(2), _initAccount.GetBalance(_addr[2], _currencies[2]));
         }
 
         [Fact]
         public virtual void States()
         {
-            IAccountStateDelta a = _initStateDelta.SetState(_addr[0], (Text)"A");
+            IAccount a = _initAccount.SetState(_addr[0], (Text)"A");
             Assert.Equal("A", (Text)a.GetState(_addr[0]));
-            Assert.Equal("a", (Text)_initStateDelta.GetState(_addr[0]));
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
             Assert.Equal("b", (Text)a.GetState(_addr[1]));
-            Assert.Equal("b", (Text)_initStateDelta.GetState(_addr[1]));
+            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
             Assert.Null(a.GetState(_addr[2]));
-            Assert.Null(_initStateDelta.GetState(_addr[2]));
+            Assert.Null(_initAccount.GetState(_addr[2]));
             Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
             Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
             Assert.Empty(a.Delta.UpdatedFungibleAssets);
             Assert.Empty(a.Delta.UpdatedTotalSupplyCurrencies);
-            Assert.Empty(_initStateDelta.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.UpdatedFungibleAssets);
-            Assert.Empty(_initStateDelta.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
+            Assert.Empty(_initAccount.Delta.UpdatedTotalSupplyCurrencies);
 
-            IAccountStateDelta b = a.SetState(_addr[0], (Text)"z");
+            IAccount b = a.SetState(_addr[0], (Text)"z");
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
             Assert.Equal("A", (Text)a.GetState(_addr[0]));
-            Assert.Equal("a", (Text)_initStateDelta.GetState(_addr[0]));
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
             Assert.Equal("b", (Text)b.GetState(_addr[1]));
             Assert.Equal("b", (Text)a.GetState(_addr[1]));
             Assert.Null(b.GetState(_addr[2]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
             Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
 
-            IAccountStateDelta c = b.SetState(_addr[0], (Text)"a");
+            IAccount c = b.SetState(_addr[0], (Text)"a");
             Assert.Equal("a", (Text)c.GetState(_addr[0]));
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
-            Assert.Empty(_initStateDelta.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
         }
 
         [Fact]
         public virtual void FungibleAssets()
         {
-            IAccountStateDelta a = _initStateDelta.TransferAsset(
+            IAccount a = _initAccount.TransferAsset(
                 _initContext, _addr[1], _addr[2], Value(2, 5));
             Assert.Equal(Value(2, 15), a.GetBalance(_addr[1], _currencies[2]));
             Assert.Equal(Value(2, 5), a.GetBalance(_addr[2], _currencies[2]));
@@ -178,26 +178,26 @@ namespace Libplanet.Tests.Action
                 a.Delta.UpdatedFungibleAssets.Select(pair => pair.Item1).ToImmutableHashSet(),
                 a.Delta.UpdatedAddresses);
             Assert.Empty(a.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.UpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initStateDelta.Delta.UpdatedFungibleAssets);
-            Assert.Empty(_initStateDelta.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
+            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
+            Assert.Empty(_initAccount.Delta.UpdatedTotalSupplyCurrencies);
         }
 
         [Fact]
         public virtual void TransferAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.TransferAsset(_initContext, _addr[0], _addr[1], Zero(0))
+                _initAccount.TransferAsset(_initContext, _addr[0], _addr[1], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, -1))
+                _initAccount.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, -1))
             );
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initStateDelta.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 6))
+                _initAccount.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 6))
             );
 
-            IAccountStateDelta a = _initStateDelta.TransferAsset(
+            IAccount a = _initAccount.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],
@@ -259,13 +259,13 @@ namespace Libplanet.Tests.Action
         public virtual void MintAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.MintAsset(_initContext, _addr[0], Zero(0))
+                _initAccount.MintAsset(_initContext, _addr[0], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.MintAsset(_initContext, _addr[0], Value(0, -1))
+                _initAccount.MintAsset(_initContext, _addr[0], Value(0, -1))
             );
 
-            IAccountStateDelta delta0 = _initStateDelta;
+            IAccount delta0 = _initAccount;
             IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to mint
             delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
@@ -279,7 +279,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(_initState);
+            IAccount delta1 = CreateInstance(_initState);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
@@ -298,16 +298,16 @@ namespace Libplanet.Tests.Action
         public virtual void BurnAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.BurnAsset(_initContext, _addr[0], Zero(0))
+                _initAccount.BurnAsset(_initContext, _addr[0], Zero(0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.BurnAsset(_initContext, _addr[0], Value(0, -1))
+                _initAccount.BurnAsset(_initContext, _addr[0], Value(0, -1))
             );
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initStateDelta.BurnAsset(_initContext, _addr[0], Value(0, 6))
+                _initAccount.BurnAsset(_initContext, _addr[0], Value(0, 6))
             );
 
-            IAccountStateDelta delta0 = _initStateDelta;
+            IAccount delta0 = _initAccount;
             IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
@@ -321,7 +321,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(_initState);
+            IAccount delta1 = CreateInstance(_initState);
             IActionContext context1 = CreateContext(delta1, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
@@ -340,14 +340,14 @@ namespace Libplanet.Tests.Action
         public virtual void SetValidator()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initStateDelta.SetValidator(new Validator(new PrivateKey().PublicKey, -1))
+                _initAccount.SetValidator(new Validator(new PrivateKey().PublicKey, -1))
             );
 
             var initCount = _keys.Length;
             var key3 = new PrivateKey().PublicKey;
             var key4 = new PrivateKey().PublicKey;
 
-            IAccountStateDelta delta = _initStateDelta;
+            IAccount delta = _initAccount;
             // delta already has 3 validators
             Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
 

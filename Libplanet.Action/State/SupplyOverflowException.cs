@@ -9,7 +9,7 @@ namespace Libplanet.Action.State
     /// The exception thrown when a minter tries to mint a currency such that the resulting total
     /// supply exceed the maximum amount.
     /// </summary>
-    /// <seealso cref="IAccountStateDelta.MintAsset"/>
+    /// <seealso cref="IAccount.MintAsset"/>
     [Serializable]
     public sealed class SupplyOverflowException : Exception
     {

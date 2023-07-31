@@ -12,19 +12,19 @@ using Libplanet.Types.Consensus;
 namespace Libplanet.Action.State
 {
     /// <summary>
-    /// An internal implementation of <see cref="IAccountStateDelta"/>.
+    /// An internal implementation of <see cref="IAccount"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDelta : IAccountStateDelta
+    internal class Account : IAccount
     {
         private readonly IAccountState _baseState;
 
-        private AccountStateDelta(IAccountState baseState)
+        private Account(IAccountState baseState)
             : this(baseState, new AccountDelta())
         {
         }
 
-        private AccountStateDelta(IAccountState baseState, IAccountDelta delta)
+        private Account(IAccountState baseState, IAccountDelta delta)
         {
             _baseState = baseState;
             Delta = delta;
@@ -45,10 +45,10 @@ namespace Libplanet.Action.State
         [Pure]
         public IValue? GetState(Address address)
         {
-            AccountStateDeltaMetrics.GetStateTimer.Value?.Start();
-            AccountStateDeltaMetrics.GetStateCount.Value += 1;
+            AccountMetrics.GetStateTimer.Value?.Start();
+            AccountMetrics.GetStateCount.Value += 1;
             IValue? state = GetStates(new[] { address })[0];
-            AccountStateDeltaMetrics.GetStateTimer.Value?.Stop();
+            AccountMetrics.GetStateTimer.Value?.Stop();
             return state;
         }
 
@@ -56,9 +56,9 @@ namespace Libplanet.Action.State
         [Pure]
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
         {
-            AccountStateDeltaMetrics.GetStateTimer.Value?.Start();
+            AccountMetrics.GetStateTimer.Value?.Start();
             int length = addresses.Count;
-            AccountStateDeltaMetrics.GetStateCount.Value += length;
+            AccountMetrics.GetStateCount.Value += length;
             IValue?[] values = new IValue?[length];
             var notFoundIndices = new List<int>(length);
             for (int i = 0; i < length; i++)
@@ -84,13 +84,13 @@ namespace Libplanet.Action.State
                 }
             }
 
-            AccountStateDeltaMetrics.GetStateTimer.Value?.Stop();
+            AccountMetrics.GetStateTimer.Value?.Stop();
             return values;
         }
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta SetState(Address address, IValue state) =>
+        public IAccount SetState(Address address, IValue state) =>
             UpdateStates(Delta.States.SetItem(address, state));
 
         /// <inheritdoc/>
@@ -123,7 +123,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta MintAsset(
+        public IAccount MintAsset(
             IActionContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
@@ -174,7 +174,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta TransferAsset(
+        public IAccount TransferAsset(
             IActionContext context,
             Address sender,
             Address recipient,
@@ -185,7 +185,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta BurnAsset(
+        public IAccount BurnAsset(
             IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
@@ -236,43 +236,43 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountStateDelta SetValidator(Validator validator)
+        public IAccount SetValidator(Validator validator)
         {
             return UpdateValidatorSet(GetValidatorSet().Update(validator));
         }
 
         /// <summary>
-        /// Creates a null state delta from given <paramref name="previousState"/>.
+        /// Creates a null account from given <paramref name="previousState"/>.
         /// </summary>
         /// <param name="previousState">The previous <see cref="IAccountState"/> to use as
         /// a basis.</param>
-        /// <returns>A null state delta created from <paramref name="previousState"/>.
+        /// <returns>A null account created from <paramref name="previousState"/>.
         /// </returns>
-        internal static IAccountStateDelta Create(IAccountState previousState) =>
-            new AccountStateDelta(previousState);
+        internal static IAccount Create(IAccountState previousState) =>
+            new Account(previousState);
 
         /// <summary>
-        /// Creates a null state delta while inheriting <paramref name="stateDelta"/>s
+        /// Creates a null account while inheriting <paramref name="account"/>s
         /// total updated fungibles.
         /// </summary>
-        /// <param name="stateDelta">The previous <see cref="IAccountStateDelta"/> to use.</param>
-        /// <returns>A null state delta that is of the same type as <paramref name="stateDelta"/>.
+        /// <param name="account">The previous <see cref="IAccount"/> to use.</param>
+        /// <returns>A null account that is of the same type as <paramref name="account"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown if given <paramref name="stateDelta"/>
-        /// is not <see cref="AccountStateDelta"/>.
+        /// <exception cref="ArgumentException">Thrown if given <paramref name="account"/>
+        /// is not <see cref="Account"/>.
         /// </exception>
         /// <remarks>
-        /// This inherits <paramref name="stateDelta"/>'s
-        /// <see cref="IAccountStateDelta.TotalUpdatedFungibleAssets"/>.
+        /// This inherits <paramref name="account"/>'s
+        /// <see cref="IAccount.TotalUpdatedFungibleAssets"/>.
         /// </remarks>
-        internal static IAccountStateDelta Flush(IAccountStateDelta stateDelta) =>
-            stateDelta is AccountStateDelta impl
-                ? new AccountStateDelta(stateDelta)
+        internal static IAccount Flush(IAccount account) =>
+            account is Account impl
+                ? new Account(account)
                     {
                         TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
                     }
                 : throw new ArgumentException(
-                    $"Unknown type for {nameof(stateDelta)}: {stateDelta.GetType()}");
+                    $"Unknown type for {nameof(account)}: {account.GetType()}");
 
         [Pure]
         private FungibleAssetValue GetBalance(
@@ -284,9 +284,9 @@ namespace Libplanet.Action.State
                 : _baseState.GetBalance(address, currency);
 
         [Pure]
-        private AccountStateDelta UpdateStates(
+        private Account UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates) =>
-            new AccountStateDelta(
+            new Account(
                 _baseState,
                 new AccountDelta(
                     updatedStates,
@@ -298,7 +298,7 @@ namespace Libplanet.Action.State
             };
 
         [Pure]
-        private AccountStateDelta UpdateFungibleAssets(
+        private Account UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
         ) =>
@@ -308,12 +308,12 @@ namespace Libplanet.Action.State
                 Delta.TotalSupplies);
 
         [Pure]
-        private AccountStateDelta UpdateFungibleAssets(
+        private Account UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
-            new AccountStateDelta(
+            new Account(
                 _baseState,
                 new AccountDelta(
                     Delta.States,
@@ -325,9 +325,9 @@ namespace Libplanet.Action.State
             };
 
         [Pure]
-        private AccountStateDelta UpdateValidatorSet(
+        private Account UpdateValidatorSet(
             ValidatorSet updatedValidatorSet) =>
-            new AccountStateDelta(
+            new Account(
                 _baseState,
                 new AccountDelta(
                     Delta.States,
@@ -339,7 +339,7 @@ namespace Libplanet.Action.State
             };
 
         [Pure]
-        private IAccountStateDelta TransferAssetV0(
+        private IAccount TransferAssetV0(
             Address sender,
             Address recipient,
             FungibleAssetValue value,
@@ -375,7 +375,7 @@ namespace Libplanet.Action.State
         }
 
         [Pure]
-        private IAccountStateDelta TransferAssetV1(
+        private IAccount TransferAssetV1(
             Address sender,
             Address recipient,
             FungibleAssetValue value,

@@ -60,7 +60,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void RenderAction(
             IValue action,
             IActionContext context,
-            IAccountStateDelta nextStates
+            IAccount nextStates
         )
         {
             _records.Add(

@@ -15,7 +15,7 @@ namespace Libplanet.Action.Tests.Common
 
         public abstract IValue PlainValue { get; }
 
-        public abstract IAccountStateDelta Execute(IActionContext context);
+        public abstract IAccount Execute(IActionContext context);
 
         public abstract void LoadPlainValue(IValue plainValue);
 

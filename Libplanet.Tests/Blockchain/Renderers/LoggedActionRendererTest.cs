@@ -21,8 +21,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IAccountStateDelta _stateDelta =
-            AccountStateDelta.Create(MockAccountState.Empty);
+        private static IAccount _account =
+            Account.Create(MockAccountState.Empty);
 
         private static Exception _exception = new Exception();
 
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     Block.CurrentProtocolVersion,
                     123,
-                    _stateDelta,
+                    _account,
                     default,
                     0,
                     rehearsal
@@ -106,14 +106,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
             else
             {
-                Action<IValue, IActionContext, IAccountStateDelta> render = (action, cxt, next) =>
+                Action<IValue, IActionContext, IAccount> render = (action, cxt, next) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);
                     firstLog = logs[0];
                     Assert.Same(_action, action);
                     Assert.Same(actionContext, cxt);
-                    Assert.Same(_stateDelta, next);
+                    Assert.Same(_account, next);
                     called = true;
                     if (exception)
                     {
@@ -148,7 +148,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 }
                 else
                 {
-                    actionRenderer.RenderAction(_action, actionContext, _stateDelta);
+                    actionRenderer.RenderAction(_action, actionContext, _account);
                 }
             }
             catch (ThrowException.SomeException e)

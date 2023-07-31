@@ -59,7 +59,7 @@ namespace Libplanet.Action.Sys
             }
         }
 
-        public IAccountStateDelta Execute(IActionContext context)
+        public IAccount Execute(IActionContext context)
         {
             if (context.BlockIndex != 0)
             {
@@ -68,7 +68,7 @@ namespace Libplanet.Action.Sys
                 );
             }
 
-            IAccountStateDelta states = context.PreviousState;
+            IAccount states = context.PreviousState;
             if (ValidatorSet is { } vs)
             {
                 foreach (Validator v in vs.Validators)

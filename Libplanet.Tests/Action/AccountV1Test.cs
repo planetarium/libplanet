@@ -13,9 +13,9 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public class AccountStateDeltaV1Test : AccountStateDeltaTest
+    public class AccountV1Test : AccountTest
     {
-        public AccountStateDeltaV1Test(ITestOutputHelper output)
+        public AccountV1Test(ITestOutputHelper output)
             : base(output)
         {
         }
@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Action
         public override int ProtocolVersion { get; } = Block.CurrentProtocolVersion;
 
         public override IActionContext CreateContext(
-            IAccountStateDelta delta, Address signer) =>
+            IAccount delta, Address signer) =>
             new ActionContext(
                 signer,
                 null,
@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IAccountStateDelta a = _initStateDelta.TransferAsset(
+            IAccount a = _initAccount.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],
@@ -87,47 +87,47 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void TotalSupplyTracking()
         {
-            IAccountStateDelta stateDelta = _initStateDelta;
+            IAccount account = _initAccount;
             IActionContext context = _initContext;
 
-            Assert.Empty(stateDelta.GetUpdatedTotalSupplies());
-            Assert.Empty(stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Empty(account.GetUpdatedTotalSupplies());
+            Assert.Empty(account.Delta.UpdatedTotalSupplyCurrencies);
 
             Assert.Equal(
                 _initState.GetTotalSupply(_currencies[3]),
-                _initStateDelta.GetTotalSupply(_currencies[3]));
+                _initAccount.GetTotalSupply(_currencies[3]));
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initStateDelta.GetTotalSupply(_currencies[0]));
+                _initAccount.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[0], Value(0, 5)),
-                stateDelta.GetUpdatedTotalSupplies());
-            Assert.DoesNotContain(_currencies[0], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+                account.GetUpdatedTotalSupplies());
+            Assert.DoesNotContain(_currencies[0], account.Delta.UpdatedTotalSupplyCurrencies);
 
-            Assert.Equal(Value(4, 0), _initStateDelta.GetTotalSupply(_currencies[4]));
-            Assert.DoesNotContain(_currencies[4], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Equal(Value(4, 0), _initAccount.GetTotalSupply(_currencies[4]));
+            Assert.DoesNotContain(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
 
-            stateDelta = stateDelta.MintAsset(context, _addr[0], Value(0, 10));
+            account = account.MintAsset(context, _addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initStateDelta.GetTotalSupply(_currencies[0]));
-            Assert.DoesNotContain(_currencies[0], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+                _initAccount.GetTotalSupply(_currencies[0]));
+            Assert.DoesNotContain(_currencies[0], account.Delta.UpdatedTotalSupplyCurrencies);
 
-            stateDelta = stateDelta.MintAsset(context, _addr[0], Value(4, 10));
-            Assert.Equal(Value(4, 10), stateDelta.GetTotalSupply(_currencies[4]));
+            account = account.MintAsset(context, _addr[0], Value(4, 10));
+            Assert.Equal(Value(4, 10), account.GetTotalSupply(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[4], Value(4, 10)),
-                stateDelta.GetUpdatedTotalSupplies());
-            Assert.Contains(_currencies[4], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+                account.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
 
-            stateDelta = stateDelta.BurnAsset(context, _addr[0], Value(4, 5));
-            Assert.Equal(Value(4, 5), stateDelta.GetTotalSupply(_currencies[4]));
+            account = account.BurnAsset(context, _addr[0], Value(4, 5));
+            Assert.Equal(Value(4, 5), account.GetTotalSupply(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[4], Value(4, 5)),
-                stateDelta.GetUpdatedTotalSupplies());
-            Assert.Contains(_currencies[4], stateDelta.Delta.UpdatedTotalSupplyCurrencies);
+                account.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
         }
 
         [Fact]
@@ -136,13 +136,13 @@ namespace Libplanet.Tests.Action
             base.MintAsset();
 
             Assert.Throws<SupplyOverflowException>(
-                () => _initStateDelta.MintAsset(_initContext, _addr[0], Value(4, 200)));
+                () => _initAccount.MintAsset(_initContext, _addr[0], Value(4, 200)));
         }
 
         [Fact]
         public virtual void TotalUpdatedFungibleAssets()
         {
-            IAccountStateDelta delta0 = _initStateDelta;
+            IAccount delta0 = _initAccount;
             IActionContext context0 = _initContext;
 
             // currencies[0] (FOO) allows only _addr[0] to burn
@@ -153,7 +153,7 @@ namespace Libplanet.Tests.Action
                 (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
 
             // Forcefully create null delta
-            delta0 = AccountStateDelta.Flush(delta0);
+            delta0 = Account.Flush(delta0);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
             delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Action
                 _addr[1], delta0.TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
 
             // Forcefully create null delta
-            delta0 = AccountStateDelta.Flush(delta0);
+            delta0 = Account.Flush(delta0);
             context0 = CreateContext(delta0, _addr[1]);
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
 

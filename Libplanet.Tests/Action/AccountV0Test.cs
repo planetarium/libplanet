@@ -10,9 +10,9 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public class AccountStateDeltaV0Test : AccountStateDeltaTest
+    public class AccountV0Test : AccountTest
     {
-        public AccountStateDeltaV0Test(ITestOutputHelper output)
+        public AccountV0Test(ITestOutputHelper output)
             : base(output)
         {
         }
@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Action
         public override int ProtocolVersion { get; } = 0;
 
         public override IActionContext CreateContext(
-            IAccountStateDelta delta, Address signer) =>
+            IAccount delta, Address signer) =>
             new ActionContext(
                 signer,
                 null,
@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IAccountStateDelta a = _initStateDelta.TransferAsset(
+            IAccount a = _initAccount.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],

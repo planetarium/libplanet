@@ -6,7 +6,7 @@ namespace Libplanet.Action.Tests.Common
     {
         public IAction Action { get; set; }
 
-        public IAccountStateDelta NextState { get; set; }
+        public IAccount NextState { get; set; }
 
         public bool Rehearsal { get; set; }
 
