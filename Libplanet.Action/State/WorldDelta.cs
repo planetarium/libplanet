@@ -15,8 +15,10 @@ namespace Libplanet.Action.State
             Accounts = accounts;
         }
 
-        public IImmutableSet<Address> UpdatedAccounts => Accounts.Keys.ToImmutableHashSet();
+        /// <inheritdoc cref="IWorldDelta.UpdatedAddresses"/>
+        public IImmutableSet<Address> UpdatedAddresses => Accounts.Keys.ToImmutableHashSet();
 
+        /// <inheritdoc cref="IWorldDelta.Accounts"/>
         public IImmutableDictionary<Address, IAccount> Accounts { get; }
     }
 }
