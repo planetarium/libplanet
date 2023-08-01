@@ -4,6 +4,9 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Action.State
 {
+    /// <summary>
+    /// An internal implementation of <see cref="IWorld"/>.
+    /// </summary>
     [Pure]
     internal class World : IWorld
     {
@@ -21,12 +24,15 @@ namespace Libplanet.Action.State
             Legacy = false;
         }
 
+        /// <inheritdoc/>
         [Pure]
         public IWorldDelta Delta { get; private set; }
 
+        /// <inheritdoc/>
         [Pure]
         public bool Legacy { get; private set; }
 
+        /// <inheritdoc/>
         [Pure]
         public IAccount? GetAccount(Address address)
         {
@@ -35,6 +41,7 @@ namespace Libplanet.Action.State
                 : _baseState.GetAccount(address);
         }
 
+        /// <inheritdoc/>
         [Pure]
         public IWorld SetAccount(Address address, IAccount account) =>
             new World(this, new WorldDelta(Delta.Accounts.SetItem(address, account)))

@@ -1,10 +1,11 @@
 using System.Collections.Immutable;
 using Bencodex.Types;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
 using Xunit;
 
-namespace Libplanet.Action.State.Tests
+namespace Libplanet.Action.Tests.State
 {
     public class WorldTest
     {
@@ -54,8 +55,8 @@ namespace Libplanet.Action.State.Tests
 
             // TestGetAccount() will retrieve account from World.Delta
             world = world.SetAccount(accountAddress, mockAccount);
-            Assert.Single(world.Delta.UpdatedAccounts);
-            Assert.Equal(accountAddress, world.Delta.UpdatedAccounts.First());
+            Assert.Single(world.Delta.UpdatedAddresses);
+            Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());
             Assert.Equal(mockAccount, world.GetAccount(accountAddress));
         }
 
@@ -69,12 +70,12 @@ namespace Libplanet.Action.State.Tests
             IAccount emptyAccount = Account.Create(MockAccountState.Empty);
             Address accountAddress = RandomAddress;
             world = world.SetAccount(accountAddress, emptyAccount);
-            Assert.Single(world.Delta.UpdatedAccounts);
-            Assert.Equal(accountAddress, world.Delta.UpdatedAccounts.First());
+            Assert.Single(world.Delta.UpdatedAddresses);
+            Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());
 
             // After flush, World.Delta moves to World._baseState.Delta
             world = World.Flush(world);
-            Assert.Empty(world.Delta.UpdatedAccounts);
+            Assert.Empty(world.Delta.UpdatedAddresses);
             Assert.NotNull(world.GetAccount(accountAddress));
         }
 

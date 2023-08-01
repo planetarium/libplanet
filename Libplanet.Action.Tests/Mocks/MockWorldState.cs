@@ -20,9 +20,9 @@ namespace Libplanet.Action.Tests.Mocks
 
         public bool Legacy { get; private set; }
 
-        IAccount? IWorldState.GetAccount(Address address)
+        IAccount IWorldState.GetAccount(Address address)
         {
-            _accounts.TryGetValue(address, out IAccount? account);
+            _accounts.TryGetValue(address, out IAccount account);
             return account;
         }
     }
