@@ -12,6 +12,7 @@ To be released.
 
  -  (Libplanet.Action) Renamed `IAccountStateDelta` as `IAccount`.
     [[#3337]]
+ -  (Libplanet.Store) Optimized `MerkleTrie.Get()`.  [[#3347]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#3337]: https://github.com/planetarium/libplanet/pull/3337
+[#3347]: https://github.com/planetarium/libplanet/pull/3347
 
 
 Version 3.1.0
