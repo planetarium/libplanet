@@ -42,6 +42,6 @@ namespace Libplanet.Action.State
         /// If it has never been set to any state it returns <see langword="null"/>
         /// instead.</returns>
         [Pure]
-        IAccount? GetAccount(Address address);
+        IAccount GetAccount(Address address);
     }
 }

@@ -32,7 +32,7 @@ namespace Libplanet.Action.State
     /// method does not manipulate the instance, but returns a new
     /// <see cref="IWorld"/> instance with updated states.
     /// </remarks>
-    internal interface IWorld : IWorldState
+    public interface IWorld : IWorldState
     {
         /// <summary>
         /// The <see cref="IWorld"/> representing the delta part of
