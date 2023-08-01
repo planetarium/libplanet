@@ -104,48 +104,20 @@ namespace Libplanet.Store.Trie
             PathResolution[] resolutions = keys
                 .Select(k => ResolvePath(Root, new PathCursor(k, _secure)))
                 .ToArray();
-            var nextNodeHashes = new List<KeyBytes>(resolutions.Length);
 
-            while (true)
+            for (int i = 0; i < resolutions.Length; i++)
             {
-                nextNodeHashes.Clear();
-                for (int i = 0; i < resolutions.Length; i++)
+                while (resolutions[i].Next is (HashDigest<SHA256> nodeHash, PathCursor cursor))
                 {
-                    PathResolution resolution = resolutions[i];
-                    if (resolution.Next is (HashDigest<SHA256> nodeHash, _))
-                    {
-                        nextNodeHashes.Add(new KeyBytes(nodeHash.ByteArray));
-                    }
-                }
-
-                if (!nextNodeHashes.Any())
-                {
-                    break;
-                }
-
-                IReadOnlyDictionary<KeyBytes, byte[]> nValues = KeyValueStore.Get(nextNodeHashes);
-                for (int i = 0, j = 0; i < resolutions.Length; i++)
-                {
-                    PathResolution resolution = resolutions[i];
-                    if (resolution.Next is (_, PathCursor cursor))
-                    {
-                        byte[]? nodeValue = nValues[nextNodeHashes[j]];
-                        j++;
-                        if (nodeValue is { } v)
-                        {
-                            IValue intermediateEncoding = _codec.Decode(v);
-                            INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
-                            resolutions[i] = ResolvePath(nextNode, cursor);
-                        }
-                        else
-                        {
-                            resolutions[i] = PathResolution.Unresolved();
-                        }
-                    }
+                    KeyBytes nextNodeHash = new KeyBytes(nodeHash.ByteArray);
+                    byte[] nodeValue = KeyValueStore.Get(nextNodeHash);
+                    IValue intermediateEncoding = _codec.Decode(nodeValue);
+                    INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
+                    resolutions[i] = ResolvePath(nextNode, cursor);
                 }
             }
 
-            return resolutions.Select(r => r.Value).ToArray();
+            return resolutions.Select(resolution => resolution.Value).ToArray();
         }
 
         /// <inheritdoc/>
