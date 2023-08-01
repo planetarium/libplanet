@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
@@ -21,8 +20,6 @@ namespace Libplanet.Store.Trie
     public partial class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
-
-        private const long OffloadThresholdBytes = 0x7fffffffffffffffL;
 
         private static readonly ConcurrentDictionary<Fingerprint, WeakReference<IValue>> _valueCache
             = new ConcurrentDictionary<Fingerprint, WeakReference<IValue>>();
@@ -136,7 +133,7 @@ namespace Libplanet.Store.Trie
                         j++;
                         if (nodeValue is { } v)
                         {
-                            IValue intermediateEncoding = _codec.Decode(v, LoadIndirectValue);
+                            IValue intermediateEncoding = _codec.Decode(v);
                             INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
                             resolutions[i] = ResolvePath(nextNode, cursor);
                         }
@@ -300,7 +297,7 @@ namespace Libplanet.Store.Trie
                     }
                 }
 
-                var node = NodeDecoder.Decode(_codec.Decode(value, LoadIndirectValue));
+                var node = NodeDecoder.Decode(_codec.Decode(value));
                 if (!noFingerprint && !(node is null))
                 {
                     yield return (key, _codec.Encode(node.ToBencodex()));
@@ -433,16 +430,8 @@ namespace Libplanet.Store.Trie
 
         private HashNode Encode(IValue intermediateEncoding, WriteBatch writeBatch)
         {
-            var offloadOptions = new OffloadOptions(
-                OffloadThresholdBytes,
-                writeBatch,
-                KeyValueStore
-            );
-            byte[] serialized = _codec.Encode(intermediateEncoding, offloadOptions);
-            byte[] fullEncoding = offloadOptions.Offloaded
-                ? _codec.Encode(intermediateEncoding)
-                : serialized;
-            var nodeHash = HashDigest<SHA256>.DeriveFrom(fullEncoding);
+            byte[] serialized = _codec.Encode(intermediateEncoding);
+            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
             writeBatch.Add(new KeyBytes(nodeHash.ByteArray), serialized);
             return new HashNode(nodeHash);
         }
@@ -527,87 +516,8 @@ namespace Libplanet.Store.Trie
         private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
             IValue intermediateEncoding = _codec.Decode(
-                KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)),
-                LoadIndirectValue
-            );
+                KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)));
             return NodeDecoder.Decode(intermediateEncoding);
-        }
-
-        private IValue LoadIndirectValue(Fingerprint fp)
-        {
-            if (fp.EncodingLength >= OffloadThresholdBytes &&
-                _valueCache.TryGetValue(fp, out WeakReference<IValue>? weakRef) &&
-                weakRef is { } w)
-            {
-                if (w.TryGetTarget(out IValue? cached) && cached is { } cachedValue)
-                {
-                    return cachedValue;
-                }
-
-                _valueCache.TryRemove(fp, out _);
-            }
-
-            var key = new KeyBytes(fp.Serialize());
-            if (fp.Kind != ValueKind.Dictionary)
-            {
-                FreeValueCache();
-                IValue v = _codec.Decode(KeyValueStore.Get(key), LoadIndirectValue);
-                if (fp != v.Fingerprint)
-                {
-                    throw new InvalidOperationException(
-                        $"Failed to load an offloaded value." +
-                        $"\nExpected: {fp}\nActual:   {v.Fingerprint}\nLoaded:   {v}"
-                    );
-                }
-                else if (fp.EncodingLength >= OffloadThresholdBytes)
-                {
-                    _valueCache[fp] = new WeakReference<IValue>(v);
-                }
-
-                return v;
-            }
-
-            var pair = (List)_codec.Decode(KeyValueStore.Get(key), LoadIndirectValue);
-            IEnumerable<IndirectValue> reprs =
-                pair.EnumerateIndirectValues(out IndirectValue.Loader? reprLoader);
-            Dictionary value;
-            if (reprLoader is { } l)
-            {
-                IndirectValue keysIv = reprs.First();
-                var keys = keysIv.LoadedValue is List lst ? lst : (List)keysIv.GetValue(l);
-                IEnumerable<KeyValuePair<IKey, IndirectValue>> indirectPairs = keys.Zip(
-                    reprs.Skip(1).Select(group => (List)group.GetValue(l)).SelectMany(vs =>
-                        vs.EnumerateIndirectValues(out _)
-                    ),
-                    (k, v) => new KeyValuePair<IKey, IndirectValue>((IKey)k, v)
-                );
-                value = new Dictionary(indirectPairs, l);
-            }
-            else
-            {
-                var keys = (List)pair[0];
-                IEnumerable<KeyValuePair<IKey, IValue>> pairs = keys.Zip(
-                    pair.Skip(1).SelectMany(group => (List)group),
-                    (k, v) => new KeyValuePair<IKey, IValue>((IKey)k, v)
-                );
-                value = new Dictionary(pairs);
-            }
-
-            if (fp != value.Fingerprint)
-            {
-                throw new InvalidOperationException(
-                    $"Failed to load an offloaded value." +
-                    $"\nExpected: {fp}\nActual:   {value.Fingerprint}\nLoaded:   {value}"
-                );
-            }
-
-            FreeValueCache();
-            if (fp.EncodingLength >= OffloadThresholdBytes)
-            {
-                _valueCache[fp] = new WeakReference<IValue>(value);
-            }
-
-            return value;
         }
 
         private class WriteBatch
@@ -639,102 +549,6 @@ namespace Libplanet.Store.Trie
             {
                 _store.Set(_batch);
                 _batch.Clear();
-            }
-        }
-
-        private sealed class OffloadOptions : IOffloadOptions
-        {
-            [SuppressMessage(
-                "Microsoft.StyleCop.CSharp.CSharpRules",
-                "SA1401:FieldsMustBePrivate",
-                Justification = "It's a private class and we want to get rid of runtime overhead.")]
-            public bool Offloaded;
-
-            private readonly long _thresholdBytes;
-            private readonly WriteBatch _dirty;
-            private readonly IKeyValueStore _store;
-
-            public OffloadOptions(
-                long thresholdBytes,
-                WriteBatch dirty,
-                IKeyValueStore store
-            )
-            {
-                _thresholdBytes = thresholdBytes;
-                _dirty = dirty;
-                _store = store;
-                Offloaded = false;
-            }
-
-            public bool Embeds(in IndirectValue indirectValue) =>
-                indirectValue.EncodingLength < _thresholdBytes;
-
-            public void Offload(in IndirectValue indirectValue, IndirectValue.Loader? loader)
-            {
-                Offloaded = true;
-                var fp = new KeyBytes(indirectValue.Fingerprint.Serialize());
-                if (!_dirty.ContainsKey(fp) && !_store.Exists(fp))
-                {
-                    IValue value = indirectValue.GetValue(loader);
-                    IValue repr = value;
-                    if (repr is Dictionary dict)
-                    {
-                        // For dictionaries, in order to reduce duplicate common keys (= schema),
-                        // they are encoded in [keys, [v, v', ...], [v'', v''', ...], ...] where
-                        // keys = [k, k', ...]  instead of [k, v, k', v', ...].
-                        // Keys and value groups can be offloaded too.
-                        const int groupSize = 0x7fffffff;
-                        var keys = new List<IKey>(dict.Count);
-                        var valueGroups =
-                            new IValue[1 + (int)Math.Ceiling((double)dict.Count / groupSize)];
-                        IEnumerable<KeyValuePair<IKey, IndirectValue>> pairs =
-                            dict.EnumerableIndirectPairs(out loader);
-                        if (loader is { } l)
-                        {
-                            var group = new List<IndirectValue>(groupSize);
-                            int g = 1;
-                            foreach (KeyValuePair<IKey, IndirectValue> pair in pairs)
-                            {
-                                keys.Add(pair.Key);
-                                group.Add(pair.Value);
-                                if (group.Count >= groupSize || keys.Count >= dict.Count)
-                                {
-                                    List valueGroup = new List(group, l);
-                                    group.Clear();
-                                    valueGroups[g] = valueGroup;
-                                    g++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var group = new List<IValue>(groupSize);
-                            int g = 1;
-                            foreach (KeyValuePair<IKey, IValue> pair in dict)
-                            {
-                                keys.Add(pair.Key);
-                                group.Add(pair.Value);
-                                if (group.Count >= groupSize || keys.Count >= dict.Count)
-                                {
-                                    List valueGroup = new List(group);
-                                    group.Clear();
-                                    valueGroups[g] = valueGroup;
-                                    g++;
-                                }
-                            }
-                        }
-
-                        valueGroups[0] = new List(keys);
-                        repr = new List(valueGroups);
-                    }
-
-                    _dirty.Add(fp, _codec.Encode(repr, this));
-                    if (!_valueCache.ContainsKey(indirectValue.Fingerprint))
-                    {
-                        FreeValueCache();
-                        _valueCache[indirectValue.Fingerprint] = new WeakReference<IValue>(value);
-                    }
-                }
             }
         }
     }
