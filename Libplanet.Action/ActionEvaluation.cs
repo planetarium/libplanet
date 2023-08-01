@@ -24,7 +24,7 @@ namespace Libplanet.Action
         public ActionEvaluation(
             IAction action,
             IActionContext inputContext,
-            IAccount outputState,
+            IWorld outputState,
             Exception? exception = null)
         {
             Action = action;
@@ -51,7 +51,7 @@ namespace Libplanet.Action
         /// <summary>
         /// The result states that <see cref="Action"/> makes.
         /// </summary>
-        public IAccount OutputState { get; }
+        public IWorld OutputState { get; }
 
         /// <summary>
         /// An exception that had risen during evaluation.

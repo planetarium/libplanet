@@ -248,8 +248,8 @@ namespace Libplanet.Action.State
         /// a basis.</param>
         /// <returns>A null account created from <paramref name="previousState"/>.
         /// </returns>
-        internal static IAccount Create(IAccountState previousState) =>
-            new Account(previousState);
+        internal static IWorld Create(IWorldState previousState) =>
+            new World(previousState);
 
         /// <summary>
         /// Creates a null account while inheriting <paramref name="account"/>s

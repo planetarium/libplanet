@@ -12,7 +12,7 @@ namespace Libplanet.Action.State
     {
         private readonly IWorldState _baseState;
 
-        private World(IWorldState baseState)
+        internal World(IWorldState baseState)
             : this(baseState, new WorldDelta())
         {
         }

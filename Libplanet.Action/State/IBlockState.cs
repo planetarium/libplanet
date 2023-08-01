@@ -5,7 +5,7 @@ namespace Libplanet.Action.State
     /// <summary>
     /// A minimal interface to get states from the output state of a <see cref="Block"/>.
     /// </summary>
-    public interface IBlockState : IAccountState
+    public interface IBlockState : IWorldState
     {
         /// <summary>
         /// The <see cref="Block.Hash"/> of the <see cref="Block"/> that this
