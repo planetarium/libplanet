@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -96,6 +97,21 @@ namespace Libplanet.Store
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
+        }
+
+        /// <inheritdoc cref="IStateStore.Commit(ITrie)"/>
+        public ITrie Commit(ITrie trie)
+        {
+            if (trie is MerkleTrie mTrie)
+            {
+                return mTrie.Commit();
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(trie)} must be a {nameof(MerkleTrie)}: {trie.GetType()}",
+                    nameof(trie));
+            }
         }
 
         /// <summary>

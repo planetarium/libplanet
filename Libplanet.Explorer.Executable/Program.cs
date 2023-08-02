@@ -501,6 +501,12 @@ If omitted (default) explorer only the local blockchain store.")]
             {
             }
 
+            public ITrie Commit(ITrie trie)
+            {
+                throw new InvalidOperationException(
+                    $"A {nameof(NoOpStateStore)} does not allow commit operation");
+            }
+
             public void Dispose()
             {
             }

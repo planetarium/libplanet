@@ -28,6 +28,12 @@ namespace Libplanet.Tests.Store
             _stateStore.PruneStates(survivingStateRootHashes);
         }
 
+        public ITrie Commit(ITrie trie)
+        {
+            Log(nameof(Commit), trie);
+            return _stateStore.Commit(trie);
+        }
+
         public void Dispose()
         {
             if (!_disposed)

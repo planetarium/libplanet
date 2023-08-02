@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
 
@@ -26,5 +27,12 @@ namespace Libplanet.Store
         /// <param name="survivingStateRootHashes">The state root hashes <em>not</em> to prune.
         /// These state root hashes are guaranteed to survive after pruning.</param>
         void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes);
+
+        /// <summary>
+        /// Cleans up and stores the <see cref="ITrie"/> in storage.
+        /// </summary>
+        /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
+        /// <returns>A new committed <see cref="ITrie"/>.</returns>
+        ITrie Commit(ITrie trie);
     }
 }
