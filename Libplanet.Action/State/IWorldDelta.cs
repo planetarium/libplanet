@@ -7,7 +7,7 @@ namespace Libplanet.Action.State
     public interface IWorldDelta
     {
         /// <summary>
-        /// A dictionary representing changed accounts for each <see cref="Address"/>.
+        /// A dictionary representing changed account states for each <see cref="Address"/>.
         /// </summary>
         [Pure]
         IImmutableDictionary<Address, IAccount> Accounts { get; }

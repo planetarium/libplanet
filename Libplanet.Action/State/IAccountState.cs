@@ -32,6 +32,11 @@ namespace Libplanet.Action.State
     public interface IAccountState
     {
         /// <summary>
+        /// The <see cref="Crypto.Address"/> of this <see cref="IAccountState"/>.
+        /// </summary>
+        Address Address { get; }
+
+        /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> referring

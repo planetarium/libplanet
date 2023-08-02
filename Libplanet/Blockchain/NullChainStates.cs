@@ -1,7 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -17,46 +22,117 @@ namespace Libplanet.Blockchain
         }
 
         public IValue? GetState(
-            Address address, BlockHash? offset) =>
-            GetBlockState(offset).GetState(address);
+            Address address, Address accountAddress, BlockHash? offset) =>
+            GetWorldState(offset).GetAccountState(accountAddress)
+            .GetState(address);
 
         public IReadOnlyList<IValue?> GetStates(
-            IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockState(offset).GetStates(addresses);
+            IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset) =>
+            GetWorldState(offset).GetAccountState(accountAddress)
+            .GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetBalance(address, currency);
+            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            .GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetTotalSupply(currency);
+            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            .GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockState(offset).GetValidatorSet();
+            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            .GetValidatorSet();
 
-        public IBlockState GetBlockState(BlockHash? offset) => new NullBlockState(offset);
+        public IWorldState GetWorldState(BlockHash? offset) => new NullWorldState(offset);
+
+        public IAccountState GetAccountState(Address address, HashDigest<SHA256> srh)
+            => new NullAccountState(address);
+
+        public ITrie GetBlockStateRoot(BlockHash? offset) => new NullTrie(offset);
+
+        public ITrie GetStateRoot(HashDigest<SHA256>? srh) => new NullTrie(srh);
     }
 
 #pragma warning disable SA1402  // File may only contain a single type
-    internal class NullBlockState : IBlockState
+    internal class NullWorldState : IWorldState
 #pragma warning restore SA1402
     {
-        public NullBlockState(BlockHash? blockHash)
+        public NullWorldState(BlockHash? blockHash)
         {
             BlockHash = blockHash;
         }
 
         public BlockHash? BlockHash { get; }
 
-        public IValue? GetState(Address address) => null;
+        public bool Legacy => true;
 
-        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
+        public IAccountState GetAccountState(Address address) => new NullAccountState(address);
+    }
+
+#pragma warning disable SA1402  // File may only contain a single type
+    internal class NullTrie : ITrie
+#pragma warning restore SA1402
+    {
+        public NullTrie(BlockHash? blockHash)
+        {
+            if (blockHash is { } hash)
+            {
+                Hash = HashDigest<SHA256>.DeriveFrom(hash.ByteArray);
+            }
+            else
+            {
+                Hash = HashDigest<SHA256>.DeriveFrom(new Codec().Encode(Null.Value));
+            }
+        }
+
+        public NullTrie(HashDigest<SHA256>? srh)
+        {
+            if (srh is { } hash)
+            {
+                Hash = hash;
+            }
+            else
+            {
+                Hash = HashDigest<SHA256>.DeriveFrom(new Codec().Encode(Null.Value));
+            }
+        }
+
+        public HashDigest<SHA256> Hash { get; }
+
+        public bool Recorded => false;
+
+        public ITrie Commit() => this;
+
+        public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys) =>
+            new IValue?[keys.Count];
+
+        public ITrie Set(in KeyBytes key, IValue value)
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+#pragma warning disable SA1402  // File may only contain a single type
+    internal class NullAccountState : IAccountState
+#pragma warning restore SA1402
+    {
+        public NullAccountState(Address address)
+        {
+            Address = address;
+        }
+
+        public Address Address { get; }
+
+        IValue? IAccountState.GetState(Address address) => null;
+
+        IReadOnlyList<IValue?> IAccountState.GetStates(IReadOnlyList<Address> addresses) =>
             new IValue?[addresses.Count];
 
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            currency * 0;
+        FungibleAssetValue IAccountState.GetBalance(Address address, Currency currency)
+            => currency * 0;
 
-        public FungibleAssetValue GetTotalSupply(Currency currency)
+        FungibleAssetValue IAccountState.GetTotalSupply(Currency currency)
         {
             if (!currency.TotalSupplyTrackable)
             {
@@ -66,7 +142,6 @@ namespace Libplanet.Blockchain
             return currency * 0;
         }
 
-        public ValidatorSet GetValidatorSet() =>
-            new ValidatorSet();
+        ValidatorSet IAccountState.GetValidatorSet() => new ValidatorSet();
     }
 }

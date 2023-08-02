@@ -35,6 +35,9 @@ namespace Libplanet.Action.State
         public IAccountDelta Delta { get; private set; }
 
         /// <inheritdoc/>
+        public Address Address => _baseState.Address;
+
+        /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
@@ -248,8 +251,8 @@ namespace Libplanet.Action.State
         /// a basis.</param>
         /// <returns>A null account created from <paramref name="previousState"/>.
         /// </returns>
-        internal static IWorld Create(IWorldState previousState) =>
-            new World(previousState);
+        internal static IAccount Create(IAccountState previousState) =>
+            new Account(previousState);
 
         /// <summary>
         /// Creates a null account while inheriting <paramref name="account"/>s

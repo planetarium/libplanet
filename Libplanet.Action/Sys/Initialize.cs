@@ -81,11 +81,11 @@ namespace Libplanet.Action.Sys
 
             if (ValidatorSet is { } vs)
             {
-                IAccount account = world.GetValidatorSetAccount();
+                IAccount account = Account.Create(world.GetValidatorSetAccountState());
 
                 foreach (Validator v in vs.Validators)
                 {
-                    account = account.SetValidator(v);
+                    account = Account.Create(account.SetValidator(v));
                 }
 
                 world = world.SetValidatorSetAccount(account);
@@ -95,7 +95,7 @@ namespace Libplanet.Action.Sys
             {
                 foreach (KeyValuePair<Address, IImmutableDictionary<Address, IValue>> kv in s)
                 {
-                    var acc = world.GetAccount(kv.Key);
+                    var acc = Account.Create(world.GetAccountState(kv.Key));
                     foreach (KeyValuePair<Address, IValue> kv2 in kv.Value)
                     {
                         acc = acc.SetState(kv2.Key, kv2.Value);

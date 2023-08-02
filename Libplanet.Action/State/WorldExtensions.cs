@@ -6,14 +6,14 @@ namespace Libplanet.Action.State
 {
     internal static class WorldExtensions
     {
-        internal static IAccount GetFungibleAssetsAccount(this IWorld world) =>
-            world.GetAccount(
+        internal static IAccountState GetFungibleAssetsAccountState(this IWorldState world) =>
+            world.GetAccountState(
                 world.Legacy
                     ? ReservedAddresses.LegacyAccount
                     : ReservedAddresses.FungibleAssetsAccount);
 
-        internal static IAccount GetValidatorSetAccount(this IWorld world) =>
-            world.GetAccount(
+        internal static IAccountState GetValidatorSetAccountState(this IWorldState world) =>
+            world.GetAccountState(
                 world.Legacy
                     ? ReservedAddresses.LegacyAccount
                     : ReservedAddresses.ValidatorSetAddress);

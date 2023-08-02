@@ -29,7 +29,7 @@ namespace Libplanet.Action.State
     public interface IWorldState
     {
         /// <summary>
-        /// Whether <see cref="IWorldState"/> is in legacy state or not
+        /// Whether <see cref="IWorldState"/> is in legacy state or not.
         /// </summary>
         bool Legacy { get; }
 
@@ -42,6 +42,6 @@ namespace Libplanet.Action.State
         /// If it has never been set to any state it returns <see langword="null"/>
         /// instead.</returns>
         [Pure]
-        IAccount GetAccount(Address address);
+        IAccountState GetAccountState(Address address);
     }
 }

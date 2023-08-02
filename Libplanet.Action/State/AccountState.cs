@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
@@ -13,24 +15,21 @@ namespace Libplanet.Action.State
     /// <summary>
     /// A default implementation of <see cref="IBlockState"/> interface.
     /// </summary>
-    public class BlockState : IBlockState
+    public class AccountState : IAccountState
     {
-        private BlockHash? _blockHash;
+        private Address _address;
         private ITrie _stateRoot;
         private BlockStateCache _cache;
 
-        public BlockState(BlockHash? blockHash, ITrie stateRoot)
+        public AccountState(Address address, ITrie stateRoot)
         {
-            _blockHash = blockHash;
+            _address = address;
             _stateRoot = stateRoot;
             _cache = new BlockStateCache();
         }
 
-        /// <inheritdoc cref="IWorldState.Legacy"/>
-        public bool Legacy { get; }
-
-        /// <inheritdoc cref="IBlockState.BlockHash"/>
-        public BlockHash? BlockHash => _blockHash;
+        /// <inheritdoc cref="IAccountState.Address"/>
+        public Address Address => _address;
 
         /// <inheritdoc cref="IAccountState.GetState"/>
         public IValue? GetState(Address address) => GetStates(new[] { address }).First();
@@ -76,12 +75,6 @@ namespace Libplanet.Action.State
             }
 
             return result;
-        }
-
-        /// <inheritdoc cref="IWorldState.GetAccount"/>
-        public IAccount GetAccount(Address address)
-        {
-            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc cref="IAccountState.GetBalance"/>
