@@ -135,7 +135,7 @@ namespace Libplanet.Tests.Fixtures
                         var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                             .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                         HashDigest<SHA256> nextRootHash =
-                            prevTrie.Set(updatedRawStates).Commit().Hash;
+                            StateStore.Commit(prevTrie.Set(updatedRawStates)).Hash;
                         return (nextState, nextRootHash);
                     }
                 });
@@ -157,7 +157,7 @@ namespace Libplanet.Tests.Fixtures
                             var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                                 .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                             HashDigest<SHA256> nextRootHash =
-                                prevTrie.Set(updatedRawStates).Commit().Hash;
+                                StateStore.Commit(prevTrie.Set(updatedRawStates)).Hash;
                             return delta.Add((nextState, nextRootHash));
                         }
                     }

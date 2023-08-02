@@ -35,7 +35,7 @@ namespace Libplanet.Store
                 trie = trie.Set(pair.Key, pair.Value);
             }
 
-            ITrie stage = trie.Commit();
+            ITrie stage = stateStore.Commit(trie);
             return stateStore.GetStateRoot(stage.Hash);
         }
 

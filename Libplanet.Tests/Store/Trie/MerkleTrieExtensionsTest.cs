@@ -17,12 +17,12 @@ namespace Libplanet.Tests.Store.Trie
 
             trieA = (MerkleTrie)trieA.Set(new KeyBytes(0x01), Null.Value)
                 .Set(new KeyBytes(0x02), Null.Value)
-                .Set(new KeyBytes(0x03), Null.Value)
-                .Commit();
+                .Set(new KeyBytes(0x03), Null.Value);
+            trieA = (MerkleTrie)trieA.Commit();
             trieB = (MerkleTrie)trieB.Set(new KeyBytes(0x01), Dictionary.Empty)
                 .Set(new KeyBytes(0x02), Null.Value)
-                .Set(new KeyBytes(0x04), Null.Value)
-                .Commit();
+                .Set(new KeyBytes(0x04), Null.Value);
+            trieB = (MerkleTrie)trieB.Commit();
 
             Dictionary<KeyBytes, (IValue OriginValue, IValue OtherValue)> differentNodes =
                 trieA.DifferentNodes(trieB).ToDictionary(

@@ -41,11 +41,5 @@ namespace Libplanet.Store.Trie
         /// values are ordered in the same way to the corresponding <paramref name="keys"/>.  Absent
         /// values are represented as <see langword="null"/>.</returns>
         IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys);
-
-        /// <summary>
-        /// Cleans up and stores the <see cref="ITrie"/> in storage.
-        /// </summary>
-        /// <returns>Returns new committed <see cref="ITrie"/>.</returns>
-        ITrie Commit();
     }
 }

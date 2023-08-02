@@ -33,11 +33,13 @@ public class MptCommandTest : IDisposable
         _trieA = new MerkleTrie(stateKeyValueStoreA).Set(
             ImmutableDictionary<KeyBytes, IValue>.Empty
                 .Add(new KeyBytes("deleted"), Null.Value)
-                .Add(new KeyBytes("common"), (Text)"before")).Commit();
+                .Add(new KeyBytes("common"), (Text)"before"));
+        _trieA = ((MerkleTrie)_trieA).Commit();
         _trieB = new MerkleTrie(stateKeyValueStoreB).Set(
             ImmutableDictionary<KeyBytes, IValue>.Empty
                 .Add(new KeyBytes("created"), Null.Value)
-                .Add(new KeyBytes("common"), (Text)"after")).Commit();
+                .Add(new KeyBytes("common"), (Text)"after"));
+        _trieB = ((MerkleTrie)_trieB).Commit();
     }
 
     [Fact]

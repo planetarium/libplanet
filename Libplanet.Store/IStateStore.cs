@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
 
@@ -33,6 +32,11 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
         /// <returns>A new committed <see cref="ITrie"/>.</returns>
+        /// <remarks>Given <paramref name="trie"/> must have been derived from an
+        /// <see cref="ITrie"/> retrieved via <see cref="GetStateRoot"/> from the same
+        /// instance of an <see cref="IStateStore"/>.  Otherwise, this does not guarentee
+        /// that <paramref name="trie"/> would be committed.
+        /// </remarks>
         ITrie Commit(ITrie trie);
     }
 }

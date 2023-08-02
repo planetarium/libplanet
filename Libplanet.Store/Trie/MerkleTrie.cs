@@ -120,29 +120,6 @@ namespace Libplanet.Store.Trie
             return resolutions.Select(resolution => resolution.Value).ToArray();
         }
 
-        /// <inheritdoc/>
-        public ITrie Commit()
-        {
-            if (Root is null)
-            {
-                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
-            }
-
-            var writeBatch = new WriteBatch(KeyValueStore, 4096);
-            INode newRoot = Commit(Root, writeBatch);
-
-            // It assumes embedded node if it's not HashNode.
-            if (!(newRoot is HashNode))
-            {
-                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                writeBatch.Add(new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
-            }
-
-            writeBatch.Flush();
-
-            return new MerkleTrie(KeyValueStore, newRoot);
-        }
-
         public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
         {
             if (Root is null)
@@ -196,6 +173,28 @@ namespace Libplanet.Store.Trie
                         break;
                 }
             }
+        }
+
+        internal ITrie Commit()
+        {
+            if (Root is null)
+            {
+                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
+            }
+
+            var writeBatch = new WriteBatch(KeyValueStore, 4096);
+            INode newRoot = Commit(Root, writeBatch);
+
+            // It assumes embedded node if it's not HashNode.
+            if (!(newRoot is HashNode))
+            {
+                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
+                writeBatch.Add(new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
+            }
+
+            writeBatch.Flush();
+
+            return new MerkleTrie(KeyValueStore, newRoot);
         }
 
         internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()

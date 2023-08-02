@@ -5,6 +5,7 @@ using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
 
@@ -56,10 +57,10 @@ namespace Libplanet.Tests.Store.Trie
         [InlineData(1024)]
         public void Commit(int addressCount)
         {
-            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var codec = new Codec();
 
-            ITrie trieA = new MerkleTrie(keyValueStore);
+            ITrie trieA = stateStore.GetStateRoot(null);
 
             var addresses = new Address[addressCount];
             var states = new IValue[addressCount];
@@ -75,15 +76,15 @@ namespace Libplanet.Tests.Store.Trie
             trieA = trieA.Set(path, (Text)"foo");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
 
-            ITrie trieB = trieA.Commit();
+            ITrie trieB = stateStore.Commit(trieA);
             Assert.Equal((Text)"foo", trieB.Get(new[] { path })[0]);
 
             trieB = trieB.Set(path, (Text)"bar");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
             Assert.Equal((Text)"bar", trieB.Get(new[] { path })[0]);
 
-            ITrie trieC = trieB.Commit();
-            ITrie trieD = trieC.Commit();
+            ITrie trieC = stateStore.Commit(trieB);
+            ITrie trieD = stateStore.Commit(trieC);
 
             Assert.NotEqual(trieA.Hash, trieB.Hash);
             Assert.NotEqual(trieA.Hash, trieC.Hash);
@@ -94,15 +95,15 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void EmptyRootHash()
         {
-            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            ITrie trie = new MerkleTrie(keyValueStore);
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
             Assert.Equal(MerkleTrie.EmptyRootHash, trie.Hash);
 
-            var committedTrie = trie.Commit();
+            var committedTrie = stateStore.Commit(trie);
             Assert.Equal(MerkleTrie.EmptyRootHash, committedTrie.Hash);
 
             trie = trie.Set(new KeyBytes(default(Address).ByteArray), Dictionary.Empty);
-            committedTrie = trie.Commit();
+            committedTrie = stateStore.Commit(trie);
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
 
