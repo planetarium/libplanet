@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -26,6 +25,9 @@ namespace Libplanet.Action.State
             _stateRoot = stateRoot;
             _cache = new BlockStateCache();
         }
+
+        /// <inheritdoc cref="IWorldState.Legacy"/>
+        public bool Legacy { get; }
 
         /// <inheritdoc cref="IBlockState.BlockHash"/>
         public BlockHash? BlockHash => _blockHash;
@@ -74,6 +76,12 @@ namespace Libplanet.Action.State
             }
 
             return result;
+        }
+
+        /// <inheritdoc cref="IWorldState.GetAccount"/>
+        public IAccount GetAccount(Address address)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc cref="IAccountState.GetBalance"/>

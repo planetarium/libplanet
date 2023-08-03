@@ -15,35 +15,6 @@ namespace Libplanet.Action.State
     public static class AccountDeltaExtensions
     {
         /// <summary>
-        /// Aggregates a list of <see cref="IAccountDelta"/>s in order.
-        /// </summary>
-        /// <param name="deltas">The list of <see cref="IAccount"/>s to aggregate.</param>
-        /// <returns>The aggregate of <paramref name="deltas"/> as an
-        /// <see cref="IAccount"/>.
-        /// </returns>
-        /// <remarks>
-        /// As aggregation is done by partially overwriting previous values,
-        /// the order in which <paramref name="deltas"/> is important.
-        /// </remarks>
-        public static IAccountDelta OrderedSum(this IReadOnlyList<IAccountDelta> deltas)
-        {
-            IImmutableDictionary<Address, IValue> states = deltas.Aggregate(
-                ImmutableDictionary<Address, IValue>.Empty,
-                (prev, next) => prev.SetItems(next.States));
-            IImmutableDictionary<(Address, Currency), BigInteger> fungibles = deltas.Aggregate(
-                ImmutableDictionary<(Address, Currency), BigInteger>.Empty,
-                (prev, next) => prev.SetItems(next.Fungibles));
-            IImmutableDictionary<Currency, BigInteger> totalSupplies = deltas.Aggregate(
-                ImmutableDictionary<Currency, BigInteger>.Empty,
-                (prev, next) => prev.SetItems(next.TotalSupplies));
-            ValidatorSet? validatorSet = deltas.Aggregate(
-                (ValidatorSet?)null,
-                (prev, next) => next.ValidatorSet is { } set ? set : prev);
-            return new AccountDelta(
-                states, fungibles, totalSupplies, validatorSet);
-        }
-
-        /// <summary>
         /// Gets a raw dictionary representation of <see cref="IAccountDelta"/> that gets
         /// actually written to an <see cref="IStateStore"/>.
         /// </summary>

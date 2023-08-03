@@ -68,7 +68,7 @@ namespace Libplanet.Action
     ///     // previous states through its parameter named context,
     ///     // and is offered "bound" argument values through
     ///     // its own properties (or fields).
-    ///     IAccountStateDelta IAction.Execute(IActionContext context)
+    ///     IWorld IAction.Execute(IActionContext context)
     ///     {
     ///         // Gets the state immediately before this action is executed.
     ///         // ImmutableDictionary<string, uint> is just for example,
@@ -182,7 +182,7 @@ namespace Libplanet.Action
         /// and a deterministic random seed.</para>
         /// <para>Other &#x201c;bound&#x201d; information resides in the action
         /// object in itself, as its properties (or fields).</para>
-        /// <para>A returned <see cref="IAccount"/> object functions as
+        /// <para>A returned <see cref="IWorld"/> object functions as
         /// a delta which shifts from previous states to next states.</para>
         /// </summary>
         /// <param name="context">A context object containing addresses that
@@ -232,6 +232,6 @@ namespace Libplanet.Action
         /// your project as a dependency.</para>
         /// </remarks>
         /// <seealso cref="IActionContext"/>
-        IAccount Execute(IActionContext context);
+        IWorld Execute(IActionContext context);
     }
 }

@@ -9,8 +9,9 @@ namespace Libplanet.Action
 {
     public static class ActionEvaluationsExtensions
     {
-        public static IImmutableDictionary<KeyBytes, IValue> GetRawTotalDelta(
-            this IReadOnlyList<IActionEvaluation> actionEvaluations)
+        public static IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>
+            GetRawTotalDelta(
+                this IReadOnlyList<IActionEvaluation> actionEvaluations)
         {
             return actionEvaluations
                 .Select(eval => eval.OutputState.Delta)
