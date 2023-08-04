@@ -89,7 +89,7 @@ namespace Libplanet.Net
             try
             {
                 var blockCompletion = new BlockCompletion<BoundPeer>(
-                    completionPredicate: BlockChain.Store.ContainsBlock,
+                    completionPredicate: BlockChain.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
                 var demandBlockHashes = GetDemandBlockHashes(
