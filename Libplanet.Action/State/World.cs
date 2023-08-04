@@ -21,7 +21,7 @@ namespace Libplanet.Action.State
         {
             _baseState = baseState;
             Delta = delta;
-            Legacy = false;
+            Legacy = true;
         }
 
         /// <inheritdoc/>
@@ -34,29 +34,37 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccountState GetAccountState(Address address)
+        public IAccount GetAccount(Address address)
         {
             return Delta.Accounts.TryGetValue(address, out IAccount? account)
                 ? account!
-                : _baseState.GetAccountState(address);
+                : Account.Create(_baseState.GetAccount(address));
         }
 
         /// <inheritdoc/>
         [Pure]
-        public IWorld SetAccount(Address address, IAccount account) =>
-            new World(this, new WorldDelta(Delta.Accounts.SetItem(address, account)))
+        public IWorld SetAccount(Address address, IAccount account)
+        {
+            if (!address.Equals(ReservedAddresses.LegacyAccount)
+                && account.Delta.UpdatedFungibleAssets.Count > 0)
+            {
+                return this;
+            }
+
+            return new World(this, new WorldDelta(Delta.Accounts.SetItem(address, account)))
             { Legacy = Legacy && address.Equals(ReservedAddresses.LegacyAccount) };
+        }
 
         /// <summary>
         /// Creates a new World from given <paramref name="previousWorld"/>.
         /// </summary>
-        /// <param name="previousWorld">The previous <see cref="WorldState"/> to initialize
+        /// <param name="previousWorld">The previous <see cref="WorldBaseState"/> to initialize
         /// new World.</param>
         /// <returns>A null world using <paramref name="previousWorld"/> as its base state.
         /// </returns>
         internal static IWorld Create(IWorldState previousWorld) =>
             new World(previousWorld)
-            { Legacy = previousWorld.GetAccountState(ReservedAddresses.LegacyAccount) is null };
+            { Legacy = previousWorld.GetAccount(ReservedAddresses.LegacyAccount) is null };
 
         /// <summary>
         /// Creates a null worlds from given <see cref="IWorld"/>.

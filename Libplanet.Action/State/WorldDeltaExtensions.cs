@@ -49,5 +49,14 @@ namespace Libplanet.Action.State
                 .SetItems(rawStates)
                 .ToImmutableDictionary();
         }
+
+        public static IImmutableSet<KeyBytes> ToUpdatedStateKeys(
+            this IEnumerable<IWorldDelta> deltas)
+        {
+            return deltas
+                .SelectMany(delta => delta.UpdatedAddresses)
+                .Select(address => ToStateKey(address))
+                .ToImmutableHashSet();
+        }
     }
 }

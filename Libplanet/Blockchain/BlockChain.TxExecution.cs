@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
             foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
             {
                 TxId txid = txEvals.Key;
-                IAccount prevStates = txEvals.First().InputContext.PreviousState;
+                IWorld prevStates = txEvals.First().InputContext.PreviousState;
                 IActionEvaluation evalSum = txEvals.Last();
                 TxExecution txExecution;
                 if (evalSum.Exception is { } e)
@@ -43,11 +43,11 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    IAccount outputStates = evalSum.OutputState;
+                    IWorld outputStates = evalSum.OutputState;
                     txExecution = new TxSuccess(
                         block.Hash,
                         txid,
-                        outputStates.GetUpdatedStates(),
+                        outputStates.Delta.Accounts.Values.SelectMany(a => a.GetUpdatedStates()),
                         outputStates.Delta.UpdatedFungibleAssets
                             .Select(pair =>
                                 (

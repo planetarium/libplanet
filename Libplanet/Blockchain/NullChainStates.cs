@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -23,31 +25,31 @@ namespace Libplanet.Blockchain
 
         public IValue? GetState(
             Address address, Address accountAddress, BlockHash? offset) =>
-            GetWorldState(offset).GetAccountState(accountAddress)
+            GetWorldState(offset).GetAccount(accountAddress)
             .GetState(address);
 
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset) =>
-            GetWorldState(offset).GetAccountState(accountAddress)
+            GetWorldState(offset).GetAccount(accountAddress)
             .GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetWorldState(offset).GetAccountState(ReservedAddresses.LegacyAccount)
+            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetValidatorSet();
 
         public IWorldState GetWorldState(BlockHash? offset) => new NullWorldState(offset);
 
-        public IAccountState GetAccountState(Address address, HashDigest<SHA256> srh)
-            => new NullAccountState(address);
+        public IAccount GetAccount(Address address, HashDigest<SHA256> srh)
+            => new NullAccount(address);
 
         public ITrie GetBlockStateRoot(BlockHash? offset) => new NullTrie(offset);
 
@@ -67,7 +69,7 @@ namespace Libplanet.Blockchain
 
         public bool Legacy => true;
 
-        public IAccountState GetAccountState(Address address) => new NullAccountState(address);
+        public IAccount GetAccount(Address address) => new NullAccount(address);
     }
 
 #pragma warning disable SA1402  // File may only contain a single type
@@ -114,15 +116,20 @@ namespace Libplanet.Blockchain
     }
 
 #pragma warning disable SA1402  // File may only contain a single type
-    internal class NullAccountState : IAccountState
+    internal class NullAccount : IAccount
 #pragma warning restore SA1402
     {
-        public NullAccountState(Address address)
+        public NullAccount(Address address)
         {
             Address = address;
         }
 
         public Address Address { get; }
+
+        public IAccountDelta Delta => throw new NotSupportedException();
+
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
+            throw new NotSupportedException();
 
         IValue? IAccountState.GetState(Address address) => null;
 
@@ -143,5 +150,38 @@ namespace Libplanet.Blockchain
         }
 
         ValidatorSet IAccountState.GetValidatorSet() => new ValidatorSet();
+
+        public IAccount SetState(Address address, IValue state)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IAccount MintAsset(
+            IActionContext context,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IAccount TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IAccount SetValidator(Validator validator)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

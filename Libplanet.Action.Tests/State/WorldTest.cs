@@ -39,7 +39,7 @@ namespace Libplanet.Action.Tests.State
             IWorld world = World.Create(baseWorld);
             Assert.IsType<World>(world);
             // GetAccount() will retrieve account from World._baseState
-            Assert.Equal(mockAccount, world.GetAccountState(accountAddress));
+            Assert.Equal(mockAccount, world.GetAccount(accountAddress));
         }
 
         [Fact]
@@ -51,13 +51,13 @@ namespace Libplanet.Action.Tests.State
 
             MockWorldState baseWorld = new MockWorldState();
             IWorld world = World.Create(baseWorld);
-            Assert.Null(world.GetAccountState(accountAddress));
+            Assert.Null(world.GetAccount(accountAddress));
 
             // TestGetAccount() will retrieve account from World.Delta
             world = world.SetAccount(accountAddress, mockAccount);
             Assert.Single(world.Delta.UpdatedAddresses);
             Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());
-            Assert.Equal(mockAccount, world.GetAccountState(accountAddress));
+            Assert.Equal(mockAccount, world.GetAccount(accountAddress));
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Libplanet.Action.Tests.State
             // After flush, World.Delta moves to World._baseState.Delta
             world = World.Flush(world);
             Assert.Empty(world.Delta.UpdatedAddresses);
-            Assert.NotNull(world.GetAccountState(accountAddress));
+            Assert.NotNull(world.GetAccount(accountAddress));
         }
 
         [Fact]

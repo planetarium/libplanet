@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Blocks;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
@@ -14,34 +12,33 @@ namespace Libplanet.Action.State
     /// <summary>
     /// A default implementation of <see cref="IWorldState"/> interface.
     /// </summary>
-    public class WorldState : IWorldState
+    public class WorldBaseState : IWorldState
     {
-        private static readonly Codec Codec = new Codec();
         private readonly IBlockChainStates _blockChainStates;
-        private readonly BlockHash? _blockHash;
+        private readonly HashDigest<SHA256>? _stateRootHash;
         private readonly BlockStateCache _cache;
         private readonly bool _legacy;
         private readonly ITrie _stateRoot;
 
-        public WorldState(BlockHash? blockHash, IBlockChainStates blockChainStates)
+        public WorldBaseState(HashDigest<SHA256>? stateRootHash, IBlockChainStates blockChainStates)
         {
             _blockChainStates = blockChainStates;
-            _blockHash = blockHash;
-            _stateRoot = _blockChainStates.GetBlockStateRoot(blockHash);
-            _legacy = GetAccountState(ReservedAddresses.LegacyAccount) is null;
+            _stateRootHash = stateRootHash;
+            _stateRoot = _blockChainStates.GetStateRoot(_stateRootHash);
+            _legacy = GetAccount(ReservedAddresses.LegacyAccount) is null;
             _cache = new BlockStateCache();
         }
 
         /// <summary>
-        /// The <see cref="BlockHash"/> from which this world state is called.
+        /// The <see cref="HashDigest{SHA256}"/> from which this world state is called.
         /// </summary>
-        public BlockHash? Blockhash => _blockHash;
+        public HashDigest<SHA256>? StateRootHash => _stateRootHash;
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy => _legacy;
 
-        /// <inheritdoc cref="IWorldState.GetAccountState"/>
-        public IAccountState GetAccountState(Address address) => GetAccountStates(new[] { address }).First();
+        /// <inheritdoc cref="IWorldState.GetAccount"/>
+        public IAccount GetAccount(Address address) => GetAccounts(new[] { address }).First();
 
         /// <summary>
         /// Gets the world states of the given <paramref name="addresses"/>.
@@ -50,20 +47,21 @@ namespace Libplanet.Action.State
         /// the <see cref="IAccountState"/>s to get its states.</param>
         /// <returns>The list of <see cref="IAccountState"/>s of the given
         /// <paramref name="addresses"/>.
-        public IReadOnlyList<IAccountState> GetAccountStates(IReadOnlyList<Address> addresses)
+        public IReadOnlyList<IAccount> GetAccounts(IReadOnlyList<Address> addresses)
         {
             // Try using cache first
             int length = addresses.Count;
             List<int> uncachedIndices = new List<int>(length);
-            IAccountState[] result = new IAccount[length];
+            IAccount[] result = new IAccount[length];
 
             for (int i = 0; i < length; i++)
             {
                 if (_cache.TryGetValue(addresses[i], out IValue? cachedValue) &&
                     cachedValue is { } cv)
                 {
-                    HashDigest<SHA256> srh = HashDigest<SHA256>.DeriveFrom(Codec.Encode(cv));
-                    result[i] = new AccountState(addresses[i], _blockChainStates.GetStateRoot(srh));
+                    HashDigest<SHA256> srh = new HashDigest<SHA256>((Binary)cv);
+                    result[i] = Account.Create(
+                        new AccountBaseState(addresses[i], _blockChainStates.GetStateRoot(srh)));
                 }
                 else
                 {
@@ -84,20 +82,20 @@ namespace Libplanet.Action.State
             {
                 if (fetched[i] is { } f)
                 {
-                    HashDigest<SHA256> srh = HashDigest<SHA256>.DeriveFrom(Codec.Encode(f));
-                    result[v] = new AccountState(
-                        uncachedAddresses[i], _blockChainStates.GetStateRoot(srh));
+                    HashDigest<SHA256> srh = new HashDigest<SHA256>((Binary)f);
+                    result[v] = Account.Create(new AccountBaseState(
+                        uncachedAddresses[i], _blockChainStates.GetStateRoot(srh)));
                     _cache.AddOrUpdate(addresses[v], f);
                 }
                 else
                 {
                     if (Legacy && uncachedAddresses[i].Equals(ReservedAddresses.LegacyAccount))
                     {
-                        result[v] = new AccountState(addresses[v], _stateRoot);
+                        result[v] = Account.Create(new AccountBaseState(addresses[v], _stateRoot));
                     }
 
-                    result[v] = new AccountState(
-                        addresses[v], _blockChainStates.GetStateRoot(null));
+                    result[v] = Account.Create(
+                        new AccountBaseState(addresses[v], _blockChainStates.GetStateRoot(null)));
                 }
             }
 

@@ -19,5 +19,18 @@ namespace Libplanet.Action
                 .OrderedSum()
                 .ToRawDelta();
         }
+
+        public static IImmutableDictionary<KeyBytes, IValue>
+            GetLegacyRawTotalDelta(
+                this IEnumerable<IActionEvaluation> actionEvaluations)
+        {
+            return actionEvaluations
+                .SelectMany(eval => eval.OutputState.Delta.Accounts)
+                .Where(kv => kv.Key.Equals(ReservedAddresses.LegacyAccount))
+                .Select(kv => kv.Value.Delta)
+                .ToList()
+                .OrderedSum()
+                .ToRawDelta();
+        }
     }
 }

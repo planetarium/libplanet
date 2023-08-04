@@ -95,7 +95,7 @@ namespace Libplanet.Action.Sys
             {
                 foreach (KeyValuePair<Address, IImmutableDictionary<Address, IValue>> kv in s)
                 {
-                    var acc = Account.Create(world.GetAccountState(kv.Key));
+                    var acc = world.GetAccount(kv.Key);
                     foreach (KeyValuePair<Address, IValue> kv2 in kv.Value)
                     {
                         acc = acc.SetState(kv2.Key, kv2.Value);

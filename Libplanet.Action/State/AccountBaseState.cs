@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
-using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
@@ -15,13 +12,13 @@ namespace Libplanet.Action.State
     /// <summary>
     /// A default implementation of <see cref="IBlockState"/> interface.
     /// </summary>
-    public class AccountState : IAccountState
+    public class AccountBaseState : IAccountState
     {
         private Address _address;
         private ITrie _stateRoot;
         private BlockStateCache _cache;
 
-        public AccountState(Address address, ITrie stateRoot)
+        public AccountBaseState(Address address, ITrie stateRoot)
         {
             _address = address;
             _stateRoot = stateRoot;
