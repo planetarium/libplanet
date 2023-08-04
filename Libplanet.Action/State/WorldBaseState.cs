@@ -97,9 +97,11 @@ namespace Libplanet.Action.State
                     {
                         result[v] = Account.Create(new AccountBaseState(addresses[v], _stateRoot));
                     }
-
-                    result[v] = Account.Create(
-                        new AccountBaseState(addresses[v], _blockChainStates.GetStateRoot(null)));
+                    else
+                    {
+                        result[v] = Account.Create(new AccountBaseState(
+                            addresses[v], _blockChainStates.GetStateRoot(null)));
+                    }
                 }
             }
 

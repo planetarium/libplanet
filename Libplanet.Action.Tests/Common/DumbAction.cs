@@ -131,7 +131,7 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
             if (RehearsalRecords.Value is null)
             {
@@ -144,13 +144,14 @@ namespace Libplanet.Action.Tests.Common
                     RehearsalRecords.Value.Add((TargetAddress, Item));
             }
 
-            IAccount states = context.PreviousState;
+            IWorld world = context.PreviousState;
             if (Item is null)
             {
-                return states;
+                return world;
             }
 
-            string items = (Text?)states.GetState(TargetAddress);
+            IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
+            string items = (Text?)account.GetState(TargetAddress);
             string item = RecordRehearsal
                 ? $"{Item}:{context.Rehearsal}"
                 : Item;
@@ -176,7 +177,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (RecordRandom)
             {
-                states = states.SetState(
+                account = account.SetState(
                     RandomRecordsAddress,
                     (Integer)context.Random.Next()
                 );
@@ -187,11 +188,11 @@ namespace Libplanet.Action.Tests.Common
                 Item = Item.ToUpperInvariant();
             }
 
-            IAccount nextState = states.SetState(TargetAddress, (Text)items);
+            account = account.SetState(TargetAddress, (Text)items);
 
             if (!(Transfer is null))
             {
-                nextState = nextState.TransferAsset(
+                account = account.TransferAsset(
                     context,
                     sender: Transfer.Item1,
                     recipient: Transfer.Item2,
@@ -202,8 +203,8 @@ namespace Libplanet.Action.Tests.Common
 
             if (!(Validators is null))
             {
-                nextState = Validators.Aggregate(
-                    nextState,
+                account = Validators.Aggregate(
+                    account,
                     (current, validator) =>
                         current.SetValidator(new Validator(validator, BigInteger.One)));
             }
@@ -216,11 +217,12 @@ namespace Libplanet.Action.Tests.Common
             ExecuteRecords.Value = ExecuteRecords.Value.Add(new ExecuteRecord()
             {
                 Action = this,
-                NextState = nextState,
+                NextState = account,
                 Rehearsal = context.Rehearsal,
             });
 
-            return nextState;
+            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            return world;
         }
 
         public void LoadPlainValue(IValue plainValue)
