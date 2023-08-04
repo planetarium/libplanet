@@ -22,14 +22,16 @@ namespace Libplanet.Action.Tests.Common
             TargetAddress = new Address(values["target_address"]);
         }
 
-        public override IAccount Execute(IActionContext context)
+        public override IWorld Execute(IActionContext context)
         {
-            IAccount previousState = context.PreviousState;
+            IWorld previousState = context.PreviousState;
+            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.LegacyAccount);
             ResultState = context.Rehearsal;
-            return previousState.SetState(
-                TargetAddress,
-                new Bencodex.Types.Boolean(context.Rehearsal)
-            );
+            return previousState.SetAccount(
+                legacyAccount.SetState(
+                    TargetAddress,
+                    new Bencodex.Types.Boolean(context.Rehearsal)
+            ));
         }
     }
 }

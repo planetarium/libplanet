@@ -19,17 +19,9 @@ namespace Libplanet.Action.State
                     : ReservedAddresses.ValidatorSetAddress);
 
         internal static IWorld SetFungibleAssetsAccount(this IWorld world, IAccount account) =>
-            world.SetAccount(
-                world.Legacy
-                    ? ReservedAddresses.LegacyAccount
-                    : ReservedAddresses.FungibleAssetsAccount,
-                account);
+            world.SetAccount(account);
 
         internal static IWorld SetValidatorSetAccount(this IWorld world, IAccount account) =>
-            world.SetAccount(
-                world.Legacy
-                    ? ReservedAddresses.LegacyAccount
-                    : ReservedAddresses.ValidatorSetAddress,
-                account);
+            world.SetAccount(account);
     }
 }

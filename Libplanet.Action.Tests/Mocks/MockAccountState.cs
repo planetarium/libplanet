@@ -82,6 +82,8 @@ namespace Libplanet.Action.Tests.Mocks
 
         public ValidatorSet ValidatorSet => _validatorSet;
 
+        public Address Address => default;
+
         public IValue GetState(Address address) => _states.TryGetValue(address, out IValue value)
             ? value
             : null;

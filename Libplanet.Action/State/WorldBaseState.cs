@@ -15,28 +15,19 @@ namespace Libplanet.Action.State
     public class WorldBaseState : IWorldState
     {
         private readonly IBlockChainStates _blockChainStates;
-        private readonly HashDigest<SHA256>? _stateRootHash;
-        private readonly BlockStateCache _cache;
         private readonly ITrie _stateRoot;
 
         public WorldBaseState(HashDigest<SHA256>? stateRootHash, IBlockChainStates blockChainStates)
         {
             _blockChainStates = blockChainStates;
-            _stateRootHash = stateRootHash;
-            _stateRoot = _blockChainStates.GetStateRoot(_stateRootHash);
+            _stateRoot = _blockChainStates.GetStateRoot(stateRootHash);
             Legacy = _stateRoot
                 .Get(new[]
                 {
                     ToStateKey(ReservedAddresses.LegacyAccount),
                 })
                 .Any(v => v == null);
-            _cache = new BlockStateCache();
         }
-
-        /// <summary>
-        /// The <see cref="HashDigest{SHA256}"/> from which this world state is called.
-        /// </summary>
-        public HashDigest<SHA256>? StateRootHash => _stateRootHash;
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; }
@@ -51,61 +42,39 @@ namespace Libplanet.Action.State
         /// the <see cref="IAccountState"/>s to get its states.</param>
         /// <returns>The list of <see cref="IAccountState"/>s of the given
         /// <paramref name="addresses"/>.
-        public IReadOnlyList<IAccount> GetAccounts(IReadOnlyList<Address> addresses)
+        public IReadOnlyList<IAccount> GetAccounts(IReadOnlyList<Address> addresses) =>
+            GetAccountStateRoot(addresses)
+                .Zip(addresses, (trie, address) => CreateAccount(address, trie))
+                .ToList();
+
+        private IReadOnlyList<ITrie> GetAccountStateRoot(IReadOnlyList<Address> addresses)
         {
-            // Try using cache first
-            int length = addresses.Count;
-            List<int> uncachedIndices = new List<int>(length);
-            IAccount[] result = new IAccount[length];
-
-            for (int i = 0; i < length; i++)
+            if (Legacy)
             {
-                if (_cache.TryGetValue(addresses[i], out IValue? cachedValue) &&
-                    cachedValue is { } cv)
-                {
-                    HashDigest<SHA256> srh = new HashDigest<SHA256>((Binary)cv);
-                    result[i] = Account.Create(
-                        new AccountBaseState(addresses[i], _blockChainStates.GetStateRoot(srh)));
-                }
-                else
-                {
-                    uncachedIndices.Add(i);
-                }
+                return addresses
+                    .Select(GetLegacyTrieOnly)
+                    .ToList();
             }
-
-            if (uncachedIndices.Count == 0)
+            else
             {
-                return result;
+                return _stateRoot
+                    .Get(addresses.Select(ToStateKey).ToList())
+                    .Select(GetTrieFromBencodex)
+                    .ToList();
             }
-
-            IReadOnlyList<Address> uncachedAddresses =
-                uncachedIndices.Select(index => addresses[index]).ToArray();
-            KeyBytes[] uncachedKeys = uncachedAddresses.Select(ToStateKey).ToArray();
-            IReadOnlyList<IValue?> fetched = _stateRoot.Get(uncachedKeys).ToArray();
-            foreach ((var v, var i) in uncachedIndices.Select((v, i) => (v, i)))
-            {
-                if (fetched[i] is { } f)
-                {
-                    HashDigest<SHA256> srh = new HashDigest<SHA256>((Binary)f);
-                    result[v] = Account.Create(new AccountBaseState(
-                        uncachedAddresses[i], _blockChainStates.GetStateRoot(srh)));
-                    _cache.AddOrUpdate(addresses[v], f);
-                }
-                else
-                {
-                    if (Legacy && uncachedAddresses[i].Equals(ReservedAddresses.LegacyAccount))
-                    {
-                        result[v] = Account.Create(new AccountBaseState(addresses[v], _stateRoot));
-                    }
-                    else
-                    {
-                        result[v] = Account.Create(new AccountBaseState(
-                            addresses[v], _blockChainStates.GetStateRoot(null)));
-                    }
-                }
-            }
-
-            return result;
         }
+
+        private ITrie GetLegacyTrieOnly(Address address) =>
+            address == ReservedAddresses.LegacyAccount
+                ? _stateRoot
+                : _blockChainStates.GetStateRoot(null);
+
+        private ITrie GetTrieFromBencodex(IValue? value) =>
+            value is Binary stateRoot
+                ? _blockChainStates.GetStateRoot(new HashDigest<SHA256>(stateRoot))
+                : _blockChainStates.GetStateRoot(null);
+
+        private IAccount CreateAccount(Address address, ITrie trie) =>
+            Account.Create(new AccountBaseState(address, trie));
     }
 }

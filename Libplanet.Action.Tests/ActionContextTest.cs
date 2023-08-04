@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: Account.Create(MockAccountState.Empty),
+                    previousState:  Account.Create(MockAccountState.Empty),
                     randomSeed: seed,
                     gasLimit: 0
                 );

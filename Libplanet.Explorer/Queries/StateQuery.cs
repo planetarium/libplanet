@@ -72,6 +72,7 @@ public class StateQuery
 
         return context.Source.ChainStates.GetStates(
             addresses,
+            ReservedAddresses.LegacyAccount,
             offset
         );
     }

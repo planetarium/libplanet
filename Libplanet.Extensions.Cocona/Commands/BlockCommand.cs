@@ -138,6 +138,8 @@ public class BlockCommand
                 .Select(PublicKey.FromHex)
                 .Select(k => new Validator(k, BigInteger.One))
                 .ToList());
+        var emptyState =
+            ImmutableTrieDictionary<Address, IImmutableDictionary<Address, IValue>>.Empty;
         ImmutableList<Transaction> txs = Array.Empty<Transaction>()
 
             // FIXME: Remove this pragma after fixing the following issue:
@@ -150,7 +152,9 @@ public class BlockCommand
                 null,
                 new IAction[]
                 {
-                    new Initialize(validatorSet, ImmutableTrieDictionary<Address, IValue>.Empty),
+                    new Initialize(
+                        validatorSet,
+                        emptyState),
                 }.Select(x => x.PlainValue)))
             .ToImmutableList();
 

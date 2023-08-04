@@ -101,7 +101,7 @@ namespace Libplanet.Action.Sys
                         acc = acc.SetState(kv2.Key, kv2.Value);
                     }
 
-                    world = world.SetAccount(kv.Key, acc);
+                    world = world.SetAccount(acc);
                 }
             }
 

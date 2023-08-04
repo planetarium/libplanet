@@ -28,7 +28,7 @@ namespace Libplanet.Action.State
     /// </list>
     /// </summary>
     /// <remarks>
-    /// This interface is immutable.  <see cref="SetAccount(Address, IAccount)"/>
+    /// This interface is immutable.  <see cref="SetAccount"/>
     /// method does not manipulate the instance, but returns a new
     /// <see cref="IWorld"/> instance with updated states.
     /// </remarks>
@@ -46,8 +46,6 @@ namespace Libplanet.Action.State
         /// <paramref name="address"/> is set to the given
         /// <paramref name="account"/>.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> referring
-        /// the account to set its account.</param>
         /// <param name="account">The new account to fill the account with.</param>
         /// <returns>A new <see cref="IWorld"/> instance that
         /// the account state of the given <paramref name="address"/>
@@ -58,6 +56,6 @@ namespace Libplanet.Action.State
         /// with updated world instead.
         /// </remarks>
         [Pure]
-        IWorld SetAccount(Address address, IAccount account);
+        IWorld SetAccount(IAccount account);
     }
 }
