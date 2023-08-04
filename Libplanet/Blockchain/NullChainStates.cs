@@ -48,7 +48,7 @@ namespace Libplanet.Blockchain
 
         public IWorldState GetWorldState(BlockHash? offset) => new NullWorldState(offset);
 
-        public IAccount GetAccount(Address address, HashDigest<SHA256> srh)
+        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh)
             => new NullAccount(address);
 
         public ITrie GetBlockStateRoot(BlockHash? offset) => new NullTrie(offset);

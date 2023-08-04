@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain
 {
     public partial class BlockChain
     {
-        public delegate (ITrie, int) StateCommiter(
+        public delegate (ITrie, int) StateCommitter(
             ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations);
 
         /// <summary>
@@ -112,19 +112,19 @@ namespace Libplanet.Blockchain
 
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                IWorldState latestState = evalutions.Last().OutputState;
-                StateCommiter commiter;
+                IWorldState latestState = evaluations.Last().OutputState;
+                StateCommitter committer;
                 if (latestState.Legacy)
                 {
-                    commiter = CommitLegacyState;
+                    committer = CommitLegacyState;
                 }
                 else
                 {
-                    commiter = CommitModernState;
+                    committer = CommitModernState;
                 }
 
                 ITrie prevWorldTrie = GetBlockStateRoot(block.PreviousHash);
-                var (newWorldTrie, deltaCount) = commiter(prevWorldTrie, evaluations);
+                var (newWorldTrie, deltaCount) = committer(prevWorldTrie, evaluations);
 
                 HashDigest<SHA256> rootHash = newWorldTrie.Hash;
                 _logger

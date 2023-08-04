@@ -415,7 +415,7 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetRawTotalDelta();
+            var delta = evals.GetLegacyRawTotalDelta();
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
@@ -572,9 +572,9 @@ namespace Libplanet.Blockchain
         public IWorldState GetWorldState(BlockHash? offset) =>
             _blockChainStates.GetWorldState(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState"/>
-        public IAccountState GetAccountState(Address address, HashDigest<SHA256> srh) =>
-            _blockChainStates.GetAccountState(address, srh);
+        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
+        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) =>
+            _blockChainStates.GetAccount(address, srh);
 
         public ITrie GetBlockStateRoot(BlockHash? offset) =>
             _blockChainStates.GetBlockStateRoot(offset);

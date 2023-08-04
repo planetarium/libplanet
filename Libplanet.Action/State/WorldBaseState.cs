@@ -17,7 +17,6 @@ namespace Libplanet.Action.State
         private readonly IBlockChainStates _blockChainStates;
         private readonly HashDigest<SHA256>? _stateRootHash;
         private readonly BlockStateCache _cache;
-        private readonly bool _legacy;
         private readonly ITrie _stateRoot;
 
         public WorldBaseState(HashDigest<SHA256>? stateRootHash, IBlockChainStates blockChainStates)
@@ -25,7 +24,12 @@ namespace Libplanet.Action.State
             _blockChainStates = blockChainStates;
             _stateRootHash = stateRootHash;
             _stateRoot = _blockChainStates.GetStateRoot(_stateRootHash);
-            _legacy = GetAccount(ReservedAddresses.LegacyAccount) is null;
+            Legacy = _stateRoot
+                .Get(new[]
+                {
+                    ToStateKey(ReservedAddresses.LegacyAccount),
+                })
+                .Any(v => v == null);
             _cache = new BlockStateCache();
         }
 
@@ -35,7 +39,7 @@ namespace Libplanet.Action.State
         public HashDigest<SHA256>? StateRootHash => _stateRootHash;
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
-        public bool Legacy => _legacy;
+        public bool Legacy { get; }
 
         /// <inheritdoc cref="IWorldState.GetAccount"/>
         public IAccount GetAccount(Address address) => GetAccounts(new[] { address }).First();

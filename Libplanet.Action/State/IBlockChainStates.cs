@@ -158,7 +158,7 @@ namespace Libplanet.Action.State
         /// <seealso cref="IBlockState"/>
         IWorldState GetWorldState(BlockHash? offset);
 
-        IAccountState GetAccount(Address address, HashDigest<SHA256> srh);
+        IAccountState GetAccount(Address address, HashDigest<SHA256>? srh);
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>

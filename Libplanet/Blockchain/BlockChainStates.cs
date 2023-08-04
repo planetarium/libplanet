@@ -57,10 +57,10 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState"/>
         public IWorldState GetWorldState(BlockHash? offset) =>
-            new WorldState(offset, this);
+            new WorldBaseState(GetBlockStateRoot(offset).Hash, this);
 
         /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
-        public IAccountState GetAccountState(Address address, HashDigest<SHA256> srh) =>
+        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) =>
             new AccountBaseState(address, GetStateRoot(srh));
 
         /// <inheritdoc cref="IBlockChainStates.GetBlockStateRoot"/>
@@ -80,12 +80,6 @@ namespace Libplanet.Blockchain
                     $"Could not find block hash {hash} in {nameof(IStore)}.",
                     nameof(offset));
             }
-        }
-
-        public ITrie GetAccountStateRoot(Address address, BlockHash? offset)
-        {
-            IWorldState worldState = GetWorldState(offset);
-            return worldState.GetAccount(address).GetStateRoot();
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetStateRoot"/>
