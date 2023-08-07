@@ -154,7 +154,6 @@ namespace Libplanet.Tests.Blockchain
                 var s = (TxSuccess)e;
                 Assert.Equal(block2.Hash, s.BlockHash);
                 Assert.Equal(tx.Id, s.TxId);
-                Assert.Empty(s.FungibleAssetsDelta);
                 Assert.Empty(s.UpdatedFungibleAssets);
             }
 
@@ -224,10 +223,6 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 txSuccess1.UpdatedFungibleAssets
             );
-            Assert.Equal(
-                txSuccess1.FungibleAssetsDelta,
-                txSuccess1.UpdatedFungibleAssets
-            );
             var txExecution2 = getTxExecution(block3.Hash, tx2Error.Id);
             _logger.Verbose(nameof(txExecution2) + " = {@TxExecution}", txExecution2);
             Assert.IsType<TxFailure>(txExecution2);
@@ -243,20 +238,6 @@ namespace Libplanet.Tests.Blockchain
             _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
             Assert.IsType<TxSuccess>(txExecution3);
             var txSuccess3 = (TxSuccess)txExecution3;
-            Assert.Equal(
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
-                    .Add(
-                        pk.ToAddress(),
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -5)
-                    )
-                    .Add(
-                        addresses[1],
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 5)
-                    ),
-                txSuccess3.FungibleAssetsDelta
-            );
             Assert.Equal(
                 ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
                     .Add(

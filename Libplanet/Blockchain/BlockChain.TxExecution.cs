@@ -53,21 +53,6 @@ namespace Libplanet.Blockchain
                                 (
                                     pair.Item1,
                                     pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2) -
-                                        prevStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
-                            .GroupBy(triple => triple.Item1)
-                            .ToImmutableDictionary(
-                                group => group.Key,
-                                group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
-                                    .ToImmutableDictionary(
-                                        triple => triple.Item2,
-                                        triple => triple.Item3)),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
                                     outputStates.GetBalance(pair.Item1, pair.Item2)
                                 ))
                             .GroupBy(triple => triple.Item1)
