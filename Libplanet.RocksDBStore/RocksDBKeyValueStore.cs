@@ -85,12 +85,13 @@ namespace Libplanet.RocksDBStore
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
         /// </summary>
         /// <param name="path">The path of the storage file will be saved.</param>
-        public RocksDBKeyValueStore(string path)
+        /// <param name="readonly">If it is true, it will open rocksdb in read-only mode.</param>
+        public RocksDBKeyValueStore(string path, bool @readonly = false)
         {
             var options = new DbOptions()
                 .SetCreateIfMissing();
 
-            _keyValueDb = RocksDBUtils.OpenRocksDb(options, path);
+            _keyValueDb = RocksDBUtils.OpenRocksDb(options, path, @readonly: @readonly);
         }
 
         /// <inheritdoc/>
