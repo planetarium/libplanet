@@ -189,7 +189,7 @@ namespace Libplanet.Blockchain
                     $"Given {nameof(preEvaluationBlock)} must have protocol version " +
                     $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
 
-        internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>>
+        internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
             GetAccountSubStateRootHashes(
                 ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations)
         => evaluations
@@ -202,13 +202,18 @@ namespace Libplanet.Blockchain
                 .First())
             .ToImmutableDictionary(
                 kv => kv.Key,
-                kv => (Binary)kv.Value)
+                kv => (Binary?)kv.Value)
             .ToImmutableDictionary(
                 kv => kv.Key,
-                kv => kv.Value.ToByteArray())
+                kv => kv.Value?.ToByteArray())
             .ToImmutableDictionary(
                 kv => kv.Key,
-                kv => new HashDigest<SHA256>(kv.Value));
+                kv =>
+                {
+                    return kv.Value is null
+                        ? null
+                        : (HashDigest<SHA256>?)new HashDigest<SHA256>(kv.Value);
+                });
 
         internal (ITrie, int) CommitLegacyState(
             ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations)
@@ -222,7 +227,7 @@ namespace Libplanet.Blockchain
         {
             var accountSubStateDelta = evaluations.GetRawTotalDelta();
 
-            IImmutableDictionary<KeyBytes, HashDigest<SHA256>>
+            IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
                 accountSubStateRoot = GetAccountSubStateRootHashes(worldTrie, evaluations);
 
             var worldDelta = accountSubStateDelta

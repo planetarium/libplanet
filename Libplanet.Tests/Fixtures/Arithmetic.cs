@@ -107,14 +107,15 @@ namespace Libplanet.Tests.Fixtures
             Error = null;
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
             if (Error != null)
             {
                 throw new InvalidOperationException(Error);
             }
 
-            IValue v = context.PreviousState.GetState(context.Signer) ?? (Bencodex.Types.Integer)0;
+            IValue v = context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
+                .GetState(context.Signer) ?? (Bencodex.Types.Integer)0;
             if (!(v is Bencodex.Types.Integer value))
             {
                 throw new InvalidOperationException(
@@ -124,7 +125,10 @@ namespace Libplanet.Tests.Fixtures
 
             Func<BigInteger, BigInteger, BigInteger> func = Operator.ToFunc();
             BigInteger result = func(value, Operand);
-            return context.PreviousState.SetState(context.Signer, (Bencodex.Types.Integer)result);
+            return context.PreviousState.SetAccount(
+                context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).SetState(
+                    context.Signer, (Bencodex.Types.Integer)result));
         }
 
         public bool Equals(Arithmetic other)

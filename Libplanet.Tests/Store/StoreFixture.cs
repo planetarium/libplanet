@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Store
                     actionEvaluator,
                     preEval,
                     out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetRawTotalDelta());
+            stateStore.Commit(null, evals.GetLegacyRawTotalDelta());
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,

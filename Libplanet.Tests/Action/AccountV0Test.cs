@@ -1,6 +1,7 @@
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
+using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -20,16 +21,20 @@ namespace Libplanet.Tests.Action
         public override int ProtocolVersion { get; } = 0;
 
         public override IActionContext CreateContext(
-            IAccount delta, Address signer) =>
-            new ActionContext(
+            IAccount delta, Address signer)
+        {
+            IWorld world = World.Create(new MockWorldState());
+            world = world.SetAccount(delta);
+            return new ActionContext(
                 signer,
                 null,
                 signer,
                 0,
                 ProtocolVersion,
-                delta,
+                world,
                 0,
                 0);
+        }
 
         [Fact]
         public override void TransferAsset()

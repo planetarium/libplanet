@@ -221,7 +221,7 @@ namespace Libplanet.Action.Tests.Common
                 Rehearsal = context.Rehearsal,
             });
 
-            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world = world.SetAccount(account);
             return world;
         }
 

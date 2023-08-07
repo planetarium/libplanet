@@ -54,7 +54,7 @@ namespace Libplanet.Action.Tests.State
             Assert.Null(world.GetAccount(accountAddress));
 
             // TestGetAccount() will retrieve account from World.Delta
-            world = world.SetAccount(accountAddress, mockAccount);
+            world = world.SetAccount(mockAccount);
             Assert.Single(world.Delta.UpdatedAddresses);
             Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());
             Assert.Equal(mockAccount, world.GetAccount(accountAddress));
@@ -69,7 +69,7 @@ namespace Libplanet.Action.Tests.State
             // Before flush, updated accounts exists in World.Delta.
             IAccount emptyAccount = Account.Create(MockAccountState.Empty);
             Address accountAddress = RandomAddress;
-            world = world.SetAccount(accountAddress, emptyAccount);
+            world = world.SetAccount(emptyAccount);
             Assert.Single(world.Delta.UpdatedAddresses);
             Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());
 
@@ -96,15 +96,15 @@ namespace Libplanet.Action.Tests.State
 
             // world from SetAccount with legacy account address is legacy world
             IAccount account = Account.Create(MockAccountState.Empty);
-            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world = world.SetAccount(account);
             Assert.True(world.Legacy);
 
             // World from SetAccount with non-legacy account address is non-legacy world
-            world = world.SetAccount(RandomAddress, account);
+            world = world.SetAccount(account);
             Assert.False(world.Legacy);
 
             // Once world has been set as non-legacy, it cannot recover to legacy world
-            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world = world.SetAccount(account);
             Assert.False(world.Legacy);
         }
     }

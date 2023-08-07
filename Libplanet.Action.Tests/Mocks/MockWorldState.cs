@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 
@@ -20,10 +21,13 @@ namespace Libplanet.Action.Tests.Mocks
 
         public bool Legacy { get; private set; }
 
-        IAccount IWorldState.GetAccount(Address address)
+        public IAccount GetAccount(Address address)
         {
             _accounts.TryGetValue(address, out IAccount account);
             return account;
         }
+
+        public IWorldState SetAccount(Address address, IAccount account) =>
+            new MockWorldState(_accounts.SetItem(address, account));
     }
 }

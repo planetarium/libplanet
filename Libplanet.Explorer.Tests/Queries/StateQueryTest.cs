@@ -15,6 +15,10 @@ using Libplanet.Types.Consensus;
 using Libplanet.Explorer.Queries;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
+using Libplanet.Action;
+using Libplanet.Common;
+using System.Security.Cryptography;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -173,65 +177,102 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
-        public IValue GetState(Address address, BlockHash? offset) =>
-            GetBlockState(offset).GetState(address);
-
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockState(offset).GetStates(addresses);
-
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetBalance(address, currency);
+            new MockAccount(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetTotalSupply(currency);
+            new MockAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockState(offset).GetValidatorSet();
+            new MockAccount(ReservedAddresses.LegacyAccount).GetValidatorSet();
 
-        public IBlockState GetBlockState(BlockHash? offset) => new MockBlockState(offset);
-    }
 
-    private class MockBlockState : IBlockState
-    {
-        public MockBlockState(BlockHash? blockHash)
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
+            => new MockAccount(accountAddress).GetState(address);
+
+        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset)
+            => new MockAccount(accountAddress).GetStates(addresses);
+
+        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) => new MockAccount(address);
+
+
+        public ITrie GetBlockStateRoot(BlockHash? offset)
         {
-            BlockHash = blockHash;
+            throw new System.NotImplementedException();
         }
 
-        public BlockHash? BlockHash { get; }
+        public ITrie GetStateRoot(HashDigest<SHA256>? srh)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IWorldState GetWorldState(BlockHash? offset)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    private class MockAccount : IAccount
+    {
+        public MockAccount(Address address)
+        {
+            Address = address;
+        }
+
+        public Address Address { get; }
+
+        public IAccountDelta Delta => throw new System.NotImplementedException();
+
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets => throw new System.NotImplementedException();
 
         public IValue GetState(Address address) => GetStates(new[] { address }).First();
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
-            BlockHash is { } _
-                ? addresses.Select(address => address.ToString() switch
-                {
-                    "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
-                    _ => null,
-                }).ToImmutableList()
-                : addresses.Select(address => (IValue)null).ToList();
+            addresses.Select(address => address.ToString() switch
+            {
+                "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
+                _ => null,
+            }).ToImmutableList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            BlockHash is { } _
-                ? currency * 123
-                : currency * 0;
+            currency * 123;
 
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            BlockHash is { } _
-                ? currency * 10000
-                : currency * 0;
+            currency * 10000;
 
         public ValidatorSet GetValidatorSet() =>
-            BlockHash is { } _
-                ? new ValidatorSet(new List<Validator>
-                {
-                    new(
-                        PublicKey.FromHex(
-                            "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                        new BigInteger(1)),
-                })
-                : new ValidatorSet();
+            new ValidatorSet(new List<Validator>
+            {
+                new(
+                    PublicKey.FromHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                    new BigInteger(1)),
+            });
+
+        public IAccount SetState(Address address, IValue state)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount SetValidator(Validator validator)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
