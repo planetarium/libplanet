@@ -81,14 +81,14 @@ namespace Libplanet.Action.Sys
 
             if (ValidatorSet is { } vs)
             {
-                IAccount account = Account.Create(world.GetValidatorSetAccountState());
+                IAccount account = world.GetValidatorSetAccountState();
 
                 foreach (Validator v in vs.Validators)
                 {
-                    account = Account.Create(account.SetValidator(v));
+                    account = account.SetValidator(v);
                 }
 
-                world = world.SetValidatorSetAccount(account);
+                world = world.SetAccount(account);
             }
 
             if (States is { } s)

@@ -64,7 +64,7 @@ namespace Libplanet.Action.State
         /// </returns>
         internal static IWorld Create(IWorldState previousWorld) =>
             new World(previousWorld)
-            { Legacy = previousWorld.GetAccount(ReservedAddresses.LegacyAccount) is null };
+            { Legacy = previousWorld.Legacy };
 
         /// <summary>
         /// Creates a null worlds from given <see cref="IWorld"/>.

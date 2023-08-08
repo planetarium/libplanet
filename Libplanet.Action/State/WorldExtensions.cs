@@ -12,16 +12,13 @@ namespace Libplanet.Action.State
                     ? ReservedAddresses.LegacyAccount
                     : ReservedAddresses.FungibleAssetsAccount);
 
-        internal static IAccountState GetValidatorSetAccountState(this IWorldState world) =>
+        internal static IAccount GetValidatorSetAccountState(this IWorldState world) =>
             world.GetAccount(
                 world.Legacy
                     ? ReservedAddresses.LegacyAccount
                     : ReservedAddresses.ValidatorSetAddress);
 
         internal static IWorld SetFungibleAssetsAccount(this IWorld world, IAccount account) =>
-            world.SetAccount(account);
-
-        internal static IWorld SetValidatorSetAccount(this IWorld world, IAccount account) =>
             world.SetAccount(account);
     }
 }
