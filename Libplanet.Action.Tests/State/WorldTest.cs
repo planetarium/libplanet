@@ -51,7 +51,7 @@ namespace Libplanet.Action.Tests.State
 
             MockWorldState baseWorld = new MockWorldState();
             IWorld world = World.Create(baseWorld);
-            Assert.Null(world.GetAccount(accountAddress));
+            Assert.NotEqual(mockAccount, world.GetAccount(accountAddress));
 
             // TestGetAccount() will retrieve account from World.Delta
             world = world.SetAccount(mockAccount);
@@ -87,7 +87,7 @@ namespace Libplanet.Action.Tests.State
                 ImmutableDictionary<Address, IAccount>.Empty.Add(
                     ReservedAddresses.LegacyAccount, Account.Create(MockAccountState.Empty)));
             IWorld world = World.Create(baseWorldNonLegacy);
-            Assert.False(world.Legacy);
+            Assert.True(world.Legacy);
 
             // New world does not have legacy account is legacy world
             MockWorldState baseWorld = new MockWorldState();
@@ -95,16 +95,18 @@ namespace Libplanet.Action.Tests.State
             Assert.True(world.Legacy);
 
             // world from SetAccount with legacy account address is legacy world
-            IAccount account = Account.Create(MockAccountState.Empty);
-            world = world.SetAccount(account);
+            IAccount legacyAccount = Account.Create(MockAccountState.Empty);
+            world = world.SetAccount(legacyAccount);
             Assert.True(world.Legacy);
 
             // World from SetAccount with non-legacy account address is non-legacy world
-            world = world.SetAccount(account);
+            IAccount modernAccount = Account.Create(
+                new MockAccountState(new PrivateKey().ToAddress()));
+            world = world.SetAccount(modernAccount);
             Assert.False(world.Legacy);
 
             // Once world has been set as non-legacy, it cannot recover to legacy world
-            world = world.SetAccount(account);
+            world = world.SetAccount(legacyAccount);
             Assert.False(world.Legacy);
         }
     }

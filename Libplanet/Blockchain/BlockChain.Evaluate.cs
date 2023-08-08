@@ -112,7 +112,18 @@ namespace Libplanet.Blockchain
 
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                IWorldState latestState = evaluations.Last().OutputState;
+
+                IWorldState latestState;
+
+                if (evaluations.Count > 0)
+                {
+                    latestState = evaluations.Last().OutputState;
+                }
+                else
+                {
+                    latestState = _blockChainStates.GetWorldState(block.PreviousHash);
+                }
+
                 StateCommitter committer;
                 if (latestState.Legacy)
                 {

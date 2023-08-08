@@ -38,7 +38,7 @@ namespace Libplanet.Action.State
         {
             return Delta.Accounts.TryGetValue(address, out IAccount? account)
                 ? account!
-                : Account.Create(_baseState.GetAccount(address));
+                : _baseState.GetAccount(address);
         }
 
         /// <inheritdoc/>

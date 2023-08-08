@@ -55,20 +55,23 @@ namespace Libplanet.Action.Tests.Mocks
             IImmutableDictionary<Address, IValue> states,
             IImmutableDictionary<(Address Address, Currency Currency), BigInteger> fungibles,
             IImmutableDictionary<Currency, BigInteger> totalSupplies,
-            ValidatorSet validatorSet)
+            ValidatorSet validatorSet,
+            Address? address = null)
         {
             _states = states;
             _fungibles = fungibles;
             _totalSupplies = totalSupplies;
             _validatorSet = validatorSet;
+            Address = (address is { } addr) ? addr : ReservedAddresses.LegacyAccount;
         }
 
-        private MockAccountState()
+        public MockAccountState(Address? address = null)
             : this(
                 ImmutableDictionary<Address, IValue>.Empty,
                 ImmutableDictionary<(Address Address, Currency Currency), BigInteger>.Empty,
                 ImmutableDictionary<Currency, BigInteger>.Empty,
-                new ValidatorSet())
+                new ValidatorSet(),
+                address)
         {
         }
 
@@ -82,7 +85,12 @@ namespace Libplanet.Action.Tests.Mocks
 
         public ValidatorSet ValidatorSet => _validatorSet;
 
-        public Address Address => default;
+        public Address Address { get; private set; }
+
+        public void SetAddress(Address address)
+        {
+            Address = address;
+        }
 
         public IValue GetState(Address address) => _states.TryGetValue(address, out IValue value)
             ? value

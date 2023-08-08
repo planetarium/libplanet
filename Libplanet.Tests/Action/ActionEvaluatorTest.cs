@@ -708,10 +708,12 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevState.Delta.UpdatedAddresses);
+                    prevState.GetAccount(
+                        ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i].Value, prevState.GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(txA.Signer));
-                Assert.Equal(new[] { txA.Signer }, outputState.Delta.UpdatedAddresses);
+                Assert.Equal(new[] { txA.Signer }, outputState.GetAccount(
+                    ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i + 1].Value, outputState.GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(txA.Signer));
                 Assert.Null(eval.Exception);
@@ -759,10 +761,12 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevState.Delta.UpdatedAddresses);
+                    prevState.GetAccount(
+                        ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i].Value, prevState.GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(txB.Signer));
-                Assert.Equal(new[] { txB.Signer }, outputState.Delta.UpdatedAddresses);
+                Assert.Equal(new[] { txB.Signer }, outputState.GetAccount(
+                    ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i + 1].Value, outputState.GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(txB.Signer));
                 if (i == 1)
