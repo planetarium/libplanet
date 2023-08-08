@@ -21,9 +21,6 @@ namespace Libplanet.Store.Trie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
-        private static readonly ConcurrentDictionary<Fingerprint, WeakReference<IValue>> _valueCache
-            = new ConcurrentDictionary<Fingerprint, WeakReference<IValue>>();
-
         private static readonly Codec _codec;
 
         private readonly bool _secure;
@@ -256,25 +253,15 @@ namespace Libplanet.Store.Trie
                 // It assumes every length of value nodes is same with Address' hexadecimal
                 // string's hexadecimal string's size.
                 bool isValueNode = GuessValueNodeByPath(path);
-                bool noFingerprint = value.All(x => x != '*');
-                if (noFingerprint)
-                {
-                    yield return (key, value);
 
-                    // To avoid decode value node, it decodes when only there is '*' character,
-                    // fingerprint.
-                    if (isValueNode)
-                    {
-                        continue;
-                    }
+                yield return (key, value);
+
+                if (isValueNode)
+                {
+                    continue;
                 }
 
                 var node = NodeDecoder.Decode(_codec.Decode(value));
-                if (!noFingerprint && !(node is null))
-                {
-                    yield return (key, _codec.Encode(node.ToBencodex()));
-                }
-
                 if (isValueNode)
                 {
                     continue;
@@ -322,17 +309,6 @@ namespace Libplanet.Store.Trie
 
                     default:
                         throw new InvalidOperationException();
-                }
-            }
-        }
-
-        private static void FreeValueCache()
-        {
-            foreach (KeyValuePair<Fingerprint, WeakReference<IValue>> kv in _valueCache)
-            {
-                if (!kv.Value.TryGetTarget(out _))
-                {
-                    _valueCache.TryRemove(kv.Key, out _);
                 }
             }
         }

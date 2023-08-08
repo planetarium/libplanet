@@ -96,8 +96,6 @@ namespace Libplanet.Tests.Store
             stateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(second.Hash));
 
             // It will stay at the same count of nodes.
-            // FIXME: Bencodex fingerprints also should be tracked.
-            //        https://github.com/planetarium/libplanet/issues/1653
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
 
