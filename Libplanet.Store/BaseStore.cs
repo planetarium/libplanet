@@ -188,12 +188,10 @@ namespace Libplanet.Store
                     )
                 )
             );
-            var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
             var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
             var serialized = Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
-                .Add("favDelta", new Dictionary(favDelta))
                 .Add("updatedFAVs", new Dictionary(updatedFAVs));
 
             return serialized;
@@ -239,15 +237,12 @@ namespace Libplanet.Store
                         kv => kv.Value is List l && l.Any() ? l[0] : null
                     );
                 IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-                    favDelta = DeserializeGroupedFAVs(d.GetValue<Dictionary>("favDelta"));
-                IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
                     updatedFAVs = DeserializeGroupedFAVs(d.GetValue<Dictionary>("updatedFAVs"));
 
                 return new TxSuccess(
                     blockHash,
                     txid,
                     sDelta,
-                    favDelta,
                     updatedFAVs
                 );
             }

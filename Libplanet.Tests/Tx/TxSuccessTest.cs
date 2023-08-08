@@ -24,9 +24,6 @@ namespace Libplanet.Tests.Tx
         private readonly ImmutableDictionary<Address, IValue> _updatedStates;
 
         private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-            _fungibleAssetsDelta;
-
-        private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
             _updatedFungibleAssets;
 
         private readonly TxSuccess _fx;
@@ -58,18 +55,10 @@ namespace Libplanet.Tests.Tx
                         c => c * random.Next()
                     )
             );
-            _fungibleAssetsDelta = _updatedFungibleAssets
-                .ToImmutableDictionary(
-                    kv => kv.Key,
-                    kv => (IImmutableDictionary<Currency, FAV>)kv.Value
-                        .ToImmutableDictionary(
-                            pair => pair.Key,
-                            pair => pair.Key * random.Next(1, int.MaxValue)));
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,
                 _updatedStates,
-                _fungibleAssetsDelta,
                 _updatedFungibleAssets
             );
         }
@@ -80,7 +69,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_blockHash, _fx.BlockHash);
             Assert.Equal(_txid, _fx.TxId);
             Assert.Equal(_updatedStates, _fx.UpdatedStates);
-            Assert.Equal(_fungibleAssetsDelta, _fx.FungibleAssetsDelta);
             Assert.Equal(_updatedFungibleAssets, _fx.UpdatedFungibleAssets);
         }
 
@@ -97,7 +85,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_blockHash, s.BlockHash);
             Assert.Equal(_txid, s.TxId);
             Assert.Equal(_fx.UpdatedStates, s.UpdatedStates);
-            Assert.Equal(_fx.FungibleAssetsDelta, s.FungibleAssetsDelta);
             Assert.Equal(_fx.UpdatedFungibleAssets, s.UpdatedFungibleAssets);
         }
     }

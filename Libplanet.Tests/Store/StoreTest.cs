@@ -400,7 +400,6 @@ namespace Libplanet.Tests.Store
                 Assert.Equal(expected.TxId, success.TxId);
                 Assert.Equal(expected.BlockHash, success.BlockHash);
                 Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
-                Assert.Equal(expected.FungibleAssetsDelta, success.FungibleAssetsDelta);
                 Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
             }
 
@@ -427,14 +426,6 @@ namespace Libplanet.Tests.Store
                     random.NextAddress(),
                     (Text)"state value"
                 ),
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
-                    .Add(
-                        random.NextAddress(),
-                        ImmutableDictionary<Currency, FAV>.Empty.Add(
-                            DumbAction.DumbCurrency,
-                            DumbAction.DumbCurrency * 5
-                        )
-                    ),
                 ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
                     .Add(
                         random.NextAddress(),

@@ -34,12 +34,6 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.ExceptionName
             );
 
-            Field<BencodexValueType>(
-                nameof(TxResult.ExceptionMetadata),
-                description: "The hexadecimal string of the exception metadata. (when only failed)",
-                resolve: context => context.Source.ExceptionMetadata
-            );
-
             Field<ListGraphType<NonNullGraphType<UpdatedStateType>>>(
                 nameof(TxResult.UpdatedStates),
                 resolve: context => context.Source.UpdatedStates?
@@ -49,12 +43,6 @@ namespace Libplanet.Explorer.GraphTypes
             Field<ListGraphType<NonNullGraphType<FungibleAssetBalancesType>>>(
                 nameof(TxResult.UpdatedFungibleAssets),
                 resolve: context => context.Source.UpdatedFungibleAssets?
-                    .Select(pair => new FungibleAssetBalances(pair.Key, pair.Value.Values))
-            );
-
-            Field<ListGraphType<NonNullGraphType<FungibleAssetBalancesType>>>(
-                nameof(TxResult.FungibleAssetsDelta),
-                resolve: context => context.Source.FungibleAssetsDelta?
                     .Select(pair => new FungibleAssetBalances(pair.Key, pair.Value.Values))
             );
         }

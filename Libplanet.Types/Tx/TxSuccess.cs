@@ -41,14 +41,12 @@ namespace Libplanet.Types.Tx
             BlockHash blockHash,
             TxId txId,
             IImmutableDictionary<Address, IValue> updatedStates,
-            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> fungibleAssetsDelta,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
                 updatedFungibleAssets
         )
             : base(blockHash, txId)
         {
             UpdatedStates = updatedStates;
-            FungibleAssetsDelta = fungibleAssetsDelta;
             UpdatedFungibleAssets = updatedFungibleAssets;
         }
 
@@ -61,9 +59,6 @@ namespace Libplanet.Types.Tx
                 kv => new Address(kv.Key),
                 kv => kv.Value
             );
-            FungibleAssetsDelta = DecodeFungibleAssetGroups(
-                info.GetValue<byte[]>(nameof(FungibleAssetsDelta))
-            );
             UpdatedFungibleAssets = DecodeFungibleAssetGroups(
                 info.GetValue<byte[]>(nameof(UpdatedFungibleAssets))
             );
@@ -74,16 +69,6 @@ namespace Libplanet.Types.Tx
         /// </summary>
         [Pure]
         public IImmutableDictionary<Address, IValue> UpdatedStates { get; }
-
-        /// <summary>
-        /// <see cref="Address"/>es and sets of
-        /// <see cref="Currency"/> whose fungible assets have been updated by the actions in
-        /// the transaction within the block.  Included <see cref="FungibleAssetValue"/>s are
-        /// the delta values (plus or minus) that the transaction makes.
-        /// </summary>
-        [Pure]
-        public IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-            FungibleAssetsDelta { get; }
 
         /// <summary>
         /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
@@ -115,10 +100,6 @@ namespace Libplanet.Types.Tx
                             new KeyValuePair<IKey, IValue>(
                                 new Binary(kv.Key.ToByteArray()),
                                 kv.Value))))
-            );
-            info.AddValue(
-                nameof(FungibleAssetsDelta),
-                EncodeFungibleAssetGroups(FungibleAssetsDelta)
             );
             info.AddValue(
                 nameof(UpdatedFungibleAssets),

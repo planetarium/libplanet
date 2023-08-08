@@ -250,13 +250,9 @@ namespace Libplanet.Explorer.Queries
                                 null,
                                 null,
                                 null,
-                                null,
-                                null,
                                 null)
                             : new TxResult(
                                 TxStatus.INVALID,
-                                null,
-                                null,
                                 null,
                                 null,
                                 null,
@@ -279,9 +275,7 @@ namespace Libplanet.Explorer.Queries
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 null,
-                                null,
                                 txSuccess.UpdatedStates,
-                                txSuccess.FungibleAssetsDelta,
                                 txSuccess.UpdatedFungibleAssets
                             ),
                             TxFailure txFailure => new TxResult(
@@ -289,8 +283,6 @@ namespace Libplanet.Explorer.Queries
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 txFailure.ExceptionName,
-                                txFailure.ExceptionMetadata,
-                                null,
                                 null,
                                 null
                             ),
@@ -305,8 +297,6 @@ namespace Libplanet.Explorer.Queries
                     {
                         return new TxResult(
                             TxStatus.INVALID,
-                            null,
-                            null,
                             null,
                             null,
                             null,
