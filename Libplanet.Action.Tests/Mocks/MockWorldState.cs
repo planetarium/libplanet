@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 

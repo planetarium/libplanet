@@ -31,7 +31,6 @@ namespace Libplanet.Action.Tests.Sys
                 }.ToImmutableDictionary(),
             }.ToImmutableDictionary();
 
-
         [Fact]
         public void Constructor()
         {

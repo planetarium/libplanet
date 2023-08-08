@@ -39,7 +39,7 @@ namespace Libplanet.Action.Tests.State
             IWorld world = World.Create(baseWorld);
             Assert.IsType<World>(world);
             // GetAccount() will retrieve account from World._baseState
-            Assert.Equal(mockAccount, world.GetAccount(accountAddress));
+            TestUtils.AssertAccountEqual(mockAccount, world.GetAccount(accountAddress));
         }
 
         [Fact]
