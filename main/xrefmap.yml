@@ -33068,15 +33068,15 @@ references:
   commentId: T:Libplanet.Types.Tx.TxSuccess
   fullName: Libplanet.Types.Tx.TxSuccess
   nameWithType: TxSuccess
-- uid: Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
-  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Types_Assets_Currency_Libplanet_Types_Assets_FungibleAssetValue___System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Types_Assets_Currency_Libplanet_Types_Assets_FungibleAssetValue___
-  commentId: M:Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
-  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
-  fullName: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue>>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue>>)
-  fullName.vb: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, Bencodex.Types.IValue), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue)), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue)))
-  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+- uid: Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
+  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Types_Assets_Currency_Libplanet_Types_Assets_FungibleAssetValue___
+  commentId: M:Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
+  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
+  fullName: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue>>)
+  fullName.vb: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, Bencodex.Types.IValue), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue)))
+  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
+  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
 - uid: Libplanet.Types.Tx.TxSuccess.#ctor*
   name: TxSuccess
   href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess__ctor_
@@ -33084,19 +33084,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.TxSuccess.TxSuccess
   nameWithType: TxSuccess.TxSuccess
-- uid: Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta
-  name: FungibleAssetsDelta
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_FungibleAssetsDelta
-  commentId: P:Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta
-  fullName: Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta
-  nameWithType: TxSuccess.FungibleAssetsDelta
-- uid: Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta*
-  name: FungibleAssetsDelta
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_FungibleAssetsDelta_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.FungibleAssetsDelta
-  nameWithType: TxSuccess.FungibleAssetsDelta
 - uid: Libplanet.Types.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
