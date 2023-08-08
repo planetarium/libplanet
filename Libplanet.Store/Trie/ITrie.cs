@@ -34,6 +34,14 @@ namespace Libplanet.Store.Trie
         ITrie Set(in KeyBytes key, IValue value);
 
         /// <summary>
+        /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.
+        /// </summary>
+        /// <param name="keys">The key used in <see cref="Set"/> to store a value.</param>
+        /// <returns>The value associated to the specified <paramref name="key"/>.  Absent
+        /// value is represented as <see langword="null"/>.</returns>
+        public IValue? Get(KeyBytes key);
+
+        /// <summary>
         /// Gets the values stored with <paramref name="keys"/> in <see cref="Set"/>.
         /// </summary>
         /// <param name="keys">The keys used in <see cref="Set"/> to store a value.</param>

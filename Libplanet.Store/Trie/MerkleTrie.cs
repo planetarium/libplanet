@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -95,26 +94,29 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
 
+        /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
+        public IValue? Get(KeyBytes key)
+        {
+            PathResolution resolution = ResolvePath(Root, new PathCursor(key, _secure));
+            while (resolution.Next is (HashDigest<SHA256> nodeHash, PathCursor cursor))
+            {
+                KeyBytes nextNodeHash = new KeyBytes(nodeHash.ByteArray);
+                byte[] nodeValue = KeyValueStore.Get(nextNodeHash);
+                IValue intermediateEncoding = _codec.Decode(nodeValue);
+                INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
+                resolution = ResolvePath(nextNode, cursor);
+            }
+
+            return resolution.Value;
+        }
+
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
         {
-            PathResolution[] resolutions = keys
-                .Select(k => ResolvePath(Root, new PathCursor(k, _secure)))
-                .ToArray();
-
-            for (int i = 0; i < resolutions.Length; i++)
-            {
-                while (resolutions[i].Next is (HashDigest<SHA256> nodeHash, PathCursor cursor))
-                {
-                    KeyBytes nextNodeHash = new KeyBytes(nodeHash.ByteArray);
-                    byte[] nodeValue = KeyValueStore.Get(nextNodeHash);
-                    IValue intermediateEncoding = _codec.Decode(nodeValue);
-                    INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
-                    resolutions[i] = ResolvePath(nextNode, cursor);
-                }
-            }
-
-            return resolutions.Select(resolution => resolution.Value).ToArray();
+            const int parallelThreshold = 4;
+            return keys.Count <= parallelThreshold
+                ? keys.Select(key => Get(key)).ToArray()
+                : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
 
         /// <inheritdoc/>
