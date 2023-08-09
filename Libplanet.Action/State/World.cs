@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.State
@@ -75,10 +76,17 @@ namespace Libplanet.Action.State
         /// <exception cref="ArgumentException">Thrown if given <paramref name="world"/>
         /// is not <see cref="World"/>.
         /// </exception>
-        internal static IWorld Flush(IWorld world) =>
-            world is World impl
+        internal static IWorld Flush(IWorld world)
+        {
+            foreach (IAccount account in world.Delta.Accounts.Values)
+            {
+                world = world.SetAccount(Account.Flush(account));
+            }
+
+            return world is World impl
                 ? new World(impl) { Legacy = impl.Legacy }
                 : throw new ArgumentException(
                     $"Unknown type for {nameof(world)}: {world.GetType()}");
+        }
     }
 }

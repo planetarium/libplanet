@@ -475,6 +475,8 @@ namespace Libplanet.Tests.Action
             }
 
             previousState = World.Create(evals1.Last().OutputState);
+            previousState = previousState.SetAccount(
+                Account.Create(previousState.GetAccount(ReservedAddresses.LegacyAccount)));
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
