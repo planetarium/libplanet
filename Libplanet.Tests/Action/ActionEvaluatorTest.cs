@@ -616,9 +616,13 @@ namespace Libplanet.Tests.Action
                 blockHeader: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
-            Assert.Equal(
-                evaluations[3].OutputState.Delta.Accounts,
-                delta.Delta.Accounts);
+            foreach (
+                var (expected, actual) in
+                evaluations[3].OutputState.Delta.Accounts.Values.Zip(
+                delta.Delta.Accounts.Values))
+            {
+                Libplanet.Action.Tests.TestUtils.AssertAccountEqual(expected, actual);
+            }
 
             Assert.DoesNotContain(
                 (addresses[2], "R"),

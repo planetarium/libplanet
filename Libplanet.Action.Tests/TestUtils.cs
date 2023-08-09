@@ -8,7 +8,7 @@ using Xunit.Sdk;
 
 namespace Libplanet.Action.Tests
 {
-    internal static class TestUtils
+    public static class TestUtils
     {
         private static readonly System.Random _random = new System.Random();
 

@@ -132,7 +132,7 @@ namespace Libplanet.Action.Tests.Sys
                     new List(
                         _validatorSet.Bencoded,
                         Dictionary.Empty.Add(
-                            ReservedAddresses.LegacyAccount.ToByteArray(),
+                            default(Address).ToByteArray(),
                             Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")))
                     );
             var action = new Initialize();
