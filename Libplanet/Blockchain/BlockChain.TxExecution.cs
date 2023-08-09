@@ -55,12 +55,10 @@ namespace Libplanet.Blockchain
                             pair => (
                             pair.Item1,
                             pair.Item2,
-                            outputStates.Delta.Accounts.Values.Aggregate(
-                                pair.Item2 * 0,
-                                (total, next) => total + next.GetBalance(pair.Item1, pair.Item2)) -
-                            prevStates.Delta.Accounts.Values.Aggregate(
-                                pair.Item2 * 0,
-                                (total, next) => total + next.GetBalance(pair.Item1, pair.Item2))))
+                            outputStates.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(
+                                pair.Item1, pair.Item2) -
+                            prevStates.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(
+                                pair.Item1, pair.Item2)))
                             .GroupBy(triple => triple.Item1)
                             .ToImmutableDictionary(
                             group => group.Key,
@@ -73,9 +71,8 @@ namespace Libplanet.Blockchain
                             pair => (
                             pair.Item1,
                             pair.Item2,
-                            outputStates.Delta.Accounts.Values.Aggregate(
-                                pair.Item2 * 0,
-                                (total, next) => total + next.GetBalance(pair.Item1, pair.Item2))))
+                            outputStates.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(
+                                pair.Item1, pair.Item2)))
                             .GroupBy(triple => triple.Item1)
                             .ToImmutableDictionary(
                                 group => group.Key,
