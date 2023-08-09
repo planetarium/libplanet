@@ -22405,6 +22405,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Commit
   nameWithType: ITrie.Commit
+- uid: Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)
+  name: Get(KeyBytes)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)
+  nameWithType: ITrie.Get(KeyBytes)
 - uid: Libplanet.Store.Trie.ITrie.Get(System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
   name: Get(IReadOnlyList<KeyBytes>)
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
@@ -22860,6 +22866,12 @@ references:
   commentId: F:Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   fullName: Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   nameWithType: MerkleTrie.EmptyRootHash
+- uid: Libplanet.Store.Trie.MerkleTrie.Get(Libplanet.Store.Trie.KeyBytes)
+  name: Get(KeyBytes)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Get_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Get(Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.MerkleTrie.Get(Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MerkleTrie.Get(KeyBytes)
 - uid: Libplanet.Store.Trie.MerkleTrie.Get(System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
   name: Get(IReadOnlyList<KeyBytes>)
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__

@@ -72,6 +72,9 @@
 <li>(Libplanet.Types) Removed <code>TxSuccess.FungibleAssetsDelta</code>  [<a href="https://github.com/planetarium/libplanet/pull/3357">#3357</a>]</li>
 <li>(Libplanet.Explorer) Removed <code>TxResult.ExceptionMetadata</code> and
 <code>TxResult.FungibleAssetsDelta</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3357">#3357</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.Get(KeyBytes)</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3359">#3359</a>]</li>
+<li>(Libplanet.Store) Optimized <code>MerkleTrie.Get()</code> by allowing parallel
+processing when more than 4 <code>KeyBytes</code> keys are given.  [<a href="https://github.com/planetarium/libplanet/pull/3359">#3359</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
