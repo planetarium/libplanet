@@ -4,7 +4,12 @@ Libplanet changelog
 Version 3.1.1
 -------------
 
-To be released.
+ -  Fixed a bug where `Swarm` checks block existent when preloading.
+    [[#3253], [#3353], [#3360]]
+
+[#3253]: https://github.com/planetarium/libplanet/issues/3253
+[#3353]: https://github.com/planetarium/libplanet/pull/3353
+[#3360]: https://github.com/planetarium/libplanet/pull/3360
 
 
 Version 3.1.0
