@@ -45,9 +45,9 @@ namespace Libplanet.Action.Tests.State
         [Fact]
         public void SetAccount()
         {
-            IAccount mockAccount = Account.Create(
-                MockAccountState.Empty.SetState(RandomAddress, new Integer(1)));
             Address accountAddress = RandomAddress;
+            IAccount mockAccount = Account.Create(
+                new MockAccountState(accountAddress).SetState(RandomAddress, new Integer(1)));
 
             MockWorldState baseWorld = new MockWorldState();
             IWorld world = World.Create(baseWorld);
@@ -67,8 +67,9 @@ namespace Libplanet.Action.Tests.State
             IWorld world = World.Create(baseWorld);
 
             // Before flush, updated accounts exists in World.Delta.
-            IAccount emptyAccount = Account.Create(MockAccountState.Empty);
             Address accountAddress = RandomAddress;
+            IAccount emptyAccount = Account.Create(new MockAccountState(accountAddress));
+
             world = world.SetAccount(emptyAccount);
             Assert.Single(world.Delta.UpdatedAddresses);
             Assert.Equal(accountAddress, world.Delta.UpdatedAddresses.First());

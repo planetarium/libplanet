@@ -71,7 +71,7 @@ namespace Libplanet.Action.Tests.Sys
                 nextStates.GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet());
             Assert.Equal(
                 _states[default][default],
-                nextStates.GetAccount(ReservedAddresses.LegacyAccount).GetState(default));
+                nextStates.GetAccount(default).GetState(default));
         }
 
         [Fact]
@@ -115,7 +115,10 @@ namespace Libplanet.Action.Tests.Sys
                         "values",
                         new List(
                             _validatorSet.Bencoded,
-                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"))),
+                            Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                )))),
                 action.PlainValue);
         }
 
@@ -128,7 +131,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                            ReservedAddresses.LegacyAccount.ToByteArray(),
+                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")))
+                    );
             var action = new Initialize();
             action.LoadPlainValue(encoded);
 

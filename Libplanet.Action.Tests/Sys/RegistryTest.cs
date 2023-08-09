@@ -41,7 +41,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                ))));
             IAction action = Registry.Deserialize(value);
             var initialize = Assert.IsType<Initialize>(action);
             Assert.Equal(_validatorSet, initialize.ValidatorSet);
@@ -87,7 +90,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                ))));
             TestUtils.AssertBencodexEqual(expected, actual);
         }
 

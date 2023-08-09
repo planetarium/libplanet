@@ -127,7 +127,8 @@ namespace Libplanet.Action.Tests.Mocks
                 _states.SetItem(address, state),
                 _fungibles,
                 _totalSupplies,
-                _validatorSet);
+                _validatorSet,
+                Address);
 
         public MockAccountState SetBalance(
             Address address, FungibleAssetValue amount) =>
@@ -143,7 +144,8 @@ namespace Libplanet.Action.Tests.Mocks
                 _states,
                 _fungibles.SetItem(pair, rawAmount),
                 _totalSupplies,
-                _validatorSet);
+                _validatorSet,
+                Address);
 
         public MockAccountState AddBalance(Address address, FungibleAssetValue amount) =>
             AddBalance((address, amount.Currency), amount.RawValue);
@@ -191,7 +193,8 @@ namespace Libplanet.Action.Tests.Mocks
                         _states,
                         _fungibles,
                         _totalSupplies.SetItem(currency, rawAmount),
-                        _validatorSet)
+                        _validatorSet,
+                        Address)
                     : throw new ArgumentException(
                         $"Given {currency}'s total supply is capped at {maximumSupply.RawValue} " +
                         $"and cannot be set to {rawAmount}.")
@@ -221,6 +224,7 @@ namespace Libplanet.Action.Tests.Mocks
                 _states,
                 _fungibles,
                 _totalSupplies,
-                _validatorSet.Update(validator));
+                _validatorSet.Update(validator),
+                Address);
     }
 }
