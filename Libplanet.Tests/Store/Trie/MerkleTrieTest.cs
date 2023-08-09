@@ -63,10 +63,10 @@ namespace Libplanet.Tests.Store.Trie
                 FromString("1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"),
                 trie.Hash
             );
-            Assert.Null(trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            Assert.Null(trie.Get(new KeyBytes(0xbe, 0xef)));
+            Assert.Null(trie.Get(new KeyBytes(0x11, 0x22)));
+            Assert.Null(trie.Get(new KeyBytes(0xaa, 0xbb)));
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xbe, 0xef), Null.Value);
             trie = commit ? trie.Commit() : trie;
@@ -74,10 +74,10 @@ namespace Libplanet.Tests.Store.Trie
                 FromString("16fc25f43edd0c2d2cb6e3cc3827576e57f4b9e04f8dc3a062c7fe59041f77bd"),
                 trie.Hash
             );
-            AssertBencodexEqual(Null.Value, trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(Null.Value, trie.Get(new KeyBytes(0xbe, 0xef)));
+            Assert.Null(trie.Get(new KeyBytes(0x11, 0x22)));
+            Assert.Null(trie.Get(new KeyBytes(0xaa, 0xbb)));
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xbe, 0xef), new Boolean(true));
             trie = commit ? trie.Commit() : trie;
@@ -87,11 +87,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            Assert.Null(trie.Get(new KeyBytes(0x11, 0x22)));
+            Assert.Null(trie.Get(new KeyBytes(0xaa, 0xbb)));
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0x11, 0x22), List.Empty);
             trie = commit ? trie.Commit() : trie;
@@ -101,11 +101,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(List.Empty, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
+            Assert.Null(trie.Get(new KeyBytes(0xaa, 0xbb)));
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xaa, 0xbb), new Text("hello world"));
             trie = commit ? trie.Commit() : trie;
@@ -115,14 +115,14 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(List.Empty, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
+            AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
             AssertBencodexEqual(
                 new Text("hello world"),
-                trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]
+                trie.Get(new KeyBytes(0xaa, 0xbb))
             );
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             var longText = new Text(string.Join("\n", Range(0, 1000).Select(i => $"long str {i}")));
             trie = trie.Set(new KeyBytes(0xaa, 0xbb), longText);
@@ -135,11 +135,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(List.Empty, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            AssertBencodexEqual(longText, trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            Assert.Null(trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
+            AssertBencodexEqual(longText, trie.Get(new KeyBytes(0xaa, 0xbb)));
+            Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0x12, 0x34), Dictionary.Empty);
             trie = commit ? trie.Commit() : trie;
@@ -151,11 +151,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(List.Empty, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            AssertBencodexEqual(longText, trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            AssertBencodexEqual(Dictionary.Empty, trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
+            AssertBencodexEqual(longText, trie.Get(new KeyBytes(0xaa, 0xbb)));
+            AssertBencodexEqual(Dictionary.Empty, trie.Get(new KeyBytes(0x12, 0x34)));
 
             List complexList = List.Empty
                 .Add("Hello world")
@@ -176,11 +176,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(complexList, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            AssertBencodexEqual(longText, trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            AssertBencodexEqual(Dictionary.Empty, trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(complexList, trie.Get(new KeyBytes(0x11, 0x22)));
+            AssertBencodexEqual(longText, trie.Get(new KeyBytes(0xaa, 0xbb)));
+            AssertBencodexEqual(Dictionary.Empty, trie.Get(new KeyBytes(0x12, 0x34)));
 
             Dictionary complexDict = Dictionary.Empty
                 .Add("foo", 123)
@@ -206,11 +206,11 @@ namespace Libplanet.Tests.Store.Trie
             );
             AssertBencodexEqual(
                 new Boolean(true),
-                trie.Get(new[] { new KeyBytes(0xbe, 0xef) })[0]
+                trie.Get(new KeyBytes(0xbe, 0xef))
             );
-            AssertBencodexEqual(complexList, trie.Get(new[] { new KeyBytes(0x11, 0x22) })[0]);
-            AssertBencodexEqual(longText, trie.Get(new[] { new KeyBytes(0xaa, 0xbb) })[0]);
-            AssertBencodexEqual(complexDict, trie.Get(new[] { new KeyBytes(0x12, 0x34) })[0]);
+            AssertBencodexEqual(complexList, trie.Get(new KeyBytes(0x11, 0x22)));
+            AssertBencodexEqual(longText, trie.Get(new KeyBytes(0xaa, 0xbb)));
+            AssertBencodexEqual(complexDict, trie.Get(new KeyBytes(0x12, 0x34)));
         }
     }
 }

@@ -16,6 +16,9 @@ To be released.
  -  (Libplanet.Types) Removed `TxSuccess.FungibleAssetsDelta`  [[#3357]]
  -  (Libplanet.Explorer) Removed `TxResult.ExceptionMetadata` and
     `TxResult.FungibleAssetsDelta`.  [[#3357]]
+ -  (Libplanet.Store) Added `ITrie.Get(KeyBytes)` interface method.  [[#3359]]
+ -  (Libplanet.Store) Optimized `MerkleTrie.Get()` by allowing parallel
+    processing when more than 4 `KeyBytes` keys are given.  [[#3359]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,6 +37,7 @@ To be released.
 [#3337]: https://github.com/planetarium/libplanet/pull/3337
 [#3347]: https://github.com/planetarium/libplanet/pull/3347
 [#3357]: https://github.com/planetarium/libplanet/pull/3357
+[#3359]: https://github.com/planetarium/libplanet/pull/3359
 
 
 Version 3.1.0
