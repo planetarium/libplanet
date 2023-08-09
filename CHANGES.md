@@ -4,6 +4,8 @@ Libplanet changelog
 Version 3.1.1
 -------------
 
+Released on August 9, 2023.
+
  -  Fixed a bug where `Swarm` checks block existent when preloading.
     [[#3253], [#3353], [#3360]]
 
