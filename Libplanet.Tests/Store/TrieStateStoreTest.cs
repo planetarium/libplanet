@@ -144,6 +144,49 @@ namespace Libplanet.Tests.Store
             Assert.Equal(prevStatesCount, targetStateKeyValueStore.ListKeys().Count());
         }
 
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReadOnly(bool secure)
+        {
+            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            var storedKey = new KeyBytes(TestUtils.GetRandomBytes(32));
+            var storedValue = new Binary(TestUtils.GetRandomBytes(32));
+
+            var trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(storedKey, storedValue);
+            trie = trie.Commit();
+            var storedHash = trie.Hash;
+
+            var key = new KeyBytes(TestUtils.GetRandomBytes(32));
+            var value = new Binary(TestUtils.GetRandomBytes(32));
+            var trieR = stateStore.GetStateRoot(storedHash, readOnly: true);
+
+            // Can get old value
+            Assert.Equal(storedValue, trieR.Get(storedKey));
+            Assert.Null(trieR.Get(key));
+
+            trieR = trieR.Set(key, value);
+            Assert.Equal(value, trieR.Get(key));
+            trieR = trieR.Commit();
+            var hashR = trieR.Hash;
+
+            // From trieR's perspective, it is recorded
+            // but stateStore's perspective, given root is not recorded
+            Assert.True(trieR.Recorded);
+            Assert.False(stateStore.GetStateRoot(hashR).Recorded);
+
+            var trieRW = stateStore.GetStateRoot(storedHash, readOnly: false);
+            Assert.Null(trieRW.Get(key));
+
+            trieRW = trieRW.Set(key, value);
+            trieRW = trieRW.Commit();
+            var hashRW = trieRW.Hash;
+
+            Assert.Equal(hashR, hashRW);
+            Assert.True(stateStore.GetStateRoot(hashRW).Recorded);
+        }
+
         [Fact]
 #pragma warning disable S2699 // Tests should include assertions
         public void IdempotentDispose()

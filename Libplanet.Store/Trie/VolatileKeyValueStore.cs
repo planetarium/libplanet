@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Libplanet.Store.Trie
@@ -14,7 +14,7 @@ namespace Libplanet.Store.Trie
     /// <remarks>
     /// Deletion of keys is not supported.
     /// </remarks>
-    public class VolatileKeyValueStore : IKeyValueStore
+    public class VolatileKeyValueStore : IKeyValueStore, IDisposable
     {
         private IKeyValueStore _base;
         private ConcurrentDictionary<KeyBytes, byte[]> _delta;
@@ -38,12 +38,14 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="IKeyValueStore.Get"/>
         public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
         {
-            return keys
-                .Distinct()
-                .Select(key => new KeyValuePair<KeyBytes, byte[]>(
-                    key,
-                    _delta.TryGetValue(key, out var value) ? value : _base.Get(key)))
-                .ToImmutableDictionary();
+            IEnumerable<KeyBytes> distinct = keys.Distinct();
+            IEnumerable<KeyValuePair<KeyBytes, byte[]>> fromDelta = distinct
+                .Where(key => _delta.ContainsKey(key))
+                .Select(key => new KeyValuePair<KeyBytes, byte[]>(key, _delta[key]));
+            IEnumerable<KeyValuePair<KeyBytes, byte[]>> fromBase = _base.Get(
+                distinct.Where(key => !_delta.ContainsKey(key)));
+
+            return fromDelta.Concat(fromBase).ToImmutableDictionary();
         }
 
         /// <inheritdoc cref="IKeyValueStore.Set"/>
@@ -86,7 +88,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             if (!_disposed)
             {
