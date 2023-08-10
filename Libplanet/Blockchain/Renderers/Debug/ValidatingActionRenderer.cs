@@ -41,11 +41,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
         }
 
         /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IWorld)"/>
         public override void RenderAction(
             IValue action,
             IActionContext context,
-            IAccount nextStates
+            IWorld nextStates
         )
         {
             base.RenderAction(action, context, nextStates);

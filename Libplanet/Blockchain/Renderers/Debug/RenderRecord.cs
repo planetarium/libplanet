@@ -94,7 +94,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 string stackTrace,
                 IValue action,
                 IActionContext context,
-                IAccount nextStates,
+                IWorld nextStates,
                 bool unrender = false
             )
                 : base(index, stackTrace, action, context, unrender: unrender)
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <summary>
             /// The resulting states after the action is evaluated.
             /// </summary>
-            public IAccount NextStates { get; }
+            public IWorld NextStates { get; }
 
             /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() => $"{base.ToString()} [success]";

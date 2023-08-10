@@ -17,7 +17,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <list type="number">
     /// <item><description><see cref="IRenderer.RenderBlock(Block, Block)"/> (one time)
     /// </description></item>
-    /// <item><description><see cref="RenderAction(IValue, IActionContext, IAccount)"/>
+    /// <item><description><see cref="RenderAction(IValue, IActionContext, IWorld)"/>
     /// &amp; <see cref="RenderActionError(IValue, IActionContext, Exception)"/> (zero or more
     /// times)</description>
     /// </item>
@@ -49,8 +49,8 @@ namespace Libplanet.Blockchain.Renderers
         /// That means <see cref="IActionContext.PreviousState"/> are the states right
         /// <em>before</em> this action executed.  For the states after this action executed,
         /// use the <paramref name="nextStates"/> argument instead.</param>
-        /// <param name="nextStates">The states right <em>after</em> this action executed,
-        /// which means it is equivalent to the states <paramref name="action"/>'s
+        /// <param name="nextStates">The world right <em>after</em> this action executed,
+        /// which means it is equivalent to the world <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
         /// <remarks>
         /// It is guaranteed to be called only once for an <paramref name="action"/>,
@@ -63,11 +63,11 @@ namespace Libplanet.Blockchain.Renderers
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
         /// </remarks>
-        void RenderAction(IValue action, IActionContext context, IAccount nextStates);
+        void RenderAction(IValue action, IActionContext context, IWorld nextStates);
 
         /// <summary>
         /// Does the similar things to <see cref=
-        /// "RenderAction(IValue, IActionContext, IAccount)"/>, except that this method
+        /// "RenderAction(IValue, IActionContext, IWorld)"/>, except that this method
         /// is invoked when <paramref name="action"/> has terminated with an exception.
         /// </summary>
         /// <param name="action">An action which threw an exception during execution.</param>
