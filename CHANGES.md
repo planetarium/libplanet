@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.2.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on August 10, 2023.
 
 ### Backward-incompatible API changes
 
@@ -19,20 +17,6 @@ To be released.
  -  (Libplanet.Store) Added `ITrie.Get(KeyBytes)` interface method.  [[#3359]]
  -  (Libplanet.Store) Optimized `MerkleTrie.Get()` by allowing parallel
     processing when more than 4 `KeyBytes` keys are given.  [[#3359]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3337]: https://github.com/planetarium/libplanet/pull/3337
 [#3347]: https://github.com/planetarium/libplanet/pull/3347
