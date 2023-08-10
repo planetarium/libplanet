@@ -102,7 +102,8 @@ public class GeneratedBlockChainFixture
                                     new ValidatorSet(
                                         ImmutableList<Validator>.Empty.Add(
                                             new Validator(pk.PublicKey, 1)).ToList()),
-                                    ImmutableDictionary<Address, IValue>.Empty),
+                                    ImmutableDictionary.Create<
+                                        Address, IImmutableDictionary<Address, IValue>>())
                             }.ToPlainValues()))
                 .ToImmutableList());
         Chain = BlockChain.Create(
