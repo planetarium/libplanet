@@ -6,6 +6,12 @@ Version 3.1.2
 
 To be released.
 
+ -  Upgrade *Bencodex* from [0.12.0][Bencodex 0.12.0] to
+    [0.14.0][Bencodex 0.14.0].  [[#3367]]
+
+[#3365]: https://github.com/planetarium/libplanet/pull/3367
+[Bencodex 0.14.0]: https://www.nuget.org/packages/Bencodex/0.14.0
+
 
 Version 3.1.1
 -------------
