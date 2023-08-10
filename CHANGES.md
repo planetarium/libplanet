@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.1.2
 -------------
 
-To be released.
+Released on August 10, 2023.
 
  -  Upgrade *Bencodex* from [0.12.0][Bencodex 0.12.0] to
     [0.14.0][Bencodex 0.14.0].  [[#3367]]
