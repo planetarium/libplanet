@@ -73,17 +73,20 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </exception>
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
         private ITrie GetStateRoot(BlockHash? offset)
         {
             if (!(offset is { } hash))
             {
-                return _stateStore.GetStateRoot(null);
+                return _stateStore.GetStateRoot(null, readOnly: true);
             }
             else if (_store.GetStateRootHash(hash) is { } stateRootHash)
             {
                 if (_stateStore.ContainsStateRoot(stateRootHash))
                 {
-                    return _stateStore.GetStateRoot(stateRootHash);
+                    return _stateStore.GetStateRoot(stateRootHash, readOnly: true);
                 }
                 else
                 {
