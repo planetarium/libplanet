@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -19,8 +22,10 @@ namespace Libplanet.Action.State
         /// Gets a state associated to specified <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> of the state to query.</param>
+        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
+        /// the state from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
-        /// the states from.</param>
+        /// the state from.</param>
         /// <returns>The state associated to specified <paramref name="address"/>.
         /// An absent state is represented as <see langword="null"/>.  The returned value
         /// must be the same as the single element when retrieved via
@@ -42,12 +47,14 @@ namespace Libplanet.Action.State
         /// For performance reasons, it is generally recommended to use <see cref="GetStates"/>
         /// with a batch of <see cref="Address"/>es instead of iterating over this method.
         /// </remarks>
-        IValue? GetState(Address address, BlockHash? offset);
+        IValue? GetState(Address address, Address accountAddress, BlockHash? offset);
 
         /// <summary>
         /// Gets multiple states associated to specified <paramref name="addresses"/>.
         /// </summary>
         /// <param name="addresses">The <see cref="Address"/>es of the states to query.</param>
+        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
+        /// the states from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
         /// <returns>The states associated to specified <paramref name="addresses"/>.
@@ -70,6 +77,7 @@ namespace Libplanet.Action.State
         /// </exception>
         IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
+            Address accountAddress,
             BlockHash? offset);
 
         /// <summary>
@@ -148,6 +156,33 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IBlockState"/>
-        IBlockState GetBlockState(BlockHash? offset);
+        IWorldState GetWorldState(BlockHash? offset);
+
+        IAccountState GetAccount(Address address, HashDigest<SHA256>? srh);
+
+        /// <summary>
+        /// Returns the state root associated with <see cref="BlockHash"/>
+        /// <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="BlockHash"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <paramref name="offset"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown for one of the following reasons.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="offset"/>
+        ///         cannot be found in <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
+        ITrie GetBlockStateRoot(BlockHash? offset);
+
+        ITrie GetStateRoot(HashDigest<SHA256>? srh);
     }
 }

@@ -35,6 +35,9 @@ namespace Libplanet.Action.State
         public IAccountDelta Delta { get; private set; }
 
         /// <inheritdoc/>
+        public Address Address => _baseState.Address;
+
+        /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 

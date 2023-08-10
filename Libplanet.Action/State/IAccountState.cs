@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
@@ -31,6 +33,11 @@ namespace Libplanet.Action.State
     /// </summary>
     public interface IAccountState
     {
+        /// <summary>
+        /// The <see cref="Crypto.Address"/> of this <see cref="IAccountState"/>.
+        /// </summary>
+        Address Address { get; }
+
         /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.
         /// </summary>
