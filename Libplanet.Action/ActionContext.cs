@@ -20,7 +20,7 @@ namespace Libplanet.Action
             Address miner,
             long blockIndex,
             int blockProtocolVersion,
-            IAccount previousState,
+            IWorld previousState,
             int randomSeed,
             long gasLimit,
             bool rehearsal = false)
@@ -58,7 +58,7 @@ namespace Libplanet.Action
         public bool Rehearsal { get; }
 
         /// <inheritdoc cref="IActionContext.PreviousState"/>
-        public IAccount PreviousState { get; }
+        public IWorld PreviousState { get; }
 
         /// <inheritdoc cref="IActionContext.Random"/>
         public IRandom Random { get; }

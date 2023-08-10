@@ -57,20 +57,21 @@ namespace Libplanet.Action
             _state = state;
         }
 
-        public IAccount Mortgage(IAccount state)
+        public IWorld Mortgage(IWorld world)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Mortgage))
             {
-                return state;
+                return world;
             }
 
             if (!(_gasPrice is { } realGasPrice))
             {
-                return state;
+                return world;
             }
 
-            var balance = state.GetBalance(_context.Signer, realGasPrice.Currency);
+            IAccountState accountState = world.GetFungibleAssetsAccountState();
+            var balance = accountState.GetBalance(_context.Signer, realGasPrice.Currency);
             if (balance < realGasPrice * _context.GasLimit())
             {
                 var msg =
@@ -80,66 +81,66 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(msg, _context.Signer, balance);
             }
 
-            IAccount nextState = state.BurnAsset(
+            IAccount nextAccount = Account.Create(accountState).BurnAsset(
                 _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
             _state = FeeCollectState.Mortgage;
-            return nextState;
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
-        public IAccount Refund(IAccount state)
+        public IWorld Refund(IWorld world)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Refund))
             {
-                return state;
+                return world;
             }
 
             if (!(_gasPrice is { } realGasPrice) || realGasPrice.Sign <= 0)
             {
-                return state;
+                return world;
             }
 
             if (_context.GasLimit() - _context.GasUsed() <= 0)
             {
                 _state = FeeCollectState.Refund;
-                return state;
+                return world;
             }
 
-            IAccount nextState = state.MintAsset(
+            IAccount nextAccount = Account.Create(world.GetFungibleAssetsAccountState()).MintAsset(
                 _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
             _state = FeeCollectState.Refund;
-            return nextState;
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
-        public IAccount Reward(IAccount state)
+        public IWorld Reward(IWorld world)
         {
             if (_state == FeeCollectState.CannotCollectible ||
                 !CheckState(FeeCollectState.Reward))
             {
-                return state;
+                return world;
             }
 
             if (!(_gasPrice is { } realGasPrice) || realGasPrice.Sign <= 0)
             {
-                return state;
+                return world;
             }
 
             if (_context.GasUsed() <= 0)
             {
                 _state = FeeCollectState.Refund;
-                return state;
+                return world;
             }
 
-            IAccount nextState = state.MintAsset(
+            IAccount nextAccount = Account.Create(world.GetFungibleAssetsAccountState()).MintAsset(
                 _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());
             _state = FeeCollectState.Reward;
-            return nextState;
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
         public IFeeCollector Next(IActionContext context)
