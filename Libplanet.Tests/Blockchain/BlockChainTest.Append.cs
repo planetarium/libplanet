@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -80,44 +81,55 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, renders[0].Context.BlockIndex);
             Assert.Equal(
                 new IValue[] { null, null, null, null, (Integer)1 },
-                addresses.Select(renders[0].Context.PreviousState.GetState)
+                addresses.Select(renders[0].Context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", null, null, null, (Integer)1 },
-                addresses.Select(renders[0].NextStates.GetState)
+                addresses.Select(renders[0].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal("bar", actions[1].Item);
             Assert.Equal(2, renders[1].Context.BlockIndex);
             Assert.Equal(
-                addresses.Select(renders[0].NextStates.GetState),
-                addresses.Select(renders[1].Context.PreviousState.GetState)
+                addresses.Select(renders[0].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState),
+                addresses.Select(renders[1].Context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", (Text)"bar", null, null, (Integer)1 },
-                addresses.Select(renders[1].NextStates.GetState)
+                addresses.Select(renders[1].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal("baz", actions[2].Item);
             Assert.Equal(2, renders[2].Context.BlockIndex);
             Assert.Equal(
-                addresses.Select(renders[1].NextStates.GetState),
-                addresses.Select(renders[2].Context.PreviousState.GetState)
+                addresses.Select(renders[1].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState),
+                addresses.Select(renders[2].Context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal(
                 new IValue[] { (Text)"foo", (Text)"bar", (Text)"baz", null, (Integer)1 },
-                addresses.Select(renders[2].NextStates.GetState)
+                addresses.Select(renders[2].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal("qux", actions[3].Item);
             Assert.Equal(2, renders[3].Context.BlockIndex);
             Assert.Equal(
-                addresses.Select(renders[2].NextStates.GetState),
-                addresses.Select(renders[3].Context.PreviousState.GetState)
+                addresses.Select(renders[2].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState),
+                addresses.Select(renders[3].Context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState)
             );
             Assert.Equal(
                 new IValue[]
                 {
                     (Text)"foo", (Text)"bar", (Text)"baz", (Text)"qux", (Integer)1,
                 },
-                renders[3].NextStates.GetStates(addresses)
+                renders[3].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetStates(addresses)
             );
 
             Address minerAddress = addresses[4];
@@ -125,7 +137,8 @@ namespace Libplanet.Tests.Blockchain
                 .Where(r => TestUtils.IsMinerReward(r.Action))
                 .ToArray();
 
-            Assert.Equal((Integer)2, (Integer)_blockChain.GetState(minerAddress));
+            Assert.Equal((Integer)2, (Integer)_blockChain.GetWorldState().GetAccount(
+                ReservedAddresses.LegacyAccount).GetState(minerAddress));
             Assert.Equal(2, blockRenders.Length);
             Assert.True(blockRenders.All(r => r.Render));
             Assert.Equal(1, blockRenders[0].Context.BlockIndex);
@@ -133,15 +146,18 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 (Integer)1,
-                (Integer)blockRenders[0].NextStates.GetState(minerAddress)
+                (Integer)blockRenders[0].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState(minerAddress)
             );
             Assert.Equal(
                 (Integer)1,
-                (Integer)blockRenders[1].Context.PreviousState.GetState(minerAddress)
+                (Integer)blockRenders[1].Context.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState(minerAddress)
             );
             Assert.Equal(
                 (Integer)2,
-                (Integer)blockRenders[1].NextStates.GetState(minerAddress)
+                (Integer)blockRenders[1].NextStates.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState(minerAddress)
             );
 
             foreach (Transaction tx in txs)
