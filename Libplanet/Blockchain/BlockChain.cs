@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -16,6 +17,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -413,7 +415,7 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetRawTotalDelta();
+            var delta = evals.GetLegacyRawTotalDelta();
             stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
@@ -494,31 +496,35 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain"/>.
         /// </summary>
         /// <param name="address">An <see cref="Address"/> to get the states of.</param>
+        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
         /// <returns>The current state of given <paramref name="address"/>.  This can be
         /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
-        public IValue GetState(Address address) =>
-            GetState(address, Tip.Hash);
+        public IValue GetState(Address address, Address accountAddress) =>
+            GetState(address, accountAddress, Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetState"/>
-        public IValue GetState(Address address, BlockHash? offset) =>
-            _blockChainStates.GetState(address, offset);
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset) =>
+            _blockChainStates.GetState(address, accountAddress, offset);
 
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
         /// </summary>
         /// <param name="addresses">Addresses of states to query.</param>
+        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
         /// <returns>The states associated to the specified <paramref name="addresses"/>.
         /// Associated values are ordered in the same way to the corresponding
         /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
         /// </returns>
-        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
-            GetStates(addresses, Tip.Hash);
+        public IReadOnlyList<IValue> GetStates(
+            IReadOnlyList<Address> addresses, Address accountAddress) =>
+            GetStates(addresses, accountAddress, Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
+            Address accountAddress,
             BlockHash? offset) =>
-            _blockChainStates.GetStates(addresses, offset);
+            _blockChainStates.GetStates(addresses, accountAddress, offset);
 
         /// <summary>
         /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
@@ -560,11 +566,21 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IBlockState GetBlockState() => GetBlockState(Tip.Hash);
+        public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockState" />
-        public IBlockState GetBlockState(BlockHash? offset) =>
-            _blockChainStates.GetBlockState(offset);
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState" />
+        public IWorldState GetWorldState(BlockHash? offset) =>
+            _blockChainStates.GetWorldState(offset);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
+        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) =>
+            _blockChainStates.GetAccount(address, srh);
+
+        public ITrie GetBlockStateRoot(BlockHash? offset) =>
+            _blockChainStates.GetBlockStateRoot(offset);
+
+        public ITrie GetStateRoot(HashDigest<SHA256>? srh) =>
+            _blockChainStates.GetStateRoot(srh);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

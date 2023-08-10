@@ -31,7 +31,7 @@ namespace Libplanet.Blockchain
             foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
             {
                 TxId txid = txEvals.Key;
-                IAccount prevStates = txEvals.First().InputContext.PreviousState;
+                IWorld prevStates = txEvals.First().InputContext.PreviousState;
                 IActionEvaluation evalSum = txEvals.Last();
                 TxExecution txExecution;
                 if (evalSum.Exception is { } e)
@@ -43,18 +43,20 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    IAccount outputStates = evalSum.OutputState;
+                    IWorld outputStates = evalSum.OutputState;
                     txExecution = new TxSuccess(
                         block.Hash,
                         txid,
-                        outputStates.GetUpdatedStates(),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
+                        outputStates.Delta.Accounts.Values.SelectMany(
+                            account => account.GetUpdatedStates())
+                            .ToImmutableDictionary(x => x.Key, x => x.Value),
+                        outputStates.Delta.Accounts.Values.SelectMany(
+                            account => account.Delta.UpdatedFungibleAssets).Select(
+                            pair => (
+                            pair.Item1,
+                            pair.Item2,
+                            outputStates.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(
+                                pair.Item1, pair.Item2)))
                             .GroupBy(triple => triple.Item1)
                             .ToImmutableDictionary(
                                 group => group.Key,

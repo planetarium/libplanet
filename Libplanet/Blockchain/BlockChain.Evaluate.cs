@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -18,6 +20,9 @@ namespace Libplanet.Blockchain
 {
     public partial class BlockChain
     {
+        public delegate (ITrie, int) StateCommitter(
+            ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations);
+
         /// <summary>
         /// Determines the state root hash of <paramref name="preEvaluationBlock"/>
         /// by evaluating on top of empty states.
@@ -42,7 +47,7 @@ namespace Libplanet.Blockchain
             out IReadOnlyList<IActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetRawTotalDelta();
+            IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetLegacyRawTotalDelta();
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
             return trie.Hash;
@@ -103,21 +108,36 @@ namespace Libplanet.Blockchain
             _rwlock.EnterWriteLock();
             try
             {
+                evaluations = EvaluateBlock(block);
+
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                evaluations = EvaluateBlock(block);
-                var totalDelta = evaluations.GetRawTotalDelta();
-                _logger.Debug(
-                    "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
-                    "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                    stopwatch.ElapsedMilliseconds,
-                    totalDelta.Count,
-                    block.Index,
-                    block.PreEvaluationHash);
 
-                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
-                HashDigest<SHA256> rootHash = stateRoot.Hash;
+                IWorldState latestState;
+
+                if (evaluations.Count > 0)
+                {
+                    latestState = evaluations.Last().OutputState;
+                }
+                else
+                {
+                    latestState = _blockChainStates.GetWorldState(block.PreviousHash);
+                }
+
+                StateCommitter committer;
+                if (latestState.Legacy)
+                {
+                    committer = CommitLegacyState;
+                }
+                else
+                {
+                    committer = CommitModernState;
+                }
+
+                ITrie prevWorldTrie = GetBlockStateRoot(block.PreviousHash);
+                var (newWorldTrie, deltaCount) = committer(prevWorldTrie, evaluations);
+
+                HashDigest<SHA256> rootHash = newWorldTrie.Hash;
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "StateUpdateDuration")
@@ -126,7 +146,7 @@ namespace Libplanet.Blockchain
                         "and resulting in state root hash {StateRootHash} for " +
                         "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                         stopwatch.ElapsedMilliseconds,
-                        totalDelta.Count,
+                        deltaCount,
                         rootHash,
                         block.Index,
                         block.PreEvaluationHash);
@@ -179,5 +199,61 @@ namespace Libplanet.Blockchain
                 : throw new ArgumentException(
                     $"Given {nameof(preEvaluationBlock)} must have protocol version " +
                     $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
+
+        internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
+            GetAccountSubStateRootHashes(
+                ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations)
+        => evaluations
+            .Select(eval => eval.OutputState.Delta)
+            .ToUpdatedStateKeys()
+            .ToImmutableDictionary(
+                keybytes => keybytes,
+                keybytes => worldTrie
+                .Get(new KeyBytes[] { keybytes })
+                .First())
+            .ToImmutableDictionary(
+                kv => kv.Key,
+                kv => (Binary?)kv.Value)
+            .ToImmutableDictionary(
+                kv => kv.Key,
+                kv => kv.Value?.ToByteArray())
+            .ToImmutableDictionary(
+                kv => kv.Key,
+                kv =>
+                {
+                    return kv.Value is null
+                        ? null
+                        : (HashDigest<SHA256>?)new HashDigest<SHA256>(kv.Value);
+                });
+
+        internal (ITrie, int) CommitLegacyState(
+            ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations)
+        {
+            var totalDelta = evaluations.GetLegacyRawTotalDelta();
+            return (StateStore.Commit(worldTrie.Hash, totalDelta), totalDelta.Count);
+        }
+
+        internal (ITrie, int) CommitModernState(
+            ITrie worldTrie, IReadOnlyList<IActionEvaluation> evaluations)
+        {
+            var accountSubStateDelta = evaluations.GetRawTotalDelta();
+
+            IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
+                accountSubStateRoot = GetAccountSubStateRootHashes(worldTrie, evaluations);
+
+            var worldDelta = accountSubStateDelta
+                .ToImmutableDictionary(
+                    kv => kv.Key,
+                    kv => StateStore.Commit(accountSubStateRoot[kv.Key], kv.Value))
+                .ToImmutableDictionary(
+                    kv => kv.Key,
+                    kv => kv.Value.Hash.ToByteArray())
+                .ToImmutableDictionary(
+                    kv => kv.Key,
+                    kv => (IValue)new Binary(kv.Value));
+
+            return (StateStore.Commit(worldTrie.Hash, worldDelta), accountSubStateDelta.Select(
+                x => x.Value.Count).Sum());
+        }
     }
 }
