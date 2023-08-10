@@ -32,16 +32,23 @@ To be released.
 
 ### Dependencies
 
- -  Upgrade *Bencodex* from [0.12.0][Bencodex 0.12.0] to
-    [0.14.0][Bencodex 0.14.0].  [[#3365]]
-
 ### CLI tools
 
 [#3337]: https://github.com/planetarium/libplanet/pull/3337
 [#3347]: https://github.com/planetarium/libplanet/pull/3347
 [#3357]: https://github.com/planetarium/libplanet/pull/3357
 [#3359]: https://github.com/planetarium/libplanet/pull/3359
-[#3365]: https://github.com/planetarium/libplanet/pull/3365
+
+
+Version 3.1.2
+-------------
+
+Released on August 10, 2023.
+
+ -  Upgrade *Bencodex* from [0.12.0][Bencodex 0.12.0] to
+    [0.14.0][Bencodex 0.14.0].  [[#3367]]
+
+[#3367]: https://github.com/planetarium/libplanet/pull/3367
 [Bencodex 0.14.0]: https://www.nuget.org/packages/Bencodex/0.14.0
 
 
