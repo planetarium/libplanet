@@ -1,11 +1,14 @@
+using System.Collections.Immutable;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using Libplanet.Action.State;
+using Xunit;
 using Xunit.Sdk;
 
 namespace Libplanet.Action.Tests
 {
-    internal static class TestUtils
+    public static class TestUtils
     {
         private static readonly System.Random _random = new System.Random();
 
@@ -44,6 +47,62 @@ namespace Libplanet.Action.Tests
             throw new XunitException(
                 "Two Bencodex values are not equal.\n--- Expected\n+++ Actual\n\n" + diff
             );
+        }
+
+        public static void AssertAccountEqual(IAccount expected, IAccount actual)
+        {
+            if (expected is null && actual is null)
+            {
+                return;
+            }
+
+            if (expected is null || actual is null ||
+                !(expected is Account ea && actual is Account aa))
+            {
+                throw new XunitException("Accounts should be of type Account");
+            }
+
+            if (!ea.Address.Equals(aa.Address) ||
+                !ea.TotalUpdatedFungibleAssets.SequenceEqual(aa.TotalUpdatedFungibleAssets) ||
+                !DictionaryEquals(ea.TotalUpdatedFungibles, aa.TotalUpdatedFungibles))
+            {
+                Assert.Equal(expected, actual);
+            }
+
+            if (!DictionaryEquals(ea.Delta.ToRawDelta(), aa.Delta.ToRawDelta()))
+            {
+                Assert.Equal(ea.Delta, aa.Delta);
+            }
+        }
+
+        public static bool DictionaryEquals<T1, T2>(
+            IImmutableDictionary<T1, T2> expected,
+            IImmutableDictionary<T1, T2> actual)
+        {
+            if (expected is null && actual is null)
+            {
+                return true;
+            }
+
+            if (expected is null || actual is null)
+            {
+                return false;
+            }
+
+            if (expected.Count != actual.Count)
+            {
+                return false;
+            }
+
+            foreach (KeyValuePair<T1, T2> pair in expected)
+            {
+                if (!actual.TryGetValue(pair.Key, out T2 value) || !pair.Value.Equals(value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static byte[] GetRandomBytes(int size)

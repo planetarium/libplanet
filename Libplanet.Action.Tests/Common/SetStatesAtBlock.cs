@@ -34,12 +34,13 @@ namespace Libplanet.Action.Tests.Common
             _blockIndex = dict.GetValue<Bencodex.Types.Integer>("block_index");
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
-            IAccount states = context.PreviousState;
+            IWorld states = context.PreviousState;
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
             if (context.BlockIndex == _blockIndex)
             {
-                states = states.SetState(_address, _value);
+                states = states.SetAccount(legacyAccount.SetState(_address, _value));
             }
 
             return states;

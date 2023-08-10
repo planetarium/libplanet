@@ -19,10 +19,15 @@ namespace Libplanet.Action.Tests.Sys
             }
         );
 
-        private static readonly ImmutableDictionary<Address, IValue> _states =
-            new Dictionary<Address, IValue>
+        private static readonly IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>
+            _states =
+            new Dictionary<Address, IImmutableDictionary<Address, IValue>>
             {
-                [default] = (Text)"initial value",
+                [default] =
+                new Dictionary<Address, IValue>
+                {
+                    [default] = (Text)"initial value",
+                }.ToImmutableDictionary(),
             }.ToImmutableDictionary();
 
         private static readonly Currency FooCurrency = Currency.Uncapped("FOO", 2, null);
@@ -36,7 +41,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                ))));
             IAction action = Registry.Deserialize(value);
             var initialize = Assert.IsType<Initialize>(action);
             Assert.Equal(_validatorSet, initialize.ValidatorSet);
@@ -82,7 +90,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                ))));
             TestUtils.AssertBencodexEqual(expected, actual);
         }
 

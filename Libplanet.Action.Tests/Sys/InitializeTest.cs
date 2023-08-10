@@ -20,10 +20,15 @@ namespace Libplanet.Action.Tests.Sys
             }
         );
 
-        private static readonly ImmutableDictionary<Address, IValue> _states =
-            new Dictionary<Address, IValue>
+        private static readonly IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>
+            _states =
+            new Dictionary<Address, IImmutableDictionary<Address, IValue>>
             {
-                [default] = (Text)"initial value",
+                [default] =
+                new Dictionary<Address, IValue>
+                {
+                    [default] = (Text)"initial value",
+                }.ToImmutableDictionary(),
             }.ToImmutableDictionary();
 
         [Fact]
@@ -42,7 +47,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = Account.Create(MockAccountState.Empty);
+            var prevState = World.Create(new MockWorldState());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -61,8 +66,12 @@ namespace Libplanet.Action.Tests.Sys
 
             var nextStates = initialize.Execute(context);
 
-            Assert.Equal(_validatorSet, nextStates.GetValidatorSet());
-            Assert.Equal(_states[default], nextStates.GetState(default));
+            Assert.Equal(
+                _validatorSet,
+                nextStates.GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet());
+            Assert.Equal(
+                _states[default][default],
+                nextStates.GetAccount(default).GetState(default));
         }
 
         [Fact]
@@ -70,7 +79,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = Account.Create(MockAccountState.Empty);
+            var prevState = World.Create(new MockWorldState());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -106,7 +115,10 @@ namespace Libplanet.Action.Tests.Sys
                         "values",
                         new List(
                             _validatorSet.Bencoded,
-                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"))),
+                            Dictionary.Empty.Add(
+                                default(Address).ToByteArray(),
+                                Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                                )))),
                 action.PlainValue);
         }
 
@@ -119,7 +131,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                            default(Address).ToByteArray(),
+                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")))
+                    );
             var action = new Initialize();
             action.LoadPlainValue(encoded);
 

@@ -31,7 +31,7 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
             var state = context.PreviousState;
             var started = DateTimeOffset.UtcNow;
@@ -41,7 +41,10 @@ namespace Libplanet.Action.Tests.Common
                 MilliSecond);
             Thread.Sleep(MilliSecond);
             var ended = DateTimeOffset.UtcNow;
-            state = state.SetState(TrivialUpdatedAddress, new Bencodex.Types.Integer(MilliSecond));
+            var delayAccount = state
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .SetState(TrivialUpdatedAddress, new Bencodex.Types.Integer(MilliSecond));
+            state = state.SetAccount(delayAccount);
             Log.Debug(
                 "{MethodName} Total Executed Time: {Elapsed}. Delay target: {MilliSecond}",
                 nameof(DelayAction),

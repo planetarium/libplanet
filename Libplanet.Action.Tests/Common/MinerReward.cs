@@ -36,23 +36,25 @@ namespace Libplanet.Action.Tests.Common
             Reward = plainValue.GetValue<Integer>("reward");
         }
 
-        public IAccount Execute(IActionContext ctx)
+        public IWorld Execute(IActionContext ctx)
         {
-            IAccount states = ctx.PreviousState;
+            IWorld states = ctx.PreviousState;
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
 
-            string rewardRecord = (Text?)states.GetState(RewardRecordAddress);
+            string rewardRecord = (Text?)legacyAccount.GetState(RewardRecordAddress);
 
             rewardRecord = rewardRecord is null
                 ? ctx.Miner.ToString()
                 : $"{rewardRecord},{ctx.Miner}";
 
-            states = states.SetState(RewardRecordAddress, (Text)rewardRecord);
+            legacyAccount = legacyAccount.SetState(RewardRecordAddress, (Text)rewardRecord);
 
-            IValue tempQualifier1 = states?.GetState(ctx.Miner);
+            IValue tempQualifier1 = legacyAccount.GetState(ctx.Miner);
             int previousReward = tempQualifier1 is Integer i ? (int)i.Value : 0;
             int reward = previousReward + Reward;
 
-            return states.SetState(ctx.Miner, (Integer)reward);
+            legacyAccount = legacyAccount.SetState(ctx.Miner, (Integer)reward);
+            return states.SetAccount(legacyAccount);
         }
     }
 }

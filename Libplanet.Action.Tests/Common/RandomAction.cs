@@ -28,15 +28,17 @@ namespace Libplanet.Action.Tests.Common
             Address = new Address((string)dictionary.GetValue<Text>("address"));
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
-            IAccount states = context.PreviousState;
+            IWorld states = context.PreviousState;
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
             if (context.Rehearsal)
             {
-                return states.SetState(Address, Null.Value);
+                return states.SetAccount(legacyAccount.SetState(Address, Null.Value));
             }
 
-            return states.SetState(Address, (Integer)context.Random.Next());
+            legacyAccount = legacyAccount.SetState(Address, (Integer)context.Random.Next());
+            return states.SetAccount(legacyAccount);
         }
     }
 }

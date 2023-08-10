@@ -55,20 +55,23 @@ namespace Libplanet.Action.Tests.Mocks
             IImmutableDictionary<Address, IValue> states,
             IImmutableDictionary<(Address Address, Currency Currency), BigInteger> fungibles,
             IImmutableDictionary<Currency, BigInteger> totalSupplies,
-            ValidatorSet validatorSet)
+            ValidatorSet validatorSet,
+            Address? address = null)
         {
             _states = states;
             _fungibles = fungibles;
             _totalSupplies = totalSupplies;
             _validatorSet = validatorSet;
+            Address = (address is { } addr) ? addr : ReservedAddresses.LegacyAccount;
         }
 
-        private MockAccountState()
+        public MockAccountState(Address? address = null)
             : this(
                 ImmutableDictionary<Address, IValue>.Empty,
                 ImmutableDictionary<(Address Address, Currency Currency), BigInteger>.Empty,
                 ImmutableDictionary<Currency, BigInteger>.Empty,
-                new ValidatorSet())
+                new ValidatorSet(),
+                address)
         {
         }
 
@@ -81,6 +84,13 @@ namespace Libplanet.Action.Tests.Mocks
         public IImmutableDictionary<Currency, BigInteger> TotalSupplies => _totalSupplies;
 
         public ValidatorSet ValidatorSet => _validatorSet;
+
+        public Address Address { get; private set; }
+
+        public void SetAddress(Address address)
+        {
+            Address = address;
+        }
 
         public IValue GetState(Address address) => _states.TryGetValue(address, out IValue value)
             ? value
@@ -117,7 +127,8 @@ namespace Libplanet.Action.Tests.Mocks
                 _states.SetItem(address, state),
                 _fungibles,
                 _totalSupplies,
-                _validatorSet);
+                _validatorSet,
+                Address);
 
         public MockAccountState SetBalance(
             Address address, FungibleAssetValue amount) =>
@@ -133,7 +144,8 @@ namespace Libplanet.Action.Tests.Mocks
                 _states,
                 _fungibles.SetItem(pair, rawAmount),
                 _totalSupplies,
-                _validatorSet);
+                _validatorSet,
+                Address);
 
         public MockAccountState AddBalance(Address address, FungibleAssetValue amount) =>
             AddBalance((address, amount.Currency), amount.RawValue);
@@ -181,7 +193,8 @@ namespace Libplanet.Action.Tests.Mocks
                         _states,
                         _fungibles,
                         _totalSupplies.SetItem(currency, rawAmount),
-                        _validatorSet)
+                        _validatorSet,
+                        Address)
                     : throw new ArgumentException(
                         $"Given {currency}'s total supply is capped at {maximumSupply.RawValue} " +
                         $"and cannot be set to {rawAmount}.")
@@ -211,6 +224,7 @@ namespace Libplanet.Action.Tests.Mocks
                 _states,
                 _fungibles,
                 _totalSupplies,
-                _validatorSet.Update(validator));
+                _validatorSet.Update(validator),
+                Address);
     }
 }

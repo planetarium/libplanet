@@ -29,13 +29,14 @@ namespace Libplanet.Action.Tests.Common
             TargetAddress = new Address(values["target_address"]);
         }
 
-        public override IAccount Execute(IActionContext context)
+        public override IWorld Execute(IActionContext context)
         {
             IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
             IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
-            IAccount previousState = context.PreviousState;
+            IWorld previousState = context.PreviousState;
+            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.LegacyAccount);
 
-            object value = previousState.GetState(TargetAddress);
+            object value = legacyAccount.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
             {
                 var previousResult = BattleResult.FromBencodex((Bencodex.Types.Dictionary)value);
@@ -46,8 +47,9 @@ namespace Libplanet.Action.Tests.Common
             usedWeapons = usedWeapons.Add(Weapon);
             targets = targets.Add(Target);
             var result = new BattleResult(usedWeapons, targets);
+            legacyAccount = legacyAccount.SetState(TargetAddress, result.ToBencodex());
 
-            return previousState.SetState(TargetAddress, result.ToBencodex());
+            return previousState.SetAccount(legacyAccount);
         }
     }
 }
