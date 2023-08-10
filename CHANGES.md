@@ -1,6 +1,67 @@
 Libplanet changelog
 ===================
 
+To be released.
+
+### Deprecated APIs
+
+ -  (Libplanet.Action) `IBlockState` has been removed.  [[#3373]]
+ -  (Libplanet) `IBlockChainStates.GetBlockState()` has been removed.
+    [[#3373]]
+ -  (Libplanet) `NullChainStates` has been removed.  [[#3373]]
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Action) Return type of extension `GetRawTotalDelta()` for
+    `IEnumerable<IActionEvaluation>` has been changed from
+    `IImmutableDictionary<KeyBytes, IValue>` to
+    `IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>`.
+    [[#3373]]
+ -  (Libplanet.Action) Type of `IActionContext.PreviousState` has been changed
+    from `IAccount` to `IWorld`.  [[#3373]]
+ -  (Libplanet.Action) Type of `IActionEvaluation.OutputState` has been changed
+    from `IAccount` to `IWorld`.  [[#3373]]
+ -  (Libplanet.Action) Parameter type of `EvaluateActions()`,
+    `CreateActionContext()`, `EvaluateBlock()`, `EvaluateTx()`,
+    `EvaluatePolicyBlockAction()`, `PrepareInitialDelta()`
+    on `ActionEvaluator` has been changed from `IAccount` to `IWorld`.
+    [[#3373]]
+ -  (Libplanet.Action) Parameter and return type of `Mortgage()`, `Refund()`,
+    `Reward()` on `IFeeCollector` has been changed from `IAccount` to `IWorld`.
+    [[#3373]]
+ -  (Libplanet.Action) `IAction.Execute()` now returns `IWorld`.  [[#3373]]
+ -  (Libplanet) Methods `GetState()`, `GetStates()` on `IBlockChainStates`
+    now receives parameter `Address accountAddress`.  [[#3373]]
+ -  (Libplanet) `IBlockChainStates.GetStateRoot()` now receives
+    `HashDigest<SHA256>` instead of `BlockHash` as its parameter.  [[#3373]]
+ -  (Libplanet) `IActionRenderer.RenderAction()` now receives `IWorld`
+    instead of `IAccount` as its parameter.  [[#3373]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  (Libplanet.Action) Extension `GetLegacyRawTotalDelta()` for
+    `IEnumerable<IActionEvaluation>` has been added to generate same result
+    for `GetRawTotalDelta()` from legacy accounts.  [[#3373]]
+ -  (Libplanet.Action) Introduced `IWorld`, `IWorldDelta`, `IWorldState`.
+    [[#3373]]
+ -  (Libplanet) Introduced methods `GetWorldState()`, `GetAccount()`,
+    `GetBlockStateRoot()`, `GetStateRoot()` on `IBlockChainStates`.  [[#3373]]
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#3373]: https://github.com/planetarium/libplanet/pull/3373
+
+
 Version 3.2.0
 -------------
 
@@ -11,7 +72,7 @@ Released on August 10, 2023.
  -  (Libplanet.Action) Renamed `IAccountStateDelta` as `IAccount`.
     [[#3337]]
  -  (Libplanet.Store) Optimized `MerkleTrie.Get()`.  [[#3347]]
- -  (Libplanet.Types) Removed `TxSuccess.FungibleAssetsDelta`  [[#3357]]
+ -  (Libplanet.Types) Removed `TxSuccess.FungibleAssetsDelta`.  [[#3357]]
  -  (Libplanet.Explorer) Removed `TxResult.ExceptionMetadata` and
     `TxResult.FungibleAssetsDelta`.  [[#3357]]
  -  (Libplanet.Store) Added `ITrie.Get(KeyBytes)` interface method.  [[#3359]]
