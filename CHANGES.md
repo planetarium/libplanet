@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Store) Added `VolatileKeyValueStore` class.  [[#3361]]
+ -  (Libplanet.Store) Changed `IStateStore.GetStateRoot(HashDigest<SHA256>?)`
+    to `IStateStore.GetStateRoot(HashDigest<SHA256>?, bool)`.  [[#3361]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -46,6 +50,7 @@ Released on August 10, 2023.
 [#3347]: https://github.com/planetarium/libplanet/pull/3347
 [#3357]: https://github.com/planetarium/libplanet/pull/3357
 [#3359]: https://github.com/planetarium/libplanet/pull/3359
+[#3361]: https://github.com/planetarium/libplanet/pull/3361
 
 
 Version 3.1.2

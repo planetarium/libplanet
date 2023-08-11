@@ -100,7 +100,7 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [SkippableFact]
-        public void Delete()
+        public virtual void Delete()
         {
             foreach (KeyBytes key in PreStoredDataKeys)
             {
@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [SkippableFact]
-        public void DeleteMany()
+        public virtual void DeleteMany()
         {
             KeyBytes[] nonExistentKeys = Enumerable.Range(0, 10)
                 .Select(_ => NewRandomKey())

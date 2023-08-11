@@ -16,10 +16,10 @@ namespace Libplanet.Tests.Store
             _stateStore = stateStore;
         }
 
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash)
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false)
         {
             Log(nameof(GetStateRoot), stateRootHash);
-            return _stateStore.GetStateRoot(stateRootHash);
+            return _stateStore.GetStateRoot(stateRootHash, readOnly);
         }
 
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
