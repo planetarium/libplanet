@@ -74,9 +74,7 @@ public class StateQueryTest
             Assert.IsAssignableFrom<object>(resultDict["accountState"]);
         Assert.IsType<MockAccount>(states);
         Assert.Equal(new Address("0x40837BFebC1b192600023a431400557EA5FDE51a"), ((MockAccount)states).Address);
-        Assert.Equal(
-            new HashDigest<SHA256>(ByteUtil.ParseHex("01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b")),
-            ((MockAccount)states).StateRootHash);
+        Assert.Equal(default, ((MockAccount)states).StateRootHash);
     }
 
     [Fact]
@@ -253,7 +251,7 @@ public class StateQueryTest
             => new MockAccount(address: address, stateRootHash: stateRootHash ?? default);
 
         public IAccountState GetAccountState(Address address, BlockHash? blockHash)
-            => new MockAccount(address: address, blockHash: blockHash ?? default);
+            => new MockAccount(address: address);
 
         public ITrie GetStateRoot(BlockHash? offset)
         {
@@ -304,12 +302,6 @@ public class StateQueryTest
         public MockAccount(Address address = default, HashDigest<SHA256> stateRootHash = default)
         {
             StateRootHash = stateRootHash;
-            Address = address;
-        }
-
-        public MockAccount(Address address = default, BlockHash blockHash = default)
-        {
-            StateRootHash = new HashDigest<SHA256>(blockHash.ToByteArray());
             Address = address;
         }
 

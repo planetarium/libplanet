@@ -1,8 +1,10 @@
 using System;
+using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Types.Assets;
@@ -26,9 +28,9 @@ public class StateQuery
         Field<NonNullGraphType<BencodexValueType>>(
             "accountState",
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<AddressType>>
-                { Name = "address" },
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+                new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
+                new QueryArgument<IdGraphType> { Name = "stateRootHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveAccountState
         );
@@ -94,22 +96,42 @@ public class StateQuery
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address address = context.GetArgument<Address>("address");
+        string stateRootHash = context.GetArgument<string>("stateRootHash");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
 
-        BlockHash offset;
-        try
+        if (!(stateRootHash is null ^ offsetBlockHash is null))
         {
-            offset = BlockHash.FromString(offsetBlockHash);
-        }
-        catch (Exception e)
-        {
-            throw new ExecutionError(
-                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
-                e
-            );
+            throw new GraphQL.ExecutionError(
+                "The parameters stateRootHash and offsetBlockHash are mutually exclusive; " +
+                "give only one at a time.");
         }
 
-        return context.Source.ChainStates.GetAccountState(address, offset);
+        if (stateRootHash is string stateRootHashNotNull)
+        {
+            HashDigest<SHA256> srh = new HashDigest<SHA256>(
+                ByteUtil.ParseHex(stateRootHashNotNull));
+            return context.Source.ChainStates.GetAccountState(address, srh);
+        }
+
+        if (offsetBlockHash is string offsetBlockHashNotNull)
+        {
+            BlockHash offset;
+            try
+            {
+                offset = BlockHash.FromString(offsetBlockHashNotNull);
+            }
+            catch (Exception e)
+            {
+                throw new ExecutionError(
+                    "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                    e
+                );
+            }
+
+            return context.Source.ChainStates.GetAccountState(address, offset);
+        }
+
+        throw new GraphQL.ExecutionError("Unexpected block query");
     }
 
     private static object ResolveStates(
