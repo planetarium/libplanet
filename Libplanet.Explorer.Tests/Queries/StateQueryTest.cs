@@ -19,15 +19,69 @@ using Libplanet.Action;
 using Libplanet.Common;
 using System.Security.Cryptography;
 using Libplanet.Store.Trie;
+using Org.BouncyCastle.Cms;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
 public class StateQueryTest
 {
     [Fact]
+    public async Task WorldStates()
+    {
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            worldState(
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            )
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        object states =
+            Assert.IsAssignableFrom<object>(resultDict["worldState"]);
+        Assert.IsType<MockWorld>(states);
+        Assert.Equal(
+            new HashDigest<SHA256>(ByteUtil.ParseHex("01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b")),
+            ((MockWorld)states).StateRootHash);
+    }
+
+    [Fact]
+    public async Task AccountStates()
+    {
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            accountState(
+                 address: ""0x40837BFebC1b192600023a431400557EA5FDE51a"",
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            )
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        object states =
+            Assert.IsAssignableFrom<object>(resultDict["accountState"]);
+        Assert.IsType<MockAccount>(states);
+        Assert.Equal(new Address("0x40837BFebC1b192600023a431400557EA5FDE51a"), ((MockAccount)states).Address);
+        Assert.Equal(
+            new HashDigest<SHA256>(ByteUtil.ParseHex("01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b")),
+            ((MockAccount)states).StateRootHash);
+    }
+
+    [Fact]
     public async Task States()
     {
-        var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(), new BlockPolicy()
         );
@@ -35,6 +89,7 @@ public class StateQueryTest
         {
             states(
                  addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
+                 accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             )
@@ -179,26 +234,26 @@ public class StateQueryTest
     {
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            new MockAccount(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+            new MockAccount(address: ReservedAddresses.LegacyAccount, stateRootHash: default).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            new MockAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+            new MockAccount(address: ReservedAddresses.LegacyAccount, stateRootHash: default).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            new MockAccount(ReservedAddresses.LegacyAccount).GetValidatorSet();
+            new MockAccount(address: ReservedAddresses.LegacyAccount, stateRootHash: default).GetValidatorSet();
 
 
         public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
-            => new MockAccount(accountAddress).GetState(address);
+            => new MockAccount(address: accountAddress, stateRootHash: default).GetState(address);
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset)
-            => new MockAccount(accountAddress).GetStates(addresses);
+            => new MockAccount(address: accountAddress, stateRootHash: default).GetStates(addresses);
 
         public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash)
-            => new MockAccount(address);
+            => new MockAccount(address: address, stateRootHash: stateRootHash ?? default);
 
         public IAccountState GetAccountState(Address address, BlockHash? blockHash)
-            => new MockAccount(address);
+            => new MockAccount(address: address, blockHash: blockHash ?? default);
 
         public ITrie GetStateRoot(BlockHash? offset)
         {
@@ -210,12 +265,35 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
-        public IWorldState GetWorldState(BlockHash? offset)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IWorldState GetWorldState(BlockHash? blockHash)
+            => new MockWorld(blockHash ?? default);
 
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+            => new MockWorld(stateRootHash ?? default);
+    }
+
+    private class MockWorld : IWorld
+    {
+        public MockWorld(HashDigest<SHA256> stateRootHash = default)
+        {
+            StateRootHash = stateRootHash;
+        }
+
+        public MockWorld(BlockHash blockHash = default)
+        {
+            StateRootHash = new HashDigest<SHA256>(blockHash.ToByteArray());
+        }
+
+        public IWorldDelta Delta => throw new System.NotImplementedException();
+
+        public HashDigest<SHA256> StateRootHash { get; }
+
+        public bool Legacy => true;
+
+        public IAccount GetAccount(Address address)
+            => new MockAccount(address: address, stateRootHash: default);
+
+        public IWorld SetAccount(IAccount account)
         {
             throw new System.NotImplementedException();
         }
@@ -223,10 +301,19 @@ public class StateQueryTest
 
     private class MockAccount : IAccount
     {
-        public MockAccount(Address address)
+        public MockAccount(Address address = default, HashDigest<SHA256> stateRootHash = default)
         {
+            StateRootHash = stateRootHash;
             Address = address;
         }
+
+        public MockAccount(Address address = default, BlockHash blockHash = default)
+        {
+            StateRootHash = new HashDigest<SHA256>(blockHash.ToByteArray());
+            Address = address;
+        }
+
+        public HashDigest<SHA256> StateRootHash { get; }
 
         public Address Address { get; }
 

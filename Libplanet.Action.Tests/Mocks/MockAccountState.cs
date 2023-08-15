@@ -1,7 +1,9 @@
 using System.Collections.Immutable;
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
@@ -84,6 +86,8 @@ namespace Libplanet.Action.Tests.Mocks
         public IImmutableDictionary<Currency, BigInteger> TotalSupplies => _totalSupplies;
 
         public ValidatorSet ValidatorSet => _validatorSet;
+
+        public HashDigest<SHA256> StateRootHash => default;
 
         public Address Address { get; private set; }
 

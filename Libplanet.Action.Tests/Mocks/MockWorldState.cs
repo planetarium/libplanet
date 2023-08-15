@@ -1,5 +1,7 @@
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.Tests.Mocks
@@ -19,6 +21,8 @@ namespace Libplanet.Action.Tests.Mocks
             _accounts = ImmutableDictionary<Address, IAccount>.Empty;
             Legacy = true;
         }
+
+        public HashDigest<SHA256> StateRootHash => default;
 
         public bool Legacy { get; private set; }
 
