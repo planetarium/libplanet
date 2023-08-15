@@ -89,7 +89,7 @@ public class StateQuery
             );
         }
 
-        return context.Source.ChainStates.GetWorldState(offset);
+        return context.Source.ChainStates.GetBlockWorldState(offset);
     }
 
     private static object ResolveAccountState(
@@ -128,7 +128,7 @@ public class StateQuery
                 );
             }
 
-            return context.Source.ChainStates.GetAccountState(address, offset);
+            return context.Source.ChainStates.GetBlockAccountState(address, offset);
         }
 
         throw new GraphQL.ExecutionError("Unexpected block query");

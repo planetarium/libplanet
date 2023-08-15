@@ -171,7 +171,7 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IWorldState"/>
-        IWorldState GetWorldState(BlockHash? blockHash);
+        IWorldState GetBlockWorldState(BlockHash? blockHash);
 
         /// <summary>
         /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
@@ -213,7 +213,7 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(Address address, BlockHash? blockHash);
+        IAccountState GetBlockAccountState(Address address, BlockHash? blockHash);
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -236,7 +236,7 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        ITrie GetStateRoot(BlockHash? blockHash);
+        ITrie GetBlockStateRoot(BlockHash? blockHash);
 
         /// <summary>
         /// Returns the state root associated with <paramref name="stateRootHash"/>.

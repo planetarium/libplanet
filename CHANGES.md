@@ -48,8 +48,9 @@ To be released.
     for `GetRawTotalDelta()` from legacy accounts.  [[#3373]]
  -  (Libplanet.Action) Introduced `IWorld`, `IWorldDelta`, `IWorldState`.
     [[#3373]]
- -  (Libplanet) Introduced methods `GetWorldState()`, `GetAccount()`,
-    `GetBlockStateRoot()`, `GetStateRoot()` on `IBlockChainStates`.  [[#3373]]
+ -  (Libplanet) Introduced methods `GetBlockWorldState()`, `GetWorldState()`,
+    `GetBlockAccount()`, `GetAccount()`, `GetBlockStateRoot()`, `GetStateRoot()`
+    on `IBlockChainStates`.  [[#3373]]
 
 ### Behavioral changes
 

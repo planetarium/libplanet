@@ -250,10 +250,10 @@ public class StateQueryTest
         public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash)
             => new MockAccount(address: address, stateRootHash: stateRootHash ?? default);
 
-        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
+        public IAccountState GetBlockAccountState(Address address, BlockHash? blockHash)
             => new MockAccount(address: address);
 
-        public ITrie GetStateRoot(BlockHash? offset)
+        public ITrie GetBlockStateRoot(BlockHash? offset)
         {
             throw new System.NotImplementedException();
         }
@@ -263,7 +263,7 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
-        public IWorldState GetWorldState(BlockHash? blockHash)
+        public IWorldState GetBlockWorldState(BlockHash? blockHash)
             => new MockWorld(blockHash ?? default);
 
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)

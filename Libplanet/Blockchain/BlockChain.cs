@@ -566,27 +566,27 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
+        public IWorldState GetWorldState() => GetBlockWorldState(Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
             _blockChainStates.GetWorldState(stateRootHash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)" />
-        public IWorldState GetWorldState(BlockHash? blockHash) =>
-            _blockChainStates.GetWorldState(blockHash);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockWorldState(BlockHash?)" />
+        public IWorldState GetBlockWorldState(BlockHash? blockHash) =>
+            _blockChainStates.GetBlockWorldState(blockHash);
 
         /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, HashDigest{SHA256}?)"/>
         public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash) =>
             _blockChainStates.GetAccountState(address, stateRootHash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
-        public IAccountState GetAccountState(Address address, BlockHash? blockHash) =>
-            _blockChainStates.GetAccountState(address, blockHash);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockAccountState(Address, BlockHash?)"/>
+        public IAccountState GetBlockAccountState(Address address, BlockHash? blockHash) =>
+            _blockChainStates.GetBlockAccountState(address, blockHash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(BlockHash?)"/>
-        public ITrie GetStateRoot(BlockHash? blockHash) =>
-            _blockChainStates.GetStateRoot(blockHash);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockStateRoot(BlockHash?)"/>
+        public ITrie GetBlockStateRoot(BlockHash? blockHash) =>
+            _blockChainStates.GetBlockStateRoot(blockHash);
 
         /// <inheritdoc cref="IBlockChainStates.GetStateRoot(HashDigest{SHA256}?)"/>
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>

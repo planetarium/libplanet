@@ -30,49 +30,49 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetState"/>
         public IValue? GetState(
             Address address, Address accountAddress, BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(accountAddress)
+            GetBlockWorldState(offset).GetAccount(accountAddress)
             .GetState(address);
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(accountAddress)
+            GetBlockWorldState(offset).GetAccount(accountAddress)
             .GetStates(addresses);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
+            GetBlockWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetBalance(address, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
+            GetBlockWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
+            GetBlockWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)"/>
-        public IWorldState GetWorldState(BlockHash? blockHash) =>
+        /// <inheritdoc cref="IBlockChainStates.GetBlockWorldState(BlockHash?)"/>
+        public IWorldState GetBlockWorldState(BlockHash? blockHash) =>
             new WorldBaseState(_store.GetStateRootHash(blockHash), this);
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
             new WorldBaseState(stateRootHash, this);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
-        public IAccountState GetAccountState(Address address, BlockHash? blockHash) =>
-            GetWorldState(blockHash).GetAccount(address);
+        /// <inheritdoc cref="IBlockChainStates.GetBlockAccountState(Address, BlockHash?)"/>
+        public IAccountState GetBlockAccountState(Address address, BlockHash? blockHash) =>
+            GetBlockWorldState(blockHash).GetAccount(address);
 
         /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, HashDigest{SHA256}?)"/>
         public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash) =>
             new AccountBaseState(address, GetStateRoot(stateRootHash));
 
-        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(BlockHash?)"/>
-        public ITrie GetStateRoot(BlockHash? blockHash)
+        /// <inheritdoc cref="IBlockChainStates.GetBlockStateRoot(BlockHash?)"/>
+        public ITrie GetBlockStateRoot(BlockHash? blockHash)
         {
             if (!(blockHash is { } hash))
             {
