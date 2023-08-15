@@ -68,12 +68,12 @@ namespace Libplanet.Action.State
         private ITrie GetLegacyTrieOnly(Address address) =>
             address == ReservedAddresses.LegacyAccount
                 ? _stateRoot
-                : _blockChainStates.GetStateRoot(null);
+                : _blockChainStates.GetStateRoot((HashDigest<SHA256>?)null);
 
         private ITrie GetTrieFromBencodex(IValue? value) =>
             value is Binary stateRoot
                 ? _blockChainStates.GetStateRoot(new HashDigest<SHA256>(stateRoot))
-                : _blockChainStates.GetStateRoot(null);
+                : _blockChainStates.GetStateRoot((HashDigest<SHA256>?)null);
 
         private IAccount CreateAccount(Address address, ITrie trie) =>
             Account.Create(new AccountBaseState(address, trie));

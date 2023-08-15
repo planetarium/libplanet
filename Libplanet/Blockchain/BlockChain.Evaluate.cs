@@ -134,7 +134,7 @@ namespace Libplanet.Blockchain
                     committer = CommitModernState;
                 }
 
-                ITrie prevWorldTrie = GetBlockStateRoot(block.PreviousHash);
+                ITrie prevWorldTrie = GetStateRoot(block.PreviousHash);
                 var (newWorldTrie, deltaCount) = committer(prevWorldTrie, evaluations);
 
                 HashDigest<SHA256> rootHash = newWorldTrie.Hash;

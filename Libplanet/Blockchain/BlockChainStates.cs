@@ -55,18 +55,26 @@ namespace Libplanet.Blockchain
             GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount)
             .GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState"/>
-        public IWorldState GetWorldState(BlockHash? offset) =>
-            new WorldBaseState(_store.GetStateRootHash(offset), this);
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)"/>
+        public IWorldState GetWorldState(BlockHash? blockHash) =>
+            new WorldBaseState(_store.GetStateRootHash(blockHash), this);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
-        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) =>
-            new AccountBaseState(address, GetStateRoot(srh));
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
+        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
+            new WorldBaseState(stateRootHash, this);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockStateRoot"/>
-        public ITrie GetBlockStateRoot(BlockHash? offset)
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
+        public IAccountState GetAccountState(Address address, BlockHash? blockHash) =>
+            new AccountBaseState(address, GetStateRoot(blockHash));
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, HashDigest{SHA256}?)"/>
+        public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash) =>
+            new AccountBaseState(address, GetStateRoot(stateRootHash));
+
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(BlockHash?)"/>
+        public ITrie GetStateRoot(BlockHash? blockHash)
         {
-            if (!(offset is { } hash))
+            if (!(blockHash is { } hash))
             {
                 return _stateStore.GetStateRoot(null);
             }
@@ -78,14 +86,14 @@ namespace Libplanet.Blockchain
             {
                 throw new ArgumentException(
                     $"Could not find block hash {hash} in {nameof(IStore)}.",
-                    nameof(offset));
+                    nameof(blockHash));
             }
         }
 
-        /// <inheritdoc cref="IBlockChainStates.GetStateRoot"/>
-        public ITrie GetStateRoot(HashDigest<SHA256>? srh)
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(HashDigest{SHA256}?)"/>
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash)
         {
-            if (!(srh is { } hash))
+            if (!(stateRootHash is { } hash))
             {
                 return _stateStore.GetStateRoot(null);
             }
@@ -97,7 +105,7 @@ namespace Libplanet.Blockchain
             {
                 throw new ArgumentException(
                     $"Could not find state root {hash} in {nameof(IStateStore)}.",
-                    nameof(srh));
+                    nameof(stateRootHash));
             }
         }
     }

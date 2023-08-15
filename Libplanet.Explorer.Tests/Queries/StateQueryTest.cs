@@ -194,10 +194,13 @@ public class StateQueryTest
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset)
             => new MockAccount(accountAddress).GetStates(addresses);
 
-        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) => new MockAccount(address);
+        public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash)
+            => new MockAccount(address);
 
+        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
+            => new MockAccount(address);
 
-        public ITrie GetBlockStateRoot(BlockHash? offset)
+        public ITrie GetStateRoot(BlockHash? offset)
         {
             throw new System.NotImplementedException();
         }
@@ -208,6 +211,11 @@ public class StateQueryTest
         }
 
         public IWorldState GetWorldState(BlockHash? offset)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
         {
             throw new System.NotImplementedException();
         }

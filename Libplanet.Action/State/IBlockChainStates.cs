@@ -135,13 +135,70 @@ namespace Libplanet.Action.State
         ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
-        /// Returns the <see cref="IBlockState"/> in the <see cref="BlockChain"/>
-        /// at <paramref name="offset"/>.
+        /// Returns the <see cref="IWorldState"/> in the <see cref="BlockChain"/>
+        /// at state root of <paramref name="stateRootHash"/>.
         /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        /// for which to create an <see cref="IBlockState"/>.</param>
+        /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> of the state root
+        /// for which to create an <see cref="IWorldState"/>.</param>
         /// <returns>
-        /// The <see cref="IBlockState"/> at <paramref name="offset"/>.
+        /// The <see cref="IWorldState"/> at <paramref name="stateRootHash"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="stateRootHash"/>
+        /// is not <see langword="null"/> and is not found in the <see cref="IStateStore"/>.
+        /// </exception>
+        /// <seealso cref="IWorldState"/>
+        IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
+
+        /// <summary>
+        /// Returns the <see cref="IWorldState"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
+        /// for which to create an <see cref="IWorldState"/>.</param>
+        /// <returns>
+        /// The <see cref="IWorldState"/> at <paramref name="blockHash"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="blockHash"/> is not
+        /// <see langword="null"/> and one of the following is true.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Corresponding <see cref="Block"/> is found but its state root is not found
+        ///         in the <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
+        /// <seealso cref="IWorldState"/>
+        IWorldState GetWorldState(BlockHash? blockHash);
+
+        /// <summary>
+        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
+        /// at state root of <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
+        /// to be returned.</param>
+        /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> of the state root
+        /// for which to create an <see cref="IAccountState"/>.</param>
+        /// <returns>
+        /// The <see cref="IAccountState"/> at <paramref name="stateRootHash"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="stateRootHash"/>
+        /// is not <see langword="null"/> and is not found in the <see cref="IStateStore"/>.
+        /// </exception>
+        IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash);
+
+        /// <summary>
+        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
+        /// to be returned.</param>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
+        /// for which to create an <see cref="IAccountState"/>.</param>
+        /// <returns>
+        /// The <see cref="IAccountState"/> at <paramref name="blockHash"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
         /// <see langword="null"/> and one of the following is true.
@@ -155,34 +212,42 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        /// <seealso cref="IBlockState"/>
-        IWorldState GetWorldState(BlockHash? offset);
-
-        IAccountState GetAccount(Address address, HashDigest<SHA256>? srh);
+        /// <seealso cref="IAccountState"/>
+        IAccountState GetAccountState(Address address, BlockHash? blockHash);
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
-        /// <paramref name="offset"/>.
+        /// <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> to look up in
+        /// <param name="blockHash">The <see cref="BlockHash"/> to look up in
         /// the internally held <see cref="IStore"/>.</param>
         /// <returns>An <see cref="ITrie"/> representing the state root associated with
-        /// <paramref name="offset"/>.</returns>
+        /// <paramref name="blockHash"/>.</returns>
         /// <exception cref="ArgumentException">Thrown for one of the following reasons.
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <paramref name="offset"/> is not <see langword="null"/> and
-        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
+        ///         If <paramref name="blockHash"/> is not <see langword="null"/> and
+        ///         <paramref name="blockHash"/> cannot be found in <see cref="IStore"/>.
         ///     </description></item>
         ///     <item><description>
-        ///         If <paramref name="offset"/> is not <see langword="null"/> and
-        ///         the state root hash associated with <paramref name="offset"/>
+        ///         If <paramref name="blockHash"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="blockHash"/>
         ///         cannot be found in <see cref="IStateStore"/>.
         ///     </description></item>
         /// </list>
         /// </exception>
-        ITrie GetBlockStateRoot(BlockHash? offset);
+        ITrie GetStateRoot(BlockHash? blockHash);
 
-        ITrie GetStateRoot(HashDigest<SHA256>? srh);
+        /// <summary>
+        /// Returns the state root associated with <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <paramref name="stateRootHash"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the state root hash
+        /// is not <see langword="null"/> and cannot be found in <see cref="IStateStore"/>.
+        /// </exception>
+        ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
     }
 }

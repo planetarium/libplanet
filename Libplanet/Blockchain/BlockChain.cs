@@ -568,19 +568,29 @@ namespace Libplanet.Blockchain
 
         public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState" />
-        public IWorldState GetWorldState(BlockHash? offset) =>
-            _blockChainStates.GetWorldState(offset);
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
+        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
+            _blockChainStates.GetWorldState(stateRootHash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
-        public IAccountState GetAccount(Address address, HashDigest<SHA256>? srh) =>
-            _blockChainStates.GetAccount(address, srh);
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)" />
+        public IWorldState GetWorldState(BlockHash? blockHash) =>
+            _blockChainStates.GetWorldState(blockHash);
 
-        public ITrie GetBlockStateRoot(BlockHash? offset) =>
-            _blockChainStates.GetBlockStateRoot(offset);
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, HashDigest{SHA256}?)"/>
+        public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash) =>
+            _blockChainStates.GetAccountState(address, stateRootHash);
 
-        public ITrie GetStateRoot(HashDigest<SHA256>? srh) =>
-            _blockChainStates.GetStateRoot(srh);
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
+        public IAccountState GetAccountState(Address address, BlockHash? blockHash) =>
+            _blockChainStates.GetAccountState(address, blockHash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(BlockHash?)"/>
+        public ITrie GetStateRoot(BlockHash? blockHash) =>
+            _blockChainStates.GetStateRoot(blockHash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(HashDigest{SHA256}?)"/>
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
+            _blockChainStates.GetStateRoot(stateRootHash);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
