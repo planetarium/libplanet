@@ -36,7 +36,7 @@ namespace Libplanet.Action.State
         /// <summary>
         /// State root hash of the <see cref="IAccountState"/>.
         /// </summary>
-        HashDigest<SHA256> StateRootHash { get; }
+        HashDigest<SHA256>? StateRootHash { get; }
 
         /// <summary>
         /// The <see cref="Crypto.Address"/> of this <see cref="IAccountState"/>.

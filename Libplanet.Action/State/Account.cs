@@ -39,7 +39,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public HashDigest<SHA256> StateRootHash => _baseState.StateRootHash;
+        public HashDigest<SHA256>? StateRootHash => _baseState.StateRootHash;
 
         /// <inheritdoc/>
         [Pure]

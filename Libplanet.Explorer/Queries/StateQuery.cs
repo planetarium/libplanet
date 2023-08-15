@@ -18,14 +18,14 @@ public class StateQuery
     public StateQuery()
     {
         Name = "StateQuery";
-        Field<NonNullGraphType<BencodexValueType>>(
+        Field<NonNullGraphType<WorldStateType>>(
             "worldState",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveWorldState
         );
-        Field<NonNullGraphType<BencodexValueType>>(
+        Field<NonNullGraphType<AccountStateType>>(
             "accountState",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
@@ -131,7 +131,7 @@ public class StateQuery
             return context.Source.ChainStates.GetBlockAccountState(address, offset);
         }
 
-        throw new GraphQL.ExecutionError("Unexpected block query");
+        throw new GraphQL.ExecutionError("Unexpected state query");
     }
 
     private static object ResolveStates(

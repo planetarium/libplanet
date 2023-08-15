@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Name = "AccountState";
 
-            Field<NonNullGraphType<IdGraphType>>(
+            Field<IdGraphType>(
                 name: "StateRootHash",
                 description: "The state root hash of the account state.",
                 resolve: ctx => ctx.Source.StateRootHash

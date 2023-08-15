@@ -29,7 +29,7 @@ namespace Libplanet.Action.State
         }
 
         /// <inheritdoc cref="IAccountState.StateRootHash"/>
-        public HashDigest<SHA256> StateRootHash => _stateRoot.Hash;
+        public HashDigest<SHA256>? StateRootHash => _stateRoot.Hash;
 
         /// <inheritdoc cref="IAccountState.Address"/>
         public Address Address => _address;

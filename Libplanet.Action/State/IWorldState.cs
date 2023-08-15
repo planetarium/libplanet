@@ -34,7 +34,7 @@ namespace Libplanet.Action.State
         /// <summary>
         /// State root hash of the <see cref="IWorldState"/>.
         /// </summary>
-        HashDigest<SHA256> StateRootHash { get; }
+        HashDigest<SHA256>? StateRootHash { get; }
 
         /// <summary>
         /// Whether <see cref="IWorldState"/> is in legacy state or not.

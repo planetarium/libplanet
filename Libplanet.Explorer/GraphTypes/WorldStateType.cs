@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Name = "WorldState";
 
-            Field<NonNullGraphType<IdGraphType>>(
+            Field<IdGraphType>(
                 name: "StateRootHash",
                 description: "The state root hash of the world state.",
                 resolve: ctx => ctx.Source.StateRootHash.ToString()

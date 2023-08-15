@@ -30,7 +30,7 @@ namespace Libplanet.Action.State
                 .Any(v => v == null);
         }
 
-        public HashDigest<SHA256> StateRootHash => _stateRoot.Hash;
+        public HashDigest<SHA256>? StateRootHash => _stateRoot.Hash;
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; }
