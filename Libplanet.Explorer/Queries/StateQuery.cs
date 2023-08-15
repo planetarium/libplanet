@@ -16,11 +16,29 @@ public class StateQuery
     public StateQuery()
     {
         Name = "StateQuery";
+        Field<NonNullGraphType<BencodexValueType>>(
+            "worldState",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveWorldState
+        );
+        Field<NonNullGraphType<BencodexValueType>>(
+            "accountState",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<AddressType>>
+                { Name = "address" },
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveAccountState
+        );
         Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
             "states",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
-                    { Name = "addresses" },
+                { Name = "addresses" },
+                new QueryArgument<NonNullGraphType<AddressType>>
+                { Name = "accountAddress" },
                 new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveStates
@@ -51,10 +69,54 @@ public class StateQuery
         );
     }
 
+    private static object ResolveWorldState(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    {
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetWorldState(offset);
+    }
+
+    private static object ResolveAccountState(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    {
+        Address address = context.GetArgument<Address>("address");
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetAccountState(address, offset);
+    }
+
     private static object ResolveStates(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
+        Address accountAddress = context.GetArgument<Address>("accountAddress");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
 
         BlockHash offset;
@@ -72,7 +134,7 @@ public class StateQuery
 
         return context.Source.ChainStates.GetStates(
             addresses,
-            ReservedAddresses.LegacyAccount,
+            accountAddress,
             offset
         );
     }
