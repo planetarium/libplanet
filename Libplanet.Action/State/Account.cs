@@ -9,6 +9,7 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -39,11 +40,15 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
+        public Address Address => _baseState.Address;
+
+        /// <inheritdoc/>
+        [Pure]
         public HashDigest<SHA256>? StateRootHash => _baseState.StateRootHash;
 
         /// <inheritdoc/>
         [Pure]
-        public Address Address => _baseState.Address;
+        public BlockHash? BlockHash => _baseState.BlockHash;
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>

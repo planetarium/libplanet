@@ -5,6 +5,7 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -34,14 +35,19 @@ namespace Libplanet.Action.State
     public interface IAccountState
     {
         /// <summary>
+        /// The <see cref="Crypto.Address"/> of this <see cref="IAccountState"/>.
+        /// </summary>
+        Address Address { get; }
+
+        /// <summary>
         /// State root hash of the <see cref="IAccountState"/>.
         /// </summary>
         HashDigest<SHA256>? StateRootHash { get; }
 
         /// <summary>
-        /// The <see cref="Crypto.Address"/> of this <see cref="IAccountState"/>.
+        /// The <see cref="Types.Blocks.BlockHash"/> of this <see cref="IAccountState"/>.
         /// </summary>
-        Address Address { get; }
+        BlockHash? BlockHash { get; }
 
         /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.

@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -566,31 +565,19 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IWorldState GetWorldState() => GetBlockWorldState(Tip.Hash);
+        public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
-        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
-            _blockChainStates.GetWorldState(stateRootHash);
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)" />
+        public IWorldState GetWorldState(BlockHash? offset) =>
+            _blockChainStates.GetWorldState(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockWorldState(BlockHash?)" />
-        public IWorldState GetBlockWorldState(BlockHash? blockHash) =>
-            _blockChainStates.GetBlockWorldState(blockHash);
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
+        public IAccountState GetAccountState(Address address, BlockHash? offset) =>
+            _blockChainStates.GetAccountState(address, offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, HashDigest{SHA256}?)"/>
-        public IAccountState GetAccountState(Address address, HashDigest<SHA256>? stateRootHash) =>
-            _blockChainStates.GetAccountState(address, stateRootHash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetBlockAccountState(Address, BlockHash?)"/>
-        public IAccountState GetBlockAccountState(Address address, BlockHash? blockHash) =>
-            _blockChainStates.GetBlockAccountState(address, blockHash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetBlockStateRoot(BlockHash?)"/>
-        public ITrie GetBlockStateRoot(BlockHash? blockHash) =>
-            _blockChainStates.GetBlockStateRoot(blockHash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(HashDigest{SHA256}?)"/>
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
-            _blockChainStates.GetStateRoot(stateRootHash);
+        /// <inheritdoc cref="IBlockChainStates.GetStateRoot(BlockHash?)"/>
+        public ITrie GetStateRoot(BlockHash? offset) =>
+            _blockChainStates.GetStateRoot(offset);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action.Tests.Mocks
 {
@@ -22,7 +23,7 @@ namespace Libplanet.Action.Tests.Mocks
             Legacy = true;
         }
 
-        public HashDigest<SHA256> StateRootHash => default;
+        public BlockHash? BlockHash => default;
 
         public bool Legacy { get; private set; }
 

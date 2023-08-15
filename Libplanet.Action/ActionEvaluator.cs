@@ -483,7 +483,7 @@ namespace Libplanet.Action
         /// </returns>
         internal IWorld PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            return World.Create(_blockChainStates.GetBlockWorldState(block.PreviousHash));
+            return World.Create(_blockChainStates.GetWorldState(block.PreviousHash));
         }
 
         [Pure]

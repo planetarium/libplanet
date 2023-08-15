@@ -180,7 +180,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IWorld CreateWorld(BlockHash? offset = null)
-            => World.Create(Chain.GetBlockWorldState(offset ?? Tip.Hash));
+            => World.Create(Chain.GetWorldState(offset ?? Tip.Hash));
 
         public ITrie GetTrie(BlockHash? blockHash)
         {

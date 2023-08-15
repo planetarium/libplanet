@@ -1,9 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Security.Cryptography;
-using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action.State
 {
@@ -33,7 +31,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public HashDigest<SHA256>? StateRootHash => _baseState.StateRootHash;
+        public BlockHash? BlockHash => _baseState.BlockHash;
 
         /// <inheritdoc/>
         [Pure]

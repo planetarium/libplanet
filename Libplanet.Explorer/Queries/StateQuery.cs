@@ -29,8 +29,7 @@ public class StateQuery
             "accountState",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
-                new QueryArgument<IdGraphType> { Name = "stateRootHash" },
-                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" }
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
             ),
             resolve: ResolveAccountState
         );
@@ -89,49 +88,29 @@ public class StateQuery
             );
         }
 
-        return context.Source.ChainStates.GetBlockWorldState(offset);
+        return context.Source.ChainStates.GetWorldState(offset);
     }
 
     private static object ResolveAccountState(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address address = context.GetArgument<Address>("address");
-        string stateRootHash = context.GetArgument<string>("stateRootHash");
         string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
 
-        if (!(stateRootHash is null ^ offsetBlockHash is null))
+        BlockHash offset;
+        try
         {
-            throw new GraphQL.ExecutionError(
-                "The parameters stateRootHash and offsetBlockHash are mutually exclusive; " +
-                "give only one at a time.");
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
         }
 
-        if (stateRootHash is string stateRootHashNotNull)
-        {
-            HashDigest<SHA256> srh = new HashDigest<SHA256>(
-                ByteUtil.ParseHex(stateRootHashNotNull));
-            return context.Source.ChainStates.GetAccountState(address, srh);
-        }
-
-        if (offsetBlockHash is string offsetBlockHashNotNull)
-        {
-            BlockHash offset;
-            try
-            {
-                offset = BlockHash.FromString(offsetBlockHashNotNull);
-            }
-            catch (Exception e)
-            {
-                throw new ExecutionError(
-                    "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
-                    e
-                );
-            }
-
-            return context.Source.ChainStates.GetBlockAccountState(address, offset);
-        }
-
-        throw new GraphQL.ExecutionError("Unexpected state query");
+        return context.Source.ChainStates.GetAccountState(address, offset);
     }
 
     private static object ResolveStates(

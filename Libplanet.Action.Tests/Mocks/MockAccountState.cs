@@ -6,6 +6,7 @@ using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.Tests.Mocks
@@ -87,7 +88,9 @@ namespace Libplanet.Action.Tests.Mocks
 
         public ValidatorSet ValidatorSet => _validatorSet;
 
-        public HashDigest<SHA256> StateRootHash => default;
+        public HashDigest<SHA256>? StateRootHash => default;
+
+        public BlockHash? BlockHash => default;
 
         public Address Address { get; private set; }
 

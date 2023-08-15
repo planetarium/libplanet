@@ -6,6 +6,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
@@ -19,20 +20,25 @@ namespace Libplanet.Action.State
     {
         private Address _address;
         private ITrie _stateRoot;
+        private BlockHash? _blockHash;
         private BlockStateCache _cache;
 
-        public AccountBaseState(Address address, ITrie stateRoot)
+        public AccountBaseState(Address address, ITrie stateRoot, BlockHash? blockHash)
         {
             _address = address;
             _stateRoot = stateRoot;
+            _blockHash = blockHash;
             _cache = new BlockStateCache();
         }
+
+        /// <inheritdoc cref="IAccountState.Address"/>
+        public Address Address => _address;
 
         /// <inheritdoc cref="IAccountState.StateRootHash"/>
         public HashDigest<SHA256>? StateRootHash => _stateRoot.Hash;
 
-        /// <inheritdoc cref="IAccountState.Address"/>
-        public Address Address => _address;
+        /// <inheritdoc cref="IAccountState.BlockHash"/>
+        public BlockHash? BlockHash => _blockHash;
 
         /// <inheritdoc cref="IAccountState.GetState"/>
         public IValue? GetState(Address address) => GetStates(new[] { address }).First();

@@ -10,9 +10,9 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "WorldState";
 
             Field<IdGraphType>(
-                name: "StateRootHash",
-                description: "The state root hash of the world state.",
-                resolve: ctx => ctx.Source.StateRootHash.ToString()
+                name: "BlockHash",
+                description: "The block hash of the world state.",
+                resolve: ctx => ctx.Source.BlockHash.ToString()
             );
             Field<NonNullGraphType<BooleanGraphType>>(
                 name: "Legacy",

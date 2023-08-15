@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Blocks;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
@@ -18,10 +17,11 @@ namespace Libplanet.Action.State
         private readonly IBlockChainStates _blockChainStates;
         private readonly ITrie _stateRoot;
 
-        public WorldBaseState(HashDigest<SHA256>? stateRootHash, IBlockChainStates blockChainStates)
+        public WorldBaseState(BlockHash? blockHash, IBlockChainStates blockChainStates)
         {
             _blockChainStates = blockChainStates;
-            _stateRoot = _blockChainStates.GetStateRoot(stateRootHash);
+            _stateRoot = _blockChainStates.GetStateRoot(blockHash);
+            BlockHash = blockHash;
             Legacy = _stateRoot
                 .Get(new[]
                 {
@@ -30,7 +30,7 @@ namespace Libplanet.Action.State
                 .Any(v => v == null);
         }
 
-        public HashDigest<SHA256>? StateRootHash => _stateRoot.Hash;
+        public BlockHash? BlockHash { get; }
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; }
@@ -70,14 +70,15 @@ namespace Libplanet.Action.State
         private ITrie GetLegacyTrieOnly(Address address) =>
             address == ReservedAddresses.LegacyAccount
                 ? _stateRoot
-                : _blockChainStates.GetStateRoot((HashDigest<SHA256>?)null);
+                : _blockChainStates.GetStateRoot(null);
 
         private ITrie GetTrieFromBencodex(IValue? value) =>
-            value is Binary stateRoot
-                ? _blockChainStates.GetStateRoot(new HashDigest<SHA256>(stateRoot))
-                : _blockChainStates.GetStateRoot((HashDigest<SHA256>?)null);
+            value is Binary stateRootHash
+                ? _blockChainStates.GetStateRoot(
+                    Types.Blocks.BlockHash.DeriveFrom(stateRootHash.ToArray()))
+                : _blockChainStates.GetStateRoot(null);
 
         private IAccount CreateAccount(Address address, ITrie trie) =>
-            Account.Create(new AccountBaseState(address, trie));
+            Account.Create(new AccountBaseState(address, trie, BlockHash));
     }
 }

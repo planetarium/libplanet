@@ -32,8 +32,6 @@ To be released.
  -  (Libplanet.Action) `IAction.Execute()` now returns `IWorld`.  [[#3373]]
  -  (Libplanet) Methods `GetState()`, `GetStates()` on `IBlockChainStates`
     now receives parameter `Address accountAddress`.  [[#3373]]
- -  (Libplanet) `IBlockChainStates.GetStateRoot()` now receives
-    `HashDigest<SHA256>` instead of `BlockHash` as its parameter.  [[#3373]]
  -  (Libplanet) `IActionRenderer.RenderAction()` now receives `IWorld`
     instead of `IAccount` as its parameter.  [[#3373]]
 
@@ -48,9 +46,8 @@ To be released.
     for `GetRawTotalDelta()` from legacy accounts.  [[#3373]]
  -  (Libplanet.Action) Introduced `IWorld`, `IWorldDelta`, `IWorldState`.
     [[#3373]]
- -  (Libplanet) Introduced methods `GetBlockWorldState()`, `GetWorldState()`,
-    `GetBlockAccount()`, `GetAccount()`, `GetBlockStateRoot()`, `GetStateRoot()`
-    on `IBlockChainStates`.  [[#3373]]
+ -  (Libplanet) Introduced methods `GetWorldState()`, `GetAccount()`,
+    `GetStateRoot()` on `IBlockChainStates`.  [[#3373]]
 
 ### Behavioral changes
 
