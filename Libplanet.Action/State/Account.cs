@@ -4,7 +4,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
@@ -32,9 +34,15 @@ namespace Libplanet.Action.State
         }
 
         /// <inheritdoc/>
+        [Pure]
         public IAccountDelta Delta { get; private set; }
 
         /// <inheritdoc/>
+        [Pure]
+        public HashDigest<SHA256> StateRootHash => _baseState.StateRootHash;
+
+        /// <inheritdoc/>
+        [Pure]
         public Address Address => _baseState.Address;
 
         /// <inheritdoc/>

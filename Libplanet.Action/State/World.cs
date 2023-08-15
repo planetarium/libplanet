@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.State
@@ -28,6 +30,10 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IWorldDelta Delta { get; private set; }
+
+        /// <inheritdoc/>
+        [Pure]
+        public HashDigest<SHA256> StateRootHash => _baseState.StateRootHash;
 
         /// <inheritdoc/>
         [Pure]

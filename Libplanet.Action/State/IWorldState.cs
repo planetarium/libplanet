@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet.Action.State
 {
@@ -28,6 +31,11 @@ namespace Libplanet.Action.State
     /// </summary>
     public interface IWorldState
     {
+        /// <summary>
+        /// State root hash of the <see cref="IWorldState"/>.
+        /// </summary>
+        HashDigest<SHA256> StateRootHash { get; }
+
         /// <summary>
         /// Whether <see cref="IWorldState"/> is in legacy state or not.
         /// </summary>

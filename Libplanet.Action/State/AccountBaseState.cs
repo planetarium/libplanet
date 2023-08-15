@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
@@ -25,6 +27,9 @@ namespace Libplanet.Action.State
             _stateRoot = stateRoot;
             _cache = new BlockStateCache();
         }
+
+        /// <inheritdoc cref="IAccountState.StateRootHash"/>
+        public HashDigest<SHA256> StateRootHash => _stateRoot.Hash;
 
         /// <inheritdoc cref="IAccountState.Address"/>
         public Address Address => _address;
