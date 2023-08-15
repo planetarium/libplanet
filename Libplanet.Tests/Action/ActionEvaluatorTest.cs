@@ -273,11 +273,17 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
 
-            Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
                 blockChainStates: new BlockChainStates(_storeFx.Store, _storeFx.StateStore),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
+
+            var genesisPreEval = ProposeGenesis(
+                GenesisProposer.PublicKey, null, null, null, Block.CurrentProtocolVersion);
+            var srh = _storeFx.StateStore.Commit(
+                null, actionEvaluator.Evaluate(genesisPreEval).GetLegacyRawTotalDelta()).Hash;
+            var genesis = genesisPreEval.Sign(GenesisProposer, srh);
+            _storeFx.Store.PutBlock(genesis);
 
             Transaction[] block1Txs =
             {
@@ -327,9 +333,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -446,9 +452,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -522,6 +528,18 @@ namespace Libplanet.Tests.Action
                     recordRandom: true),
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
+
+            var actionEvaluator = new ActionEvaluator(
+                policyBlockActionGetter: _ => null,
+                blockChainStates: new BlockChainStates(_storeFx.Store, _storeFx.StateStore),
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
+            var preEval = ProposeGenesis(
+                GenesisProposer.PublicKey, null, null, null, Block.CurrentProtocolVersion);
+            var srh = _storeFx.StateStore.Commit(
+                null, actionEvaluator.Evaluate(preEval).GetLegacyRawTotalDelta()).Hash;
+            var previous = preEval.Sign(GenesisProposer, srh);
+            _storeFx.Store.PutBlock(previous);
+
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
             var txs = new Transaction[] { tx };
@@ -530,14 +548,10 @@ namespace Libplanet.Tests.Action
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: keys[0].PublicKey,
-                    previousHash: default(BlockHash),
+                    previousHash: previous.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
-            var actionEvaluator = new ActionEvaluator(
-                policyBlockActionGetter: _ => null,
-                blockChainStates: new BlockChainStates(_storeFx.Store, _storeFx.StateStore),
-                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             DumbAction.RehearsalRecords.Value =
                 ImmutableList<(Address, string)>.Empty;
@@ -651,14 +665,20 @@ namespace Libplanet.Tests.Action
                 blockChainStates: new BlockChainStates(_storeFx.Store, _storeFx.StateStore),
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
+            var preEval = ProposeGenesis(
+                GenesisProposer.PublicKey, null, null, null, Block.CurrentProtocolVersion);
+            var srh = _storeFx.StateStore.Commit(
+                null, actionEvaluator.Evaluate(preEval).GetLegacyRawTotalDelta()).Hash;
+            var previous = preEval.Sign(GenesisProposer, srh);
+            _storeFx.Store.PutBlock(previous);
             var block = new BlockContent(
                 new BlockMetadata(
                     index: 123,
                     timestamp: DateTimeOffset.UtcNow,
                     publicKey: GenesisProposer.PublicKey,
-                    previousHash: hash,
+                    previousHash: previous.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: CreateBlockCommit(hash, 122, 0)),
+                    lastCommit: CreateBlockCommit(previous.Hash, 122, 0)),
                 transactions: txs).Propose();
             IWorld previousState = actionEvaluator.PrepareInitialDelta(block);
             var nextStates = actionEvaluator.EvaluateTx(
