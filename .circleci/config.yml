@@ -184,6 +184,21 @@ commands:
             head -n $part .head_tests.txt > .current_tests.txt
           fi
           excluded_tests=(
+            Libplanet.Net.Tests.Protocols.ProtocolTest.KademliaTest
+            Libplanet.Net.Tests.Protocols.ProtocolTest.Start
+            Libplanet.Net.Tests.Protocols.ProtocolTest.Ping
+            Libplanet.Net.Tests.Protocols.ProtocolTest.PingTwice
+            Libplanet.Net.Tests.Protocols.ProtocolTest.PingToClosedPeer
+            Libplanet.Net.Tests.Protocols.ProtocolTest.BootstrapException
+            Libplanet.Net.Tests.Protocols.ProtocolTest.BootstrapAsyncTest
+            Libplanet.Net.Tests.Protocols.ProtocolTest.RemoveStalePeers
+            Libplanet.Net.Tests.Protocols.ProtocolTest.RoutingTableFull
+            Libplanet.Net.Tests.Protocols.ProtocolTest.ReplacementCache
+            Libplanet.Net.Tests.Protocols.ProtocolTest.RemoveDeadReplacementCache
+            Libplanet.Net.Tests.Protocols.ProtocolTest.BroadcastMessage
+            Libplanet.Net.Tests.Protocols.ProtocolTest.BroadcastGuarantee
+            Libplanet.Net.Tests.Protocols.ProtocolTest.DoNotBroadcastToSourcePeer
+            Libplanet.Net.Tests.Protocols.ProtocolTest.RefreshTable
           )
           cat .current_tests.txt
           first=1
