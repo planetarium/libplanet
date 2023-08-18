@@ -43,6 +43,7 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
             }
         }
@@ -64,6 +65,7 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
                 if (transport is NetMQTransport)
                 {
@@ -81,6 +83,7 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
                 var boundPeer = new BoundPeer(
                     new PrivateKey().PublicKey,
@@ -137,6 +140,7 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
             }
         }
@@ -174,6 +178,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA.Dispose();
                 transportB.Dispose();
             }
@@ -201,6 +207,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA.Dispose();
                 transportB.Dispose();
                 cts.Dispose();
@@ -246,6 +254,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA.Dispose();
                 transportB.Dispose();
             }
@@ -273,6 +283,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA.Dispose();
                 transportB.Dispose();
             }
@@ -299,6 +311,7 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
             }
         }
@@ -330,6 +343,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA.Dispose();
                 transportB.Dispose();
             }
@@ -396,9 +411,13 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
+                await transportA?.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportA?.Dispose();
+                await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportB.Dispose();
+                await transportC.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportC.Dispose();
+                await transportD.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportD.Dispose();
             }
         }
