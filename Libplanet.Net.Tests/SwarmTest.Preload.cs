@@ -59,8 +59,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
-                await StopAsync(receiverSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
         }
 
@@ -112,7 +112,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
         }
 
@@ -248,8 +249,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
-                await StopAsync(receiverSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
         }
 
@@ -364,13 +365,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-                swarmC.Dispose();
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -424,6 +421,9 @@ namespace Libplanet.Net.Tests
             Assert.Equal(sender.BlockChain.Tip, receiver.BlockChain.Tip);
             Assert.Equal(sender.BlockChain.Count, receiver.BlockChain.Count);
             Assert.Equal(0, renderCount);
+
+            CleaningSwarm(receiver);
+            CleaningSwarm(sender);
         }
 
         [Fact(Timeout = Timeout)]
@@ -483,7 +483,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
         }
 
@@ -602,13 +603,10 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
-                await StopAsync(nominerSwarm0);
-                await StopAsync(nominerSwarm1);
-                await StopAsync(receiverSwarm);
-
-                nominerSwarm0.Dispose();
-                nominerSwarm1.Dispose();
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(nominerSwarm0);
+                CleaningSwarm(nominerSwarm1);
+                CleaningSwarm(receiverSwarm);
 
                 fxForNominers[0].Dispose();
                 fxForNominers[1].Dispose();
@@ -669,6 +667,10 @@ namespace Libplanet.Net.Tests
 
             Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
+
+            CleaningSwarm(swarm0);
+            CleaningSwarm(swarm1);
+            CleaningSwarm(receiverSwarm);
         }
 
         [RetryTheory(10, Timeout = Timeout)]
@@ -757,6 +759,9 @@ namespace Libplanet.Net.Tests
                     receiverChain.GetState(address)
                 );
             }
+
+            CleaningSwarm(minerSwarm);
+            CleaningSwarm(receiverSwarm);
         }
 
         [Fact(Timeout = Timeout)]
@@ -798,6 +803,9 @@ namespace Libplanet.Net.Tests
                 .Where(b => b.Index >= receiverChain.Count)
                 .Select(b => (b.Index, b.Hash));
             Assert.Equal(expectedBlocks, demands);
+
+            CleaningSwarm(minerSwarm);
+            CleaningSwarm(receiverSwarm);
         }
 
         [Fact(Timeout = Timeout, Skip = "No Reorganization in PBFT")]
@@ -845,7 +853,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
 
             Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
@@ -905,6 +914,9 @@ namespace Libplanet.Net.Tests
             ).ToArrayAsync();
 
             Assert.Equal(receivedCount, demands.LongLength);
+
+            CleaningSwarm(minerSwarm);
+            CleaningSwarm(receiverSwarm);
         }
 
         [Fact(Timeout = Timeout)]
@@ -932,7 +944,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
             }
 
             // Check PreloadAsync() preserves chain that forked before preloading.
@@ -974,9 +987,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm1);
-                await StopAsync(minerSwarm2);
-                await StopAsync(receiverSwarm);
+                CleaningSwarm(minerSwarm1);
+                CleaningSwarm(minerSwarm2);
+                CleaningSwarm(receiverSwarm);
             }
 
             Assert.Equal(minerChain1.Count, receiverChain.Count);
@@ -1044,13 +1057,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(receiverSwarm);
-                await StopAsync(validSeedSwarm);
-                await StopAsync(invalidSeedSwarm);
-
-                receiverSwarm.Dispose();
-                validSeedSwarm.Dispose();
-                invalidSeedSwarm.Dispose();
+                CleaningSwarm(receiverSwarm);
+                CleaningSwarm(validSeedSwarm);
+                CleaningSwarm(invalidSeedSwarm);
             }
         }
 
@@ -1109,7 +1118,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(seed);
+                CleaningSwarm(seed);
+                CleaningSwarm(receiver);
             }
         }
 
@@ -1165,8 +1175,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(seed);
-                await StopAsync(receiver);
+                CleaningSwarm(seed);
+                CleaningSwarm(receiver);
             }
         }
     }

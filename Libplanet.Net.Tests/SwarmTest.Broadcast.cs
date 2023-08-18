@@ -83,11 +83,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
             }
         }
 
@@ -172,13 +169,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(seed);
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-
-                seed.Dispose();
-                swarmA.Dispose();
-                swarmB.Dispose();
+                CleaningSwarm(seed);
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
             }
         }
 
@@ -211,10 +204,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(seedSwarm);
-                await StopAsync(receiverSwarm);
-
-                seedSwarm.Dispose();
+                CleaningSwarm(seedSwarm);
+                CleaningSwarm(receiverSwarm);
             }
         }
 
@@ -288,8 +279,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(a);
-                await StopAsync(b);
+                CleaningSwarm(a);
+                CleaningSwarm(b);
             }
 
             _logger.CompareBothChains(LogEventLevel.Debug, "A", chainA, "B", chainB);
@@ -339,9 +330,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -401,8 +392,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmC);
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -438,7 +429,7 @@ namespace Libplanet.Net.Tests
                 await swarmB.TxReceived.WaitAsync();
                 Assert.Equal(tx, chainB.GetTransaction(tx.Id));
 
-                await StopAsync(swarmA);
+                CleaningSwarm(swarmA);
 
                 // Re-Broadcast received tx swarmB to swarmC
                 await swarmB.AddPeersAsync(new[] { swarmC.AsPeer }, null);
@@ -448,9 +439,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -518,9 +508,8 @@ namespace Libplanet.Net.Tests
             {
                 for (int i = 0; i < size; i++)
                 {
-                    await StopAsync(swarms[i]);
+                    CleaningSwarm(swarms[i]);
                     fxs[i].Dispose();
-                    swarms[i].Dispose();
                 }
             }
         }
@@ -628,13 +617,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-                swarmC.Dispose();
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -704,13 +689,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-                swarmC.Dispose();
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -792,10 +773,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(minerSwarm);
-                await StopAsync(receiverSwarm);
+                CleaningSwarm(minerSwarm);
+                CleaningSwarm(receiverSwarm);
                 fx1.Dispose();
-                minerSwarm.Dispose();
             }
         }
 
@@ -837,8 +817,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
             }
         }
 
@@ -892,8 +872,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
             }
         }
 
@@ -951,13 +931,9 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-                swarmC.Dispose();
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
 
@@ -1012,10 +988,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarm1);
-                await StopAsync(swarm2);
-                swarm1.Dispose();
-                swarm2.Dispose();
+                CleaningSwarm(swarm1);
+                CleaningSwarm(swarm2);
             }
         }
 
@@ -1108,9 +1082,8 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(receiver);
+                CleaningSwarm(receiver);
                 await mockTransport.StopAsync(TimeSpan.FromMilliseconds(10));
-                receiver.Dispose();
                 mockTransport.Dispose();
             }
         }
