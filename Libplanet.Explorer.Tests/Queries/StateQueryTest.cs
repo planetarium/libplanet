@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
+using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -13,6 +14,7 @@ using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Explorer.Queries;
+using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
@@ -174,33 +176,69 @@ public class StateQueryTest
     private class MockChainStates : IBlockChainStates
     {
         public IValue GetState(Address address, BlockHash? offset) =>
-            GetBlockState(offset).GetState(address);
+            GetAccount(offset).GetState(address);
 
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockState(offset).GetStates(addresses);
+            GetAccount(offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetBalance(address, currency);
+            GetAccount(offset).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetTotalSupply(currency);
+            GetAccount(offset).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockState(offset).GetValidatorSet();
+            GetAccount(offset).GetValidatorSet();
 
-        public IBlockState GetBlockState(BlockHash? offset) => new MockBlockState(offset);
+        public IAccount GetAccount(BlockHash? offset) => new MockAccount(offset);
+
+        public ITrie GetTrie(BlockHash? offset)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    private class MockBlockState : IBlockState
+    private class MockAccount : IAccount
     {
-        public MockBlockState(BlockHash? blockHash)
+        public MockAccount(BlockHash? blockHash)
         {
-            BlockHash = blockHash;
+            BlockHash = blockHash ?? default;
         }
 
-        public BlockHash? BlockHash { get; }
+        public IAccountDelta Delta { get; }
+        public ITrie Trie { get; }
+
+        public BlockHash BlockHash { get; }
+
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
+        public IAccount SetState(Address address, IValue state)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient,
+            FungibleAssetValue value, bool allowNegativeBalance = false)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccount SetValidator(Validator validator)
+        {
+            throw new System.NotImplementedException();
+        }
+
 
         public IValue GetState(Address address) => GetStates(new[] { address }).First();
 

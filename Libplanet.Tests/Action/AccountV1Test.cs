@@ -93,10 +93,6 @@ namespace Libplanet.Tests.Action
             Assert.Empty(account.GetUpdatedTotalSupplies());
             Assert.Empty(account.Delta.UpdatedTotalSupplyCurrencies);
 
-            Assert.Equal(
-                _initState.GetTotalSupply(_currencies[3]),
-                _initAccount.GetTotalSupply(_currencies[3]));
-
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 _initAccount.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(
