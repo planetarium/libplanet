@@ -97,5 +97,6 @@ public class StatsCommandTest : IDisposable
         }
 
         Console.SetOut(_originalWriter);
+        _originalWriter.Dispose();
     }
 }
