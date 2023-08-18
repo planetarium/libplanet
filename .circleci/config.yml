@@ -458,7 +458,7 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 13.2.1
-    resource_class: macos.x86.medium.gen2
+    resource_class: macos.m1.medium.gen1
     parallelism: 4
     steps:
     - macos_netcore_test_base: { code_coverage: false }
