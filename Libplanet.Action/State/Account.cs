@@ -6,7 +6,9 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -15,24 +17,43 @@ namespace Libplanet.Action.State
     /// An internal implementation of <see cref="IAccount"/>.
     /// </summary>
     [Pure]
-    internal class Account : IAccount
+    public class Account : IAccount
     {
-        private readonly IAccountState _baseState;
-
-        private Account(IAccountState baseState)
-            : this(baseState, new AccountDelta())
+        public Account(BlockHash blockHash, ITrie trie)
+            : this(blockHash, trie, new AccountDelta())
         {
         }
 
-        private Account(IAccountState baseState, IAccountDelta delta)
+        public Account(IAccount baseState)
+            : this(
+                baseState.BlockHash,
+                baseState.Trie,
+                new AccountDelta())
         {
-            _baseState = baseState;
+        }
+
+        private Account(IAccount previousAccount, IAccountDelta delta)
+            : this(
+                previousAccount.BlockHash,
+                previousAccount.Trie.Set(delta.ToRawDelta()).Commit(),
+                delta)
+        {
+        }
+
+        private Account(BlockHash blockHash, ITrie trie, IAccountDelta delta)
+        {
+            BlockHash = blockHash;
+            Trie = trie;
             Delta = delta;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
         }
 
         /// <inheritdoc/>
         public IAccountDelta Delta { get; private set; }
+
+        public ITrie Trie { get; private set; }
+
+        public BlockHash BlockHash { get; private set; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
@@ -59,30 +80,11 @@ namespace Libplanet.Action.State
             AccountMetrics.GetStateTimer.Value?.Start();
             int length = addresses.Count;
             AccountMetrics.GetStateCount.Value += length;
-            IValue?[] values = new IValue?[length];
-            var notFoundIndices = new List<int>(length);
-            for (int i = 0; i < length; i++)
-            {
-                Address address = addresses[i];
-                if (Delta.States.TryGetValue(address, out IValue? updatedValue))
-                {
-                    values[i] = updatedValue;
-                }
-                else
-                {
-                    notFoundIndices.Add(i);
-                }
-            }
-
-            if (notFoundIndices.Count > 0)
-            {
-                IReadOnlyList<IValue?> restValues = _baseState.GetStates(
-                    notFoundIndices.Select(index => addresses[index]).ToArray());
-                foreach ((var v, var i) in notFoundIndices.Select((v, i) => (v, i)))
-                {
-                    values[v] = restValues[i];
-                }
-            }
+            var values =
+                Trie.Get(
+                    addresses
+                        .Select(KeyConverters.ToStateKey)
+                        .ToArray());
 
             AccountMetrics.GetStateTimer.Value?.Stop();
             return values;
@@ -95,8 +97,14 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetBalance(address, currency, Delta.Fungibles);
+        public FungibleAssetValue GetBalance(Address address, Currency currency)
+        {
+             KeyBytes[] keys = new[] { KeyConverters.ToFungibleAssetKey(address, currency) };
+             IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
+             return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+                 ? FungibleAssetValue.FromRawValue(currency, i)
+                 : currency * 0;
+        }
 
         /// <inheritdoc/>
         [Pure]
@@ -107,19 +115,23 @@ namespace Libplanet.Action.State
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            // Return dirty state if it exists.
-            if (Delta.TotalSupplies.TryGetValue(currency, out BigInteger totalSupplyValue))
-            {
-                return FungibleAssetValue.FromRawValue(currency, totalSupplyValue);
-            }
-
-            return _baseState.GetTotalSupply(currency);
+            KeyBytes[] keys = new[] { KeyConverters.ToTotalSupplyKey(currency) };
+            IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
+            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
         }
 
         /// <inheritdoc/>
         [Pure]
-        public ValidatorSet GetValidatorSet() =>
-            Delta.ValidatorSet ?? _baseState.GetValidatorSet();
+        public ValidatorSet GetValidatorSet()
+        {
+             KeyBytes[] keys = new[] { KeyConverters.ValidatorSetKey };
+             IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
+             return rawValues.Count > 0 && rawValues[0] is List list
+                 ? new ValidatorSet(list)
+                 : new ValidatorSet();
+        }
 
         /// <inheritdoc/>
         [Pure]
@@ -242,16 +254,6 @@ namespace Libplanet.Action.State
         }
 
         /// <summary>
-        /// Creates a null account from given <paramref name="previousState"/>.
-        /// </summary>
-        /// <param name="previousState">The previous <see cref="IAccountState"/> to use as
-        /// a basis.</param>
-        /// <returns>A null account created from <paramref name="previousState"/>.
-        /// </returns>
-        internal static IAccount Create(IAccountState previousState) =>
-            new Account(previousState);
-
-        /// <summary>
         /// Creates a null account while inheriting <paramref name="account"/>s
         /// total updated fungibles.
         /// </summary>
@@ -281,13 +283,13 @@ namespace Libplanet.Action.State
             IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
             balances.TryGetValue((address, currency), out BigInteger balance)
                 ? FungibleAssetValue.FromRawValue(currency, balance)
-                : _baseState.GetBalance(address, currency);
+                : GetBalance(address, currency);
 
         [Pure]
         private Account UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates) =>
             new Account(
-                _baseState,
+                this,
                 new AccountDelta(
                     updatedStates,
                     Delta.Fungibles,
@@ -314,7 +316,7 @@ namespace Libplanet.Action.State
             IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
         ) =>
             new Account(
-                _baseState,
+                this,
                 new AccountDelta(
                     Delta.States,
                     updatedFungibleAssets,
@@ -328,7 +330,7 @@ namespace Libplanet.Action.State
         private Account UpdateValidatorSet(
             ValidatorSet updatedValidatorSet) =>
             new Account(
-                _baseState,
+                this,
                 new AccountDelta(
                     Delta.States,
                     Delta.Fungibles,

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -46,6 +47,10 @@ namespace Libplanet.Action.State
         /// </summary>
         [Pure]
         IAccountDelta Delta { get; }
+
+        public ITrie Trie { get; }
+
+        public BlockHash BlockHash { get; }
 
         /// <summary>
         /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
