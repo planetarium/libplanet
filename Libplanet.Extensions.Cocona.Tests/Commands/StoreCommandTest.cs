@@ -356,6 +356,8 @@ public class StoreCommandTest : IDisposable
 
         Console.SetOut(_originalOut);
         Console.SetError(_originalError);
+        _originalOut.Dispose();
+        _originalError.Dispose();
     }
 
     private Transaction DummyTransaction()
