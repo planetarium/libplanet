@@ -1734,7 +1734,6 @@ namespace Libplanet.Tests.Blockchain
                             miner: GenesisProposer.PublicKey,
                             lastCommit: CreateBlockCommit(b)),
                         GenesisProposer);
-                    previousState = Account.Create(previousState);
 
                     dirty = actionEvaluator.EvaluateBlock(b, previousState).GetDirtyStates();
                     Assert.NotEmpty(dirty);
