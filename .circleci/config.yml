@@ -199,6 +199,18 @@ commands:
             Libplanet.Net.Tests.Protocols.ProtocolTest.BroadcastGuarantee
             Libplanet.Net.Tests.Protocols.ProtocolTest.DoNotBroadcastToSourcePeer
             Libplanet.Net.Tests.Protocols.ProtocolTest.RefreshTable
+            Libplanet.Extensions.Cocona.Tests.Commands.StatsCommandTest.SummaryInvalidArguments
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestInvalidArguments
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByTxIdNotExist
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByTxIdTwo
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockHashesByTxId
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBuildIndexTxBlockBlockByTxId
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByHashNotExists
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByHash
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByIndexNotExists
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByIndex
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxByIdNotExists
+            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxById
           )
           cat .current_tests.txt
           first=1
