@@ -28,29 +28,29 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetState"/>
         public IValue? GetState(
             Address address, BlockHash? offset) =>
-            GetBlockState(offset).GetState(address);
+            GetAccount(offset).GetState(address);
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetBlockState(offset).GetStates(addresses);
+            GetAccount(offset).GetStates(addresses);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetBalance(address, currency);
+            GetAccount(offset).GetBalance(address, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetBlockState(offset).GetTotalSupply(currency);
+            GetAccount(offset).GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetBlockState(offset).GetValidatorSet();
+            GetAccount(offset).GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockState"/>
-        public IBlockState GetBlockState(BlockHash? offset) =>
-            new BlockState(offset, GetStateRoot(offset));
+        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
+        public IAccount GetAccount(BlockHash? offset) =>
+            new Account(offset ?? default, GetTrie(offset));
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -76,7 +76,7 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// An <see cref="ITrie"/> returned by this method is read-only.
         /// </remarks>
-        private ITrie GetStateRoot(BlockHash? offset)
+        private ITrie GetTrie(BlockHash? offset)
         {
             if (!(offset is { } hash))
             {

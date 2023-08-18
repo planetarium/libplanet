@@ -483,7 +483,7 @@ namespace Libplanet.Action
         /// </returns>
         internal IAccount PrepareInitialDelta(IPreEvaluationBlock block)
         {
-            return Account.Create(_blockChainStates.GetBlockState(block.PreviousHash));
+            return _blockChainStates.GetAccount(block.PreviousHash);
         }
 
         [Pure]
