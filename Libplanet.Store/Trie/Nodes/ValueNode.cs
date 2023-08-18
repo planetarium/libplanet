@@ -19,27 +19,22 @@ namespace Libplanet.Store.Trie.Nodes
 
         public static bool operator !=(ValueNode left, ValueNode right) => !left.Equals(right);
 
+        /// <inheritdoc cref="IEquatable{T}.Equals"/>
         public bool Equals(ValueNode? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            return Value.Equals(other.Value);
+            return other is { } node && Value.Equals(node.Value);
         }
 
         public override bool Equals(object? obj) => obj is ValueNode other && Equals(other);
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
-        public IValue ToBencodex() =>
-            new List(Null.Value, Value);
+        public IValue ToBencodex() => new List(Null.Value, Value);
 
-        public override int GetHashCode() => Value?.GetHashCode() ?? 0;
+        public override int GetHashCode() => Value.GetHashCode();
     }
 }

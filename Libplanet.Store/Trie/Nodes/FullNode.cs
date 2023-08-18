@@ -34,48 +34,21 @@ namespace Libplanet.Store.Trie.Nodes
             return new FullNode(Children.SetItem(index, childNode));
         }
 
-        bool IEquatable<FullNode>.Equals(FullNode? other)
+        /// <inheritdoc cref="IEquatable{T}.Equals"/>
+        public bool Equals(FullNode? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-
             if (ReferenceEquals(this, other))
             {
-                return false;
+                return true;
             }
 
-            for (var i = 0; i < ChildrenCount; ++i)
-            {
-                if (other.Children[i] is null ^ Children[i] is null)
-                {
-                    return false;
-                }
-
-                if (other.Children[i] is null && Children[i] is null)
-                {
-                    return true;
-                }
-
-                if (other.Children[i]?.GetType() != Children[i]?.GetType())
-                {
-                    return false;
-                }
-
-                if (other.Children[i]?.GetHashCode() != Children[i]?.GetHashCode())
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return other is { } node &&
+                Children.Where((n, i) => n is { })
+                    .SequenceEqual(node.Children.Where((n, i) => n is { }));
         }
 
-        public override bool Equals(object? obj)
-        {
-            return ReferenceEquals(this, obj) || (obj is FullNode other && Equals(other));
-        }
+        public override bool Equals(object? obj) =>
+            obj is FullNode other && Equals(other);
 
         public override int GetHashCode()
         {

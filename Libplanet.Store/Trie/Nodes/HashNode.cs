@@ -21,7 +21,9 @@ namespace Libplanet.Store.Trie.Nodes
 
         public static bool operator !=(HashNode left, HashNode right) => !left.Equals(right);
 
-        public bool Equals(HashNode? other) => HashDigest.Equals(other?.HashDigest);
+        /// <inheritdoc cref="IEquatable{T}.Equals"/>
+        public bool Equals(HashNode? other) =>
+            other is { } node && HashDigest.Equals(node.HashDigest);
 
         public override bool Equals(object? obj) => obj is HashNode other && Equals(other);
 
