@@ -241,7 +241,7 @@ namespace Libplanet.Net.Transports
 
                 if (_routerPoller.IsRunning)
                 {
-                    _routerPoller.Dispose();
+                    _routerPoller.Stop();
                 }
 
                 _replyQueue.Dispose();
@@ -276,6 +276,8 @@ namespace Libplanet.Net.Transports
                     _router.Dispose();
                     _turnClient?.Dispose();
                 }
+
+                _routerPoller?.Dispose();
 
                 _disposed = true;
             }
