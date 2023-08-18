@@ -28,12 +28,17 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Store) Fixed `Equals()` for `FullNode` and `ShortNode`.
+    [[#3377]]
+
 ### Dependencies
 
 ### CLI tools
 
 [#3354]: https://github.com/planetarium/libplanet/issues/3354
 [#3356]: https://github.com/planetarium/libplanet/pull/3356
+[#3361]: https://github.com/planetarium/libplanet/pull/3361
+[#3377]: https://github.com/planetarium/libplanet/pull/3377
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
@@ -58,7 +63,6 @@ Released on August 10, 2023.
 [#3347]: https://github.com/planetarium/libplanet/pull/3347
 [#3357]: https://github.com/planetarium/libplanet/pull/3357
 [#3359]: https://github.com/planetarium/libplanet/pull/3359
-[#3361]: https://github.com/planetarium/libplanet/pull/3361
 
 
 Version 3.1.2
