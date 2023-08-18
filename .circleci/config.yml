@@ -460,7 +460,9 @@ jobs:
     resource_class: xlarge
     working_directory: /mnt/ramdisk
     parallelism: 4
-    steps: [linux_netcore_test_base]
+    steps:     
+    - linux_netcore_test_base:
+        code_coverage: false
 
   linux-netcore-test-ar-SA:
     docker:
@@ -471,6 +473,7 @@ jobs:
     steps:
     - linux_netcore_test_base:
         locale: ar_SA.UTF-8
+        code_coverage: false
 
   linux-netcore-test-fr-FR:
     docker:
@@ -481,6 +484,7 @@ jobs:
     steps:
     - linux_netcore_test_base:
         locale: fr_FR.UTF-8
+        code_coverage: false
 
   macos-netcore-test:
     macos:
