@@ -43,8 +43,8 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             return other is { } node &&
-                Children.Where((n, i) => n is { })
-                    .SequenceEqual(node.Children.Where((n, i) => n is { }));
+                Children.Select((n, i) => (n, i)).Where(pair => pair.n is { }).SequenceEqual(
+                    node.Children.Select((n, i) => (n, i)).Where(pair => pair.n is { }));
         }
 
         public override bool Equals(object? obj) =>
