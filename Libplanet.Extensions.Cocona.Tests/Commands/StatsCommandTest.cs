@@ -40,6 +40,11 @@ public class StatsCommandTest : IDisposable
         }
     }
 
+    ~StatsCommandTest()
+    {
+        Dispose();
+    }
+
     [SkippableFact]
     public void SummaryInvalidArguments()
     {

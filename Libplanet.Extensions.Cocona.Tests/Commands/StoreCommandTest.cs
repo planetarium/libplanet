@@ -110,6 +110,11 @@ public class StoreCommandTest : IDisposable
         }
     }
 
+    ~StoreCommandTest()
+    {
+        Dispose();
+    }
+
     [SkippableFact]
     public void TestInvalidArguments()
     {
@@ -343,6 +348,12 @@ public class StoreCommandTest : IDisposable
 
     public void Dispose()
     {
+        foreach (var storeFixture in _storeFixtures)
+        {
+            storeFixture.Store?.Dispose();
+            storeFixture.StateStore?.Dispose();
+        }
+
         Console.SetOut(_originalOut);
         Console.SetError(_originalError);
     }
