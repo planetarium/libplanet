@@ -22,7 +22,7 @@ namespace Libplanet.Net.Tests.Consensus
     [Collection("NetMQConfiguration")]
     public class GossipConsensusMessageCommunicatorTest : IDisposable
     {
-        private const int Timeout = 60 * 1000;
+        private const int Timeout = 10 * 1000;
         private readonly ILogger _logger;
 
         public GossipConsensusMessageCommunicatorTest(ITestOutputHelper output)
