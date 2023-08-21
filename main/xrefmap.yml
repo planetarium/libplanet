@@ -18264,12 +18264,12 @@ references:
   commentId: T:Libplanet.RocksDBStore.RocksDBKeyValueStore
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String)
-  name: RocksDBKeyValueStore(String)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String)
-  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,System.Boolean)
+  name: RocksDBKeyValueStore(String, Boolean)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_System_Boolean_
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,System.Boolean)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, System.Boolean)
+  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String, Boolean)
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor*
   name: RocksDBKeyValueStore
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_
@@ -18400,15 +18400,15 @@ references:
   commentId: T:Libplanet.RocksDBStore.RocksDBStore
   fullName: Libplanet.RocksDBStore.RocksDBStore
   nameWithType: RocksDBStore
-- uid: Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32)
-  name: RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32)
-  name.vb: RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Int32, System.Int32, System.Int32)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Int32, System.Int32, System.Int32)
-  nameWithType: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32)
-  nameWithType.vb: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32)
+- uid: Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,System.Boolean)
+  name: RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, Boolean)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_System_Boolean_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,System.Boolean)
+  name.vb: RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, Boolean)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Int32, System.Int32, System.Int32, System.Boolean)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Int32, System.Int32, System.Int32, System.Boolean)
+  nameWithType: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, Boolean)
+  nameWithType.vb: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, Boolean)
 - uid: Libplanet.RocksDBStore.RocksDBStore.#ctor*
   name: RocksDBStore
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_

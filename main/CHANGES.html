@@ -73,6 +73,11 @@ to <code>IStateStore.GetStateRoot(HashDigest&lt;SHA256&gt;?, bool)</code>.  [<a 
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.RocksDBStore) <code>RocksDBStore</code> and <code>RocksDBKeyValueStore</code> became to
+receive <code>@readonly</code> parameter in their constructor. If it is true, it opens
+rocksdb as read-only mode.  [<a href="https://github.com/planetarium/libplanet/issues/3354">#3354</a>, <a href="https://github.com/planetarium/libplanet/pull/3356">#3356</a>, <a href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">RocksDB Read Only</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
