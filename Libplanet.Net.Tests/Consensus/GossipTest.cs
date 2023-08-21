@@ -89,10 +89,8 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
+                await CleaningGossip(gossip1);
+                await CleaningGossip(gossip2);
             }
         }
 
@@ -144,10 +142,8 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
+                await CleaningGossip(gossip1);
+                await CleaningGossip(gossip2);
             }
         }
 
@@ -209,10 +205,8 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
+                await CleaningGossip(gossip1);
+                await CleaningGossip(gossip2);
             }
         }
 
@@ -260,10 +254,9 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await transport2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip.Dispose();
-                transport2.Dispose();
+                await CleaningGossip(gossip);
+                await CleaningTransport(transport2);
+                await CleaningTransport(transport1);
             }
         }
 
@@ -299,10 +292,8 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await seed.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                seed.Dispose();
-                gossip.Dispose();
+                await CleaningTransport(seed);
+                await CleaningGossip(gossip);
             }
         }
 
@@ -353,12 +344,9 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                await receiver.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await sender1.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await sender2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                receiver.Dispose();
-                sender1.Dispose();
-                sender2.Dispose();
+                await CleaningGossip(receiver);
+                await CleaningTransport(sender1);
+                await CleaningTransport(sender2);
             }
         }
 
@@ -377,6 +365,32 @@ namespace Libplanet.Net.Tests.Consensus
                 _ => { },
                 _ => { },
                 processMessage);
+        }
+
+        private async Task CleaningTransport(ITransport transport)
+        {
+            try
+            {
+                await transport.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                transport.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                _logger.Warning("Transport already disposed.");
+            }
+        }
+
+        private async Task CleaningGossip(Gossip gossip)
+        {
+            try
+            {
+                await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                gossip.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                _logger.Warning("Gossip already disposed.");
+            }
         }
 
         private NetMQTransport CreateTransport(
