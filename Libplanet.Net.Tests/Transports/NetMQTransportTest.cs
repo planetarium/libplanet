@@ -34,13 +34,17 @@ namespace Libplanet.Net.Tests.Transports
                     messageTimestampBuffer);
 
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffff}[{ThreadId}] - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ}" +
+                "[{ThreadId}][{Caller}] - {Message:lj}{NewLine}{Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
+                .Enrich.WithCaller()
+                .WriteTo.File("/tmp/artifacts/netmq-test.log", outputTemplate: outputTemplate)
                 .WriteTo.TestOutput(testOutputHelper, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<NetMQTransportTest>();
+
             Logger = Log.ForContext<NetMQTransportTest>();
         }
 

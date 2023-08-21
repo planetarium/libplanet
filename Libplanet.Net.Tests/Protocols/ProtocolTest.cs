@@ -24,16 +24,19 @@ namespace Libplanet.Net.Tests.Protocols
 
         public ProtocolTest(ITestOutputHelper output)
         {
-            const string outputTemplate =
-                "{Timestamp:HH:mm:ss}[@{Address}][{ThreadId}] - {Message}";
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.WithThreadId()
-                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
-                .CreateLogger()
-                .ForContext<ProtocolTest>();
+             const string outputTemplate =
+                 "{Timestamp:HH:mm:ss:ffffffZ}" +
+                 "[@{Address}][{ThreadId}][{Caller}] - {Message:lj}{NewLine}{Exception}";
+             Log.Logger = new LoggerConfiguration()
+                 .MinimumLevel.Verbose()
+                 .Enrich.WithThreadId()
+                 .Enrich.WithCaller()
+                 .WriteTo.File("/tmp/artifacts/protocol-test.log", outputTemplate: outputTemplate)
+                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                 .CreateLogger()
+                 .ForContext<ProtocolTest>();
 
-            _transports = new Dictionary<Address, TestTransport>();
+             _transports = new Dictionary<Address, TestTransport>();
         }
 
         [Fact]

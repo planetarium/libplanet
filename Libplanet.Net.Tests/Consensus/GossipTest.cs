@@ -26,10 +26,12 @@ namespace Libplanet.Net.Tests.Consensus
         public GossipTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ}[{Caller}] - {Message}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                .Enrich.WithCaller()
+                .WriteTo.File("/tmp/artifacts/gossip-test.log", outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<GossipTest>();
 
