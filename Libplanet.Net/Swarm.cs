@@ -1327,6 +1327,11 @@ namespace Libplanet.Net
                     _logger.Warning(e, "{MethodName}() was canceled", fname);
                     throw;
                 }
+                catch (ObjectDisposedException e)
+                {
+                    _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                    throw;
+                }
                 catch (Exception e)
                 {
                     _logger.Error(
@@ -1365,6 +1370,11 @@ namespace Libplanet.Net
                 {
                     _logger.Warning(e, "{MethodName}() was canceled", nameof(BroadcastTxAsync));
                     throw;
+                }
+                catch (ObjectDisposedException e)
+                {
+                     _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                     throw;
                 }
                 catch (Exception e)
                 {
@@ -1413,8 +1423,19 @@ namespace Libplanet.Net
                     _logger.Warning(e, "{MethodName}() was cancelled", nameof(RefreshTableAsync));
                     throw;
                 }
+                catch (ObjectDisposedException e)
+                {
+                    _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                    throw;
+                }
                 catch (Exception e)
                 {
+                    if (e.InnerException is ObjectDisposedException)
+                    {
+                        _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                        throw;
+                    }
+
                     _logger.Warning(
                         e,
                         "An unexpected exception occurred during {MethodName}()",

@@ -567,8 +567,19 @@ namespace Libplanet.Net.Consensus
                     _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
                     throw;
                 }
+                catch (ObjectDisposedException e)
+                {
+                    _logger.Warning(e, "{ClassName} was disposed", nameof(Gossip));
+                    throw;
+                }
                 catch (Exception e)
                 {
+                    if (e.InnerException is ObjectDisposedException)
+                    {
+                        _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                        throw;
+                    }
+
                     var msg = "Unexpected exception occurred during " +
                               $"{nameof(RefreshTableAsync)}(): {{0}}";
                     _logger.Warning(e, msg, e);
