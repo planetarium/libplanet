@@ -273,6 +273,8 @@ commands:
               LANGUAGE: "<<parameters.locale>>"
         - store_test_results:
             path: /tmp/junit
+        - store_artifacts:
+            path: /tmp/artifacts
 
   linux_netcore_test_base:
     parameters:
