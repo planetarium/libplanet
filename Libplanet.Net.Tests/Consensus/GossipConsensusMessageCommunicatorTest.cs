@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
 
         public void Dispose()
         {
-            NetMQConfig.Cleanup();
+            NetMQConfig.Cleanup(false);
         }
 
         [Fact(Timeout = Timeout)]
