@@ -267,15 +267,15 @@ namespace Libplanet.Net.Tests
                 await a.AddPeersAsync(new[] { b.AsPeer }, null);
 
                 var minerCanceller = new CancellationTokenSource();
-                Task miningA = CreateMiner(minerA, a, chainA, 5000, minerCanceller.Token);
-                Task miningB = CreateMiner(minerB, b, chainB, 8000, minerCanceller.Token);
+                Task miningA = CreateMiner(minerA, a, chainA, 500, minerCanceller.Token);
+                Task miningB = CreateMiner(minerB, b, chainB, 800, minerCanceller.Token);
 
-                await Task.Delay(10000);
+                await Task.Delay(1000);
                 minerCanceller.Cancel();
 
                 await Task.WhenAll(miningA, miningB);
 
-                await Task.Delay(5000);
+                await Task.Delay(500);
             }
             finally
             {

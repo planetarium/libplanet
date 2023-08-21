@@ -82,18 +82,18 @@ namespace Libplanet.Net.Tests.Consensus
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             }
 
-            for (var i = 0; i < 4; i++)
-            {
-                consensusReactors[i] = TestUtils.CreateDummyConsensusReactor(
-                    blockChain: blockChains[i],
-                    key: TestUtils.PrivateKeys[i],
-                    consensusPort: ports[i],
-                    validatorPeers: validatorPeers,
-                    newHeightDelayMilliseconds: PropagationDelay * 2);
-            }
-
             try
             {
+                for (var i = 0; i < 4; i++)
+                {
+                    consensusReactors[i] = TestUtils.CreateDummyConsensusReactor(
+                        blockChain: blockChains[i],
+                        key: TestUtils.PrivateKeys[i],
+                        consensusPort: ports[i],
+                        validatorPeers: validatorPeers,
+                        newHeightDelayMilliseconds: PropagationDelay * 2);
+                }
+
                 consensusReactors.AsParallel().ForAll(
                     reactor => _ = reactor.StartAsync(cancellationTokenSource.Token));
 

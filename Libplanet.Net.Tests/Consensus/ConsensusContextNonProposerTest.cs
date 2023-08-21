@@ -18,7 +18,7 @@ namespace Libplanet.Net.Tests.Consensus
 {
     public class ConsensusContextNonProposerTest
     {
-        private const int Timeout = 30000;
+        private const int Timeout = 10000;
         private readonly ILogger _logger;
 
         public ConsensusContextNonProposerTest(ITestOutputHelper output)

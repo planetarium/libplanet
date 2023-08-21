@@ -44,7 +44,7 @@ namespace Libplanet.Net.Tests
     [Collection("NetMQConfiguration")]
     public partial class SwarmTest : IDisposable
     {
-        private const int Timeout = 60 * 1000;
+        private const int Timeout = 10 * 1000;
         private const int DisposeTimeout = 5 * 1000;
 
         private readonly ITestOutputHelper _output;
@@ -74,6 +74,7 @@ namespace Libplanet.Net.Tests
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing SwarmTest...");
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -384,7 +385,7 @@ namespace Libplanet.Net.Tests
             CleaningSwarm(swarm);
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(Timeout = 20000)]
         public async Task BootstrapContext()
         {
             var collectedTwoMessages = Enumerable.Range(0, 4).Select(i =>
@@ -408,7 +409,7 @@ namespace Libplanet.Net.Tests
                     ConsensusPort = 6000 + i,
                     ConsensusPrivateKey = TestUtils.PrivateKeys[i],
                     ConsensusWorkers = 100,
-                    TargetBlockInterval = TimeSpan.FromSeconds(10),
+                    TargetBlockInterval = TimeSpan.FromSeconds(1),
                     ContextTimeoutOptions = new ContextTimeoutOption(),
                 }).ToList();
             var swarms = new List<Swarm>();
@@ -1934,9 +1935,15 @@ namespace Libplanet.Net.Tests
 
         private void CleaningSwarm(Swarm swarm)
         {
-            swarm.StopAsync(TimeSpan.FromMilliseconds(10)).WaitAndUnwrapException();
-            swarm.Dispose();
-            NetMQConfig.Cleanup(false);
+            try
+            {
+                swarm.StopAsync(TimeSpan.FromMilliseconds(10)).WaitAndUnwrapException();
+                swarm.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                _logger.Debug("Swarm {Swarm} is already disposed", swarm);
+            }
         }
 
         private Task BootstrapAsync(

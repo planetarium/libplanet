@@ -469,7 +469,9 @@ jobs:
       name: win/server-2022
       size: xlarge
     parallelism: 6
-    steps: [netcore_test_base]
+    steps: 
+    - netcore_test_base:
+        code_coverage: false
 
   linux-unity-test:
     docker:
