@@ -230,6 +230,7 @@ commands:
               fi
             fi
           done < .current_tests.txt > .test-filter.txt
+          mkdir -p /tmp/artifacts
     - when:
         condition: "<<parameters.code_coverage>>"
         steps:
@@ -275,6 +276,8 @@ commands:
             path: /tmp/junit
         - store_artifacts:
             path: /tmp/artifacts
+        - store_artifacts:
+            path: /tmp/core_dumps
 
   linux_netcore_test_base:
     parameters:
