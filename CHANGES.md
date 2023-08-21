@@ -20,6 +20,10 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore` became to
+    receive `@readonly` parameter in their constructor. If it is true, it opens
+    rocksdb as read-only mode.  [[#3354], [#3356], [RocksDB Read Only]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -27,6 +31,10 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3354]: https://github.com/planetarium/libplanet/issues/3354
+[#3356]: https://github.com/planetarium/libplanet/pull/3356
+[RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
 Version 3.2.0
