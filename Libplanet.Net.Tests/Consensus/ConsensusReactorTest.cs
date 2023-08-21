@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,16 +48,23 @@ namespace Libplanet.Net.Tests.Consensus
             var consensusReactors = new ConsensusReactor[4];
             var stores = new IStore[4];
             var blockChains = new BlockChain[4];
+            var ports = new int[4];
             var fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
             var validatorPeers = new List<BoundPeer>();
             var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(Timeout);
+
+            for (int i = 0; i < 4; i++)
+            {
+                ports[i] = GetAvailablePort() ?? throw new Exception("No available port.");
+            }
 
             for (var i = 0; i < 4; i++)
             {
                 validatorPeers.Add(
                     new BoundPeer(
                         TestUtils.PrivateKeys[i].PublicKey,
-                        new DnsEndPoint("127.0.0.1", 6000 + i)));
+                        new DnsEndPoint("127.0.0.1", ports[i])));
                 stores[i] = new MemoryStore();
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 blockChains[i] = BlockChain.Create(
@@ -76,7 +84,7 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusReactors[i] = TestUtils.CreateDummyConsensusReactor(
                     blockChain: blockChains[i],
                     key: TestUtils.PrivateKeys[i],
-                    consensusPort: 6000 + i,
+                    consensusPort: ports[i],
                     validatorPeers: validatorPeers,
                     newHeightDelayMilliseconds: PropagationDelay * 2);
             }
@@ -138,9 +146,13 @@ namespace Libplanet.Net.Tests.Consensus
             }
             finally
             {
-                cancellationTokenSource.Cancel();
                 for (int i = 0; i < 4; ++i)
                 {
+                    if (!consensusReactors[i].Running)
+                    {
+                        continue;
+                    }
+
                     await consensusReactors[i].StopAsync(cancellationTokenSource.Token);
                     consensusReactors[i].Dispose();
                 }
@@ -150,6 +162,27 @@ namespace Libplanet.Net.Tests.Consensus
         public void Dispose()
         {
             NetMQConfig.Cleanup(false);
+        }
+
+        private static int? GetAvailablePort(
+            ushort lowerPort = 6000,
+            ushort upperPort = ushort.MaxValue)
+        {
+            var ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            var usedPorts = Enumerable.Empty<int>()
+                .Concat(ipProperties.GetActiveTcpConnections().Select(c => c.LocalEndPoint.Port))
+                .Concat(ipProperties.GetActiveTcpListeners().Select(l => l.Port))
+                .Concat(ipProperties.GetActiveUdpListeners().Select(l => l.Port))
+                .ToHashSet();
+            for (int port = lowerPort; port <= upperPort; port++)
+            {
+                if (!usedPorts.Contains(port))
+                {
+                    return port;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -127,7 +127,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="cancellationToken">A cancellation Token.</param>
         /// <returns>Returns the <see cref="ITransport.StopAsync"/>.</returns>
-        public async Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken = default)
         {
             _consensusContext.Dispose();
             await _gossip.StopAsync(TimeSpan.FromMilliseconds(10), cancellationToken);
