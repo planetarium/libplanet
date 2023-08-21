@@ -174,15 +174,7 @@ commands:
         command: |
           set -evx
           tests_collection="<<parameters.collect_tests_from>>"
-          total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
-          part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
-          tail -n +$((CIRCLE_NODE_INDEX * part + 1)) "$tests_collection" \
-          > .head_tests.txt
-          if [[ "$part" = "0" ]]; then
-            cp .head_tests.txt .current_tests.txt
-          else
-            head -n $part .head_tests.txt > .current_tests.txt
-          fi
+          cat "$tests_collection" | circleci tests split --split-by=timings > .current_tests.txt
           excluded_tests=(
             Libplanet.Net.Tests.Protocols.ProtocolTest.KademliaTest
             Libplanet.Net.Tests.Protocols.ProtocolTest.Start
@@ -212,7 +204,6 @@ commands:
             Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxByIdNotExists
             Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxById
           )
-          cat .current_tests.txt
           first=1
           while read test; do
             to_write=1
@@ -230,6 +221,7 @@ commands:
               fi
             fi
           done < .current_tests.txt > .test-filter.txt
+          cat .test-filter.txt
           mkdir -p /tmp/artifacts
     - when:
         condition: "<<parameters.code_coverage>>"
