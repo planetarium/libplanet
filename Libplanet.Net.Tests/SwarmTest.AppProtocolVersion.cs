@@ -74,6 +74,7 @@ namespace Libplanet.Net.Tests
 
             try
             {
+                await StartAsync(a);
                 await StartAsync(b);
 
                 await Assert.ThrowsAsync<PeerDiscoveryException>(() => BootstrapAsync(a, b.AsPeer));
