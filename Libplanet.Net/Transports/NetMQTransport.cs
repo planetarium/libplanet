@@ -234,20 +234,30 @@ namespace Libplanet.Net.Transports
 
             if (Running)
             {
-                await Task.Delay(waitFor, cancellationToken);
-
-                _replyQueue.ReceiveReady -= DoReply;
-                _router.ReceiveReady -= ReceiveMessage;
-
-                if (_routerPoller.IsRunning)
+                try
                 {
-                    _routerPoller.Stop();
+                    await Task.Delay(waitFor, cancellationToken);
+
+                    _replyQueue.ReceiveReady -= DoReply;
+                    _router.ReceiveReady -= ReceiveMessage;
+
+                    if (_routerPoller.IsRunning)
+                    {
+                        _routerPoller.Stop();
+                    }
+
+                    _replyQueue.Dispose();
+
+                    _runtimeCancellationTokenSource.Cancel();
+                    _runningEvent.Reset();
                 }
-
-                _replyQueue.Dispose();
-
-                _runtimeCancellationTokenSource.Cancel();
-                _runningEvent.Reset();
+                catch (ObjectDisposedException e)
+                {
+                    _logger.Error(
+                        e,
+                        "An exception has occurred while stopping {TaskName}",
+                        nameof(NetMQTransport));
+                }
             }
         }
 

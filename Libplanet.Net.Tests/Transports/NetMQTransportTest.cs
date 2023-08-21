@@ -48,11 +48,6 @@ namespace Libplanet.Net.Tests.Transports
             Logger = Log.ForContext<NetMQTransportTest>();
         }
 
-        ~NetMQTransportTest()
-        {
-            Dispose(false);
-        }
-
         [Fact]
         public async Task SendMessageAsyncNetMQSocketLeak()
         {
