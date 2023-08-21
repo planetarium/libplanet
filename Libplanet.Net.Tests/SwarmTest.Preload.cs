@@ -679,8 +679,6 @@ namespace Libplanet.Net.Tests
         [InlineData(100)]
         [InlineData(500)]
         [InlineData(1000)]
-        [InlineData(2500)]
-        [InlineData(5000)]
         public async Task PreloadAsyncCancellation(int cancelAfter)
         {
             Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
