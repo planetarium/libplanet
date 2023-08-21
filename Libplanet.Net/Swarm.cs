@@ -768,6 +768,11 @@ namespace Libplanet.Net
             {
                 yield break;
             }
+            catch (ObjectDisposedException e)
+            {
+                _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                yield break;
+            }
 
             if (parsedMessage.Content is BlockHashesMsg blockHashes)
             {
