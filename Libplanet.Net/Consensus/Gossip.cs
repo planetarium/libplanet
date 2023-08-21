@@ -576,7 +576,7 @@ namespace Libplanet.Net.Consensus
                 {
                     if (e.InnerException is ObjectDisposedException)
                     {
-                        _logger.Warning(e, "{ClassName} was disposed", nameof(Swarm));
+                        _logger.Warning(e, "{ClassName} was disposed", nameof(Gossip));
                         throw;
                     }
 
