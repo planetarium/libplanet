@@ -72,11 +72,6 @@ namespace Libplanet.Net.Tests
             _finalizers = new List<Func<Task>>();
         }
 
-        ~SwarmTest()
-        {
-            Dispose(false);
-        }
-
         public void Dispose()
         {
             Dispose(true);
@@ -1941,6 +1936,7 @@ namespace Libplanet.Net.Tests
         {
             swarm.StopAsync(TimeSpan.FromMilliseconds(10)).WaitAndUnwrapException();
             swarm.Dispose();
+            NetMQConfig.Cleanup(false);
         }
 
         private Task BootstrapAsync(
