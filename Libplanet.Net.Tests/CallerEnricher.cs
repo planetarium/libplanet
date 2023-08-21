@@ -24,7 +24,8 @@ namespace Libplanet.Net.Tests
                 var method = stack.GetMethod();
                 if (method?.DeclaringType?.FullName != null
                     && method.DeclaringType.Assembly != typeof(Log).Assembly
-                    && method.DeclaringType.FullName.Contains("Libplanet.Net.Tests.SwarmTest"))
+                    && method.DeclaringType.FullName.Contains("Libplanet.Net.Tests")
+                    && !method.DeclaringType.FullName.Contains("CallerEnricher"))
                 {
                     var methodName = string.Join(
                         ", ",
