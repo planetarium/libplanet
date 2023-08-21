@@ -59,6 +59,7 @@ namespace Libplanet.Net.Tests
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
+                .WriteTo.Console()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<SwarmTest>();
