@@ -132,7 +132,7 @@ namespace Libplanet.Net
             }
         }
 
-        public bool Running => Transport?.Running ?? false;
+        public bool Running => (Transport?.Running ?? false) && _consensusReactor.Running;
 
         public bool ConsensusRunning => _consensusReactor?.Running ?? false;
 

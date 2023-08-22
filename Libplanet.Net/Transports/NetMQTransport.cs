@@ -135,7 +135,9 @@ namespace Libplanet.Net.Transports
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
 
         /// <inheritdoc/>
-        public bool Running => _routerPoller?.IsRunning ?? false;
+        public bool Running => (_routerPoller?.IsRunning ?? false)
+                               && !_router.IsDisposed
+                               && !_replyQueue.IsDisposed;
 
         /// <inheritdoc/>
         public AppProtocolVersion AppProtocolVersion =>
