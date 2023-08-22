@@ -52,6 +52,8 @@ namespace Libplanet.Net.Tests
 
         private bool _disposed = false;
 
+        private List<Swarm> _swarms = new List<Swarm>();
+
         public SwarmTest(ITestOutputHelper output)
         {
             const string outputTemplate =
@@ -76,6 +78,7 @@ namespace Libplanet.Net.Tests
         {
             Console.WriteLine("Disposing SwarmTest...");
             Dispose(true);
+            Console.WriteLine("Disposed SwarmTest.");
             GC.SuppressFinalize(this);
         }
 
@@ -1913,6 +1916,12 @@ namespace Libplanet.Net.Tests
                     }
 
                     _logger.Debug("Finished to finalize {Resources} resources", _finalizers.Count);
+
+                    foreach (var swarm in _swarms)
+                    {
+                        Console.WriteLine($"Swarm {swarm.EndPoint} is {swarm.Running}");
+                    }
+
                     NetMQConfig.Cleanup(false);
                 }
 

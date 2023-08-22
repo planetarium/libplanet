@@ -170,6 +170,7 @@ namespace Libplanet.Net.Tests
                 options,
                 consensusTransport: consensusTransport,
                 consensusOption: consensusReactorOption);
+            _swarms = _swarms.Append(swarm).ToList();
             _finalizers.Add(async () =>
             {
                 try
@@ -181,6 +182,8 @@ namespace Libplanet.Net.Tests
                 {
                     _logger.Debug("Swarm {Swarm} is already disposed", swarm);
                 }
+
+                Console.WriteLine("Swarm disposed.");
             });
             return swarm;
         }

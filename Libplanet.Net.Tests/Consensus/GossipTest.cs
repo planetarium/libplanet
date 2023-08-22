@@ -42,6 +42,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             Console.WriteLine("Disposing GossipTest...");
             NetMQConfig.Cleanup(false);
+            Console.WriteLine("Disposed GossipTest.");
         }
 
         [Fact(Timeout = Timeout)]
