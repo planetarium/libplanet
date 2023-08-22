@@ -40,6 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing GossipConsensusMessageCommunicatorTest...");
             NetMQConfig.Cleanup(false);
         }
 
@@ -51,12 +52,13 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedPreVotes = new AsyncAutoResetEvent();
-            var receivedPreCommitFrom3 = new AsyncAutoResetEvent();
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                port1,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", port2)) });
             var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
                 {
@@ -67,8 +69,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                port2,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", port1)) });
 
             try
             {
@@ -118,15 +120,18 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var key3 = new PrivateKey();
-            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001));
-            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002));
-            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 6003));
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
+            var port3 = new Random().Next(30001, 40000);
+            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", port1));
+            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", port2));
+            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", port3));
             var receivedTwoHigherPreVotes = new AsyncAutoResetEvent();
             var receivedPreCommitFrom3 = new AsyncAutoResetEvent();
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key1,
-                6001,
+                port1,
                 new[] { peer2 });
             var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
@@ -165,12 +170,12 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
+                port2,
                 new[] { peer1, peer3 });
             var communicator3 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key3,
-                6003,
+                port3,
                 new[] { peer2 });
 
             async Task CheckDeniedAsync()

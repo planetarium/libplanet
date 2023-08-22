@@ -397,16 +397,21 @@ namespace Libplanet.Net.Tests
             var roundOneProposed = new AsyncAutoResetEvent();
             var policy = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
-
+            var consensusPorts = Enumerable.Range(0, 4)
+                .Select(i => new Random().Next(30000, 50000))
+                .ToList();
+            var swarmPorts = Enumerable.Range(0, 4)
+                .Select(i => new Random().Next(10000, 30000))
+                .ToList();
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
                 new BoundPeer(
                     TestUtils.PrivateKeys[i].PublicKey,
-                    new DnsEndPoint("127.0.0.1", 6000 + i))).ToImmutableList();
+                    new DnsEndPoint("127.0.0.1", consensusPorts[i]))).ToImmutableList();
             var reactorOpts = Enumerable.Range(0, 4).Select(i =>
                 new ConsensusReactorOption
                 {
                     ConsensusPeers = consensusPeers,
-                    ConsensusPort = 6000 + i,
+                    ConsensusPort = consensusPorts[i],
                     ConsensusPrivateKey = TestUtils.PrivateKeys[i],
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(1),
@@ -420,7 +425,7 @@ namespace Libplanet.Net.Tests
                     hostOptions: new HostOptions(
                         "127.0.0.1",
                         Array.Empty<IceServer>(),
-                        9000 + i),
+                        swarmPorts[i]),
                     policy: policy,
                     genesis: genesis,
                     consensusReactorOption: reactorOpts[i]).ConfigureAwait(false));
@@ -445,6 +450,7 @@ namespace Libplanet.Net.Tests
                 await collectedTwoMessages[0].WaitAsync();
 
                 // Dispose swarm[3] to simulate shutdown during bootstrap.
+                await swarms[3].StopAsync();
                 swarms[3].Dispose();
 
                 // Bring swarm[2] online.
@@ -496,6 +502,7 @@ namespace Libplanet.Net.Tests
                 CleaningSwarm(swarms[0]);
                 CleaningSwarm(swarms[1]);
                 CleaningSwarm(swarms[2]);
+                CleaningSwarm(swarms[3]);
             }
         }
 
@@ -699,8 +706,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async void CanResolveEndPoint()
         {
-            var expected = new DnsEndPoint("1.2.3.4", 5678);
-            var hostOptions = new HostOptions("1.2.3.4", new IceServer[] { }, 5678);
+            var basePort = new Random().Next(10000, 20000);
+            var expected = new DnsEndPoint("1.2.3.4", basePort);
+            var hostOptions = new HostOptions("1.2.3.4", new IceServer[] { }, basePort);
             Swarm s = await CreateSwarm(hostOptions: hostOptions).ConfigureAwait(false);
             Assert.Equal(expected, s.EndPoint);
             Assert.Equal(expected, s.AsPeer?.EndPoint);

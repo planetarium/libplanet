@@ -40,6 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
 
         public void Dispose()
         {
+            Console.WriteLine("Disposing GossipTest...");
             NetMQConfig.Cleanup(false);
         }
 
@@ -52,6 +53,8 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
             var gossip1 = CreateGossip(
                 content =>
                 {
@@ -61,8 +64,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                port1,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", port2)) });
             var gossip2 = CreateGossip(
                 content =>
                 {
@@ -73,8 +76,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                port2,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", port1)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -105,6 +108,8 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
             var gossip1 = CreateGossip(
                 content =>
                 {
@@ -114,8 +119,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                port1,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", port2)) });
             var gossip2 = CreateGossip(
                 content =>
                 {
@@ -126,8 +131,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                port2,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", port1)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -156,6 +161,9 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var receivedEvent = new AsyncAutoResetEvent();
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
+
             var gossip1 = CreateGossip(
                 content =>
                 {
@@ -165,8 +173,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                port1,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", port2)) });
             var gossip2 = CreateGossip(
                 content =>
                 {
@@ -181,8 +189,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                port2,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", port1)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -217,7 +225,11 @@ namespace Libplanet.Net.Tests.Consensus
             var key2 = new PrivateKey();
             var received = false;
             var receivedEvent = new AsyncAutoResetEvent();
-            var transport1 = CreateTransport(key1, 6001);
+
+            var port1 = new Random().Next(10000, 20000);
+            var port2 = new Random().Next(20001, 30000);
+
+            var transport1 = CreateTransport(key1, port1);
 
             async Task HandleMessage(Message message)
             {
@@ -234,7 +246,7 @@ namespace Libplanet.Net.Tests.Consensus
                 _ => { },
                 _ => { },
                 _ => { });
-            var transport2 = CreateTransport(key2, 6002);
+            var transport2 = CreateTransport(key2, port2);
             try
             {
                 _ = gossip.StartAsync(default);
