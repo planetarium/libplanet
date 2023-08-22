@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -97,20 +96,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key)
-        {
-            PathResolution resolution = ResolvePath(Root, new PathCursor(key, _secure));
-            while (resolution.Next is (HashDigest<SHA256> nodeHash, PathCursor cursor))
-            {
-                KeyBytes nextNodeHash = new KeyBytes(nodeHash.ByteArray);
-                byte[] nodeValue = KeyValueStore.Get(nextNodeHash);
-                IValue intermediateEncoding = _codec.Decode(nodeValue);
-                INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
-                resolution = ResolvePath(nextNode, cursor);
-            }
-
-            return resolution.Value;
-        }
+        public IValue? Get(KeyBytes key) => ResolvePath(Root, new PathCursor(key, _secure));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
