@@ -56,7 +56,9 @@ namespace Libplanet.Store.Trie
         {
             if (keyBytes.Length % 2 == 1)
             {
-                throw new ArgumentException(nameof(keyBytes));
+                throw new ArgumentException(
+                    $"Given {nameof(keyBytes)} must be of even length: {keyBytes.Length}",
+                    nameof(keyBytes));
             }
 
             ImmutableArray<byte> bytes = keyBytes.ByteArray;

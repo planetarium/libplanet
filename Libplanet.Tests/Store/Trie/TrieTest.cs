@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
@@ -57,8 +56,6 @@ namespace Libplanet.Tests.Store.Trie
         public void Commit(int addressCount)
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            var codec = new Codec();
-
             ITrie trieA = new MerkleTrie(keyValueStore);
 
             var addresses = new Address[addressCount];

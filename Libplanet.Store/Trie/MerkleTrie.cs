@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -89,7 +90,8 @@ namespace Libplanet.Store.Trie
             INode newRootNode = Insert(
                 Root,
                 new PathCursor(key, _secure),
-                new ValueNode(value));
+                new ValueNode(value),
+                true);
 
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
@@ -355,6 +357,7 @@ namespace Libplanet.Store.Trie
 
         private INode CommitShortNode(ShortNode shortNode, WriteBatch writeBatch)
         {
+            // FIXME: Assumes value is not null.
             var committedValueNode = Commit(shortNode.Value!, writeBatch);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
             IValue encoded = shortNode.ToBencodex();
@@ -386,73 +389,155 @@ namespace Libplanet.Store.Trie
             return new HashNode(nodeHash);
         }
 
-        private INode Insert(INode? node, in PathCursor cursor, INode value)
+        private INode Insert(
+            INode? node,
+            in PathCursor cursor,
+            ValueNode value,
+            bool allowNull)
         {
-            // If path exists only last one
-            if (!cursor.RemainingAnyNibbles)
-            {
-                return value;
-            }
-
             switch (node)
             {
-                case ShortNode shortNode:
-                    return InsertShortNode(shortNode, cursor, value);
-
-                case FullNode fullNode:
-                    byte nextNibble = cursor.NextNibble;
-                    var n = Insert(
-                        fullNode.Children[nextNibble],
-                        cursor.Next(1),
-                        value);
-                    return fullNode.SetChild(nextNibble, n);
+                case HashNode hashNode:
+                    return InsertToHashNode(hashNode, cursor, value, allowNull);
 
                 case null:
-                    return new ShortNode(cursor.GetRemainingNibbles(), value);
+                    return allowNull
+                        ? InsertToNullNode(cursor, value)
+                        : throw new NullReferenceException(
+                            $"Given {nameof(node)} is not allowed to be null");
 
-                case HashNode hashNode:
-                    var hn = GetNode(hashNode.HashDigest);
-                    return Insert(hn, cursor, value);
+                case ValueNode valueNode:
+                    return InsertToValueNode(valueNode, cursor, value);
+
+                case ShortNode shortNode:
+                    return InsertToShortNode(shortNode, cursor, value);
+
+                case FullNode fullNode:
+                    return InsertToFullNode(fullNode, cursor, value);
 
                 default:
                     throw new InvalidTrieNodeException(
-                        $"Unsupported node value: {node.ToBencodex().Inspect(false)}"
-                    );
+                        $"Unsupported node value: {node.ToBencodex().Inspect(false)}");
             }
         }
 
-        private INode InsertShortNode(ShortNode shortNode, in PathCursor cursor, INode value)
+        // Note: Should not be called on short node or full node's value.
+        private INode InsertToNullNode(PathCursor cursor, ValueNode value)
         {
+            if (cursor.RemainingAnyNibbles)
+            {
+                return new ShortNode(cursor.GetRemainingNibbles(), value);
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        // Note: Should not be called on full node's value.
+        private INode InsertToValueNode(ValueNode valueNode, PathCursor cursor, ValueNode value)
+        {
+            if (cursor.RemainingAnyNibbles)
+            {
+                return new FullNode()
+                    .SetChild(FullNode.ChildrenCount - 1, valueNode)
+                    .SetChild(cursor.NextNibble, InsertToNullNode(cursor.Next(1), value));
+            }
+            else
+            {
+                // Overwrite existing value
+                return value;
+            }
+        }
+
+        private INode InsertToShortNode(ShortNode shortNode, in PathCursor cursor, ValueNode value)
+        {
+            // Two cases are possible:
+            // - common prefix length == short node's key length: insert directly into short node's
+            //   value
+            // - common prefix length < short node's key length: branch off and handle remaining
+            //   short node and remaining path
+            //   - in this case, a full node is created at current cursor + common prefix nibbles
             int commonPrefixLength = cursor.CountCommonStartingNibbles(shortNode.Key);
+            PathCursor nextCursor = cursor.Next(commonPrefixLength);
+
             if (commonPrefixLength == shortNode.Key.Length)
             {
-                INode nn = Insert(shortNode.Value, cursor.Next(commonPrefixLength), value);
-                return new ShortNode(shortNode.Key, nn);
+                // FIXME: This assumes short node's value is not null.
+                return new ShortNode(
+                    shortNode.Key,
+                    Insert(shortNode.Value, nextCursor, value, false));
             }
-
-            var branch = new FullNode();
-            branch = branch.SetChild(
-                cursor.NibbleAt(commonPrefixLength),
-                Insert(null, cursor.Next(commonPrefixLength + 1), value)
-            );
-            PathCursor branchCursor =
-                PathCursor.FromNibbles(shortNode.Key, commonPrefixLength + 1);
-            branch = branch.SetChild(
-                shortNode.Key[commonPrefixLength],
-                Insert(null, branchCursor, shortNode.Value!)
-            );
-
-            if (commonPrefixLength == 0)
+            else
             {
-                return branch;
-            }
+                FullNode fullNode = new FullNode();
+                byte newChildIndex = shortNode.Key[commonPrefixLength];
+                ImmutableArray<byte> newShortNodeKey =
+                    shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray();
 
-            // extension node
-            ImmutableArray<byte> commonPrefixNibbles = shortNode.Key.RemoveRange(
-                commonPrefixLength,
-                shortNode.Key.Length - commonPrefixLength
-            );
-            return new ShortNode(commonPrefixNibbles, branch);
+                // FIXME: Deal with null; this assumes short node's value is not null
+                // Handles modified short node.
+                fullNode = newShortNodeKey.IsDefaultOrEmpty
+                    ? fullNode.SetChild(newChildIndex, shortNode.Value!)
+                    : fullNode.SetChild(
+                        newChildIndex,
+                        new ShortNode(newShortNodeKey, shortNode.Value));
+
+                // Handles value node.
+                // Assumes next cursor nibble (including non-remaining case)
+                // does not conflict with short node above.
+                if (nextCursor.RemainingNibbleLength > 0)
+                {
+                    fullNode = fullNode.SetChild(
+                        nextCursor.NextNibble,
+                        InsertToNullNode(nextCursor.Next(1), value));
+                }
+                else
+                {
+                    fullNode = fullNode.SetChild(
+                        FullNode.ChildrenCount - 1,
+                        value);
+                }
+
+                // Full node is created at the branching point and may not be at the original root.
+                if (commonPrefixLength == 0)
+                {
+                    return fullNode;
+                }
+                else
+                {
+                    return new ShortNode(
+                        shortNode.Key.Take(commonPrefixLength).ToImmutableArray(),
+                        fullNode);
+                }
+            }
+        }
+
+        private INode InsertToFullNode(FullNode fullNode, PathCursor cursor, ValueNode value)
+        {
+            if (cursor.RemainingAnyNibbles)
+            {
+                byte nextNibble = cursor.NextNibble;
+                return fullNode.SetChild(
+                    nextNibble,
+                    Insert(fullNode.Children[nextNibble], cursor.Next(1), value, true));
+            }
+            else
+            {
+                // Overwrite existing value
+                return fullNode.SetChild(FullNode.ChildrenCount - 1, value);
+            }
+        }
+
+        private INode InsertToHashNode(
+            HashNode hashNode,
+            PathCursor cursor,
+            ValueNode value,
+            bool allowNull)
+        {
+            // FIXME: Probably needs to check unhashedNode to be ValueNode, ShortNode, or FullNode.
+            INode? unhashedNode = GetNode(hashNode.HashDigest);
+            return Insert(unhashedNode, cursor, value, allowNull);
         }
 
         /// <summary>
