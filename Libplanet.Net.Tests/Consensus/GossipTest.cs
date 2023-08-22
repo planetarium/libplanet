@@ -20,7 +20,7 @@ namespace Libplanet.Net.Tests.Consensus
     [Collection("NetMQConfiguration")]
     public class GossipTest : IDisposable
     {
-        private const int Timeout = 60 * 1000;
+        private const int Timeout = 20 * 1000;
         private readonly ILogger _logger;
 
         public GossipTest(ITestOutputHelper output)

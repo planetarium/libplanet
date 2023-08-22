@@ -18,7 +18,7 @@ namespace Libplanet.Net.Tests.Consensus
 {
     public class ConsensusContextNonProposerTest
     {
-        private const int Timeout = 10000;
+        private const int Timeout = 10 * 1000;
         private readonly ILogger _logger;
 
         public ConsensusContextNonProposerTest(ITestOutputHelper output)
@@ -276,7 +276,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         // Retry: This calculates delta time.
-        [RetryFact(10, Timeout = Timeout)]
+        [RetryFact(2, Timeout = Timeout)]
         public async void NewHeightDelay()
         {
             var newHeightDelay = TimeSpan.FromSeconds(1);

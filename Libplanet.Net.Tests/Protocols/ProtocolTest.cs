@@ -19,7 +19,7 @@ namespace Libplanet.Net.Tests.Protocols
 {
     public class ProtocolTest
     {
-        private const int Timeout = 60 * 1000;
+        private const int Timeout = 10 * 1000;
         private readonly Dictionary<Address, TestTransport> _transports;
 
         public ProtocolTest(ITestOutputHelper output)
@@ -382,10 +382,12 @@ namespace Libplanet.Net.Tests.Protocols
             }
             finally
             {
+                await seed.StopAsync(TimeSpan.FromMilliseconds(100));
                 seed.Dispose();
                 foreach (var transport in transports)
                 {
                     Assert.True(transport.ReceivedTestMessageOfData("foo"));
+                    await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                     transport.Dispose();
                 }
             }

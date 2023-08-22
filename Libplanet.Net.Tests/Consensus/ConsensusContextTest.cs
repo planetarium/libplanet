@@ -19,7 +19,7 @@ namespace Libplanet.Net.Tests.Consensus
 {
     public class ConsensusContextTest
     {
-        private const int Timeout = 30000;
+        private const int Timeout = 10 * 1000;
         private readonly ILogger _logger;
 
         public ConsensusContextTest(ITestOutputHelper output)
