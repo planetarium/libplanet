@@ -50,7 +50,7 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
         public IAccount GetAccount(BlockHash? offset) =>
-            new Account(offset ?? default, GetTrie(offset));
+            new Account(offset ?? default, GetUnRecordableTrie(offset));
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -103,5 +103,8 @@ namespace Libplanet.Blockchain
                     nameof(offset));
             }
         }
+
+        private IUnRecordableTrie GetUnRecordableTrie(BlockHash? offset)
+            => new UnRecordableTrie(GetTrie(offset));
     }
 }

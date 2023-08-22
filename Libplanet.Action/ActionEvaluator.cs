@@ -11,6 +11,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
@@ -25,6 +26,7 @@ namespace Libplanet.Action
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
+        private readonly IKeyValueStore _keyValueStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
@@ -34,11 +36,15 @@ namespace Libplanet.Action
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
+        /// <param name="keyValueStore">
+        /// A <see cref="IKeyValueStore"/> implementation to use for storing the states.
+        /// </param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
+            IKeyValueStore keyValueStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
@@ -46,6 +52,7 @@ namespace Libplanet.Action
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
+            _keyValueStore = keyValueStore;
         }
 
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
@@ -93,19 +100,20 @@ namespace Libplanet.Action
                     EvaluateBlock(block, previousState).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
-                if (policyBlockAction is null)
+                if (!(policyBlockAction is null))
                 {
-                    return evaluations;
+                     previousState = evaluations.Count > 0
+                         ? evaluations.Last().OutputState
+                         : previousState;
+                     evaluations = evaluations.Add(
+                         EvaluatePolicyBlockAction(block, previousState)
+                     );
                 }
-                else
-                {
-                    previousState = evaluations.Count > 0
-                        ? evaluations.Last().OutputState
-                        : previousState;
-                    return evaluations.Add(
-                        EvaluatePolicyBlockAction(block, previousState)
-                    );
-                }
+
+                var trie = new MerkleTrie(_keyValueStore, evaluations.Last().OutputState.Trie.Root)
+                    .Commit();
+
+                return evaluations;
             }
             finally
             {

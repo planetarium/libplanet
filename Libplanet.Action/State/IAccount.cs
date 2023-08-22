@@ -48,7 +48,7 @@ namespace Libplanet.Action.State
         [Pure]
         IAccountDelta Delta { get; }
 
-        public ITrie Trie { get; }
+        public IUnRecordableTrie Trie { get; }
 
         public BlockHash BlockHash { get; }
 

@@ -19,7 +19,7 @@ namespace Libplanet.Action.State
     [Pure]
     public class Account : IAccount
     {
-        public Account(BlockHash blockHash, ITrie trie)
+        public Account(BlockHash blockHash, IUnRecordableTrie trie)
             : this(blockHash, trie, new AccountDelta())
         {
         }
@@ -35,12 +35,12 @@ namespace Libplanet.Action.State
         private Account(IAccount previousAccount, IAccountDelta delta)
             : this(
                 previousAccount.BlockHash,
-                previousAccount.Trie.Set(delta.ToRawDelta()).Commit(),
+                previousAccount.Trie.Set(delta.ToRawDelta()),
                 delta)
         {
         }
 
-        private Account(BlockHash blockHash, ITrie trie, IAccountDelta delta)
+        private Account(BlockHash blockHash, IUnRecordableTrie trie, IAccountDelta delta)
         {
             BlockHash = blockHash;
             Trie = trie;
@@ -51,7 +51,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         public IAccountDelta Delta { get; private set; }
 
-        public ITrie Trie { get; private set; }
+        public IUnRecordableTrie Trie { get; private set; }
 
         public BlockHash BlockHash { get; private set; }
 

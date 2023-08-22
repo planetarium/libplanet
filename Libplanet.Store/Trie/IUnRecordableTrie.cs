@@ -6,27 +6,17 @@ using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
-    /// <summary>
-    /// An interface for <see href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</see>.
-    /// </summary>
-    /// <seealso cref="MerkleTrie"/>
-    public interface ITrie
+    public interface IUnRecordableTrie
     {
-        /// <summary>
-        /// The state root hash of the trie.
-        /// </summary>
-        HashDigest<SHA256> Hash { get; }
-
         /// <summary>
         /// The root node of the current trie.
         /// </summary>
         INode? Root { get; }
 
         /// <summary>
-        /// Whether the trie root is recorded in the store.
+        /// The state root hash of the branchpoint trie.
         /// </summary>
-        /// <remarks>Empty root is considered as recorded.</remarks>
-        bool Recorded { get; }
+        HashDigest<SHA256> Hash { get; }
 
         /// <summary>
         /// Stores the <paramref name="value"/> to the
@@ -37,7 +27,7 @@ namespace Libplanet.Store.Trie
         /// <exception cref="System.ArgumentNullException">Thrown when the given
         /// <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
-        ITrie Set(in KeyBytes key, IValue value);
+        IUnRecordableTrie Set(in KeyBytes key, IValue value);
 
         /// <summary>
         /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.
@@ -55,11 +45,5 @@ namespace Libplanet.Store.Trie
         /// values are ordered in the same way to the corresponding <paramref name="keys"/>.  Absent
         /// values are represented as <see langword="null"/>.</returns>
         IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys);
-
-        /// <summary>
-        /// Cleans up and stores the <see cref="ITrie"/> in storage.
-        /// </summary>
-        /// <returns>Returns new committed <see cref="ITrie"/>.</returns>
-        ITrie Commit();
     }
 }
