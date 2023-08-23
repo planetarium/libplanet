@@ -26,10 +26,18 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Store) Changed `ShortNode` to no longer accept empty `byte`
+    arrays.  [[#3390]]
+
 ### Bug fixes
 
  -  (Libplanet.Store) Fixed `Equals()` for `FullNode` and `ShortNode`.
     [[#3377]]
+ -  (Libplanet.Store) Fixed a bug where adding two `byte` arrays as keys
+    with one being a subsequence of the other would break `MerkleTrie`
+    and lose data.  [[#3390]]
+ -  (Libplanet.Store) Fixed a bug where when trying to add a value to
+    an existing `FullNode` would throw an `Exception`.  [[#3390]]
 
 ### Dependencies
 
@@ -39,6 +47,7 @@ To be released.
 [#3356]: https://github.com/planetarium/libplanet/pull/3356
 [#3361]: https://github.com/planetarium/libplanet/pull/3361
 [#3377]: https://github.com/planetarium/libplanet/pull/3377
+[#3390]: https://github.com/planetarium/libplanet/pull/3390
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
