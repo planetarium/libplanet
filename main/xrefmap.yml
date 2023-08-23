@@ -23252,6 +23252,12 @@ references:
   commentId: F:Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
   fullName: Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
   nameWithType: FullNode.ChildrenCount
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  name: Equals(FullNode)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Equals_Libplanet_Store_Trie_Nodes_FullNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Equals(Libplanet.Store.Trie.Nodes.FullNode)
+  nameWithType: FullNode.Equals(FullNode)
 - uid: Libplanet.Store.Trie.Nodes.FullNode.Equals(System.Object)
   name: Equals(Object)
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Equals_System_Object_
@@ -23291,23 +23297,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.FullNode.SetChild
   nameWithType: FullNode.SetChild
-- uid: Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals(Libplanet.Store.Trie.Nodes.FullNode)
-  name: IEquatable<FullNode>.Equals(FullNode)
-  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_System_IEquatable_Libplanet_Store_Trie_Nodes_FullNode__Equals_Libplanet_Store_Trie_Nodes_FullNode_
-  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals(Libplanet.Store.Trie.Nodes.FullNode)
-  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(FullNode)
-  fullName: Libplanet.Store.Trie.Nodes.FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(Libplanet.Store.Trie.Nodes.FullNode)
-  nameWithType: FullNode.IEquatable<FullNode>.Equals(FullNode)
-  nameWithType.vb: FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals(FullNode)
-- uid: Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals*
-  name: IEquatable<FullNode>.Equals
-  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_System_IEquatable_Libplanet_Store_Trie_Nodes_FullNode__Equals_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.System#IEquatable{Libplanet#Store#Trie#Nodes#FullNode}#Equals
-  isSpec: "True"
-  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
-  fullName: Libplanet.Store.Trie.Nodes.FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
-  nameWithType: FullNode.IEquatable<FullNode>.Equals
-  nameWithType.vb: FullNode.System.IEquatable<Libplanet.Store.Trie.Nodes.FullNode>.Equals
 - uid: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
   name: ToBencodex()
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_ToBencodex
@@ -23500,6 +23489,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.ShortNode.ShortNode
   nameWithType: ShortNode.ShortNode
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  name: Equals(ShortNode)
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Equals_Libplanet_Store_Trie_Nodes_ShortNode_
+  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Equals(Libplanet.Store.Trie.Nodes.ShortNode)
+  nameWithType: ShortNode.Equals(ShortNode)
 - uid: Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)
   name: Equals(Object)
   href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Equals_System_Object_
@@ -23539,23 +23534,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.ShortNode.Key
   nameWithType: ShortNode.Key
-- uid: Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals(Libplanet.Store.Trie.Nodes.ShortNode)
-  name: IEquatable<ShortNode>.Equals(ShortNode)
-  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_System_IEquatable_Libplanet_Store_Trie_Nodes_ShortNode__Equals_Libplanet_Store_Trie_Nodes_ShortNode_
-  commentId: M:Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals(Libplanet.Store.Trie.Nodes.ShortNode)
-  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(ShortNode)
-  fullName: Libplanet.Store.Trie.Nodes.ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(Libplanet.Store.Trie.Nodes.ShortNode)
-  nameWithType: ShortNode.IEquatable<ShortNode>.Equals(ShortNode)
-  nameWithType.vb: ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals(ShortNode)
-- uid: Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals*
-  name: IEquatable<ShortNode>.Equals
-  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_System_IEquatable_Libplanet_Store_Trie_Nodes_ShortNode__Equals_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.System#IEquatable{Libplanet#Store#Trie#Nodes#ShortNode}#Equals
-  isSpec: "True"
-  name.vb: System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
-  fullName: Libplanet.Store.Trie.Nodes.ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
-  nameWithType: ShortNode.IEquatable<ShortNode>.Equals
-  nameWithType.vb: ShortNode.System.IEquatable<Libplanet.Store.Trie.Nodes.ShortNode>.Equals
 - uid: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
   name: ToBencodex()
   href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex
