@@ -4,11 +4,11 @@ using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Common.ByteUtil;
 using static Libplanet.Tests.TestUtils;
-using PathCursor = Libplanet.Store.Trie.MerkleTrie.PathCursor;
+using PathCursor = Libplanet.Store.Trie.PathCursor;
 
 namespace Libplanet.Tests.Store.Trie
 {
-    public class MerkleTriePathCursorTest
+    public class PathCursorTest
     {
         [Fact]
         public void Constructor()
