@@ -4,7 +4,6 @@ using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Common.ByteUtil;
 using static Libplanet.Tests.TestUtils;
-using PathCursor = Libplanet.Store.Trie.PathCursor;
 
 namespace Libplanet.Tests.Store.Trie
 {
@@ -34,7 +33,8 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(0, cursor.NibbleOffset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(-1); });
             Assert.Equal(0, cursor.NibbleOffset);
@@ -48,11 +48,13 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(0, cursor.NibbleOffset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
             Assert.Equal(1, next.NibbleOffset);
             Assert.Equal((byte)0xf, next.NextNibble);
             Assert.Equal(7, next.RemainingNibbleLength);
-            AssertBytesEqual(ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles().ByteArray);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(-1); });
             Assert.Equal(1, next.NibbleOffset);
@@ -66,15 +68,18 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(0, cursor.NibbleOffset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
             Assert.Equal(1, next.NibbleOffset);
             Assert.Equal(7, next.RemainingNibbleLength);
             Assert.Equal((byte)0xf, next.NextNibble);
-            AssertBytesEqual(ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles().ByteArray);
             Assert.Equal(6, next2.NibbleOffset);
             Assert.Equal(2, next2.RemainingNibbleLength);
             Assert.Equal((byte)0x6, next2.NextNibble);
-            AssertBytesEqual(ParseHexToImmutable("0600"), next2.GetRemainingNibbles());
+            AssertBytesEqual(
+                ParseHexToImmutable("0600"), next2.GetRemainingNibbles().ByteArray);
         }
 
         [Fact]
@@ -94,53 +99,57 @@ namespace Libplanet.Tests.Store.Trie
             var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
             Assert.Equal(
                 0,
-                cursor.CountCommonStartingNibbles(ImmutableArray<byte>.Empty)
-            );
+                cursor.CountCommonStartingNibbles(new Nibbles(ImmutableArray<byte>.Empty)));
             Assert.Equal(
                 0,
-                cursor.CountCommonStartingNibbles(ParseHexToImmutable("0a0b0c0d"))
-            );
+                cursor.CountCommonStartingNibbles(new Nibbles(ParseHexToImmutable("0a0b0c0d"))));
             Assert.Equal(
                 3,
-                cursor.CountCommonStartingNibbles(ParseHexToImmutable("0c0f0e0f0f0f0f"))
-            );
+                cursor.CountCommonStartingNibbles(
+                    new Nibbles(ParseHexToImmutable("0c0f0e0f0f0f0f"))));
             Assert.Equal(
                 8,
-                cursor.CountCommonStartingNibbles(ParseHexToImmutable("0c0f0e0d040406000a0b0c0d"))
-            );
+                cursor.CountCommonStartingNibbles(
+                    new Nibbles(ParseHexToImmutable("0c0f0e0d040406000a0b0c0d"))));
 
             PathCursor next = cursor.Next(3);
             Assert.Equal(
                 0,
-                next.CountCommonStartingNibbles(ImmutableArray<byte>.Empty)
-            );
+                next.CountCommonStartingNibbles(
+                    new Nibbles(ImmutableArray<byte>.Empty)));
             Assert.Equal(
                 0,
-                next.CountCommonStartingNibbles(ParseHexToImmutable("0c0f0e0f0f0f0f"))
-            );
+                next.CountCommonStartingNibbles(
+                    new Nibbles(ParseHexToImmutable("0c0f0e0f0f0f0f"))));
             Assert.Equal(
                 3,
-                next.CountCommonStartingNibbles(ParseHexToImmutable("0d04040a0b0c"))
-            );
+                next.CountCommonStartingNibbles(
+                    new Nibbles(ParseHexToImmutable("0d04040a0b0c"))));
             Assert.Equal(
                 5,
-                next.CountCommonStartingNibbles(ParseHexToImmutable("0d040406000a0b0c0d"))
-            );
+                next.CountCommonStartingNibbles(
+                    new Nibbles(ParseHexToImmutable("0d040406000a0b0c0d"))));
         }
 
         [Fact]
         public void RemainingNibblesStartWith()
         {
             var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
-            Assert.True(cursor.RemainingNibblesStartWith(ParseHexToImmutable("0c0f0e0d04")));
+            Assert.True(cursor.RemainingNibblesStartWith(
+                new Nibbles(ParseHexToImmutable("0c0f0e0d04"))));
             Assert.False(
-                cursor.RemainingNibblesStartWith(ParseHexToImmutable("0c0f0e0d040406000a")));
-            Assert.False(cursor.RemainingNibblesStartWith(ParseHexToImmutable("0c0f0e0d0f0f0f")));
+                cursor.RemainingNibblesStartWith(
+                    new Nibbles(ParseHexToImmutable("0c0f0e0d040406000a"))));
+            Assert.False(cursor.RemainingNibblesStartWith(
+                new Nibbles(ParseHexToImmutable("0c0f0e0d0f0f0f"))));
 
             PathCursor next = cursor.Next(3);
-            Assert.True(next.RemainingNibblesStartWith(ParseHexToImmutable("0d0404")));
-            Assert.False(next.RemainingNibblesStartWith(ParseHexToImmutable("0d040406000a0b0c0d")));
-            Assert.False(next.RemainingNibblesStartWith(ParseHexToImmutable("0d040a0b0c")));
+            Assert.True(next.RemainingNibblesStartWith(
+                new Nibbles(ParseHexToImmutable("0d0404"))));
+            Assert.False(next.RemainingNibblesStartWith(
+                new Nibbles(ParseHexToImmutable("0d040406000a0b0c0d"))));
+            Assert.False(next.RemainingNibblesStartWith(
+                new Nibbles(ParseHexToImmutable("0d040a0b0c"))));
         }
     }
 }
