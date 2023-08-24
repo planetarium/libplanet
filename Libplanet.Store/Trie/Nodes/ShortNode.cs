@@ -1,22 +1,20 @@
 using System;
-using System.Collections.Immutable;
-using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
     public sealed class ShortNode : BaseNode, IEquatable<ShortNode>
     {
-        public ShortNode(in ImmutableArray<byte> key, INode? value)
+        public ShortNode(in Nibbles nibbles, INode? value)
             : base(value)
         {
-            Key = key.IsDefaultOrEmpty
-                ? throw new ArgumentException($"Given {nameof(key)} cannot be empty", nameof(key))
-                : key;
+            Key = nibbles.Length > 0
+                ? nibbles
+                : throw new ArgumentException(
+                    $"Given {nameof(nibbles)} cannot be empty", nameof(nibbles));
         }
 
-        // FIXME: We should declare a custom value type to represent nibbles...
-        public ImmutableArray<byte> Key { get; }
+        public Nibbles Key { get; }
 
         /// <inheritdoc cref="IEquatable{T}.Equals"/>
         public bool Equals(ShortNode? other)
@@ -27,7 +25,7 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             return other is { } node &&
-                Key.SequenceEqual(node.Key) &&
+                Key.Equals(node.Key) &&
                 ((Value is null && node.Value is null) ||
                 (Value is { } value && value.Equals(node.Value)));
         }
@@ -46,6 +44,6 @@ namespace Libplanet.Store.Trie.Nodes
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
         public override IValue ToBencodex() =>
-            new List(new Binary(Key), Value?.ToBencodex() ?? Null.Value);
+            new List(new Binary(Key.ByteArray), Value?.ToBencodex() ?? Null.Value);
     }
 }

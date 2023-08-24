@@ -17,13 +17,23 @@ namespace Libplanet.Store.Trie
                 secure
                     ? HashDigest<SHA256>.DeriveFrom(keyBytes.ByteArray).ByteArray
                     : keyBytes.ByteArray,
-                0)
+                0,
+                (secure ? HashDigest<SHA256>.Size : keyBytes.ByteArray.Length) * 2)
         {
         }
 
-        private PathCursor(in ImmutableArray<byte> bytes, int nibbleOffset)
+        /// <summary>
+        /// Creates a <see cref="PathCursor"/> from <paramref name="nibbles"/>.
+        /// </summary>
+        /// <param name="nibbles">The <see cref="Nibbles"/> from which to derive
+        /// a <see cref="PathCursor"/>.</param>
+        public PathCursor(in Nibbles nibbles)
+            : this(nibbles.GetCompressed(), 0, nibbles.Length)
         {
-            int nibbleLength = bytes.Length * 2;
+        }
+
+        private PathCursor(in ImmutableArray<byte> bytes, int nibbleOffset, int nibbleLength)
+        {
             if (nibbleOffset < 0 || nibbleOffset > nibbleLength)
             {
                 throw new ArgumentOutOfRangeException(nameof(nibbleOffset));
@@ -58,7 +68,7 @@ namespace Libplanet.Store.Trie
         }
 
         [Pure]
-        public ImmutableArray<byte> GetRemainingNibbles()
+        public Nibbles GetRemainingNibbles()
         {
             var builder = ImmutableArray.CreateBuilder<byte>(RemainingNibbleLength);
             for (int i = NibbleOffset; i < NibbleLength; i++)
@@ -66,17 +76,16 @@ namespace Libplanet.Store.Trie
                 builder.Add(GetNibble(Bytes[i / 2], i % 2 == 0));
             }
 
-            return builder.MoveToImmutable();
+            return new Nibbles(builder.MoveToImmutable());
         }
 
         [Pure]
         public PathCursor Next(int nibbleOffset) => nibbleOffset < 0
             ? throw new ArgumentOutOfRangeException(nameof(nibbleOffset))
-            : new PathCursor(Bytes, NibbleOffset + nibbleOffset);
+            : new PathCursor(Bytes, NibbleOffset + nibbleOffset, NibbleLength);
 
-        // FIXME: We should declare a custom value type to represent nibbles...
         [Pure]
-        public bool RemainingNibblesStartWith(in ImmutableArray<byte> nibbles)
+        public bool RemainingNibblesStartWith(in Nibbles nibbles)
         {
             if (NibbleLength < nibbles.Length)
             {
@@ -93,7 +102,7 @@ namespace Libplanet.Store.Trie
         /// <returns>The number of common starting nibbles from
         /// current <see cref="NibbleOffset"/>.</returns>
         [Pure]
-        public int CountCommonStartingNibbles(in ImmutableArray<byte> nibbles)
+        public int CountCommonStartingNibbles(in Nibbles nibbles)
         {
             for (int i = 0; i < nibbles.Length; i++)
             {
@@ -114,7 +123,6 @@ namespace Libplanet.Store.Trie
             return nibbles.Length;
         }
 
-        // FIXME: We should declare a custom value type to represent nibbles...
         [Pure]
         private static byte GetNibble(byte octet, bool high) =>
             high ? (byte)(octet >> 4) : (byte)(octet & 0b00001111);

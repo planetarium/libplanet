@@ -146,7 +146,7 @@ namespace Libplanet.Store.Trie
                         {
                             queue.Enqueue((
                                     shortNode.Value,
-                                    path.Concat(shortNode.Key).ToImmutableArray()));
+                                    path.Concat(shortNode.Key.ByteArray).ToImmutableArray()));
                         }
 
                         break;
@@ -266,7 +266,7 @@ namespace Libplanet.Store.Trie
                             case HashNode hashNode:
                                 key = new KeyBytes(hashNode.HashDigest.ByteArray);
                                 value = KeyValueStore.Get(key);
-                                queue.Enqueue((key, value, path.AddRange(shortNode.Key)));
+                                queue.Enqueue((key, value, path.AddRange(shortNode.Key.ByteArray)));
                                 break;
                         }
 
@@ -364,16 +364,17 @@ namespace Libplanet.Store.Trie
             {
                 FullNode fullNode = new FullNode();
                 byte newChildIndex = shortNode.Key[commonPrefixLength];
-                ImmutableArray<byte> newShortNodeKey =
-                    shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray();
+                Nibbles newShortNodeKey =
+                    new Nibbles(
+                        shortNode.Key.ByteArray.Skip(commonPrefixLength + 1).ToImmutableArray());
 
                 // FIXME: Deal with null; this assumes short node's value is not null
                 // Handles modified short node.
-                fullNode = newShortNodeKey.IsDefaultOrEmpty
-                    ? fullNode.SetChild(newChildIndex, shortNode.Value!)
-                    : fullNode.SetChild(
+                fullNode = newShortNodeKey.Length > 0
+                    ? fullNode.SetChild(
                         newChildIndex,
-                        new ShortNode(newShortNodeKey, shortNode.Value));
+                        new ShortNode(newShortNodeKey, shortNode.Value))
+                    : fullNode.SetChild(newChildIndex, shortNode.Value!);
 
                 // Handles value node.
                 // Assumes next cursor nibble (including non-remaining case)
@@ -399,7 +400,8 @@ namespace Libplanet.Store.Trie
                 else
                 {
                     return new ShortNode(
-                        shortNode.Key.Take(commonPrefixLength).ToImmutableArray(),
+                        new Nibbles(
+                            shortNode.Key.ByteArray.Take(commonPrefixLength).ToImmutableArray()),
                         fullNode);
                 }
             }
