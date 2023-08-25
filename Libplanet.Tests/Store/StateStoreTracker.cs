@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Tests.Store
 {
@@ -16,10 +17,20 @@ namespace Libplanet.Tests.Store
             _stateStore = stateStore;
         }
 
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false)
+        public IUnRecordableTrie GetUnRecordableStateRoot(HashDigest<SHA256>? stateRootHash)
+        {
+            return _stateStore.GetUnRecordableStateRoot(stateRootHash);
+        }
+
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash)
         {
             Log(nameof(GetStateRoot), stateRootHash);
-            return _stateStore.GetStateRoot(stateRootHash, readOnly);
+            return _stateStore.GetStateRoot(stateRootHash);
+        }
+
+        public ITrie GetStateRoot(INode rootNode)
+        {
+            return _stateStore.GetStateRoot(rootNode);
         }
 
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)

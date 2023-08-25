@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store
 {
@@ -20,7 +21,11 @@ namespace Libplanet.Store
         /// in the sense that nothing gets written to the storage.</param>
         /// <returns>The state root trie of the <paramref name="stateRootHash"/>.
         /// If <see langword="null"/> is passed the empty state root trie is returned.</returns>
-        ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false);
+        ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
+
+        IUnRecordableTrie GetUnRecordableStateRoot(HashDigest<SHA256>? stateRootHash);
+
+        ITrie GetStateRoot(INode? rootNode);
 
         /// <summary>
         /// Prunes the states no more used from the state store.
