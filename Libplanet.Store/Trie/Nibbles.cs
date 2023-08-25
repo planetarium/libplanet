@@ -129,5 +129,16 @@ namespace Libplanet.Store.Trie
         {
             return Hex;
         }
+
+        public static Nibbles FromHex(string hex)
+        {
+            byte[] bytes = new byte[hex.Length];
+            for (var i = 0; i < hex.Length; i++)
+            {
+                bytes[i] = (byte)System.Uri.FromHex(hex[i]);
+            }
+
+            return new Nibbles(bytes.ToImmutableArray());
+        }
     }
 }
