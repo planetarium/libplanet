@@ -350,10 +350,10 @@ namespace Libplanet.Store.Trie
             // - common prefix length < short node's key length: branch off and handle remaining
             //   short node and remaining path
             //   - in this case, a full node is created at current cursor + common prefix nibbles
-            int commonPrefixLength = cursor.CountCommonStartingNibbles(shortNode.Key);
-            PathCursor nextCursor = cursor.Next(commonPrefixLength);
+            Nibbles commonNibbles = cursor.GetCommonStartingNibbles(shortNode.Key);
+            PathCursor nextCursor = cursor.Next(commonNibbles.Length);
 
-            if (commonPrefixLength == shortNode.Key.Length)
+            if (commonNibbles.Length == shortNode.Key.Length)
             {
                 // FIXME: This assumes short node's value is not null.
                 return new ShortNode(
@@ -363,10 +363,10 @@ namespace Libplanet.Store.Trie
             else
             {
                 FullNode fullNode = new FullNode();
-                byte newChildIndex = shortNode.Key[commonPrefixLength];
+                byte newChildIndex = shortNode.Key[commonNibbles.Length];
                 Nibbles newShortNodeKey =
                     new Nibbles(
-                        shortNode.Key.ByteArray.Skip(commonPrefixLength + 1).ToImmutableArray());
+                        shortNode.Key.ByteArray.Skip(commonNibbles.Length + 1).ToImmutableArray());
 
                 // FIXME: Deal with null; this assumes short node's value is not null
                 // Handles modified short node.
@@ -393,15 +393,14 @@ namespace Libplanet.Store.Trie
                 }
 
                 // Full node is created at the branching point and may not be at the original root.
-                if (commonPrefixLength == 0)
+                if (commonNibbles.Length == 0)
                 {
                     return fullNode;
                 }
                 else
                 {
                     return new ShortNode(
-                        new Nibbles(
-                            shortNode.Key.ByteArray.Take(commonPrefixLength).ToImmutableArray()),
+                        commonNibbles,
                         fullNode);
                 }
             }

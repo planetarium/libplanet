@@ -54,6 +54,29 @@ namespace Libplanet.Store.Trie
 
         public byte this[int index] => ByteArray[index];
 
+        public static Nibbles FromHex(string hex)
+        {
+            byte[] bytes = new byte[hex.Length];
+            for (var i = 0; i < hex.Length; i++)
+            {
+                bytes[i] = (byte)System.Uri.FromHex(hex[i]);
+            }
+
+            return new Nibbles(bytes.ToImmutableArray());
+        }
+
+        public static Nibbles FromBytes(in ImmutableArray<byte> bytes)
+        {
+            var builder = ImmutableArray.CreateBuilder<byte>(bytes.Length * 2);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Add((byte)(bytes[i] >> 4));
+                builder.Add((byte)(bytes[i] & 0x0f));
+            }
+
+            return new Nibbles(builder.ToImmutable());
+        }
+
         public Nibbles Add(byte b)
         {
             return new Nibbles(ByteArray.Add(b));
@@ -73,6 +96,9 @@ namespace Libplanet.Store.Trie
         /// A list of <see langword="byte"/>s representing compressed nibbles where each
         /// pair of nibbles is compacted into a <see langword="byte"/>.
         /// </summary>
+        /// <returns>
+        /// A compacted nibbles in <see langword="byte"/>s.
+        /// </returns>
         /// <remarks>
         /// As nibbles with odd length and nibbles with even length ending in 0 may have
         /// the same compressed representation, this should be used with <see cref="Length"/>
@@ -95,7 +121,7 @@ namespace Libplanet.Store.Trie
                 builder.Add((byte)(ByteArray[Length - 1] << 4));
             }
 
-            return builder.MoveToImmutable();
+            return builder.ToImmutable();
         }
 
         public bool Equals(Nibbles other)
@@ -128,17 +154,6 @@ namespace Libplanet.Store.Trie
         public override string ToString()
         {
             return Hex;
-        }
-
-        public static Nibbles FromHex(string hex)
-        {
-            byte[] bytes = new byte[hex.Length];
-            for (var i = 0; i < hex.Length; i++)
-            {
-                bytes[i] = (byte)System.Uri.FromHex(hex[i]);
-            }
-
-            return new Nibbles(bytes.ToImmutableArray());
         }
     }
 }
