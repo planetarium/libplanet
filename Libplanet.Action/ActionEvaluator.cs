@@ -11,6 +11,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -26,7 +27,7 @@ namespace Libplanet.Action
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IBlockChainStates _blockChainStates;
-        private readonly IKeyValueStore _keyValueStore;
+        private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
@@ -36,15 +37,15 @@ namespace Libplanet.Action
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
-        /// <param name="keyValueStore">
-        /// A <see cref="IKeyValueStore"/> implementation to use for storing the states.
+        /// <param name="stateStore">
+        /// A <see cref="IStateStore"/> implementation to use for storing the states.
         /// </param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
             IBlockChainStates blockChainStates,
-            IKeyValueStore keyValueStore,
+            IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
@@ -52,7 +53,7 @@ namespace Libplanet.Action
             _policyBlockActionGetter = policyBlockActionGetter;
             _blockChainStates = blockChainStates;
             _actionLoader = actionTypeLoader;
-            _keyValueStore = keyValueStore;
+            _stateStore = stateStore;
         }
 
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
@@ -81,6 +82,43 @@ namespace Libplanet.Action
                 ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
         }
 
+        [Pure]
+        public HashDigest<SHA256> Evaluate(
+            HashDigest<SHA256>? stateRootHash,
+            IPreEvaluationBlock block,
+            out IReadOnlyList<IActionEvaluation> evaluations)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            IAccount previousState = new Account(
+                block.PreviousHash,
+                _stateStore.GetUnRecordableStateRoot(stateRootHash));
+
+            try
+            {
+                evaluations = Evaluate(previousState, block);
+                return evaluations.Count > 0
+                    ? _stateStore
+                        .GetStateRoot(evaluations.Last().OutputState.Trie.Root)
+                        .Commit()
+                        .Hash
+                    : _stateStore.GetStateRoot(stateRootHash).Hash;
+            }
+            finally
+            {
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "BlockEvaluationDuration")
+                    .Information(
+                        "Actions in {TxCount} transactions for block #{BlockIndex} " +
+                        "pre-evaluation hash {PreEvaluationHash} evaluated in {DurationMs} ms",
+                        block.Transactions.Count,
+                        block.Index,
+                        ByteUtil.Hex(block.PreEvaluationHash.ByteArray),
+                        stopwatch.ElapsedMilliseconds);
+            }
+        }
+
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
         public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
@@ -93,25 +131,16 @@ namespace Libplanet.Action
             );
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            IAccount previousState = PrepareInitialDelta(block);
             try
             {
-                IAccount previousState = PrepareInitialDelta(block);
-                ImmutableList<ActionEvaluation> evaluations =
-                    EvaluateBlock(block, previousState).ToImmutableList();
-
-                var policyBlockAction = _policyBlockActionGetter(block);
-                if (!(policyBlockAction is null))
+                IReadOnlyList<IActionEvaluation> evaluations = Evaluate(previousState, block);
+                if (evaluations.Count > 0)
                 {
-                     previousState = evaluations.Count > 0
-                         ? evaluations.Last().OutputState
-                         : previousState;
-                     evaluations = evaluations.Add(
-                         EvaluatePolicyBlockAction(block, previousState)
-                     );
+                    _stateStore
+                        .GetStateRoot(evaluations.Last().OutputState.Trie.Root)
+                        .Commit();
                 }
-
-                var trie = new MerkleTrie(_keyValueStore, evaluations.Last().OutputState.Trie.Root)
-                    .Commit();
 
                 return evaluations;
             }
@@ -368,6 +397,27 @@ namespace Libplanet.Action
             return protocolVersion >= 3
                 ? OrderTxsForEvaluationV3(txs, preEvaluationHashBytes)
                 : OrderTxsForEvaluationV0(txs, preEvaluationHashBytes);
+        }
+
+        internal IReadOnlyList<IActionEvaluation> Evaluate(
+            IAccount previousState,
+            IPreEvaluationBlock block)
+        {
+            ImmutableList<ActionEvaluation> evaluations =
+                EvaluateBlock(block, previousState).ToImmutableList();
+
+            var policyBlockAction = _policyBlockActionGetter(block);
+            if (!(policyBlockAction is null))
+            {
+                previousState = evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : previousState;
+                evaluations = evaluations.Add(
+                    EvaluatePolicyBlockAction(block, previousState)
+                );
+            }
+
+            return evaluations;
         }
 
         /// <summary>
