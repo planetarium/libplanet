@@ -79,10 +79,19 @@ receive <code>@readonly</code> parameter in their constructor. If it is true, it
 rocksdb as read-only mode.  [<a href="https://github.com/planetarium/libplanet/issues/3354">#3354</a>, <a href="https://github.com/planetarium/libplanet/pull/3356">#3356</a>, <a href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">RocksDB Read Only</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Store) Changed <code>ShortNode</code> to no longer accept empty <code>byte</code>
+arrays.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Store) Fixed <code>Equals()</code> for <code>FullNode</code> and <code>ShortNode</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3377">#3377</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where adding two <code>byte</code> arrays as keys
+with one being a subsequence of the other would break <code>MerkleTrie</code>
+and lose data.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where when trying to add a value to
+an existing <code>FullNode</code> would throw an <code>Exception</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>

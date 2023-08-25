@@ -22958,22 +22958,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.CountCommonStartingNibbles
   nameWithType: MerkleTrie.PathCursor.CountCommonStartingNibbles
-- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@,System.Int32)
-  name: FromNibbles(in ImmutableArray<Byte>, Int32)
-  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_FromNibbles_System_Collections_Immutable_ImmutableArray_System_Byte___System_Int32_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(System.Collections.Immutable.ImmutableArray{System.Byte}@,System.Int32)
-  name.vb: FromNibbles(ByRef ImmutableArray(Of Byte), Int32)
-  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(in System.Collections.Immutable.ImmutableArray<System.Byte>, System.Int32)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte), System.Int32)
-  nameWithType: MerkleTrie.PathCursor.FromNibbles(in ImmutableArray<Byte>, Int32)
-  nameWithType.vb: MerkleTrie.PathCursor.FromNibbles(ByRef ImmutableArray(Of Byte), Int32)
-- uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles*
-  name: FromNibbles
-  href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_FromNibbles_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrie.PathCursor.FromNibbles
-  nameWithType: MerkleTrie.PathCursor.FromNibbles
 - uid: Libplanet.Store.Trie.MerkleTrie.PathCursor.GetRemainingNibbles
   name: GetRemainingNibbles()
   href: api/Libplanet.Store.Trie.MerkleTrie.PathCursor.html#Libplanet_Store_Trie_MerkleTrie_PathCursor_GetRemainingNibbles
