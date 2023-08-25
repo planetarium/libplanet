@@ -19,7 +19,7 @@ namespace Libplanet.Action.State
     [Pure]
     public class Account : IAccount
     {
-        public Account(BlockHash blockHash, IUnRecordableTrie trie)
+        public Account(BlockHash? blockHash, IUnRecordableTrie trie)
             : this(blockHash, trie, new AccountDelta())
         {
         }
@@ -40,7 +40,7 @@ namespace Libplanet.Action.State
         {
         }
 
-        private Account(BlockHash blockHash, IUnRecordableTrie trie, IAccountDelta delta)
+        private Account(BlockHash? blockHash, IUnRecordableTrie trie, IAccountDelta delta)
         {
             BlockHash = blockHash;
             Trie = trie;
@@ -53,7 +53,7 @@ namespace Libplanet.Action.State
 
         public IUnRecordableTrie Trie { get; private set; }
 
-        public BlockHash BlockHash { get; private set; }
+        public BlockHash? BlockHash { get; private set; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>

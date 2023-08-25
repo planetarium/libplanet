@@ -50,7 +50,7 @@ namespace Libplanet.Action.State
 
         public IUnRecordableTrie Trie { get; }
 
-        public BlockHash BlockHash { get; }
+        public BlockHash? BlockHash { get; }
 
         /// <summary>
         /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where

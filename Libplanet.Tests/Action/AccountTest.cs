@@ -51,7 +51,9 @@ namespace Libplanet.Tests.Action
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
-            _initAccount = new Account(default, new MerkleTrie(new MemoryKeyValueStore()))
+            _initAccount = new Account(
+                    default,
+                    new UnRecordableTrie(new MerkleTrie(new MemoryKeyValueStore())))
                 .SetState(_addr[0], (Text)"a")
                 .SetState(_addr[1], (Text)"b")
                 .SetBalance(_addr[0], _currencies[0], 5)
@@ -230,7 +232,7 @@ namespace Libplanet.Tests.Action
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
-            var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock, out _);
+            var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
             Block block = ProtocolVersion < 2
                 ? new Block(preEvalBlock, (stateRootHash, null, hash))

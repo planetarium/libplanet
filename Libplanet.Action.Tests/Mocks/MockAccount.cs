@@ -10,7 +10,7 @@ namespace Libplanet.Action.Tests.Mocks
     public static class MockAccount
     {
         public static IAccount Empty { get; } =
-            new Account(default, new MerkleTrie(new MemoryKeyValueStore()));
+            new Account(default, new UnRecordableTrie(new MerkleTrie(new MemoryKeyValueStore())));
 
         public static IAccount SetBalance(
             this IAccount account,
