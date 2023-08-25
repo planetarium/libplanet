@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 using Libplanet.Action.Loader;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
@@ -30,5 +32,11 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block);
+
+        [Pure]
+        HashDigest<SHA256> Evaluate(
+            HashDigest<SHA256>? stateRootHash,
+            IPreEvaluationBlock block,
+            out IReadOnlyList<IActionEvaluation> evaluations);
     }
 }
