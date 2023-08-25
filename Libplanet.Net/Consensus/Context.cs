@@ -503,7 +503,7 @@ namespace Libplanet.Net.Consensus
                         }
                     }
 
-                    _blockChain.ValidateBlockStateRootHash(block, out actionEvaluations);
+                    actionEvaluations = _blockChain.ActionEvaluator.Evaluate(block);
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||

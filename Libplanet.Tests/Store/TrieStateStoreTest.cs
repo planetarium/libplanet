@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Store
         public void GetStateRoot(bool secure)
         {
             var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
-            ITrie empty = stateStore.GetStateRoot(null);
+            ITrie empty = stateStore.GetStateRoot((HashDigest<SHA256>?)null);
             Assert.True(empty.Recorded);
             Assert.Null(empty.Get(new[] { KeyFoo })[0]);
             Assert.Null(empty.Get(new[] { KeyBar })[0]);
@@ -153,38 +153,37 @@ namespace Libplanet.Tests.Store
             var storedKey = new KeyBytes(TestUtils.GetRandomBytes(32));
             var storedValue = new Binary(TestUtils.GetRandomBytes(32));
 
-            var trie = stateStore.GetStateRoot(null);
+            var trie = stateStore.GetStateRoot((HashDigest<SHA256>?)null);
             trie = trie.Set(storedKey, storedValue);
             trie = trie.Commit();
             var storedHash = trie.Hash;
 
             var key = new KeyBytes(TestUtils.GetRandomBytes(32));
             var value = new Binary(TestUtils.GetRandomBytes(32));
-            var trieR = stateStore.GetStateRoot(storedHash, readOnly: true);
+            var trieUR = stateStore.GetUnRecordableStateRoot(storedHash);
 
             // Can get old value
-            Assert.Equal(storedValue, trieR.Get(storedKey));
-            Assert.Null(trieR.Get(key));
+            Assert.Equal(storedValue, trieUR.Get(storedKey));
+            Assert.Null(trieUR.Get(key));
 
-            trieR = trieR.Set(key, value);
-            Assert.Equal(value, trieR.Get(key));
-            trieR = trieR.Commit();
-            var hashR = trieR.Hash;
+            trieUR = trieUR.Set(key, value);
+            Assert.Equal(value, trieUR.Get(key));
+            trie = stateStore.GetStateRoot(trieUR.Root);
 
-            // From trieR's perspective, it is recorded
-            // but stateStore's perspective, given root is not recorded
-            Assert.True(trieR.Recorded);
-            Assert.False(stateStore.GetStateRoot(hashR).Recorded);
+            // trie what from trieUR is same as trieUR but it can recording
+            Assert.Equal(trie.Get(storedKey), trieUR.Get(storedKey));
+            Assert.Equal(trie.Hash, trieUR.Hash);
 
-            var trieRW = stateStore.GetStateRoot(storedHash, readOnly: false);
-            Assert.Null(trieRW.Get(key));
+            // From trie's perspective, it is not recorded
+            Assert.False(trie.Recorded);
 
-            trieRW = trieRW.Set(key, value);
-            trieRW = trieRW.Commit();
-            var hashRW = trieRW.Hash;
+            trie = trie.Commit();
 
-            Assert.Equal(hashR, hashRW);
-            Assert.True(stateStore.GetStateRoot(hashRW).Recorded);
+            // If trie is committed, it is recorded.
+            Assert.True(trie.Recorded);
+
+            // If trie is recorded, it is not same as trieUR
+            Assert.NotEqual(trie.Hash, trieUR.Hash);
         }
 
         [Fact]

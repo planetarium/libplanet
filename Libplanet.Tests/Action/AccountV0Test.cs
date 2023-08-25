@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Action
                 miner: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion
             );
-            var stateRootHash = chain.DetermineBlockStateRootHash(preEval, out _);
+            var stateRootHash = chain.DetermineBlockStateRootHash(preEval);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             Block block = new Block(preEval, (stateRootHash, null, hash));
             chain.Append(block, TestUtils.CreateBlockCommit(block));

@@ -208,9 +208,9 @@ public class StateQueryTest
         }
 
         public IAccountDelta Delta { get; }
-        public ITrie Trie { get; }
+        public IUnRecordableTrie Trie { get; }
 
-        public BlockHash BlockHash { get; }
+        public BlockHash? BlockHash { get; }
 
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
         public IAccount SetState(Address address, IValue state)

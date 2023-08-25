@@ -155,10 +155,12 @@ public class BlockCommand
             .ToImmutableList();
 
         var blockAction = blockPolicyParams.GetBlockAction();
+        var stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
         var actionEvaluator = new ActionEvaluator(
             _ => blockAction,
             new BlockChainStates(
-                new MemoryStore(), new TrieStateStore(new DefaultKeyValueStore(null))),
+                new MemoryStore(), stateStore),
+            stateStore,
             new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(
             actionEvaluator, privateKey: key, transactions: txs);

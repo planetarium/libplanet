@@ -24,6 +24,7 @@ using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Microsoft.AspNetCore;
@@ -228,6 +229,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         new ActionEvaluator(
                             _ => policy.BlockAction,
                             blockChainStates,
+                            stateStore,
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;
@@ -496,6 +498,13 @@ If omitted (default) explorer only the local blockchain store.")]
         private class NoOpStateStore : IStateStore
         {
             public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly) => null;
+
+            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null;
+
+            public IUnRecordableTrie GetUnRecordableStateRoot(HashDigest<SHA256>? stateRootHash) =>
+                null;
+
+            public ITrie GetStateRoot(INode rootNode) => null;
 
             public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
             {

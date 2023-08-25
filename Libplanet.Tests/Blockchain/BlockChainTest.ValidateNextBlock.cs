@@ -183,6 +183,7 @@ namespace Libplanet.Tests.Blockchain
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 new BlockChainStates(store, stateStore),
+                stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
@@ -227,6 +228,7 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     _ => policyWithBlockAction.BlockAction,
                     blockChainStates,
+                    stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));

@@ -44,6 +44,7 @@ namespace Libplanet.Tests.Blocks
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     new BlockChainStates(fx.Store, fx.StateStore),
+                    fx.StateStore,
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
@@ -62,7 +63,7 @@ namespace Libplanet.Tests.Blocks
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =
-                    blockChain.DetermineBlockStateRootHash(preEvalGenesis, out _);
+                    blockChain.DetermineBlockStateRootHash(preEvalGenesis);
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
@@ -82,7 +83,7 @@ namespace Libplanet.Tests.Blocks
                 _output.WriteLine("#1: {0}", block1);
 
                 HashDigest<SHA256> identicalBlock1StateRootHash =
-                    blockChain.DetermineBlockStateRootHash(preEval1, out _);
+                    blockChain.DetermineBlockStateRootHash(preEval1);
                 AssertBytesEqual(block1.StateRootHash, identicalBlock1StateRootHash);
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
@@ -107,6 +108,7 @@ namespace Libplanet.Tests.Blocks
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                    stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain.DetermineGenesisStateRootHash(
@@ -126,7 +128,7 @@ namespace Libplanet.Tests.Blocks
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =
-                    blockChain.DetermineBlockStateRootHash(preEvalGenesis, out _);
+                    blockChain.DetermineBlockStateRootHash(preEvalGenesis);
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
                 var txs = new[] { _contents.Block1Tx0 };
@@ -142,7 +144,7 @@ namespace Libplanet.Tests.Blocks
                 PreEvaluationBlock preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash =
-                    blockChain.DetermineBlockStateRootHash(preEval1, out _);
+                    blockChain.DetermineBlockStateRootHash(preEval1);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
                 Block block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
