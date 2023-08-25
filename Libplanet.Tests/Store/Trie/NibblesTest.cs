@@ -36,6 +36,15 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
+        public void FromBytes()
+        {
+            byte[] bytes = new byte[] { 0x2f, 0x1c };
+            Nibbles nibbles = Nibbles.FromBytes(bytes.ToImmutableArray());
+            Assert.Equal(4, nibbles.Length);
+            Assert.Equal("2f1c", nibbles.Hex);
+        }
+
+        [Fact]
         public void Add()
         {
             string hex = "6912f";
