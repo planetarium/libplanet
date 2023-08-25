@@ -10,7 +10,7 @@ namespace Libplanet.Store.Trie.Nodes
     {
         public static INode? Decode(IValue value)
         {
-            if (value is Bencodex.Types.List list)
+            if (value is List list)
             {
                 switch (list.Count)
                 {
@@ -48,13 +48,12 @@ namespace Libplanet.Store.Trie.Nodes
             // but there is no way to present null.
             return new FullNode(list
                 .Select(DecodeRef)
-                .Take(FullNode.ChildrenCount)
                 .ToImmutableArray());
         }
 
         private static ShortNode DecodeShort(List list)
         {
-            if (!(list[0] is Binary path))
+            if (!(list[0] is Binary nibbles))
             {
                 throw new InvalidTrieNodeException(
                     $"Expected `{nameof(ShortNode)}.{nameof(ShortNode.Key)}`'s serialization type" +
@@ -64,7 +63,7 @@ namespace Libplanet.Store.Trie.Nodes
             // Get referenced node corresponding.
             var refNode = DecodeRef(list[1]);
 
-            return new ShortNode(path.ByteArray, refNode);
+            return new ShortNode(nibbles.ByteArray, refNode);
         }
 
         private static INode? DecodeRef(IValue value)

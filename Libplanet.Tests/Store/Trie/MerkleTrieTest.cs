@@ -212,5 +212,45 @@ namespace Libplanet.Tests.Store.Trie
             AssertBencodexEqual(longText, trie.Get(new KeyBytes(0xaa, 0xbb)));
             AssertBencodexEqual(complexDict, trie.Get(new KeyBytes(0x12, 0x34)));
         }
+
+        [Fact]
+        public void SetValueToExtendedKey()
+        {
+            ITrie trie = new MerkleTrie(new MemoryKeyValueStore());
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            IValue value00 = new Text("00");
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+            IValue value0000 = new Text("0000");
+
+            trie = trie.Set(key00, value00);
+            trie = trie.Set(key0000, value0000);
+            trie = trie.Commit();
+
+            Assert.Equal(2, ((MerkleTrie)trie).ListAllStates().Count());
+            Assert.Equal(value00, trie.Get(key00));
+            Assert.Equal(value0000, trie.Get(key0000));
+        }
+
+        [Fact]
+        public void SetValueToFullNode()
+        {
+            ITrie trie = new MerkleTrie(new MemoryKeyValueStore());
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            IValue value00 = new Text("00");
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+            IValue value0000 = new Text("0000");
+            KeyBytes key0010 = new KeyBytes(new byte[] { 0x00, 0x10 });
+            IValue value0010 = new Text("0010");
+
+            trie = trie.Set(key0000, value0000);
+            trie = trie.Set(key0010, value0010);
+            trie = trie.Set(key00, value00);
+            trie = trie.Commit();
+
+            Assert.Equal(3, ((MerkleTrie)trie).ListAllStates().Count());
+            Assert.Equal(value00, trie.Get(key00));
+            Assert.Equal(value0000, trie.Get(key0000));
+            Assert.Equal(value0010, trie.Get(key0010));
+        }
     }
 }

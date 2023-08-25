@@ -10,7 +10,9 @@ namespace Libplanet.Store.Trie.Nodes
         public ShortNode(in ImmutableArray<byte> key, INode? value)
             : base(value)
         {
-            Key = key;
+            Key = key.IsDefaultOrEmpty
+                ? throw new ArgumentException($"Given {nameof(key)} cannot be empty", nameof(key))
+                : key;
         }
 
         // FIXME: We should declare a custom value type to represent nibbles...
@@ -44,6 +46,6 @@ namespace Libplanet.Store.Trie.Nodes
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
         public override IValue ToBencodex() =>
-            new Bencodex.Types.List(new Binary(Key), Value?.ToBencodex() ?? Null.Value);
+            new List(new Binary(Key), Value?.ToBencodex() ?? Null.Value);
     }
 }

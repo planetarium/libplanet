@@ -2,6 +2,9 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
+    /// <summary>
+    /// Represents a node in MPT that can have a value.
+    /// </summary>
     public abstract class BaseNode : INode
     {
         protected BaseNode(INode? value)

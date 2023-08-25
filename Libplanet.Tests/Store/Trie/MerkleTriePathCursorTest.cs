@@ -28,30 +28,6 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
-        public void FromNibbles()
-        {
-            ImmutableArray<byte> nibbles = ParseHexToImmutable("0c0f0e0d04040600");
-            PathCursor cursor = PathCursor.FromNibbles(nibbles);
-            AssertBytesEqual(ParseHexToImmutable("cfed4460"), cursor.Bytes);
-            Assert.Equal(8, cursor.NibbleLength);
-            Assert.Equal(0, cursor.NibbleOffset);
-
-            cursor = PathCursor.FromNibbles(nibbles, 1);
-            AssertBytesEqual(ParseHexToImmutable("cfed4460"), cursor.Bytes);
-            Assert.Equal(8, cursor.NibbleLength);
-            Assert.Equal(1, cursor.NibbleOffset);
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                _ = PathCursor.FromNibbles(nibbles, -1);
-            });
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                _ = PathCursor.FromNibbles(nibbles, 9);
-            });
-        }
-
-        [Fact]
         public void Next()
         {
             var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
@@ -110,12 +86,6 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(0xe, cursor.NibbleAt(2));
             Assert.Throws<ArgumentOutOfRangeException>(() => { cursor.NibbleAt(-1); });
             Assert.Throws<ArgumentOutOfRangeException>(() => { cursor.NibbleAt(8); });
-
-            cursor = PathCursor.FromNibbles(ParseHexToImmutable("0c0f0e0d040406"), 3);
-            Assert.Equal(0xd, cursor.NibbleAt(0));
-            Assert.Equal(0x4, cursor.NibbleAt(1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => { cursor.NibbleAt(-1); });
-            Assert.Throws<ArgumentOutOfRangeException>(() => { cursor.NibbleAt(5); });
         }
 
         [Fact]

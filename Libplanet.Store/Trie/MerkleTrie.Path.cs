@@ -10,22 +10,24 @@ namespace Libplanet.Store.Trie
 {
     public partial class MerkleTrie
     {
-        private PathResolution ResolvePath(INode? node, in PathCursor cursor) =>
+        private IValue? ResolvePath(INode? node, in PathCursor cursor) =>
             node switch
             {
-                null => PathResolution.Unresolved(),
-                ValueNode valueNode => PathResolution.Resolved(valueNode.Value),
-                ShortNode shortNode => !cursor.RemainingNibblesStartWith(shortNode.Key)
-                    ? PathResolution.Unresolved()
-                    : ResolvePath(shortNode.Value, cursor.Next(shortNode.Key.Length)),
-                FullNode fullNode => ResolvePath(
-                    fullNode.Children[cursor.NextNibble],
-                    cursor.Next(1)
-                ),
-                HashNode hashNode => PathResolution.PartiallyResolved(hashNode.HashDigest, cursor),
+                null => null,
+                ValueNode valueNode => valueNode.Value,
+                ShortNode shortNode => cursor.RemainingNibblesStartWith(shortNode.Key)
+                    ? ResolvePath(shortNode.Value, cursor.Next(shortNode.Key.Length))
+                    : null,
+                FullNode fullNode => cursor.RemainingAnyNibbles
+                    ? ResolvePath(
+                        fullNode.Children[cursor.NextNibble],
+                        cursor.Next(1))
+                    : ResolvePath(
+                        fullNode.Value,
+                        cursor),
+                HashNode hashNode => ResolvePath(GetNode(hashNode.HashDigest), cursor),
                 _ => throw new InvalidTrieNodeException(
-                    $"Invalid node value: {node.ToBencodex().Inspect(false)}"
-                ),
+                    $"Invalid node value: {node.ToBencodex().Inspect(false)}"),
             };
 
         public readonly struct PathCursor
@@ -39,13 +41,13 @@ namespace Libplanet.Store.Trie
                     secure
                         ? HashDigest<SHA256>.DeriveFrom(keyBytes.ByteArray).ByteArray
                         : keyBytes.ByteArray,
-                    0,
-                    (secure ? HashDigest<SHA256>.Size : keyBytes.Length) * 2)
+                    0)
             {
             }
 
-            private PathCursor(in ImmutableArray<byte> bytes, int nibbleOffset, int nibbleLength)
+            private PathCursor(in ImmutableArray<byte> bytes, int nibbleOffset)
             {
+                int nibbleLength = bytes.Length * 2;
                 if (nibbleOffset < 0 || nibbleOffset > nibbleLength)
                 {
                     throw new ArgumentOutOfRangeException(nameof(nibbleOffset));
@@ -66,33 +68,6 @@ namespace Libplanet.Store.Trie
             public byte NextNibble => NibbleOffset < NibbleLength
                 ? GetNibble(Bytes[NibbleOffset / 2], NibbleOffset % 2 == 0)
                 : throw new IndexOutOfRangeException();
-
-            [Pure]
-            public static PathCursor FromNibbles(
-                in ImmutableArray<byte> nibbles,
-                int nibbleOffset = 0
-            )
-            {
-                if (nibbleOffset < 0 || nibbleOffset > nibbles.Length)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(nibbleOffset));
-                }
-
-                int oddNibble = nibbles.Length % 2;
-                int byteLength = nibbles.Length / 2 + oddNibble;
-                var builder = ImmutableArray.CreateBuilder<byte>(byteLength);
-                for (int i = 0, evenNibbles = nibbles.Length - oddNibble; i < evenNibbles; i += 2)
-                {
-                    builder.Add((byte)(nibbles[i] << 4 | nibbles[i + 1]));
-                }
-
-                if (oddNibble > 0)
-                {
-                    builder.Add((byte)(nibbles[nibbles.Length - 1] << 4));
-                }
-
-                return new PathCursor(builder.MoveToImmutable(), nibbleOffset, nibbles.Length);
-            }
 
             [Pure]
             public byte NibbleAt(int index)
@@ -121,7 +96,7 @@ namespace Libplanet.Store.Trie
             [Pure]
             public PathCursor Next(int nibbleOffset) => nibbleOffset < 0
                 ? throw new ArgumentOutOfRangeException(nameof(nibbleOffset))
-                : new PathCursor(Bytes, NibbleOffset + nibbleOffset, NibbleLength);
+                : new PathCursor(Bytes, NibbleOffset + nibbleOffset);
 
             // FIXME: We should declare a custom value type to represent nibbles...
             [Pure]
@@ -135,7 +110,12 @@ namespace Libplanet.Store.Trie
                 return CountCommonStartingNibbles(nibbles) >= nibbles.Length;
             }
 
-            // FIXME: We should declare a custom value type to represent nibbles...
+            /// <summary>
+            /// Counts the number of common starting nibbles.
+            /// </summary>
+            /// <param name="nibbles">The set of nibbles to compare.</param>
+            /// <returns>The number of common starting nibbles from
+            /// current <see cref="NibbleOffset"/>.</returns>
             [Pure]
             public int CountCommonStartingNibbles(in ImmutableArray<byte> nibbles)
             {
@@ -162,34 +142,6 @@ namespace Libplanet.Store.Trie
             [Pure]
             private static byte GetNibble(byte octet, bool high) =>
                 high ? (byte)(octet >> 4) : (byte)(octet & 0b00001111);
-        }
-
-        private readonly struct PathResolution
-        {
-            public readonly IValue? Value;
-            public readonly (HashDigest<SHA256> NodeHash, PathCursor Cursor)? Next;
-
-            private PathResolution(IValue? value)
-            {
-                Value = value;
-                Next = null;
-            }
-
-            private PathResolution(in HashDigest<SHA256> nodeHash, in PathCursor cursor)
-            {
-                Value = null;
-                Next = (nodeHash, cursor);
-            }
-
-            public static PathResolution Unresolved() => default;
-
-            public static PathResolution Resolved(IValue value) => new PathResolution(value);
-
-            public static PathResolution PartiallyResolved(
-                in HashDigest<SHA256> nodeHash,
-                in PathCursor cursor
-            ) =>
-                new PathResolution(nodeHash, cursor);
         }
     }
 }

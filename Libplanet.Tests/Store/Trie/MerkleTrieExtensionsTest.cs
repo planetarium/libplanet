@@ -41,11 +41,12 @@ namespace Libplanet.Tests.Store.Trie
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             MerkleTrie trie = new MerkleTrie(keyValueStore);
 
-            trie = (MerkleTrie)trie.Set(new KeyBytes(0x01), Null.Value)
-                    .Set(new KeyBytes(0x02), Null.Value)
-                    .Set(new KeyBytes(0x03), Null.Value)
-                    .Set(new KeyBytes(0x04), Null.Value)
-                    .Set(new KeyBytes(0xbe, 0xef), Dictionary.Empty);
+            trie = (MerkleTrie)trie
+                .Set(new KeyBytes(0x01), Null.Value)
+                .Set(new KeyBytes(0x02), Null.Value)
+                .Set(new KeyBytes(0x03), Null.Value)
+                .Set(new KeyBytes(0x04), Null.Value)
+                .Set(new KeyBytes(0xbe, 0xef), Dictionary.Empty);
 
             Dictionary<KeyBytes, IValue> states =
                 trie.ListAllStates().ToDictionary(pair => pair.Key, pair => pair.Value);
