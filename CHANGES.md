@@ -13,6 +13,17 @@ To be released.
  -  (Libplanet.Store) Added `VolatileKeyValueStore` class.  [[#3361]]
  -  (Libplanet.Store) Changed `IStateStore.GetStateRoot(HashDigest<SHA256>?)`
     to `IStateStore.GetStateRoot(HashDigest<SHA256>?, bool)`.  [[#3361]]
+ -  (Libplanet.Store) Added 
+    `IStateStore.GetUnRecordableStateRoot(HashDigest<SHA256>?)`
+    interface method.  [[#3378]]
+ -  (Libplanet.Store) Added `IStateStore.GetStateRoot(INode?)` interface
+    method. [[#3378]]
+ -  (Libplanet.Action) Added `IAccount.Trie` interface property. [[#3378]]
+ -  (Libplanet.Action) Added `IActionEvaluator.Evaluate
+    (HashDigest<SHA256?>, IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>`
+    interface method. [[#3378]]
+ -  (Libplanet.Action) Added `IStateStore` parameter
+    to `ActionEvaluator`'s constructor.  [[#3378]]
 
 ### Backward-incompatible network protocol changes
 
@@ -41,6 +52,8 @@ To be released.
 [#3377]: https://github.com/planetarium/libplanet/pull/3377
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
+
+[#3378]: https://github.com/planetarium/libplanet/pull/3378
 
 Version 3.2.0
 -------------
