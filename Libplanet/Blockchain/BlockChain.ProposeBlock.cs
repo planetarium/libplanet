@@ -170,7 +170,7 @@ namespace Libplanet.Blockchain
             PrivateKey proposer,
             PreEvaluationBlock preEvaluationBlock) => preEvaluationBlock.Sign(
                 proposer,
-                DetermineBlockStateRootHash(preEvaluationBlock, out _));
+                DetermineBlockStateRootHash(preEvaluationBlock));
 
         /// <summary>
         /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block"/> for

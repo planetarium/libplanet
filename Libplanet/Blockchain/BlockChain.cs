@@ -413,9 +413,6 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
-            var delta = evals.GetRawTotalDelta();
-            stateStore.Commit(null, delta);
-
             blockChainStates ??= new BlockChainStates(store, stateStore);
 
             return new BlockChain(

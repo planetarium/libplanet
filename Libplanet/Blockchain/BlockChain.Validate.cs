@@ -320,7 +320,11 @@ namespace Libplanet.Blockchain
         internal void ValidateBlockStateRootHash(
             Block block, out IReadOnlyList<IActionEvaluation> evaluations)
         {
-            var rootHash = DetermineBlockStateRootHash(block, out evaluations);
+            var previousBlock = this[block.PreviousHash ?? Genesis.Hash];
+            var rootHash = ActionEvaluator.Evaluate(
+                previousBlock.StateRootHash,
+                block,
+                out evaluations);
             if (!rootHash.Equals(block.StateRootHash))
             {
                 var message = $"Block #{block.Index} {block.Hash}'s state root hash " +

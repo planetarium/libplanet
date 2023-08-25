@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -76,35 +78,15 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// An <see cref="ITrie"/> returned by this method is read-only.
         /// </remarks>
-        private ITrie GetTrie(BlockHash? offset)
-        {
-            if (!(offset is { } hash))
-            {
-                return _stateStore.GetStateRoot(null, readOnly: true);
-            }
-            else if (_store.GetStateRootHash(hash) is { } stateRootHash)
-            {
-                if (_stateStore.ContainsStateRoot(stateRootHash))
-                {
-                    return _stateStore.GetStateRoot(stateRootHash, readOnly: true);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"Could not find state root {stateRootHash} associated with " +
-                        $"block hash {offset} in {nameof(IStateStore)}.",
-                        nameof(offset));
-                }
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Could not find block hash {hash} in {nameof(IStore)}.",
-                    nameof(offset));
-            }
-        }
+        private ITrie GetTrie(BlockHash? offset) =>
+            _stateStore.GetStateRoot(GetStateRootHash(offset));
 
-        private IUnRecordableTrie GetUnRecordableTrie(BlockHash? offset)
-            => new UnRecordableTrie(GetTrie(offset));
+        private IUnRecordableTrie GetUnRecordableTrie(BlockHash? offset) =>
+            _stateStore.GetUnRecordableStateRoot(GetStateRootHash(offset));
+
+        private HashDigest<SHA256>? GetStateRootHash(BlockHash? offset) =>
+            offset is { } hash
+                ? _store.GetStateRootHash(hash)
+                : null;
     }
 }

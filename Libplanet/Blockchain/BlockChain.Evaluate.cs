@@ -44,7 +44,9 @@ namespace Libplanet.Blockchain
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
             IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetRawTotalDelta();
             IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
-            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
+            ITrie trie = stateStore.Commit(
+                stateStore.GetStateRoot((HashDigest<SHA256>?)null).Hash,
+                delta);
             return trie.Hash;
         }
 
@@ -76,17 +78,14 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Determines the state root hash given <paramref name="block"/> and
-        /// <paramref name="evaluations"/>.
+        /// Determines the state root hash given <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute for
-        /// <paramref name="evaluations"/>.</param>
-        /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
-        /// from which to extract the states to commit.</param>
+        /// state root hash.</param>
         /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
         /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <returns>The state root hash given <paramref name="block"/> and
-        /// its <paramref name="evaluations"/>.
+        /// its state root hash.
         /// </returns>
         /// <remarks>
         /// Since the state root hash can only be calculated by making a commit
@@ -98,40 +97,17 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         public HashDigest<SHA256> DetermineBlockStateRootHash(
-            IPreEvaluationBlock block, out IReadOnlyList<IActionEvaluation> evaluations)
+            IPreEvaluationBlock block)
         {
             _rwlock.EnterWriteLock();
             try
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                evaluations = EvaluateBlock(block);
-                var totalDelta = evaluations.GetRawTotalDelta();
-                _logger.Debug(
-                    "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
-                    "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                    stopwatch.ElapsedMilliseconds,
-                    totalDelta.Count,
-                    block.Index,
-                    block.PreEvaluationHash);
-
-                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
-                HashDigest<SHA256> rootHash = stateRoot.Hash;
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "StateUpdateDuration")
-                    .Information(
-                        "Took {DurationMs} ms to update the states with {KeyCount} key changes " +
-                        "and resulting in state root hash {StateRootHash} for " +
-                        "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                        stopwatch.ElapsedMilliseconds,
-                        totalDelta.Count,
-                        rootHash,
-                        block.Index,
-                        block.PreEvaluationHash);
-
-                return rootHash;
+                HashDigest<SHA256>? previousStateRootHash = Store
+                    .GetStateRootHash(block.PreviousHash);
+                return ActionEvaluator
+                    .Evaluate(previousStateRootHash, block, out _);
             }
             finally
             {
@@ -175,7 +151,7 @@ namespace Libplanet.Blockchain
         =>
             preEvaluationBlock.ProtocolVersion >= 2
                 ? preEvaluationBlock.Sign(
-                    privateKey, DetermineBlockStateRootHash(preEvaluationBlock, out _))
+                    privateKey, DetermineBlockStateRootHash(preEvaluationBlock))
                 : throw new ArgumentException(
                     $"Given {nameof(preEvaluationBlock)} must have protocol version " +
                     $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
