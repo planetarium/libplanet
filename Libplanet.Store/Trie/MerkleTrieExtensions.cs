@@ -46,10 +46,17 @@ namespace Libplanet.Store.Trie
         public static IEnumerable<KeyValuePair<KeyBytes, IValue>> ListAllStates(
             this MerkleTrie merkleTrie)
         {
-            return merkleTrie.IterateNodes().Where(pair => pair.Node is ValueNode).Select(pair =>
-                new KeyValuePair<KeyBytes, IValue>(
-                    FromKey(pair.Path),
-                    ((ValueNode)pair.Node).Value));
+            return merkleTrie.IterateNodes()
+                .Where(pair => pair.Node is ValueNode)
+                .Select(pair =>
+                    new KeyValuePair<KeyBytes, IValue>(
+                        new KeyBytes(
+                            pair.Path.Length % 2 == 0
+                                ? pair.Path.GetCompressed()
+                                : throw new InvalidTrieNodeException(
+                                    $"A {nameof(ValueNode)} with invalid path, of odd length, " +
+                                    $"encountered: {pair.Path.Hex}")),
+                        ((ValueNode)pair.Node).Value));
         }
 
         private static KeyBytes FromKey(KeyBytes keyBytes)
