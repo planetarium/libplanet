@@ -130,20 +130,20 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRoot);
         }
 
-        public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
+        public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
         {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<(INode, ImmutableArray<byte>)>();
-            queue.Enqueue((Root, ImmutableArray<byte>.Empty));
+            var queue = new Queue<(INode, Nibbles)>();
+            queue.Enqueue((Root, new Nibbles(ImmutableArray<byte>.Empty)));
 
             while (queue.Count > 0)
             {
-                (INode node, ImmutableArray<byte> path) = queue.Dequeue();
-                yield return (node, new KeyBytes(path));
+                (INode node, Nibbles path) = queue.Dequeue();
+                yield return (node, path);
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -168,7 +168,7 @@ namespace Libplanet.Store.Trie
                         {
                             queue.Enqueue((
                                     shortNode.Value,
-                                    path.Concat(shortNode.Key.ByteArray).ToImmutableArray()));
+                                    path.AddRange(shortNode.Key)));
                         }
 
                         break;
