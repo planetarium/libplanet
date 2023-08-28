@@ -96,7 +96,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key) => ResolvePath(Root, new PathCursor(key, _secure));
+        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, _secure));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
@@ -106,6 +106,8 @@ namespace Libplanet.Store.Trie
                 ? keys.Select(key => Get(key)).ToArray()
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
+
+        public INode? Get(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
 
         /// <inheritdoc/>
         public ITrie Commit()
@@ -174,7 +176,7 @@ namespace Libplanet.Store.Trie
                         break;
 
                     case HashNode hashNode:
-                        INode? nn = GetNode(hashNode.HashDigest);
+                        INode? nn = UnhashNode(hashNode);
                         if (!(nn is null))
                         {
                             queue.Enqueue((nn, path));
@@ -523,7 +525,7 @@ namespace Libplanet.Store.Trie
             bool allowNull)
         {
             // FIXME: Probably needs to check unhashedNode to be ValueNode, ShortNode, or FullNode.
-            INode? unhashedNode = GetNode(hashNode.HashDigest);
+            INode? unhashedNode = UnhashNode(hashNode);
             return Insert(unhashedNode, cursor, value, allowNull);
         }
 
@@ -535,10 +537,10 @@ namespace Libplanet.Store.Trie
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
         /// <exception cref="KeyNotFoundException">Thrown when the <paramref name="nodeHash"/> is
         /// not found.</exception>
-        private INode? GetNode(HashDigest<SHA256> nodeHash)
+        private INode? UnhashNode(HashNode hashNode)
         {
             IValue intermediateEncoding = _codec.Decode(
-                KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)));
+                KeyValueStore.Get(new KeyBytes(hashNode.HashDigest.ByteArray)));
             return NodeDecoder.Decode(intermediateEncoding);
         }
 
