@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
@@ -15,6 +16,11 @@ namespace Libplanet.Store.Trie
         /// The state root hash of the trie.
         /// </summary>
         HashDigest<SHA256> Hash { get; }
+
+        /// <summary>
+        /// The root node of the trie.
+        /// </summary>
+        INode? Root { get; }
 
         /// <summary>
         /// Whether the trie root is recorded in the store.
@@ -49,11 +55,5 @@ namespace Libplanet.Store.Trie
         /// values are ordered in the same way to the corresponding <paramref name="keys"/>.  Absent
         /// values are represented as <see langword="null"/>.</returns>
         IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys);
-
-        /// <summary>
-        /// Cleans up and stores the <see cref="ITrie"/> in storage.
-        /// </summary>
-        /// <returns>Returns new committed <see cref="ITrie"/>.</returns>
-        ITrie Commit();
     }
 }

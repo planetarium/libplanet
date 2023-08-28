@@ -35,7 +35,7 @@ namespace Libplanet.Action.State
         private Account(IAccount previousAccount, IAccountDelta delta)
             : this(
                 previousAccount.BlockHash,
-                previousAccount.Trie.Set(delta.ToRawDelta()).Commit(),
+                previousAccount.Trie.Set(delta.ToRawDelta()),
                 delta)
         {
         }

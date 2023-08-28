@@ -15,13 +15,13 @@ namespace Libplanet.Tests.Store.Trie
             MerkleTrie trieA = new MerkleTrie(keyValueStore),
                 trieB = new MerkleTrie(keyValueStore);
 
-            trieA = (MerkleTrie)trieA.Set(new KeyBytes(0x01), Null.Value)
-                .Set(new KeyBytes(0x02), Null.Value)
-                .Set(new KeyBytes(0x03), Null.Value)
+            trieA = (MerkleTrie)((MerkleTrie)trieA.Set(new KeyBytes(0x01), Null.Value)
+                    .Set(new KeyBytes(0x02), Null.Value)
+                    .Set(new KeyBytes(0x03), Null.Value))
                 .Commit();
-            trieB = (MerkleTrie)trieB.Set(new KeyBytes(0x01), Dictionary.Empty)
+            trieB = (MerkleTrie)((MerkleTrie)trieB.Set(new KeyBytes(0x01), Dictionary.Empty)
                 .Set(new KeyBytes(0x02), Null.Value)
-                .Set(new KeyBytes(0x04), Null.Value)
+                .Set(new KeyBytes(0x04), Null.Value))
                 .Commit();
 
             Dictionary<KeyBytes, (IValue OriginValue, IValue OtherValue)> differentNodes =
