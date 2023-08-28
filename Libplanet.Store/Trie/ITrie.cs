@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
@@ -12,14 +13,30 @@ namespace Libplanet.Store.Trie
     public interface ITrie
     {
         /// <summary>
+        /// The root of the <see cref="ITrie"/>.  This is <see langword="null"/> if and only if
+        /// the <see cref="ITrie"/> is empty.  That is, this is never a "hashed node" of a
+        /// <see langword="null"/> root.
+        /// </summary>
+        /// <seealso cref="Hash"/>
+        INode? Root { get; }
+
+        /// <summary>
         /// The state root hash of the trie.
         /// </summary>
+        /// <remarks>
+        /// If <see cref="Root"/> is <see langword="null"/>, this still gives a unique
+        /// <see cref="HashDigest{SHA256}"/> value corresponding to <see langword="null"/>
+        /// that is <em>never recorded</em>.
+        /// </remarks>
+        /// <seealso cref="Root"/>
         HashDigest<SHA256> Hash { get; }
 
         /// <summary>
-        /// Whether the trie root is recorded in the store.
+        /// Whether <see cref="Root"/> is recorded in the store.
         /// </summary>
-        /// <remarks>Empty root is considered as recorded.</remarks>
+        /// <remarks>A <see cref="Root"/> that is <see langword="null"/> is always considered
+        /// as recorded.
+        /// </remarks>
         bool Recorded { get; }
 
         /// <summary>

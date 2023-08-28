@@ -59,6 +59,10 @@ namespace Libplanet.Store.Trie
             new Nibbles(Nibbles.ByteArray.Skip(NibbleOffset).ToImmutableArray());
 
         [Pure]
+        public Nibbles GetConsumedNibbles() =>
+            new Nibbles(Nibbles.ByteArray.Take(NibbleOffset).ToImmutableArray());
+
+        [Pure]
         public PathCursor Next(int nibbleOffset) => nibbleOffset < 0
             ? throw new ArgumentOutOfRangeException(nameof(nibbleOffset))
             : new PathCursor(Nibbles, NibbleOffset + nibbleOffset);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Store.Trie.Nodes;
@@ -30,7 +29,7 @@ namespace Libplanet.Store.Trie
         {
             foreach (var pair in origin.ListAllStates())
             {
-                IValue? otherValue = other.Get(new[] { pair.Key })[0];
+                IValue? otherValue = other.Get(pair.Key);
                 if (otherValue is null || !pair.Value.Equals(otherValue))
                 {
                     yield return (pair.Key, pair.Value, otherValue);
@@ -50,44 +49,8 @@ namespace Libplanet.Store.Trie
                 .Where(pair => pair.Node is ValueNode)
                 .Select(pair =>
                     new KeyValuePair<KeyBytes, IValue>(
-                        new KeyBytes(
-                            pair.Path.Length % 2 == 0
-                                ? pair.Path.GetCompressed()
-                                : throw new InvalidTrieNodeException(
-                                    $"A {nameof(ValueNode)} with invalid path, of odd length, " +
-                                    $"encountered: {pair.Path.Hex}")),
+                        pair.Path.ToKeyBytes(),
                         ((ValueNode)pair.Node).Value));
-        }
-
-        private static KeyBytes FromKey(KeyBytes keyBytes)
-        {
-            if (keyBytes.Length % 2 == 1)
-            {
-                throw new ArgumentException(
-                    $"Given {nameof(keyBytes)} must be of even length: {keyBytes.Length}",
-                    nameof(keyBytes));
-            }
-
-            ImmutableArray<byte> bytes = keyBytes.ByteArray;
-            var builder = ImmutableArray.CreateBuilder<byte>(bytes.Length / 2);
-            builder.Count = bytes.Length / 2;
-            for (int i = 0; i < bytes.Length / 2; ++i)
-            {
-                byte high = bytes[i * 2], low = bytes[i * 2 + 1];
-                if (high >= 16)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(bytes));
-                }
-
-                if (low >= 16)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(bytes));
-                }
-
-                builder[i] = (byte)((high << 4) | low);
-            }
-
-            return new KeyBytes(builder.MoveToImmutable());
         }
     }
 }

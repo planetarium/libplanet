@@ -22,9 +22,21 @@ namespace Libplanet.Store.Trie
                         cursor),
                 HashNode hashNode => ResolveToValue(UnhashNode(hashNode), cursor),
                 _ => throw new InvalidTrieNodeException(
-                    $"Invalid node value: {node.ToBencodex().Inspect(false)}"),
+                    $"An unknown type of node was encountered " +
+                    $"at {cursor.GetConsumedNibbles().Hex}: {node.GetType()}"),
             };
 
+        /// <summary>
+        /// Returns the first node encountered at the end of <paramref name="cursor"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="INode"/> that <paramref name="cursor"/> is
+        /// currently pointing to.</param>
+        /// <param name="cursor">The path to traverse.  The offset of the cursor should point to
+        /// <paramref name="node"/>.</param>
+        /// <returns>The first <see cref="INode"/> at the end of <paramref name="cursor"/>, if any.
+        /// Otherwise, <see langword="null"/>.</returns>
+        /// <exception cref="InvalidTrieNodeException">Thrown when an unknown type
+        /// of <see cref="INode"/> is encountered while traversing.</exception>
         private INode? ResolveToNode(INode? node, in PathCursor cursor)
         {
             if (cursor.RemainingAnyNibbles)
@@ -44,7 +56,8 @@ namespace Libplanet.Store.Trie
                         return ResolveToNode(UnhashNode(hashNode), cursor);
                     default:
                         throw new InvalidTrieNodeException(
-                            $"Invalid node value: {node.ToBencodex().Inspect(false)}");
+                            $"An unknown type of node was encountered " +
+                            $"at {cursor.GetConsumedNibbles().Hex}: {node.GetType()}");
                 }
             }
             else

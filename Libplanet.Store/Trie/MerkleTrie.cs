@@ -107,7 +107,7 @@ namespace Libplanet.Store.Trie
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
 
-        public INode? Get(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
+        public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
 
         /// <inheritdoc/>
         public ITrie Commit()
