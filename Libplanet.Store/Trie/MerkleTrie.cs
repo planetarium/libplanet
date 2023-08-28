@@ -114,7 +114,7 @@ namespace Libplanet.Store.Trie
         {
             if (Root is null)
             {
-                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
+                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash), _secure);
             }
 
             var writeBatch = new WriteBatch(KeyValueStore, 4096);
