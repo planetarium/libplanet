@@ -29,7 +29,7 @@ namespace Libplanet.Store
             IImmutableDictionary<KeyBytes, IValue> rawStatesDelta
         )
         {
-            ITrie trie = stateStore.GetStateRoot(previousStateRootHash);
+            IRecordableTrie trie = stateStore.GetRecordableStateRoot(previousStateRootHash);
             foreach (KeyValuePair<KeyBytes, IValue> pair in rawStatesDelta)
             {
                 trie = trie.Set(pair.Key, pair.Value);

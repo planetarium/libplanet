@@ -7,7 +7,6 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Configuration;
-using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tools.Tests.Services;
 using Xunit;

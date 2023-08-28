@@ -153,14 +153,14 @@ namespace Libplanet.Tests.Store
             var storedKey = new KeyBytes(TestUtils.GetRandomBytes(32));
             var storedValue = new Binary(TestUtils.GetRandomBytes(32));
 
-            var trie = stateStore.GetStateRoot(null);
+            var trie = stateStore.GetRecordableStateRoot(null);
             trie = trie.Set(storedKey, storedValue);
             trie = trie.Commit();
             var storedHash = trie.Hash;
 
             var key = new KeyBytes(TestUtils.GetRandomBytes(32));
             var value = new Binary(TestUtils.GetRandomBytes(32));
-            var trieR = stateStore.GetStateRoot(storedHash, readOnly: true);
+            var trieR = stateStore.GetRecordableStateRoot(storedHash, readOnly: true);
 
             // Can get old value
             Assert.Equal(storedValue, trieR.Get(storedKey));
@@ -176,7 +176,7 @@ namespace Libplanet.Tests.Store
             Assert.True(trieR.Recorded);
             Assert.False(stateStore.GetStateRoot(hashR).Recorded);
 
-            var trieRW = stateStore.GetStateRoot(storedHash, readOnly: false);
+            var trieRW = stateStore.GetRecordableStateRoot(storedHash, readOnly: false);
             Assert.Null(trieRW.Get(key));
 
             trieRW = trieRW.Set(key, value);

@@ -497,9 +497,16 @@ If omitted (default) explorer only the local blockchain store.")]
         {
             public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly) => null;
 
+            public IRecordableTrie GetRecordableStateRoot(
+                HashDigest<SHA256>? stateRootHash,
+                bool readOnly = false) =>
+                null;
+
             public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
             {
             }
+
+            public IRecordableTrie CastToRecordableTrie(ITrie trie) => null;
 
             public void Dispose()
             {
