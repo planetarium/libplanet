@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Store.Trie
         public void Commit(int addressCount)
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            ITrie trieA = new MerkleTrie(keyValueStore);
+            IRecordableTrie trieA = new MerkleTrie(keyValueStore);
 
             var addresses = new Address[addressCount];
             var states = new IValue[addressCount];
@@ -72,15 +72,15 @@ namespace Libplanet.Tests.Store.Trie
             trieA = trieA.Set(path, (Text)"foo");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
 
-            ITrie trieB = trieA.Commit();
+            IRecordableTrie trieB = trieA.Commit();
             Assert.Equal((Text)"foo", trieB.Get(new[] { path })[0]);
 
             trieB = trieB.Set(path, (Text)"bar");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
             Assert.Equal((Text)"bar", trieB.Get(new[] { path })[0]);
 
-            ITrie trieC = trieB.Commit();
-            ITrie trieD = trieC.Commit();
+            IRecordableTrie trieC = trieB.Commit();
+            IRecordableTrie trieD = trieC.Commit();
 
             Assert.NotEqual(trieA.Hash, trieB.Hash);
             Assert.NotEqual(trieA.Hash, trieC.Hash);
@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Store.Trie
         public void EmptyRootHash()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            ITrie trie = new MerkleTrie(keyValueStore);
+            IRecordableTrie trie = new MerkleTrie(keyValueStore);
             Assert.Equal(MerkleTrie.EmptyRootHash, trie.Hash);
 
             var committedTrie = trie.Commit();
