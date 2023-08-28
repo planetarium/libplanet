@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -106,32 +107,40 @@ namespace Libplanet.Blockchain
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 evaluations = EvaluateBlock(block);
-                var totalDelta = evaluations.GetRawTotalDelta();
                 _logger.Debug(
-                    "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
+                    "Took {DurationMs} ms to summarize the states delta " +
                     "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                     stopwatch.ElapsedMilliseconds,
-                    totalDelta.Count,
                     block.Index,
                     block.PreEvaluationHash);
+                if (evaluations.Count > 0)
+                {
+                    IRecordableTrie stateRoot = StateStore
+                        .CastToRecordableTrie(evaluations.Last().OutputState.Trie).Commit();
+                    HashDigest<SHA256> rootHash = stateRoot.Hash;
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "StateUpdateDuration")
+                        .Information(
+                            "Took {DurationMs} ms to update the states " +
+                            "and resulting in state root hash {StateRootHash} for " +
+                            "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
+                            stopwatch.ElapsedMilliseconds,
+                            rootHash,
+                            block.Index,
+                            block.PreEvaluationHash);
 
-                HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
-                ITrie stateRoot = StateStore.Commit(prevStateRootHash, totalDelta);
-                HashDigest<SHA256> rootHash = stateRoot.Hash;
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "StateUpdateDuration")
-                    .Information(
-                        "Took {DurationMs} ms to update the states with {KeyCount} key changes " +
-                        "and resulting in state root hash {StateRootHash} for " +
-                        "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                        stopwatch.ElapsedMilliseconds,
-                        totalDelta.Count,
-                        rootHash,
+                    return rootHash;
+                }
+                else
+                {
+                    _logger.Information(
+                        "Block #{BlockIndex} pre-evaluation hash {PreEvaluationHash} " +
+                        "did not produce any action evaluations",
                         block.Index,
                         block.PreEvaluationHash);
-
-                return rootHash;
+                    return Store.GetStateRootHash(block.PreviousHash) ?? default;
+                }
             }
             finally
             {
