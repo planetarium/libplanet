@@ -194,6 +194,9 @@ public class StateQueryTest
 
         public IAccount GetAccount(BlockHash? offset) => new MockAccount(offset);
 
+        public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
+            throw new System.NotImplementedException();
+
         public ITrie GetTrie(BlockHash? offset)
         {
             throw new System.NotImplementedException();

@@ -38,5 +38,10 @@ namespace Libplanet.Blockchain
 
         public IAccount GetAccount(BlockHash? offset) =>
             new Account(offset ?? default, new MerkleTrie(_keyValueStore));
+
+        public IRecordableTrie CastToRecordableTrie(ITrie trie)
+        {
+            return new MerkleTrie(_keyValueStore, trie.Root);
+        }
     }
 }
