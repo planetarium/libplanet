@@ -50,7 +50,7 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
         public IAccount GetAccount(BlockHash? offset) =>
-            new Account(offset ?? default, GetTrie(offset));
+            new Account(GetTrie(offset));
 
         public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
             _stateStore.CastToRecordableTrie(trie);

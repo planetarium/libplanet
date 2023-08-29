@@ -19,30 +19,23 @@ namespace Libplanet.Action.State
     [Pure]
     public class Account : IAccount
     {
-        public Account(BlockHash blockHash, ITrie trie)
-            : this(blockHash, trie, new AccountDelta())
+        public Account(ITrie trie)
+            : this(trie, new AccountDelta())
         {
         }
 
         public Account(IAccount baseState)
-            : this(
-                baseState.BlockHash,
-                baseState.Trie,
-                new AccountDelta())
+            : this(baseState.Trie, new AccountDelta())
         {
         }
 
         private Account(IAccount previousAccount, IAccountDelta delta)
-            : this(
-                previousAccount.BlockHash,
-                previousAccount.Trie.Set(delta.ToRawDelta()),
-                delta)
+            : this(previousAccount.Trie.Set(delta.ToRawDelta()), delta)
         {
         }
 
-        private Account(BlockHash blockHash, ITrie trie, IAccountDelta delta)
+        private Account(ITrie trie, IAccountDelta delta)
         {
-            BlockHash = blockHash;
             Trie = trie;
             Delta = delta;
             TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;

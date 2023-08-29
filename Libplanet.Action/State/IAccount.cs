@@ -50,8 +50,6 @@ namespace Libplanet.Action.State
 
         public ITrie Trie { get; }
 
-        public BlockHash BlockHash { get; }
-
         /// <summary>
         /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
         /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
