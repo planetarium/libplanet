@@ -34,11 +34,11 @@ namespace Libplanet.Store
         /// <see cref="ITrie.Hash"/>.
         /// </summary>
         /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
-        /// <returns>The commited <see cref="ITrie"/>.</returns>
+        /// <returns>The committed <see cref="ITrie"/>.</returns>
         /// <remarks>
         /// Given <paramref name="trie"/> must have originated from the same instance
         /// (or with an instance with the same reference to an <see cref="IKeyValueStore"/>).
-        /// Otherwise, this is not guarenteed to work properly.
+        /// Otherwise, this is not guaranteed to work properly.
         /// </remarks>
         /// <seealso cref="GetStateRoot"/>
         ITrie Commit(ITrie trie);
