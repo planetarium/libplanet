@@ -216,7 +216,7 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void SetValueToExtendedKey()
         {
-            ITrie trie = new MerkleTrie(new MemoryKeyValueStore());
+            IRecordableTrie trie = new MerkleTrie(new MemoryKeyValueStore());
             KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
             IValue value00 = new Text("00");
             KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
@@ -234,7 +234,7 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void SetValueToFullNode()
         {
-            ITrie trie = new MerkleTrie(new MemoryKeyValueStore());
+            IRecordableTrie trie = new MerkleTrie(new MemoryKeyValueStore());
             KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
             IValue value00 = new Text("00");
             KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
