@@ -1,5 +1,3 @@
-using Bencodex.Types;
-
 namespace Libplanet.Store.Trie
 {
     public interface IRecordableTrie : ITrie
@@ -9,7 +7,5 @@ namespace Libplanet.Store.Trie
          /// </summary>
          /// <returns>Returns new committed <see cref="IRecordableTrie"/>.</returns>
         IRecordableTrie Commit();
-
-        new IRecordableTrie Set(in KeyBytes key, IValue value);
     }
 }
