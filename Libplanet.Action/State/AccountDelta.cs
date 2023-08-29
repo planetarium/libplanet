@@ -8,9 +8,9 @@ using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {
-    internal class AccountDelta : IAccountDelta
+    public class AccountDelta : IAccountDelta
     {
-        internal AccountDelta()
+        public AccountDelta()
         {
             States = ImmutableDictionary<Address, IValue>.Empty;
             Fungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;

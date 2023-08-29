@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
     public static class TrieExtensions
     {
-        public static ITrie Set(this ITrie trie, IEnumerable<KeyValuePair<KeyBytes, IValue?>> pairs)
+        public static ITrie Set(this ITrie trie, IImmutableDictionary<KeyBytes, IValue> pairs)
         {
             foreach (var pair in pairs)
             {

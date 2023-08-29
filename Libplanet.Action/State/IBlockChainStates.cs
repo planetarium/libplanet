@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -84,7 +85,7 @@ namespace Libplanet.Action.State
         /// at <paramref name="offset"/>.  If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
         FungibleAssetValue GetBalance(
             Address address,
@@ -102,12 +103,12 @@ namespace Libplanet.Action.State
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
-        /// <seealso cref="GetBlockState"/>
+        /// <seealso cref="GetAccount"/>
         FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset);
@@ -121,19 +122,19 @@ namespace Libplanet.Action.State
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
         /// <paramref name="offset"/>.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IBlockState"/> at
+        /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
-        /// <seealso cref="GetBlockState"/>
+        /// <seealso cref="GetAccount"/>
         ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
-        /// Returns the <see cref="IBlockState"/> in the <see cref="BlockChain"/>
+        /// Returns the <see cref="IAccount"/> in the <see cref="BlockChain"/>
         /// at <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        /// for which to create an <see cref="IBlockState"/>.</param>
+        ///     for which to create an <see cref="IAccount"/>.</param>
         /// <returns>
-        /// The <see cref="IBlockState"/> at <paramref name="offset"/>.
+        /// The <see cref="IAccount"/> at <paramref name="offset"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
         /// <see langword="null"/> and one of the following is true.
@@ -147,7 +148,18 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        /// <seealso cref="IBlockState"/>
-        IBlockState GetBlockState(BlockHash? offset);
+        /// <seealso cref="IAccount"/>
+        IAccount GetAccount(BlockHash? offset);
+
+        /// <summary>
+        /// Return the <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
+        /// </summary>
+        /// <param name="trie">
+        /// The <see cref="ITrie"/> to cast to <see cref="IRecordableTrie"/>.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
+        /// </returns>
+        IRecordableTrie CastToRecordableTrie(ITrie trie);
     }
 }

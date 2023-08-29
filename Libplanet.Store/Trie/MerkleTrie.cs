@@ -16,7 +16,7 @@ namespace Libplanet.Store.Trie
     /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
     /// </summary>
     // TODO: implement 'logs' for debugging.
-    public partial class MerkleTrie : ITrie
+    public partial class MerkleTrie : IRecordableTrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -108,7 +108,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public ITrie Commit()
+        public IRecordableTrie Commit()
         {
             if (Root is null)
             {

@@ -7,7 +7,6 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Configuration;
-using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tools.Tests.Services;
 using Xunit;
@@ -30,14 +29,12 @@ public class MptCommandTest : IDisposable
         _pathB = NewTempPath();
         using var stateKeyValueStoreA = new DefaultKeyValueStore(_pathA);
         using var stateKeyValueStoreB = new DefaultKeyValueStore(_pathB);
-        _trieA = new MerkleTrie(stateKeyValueStoreA).Set(
-            ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("deleted"), Null.Value)
-                .Add(new KeyBytes("common"), (Text)"before")).Commit();
-        _trieB = new MerkleTrie(stateKeyValueStoreB).Set(
-            ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("created"), Null.Value)
-                .Add(new KeyBytes("common"), (Text)"after")).Commit();
+        _trieA = ((MerkleTrie)new MerkleTrie(stateKeyValueStoreA)
+            .Set(new KeyBytes("deleted"), Null.Value)
+            .Set(new KeyBytes("common"), (Text)"before")).Commit();
+        _trieB = ((MerkleTrie)new MerkleTrie(stateKeyValueStoreB)
+            .Set(new KeyBytes("created"), Null.Value)
+            .Set(new KeyBytes("common"), (Text)"after")).Commit();
     }
 
     [Fact]

@@ -16,6 +16,7 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -560,11 +561,12 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        public IBlockState GetBlockState() => GetBlockState(Tip.Hash);
+        /// <inheritdoc cref="IBlockChainStates.GetAccount" />
+        public IAccount GetAccount(BlockHash? offset) =>
+            _blockChainStates.GetAccount(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetBlockState" />
-        public IBlockState GetBlockState(BlockHash? offset) =>
-            _blockChainStates.GetBlockState(offset);
+        public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
+            _blockChainStates.CastToRecordableTrie(trie);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

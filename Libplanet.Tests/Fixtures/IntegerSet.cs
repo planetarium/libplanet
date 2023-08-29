@@ -135,7 +135,10 @@ namespace Libplanet.Tests.Fixtures
                         var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                             .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                         HashDigest<SHA256> nextRootHash =
-                            prevTrie.Set(updatedRawStates).Commit().Hash;
+                            Chain
+                                .CastToRecordableTrie(prevTrie.Set(updatedRawStates))
+                                .Commit()
+                                .Hash;
                         return (nextState, nextRootHash);
                     }
                 });
@@ -157,7 +160,10 @@ namespace Libplanet.Tests.Fixtures
                             var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                                 .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
                             HashDigest<SHA256> nextRootHash =
-                                prevTrie.Set(updatedRawStates).Commit().Hash;
+                                Chain
+                                    .CastToRecordableTrie(prevTrie.Set(updatedRawStates))
+                                    .Commit()
+                                    .Hash;
                             return delta.Add((nextState, nextRootHash));
                         }
                     }
@@ -179,7 +185,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccount CreateAccount(Address signer, BlockHash? offset = null)
-            => Account.Create(Chain.GetBlockState(offset ?? Tip.Hash));
+            => Chain.GetAccount(offset);
 
         public IAccount CreateAccount(int signerIndex, BlockHash? offset = null)
             => CreateAccount(Addresses[signerIndex], offset);

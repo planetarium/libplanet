@@ -13,6 +13,13 @@ To be released.
  -  (Libplanet.Store) Added `VolatileKeyValueStore` class.  [[#3361]]
  -  (Libplanet.Store) Changed `IStateStore.GetStateRoot(HashDigest<SHA256>?)`
     to `IStateStore.GetStateRoot(HashDigest<SHA256>?, bool)`.  [[#3361]]
+ -  (Libplanet.Store) Added `IRecordableTrie` interface.  [[#3392]]
+ -  (Libplanet.Store) Removed `ITrie.Commit()`.  [[#3392]]
+ -  (Libplanet.Store) Added `IStateStore.CastToRecordableTrie(ITrie)`
+    method.  [[#3392]]
+ -  (Libplanet.Store) Added `IStateStore.GetRecordableStateRoot
+    (HashDigest<SHA256>?, bool)` method.  [[#3392]]
+ -  Added `IBlockChainStates.CastToRecordableTrie(ITrie)` method.  [[#3392]]
 
 ### Backward-incompatible network protocol changes
 
@@ -48,6 +55,7 @@ To be released.
 [#3361]: https://github.com/planetarium/libplanet/pull/3361
 [#3377]: https://github.com/planetarium/libplanet/pull/3377
 [#3390]: https://github.com/planetarium/libplanet/pull/3390
+[#3392]: https://github.com/planetarium/libplanet/pull/3392
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 

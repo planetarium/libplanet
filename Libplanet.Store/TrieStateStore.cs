@@ -41,6 +41,19 @@ namespace Libplanet.Store
 
         public IKeyValueStore StateKeyValueStore { get; }
 
+        public IRecordableTrie GetRecordableStateRoot(
+            HashDigest<SHA256>? stateRootHash,
+            bool readOnly = false) =>
+            readOnly
+                ? new MerkleTrie(
+                    new VolatileKeyValueStore(StateKeyValueStore),
+                    stateRootHash is { } h1 ? new HashNode(h1) : null,
+                    Secure)
+                : new MerkleTrie(
+                    StateKeyValueStore,
+                    stateRootHash is { } h2 ? new HashNode(h2) : null,
+                    Secure);
+
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
@@ -97,6 +110,9 @@ namespace Libplanet.Store
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
         }
+
+        public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
+            new MerkleTrie(StateKeyValueStore, trie.Root, Secure);
 
         /// <summary>
         /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
