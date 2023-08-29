@@ -83,6 +83,7 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a></div>
     <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></div>
   </div>
   <div class="inheritedMembers">
@@ -113,7 +114,7 @@
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_Trie_MerkleTrie_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MerkleTrie : ITrie</code></pre>
+    <pre><code class="lang-csharp hljs">public class MerkleTrie : IRecordableTrie, ITrie</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -360,12 +361,12 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Commit_" data-uid="Libplanet.Store.Trie.MerkleTrie.Commit*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Commit" data-uid="Libplanet.Store.Trie.MerkleTrie.Commit">Commit()</h4>
-  <div class="markdown level1 summary"><p>Cleans up and stores the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> in storage.</p>
+  <div class="markdown level1 summary"><p>Cleans up and stores the <a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a> in storage.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ITrie Commit()</code></pre>
+    <pre><code class="lang-csharp hljs">public IRecordableTrie Commit()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,8 +378,8 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
-        <td><p>Returns new committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+        <td><a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a></td>
+        <td><p>Returns new committed <a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -594,11 +595,14 @@ node corresponding to given <code data-dev-comment-type="paramref" class="paramr
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a>
+  </div>
+  <div>
       <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue___">TrieExtensions.Set(ITrie, IEnumerable&lt;KeyValuePair&lt;KeyBytes, IValue&gt;&gt;)</a>
+      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Immutable_IImmutableDictionary_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue__">TrieExtensions.Set(ITrie, IImmutableDictionary&lt;KeyBytes, IValue&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_DifferentNodes_Libplanet_Store_Trie_MerkleTrie_Libplanet_Store_Trie_MerkleTrie_">MerkleTrieExtensions.DifferentNodes(MerkleTrie, MerkleTrie)</a>

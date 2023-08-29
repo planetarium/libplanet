@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IBlockState
+    <title>Interface IRecordableTrie
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IBlockState
+    <meta name="title" content="Interface IRecordableTrie
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,59 +67,59 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.State.IBlockState">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.IRecordableTrie">
 
 
-  <h1 id="Libplanet_Action_State_IBlockState" data-uid="Libplanet.Action.State.IBlockState" class="text-break">Interface IBlockState
+  <h1 id="Libplanet_Store_Trie_IRecordableTrie" data-uid="Libplanet.Store.Trie.IRecordableTrie" class="text-break">Interface IRecordableTrie
 </h1>
-  <div class="markdown level0 summary"><p>A minimal interface to get states from the output state of a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetState_Libplanet_Crypto_Address_">IAccountState.GetState(Address)</a>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">ITrie.Hash</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">ITrie.Root</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_">IAccountState.GetBalance(Address, Currency)</a>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Recorded">ITrie.Recorded</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetTotalSupply_Libplanet_Types_Assets_Currency_">IAccountState.GetTotalSupply(Currency)</a>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">ITrie.Set(KeyBytes, IValue)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetValidatorSet">IAccountState.GetValidatorSet()</a>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_">ITrie.Get(KeyBytes)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__">ITrie.Get(IReadOnlyList&lt;KeyBytes&gt;)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
-  <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
-  <h5 id="Libplanet_Action_State_IBlockState_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
+  <h5 id="Libplanet_Store_Trie_IRecordableTrie_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IBlockState : IAccountState</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IRecordableTrie : ITrie</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockState_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockState.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_IRecordableTrie_Commit.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.IRecordableTrie.Commit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockState.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/IRecordableTrie.cs/#L9">View Source</a>
   </span>
-  <a id="Libplanet_Action_State_IBlockState_BlockHash_" data-uid="Libplanet.Action.State.IBlockState.BlockHash*"></a>
-  <h4 id="Libplanet_Action_State_IBlockState_BlockHash" data-uid="Libplanet.Action.State.IBlockState.BlockHash">BlockHash</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Hash">Hash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that this
-<a class="xref" href="Libplanet.Action.State.IBlockState.html">IBlockState</a> represents.  This can be <span class="xref">null</span>
-in which case represents initial default states.</p>
+  <a id="Libplanet_Store_Trie_IRecordableTrie_Commit_" data-uid="Libplanet.Store.Trie.IRecordableTrie.Commit*"></a>
+  <h4 id="Libplanet_Store_Trie_IRecordableTrie_Commit" data-uid="Libplanet.Store.Trie.IRecordableTrie.Commit">Commit()</h4>
+  <div class="markdown level1 summary"><p>Cleans up and stores the <a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a> in storage.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">BlockHash? BlockHash { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IRecordableTrie Commit()</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -129,11 +129,16 @@ in which case represents initial default states.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td></td>
+        <td><a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a></td>
+        <td><p>Returns new committed <a class="xref" href="Libplanet.Store.Trie.IRecordableTrie.html">IRecordableTrie</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Immutable_IImmutableDictionary_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue__">TrieExtensions.Set(ITrie, IImmutableDictionary&lt;KeyBytes, IValue&gt;)</a>
+  </div>
 </article>
           </div>
 
@@ -142,10 +147,10 @@ in which case represents initial default states.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockState.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_IRecordableTrie.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.IRecordableTrie%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockState.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/IRecordableTrie.cs/#L3" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
