@@ -79,9 +79,7 @@ namespace Libplanet.Store.Trie
         private IKeyValueStore KeyValueStore { get; }
 
         /// <inheritdoc/>
-        public ITrie Set(in KeyBytes key, IValue value) => ((IRecordableTrie)this).Set(key, value);
-
-        IRecordableTrie IRecordableTrie.Set(in KeyBytes key, IValue value)
+        public ITrie Set(in KeyBytes key, IValue value)
         {
             if (value is null)
             {

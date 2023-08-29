@@ -29,13 +29,14 @@ namespace Libplanet.Store
             IImmutableDictionary<KeyBytes, IValue> rawStatesDelta
         )
         {
-            IRecordableTrie trie = stateStore.GetRecordableStateRoot(previousStateRootHash);
+            ITrie trie = stateStore.GetStateRoot(previousStateRootHash, true);
             foreach (KeyValuePair<KeyBytes, IValue> pair in rawStatesDelta)
             {
                 trie = trie.Set(pair.Key, pair.Value);
             }
 
-            ITrie stage = trie.Commit();
+            IRecordableTrie recordableTrie = stateStore.CastToRecordableTrie(trie);
+            ITrie stage = recordableTrie.Commit();
             return stateStore.GetStateRoot(stage.Hash);
         }
 

@@ -153,14 +153,14 @@ namespace Libplanet.Tests.Store
             var storedKey = new KeyBytes(TestUtils.GetRandomBytes(32));
             var storedValue = new Binary(TestUtils.GetRandomBytes(32));
 
-            var trie = stateStore.GetRecordableStateRoot(null);
+            var trie = stateStore.GetStateRoot(null);
             trie = trie.Set(storedKey, storedValue);
-            trie = trie.Commit();
+            trie = stateStore.CastToRecordableTrie(trie).Commit();
             var storedHash = trie.Hash;
 
             var key = new KeyBytes(TestUtils.GetRandomBytes(32));
             var value = new Binary(TestUtils.GetRandomBytes(32));
-            var trieR = stateStore.GetRecordableStateRoot(storedHash, readOnly: true);
+            var trieR = stateStore.GetStateRoot(storedHash, readOnly: true);
 
             // Can get old value
             Assert.Equal(storedValue, trieR.Get(storedKey));
@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Store
 
             trieR = trieR.Set(key, value);
             Assert.Equal(value, trieR.Get(key));
-            trieR = trieR.Commit();
+            trieR = ((MerkleTrie)trieR).Commit();
             var hashR = trieR.Hash;
 
             // From trieR's perspective, it is recorded
@@ -176,11 +176,11 @@ namespace Libplanet.Tests.Store
             Assert.True(trieR.Recorded);
             Assert.False(stateStore.GetStateRoot(hashR).Recorded);
 
-            var trieRW = stateStore.GetRecordableStateRoot(storedHash, readOnly: false);
+            var trieRW = stateStore.GetStateRoot(storedHash, readOnly: false);
             Assert.Null(trieRW.Get(key));
 
             trieRW = trieRW.Set(key, value);
-            trieRW = trieRW.Commit();
+            trieRW = ((MerkleTrie)trieRW).Commit();
             var hashRW = trieRW.Hash;
 
             Assert.Equal(hashR, hashRW);
