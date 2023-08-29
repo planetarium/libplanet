@@ -52,5 +52,21 @@ namespace Libplanet.Store
         /// The state root hash of the latest state root trie.
         /// </returns>
         IRecordableTrie CastToRecordableTrie(ITrie trie);
+
+        /// <summary>
+        /// Commits given <paramref name="trie"/> to storage.
+        /// Returned <see cref="ITrie"/> must be identical to the one obtained from
+        /// <see cref="GetStateRoot"/> with resulting <see cref="ITrie"/>'s
+        /// <see cref="ITrie.Hash"/>.
+        /// </summary>
+        /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
+        /// <returns>The commited <see cref="ITrie"/>.</returns>
+        /// <remarks>
+        /// Given <paramref name="trie"/> must have originated from the same instance
+        /// (or with an instance with the same reference to an <see cref="IKeyValueStore"/>).
+        /// Otherwise, this is not guarenteed to work properly.
+        /// </remarks>
+        /// <seealso cref="GetStateRoot"/>
+        ITrie Commit(ITrie trie);
     }
 }

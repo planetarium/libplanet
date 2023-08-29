@@ -508,6 +508,8 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IRecordableTrie CastToRecordableTrie(ITrie trie) => null;
 
+            public ITrie Commit(ITrie trie) => null;
+
             public void Dispose()
             {
             }

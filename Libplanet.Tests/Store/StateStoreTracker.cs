@@ -42,6 +42,12 @@ namespace Libplanet.Tests.Store
             return _stateStore.CastToRecordableTrie(trie);
         }
 
+        public ITrie Commit(ITrie trie)
+        {
+            Log(nameof(CastToRecordableTrie), trie.Hash);
+            return _stateStore.Commit(trie);
+        }
+
         public void Dispose()
         {
             if (!_disposed)

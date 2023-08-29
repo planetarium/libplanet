@@ -12,7 +12,7 @@ namespace Libplanet.Store
     /// <summary>
     /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="MerkleTrie"/>.
     /// </summary>
-    public class TrieStateStore : IStateStore
+    public partial class TrieStateStore : IStateStore
     {
         private readonly ILogger _logger;
         private bool _disposed = false;
