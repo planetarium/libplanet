@@ -18,6 +18,9 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStateStore.Commit"/>
         public ITrie Commit(ITrie trie)
         {
+            // FIXME: StateKeyValueStore used might not be the same as
+            // the one referenced by the argument trie.  Some kind of sanity check
+            // would be nice, if possible.
             INode? root = trie.Root;
             if (root is null)
             {
@@ -38,9 +41,6 @@ namespace Libplanet.Store
 
                 writeBatch.Flush();
 
-                // FIXME: StateKeyValueStore passed in might not be the same as
-                // the one referenced by the argument trie.  Some kind of sanity check
-                // would be nice, if possible.
                 return new MerkleTrie(StateKeyValueStore, newRoot);
             }
         }

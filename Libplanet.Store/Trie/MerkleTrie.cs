@@ -16,7 +16,7 @@ namespace Libplanet.Store.Trie
     /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
     /// </summary>
     // TODO: implement 'logs' for debugging.
-    public partial class MerkleTrie : IRecordableTrie
+    public partial class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -105,29 +105,6 @@ namespace Libplanet.Store.Trie
             return keys.Count <= parallelThreshold
                 ? keys.Select(key => Get(key)).ToArray()
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
-        }
-
-        /// <inheritdoc/>
-        public IRecordableTrie Commit()
-        {
-            if (Root is null)
-            {
-                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
-            }
-
-            var writeBatch = new WriteBatch(KeyValueStore, 4096);
-            INode newRoot = Commit(Root, writeBatch);
-
-            // It assumes embedded node if it's not HashNode.
-            if (!(newRoot is HashNode))
-            {
-                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                writeBatch.Add(new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
-            }
-
-            writeBatch.Flush();
-
-            return new MerkleTrie(KeyValueStore, newRoot);
         }
 
         public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()

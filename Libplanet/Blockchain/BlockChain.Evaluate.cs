@@ -115,8 +115,7 @@ namespace Libplanet.Blockchain
                     block.PreEvaluationHash);
                 if (evaluations.Count > 0)
                 {
-                    IRecordableTrie stateRoot = StateStore
-                        .CastToRecordableTrie(evaluations.Last().OutputState.Trie).Commit();
+                    ITrie stateRoot = StateStore.Commit(evaluations.Last().OutputState.Trie);
                     HashDigest<SHA256> rootHash = stateRoot.Hash;
                     _logger
                         .ForContext("Tag", "Metric")

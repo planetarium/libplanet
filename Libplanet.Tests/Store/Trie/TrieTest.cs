@@ -74,15 +74,15 @@ namespace Libplanet.Tests.Store.Trie
             trieA = trieA.Set(path, (Text)"foo");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
 
-            ITrie trieB = stateStore.CastToRecordableTrie(trieA).Commit();
+            ITrie trieB = stateStore.Commit(trieA);
             Assert.Equal((Text)"foo", trieB.Get(new[] { path })[0]);
 
             trieB = trieB.Set(path, (Text)"bar");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
             Assert.Equal((Text)"bar", trieB.Get(new[] { path })[0]);
 
-            IRecordableTrie trieC = stateStore.CastToRecordableTrie(trieB).Commit();
-            IRecordableTrie trieD = stateStore.CastToRecordableTrie(trieC).Commit();
+            ITrie trieC = stateStore.Commit(trieB);
+            ITrie trieD = stateStore.Commit(trieC);
 
             Assert.NotEqual(trieA.Hash, trieB.Hash);
             Assert.NotEqual(trieA.Hash, trieC.Hash);
@@ -98,11 +98,11 @@ namespace Libplanet.Tests.Store.Trie
             ITrie trie = stateStore.GetStateRoot(null);
             Assert.Equal(MerkleTrie.EmptyRootHash, trie.Hash);
 
-            var committedTrie = stateStore.CastToRecordableTrie(trie).Commit();
+            var committedTrie = stateStore.Commit(trie);
             Assert.Equal(MerkleTrie.EmptyRootHash, committedTrie.Hash);
 
             trie = trie.Set(new KeyBytes(default(Address).ByteArray), Dictionary.Empty);
-            committedTrie = stateStore.CastToRecordableTrie(trie).Commit();
+            committedTrie = stateStore.Commit(trie);
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
 

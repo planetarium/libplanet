@@ -39,7 +39,8 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void IterateNodes()
         {
-            var merkleTrie = new MerkleTrie(new MemoryKeyValueStore());
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            MerkleTrie merkleTrie = (MerkleTrie)stateStore.GetStateRoot(null);
             // There is nothing.
             Assert.Empty(merkleTrie.IterateNodes());
 
@@ -49,7 +50,7 @@ namespace Libplanet.Tests.Store.Trie
             // There are (ShortNode, ValueNode)
             Assert.Equal(2, merkleTrie.IterateNodes().Count());
 
-            merkleTrie = (MerkleTrie)merkleTrie.Commit();
+            merkleTrie = (MerkleTrie)stateStore.Commit(merkleTrie);
             // There are (HashNode, ShortNode, HashNode, ValueNode)
             Assert.Equal(4, merkleTrie.IterateNodes().Count());
         }
@@ -71,7 +72,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xbe, 0xef), Null.Value);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString("16fc25f43edd0c2d2cb6e3cc3827576e57f4b9e04f8dc3a062c7fe59041f77bd"),
                 trie.Hash
@@ -82,7 +83,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xbe, 0xef), new Boolean(true));
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString("4458796f4092b5ebfc1ffb3989e72edee228501e438080a12dea45591dc66d58"),
                 trie.Hash
@@ -96,7 +97,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0x11, 0x22), List.Empty);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString("ab1359a2497453110a9c658dd3db45f282404fe68d8c8aca30856f395572284c"),
                 trie.Hash
@@ -110,7 +111,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0xaa, 0xbb), new Text("hello world"));
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString("abb5759141f7af1c40f1b0993ba60073cf4227900617be9641373e5a097eaa3c"),
                 trie.Hash
@@ -128,7 +129,7 @@ namespace Libplanet.Tests.Store.Trie
 
             var longText = new Text(string.Join("\n", Range(0, 1000).Select(i => $"long str {i}")));
             trie = trie.Set(new KeyBytes(0xaa, 0xbb), longText);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString(commit
                     ? "56e5a39a726acba1f7631a6520ae92e20bb93ca3992a7b7d3542c6daee68e56d"
@@ -144,7 +145,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
             trie = trie.Set(new KeyBytes(0x12, 0x34), Dictionary.Empty);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString(commit
                     ? "88d6375097fd03e6c30a129eb0030d938caeaa796643971ca938fbd27ff5e057"
@@ -169,7 +170,7 @@ namespace Libplanet.Tests.Store.Trie
                         new List(Range(0, 1000).Select(i => new Text($"long str {i}")))))
                 .Add(new List(Range(0, 1000).Select(i => new Text($"long str {i}"))));
             trie = trie.Set(new KeyBytes(0x11, 0x22), complexList);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString(commit
                     ? "f29820df65c1d1a66b69a59b9fe3e21911bbd2d97a9f298853c529804bf84a26"
@@ -199,7 +200,7 @@ namespace Libplanet.Tests.Store.Trie
                         .Add("qrst", complexList)
                         .Add("uvwx", Dictionary.Empty));
             trie = trie.Set(new KeyBytes(0x12, 0x34), complexDict);
-            trie = commit ? stateStore.CastToRecordableTrie(trie).Commit() : trie;
+            trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString(commit
                     ? "1dabec2c0fea02af0182e9fee6c7ce7ad1a9d9bcfaa2cd80c2971bbce5272655"
@@ -227,7 +228,7 @@ namespace Libplanet.Tests.Store.Trie
 
             trie = trie.Set(key00, value00);
             trie = trie.Set(key0000, value0000);
-            trie = stateStore.CastToRecordableTrie(trie).Commit();
+            trie = stateStore.Commit(trie);
 
             Assert.Equal(2, ((MerkleTrie)trie).ListAllStates().Count());
             Assert.Equal(value00, trie.Get(key00));
@@ -249,7 +250,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key0000, value0000);
             trie = trie.Set(key0010, value0010);
             trie = trie.Set(key00, value00);
-            trie = stateStore.CastToRecordableTrie(trie).Commit();
+            trie = stateStore.Commit(trie);
 
             Assert.Equal(3, ((MerkleTrie)trie).ListAllStates().Count());
             Assert.Equal(value00, trie.Get(key00));

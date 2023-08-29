@@ -150,16 +150,5 @@ namespace Libplanet.Action.State
         /// </exception>
         /// <seealso cref="IAccount"/>
         IAccount GetAccount(BlockHash? offset);
-
-        /// <summary>
-        /// Return the <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
-        /// </summary>
-        /// <param name="trie">
-        /// The <see cref="ITrie"/> to cast to <see cref="IRecordableTrie"/>.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
-        /// </returns>
-        IRecordableTrie CastToRecordableTrie(ITrie trie);
     }
 }

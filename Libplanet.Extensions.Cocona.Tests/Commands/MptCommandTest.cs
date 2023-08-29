@@ -1,12 +1,12 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Configuration;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tools.Tests.Services;
 using Xunit;
@@ -29,12 +29,16 @@ public class MptCommandTest : IDisposable
         _pathB = NewTempPath();
         using var stateKeyValueStoreA = new DefaultKeyValueStore(_pathA);
         using var stateKeyValueStoreB = new DefaultKeyValueStore(_pathB);
-        _trieA = ((MerkleTrie)new MerkleTrie(stateKeyValueStoreA)
-            .Set(new KeyBytes("deleted"), Null.Value)
-            .Set(new KeyBytes("common"), (Text)"before")).Commit();
-        _trieB = ((MerkleTrie)new MerkleTrie(stateKeyValueStoreB)
-            .Set(new KeyBytes("created"), Null.Value)
-            .Set(new KeyBytes("common"), (Text)"after")).Commit();
+        using var stateStoreA = new TrieStateStore(new DefaultKeyValueStore(_pathA));
+        using var stateStoreB = new TrieStateStore(new DefaultKeyValueStore(_pathB));
+        _trieA = stateStoreA.Commit(
+            stateStoreA.GetStateRoot(null)
+                .Set(new KeyBytes("deleted"), Null.Value)
+                .Set(new KeyBytes("common"), (Text)"before"));
+        _trieB = stateStoreB.Commit(
+            stateStoreB.GetStateRoot(null)
+                .Set(new KeyBytes("created"), Null.Value)
+                .Set(new KeyBytes("common"), (Text)"after"));
     }
 
     [Fact]
