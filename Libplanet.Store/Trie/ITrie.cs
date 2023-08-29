@@ -30,13 +30,17 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Stores the <paramref name="value"/> to the
-        /// node corresponding to given <paramref name="key"/>.
+        /// node corresponding to given <paramref name="key"/> <em>in memory</em>.
         /// </summary>
         /// <param name="key">The unique key to associate with the <paramref name="value"/>.</param>
         /// <param name="value">The value to store.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when the given
         /// <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
+        /// <remarks>
+        /// This <em>should not</em> actually write anything to storage.
+        /// </remarks>
+        /// <seealso cref="IStateStore.Commit"/>
         ITrie Set(in KeyBytes key, IValue value);
 
         /// <summary>

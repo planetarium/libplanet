@@ -111,13 +111,13 @@ namespace Libplanet.Store
         }
 
         /// <summary>
-        /// Writes <paramref name="bencodedNode"/> to storage as an embeded <see cref="INode"/>.
+        /// Writes <paramref name="bencodedNode"/> to storage as an embedded <see cref="INode"/>.
         /// </summary>
         /// <param name="bencodedNode">The <see cref="IValue"/> representation of
         /// an <see cref="INode"/> to embed.</param>
         /// <param name="writeBatch">A batched writer to use for performance reasons.</param>
         /// <returns>A <see cref="HashNode"/> already written to storage with
-        /// <paramref name="bencodedNode"/> embeded inside.</returns>
+        /// <paramref name="bencodedNode"/> embedded inside.</returns>
         private static HashNode Write(IValue bencodedNode, WriteBatch writeBatch)
         {
             byte[] serialized = _codec.Encode(bencodedNode);

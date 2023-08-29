@@ -80,13 +80,13 @@ namespace Libplanet.Blockchain
         {
             if (!(offset is { } hash))
             {
-                return _stateStore.GetStateRoot(null, readOnly: true);
+                return _stateStore.GetStateRoot(null);
             }
             else if (_store.GetStateRootHash(hash) is { } stateRootHash)
             {
                 if (_stateStore.ContainsStateRoot(stateRootHash))
                 {
-                    return _stateStore.GetStateRoot(stateRootHash, readOnly: true);
+                    return _stateStore.GetStateRoot(stateRootHash);
                 }
                 else
                 {

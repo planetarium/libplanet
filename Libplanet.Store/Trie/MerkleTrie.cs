@@ -61,6 +61,7 @@ namespace Libplanet.Store.Trie
         /// result from the given key as the key. Keys will be hashed with SHA-256.</param>
         public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
+            // FIXME: It might be a good idea to have something like IReadOnlyKeyValueStore.
             KeyValueStore = keyValueStore;
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null

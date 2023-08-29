@@ -134,16 +134,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?, bool)"/>
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false) =>
-            readOnly
-                ? new MerkleTrie(
-                    new VolatileKeyValueStore(StateKeyValueStore),
-                    stateRootHash is { } h1 ? new HashNode(h1) : null,
-                    Secure)
-                : new MerkleTrie(
-                    StateKeyValueStore,
-                    stateRootHash is { } h2 ? new HashNode(h2) : null,
-                    Secure);
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
+            new MerkleTrie(
+                StateKeyValueStore,
+                stateRootHash is { } h2 ? new HashNode(h2) : null,
+                Secure);
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()
