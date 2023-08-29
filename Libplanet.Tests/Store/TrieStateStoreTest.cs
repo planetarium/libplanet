@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Store
 
             trieR = trieR.Set(key, value);
             Assert.Equal(value, trieR.Get(key));
-            trieR = stateStore.CastToRecordableTrie(trieR).Commit();
+            trieR = ((MerkleTrie)trieR).Commit();
             var hashR = trieR.Hash;
 
             // From trieR's perspective, it is recorded
@@ -180,7 +180,7 @@ namespace Libplanet.Tests.Store
             Assert.Null(trieRW.Get(key));
 
             trieRW = trieRW.Set(key, value);
-            trieRW = stateStore.CastToRecordableTrie(trieRW).Commit();
+            trieRW = ((MerkleTrie)trieRW).Commit();
             var hashRW = trieRW.Hash;
 
             Assert.Equal(hashR, hashRW);
