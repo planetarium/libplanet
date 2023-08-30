@@ -26,21 +26,6 @@ namespace Libplanet.Store.Trie
         byte[] IKeyValueStore.Get(in KeyBytes key) =>
             _dictionary[key];
 
-        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
-        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
-        {
-            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
-            foreach (KeyBytes key in keys)
-            {
-                if (_dictionary.TryGetValue(key, out byte[]? value) && value is { } v)
-                {
-                    dictBuilder[key] = v;
-                }
-            }
-
-            return dictBuilder.ToImmutable();
-        }
-
         /// <inheritdoc/>
         void IKeyValueStore.Set(in KeyBytes key, byte[] value) =>
             _dictionary[key] = value;
