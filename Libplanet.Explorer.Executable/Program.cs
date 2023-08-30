@@ -495,18 +495,13 @@ If omitted (default) explorer only the local blockchain store.")]
 
         private class NoOpStateStore : IStateStore
         {
-            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly) => null;
-
-            public IRecordableTrie GetRecordableStateRoot(
-                HashDigest<SHA256>? stateRootHash,
-                bool readOnly = false) =>
-                null;
+            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null;
 
             public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
             {
             }
 
-            public IRecordableTrie CastToRecordableTrie(ITrie trie) => null;
+            public ITrie Commit(ITrie trie) => null;
 
             public void Dispose()
             {

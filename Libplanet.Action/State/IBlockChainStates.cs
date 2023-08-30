@@ -54,7 +54,7 @@ namespace Libplanet.Action.State
         /// <returns>The states associated to specified <paramref name="addresses"/>.
         /// Associated values are ordered in the same way to the corresponding
         /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
-        /// Hence, the returned <see cref="IReadOnlyList{T}"/> is guarenteeed to be of the same
+        /// Hence, the returned <see cref="IReadOnlyList{T}"/> is guaranteeed to be of the same
         /// length as <paramref name="addresses"/> with possible <see langword="null"/> values.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
@@ -150,16 +150,5 @@ namespace Libplanet.Action.State
         /// </exception>
         /// <seealso cref="IAccount"/>
         IAccount GetAccount(BlockHash? offset);
-
-        /// <summary>
-        /// Return the <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
-        /// </summary>
-        /// <param name="trie">
-        /// The <see cref="ITrie"/> to cast to <see cref="IRecordableTrie"/>.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IRecordableTrie"/> from the <see cref="ITrie"/>.
-        /// </returns>
-        IRecordableTrie CastToRecordableTrie(ITrie trie);
     }
 }

@@ -16,7 +16,6 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -564,9 +563,6 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetAccount" />
         public IAccount GetAccount(BlockHash? offset) =>
             _blockChainStates.GetAccount(offset);
-
-        public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
-            _blockChainStates.CastToRecordableTrie(trie);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

@@ -12,7 +12,7 @@ namespace Libplanet.Store
     /// <summary>
     /// An <see cref="IStateStore"/> implementation. It stores states with <see cref="MerkleTrie"/>.
     /// </summary>
-    public class TrieStateStore : IStateStore
+    public partial class TrieStateStore : IStateStore
     {
         private readonly ILogger _logger;
         private bool _disposed = false;
@@ -40,19 +40,6 @@ namespace Libplanet.Store
         public bool Secure { get; }
 
         public IKeyValueStore StateKeyValueStore { get; }
-
-        public IRecordableTrie GetRecordableStateRoot(
-            HashDigest<SHA256>? stateRootHash,
-            bool readOnly = false) =>
-            readOnly
-                ? new MerkleTrie(
-                    new VolatileKeyValueStore(StateKeyValueStore),
-                    stateRootHash is { } h1 ? new HashNode(h1) : null,
-                    Secure)
-                : new MerkleTrie(
-                    StateKeyValueStore,
-                    stateRootHash is { } h2 ? new HashNode(h2) : null,
-                    Secure);
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
@@ -111,9 +98,6 @@ namespace Libplanet.Store
             stopwatch.Stop();
         }
 
-        public IRecordableTrie CastToRecordableTrie(ITrie trie) =>
-            new MerkleTrie(StateKeyValueStore, trie.Root, Secure);
-
         /// <summary>
         /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
         /// to <paramref name="targetStateStore"/>.
@@ -150,16 +134,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?, bool)"/>
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false) =>
-            readOnly
-                ? new MerkleTrie(
-                    new VolatileKeyValueStore(StateKeyValueStore),
-                    stateRootHash is { } h1 ? new HashNode(h1) : null,
-                    Secure)
-                : new MerkleTrie(
-                    StateKeyValueStore,
-                    stateRootHash is { } h2 ? new HashNode(h2) : null,
-                    Secure);
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
+            new MerkleTrie(
+                StateKeyValueStore,
+                stateRootHash is { } h2 ? new HashNode(h2) : null,
+                Secure);
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()

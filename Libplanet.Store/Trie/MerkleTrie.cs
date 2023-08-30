@@ -16,7 +16,7 @@ namespace Libplanet.Store.Trie
     /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
     /// </summary>
     // TODO: implement 'logs' for debugging.
-    public partial class MerkleTrie : IRecordableTrie
+    public partial class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -61,6 +61,7 @@ namespace Libplanet.Store.Trie
         /// result from the given key as the key. Keys will be hashed with SHA-256.</param>
         public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
         {
+            // FIXME: It might be a good idea to have something like IReadOnlyKeyValueStore.
             KeyValueStore = keyValueStore;
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null
@@ -105,29 +106,6 @@ namespace Libplanet.Store.Trie
             return keys.Count <= parallelThreshold
                 ? keys.Select(key => Get(key)).ToArray()
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
-        }
-
-        /// <inheritdoc/>
-        public IRecordableTrie Commit()
-        {
-            if (Root is null)
-            {
-                return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
-            }
-
-            var writeBatch = new WriteBatch(KeyValueStore, 4096);
-            INode newRoot = Commit(Root, writeBatch);
-
-            // It assumes embedded node if it's not HashNode.
-            if (!(newRoot is HashNode))
-            {
-                byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                writeBatch.Add(new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
-            }
-
-            writeBatch.Flush();
-
-            return new MerkleTrie(KeyValueStore, newRoot);
         }
 
         public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
@@ -303,78 +281,6 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode Commit(INode node, WriteBatch writeBatch)
-        {
-            switch (node)
-            {
-                case HashNode _:
-                    return node;
-
-                case FullNode fullNode:
-                    return CommitFullNode(fullNode, writeBatch);
-
-                case ShortNode shortNode:
-                    return CommitShortNode(shortNode, writeBatch);
-
-                case ValueNode valueNode:
-                    return CommitValueNode(valueNode, writeBatch);
-
-                default:
-                    throw new NotSupportedException("Not supported node came.");
-            }
-        }
-
-        private INode CommitFullNode(FullNode fullNode, WriteBatch writeBatch)
-        {
-            var virtualChildren = fullNode.Children
-                .Select(c => c is null ? null : Commit(c, writeBatch))
-                .ToImmutableArray();
-
-            fullNode = new FullNode(virtualChildren);
-            IValue encoded = fullNode.ToBencodex();
-
-            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
-            {
-                return fullNode;
-            }
-
-            return Encode(fullNode.ToBencodex(), writeBatch);
-        }
-
-        private INode CommitShortNode(ShortNode shortNode, WriteBatch writeBatch)
-        {
-            // FIXME: Assumes value is not null.
-            var committedValueNode = Commit(shortNode.Value!, writeBatch);
-            shortNode = new ShortNode(shortNode.Key, committedValueNode);
-            IValue encoded = shortNode.ToBencodex();
-            if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
-            {
-                return shortNode;
-            }
-
-            return Encode(encoded, writeBatch);
-        }
-
-        private INode CommitValueNode(ValueNode valueNode, WriteBatch writeBatch)
-        {
-            IValue encoded = valueNode.ToBencodex();
-            var nodeSize = encoded.EncodingLength;
-            if (nodeSize <= HashDigest<SHA256>.Size)
-            {
-                return valueNode;
-            }
-
-            return Encode(encoded, writeBatch);
-        }
-
-        private HashNode Encode(IValue intermediateEncoding, WriteBatch writeBatch)
-        {
-            byte[] serialized = _codec.Encode(intermediateEncoding);
-            var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-            writeBatch.Add(new KeyBytes(nodeHash.ByteArray), serialized);
-            return new HashNode(nodeHash);
-        }
-
         private INode Insert(
             INode? node,
             in PathCursor cursor,
@@ -539,38 +445,6 @@ namespace Libplanet.Store.Trie
             IValue intermediateEncoding = _codec.Decode(
                 KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)));
             return NodeDecoder.Decode(intermediateEncoding);
-        }
-
-        private class WriteBatch
-        {
-            private readonly IKeyValueStore _store;
-            private readonly int _batchSize;
-            private readonly Dictionary<KeyBytes, byte[]> _batch;
-
-            public WriteBatch(IKeyValueStore store, int batchSize)
-            {
-                _store = store;
-                _batchSize = batchSize;
-                _batch = new Dictionary<KeyBytes, byte[]>(_batchSize);
-            }
-
-            public bool ContainsKey(KeyBytes key) => _batch.ContainsKey(key);
-
-            public void Add(KeyBytes key, byte[] value)
-            {
-                _batch[key] = value;
-
-                if (_batch.Count == _batchSize)
-                {
-                    Flush();
-                }
-            }
-
-            public void Flush()
-            {
-                _store.Set(_batch);
-                _batch.Clear();
-            }
         }
     }
 }

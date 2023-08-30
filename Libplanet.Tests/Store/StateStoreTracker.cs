@@ -16,18 +16,10 @@ namespace Libplanet.Tests.Store
             _stateStore = stateStore;
         }
 
-        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash, bool readOnly = false)
+        public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash)
         {
             Log(nameof(GetStateRoot), stateRootHash);
-            return _stateStore.GetStateRoot(stateRootHash, readOnly);
-        }
-
-        public IRecordableTrie GetRecordableStateRoot(
-            HashDigest<SHA256>? stateRootHash,
-            bool readOnly = false)
-        {
-            Log(nameof(GetRecordableStateRoot), stateRootHash);
-            return _stateStore.GetRecordableStateRoot(stateRootHash, readOnly);
+            return _stateStore.GetStateRoot(stateRootHash);
         }
 
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
@@ -36,10 +28,10 @@ namespace Libplanet.Tests.Store
             _stateStore.PruneStates(survivingStateRootHashes);
         }
 
-        public IRecordableTrie CastToRecordableTrie(ITrie trie)
+        public ITrie Commit(ITrie trie)
         {
-            Log(nameof(CastToRecordableTrie), trie.Hash);
-            return _stateStore.CastToRecordableTrie(trie);
+            Log(nameof(Commit), trie.Hash);
+            return _stateStore.Commit(trie);
         }
 
         public void Dispose()

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
 
@@ -12,17 +13,18 @@ namespace Libplanet.Tests.Store.Trie
         public void DifferentNodes()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            MerkleTrie trieA = new MerkleTrie(keyValueStore),
-                trieB = new MerkleTrie(keyValueStore);
+            IStateStore stateStore = new TrieStateStore(keyValueStore);
+            MerkleTrie trieA = (MerkleTrie)stateStore.GetStateRoot(null);
+            MerkleTrie trieB = (MerkleTrie)stateStore.GetStateRoot(null);
 
-            trieA = (MerkleTrie)((MerkleTrie)trieA.Set(new KeyBytes(0x01), Null.Value)
-                    .Set(new KeyBytes(0x02), Null.Value)
-                    .Set(new KeyBytes(0x03), Null.Value))
-                .Commit();
-            trieB = (MerkleTrie)((MerkleTrie)trieB.Set(new KeyBytes(0x01), Dictionary.Empty)
+            trieA = (MerkleTrie)stateStore.Commit(trieA
+                .Set(new KeyBytes(0x01), Null.Value)
                 .Set(new KeyBytes(0x02), Null.Value)
-                .Set(new KeyBytes(0x04), Null.Value))
-                .Commit();
+                .Set(new KeyBytes(0x03), Null.Value));
+            trieB = (MerkleTrie)stateStore.Commit(trieB
+                .Set(new KeyBytes(0x01), Dictionary.Empty)
+                .Set(new KeyBytes(0x02), Null.Value)
+                .Set(new KeyBytes(0x04), Null.Value));
 
             Dictionary<KeyBytes, (IValue OriginValue, IValue OtherValue)> differentNodes =
                 trieA.DifferentNodes(trieB).ToDictionary(
@@ -39,7 +41,8 @@ namespace Libplanet.Tests.Store.Trie
         public void ListAllStates()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            MerkleTrie trie = new MerkleTrie(keyValueStore);
+            IStateStore stateStore = new TrieStateStore(keyValueStore);
+            MerkleTrie trie = (MerkleTrie)stateStore.GetStateRoot(null);
 
             trie = (MerkleTrie)trie
                 .Set(new KeyBytes(0x01), Null.Value)
@@ -57,7 +60,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(Null.Value, states[new KeyBytes(0x04)]);
             Assert.Equal(Dictionary.Empty, states[new KeyBytes(0xbe, 0xef)]);
 
-            trie = (MerkleTrie)trie.Commit();
+            trie = (MerkleTrie)stateStore.Commit(trie);
             states = trie.ListAllStates().ToDictionary(pair => pair.Key, pair => pair.Value);
             Assert.Equal(5, states.Count);
             Assert.Equal(Null.Value, states[new KeyBytes(0x01)]);
