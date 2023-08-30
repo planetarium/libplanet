@@ -41,7 +41,7 @@ namespace Libplanet.Store
 
                 writeBatch.Flush();
 
-                return new MerkleTrie(StateKeyValueStore, newRoot);
+                return new MerkleTrie(StateKeyValueStore, newRoot, Secure);
             }
         }
 
