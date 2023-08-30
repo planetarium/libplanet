@@ -108,6 +108,9 @@ namespace Libplanet.Store.Trie
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
 
+        /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
+        public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
+
         public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
         {
             if (Root is null)

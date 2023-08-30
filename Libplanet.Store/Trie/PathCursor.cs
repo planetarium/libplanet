@@ -10,8 +10,10 @@ namespace Libplanet.Store.Trie
     public readonly struct PathCursor
     {
         public readonly Nibbles Nibbles;
-        public readonly int NibbleLength;
-        public readonly int NibbleOffset;
+
+        public readonly int Length;
+
+        public readonly int Offset;
 
         public PathCursor(in KeyBytes keyBytes, bool secure)
             : this(
@@ -33,35 +35,39 @@ namespace Libplanet.Store.Trie
         {
         }
 
-        private PathCursor(in Nibbles nibbles, int nibbleOffset)
+        private PathCursor(in Nibbles nibbles, int offset)
         {
-            if (nibbleOffset < 0 || nibbleOffset > nibbles.Length)
+            if (offset < 0 || offset > nibbles.Length)
             {
-                throw new ArgumentOutOfRangeException(nameof(nibbleOffset));
+                throw new ArgumentOutOfRangeException(nameof(offset));
             }
 
             Nibbles = nibbles;
-            NibbleOffset = nibbleOffset;
-            NibbleLength = nibbles.Length;
+            Offset = offset;
+            Length = nibbles.Length;
         }
 
         [Pure]
-        public int RemainingNibbleLength => NibbleLength - NibbleOffset;
+        public int RemainingNibbleLength => Length - Offset;
 
         [Pure]
-        public bool RemainingAnyNibbles => NibbleLength > NibbleOffset;
+        public bool RemainingAnyNibbles => Length > Offset;
 
         [Pure]
-        public byte NextNibble => Nibbles[NibbleOffset];
+        public byte NextNibble => Nibbles[Offset];
+
+        [Pure]
+        public Nibbles GetConsumedNibbles() =>
+            new Nibbles(Nibbles.ByteArray.Take(Offset).ToImmutableArray());
 
         [Pure]
         public Nibbles GetRemainingNibbles() =>
-            new Nibbles(Nibbles.ByteArray.Skip(NibbleOffset).ToImmutableArray());
+            new Nibbles(Nibbles.ByteArray.Skip(Offset).ToImmutableArray());
 
         [Pure]
-        public PathCursor Next(int nibbleOffset) => nibbleOffset < 0
-            ? throw new ArgumentOutOfRangeException(nameof(nibbleOffset))
-            : new PathCursor(Nibbles, NibbleOffset + nibbleOffset);
+        public PathCursor Next(int offset) => offset < 0
+            ? throw new ArgumentOutOfRangeException(nameof(offset))
+            : new PathCursor(Nibbles, Offset + offset);
 
         [Pure]
         public bool RemainingNibblesStartWith(in Nibbles nibbles)
@@ -74,7 +80,7 @@ namespace Libplanet.Store.Trie
             int i = 0;
             for (; i < nibbles.Length; i++)
             {
-                int offset = NibbleOffset + i;
+                int offset = Offset + i;
                 if (Nibbles[offset] != nibbles[i])
                 {
                     return false;
@@ -85,18 +91,17 @@ namespace Libplanet.Store.Trie
         }
 
         /// <summary>
-        /// Counts the number of common starting nibbles.
+        /// Counts the number of common starting nibbles from the remaining path.
         /// </summary>
-        /// <param name="nibbles">The set of nibbles to compare.</param>
-        /// <returns>The number of common starting nibbles from
-        /// current <see cref="NibbleOffset"/>.</returns>
+        /// <param name="nibbles">The list of nibbles to compare.</param>
+        /// <returns>The number of common starting nibbles from the remaining path.
         [Pure]
         public int CountCommonStartingNibbles(in Nibbles nibbles)
         {
             int i = 0;
             for (; i < Math.Min(RemainingNibbleLength, nibbles.Length); i++)
             {
-                int offset = NibbleOffset + i;
+                int offset = Offset + i;
                 if (Nibbles[offset] != nibbles[i])
                 {
                     return i;
@@ -114,7 +119,7 @@ namespace Libplanet.Store.Trie
             int i = 0;
             for (; i < Math.Min(RemainingNibbleLength, nibbles.Length); i++)
             {
-                int offset = NibbleOffset + i;
+                int offset = Offset + i;
                 if (Nibbles[offset] != nibbles[i])
                 {
                     return new Nibbles(builder.ToImmutable());

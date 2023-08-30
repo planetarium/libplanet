@@ -70,5 +70,31 @@ namespace Libplanet.Store.Trie
         /// values are ordered in the same way to the corresponding <paramref name="keys"/>.  Absent
         /// values are represented as <see langword="null"/>.</returns>
         IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys);
+
+        /// <summary>
+        /// Gets the first node encountered at <paramref name="nibbles"/> when traversing down
+        /// from <see cref="Root"/>.
+        /// </summary>
+        /// <param name="nibbles">The path to check.  This must be a secure path.</param>
+        /// <returns>A node at <paramref name="nibbles"/>, if any.
+        /// Otherwise <see langword="null"/>.</returns>
+        /// <exception cref="InvalidTrieNodeException">Thrown when an unknown type
+        /// of <see cref="INode"/> is encountered while traversing to the given path.</exception>
+        /// <remarks>
+        /// <para>
+        /// There may be more than one <see cref="INode"/> at <paramref name="nibbles"/>.
+        /// For instance, a <see cref="FullNode"/>, a <see cref="ValueNode"/> as the value of the
+        /// aforementioned <see cref="FullNode"/>, and up to two additional <see cref="HashNode"/>s
+        /// is possible.
+        /// </para>
+        /// <para>
+        /// As such, for two equivalent <see cref="ITrie"/>s, <see cref="Trie"/>s that
+        /// <em>would have the same committed <see cref="Hash"/>es</em>, this may retrun different
+        /// types of <see cref="INode"/> depending on the actual underlying "structure".
+        /// However, returned <see cref="INode"/>s for such <see cref="ITrie"/>s are
+        /// equivalent as sub-<see cref="ITrie"/>s.
+        /// </para>
+        /// </remarks>
+        INode? GetNode(Nibbles nibbles);
     }
 }

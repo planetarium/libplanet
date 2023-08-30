@@ -24,5 +24,34 @@ namespace Libplanet.Store.Trie
                 _ => throw new InvalidTrieNodeException(
                     $"Invalid node value: {node.ToBencodex().Inspect(false)}"),
             };
+
+        private INode? ResolveToNode(INode? node, in PathCursor cursor)
+        {
+            if (cursor.RemainingAnyNibbles)
+            {
+                switch (node)
+                {
+                    case null:
+                    case ValueNode _:
+                        return null;
+                    case ShortNode shortNode:
+                        return cursor.RemainingNibblesStartWith(shortNode.Key)
+                            ? ResolveToNode(shortNode.Value, cursor.Next(shortNode.Key.Length))
+                            : null;
+                    case FullNode fullNode:
+                        return ResolveToNode(fullNode.Children[cursor.NextNibble], cursor.Next(1));
+                    case HashNode hashNode:
+                        return ResolveToNode(UnhashNode(hashNode), cursor);
+                    default:
+                        throw new InvalidTrieNodeException(
+                            $"An unknown type of node was encountered " +
+                            $"at {cursor.GetConsumedNibbles().Hex}: {node.GetType()}");
+                }
+            }
+            else
+            {
+                return node;
+            }
+        }
     }
 }
