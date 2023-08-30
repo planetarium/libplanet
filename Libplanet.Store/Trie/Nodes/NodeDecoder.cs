@@ -63,6 +63,7 @@ namespace Libplanet.Store.Trie.Nodes
             // Get referenced node corresponding.
             var refNode = DecodeRef(list[1]);
 
+            // FIXME: This assumes encoded binary is a valid sequence of nibbles.
             return new ShortNode(new Nibbles(nibbles.ByteArray), refNode);
         }
 

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -61,28 +60,24 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         [Fact]
         public void DecodeValidValueNode()
         {
-            var list = new List(new IValue[]
-            {
-                (Binary)ByteUtil.ParseHexToImmutable("beef"),
-                new List(new IValue[] { Null.Value, (Text)"beef", }),
-            });
+            var list = List.Empty
+                .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
+                .Add(new List(new IValue[] { Null.Value, (Text)"beef", }));
 
             INode node = NodeDecoder.Decode(list);
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<ValueNode>(shortNode.Value);
-            Assert.Equal(new Nibbles(ByteUtil.ParseHex("beef").ToImmutableArray()), shortNode.Key);
+            Assert.Equal(Nibbles.FromHex("beef"), shortNode.Key);
             Assert.Equal(new ValueNode((Text)"beef"), shortNode.Value);
         }
 
         [Fact]
         public void DecodeValidExtensionNode()
         {
-            var list = new List(new IValue[]
-            {
-                (Binary)ByteUtil.ParseHexToImmutable("beef"),
-                (Binary)default(HashDigest<SHA256>).ByteArray,
-            });
+            var list = List.Empty
+                .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
+                .Add(default(HashDigest<SHA256>).ByteArray);
 
             INode node = NodeDecoder.Decode(list);
             Assert.IsType<ShortNode>(node);

@@ -119,7 +119,7 @@ namespace Libplanet.Store.Trie
             }
 
             var queue = new Queue<(INode, Nibbles)>();
-            queue.Enqueue((Root, new Nibbles(ImmutableArray<byte>.Empty)));
+            queue.Enqueue((Root, Nibbles.Empty));
 
             while (queue.Count > 0)
             {
@@ -362,9 +362,7 @@ namespace Libplanet.Store.Trie
             {
                 FullNode fullNode = new FullNode();
                 byte newChildIndex = shortNode.Key[commonNibbles.Length];
-                Nibbles newShortNodeKey =
-                    new Nibbles(
-                        shortNode.Key.ByteArray.Skip(commonNibbles.Length + 1).ToImmutableArray());
+                Nibbles newShortNodeKey = shortNode.Key.Skip(commonNibbles.Length + 1);
 
                 // FIXME: Deal with null; this assumes short node's value is not null
                 // Handles modified short node.
