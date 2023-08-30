@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Libplanet.Common;
@@ -10,8 +11,7 @@ namespace Libplanet.Store.Trie
     /// Wraps a byte array and provides equality comparison and hash code calculation.  Designed
     /// to be used as a key in dictionaries.
     /// </summary>
-    public readonly struct KeyBytes
-        : IEquatable<KeyBytes>, IEquatable<ImmutableArray<byte>>, IEquatable<byte[]>
+    public readonly struct KeyBytes : IEquatable<KeyBytes>
     {
         /// <summary>
         /// The default <see cref="System.Text.Encoding"/>, which is <see cref="Encoding.UTF8"/>,
@@ -55,7 +55,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
         /// <param name="encoding">The <see cref="System.Text.Encoding"/> to be used for
-        /// <paramref name="str">.</param>
+        /// <paramref name="str"/>.</param>
         private KeyBytes(string str, Encoding encoding)
         {
             byte[] neverReusedBuffer = encoding.GetBytes(str);
@@ -148,7 +148,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(KeyBytes other) => Equals(other._byteArray);
+        public bool Equals(KeyBytes other) => ByteArray.SequenceEqual(other.ByteArray);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(byte[]? other)
