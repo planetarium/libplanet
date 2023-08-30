@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -70,7 +71,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<ValueNode>(shortNode.Value);
-            Assert.Equal(ByteUtil.ParseHex("beef"), shortNode.Key);
+            Assert.Equal(new Nibbles(ByteUtil.ParseHex("beef").ToImmutableArray()), shortNode.Key);
             Assert.Equal(new ValueNode((Text)"beef"), shortNode.Value);
         }
 

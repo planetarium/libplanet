@@ -10,10 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  (Libplanet.Store) Removed `ITrie.Commit()`.  [[#3392]]
- -  (Libplanet.Store) Added `IStateStore.Commit()`.  [[#3398]]
- -  (Libplanet.Store) Removed `IKeyValueStore.Get(IEnumerable<KeyBytes> keys)`.
-    [[#3362], [#3340]]
+ -  (Libplanet.Store) Removed `ITrie.Commit()` method.  [[#3392]]
+ -  (Libplanet.Store) Added `IStateStore.Commit()` method.  [[#3398]]
+ -  (Libplanet.Store) Removed `IKeyValueStore.Get(IEnumerable<KeyBytes> keys)`
+    method.  [[#3362], [#3340]]
+ -  (Libplanet.Store) Added `PathCursor` struct.  [[#3399]]
+ -  (Libplanet.Store) Added `Nibbles` struct.  [[#3399]]
 
 ### Backward-incompatible network protocol changes
 
@@ -51,6 +53,7 @@ To be released.
 [#3390]: https://github.com/planetarium/libplanet/pull/3390
 [#3392]: https://github.com/planetarium/libplanet/pull/3392
 [#3398]: https://github.com/planetarium/libplanet/pull/3398
+[#3399]: https://github.com/planetarium/libplanet/pull/3399
 [#3340]: https://github.com/planetarium/libplanet/pull/3340
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 

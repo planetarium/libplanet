@@ -108,20 +108,20 @@ namespace Libplanet.Store.Trie
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
 
-        public IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
+        public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
         {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<(INode, ImmutableArray<byte>)>();
-            queue.Enqueue((Root, ImmutableArray<byte>.Empty));
+            var queue = new Queue<(INode, Nibbles)>();
+            queue.Enqueue((Root, new Nibbles(ImmutableArray<byte>.Empty)));
 
             while (queue.Count > 0)
             {
-                (INode node, ImmutableArray<byte> path) = queue.Dequeue();
-                yield return (node, new KeyBytes(path));
+                (INode node, Nibbles path) = queue.Dequeue();
+                yield return (node, path);
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -146,7 +146,7 @@ namespace Libplanet.Store.Trie
                         {
                             queue.Enqueue((
                                     shortNode.Value,
-                                    path.Concat(shortNode.Key).ToImmutableArray()));
+                                    path.AddRange(shortNode.Key)));
                         }
 
                         break;
@@ -266,7 +266,7 @@ namespace Libplanet.Store.Trie
                             case HashNode hashNode:
                                 key = new KeyBytes(hashNode.HashDigest.ByteArray);
                                 value = KeyValueStore.Get(key);
-                                queue.Enqueue((key, value, path.AddRange(shortNode.Key)));
+                                queue.Enqueue((key, value, path.AddRange(shortNode.Key.ByteArray)));
                                 break;
                         }
 
@@ -350,10 +350,10 @@ namespace Libplanet.Store.Trie
             // - common prefix length < short node's key length: branch off and handle remaining
             //   short node and remaining path
             //   - in this case, a full node is created at current cursor + common prefix nibbles
-            int commonPrefixLength = cursor.CountCommonStartingNibbles(shortNode.Key);
-            PathCursor nextCursor = cursor.Next(commonPrefixLength);
+            Nibbles commonNibbles = cursor.GetCommonStartingNibbles(shortNode.Key);
+            PathCursor nextCursor = cursor.Next(commonNibbles.Length);
 
-            if (commonPrefixLength == shortNode.Key.Length)
+            if (commonNibbles.Length == shortNode.Key.Length)
             {
                 // FIXME: This assumes short node's value is not null.
                 return new ShortNode(
@@ -363,17 +363,18 @@ namespace Libplanet.Store.Trie
             else
             {
                 FullNode fullNode = new FullNode();
-                byte newChildIndex = shortNode.Key[commonPrefixLength];
-                ImmutableArray<byte> newShortNodeKey =
-                    shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray();
+                byte newChildIndex = shortNode.Key[commonNibbles.Length];
+                Nibbles newShortNodeKey =
+                    new Nibbles(
+                        shortNode.Key.ByteArray.Skip(commonNibbles.Length + 1).ToImmutableArray());
 
                 // FIXME: Deal with null; this assumes short node's value is not null
                 // Handles modified short node.
-                fullNode = newShortNodeKey.IsDefaultOrEmpty
-                    ? fullNode.SetChild(newChildIndex, shortNode.Value!)
-                    : fullNode.SetChild(
+                fullNode = newShortNodeKey.Length > 0
+                    ? fullNode.SetChild(
                         newChildIndex,
-                        new ShortNode(newShortNodeKey, shortNode.Value));
+                        new ShortNode(newShortNodeKey, shortNode.Value))
+                    : fullNode.SetChild(newChildIndex, shortNode.Value!);
 
                 // Handles value node.
                 // Assumes next cursor nibble (including non-remaining case)
@@ -392,14 +393,14 @@ namespace Libplanet.Store.Trie
                 }
 
                 // Full node is created at the branching point and may not be at the original root.
-                if (commonPrefixLength == 0)
+                if (commonNibbles.Length == 0)
                 {
                     return fullNode;
                 }
                 else
                 {
                     return new ShortNode(
-                        shortNode.Key.Take(commonPrefixLength).ToImmutableArray(),
+                        commonNibbles,
                         fullNode);
                 }
             }

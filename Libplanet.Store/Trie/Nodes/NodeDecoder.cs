@@ -63,7 +63,7 @@ namespace Libplanet.Store.Trie.Nodes
             // Get referenced node corresponding.
             var refNode = DecodeRef(list[1]);
 
-            return new ShortNode(nibbles.ByteArray, refNode);
+            return new ShortNode(new Nibbles(nibbles.ByteArray), refNode);
         }
 
         private static INode? DecodeRef(IValue value)
