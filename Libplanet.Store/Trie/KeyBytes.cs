@@ -125,49 +125,7 @@ namespace Libplanet.Store.Trie
             : ByteArray.ToBuilder().ToArray();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(ImmutableArray<byte> other)
-        {
-            if (other.IsDefaultOrEmpty)
-            {
-                return _byteArray.IsDefaultOrEmpty;
-            }
-            else if (Length != other.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < Length; i++)
-            {
-                if (_byteArray[i] != other[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(KeyBytes other) => ByteArray.SequenceEqual(other.ByteArray);
-
-        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(byte[]? other)
-        {
-            if (other is { } o && o.Length == Length)
-            {
-                for (int i = 0; i < Length; i++)
-                {
-                    if (_byteArray[i] != o[i])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj) => obj is KeyBytes other && Equals(other);
