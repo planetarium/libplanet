@@ -12,6 +12,8 @@ To be released.
 
  -  (Libplanet.Store) Removed `ITrie.Commit()`.  [[#3392]]
  -  (Libplanet.Store) Added `IStateStore.Commit()`.  [[#3398]]
+ -  (Libplanet.Store) Removed `IKeyValueStore.Get(IEnumerable<KeyBytes> keys)`.
+    [[#3362], [#3340]]
 
 ### Backward-incompatible network protocol changes
 
@@ -44,10 +46,12 @@ To be released.
 
 [#3354]: https://github.com/planetarium/libplanet/issues/3354
 [#3356]: https://github.com/planetarium/libplanet/pull/3356
+[#3362]: https://github.com/planetarium/libplanet/issues/3362
 [#3377]: https://github.com/planetarium/libplanet/pull/3377
 [#3390]: https://github.com/planetarium/libplanet/pull/3390
 [#3392]: https://github.com/planetarium/libplanet/pull/3392
 [#3398]: https://github.com/planetarium/libplanet/pull/3398
+[#3340]: https://github.com/planetarium/libplanet/pull/3340
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
