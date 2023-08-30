@@ -127,6 +127,8 @@ namespace Libplanet.Tests.Store.Trie
             );
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
+            // Once node encoding length exceeds certain length,
+            // uncommitted and committed hash diverge
             var longText = new Text(string.Join("\n", Range(0, 1000).Select(i => $"long str {i}")));
             trie = trie.Set(new KeyBytes(0xaa, 0xbb), longText);
             trie = commit ? stateStore.Commit(trie) : trie;
