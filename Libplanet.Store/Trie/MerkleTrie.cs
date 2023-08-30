@@ -377,18 +377,13 @@ namespace Libplanet.Store.Trie
                 // Handles value node.
                 // Assumes next cursor nibble (including non-remaining case)
                 // does not conflict with short node above.
-                if (nextCursor.RemainingNibbleLength > 0)
-                {
-                    fullNode = fullNode.SetChild(
+                fullNode = nextCursor.RemainingNibbleLength > 0
+                    ? fullNode.SetChild(
                         nextCursor.NextNibble,
-                        InsertToNullNode(nextCursor.Next(1), value));
-                }
-                else
-                {
-                    fullNode = fullNode.SetChild(
+                        InsertToNullNode(nextCursor.Next(1), value))
+                    : fullNode.SetChild(
                         FullNode.ChildrenCount - 1,
                         value);
-                }
 
                 // Full node is created at the branching point and may not be at the original root.
                 if (commonNibbles.Length == 0)

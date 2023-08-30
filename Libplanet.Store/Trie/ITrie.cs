@@ -89,7 +89,7 @@ namespace Libplanet.Store.Trie
         /// </para>
         /// <para>
         /// As such, for two equivalent <see cref="ITrie"/>s, <see cref="Trie"/>s that
-        /// <em>would have the same committed <see cref="Hash"/>es</em>, this may retrun different
+        /// <em>would have the same committed <see cref="Hash"/>es</em>, this may return different
         /// types of <see cref="INode"/> depending on the actual underlying "structure".
         /// However, returned <see cref="INode"/>s for such <see cref="ITrie"/>s are
         /// equivalent as sub-<see cref="ITrie"/>s.
