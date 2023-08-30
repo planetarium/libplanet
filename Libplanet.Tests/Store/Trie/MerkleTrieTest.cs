@@ -219,6 +219,41 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
+        public void GetNode()
+        {
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
+
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            IValue value00 = new Text("00");
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+            IValue value0000 = new Text("0000");
+            KeyBytes key0010 = new KeyBytes(new byte[] { 0x00, 0x10 });
+            IValue value0010 = new Text("00000000000000000000000000000000_0010");
+
+            trie = trie.Set(key00, value00);
+            trie = trie.Set(key0000, value0000);
+            trie = trie.Set(key0010, value0010);
+
+            Assert.IsType<ShortNode>(trie.GetNode(Nibbles.FromHex(string.Empty)));
+            Assert.IsType<FullNode>(trie.GetNode(Nibbles.FromHex("00")));
+            Assert.Null(trie.GetNode(Nibbles.FromHex("01")));
+            Assert.IsType<ShortNode>(trie.GetNode(Nibbles.FromHex("000")));
+            Assert.IsType<ShortNode>(trie.GetNode(Nibbles.FromHex("001")));
+            Assert.IsType<ValueNode>(trie.GetNode(Nibbles.FromHex("0000")));
+            Assert.IsType<ValueNode>(trie.GetNode(Nibbles.FromHex("0010")));
+
+            trie = stateStore.Commit(trie);
+            Assert.IsType<HashNode>(trie.GetNode(Nibbles.FromHex(string.Empty)));
+            Assert.IsType<HashNode>(trie.GetNode(Nibbles.FromHex("00")));
+            Assert.Null(trie.GetNode(Nibbles.FromHex("01")));
+            Assert.IsType<ShortNode>(trie.GetNode(Nibbles.FromHex("000")));
+            Assert.IsType<HashNode>(trie.GetNode(Nibbles.FromHex("001")));
+            Assert.IsType<ValueNode>(trie.GetNode(Nibbles.FromHex("0000")));
+            Assert.IsType<HashNode>(trie.GetNode(Nibbles.FromHex("0010")));
+        }
+
+        [Fact]
         public void SetValueToExtendedKey()
         {
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
