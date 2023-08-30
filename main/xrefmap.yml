@@ -1950,19 +1950,6 @@ references:
   commentId: T:Libplanet.Action.State.IBlockChainStates
   fullName: Libplanet.Action.State.IBlockChainStates
   nameWithType: IBlockChainStates
-- uid: Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  name: CastToRecordableTrie(ITrie)
-  href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_CastToRecordableTrie_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  nameWithType: IBlockChainStates.CastToRecordableTrie(ITrie)
-- uid: Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie*
-  name: CastToRecordableTrie
-  href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_CastToRecordableTrie_
-  commentId: Overload:Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IBlockChainStates.CastToRecordableTrie
-  nameWithType: IBlockChainStates.CastToRecordableTrie
 - uid: Libplanet.Action.State.IBlockChainStates.GetAccount(System.Nullable{Libplanet.Types.Blocks.BlockHash})
   name: GetAccount(Nullable<BlockHash>)
   href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetAccount_System_Nullable_Libplanet_Types_Blocks_BlockHash__
@@ -2543,19 +2530,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.BlockHashes
   nameWithType: BlockChain.BlockHashes
-- uid: Libplanet.Blockchain.BlockChain.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  name: CastToRecordableTrie(ITrie)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_CastToRecordableTrie_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Blockchain.BlockChain.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Blockchain.BlockChain.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  nameWithType: BlockChain.CastToRecordableTrie(ITrie)
-- uid: Libplanet.Blockchain.BlockChain.CastToRecordableTrie*
-  name: CastToRecordableTrie
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_CastToRecordableTrie_
-  commentId: Overload:Libplanet.Blockchain.BlockChain.CastToRecordableTrie
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain.CastToRecordableTrie
-  nameWithType: BlockChain.CastToRecordableTrie
 - uid: Libplanet.Blockchain.BlockChain.ContainsBlock(Libplanet.Types.Blocks.BlockHash)
   name: ContainsBlock(BlockHash)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_ContainsBlock_Libplanet_Types_Blocks_BlockHash_
@@ -3116,19 +3090,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates
   nameWithType: BlockChainStates.BlockChainStates
-- uid: Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  name: CastToRecordableTrie(ITrie)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_CastToRecordableTrie_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  nameWithType: BlockChainStates.CastToRecordableTrie(ITrie)
-- uid: Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie*
-  name: CastToRecordableTrie
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_CastToRecordableTrie_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates.CastToRecordableTrie
-  nameWithType: BlockChainStates.CastToRecordableTrie
 - uid: Libplanet.Blockchain.BlockChainStates.GetAccount(System.Nullable{Libplanet.Types.Blocks.BlockHash})
   name: GetAccount(Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetAccount_System_Nullable_Libplanet_Types_Blocks_BlockHash__
@@ -20936,44 +20897,28 @@ references:
   commentId: T:Libplanet.Store.IStateStore
   fullName: Libplanet.Store.IStateStore
   nameWithType: IStateStore
-- uid: Libplanet.Store.IStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  name: CastToRecordableTrie(ITrie)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_CastToRecordableTrie_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Store.IStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Store.IStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  nameWithType: IStateStore.CastToRecordableTrie(ITrie)
-- uid: Libplanet.Store.IStateStore.CastToRecordableTrie*
-  name: CastToRecordableTrie
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_CastToRecordableTrie_
-  commentId: Overload:Libplanet.Store.IStateStore.CastToRecordableTrie
+- uid: Libplanet.Store.IStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  name: Commit(ITrie)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Store.IStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Store.IStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  nameWithType: IStateStore.Commit(ITrie)
+- uid: Libplanet.Store.IStateStore.Commit*
+  name: Commit
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_
+  commentId: Overload:Libplanet.Store.IStateStore.Commit
   isSpec: "True"
-  fullName: Libplanet.Store.IStateStore.CastToRecordableTrie
-  nameWithType: IStateStore.CastToRecordableTrie
-- uid: Libplanet.Store.IStateStore.GetRecordableStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name: GetRecordableStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetRecordableStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Boolean_
-  commentId: M:Libplanet.Store.IStateStore.GetRecordableStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name.vb: GetRecordableStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-  fullName: Libplanet.Store.IStateStore.GetRecordableStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Boolean)
-  fullName.vb: Libplanet.Store.IStateStore.GetRecordableStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Boolean)
-  nameWithType: IStateStore.GetRecordableStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  nameWithType.vb: IStateStore.GetRecordableStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-- uid: Libplanet.Store.IStateStore.GetRecordableStateRoot*
-  name: GetRecordableStateRoot
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetRecordableStateRoot_
-  commentId: Overload:Libplanet.Store.IStateStore.GetRecordableStateRoot
-  isSpec: "True"
-  fullName: Libplanet.Store.IStateStore.GetRecordableStateRoot
-  nameWithType: IStateStore.GetRecordableStateRoot
-- uid: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name: GetStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Boolean_
-  commentId: M:Libplanet.Store.IStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name.vb: GetStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-  fullName: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Boolean)
-  fullName.vb: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Boolean)
-  nameWithType: IStateStore.GetStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  nameWithType.vb: IStateStore.GetStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
+  fullName: Libplanet.Store.IStateStore.Commit
+  nameWithType: IStateStore.Commit
+- uid: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetStateRoot(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Store.IStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetStateRoot(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Store.IStateStore.GetStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: IStateStore.GetStateRoot(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: IStateStore.GetStateRoot(Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Store.IStateStore.GetStateRoot*
   name: GetStateRoot
   href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_
@@ -22698,25 +22643,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException
   nameWithType: InvalidTrieNodeException.InvalidTrieNodeException
-- uid: Libplanet.Store.Trie.IRecordableTrie
-  name: IRecordableTrie
-  href: api/Libplanet.Store.Trie.IRecordableTrie.html
-  commentId: T:Libplanet.Store.Trie.IRecordableTrie
-  fullName: Libplanet.Store.Trie.IRecordableTrie
-  nameWithType: IRecordableTrie
-- uid: Libplanet.Store.Trie.IRecordableTrie.Commit
-  name: Commit()
-  href: api/Libplanet.Store.Trie.IRecordableTrie.html#Libplanet_Store_Trie_IRecordableTrie_Commit
-  commentId: M:Libplanet.Store.Trie.IRecordableTrie.Commit
-  fullName: Libplanet.Store.Trie.IRecordableTrie.Commit()
-  nameWithType: IRecordableTrie.Commit()
-- uid: Libplanet.Store.Trie.IRecordableTrie.Commit*
-  name: Commit
-  href: api/Libplanet.Store.Trie.IRecordableTrie.html#Libplanet_Store_Trie_IRecordableTrie_Commit_
-  commentId: Overload:Libplanet.Store.Trie.IRecordableTrie.Commit
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.IRecordableTrie.Commit
-  nameWithType: IRecordableTrie.Commit
 - uid: Libplanet.Store.Trie.ITrie
   name: ITrie
   href: api/Libplanet.Store.Trie.ITrie.html
@@ -23178,19 +23104,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie
   nameWithType: MerkleTrie.MerkleTrie
-- uid: Libplanet.Store.Trie.MerkleTrie.Commit
-  name: Commit()
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Commit
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.Commit
-  fullName: Libplanet.Store.Trie.MerkleTrie.Commit()
-  nameWithType: MerkleTrie.Commit()
-- uid: Libplanet.Store.Trie.MerkleTrie.Commit*
-  name: Commit
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Commit_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Commit
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrie.Commit
-  nameWithType: MerkleTrie.Commit
 - uid: Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   name: EmptyRootHash
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_EmptyRootHash
@@ -23987,129 +23900,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.TrieExtensions.Set
   nameWithType: TrieExtensions.Set
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore
-  name: VolatileKeyValueStore
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html
-  commentId: T:Libplanet.Store.Trie.VolatileKeyValueStore
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore
-  nameWithType: VolatileKeyValueStore
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
-  name: Delete(in KeyBytes)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
-  name.vb: Delete(ByRef KeyBytes)
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
-  nameWithType: VolatileKeyValueStore.Delete(in KeyBytes)
-  nameWithType.vb: VolatileKeyValueStore.Delete(ByRef KeyBytes)
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name: Delete(IEnumerable<KeyBytes>)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name.vb: Delete(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
-  nameWithType: VolatileKeyValueStore.Delete(IEnumerable<KeyBytes>)
-  nameWithType.vb: VolatileKeyValueStore.Delete(IEnumerable(Of KeyBytes))
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Delete*
-  name: Delete
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Delete_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.Delete
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Delete
-  nameWithType: VolatileKeyValueStore.Delete
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Dispose
-  name: Dispose()
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Dispose
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Dispose
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Dispose()
-  nameWithType: VolatileKeyValueStore.Dispose()
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Dispose*
-  name: Dispose
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Dispose_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.Dispose
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Dispose
-  nameWithType: VolatileKeyValueStore.Dispose
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
-  name: Exists(in KeyBytes)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
-  name.vb: Exists(ByRef KeyBytes)
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
-  nameWithType: VolatileKeyValueStore.Exists(in KeyBytes)
-  nameWithType.vb: VolatileKeyValueStore.Exists(ByRef KeyBytes)
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Exists*
-  name: Exists
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Exists_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.Exists
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Exists
-  nameWithType: VolatileKeyValueStore.Exists
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
-  name: Get(in KeyBytes)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
-  name.vb: Get(ByRef KeyBytes)
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
-  nameWithType: VolatileKeyValueStore.Get(in KeyBytes)
-  nameWithType.vb: VolatileKeyValueStore.Get(ByRef KeyBytes)
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name: Get(IEnumerable<KeyBytes>)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Get_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name.vb: Get(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Get(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
-  nameWithType: VolatileKeyValueStore.Get(IEnumerable<KeyBytes>)
-  nameWithType.vb: VolatileKeyValueStore.Get(IEnumerable(Of KeyBytes))
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Get*
-  name: Get
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Get_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.Get
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Get
-  nameWithType: VolatileKeyValueStore.Get
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys
-  name: ListKeys()
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_ListKeys
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys()
-  nameWithType: VolatileKeyValueStore.ListKeys()
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys*
-  name: ListKeys
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_ListKeys_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.ListKeys
-  nameWithType: VolatileKeyValueStore.ListKeys
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
-  name: Set(in KeyBytes, Byte[])
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
-  name.vb: Set(ByRef KeyBytes, Byte())
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
-  nameWithType: VolatileKeyValueStore.Set(in KeyBytes, Byte[])
-  nameWithType.vb: VolatileKeyValueStore.Set(ByRef KeyBytes, Byte())
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
-  name: Set(IDictionary<KeyBytes, Byte[]>)
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
-  commentId: M:Libplanet.Store.Trie.VolatileKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
-  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Set(System.Collections.Generic.IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
-  fullName.vb: Libplanet.Store.Trie.VolatileKeyValueStore.Set(System.Collections.Generic.IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
-  nameWithType: VolatileKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
-  nameWithType.vb: VolatileKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
-- uid: Libplanet.Store.Trie.VolatileKeyValueStore.Set*
-  name: Set
-  href: api/Libplanet.Store.Trie.VolatileKeyValueStore.html#Libplanet_Store_Trie_VolatileKeyValueStore_Set_
-  commentId: Overload:Libplanet.Store.Trie.VolatileKeyValueStore.Set
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.VolatileKeyValueStore.Set
-  nameWithType: VolatileKeyValueStore.Set
 - uid: Libplanet.Store.TrieStateStore
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html
@@ -24129,19 +23919,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.TrieStateStore
   nameWithType: TrieStateStore.TrieStateStore
-- uid: Libplanet.Store.TrieStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  name: CastToRecordableTrie(ITrie)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_CastToRecordableTrie_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Store.TrieStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Store.TrieStateStore.CastToRecordableTrie(Libplanet.Store.Trie.ITrie)
-  nameWithType: TrieStateStore.CastToRecordableTrie(ITrie)
-- uid: Libplanet.Store.TrieStateStore.CastToRecordableTrie*
-  name: CastToRecordableTrie
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_CastToRecordableTrie_
-  commentId: Overload:Libplanet.Store.TrieStateStore.CastToRecordableTrie
+- uid: Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  name: Commit(ITrie)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)
+  nameWithType: TrieStateStore.Commit(ITrie)
+- uid: Libplanet.Store.TrieStateStore.Commit*
+  name: Commit
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Commit_
+  commentId: Overload:Libplanet.Store.TrieStateStore.Commit
   isSpec: "True"
-  fullName: Libplanet.Store.TrieStateStore.CastToRecordableTrie
-  nameWithType: TrieStateStore.CastToRecordableTrie
+  fullName: Libplanet.Store.TrieStateStore.Commit
+  nameWithType: TrieStateStore.Commit
 - uid: Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Store.TrieStateStore)
   name: CopyStates(IImmutableSet<HashDigest<SHA256>>, TrieStateStore)
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_
@@ -24171,31 +23961,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.Dispose
   nameWithType: TrieStateStore.Dispose
-- uid: Libplanet.Store.TrieStateStore.GetRecordableStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name: GetRecordableStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRecordableStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Boolean_
-  commentId: M:Libplanet.Store.TrieStateStore.GetRecordableStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name.vb: GetRecordableStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-  fullName: Libplanet.Store.TrieStateStore.GetRecordableStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Boolean)
-  fullName.vb: Libplanet.Store.TrieStateStore.GetRecordableStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Boolean)
-  nameWithType: TrieStateStore.GetRecordableStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  nameWithType.vb: TrieStateStore.GetRecordableStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-- uid: Libplanet.Store.TrieStateStore.GetRecordableStateRoot*
-  name: GetRecordableStateRoot
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetRecordableStateRoot_
-  commentId: Overload:Libplanet.Store.TrieStateStore.GetRecordableStateRoot
-  isSpec: "True"
-  fullName: Libplanet.Store.TrieStateStore.GetRecordableStateRoot
-  nameWithType: TrieStateStore.GetRecordableStateRoot
-- uid: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name: GetStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Boolean_
-  commentId: M:Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
-  name.vb: GetStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
-  fullName: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Boolean)
-  fullName.vb: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Boolean)
-  nameWithType: TrieStateStore.GetStateRoot(Nullable<HashDigest<SHA256>>, Boolean)
-  nameWithType.vb: TrieStateStore.GetStateRoot(Nullable(Of HashDigest(Of SHA256)), Boolean)
+- uid: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetStateRoot(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetStateRoot(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: TrieStateStore.GetStateRoot(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: TrieStateStore.GetStateRoot(Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Store.TrieStateStore.GetStateRoot*
   name: GetStateRoot
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_GetStateRoot_

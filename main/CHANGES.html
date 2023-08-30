@@ -66,15 +66,8 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>(Libplanet.Store) Added <code>VolatileKeyValueStore</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3361">#3361</a>]</li>
-<li>(Libplanet.Store) Changed <code>IStateStore.GetStateRoot(HashDigest&lt;SHA256&gt;?)</code>
-to <code>IStateStore.GetStateRoot(HashDigest&lt;SHA256&gt;?, bool)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3361">#3361</a>]</li>
-<li>(Libplanet.Store) Added <code>IRecordableTrie</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
 <li>(Libplanet.Store) Removed <code>ITrie.Commit()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
-<li>(Libplanet.Store) Added <code>IStateStore.CastToRecordableTrie(ITrie)</code>
-method.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
-<li>(Libplanet.Store) Added <code>IStateStore.GetRecordableStateRoot (HashDigest&lt;SHA256&gt;?, bool)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
-<li>Added <code>IBlockChainStates.CastToRecordableTrie(ITrie)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
+<li>(Libplanet.Store) Added <code>IStateStore.Commit()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3398">#3398</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
