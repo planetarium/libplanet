@@ -93,35 +93,32 @@ namespace Libplanet.Store.Trie
         }
 
         /// <summary>
-        /// A list of <see langword="byte"/>s representing compressed nibbles where each
-        /// pair of nibbles is compacted into a <see langword="byte"/>.
+        /// Gets a <see cref="KeyBytes"/> representing compressed nibbles where
+        /// each pair of nibbles is compacted into a <see langword="byte"/>.
         /// </summary>
         /// <returns>
-        /// A compacted nibbles in <see langword="byte"/>s.
+        /// A <see cref="KeyBytes"/> representing compacted nibbles.
         /// </returns>
-        /// <remarks>
-        /// As nibbles with odd length and nibbles with even length ending in 0 may have
-        /// the same compressed representation, this should be used with <see cref="Length"/>
-        /// in most cases.
-        /// </remarks>
-        /// <seealso cref="Length"/>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="Length"/> is odd.
+        /// </exception>
         [Pure]
-        public ImmutableArray<byte> GetCompressed()
+        public KeyBytes ToKeyBytes()
         {
-            int oddNibble = Length % 2;
-            int byteLength = Length / 2 + oddNibble;
+            if (Length % 2 != 0)
+            {
+                throw new InvalidOperationException(
+                    $"The length must be even in order to convert " +
+                    $"to a {nameof(KeyBytes)}: {Length}");
+            }
+
+            int byteLength = Length / 2;
             var builder = ImmutableArray.CreateBuilder<byte>(byteLength);
-            for (int i = 0, evenNibbles = Length - oddNibble; i < evenNibbles; i += 2)
+            for (int i = 0; i < Length; i += 2)
             {
                 builder.Add((byte)(ByteArray[i] << 4 | ByteArray[i + 1]));
             }
 
-            if (oddNibble > 0)
-            {
-                builder.Add((byte)(ByteArray[Length - 1] << 4));
-            }
-
-            return builder.ToImmutable();
+            return new KeyBytes(builder.ToImmutable());
         }
 
         public bool Equals(Nibbles other)
