@@ -227,7 +227,7 @@ namespace Libplanet.Store.Trie
                     continue;
                 }
 
-                var node = NodeDecoder.Decode(_codec.Decode(value));
+                var node = NodeDecoder.Decode(_codec.Decode(value), NodeDecoder.AnyNodeType);
                 if (isValueNode)
                 {
                     continue;
@@ -440,7 +440,7 @@ namespace Libplanet.Store.Trie
         {
             IValue intermediateEncoding = _codec.Decode(
                 KeyValueStore.Get(new KeyBytes(hashNode.HashDigest.ByteArray)));
-            return NodeDecoder.Decode(intermediateEncoding) ??
+            return NodeDecoder.Decode(intermediateEncoding, NodeDecoder.HashEmbeddedNodeType) ??
                 throw new NullReferenceException();
         }
     }

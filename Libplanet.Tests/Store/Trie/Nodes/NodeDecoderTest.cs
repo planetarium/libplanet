@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             });
             Assert.Equal(17, list.Count);
 
-            INode node = NodeDecoder.Decode(list);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Full);
             Assert.IsType<FullNode>(node);
             var fullNode = (FullNode)node;
             Assert.Equal(new HashNode(hashB), fullNode.Value);
@@ -54,7 +54,8 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         public void DecodeInvalidFullNodeThrowsException(int listCount)
         {
             var list = new List(Enumerable.Repeat((IValue)Null.Value, listCount));
-            Assert.Throws<InvalidTrieNodeException>(() => NodeDecoder.Decode(list));
+            Assert.Throws<InvalidTrieNodeException>(
+                () => NodeDecoder.Decode(list, NodeDecoder.NodeType.Full));
         }
 
         [Fact]
@@ -64,7 +65,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
                 .Add(new List(new IValue[] { Null.Value, (Text)"beef", }));
 
-            INode node = NodeDecoder.Decode(list);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<ValueNode>(shortNode.Value);
@@ -79,11 +80,46 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
                 .Add(default(HashDigest<SHA256>).ByteArray);
 
-            INode node = NodeDecoder.Decode(list);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<HashNode>(shortNode.Value);
             Assert.Equal(new HashNode(default), shortNode.Value);
+        }
+
+        [Fact]
+        public void OnlyDecodeAllowedNodeType()
+        {
+            IValue valueNodeEncoded = new ValueNode(new Text("foo")).ToBencodex();
+            IValue shortNodeEncoded = new ShortNode(
+                Nibbles.FromHex("b4"),
+                new ValueNode(new Text("bar"))).ToBencodex();
+            IValue fullNodeEncoded = new FullNode()
+                .SetChild(4, new ValueNode(new Text("4")))
+                .SetChild(10, new ValueNode(new Text("c")))
+                .ToBencodex();
+            IValue hashNodeEncoded =
+                new HashNode(
+                    new HashDigest<SHA256>(
+                        TestUtils.GetRandomBytes(HashDigest<SHA256>.Size))).ToBencodex();
+
+            Assert.Null(NodeDecoder.Decode(Null.Value, NodeDecoder.AnyNodeType));
+            Assert.IsType<ValueNode>(
+                NodeDecoder.Decode(valueNodeEncoded, NodeDecoder.AnyNodeType));
+            Assert.IsType<ShortNode>(
+                NodeDecoder.Decode(shortNodeEncoded, NodeDecoder.AnyNodeType));
+            Assert.IsType<FullNode>(
+                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeType));
+            Assert.IsType<FullNode>(
+                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeType));
+            Assert.Throws<InvalidTrieNodeException>(() =>
+                NodeDecoder.Decode(Null.Value, NodeDecoder.NodeType.Value));
+            Assert.Throws<InvalidTrieNodeException>(() =>
+                NodeDecoder.Decode(valueNodeEncoded, NodeDecoder.NodeType.Short));
+            Assert.Throws<InvalidTrieNodeException>(() =>
+                NodeDecoder.Decode(shortNodeEncoded, NodeDecoder.NodeType.Full));
+            Assert.Throws<InvalidTrieNodeException>(() =>
+                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.NodeType.Null));
         }
     }
 }
