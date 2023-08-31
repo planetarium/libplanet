@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Common;
 
@@ -48,21 +47,19 @@ namespace Libplanet.Store.Trie
         }
 
         [Pure]
-        public int RemainingNibbleLength => Length - Offset;
+        public readonly int RemainingNibbleLength => Length - Offset;
 
         [Pure]
-        public bool RemainingAnyNibbles => Length > Offset;
+        public readonly bool RemainingAnyNibbles => Length > Offset;
 
         [Pure]
-        public byte NextNibble => Nibbles[Offset];
+        public readonly byte NextNibble => Nibbles[Offset];
 
         [Pure]
-        public Nibbles GetConsumedNibbles() =>
-            new Nibbles(Nibbles.ByteArray.Take(Offset).ToImmutableArray());
+        public Nibbles GetConsumedNibbles() => Nibbles.Take(Offset);
 
         [Pure]
-        public Nibbles GetRemainingNibbles() =>
-            new Nibbles(Nibbles.ByteArray.Skip(Offset).ToImmutableArray());
+        public Nibbles GetRemainingNibbles() => Nibbles.Skip(Offset);
 
         [Pure]
         public PathCursor Next(int offset) => offset < 0

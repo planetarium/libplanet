@@ -5,8 +5,10 @@ using System.Linq;
 
 namespace Libplanet.Store.Trie
 {
-    public struct Nibbles : IEquatable<Nibbles>
+    public readonly struct Nibbles : IEquatable<Nibbles>
     {
+        public static readonly Nibbles Empty = new Nibbles(ImmutableArray<byte>.Empty);
+
         private static readonly char[] _hexCharLookup =
         {
             '0', '1', '2', '3', '4', '5', '6', '7',
@@ -15,7 +17,16 @@ namespace Libplanet.Store.Trie
 
         private readonly ImmutableArray<byte> _bytes;
 
-        public Nibbles(in ImmutableArray<byte> nibbles)
+        /// <summary>
+        /// Creates an instance of <see cref="Nibbles"/> from a sequence of nibbles.
+        /// </summary>
+        /// <param name="nibbles">The list of nibbles with each nibble assigned to
+        /// a <see langword="byte"/>, i.e., each element is assumed to be less than 16.</param>
+        /// <remarks>
+        /// For performance reasons, this does not actually check whether <paramref name="nibbles"/>
+        /// is a valid sequence of nibbles, i.e. each element with value less than 16.
+        /// </remarks>
+        internal Nibbles(in ImmutableArray<byte> nibbles)
         {
             _bytes = nibbles;
         }
@@ -91,6 +102,18 @@ namespace Libplanet.Store.Trie
         {
             return new Nibbles(ByteArray.AddRange(nibbles.ByteArray));
         }
+
+        public Nibbles Take(int count) => count <= Length
+            ? new Nibbles(ByteArray.Take(count).ToImmutableArray())
+            : throw new ArgumentOutOfRangeException(
+                nameof(count),
+                $"Given {nameof(count)} must be less than or equal to {Length}: {count}");
+
+        public Nibbles Skip(int count) => count <= Length
+            ? new Nibbles(ByteArray.Skip(count).ToImmutableArray())
+            : throw new ArgumentOutOfRangeException(
+                nameof(count),
+                $"Given {nameof(count)} must be less than or equal to {Length}: {count}");
 
         /// <summary>
         /// Gets a <see cref="KeyBytes"/> representing compressed nibbles where
