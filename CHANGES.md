@@ -18,6 +18,7 @@ To be released.
  -  (Libplanet.Store) Added `Nibbles` struct.  [[#3399]]
  -  (Libplanet.Store) Changed `KeyBytes` to no longer implement
     `IEquatable<byte[]>` and `IEquatable<ImmutableArray<byte>>`.  [[#3402]]
+ -  (Libplanet.Store) Added `ITrie.GetNode()` method.  [[#3401]]
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +44,8 @@ To be released.
     and lose data.  [[#3390]]
  -  (Libplanet.Store) Fixed a bug where when trying to add a value to
     an existing `FullNode` would throw an `Exception`.  [[#3390]]
+ -  (Libplanet.Store) Fixed a bug where committing an `ITrie` may return
+    an `ITrie` with a different path security scheme.  [[#3401]]
 
 ### Dependencies
 
@@ -57,6 +60,7 @@ To be released.
 [#3398]: https://github.com/planetarium/libplanet/pull/3398
 [#3399]: https://github.com/planetarium/libplanet/pull/3399
 [#3400]: https://github.com/planetarium/libplanet/pull/3400
+[#3401]: https://github.com/planetarium/libplanet/pull/3401
 [#3402]: https://github.com/planetarium/libplanet/pull/3402
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 

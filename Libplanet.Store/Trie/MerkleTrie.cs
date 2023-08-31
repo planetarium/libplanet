@@ -97,7 +97,7 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key) => ResolvePath(Root, new PathCursor(key, _secure));
+        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, _secure));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
@@ -107,6 +107,9 @@ namespace Libplanet.Store.Trie
                 ? keys.Select(key => Get(key)).ToArray()
                 : keys.AsParallel().Select(key => Get(key)).ToArray();
         }
+
+        /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
+        public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
 
         public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
         {
@@ -152,12 +155,7 @@ namespace Libplanet.Store.Trie
                         break;
 
                     case HashNode hashNode:
-                        INode? nn = GetNode(hashNode.HashDigest);
-                        if (!(nn is null))
-                        {
-                            queue.Enqueue((nn, path));
-                        }
-
+                        queue.Enqueue((UnhashNode(hashNode), path));
                         break;
                 }
             }
@@ -379,18 +377,13 @@ namespace Libplanet.Store.Trie
                 // Handles value node.
                 // Assumes next cursor nibble (including non-remaining case)
                 // does not conflict with short node above.
-                if (nextCursor.RemainingNibbleLength > 0)
-                {
-                    fullNode = fullNode.SetChild(
+                fullNode = nextCursor.RemainingNibbleLength > 0
+                    ? fullNode.SetChild(
                         nextCursor.NextNibble,
-                        InsertToNullNode(nextCursor.Next(1), value));
-                }
-                else
-                {
-                    fullNode = fullNode.SetChild(
+                        InsertToNullNode(nextCursor.Next(1), value))
+                    : fullNode.SetChild(
                         FullNode.ChildrenCount - 1,
                         value);
-                }
 
                 // Full node is created at the branching point and may not be at the original root.
                 if (commonNibbles.Length == 0)
@@ -428,24 +421,29 @@ namespace Libplanet.Store.Trie
             ValueNode value,
             bool allowNull)
         {
-            // FIXME: Probably needs to check unhashedNode to be ValueNode, ShortNode, or FullNode.
-            INode? unhashedNode = GetNode(hashNode.HashDigest);
+            INode unhashedNode = UnhashNode(hashNode);
             return Insert(unhashedNode, cursor, value, allowNull);
         }
 
         /// <summary>
-        /// Gets the node corresponding to <paramref name="nodeHash"/> from storage,
-        /// (i.e., <see cref="KeyValueStore"/>).
+        /// Gets the concrete inner node corresponding to <paramref name="hashNode"/> from storage.
         /// </summary>
-        /// <param name="nodeHash">The hash of node to get.</param>
-        /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
-        /// <exception cref="KeyNotFoundException">Thrown when the <paramref name="nodeHash"/> is
-        /// not found.</exception>
-        private INode? GetNode(HashDigest<SHA256> nodeHash)
+        /// <param name="hashNode">The <see cref="HashNode"/> to un-hash and retrieve
+        /// the inner node from.</param>
+        /// <returns>The node corresponding to <paramref name="hashNode"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when <paramref name="hashNode"/>'s
+        /// <see cref="HashNode.HashDigest"/> is not found in storage.</exception>
+        /// <remarks>
+        /// As <see langword="null"/> is never hashed, this is never <see langword="null"/>.
+        /// Specifically, hashing of <see langword="null"/> never happens.
+        /// Calling of this method is explicitly bypassed for an empty <see cref="ITrie"/>.
+        /// </remarks>
+        private INode UnhashNode(HashNode hashNode)
         {
             IValue intermediateEncoding = _codec.Decode(
-                KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)));
-            return NodeDecoder.Decode(intermediateEncoding);
+                KeyValueStore.Get(new KeyBytes(hashNode.HashDigest.ByteArray)));
+            return NodeDecoder.Decode(intermediateEncoding) ??
+                throw new NullReferenceException();
         }
     }
 }

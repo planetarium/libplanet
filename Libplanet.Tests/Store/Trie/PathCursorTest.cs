@@ -15,67 +15,67 @@ namespace Libplanet.Tests.Store.Trie
             KeyBytes keyBytes = KeyBytes.FromHex("cfed4460");
             var cursor = new PathCursor(keyBytes, false);
             Assert.Equal(Nibbles.FromBytes(keyBytes.ByteArray), cursor.Nibbles);
-            Assert.Equal(8, cursor.NibbleLength);
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(8, cursor.Length);
+            Assert.Equal(0, cursor.Offset);
 
             cursor = new PathCursor(keyBytes, true);
             ImmutableArray<byte> hash = ParseHexToImmutable(
                 "42b7a23ca82b1d195f73ac729f216074c7781af7bd808bea825e38556eca13a6");
             Assert.Equal(Nibbles.FromBytes(hash), cursor.Nibbles);
-            Assert.Equal(64, cursor.NibbleLength);
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(64, cursor.Length);
+            Assert.Equal(0, cursor.Offset);
         }
 
         [Fact]
         public void Next()
         {
             var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
             AssertBytesEqual(
                 ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(-1); });
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(9); });
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
 
             var next = cursor.Next(1);
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
             AssertBytesEqual(
                 ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
-            Assert.Equal(1, next.NibbleOffset);
+            Assert.Equal(1, next.Offset);
             Assert.Equal((byte)0xf, next.NextNibble);
             Assert.Equal(7, next.RemainingNibbleLength);
             AssertBytesEqual(
                 ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles().ByteArray);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(-1); });
-            Assert.Equal(1, next.NibbleOffset);
+            Assert.Equal(1, next.Offset);
             Assert.Equal(7, next.RemainingNibbleLength);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(8); });
-            Assert.Equal(1, next.NibbleOffset);
+            Assert.Equal(1, next.Offset);
             Assert.Equal(7, next.RemainingNibbleLength);
 
             var next2 = next.Next(5);
-            Assert.Equal(0, cursor.NibbleOffset);
+            Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
             AssertBytesEqual(
                 ParseHexToImmutable("0c0f0e0d04040600"), cursor.GetRemainingNibbles().ByteArray);
-            Assert.Equal(1, next.NibbleOffset);
+            Assert.Equal(1, next.Offset);
             Assert.Equal(7, next.RemainingNibbleLength);
             Assert.Equal((byte)0xf, next.NextNibble);
             AssertBytesEqual(
                 ParseHexToImmutable("0f0e0d04040600"), next.GetRemainingNibbles().ByteArray);
-            Assert.Equal(6, next2.NibbleOffset);
+            Assert.Equal(6, next2.Offset);
             Assert.Equal(2, next2.RemainingNibbleLength);
             Assert.Equal((byte)0x6, next2.NextNibble);
             AssertBytesEqual(
