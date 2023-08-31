@@ -3441,7 +3441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.Nibbles.html",
-          "hash": "HBCQr1nK+bUUTKc8eFe5gl7in1uykZTUyfwFvFm9RvQ="
+          "hash": "hwBj54Jd1AeMAhdnfZy20XjH8RCtSU1aBgNr8+KJFWY="
         }
       },
       "is_incremental": false,
@@ -3549,7 +3549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.PathCursor.html",
-          "hash": "QBFELMpbN6Zo+aoohhF/xhp6ntNuaiuUcW6l4dN52SM="
+          "hash": "54tBveXavt7WEzDRjwlgAoLG1yKqTsQVPZOc6QojS90="
         }
       },
       "is_incremental": false,

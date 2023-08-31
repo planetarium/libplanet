@@ -23194,22 +23194,6 @@ references:
   commentId: T:Libplanet.Store.Trie.Nibbles
   fullName: Libplanet.Store.Trie.Nibbles
   nameWithType: Nibbles
-- uid: Libplanet.Store.Trie.Nibbles.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name: Nibbles(in ImmutableArray<Byte>)
-  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Store.Trie.Nibbles.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name.vb: Nibbles(ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.Store.Trie.Nibbles.Nibbles(in System.Collections.Immutable.ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Store.Trie.Nibbles.Nibbles(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
-  nameWithType: Nibbles.Nibbles(in ImmutableArray<Byte>)
-  nameWithType.vb: Nibbles.Nibbles(ByRef ImmutableArray(Of Byte))
-- uid: Libplanet.Store.Trie.Nibbles.#ctor*
-  name: Nibbles
-  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles__ctor_
-  commentId: Overload:Libplanet.Store.Trie.Nibbles.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nibbles.Nibbles
-  nameWithType: Nibbles.Nibbles
 - uid: Libplanet.Store.Trie.Nibbles.Add(System.Byte)
   name: Add(Byte)
   href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Add_System_Byte_
@@ -23261,6 +23245,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nibbles.ByteArray
   nameWithType: Nibbles.ByteArray
+- uid: Libplanet.Store.Trie.Nibbles.Empty
+  name: Empty
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Empty
+  commentId: F:Libplanet.Store.Trie.Nibbles.Empty
+  fullName: Libplanet.Store.Trie.Nibbles.Empty
+  nameWithType: Nibbles.Empty
 - uid: Libplanet.Store.Trie.Nibbles.Equals(Libplanet.Store.Trie.Nibbles)
   name: Equals(Nibbles)
   href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Equals_Libplanet_Store_Trie_Nibbles_
@@ -23364,6 +23354,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nibbles.Length
   nameWithType: Nibbles.Length
+- uid: Libplanet.Store.Trie.Nibbles.Skip(System.Int32)
+  name: Skip(Int32)
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Skip_System_Int32_
+  commentId: M:Libplanet.Store.Trie.Nibbles.Skip(System.Int32)
+  fullName: Libplanet.Store.Trie.Nibbles.Skip(System.Int32)
+  nameWithType: Nibbles.Skip(Int32)
+- uid: Libplanet.Store.Trie.Nibbles.Skip*
+  name: Skip
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Skip_
+  commentId: Overload:Libplanet.Store.Trie.Nibbles.Skip
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nibbles.Skip
+  nameWithType: Nibbles.Skip
+- uid: Libplanet.Store.Trie.Nibbles.Take(System.Int32)
+  name: Take(Int32)
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Take_System_Int32_
+  commentId: M:Libplanet.Store.Trie.Nibbles.Take(System.Int32)
+  fullName: Libplanet.Store.Trie.Nibbles.Take(System.Int32)
+  nameWithType: Nibbles.Take(Int32)
+- uid: Libplanet.Store.Trie.Nibbles.Take*
+  name: Take
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_Take_
+  commentId: Overload:Libplanet.Store.Trie.Nibbles.Take
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nibbles.Take
+  nameWithType: Nibbles.Take
 - uid: Libplanet.Store.Trie.Nibbles.ToKeyBytes
   name: ToKeyBytes()
   href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_ToKeyBytes

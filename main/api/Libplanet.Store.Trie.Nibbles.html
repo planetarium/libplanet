@@ -94,38 +94,35 @@
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_Trie_Nibbles_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct Nibbles : IEquatable&lt;Nibbles&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct Nibbles : IEquatable&lt;Nibbles&gt;</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="fields">Fields
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.%23ctor(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Empty.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Empty%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L18">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L10">View Source</a>
   </span>
-  <a id="Libplanet_Store_Trie_Nibbles__ctor_" data-uid="Libplanet.Store.Trie.Nibbles.#ctor*"></a>
-  <h4 id="Libplanet_Store_Trie_Nibbles__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.Trie.Nibbles.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">Nibbles(in ImmutableArray&lt;Byte&gt;)</h4>
+  <h4 id="Libplanet_Store_Trie_Nibbles_Empty" data-uid="Libplanet.Store.Trie.Nibbles.Empty">Empty</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nibbles(in ImmutableArray&lt;byte&gt; nibbles)</code></pre>
+    <pre><code class="lang-csharp hljs">public static readonly Nibbles Empty</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
-        <td><span class="parametername">nibbles</span></td>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -137,7 +134,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L38">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_ByteArray_" data-uid="Libplanet.Store.Trie.Nibbles.ByteArray*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_ByteArray" data-uid="Libplanet.Store.Trie.Nibbles.ByteArray">ByteArray</h4>
@@ -170,7 +167,7 @@ public readonly ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Hex.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Hex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L51">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Hex_" data-uid="Libplanet.Store.Trie.Nibbles.Hex*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Hex" data-uid="Libplanet.Store.Trie.Nibbles.Hex">Hex</h4>
@@ -204,7 +201,7 @@ public readonly string Hex { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Item_" data-uid="Libplanet.Store.Trie.Nibbles.Item*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Item_System_Int32_" data-uid="Libplanet.Store.Trie.Nibbles.Item(System.Int32)">Item[Int32]</h4>
@@ -251,7 +248,7 @@ public readonly string Hex { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Length.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Length%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L32">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Length_" data-uid="Libplanet.Store.Trie.Nibbles.Length*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Length" data-uid="Libplanet.Store.Trie.Nibbles.Length">Length</h4>
@@ -284,7 +281,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Add_System_Byte_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Add(System.Byte)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L80">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L91">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Add_" data-uid="Libplanet.Store.Trie.Nibbles.Add*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Add_System_Byte_" data-uid="Libplanet.Store.Trie.Nibbles.Add(System.Byte)">Add(Byte)</h4>
@@ -292,7 +289,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nibbles Add(byte b)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Nibbles Add(byte b)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -331,7 +328,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_AddRange_Libplanet_Store_Trie_Nibbles__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.AddRange(Libplanet.Store.Trie.Nibbles%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L90">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L101">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_AddRange_" data-uid="Libplanet.Store.Trie.Nibbles.AddRange*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_AddRange_Libplanet_Store_Trie_Nibbles__" data-uid="Libplanet.Store.Trie.Nibbles.AddRange(Libplanet.Store.Trie.Nibbles@)">AddRange(in Nibbles)</h4>
@@ -339,7 +336,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nibbles AddRange(in Nibbles nibbles)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Nibbles AddRange(in Nibbles nibbles)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -378,7 +375,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_AddRange_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.AddRange(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L85">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_AddRange_" data-uid="Libplanet.Store.Trie.Nibbles.AddRange*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_AddRange_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.Trie.Nibbles.AddRange(System.Collections.Immutable.ImmutableArray{System.Byte}@)">AddRange(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -386,7 +383,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nibbles AddRange(in ImmutableArray&lt;byte&gt; nibbles)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Nibbles AddRange(in ImmutableArray&lt;byte&gt; nibbles)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -425,7 +422,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Equals_Libplanet_Store_Trie_Nibbles_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Equals(Libplanet.Store.Trie.Nibbles)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L124">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L147">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Equals_" data-uid="Libplanet.Store.Trie.Nibbles.Equals*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Equals_Libplanet_Store_Trie_Nibbles_" data-uid="Libplanet.Store.Trie.Nibbles.Equals(Libplanet.Store.Trie.Nibbles)">Equals(Nibbles)</h4>
@@ -433,7 +430,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(Nibbles other)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Nibbles other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -472,7 +469,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L134">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L157">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_Equals_" data-uid="Libplanet.Store.Trie.Nibbles.Equals*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_Equals_System_Object_" data-uid="Libplanet.Store.Trie.Nibbles.Equals(System.Object)">Equals(Object)</h4>
@@ -480,7 +477,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -521,7 +518,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_FromBytes_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.FromBytes(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_FromBytes_" data-uid="Libplanet.Store.Trie.Nibbles.FromBytes*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_FromBytes_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.Trie.Nibbles.FromBytes(System.Collections.Immutable.ImmutableArray{System.Byte}@)">FromBytes(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -568,7 +565,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_FromHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.FromHex(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_FromHex_" data-uid="Libplanet.Store.Trie.Nibbles.FromHex*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_FromHex_System_String_" data-uid="Libplanet.Store.Trie.Nibbles.FromHex(System.String)">FromHex(String)</h4>
@@ -615,7 +612,7 @@ public readonly int Length { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L137">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L160">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_GetHashCode_" data-uid="Libplanet.Store.Trie.Nibbles.GetHashCode*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_GetHashCode" data-uid="Libplanet.Store.Trie.Nibbles.GetHashCode">GetHashCode()</h4>
@@ -623,7 +620,7 @@ public readonly int Length { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -644,10 +641,104 @@ public readonly int Length { get; }</code></pre>
   <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Skip_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Skip(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L112">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_Nibbles_Skip_" data-uid="Libplanet.Store.Trie.Nibbles.Skip*"></a>
+  <h4 id="Libplanet_Store_Trie_Nibbles_Skip_System_Int32_" data-uid="Libplanet.Store.Trie.Nibbles.Skip(System.Int32)">Skip(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Nibbles Skip(int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">count</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_Take_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.Take(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L106">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_Nibbles_Take_" data-uid="Libplanet.Store.Trie.Nibbles.Take*"></a>
+  <h4 id="Libplanet_Store_Trie_Nibbles_Take_System_Int32_" data-uid="Libplanet.Store.Trie.Nibbles.Take(System.Int32)">Take(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Nibbles Take(int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">count</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_ToKeyBytes.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.ToKeyBytes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L127">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_ToKeyBytes_" data-uid="Libplanet.Store.Trie.Nibbles.ToKeyBytes*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_ToKeyBytes" data-uid="Libplanet.Store.Trie.Nibbles.ToKeyBytes">ToKeyBytes()</h4>
@@ -658,7 +749,7 @@ each pair of nibbles is compacted into a <span class="xref">langword_csharp_byte
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public KeyBytes ToKeyBytes()</code></pre>
+public readonly KeyBytes ToKeyBytes()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -697,7 +788,7 @@ public KeyBytes ToKeyBytes()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nibbles_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nibbles.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L151">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nibbles.cs/#L174">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nibbles_ToString_" data-uid="Libplanet.Store.Trie.Nibbles.ToString*"></a>
   <h4 id="Libplanet_Store_Trie_Nibbles_ToString" data-uid="Libplanet.Store.Trie.Nibbles.ToString">ToString()</h4>
@@ -705,7 +796,7 @@ public KeyBytes ToKeyBytes()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
