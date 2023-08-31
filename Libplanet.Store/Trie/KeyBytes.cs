@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Libplanet.Common;
@@ -10,8 +11,7 @@ namespace Libplanet.Store.Trie
     /// Wraps a byte array and provides equality comparison and hash code calculation.  Designed
     /// to be used as a key in dictionaries.
     /// </summary>
-    public readonly struct KeyBytes
-        : IEquatable<KeyBytes>, IEquatable<ImmutableArray<byte>>, IEquatable<byte[]>
+    public readonly struct KeyBytes : IEquatable<KeyBytes>
     {
         /// <summary>
         /// The default <see cref="System.Text.Encoding"/>, which is <see cref="Encoding.UTF8"/>,
@@ -55,7 +55,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="str">The key <see langword="string"/> to encode into bytes.</param>
         /// <param name="encoding">The <see cref="System.Text.Encoding"/> to be used for
-        /// <paramref name="str">.</param>
+        /// <paramref name="str"/>.</param>
         private KeyBytes(string str, Encoding encoding)
         {
             byte[] neverReusedBuffer = encoding.GetBytes(str);
@@ -125,49 +125,7 @@ namespace Libplanet.Store.Trie
             : ByteArray.ToBuilder().ToArray();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(ImmutableArray<byte> other)
-        {
-            if (other.IsDefaultOrEmpty)
-            {
-                return _byteArray.IsDefaultOrEmpty;
-            }
-            else if (Length != other.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < Length; i++)
-            {
-                if (_byteArray[i] != other[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(KeyBytes other) => Equals(other._byteArray);
-
-        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(byte[]? other)
-        {
-            if (other is { } o && o.Length == Length)
-            {
-                for (int i = 0; i < Length; i++)
-                {
-                    if (_byteArray[i] != o[i])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
+        public bool Equals(KeyBytes other) => ByteArray.SequenceEqual(other.ByteArray);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj) => obj is KeyBytes other && Equals(other);
