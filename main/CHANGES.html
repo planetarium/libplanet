@@ -69,9 +69,11 @@
 <li>(Libplanet.Store) Removed <code>ITrie.Commit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
 <li>(Libplanet.Store) Added <code>IStateStore.Commit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3398">#3398</a>]</li>
 <li>(Libplanet.Store) Removed <code>IKeyValueStore.Get(IEnumerable&lt;KeyBytes&gt; keys)</code>
-method.  [<a href="https://github.com/planetarium/libplanet/issues/3362">#3362</a>, <a href="https://github.com/planetarium/libplanet/pull/3340">#3340</a>]</li>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/3362">#3362</a>, <a href="https://github.com/planetarium/libplanet/pull/3400">#3400</a>]</li>
 <li>(Libplanet.Store) Added <code>PathCursor</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/3399">#3399</a>]</li>
 <li>(Libplanet.Store) Added <code>Nibbles</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/3399">#3399</a>]</li>
+<li>(Libplanet.Store) Changed <code>KeyBytes</code> to no longer implement
+<code>IEquatable&lt;byte[]&gt;</code> and <code>IEquatable&lt;ImmutableArray&lt;byte&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3402">#3402</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
