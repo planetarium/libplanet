@@ -23706,12 +23706,18 @@ references:
   commentId: T:Libplanet.Store.Trie.Nodes.NodeDecoder
   fullName: Libplanet.Store.Trie.Nodes.NodeDecoder
   nameWithType: NodeDecoder
-- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
-  name: Decode(IValue)
-  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
-  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)
-  nameWithType: NodeDecoder.Decode(IValue)
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.AnyNodeType
+  name: AnyNodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_AnyNodeType
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.AnyNodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.AnyNodeType
+  nameWithType: NodeDecoder.AnyNodeType
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue,Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)
+  name: Decode(IValue, NodeDecoder.NodeType)
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_
+  commentId: M:Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue,Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue, Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)
+  nameWithType: NodeDecoder.Decode(IValue, NodeDecoder.NodeType)
 - uid: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*
   name: Decode
   href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_
@@ -23719,6 +23725,66 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.Decode
   nameWithType: NodeDecoder.Decode
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.FullChildNodeType
+  name: FullChildNodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_FullChildNodeType
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.FullChildNodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.FullChildNodeType
+  nameWithType: NodeDecoder.FullChildNodeType
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.FullValueNodeType
+  name: FullValueNodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_FullValueNodeType
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.FullValueNodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.FullValueNodeType
+  nameWithType: NodeDecoder.FullValueNodeType
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.HashEmbeddedNodeType
+  name: HashEmbeddedNodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_HashEmbeddedNodeType
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.HashEmbeddedNodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.HashEmbeddedNodeType
+  nameWithType: NodeDecoder.HashEmbeddedNodeType
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType
+  name: NodeDecoder.NodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html
+  commentId: T:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType
+  nameWithType: NodeDecoder.NodeType
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Full
+  name: Full
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html#Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Full
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Full
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Full
+  nameWithType: NodeDecoder.NodeType.Full
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Hash
+  name: Hash
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html#Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Hash
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Hash
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Hash
+  nameWithType: NodeDecoder.NodeType.Hash
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Null
+  name: "Null"
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html#Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Null
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Null
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Null
+  nameWithType: NodeDecoder.NodeType.Null
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Short
+  name: Short
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html#Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Short
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Short
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Short
+  nameWithType: NodeDecoder.NodeType.Short
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Value
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html#Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Value
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Value
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.Value
+  nameWithType: NodeDecoder.NodeType.Value
+- uid: Libplanet.Store.Trie.Nodes.NodeDecoder.ShortValueNodeType
+  name: ShortValueNodeType
+  href: api/Libplanet.Store.Trie.Nodes.NodeDecoder.html#Libplanet_Store_Trie_Nodes_NodeDecoder_ShortValueNodeType
+  commentId: F:Libplanet.Store.Trie.Nodes.NodeDecoder.ShortValueNodeType
+  fullName: Libplanet.Store.Trie.Nodes.NodeDecoder.ShortValueNodeType
+  nameWithType: NodeDecoder.ShortValueNodeType
 - uid: Libplanet.Store.Trie.Nodes.ShortNode
   name: ShortNode
   href: api/Libplanet.Store.Trie.Nodes.ShortNode.html

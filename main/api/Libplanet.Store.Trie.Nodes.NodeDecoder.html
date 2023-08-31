@@ -109,22 +109,169 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class NodeDecoder</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="fields">Fields
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_AnyNodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.AnyNodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L11">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L12">View Source</a>
   </span>
-  <a id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*"></a>
-  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue)">Decode(IValue)</h4>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_AnyNodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.AnyNodeType">AnyNodeType</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static INode Decode(IValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType AnyNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_FullChildNodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.FullChildNodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L18">View Source</a>
+  </span>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_FullChildNodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.FullChildNodeType">FullChildNodeType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullChildNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_FullValueNodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.FullValueNodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L15">View Source</a>
+  </span>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_FullValueNodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.FullValueNodeType">FullValueNodeType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullValueNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Hash</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_HashEmbeddedNodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.HashEmbeddedNodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L24">View Source</a>
+  </span>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_HashEmbeddedNodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.HashEmbeddedNodeType">HashEmbeddedNodeType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType HashEmbeddedNodeType = NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_ShortValueNodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.ShortValueNodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L21">View Source</a>
+  </span>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_ShortValueNodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.ShortValueNodeType">ShortValueNodeType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType ShortValueNodeType = NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue%2CLibplanet.Store.Trie.Nodes.NodeDecoder.NodeType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L56">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*"></a>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue,Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)">Decode(IValue, NodeDecoder.NodeType)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static INode Decode(IValue value, NodeDecoder.NodeType allowed)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -139,6 +286,11 @@
       <tr>
         <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></td>
+        <td><span class="parametername">allowed</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -169,7 +321,7 @@
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

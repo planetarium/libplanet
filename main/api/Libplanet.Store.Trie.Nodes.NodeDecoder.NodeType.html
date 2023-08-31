@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Libplanet.Store.Trie.Nodes
+    <title>Enum NodeDecoder.NodeType
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Libplanet.Store.Trie.Nodes
+    <meta name="title" content="Enum NodeDecoder.NodeType
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,39 +67,56 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.Nodes">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType">
 
-  <h1 id="Libplanet_Store_Trie_Nodes" data-uid="Libplanet.Store.Trie.Nodes" class="text-break">Namespace Libplanet.Store.Trie.Nodes
+
+  <h1 id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType" class="text-break">Enum NodeDecoder.NodeType
 </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.Nodes.html">Libplanet.Store.Trie.Nodes</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
+  <h5 id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Flags]
+public enum NodeType : short</code></pre>
+  </div>
+  <h3 id="fields">Fields
 </h3>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.BaseNode.html">BaseNode</a></h4>
-      <section><p>Represents a node in MPT that can have a value.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a></h4>
-      <section><p><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>'s wrapper class, used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> interface.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.html">NodeDecoder</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.ValueNode.html">ValueNode</a></h4>
-      <section><p>Wrapper class.</p>
-</section>
-    <h3 id="interfaces">Interfaces
-</h3>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></h4>
-      <section><p>A constituent unit of <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
-</section>
-    <h3 id="enums">Enums
-</h3>
-      <h4><a class="xref" href="Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType.html">NodeDecoder.NodeType</a></h4>
-      <section></section>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Full">Full</td>
+        <td><p>A <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Hash">Hash</td>
+        <td><p>A <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Null">Null</td>
+        <td><p>A null node represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Short">Short</td>
+        <td><p>A <a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_Value">Value</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
 </article>
           </div>
 
@@ -107,6 +124,12 @@
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L27" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
