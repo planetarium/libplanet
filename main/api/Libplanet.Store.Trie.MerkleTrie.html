@@ -283,6 +283,15 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Store_Trie_MerkleTrie_Hash_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is <span class="xref">null</span>, this still gives a unique
+<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> value corresponding to <span class="xref">null</span>
+that is <em>never recorded</em>.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_MerkleTrie_Hash_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Recorded.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Recorded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -292,7 +301,7 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Recorded_" data-uid="Libplanet.Store.Trie.MerkleTrie.Recorded*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Recorded" data-uid="Libplanet.Store.Trie.MerkleTrie.Recorded">Recorded</h4>
-  <div class="markdown level1 summary"><p>Whether the trie root is recorded in the store.</p>
+  <div class="markdown level1 summary"><p>Whether <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is recorded in the store.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -315,7 +324,8 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Store_Trie_MerkleTrie_Recorded_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Empty root is considered as recorded.</p>
+  <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> that is <span class="xref">null</span> is always considered
+as recorded.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -456,10 +466,94 @@ values are represented as <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L112">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_MerkleTrie_GetNode_" data-uid="Libplanet.Store.Trie.MerkleTrie.GetNode*"></a>
+  <h4 id="Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles_" data-uid="Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)">GetNode(Nibbles)</h4>
+  <div class="markdown level1 summary"><p>Gets the first node encountered at <code data-dev-comment-type="paramref" class="paramref">nibbles</code> when traversing down
+from <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INode GetNode(Nibbles nibbles)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
+        <td><span class="parametername">nibbles</span></td>
+        <td><p>The path to check.  This must be a secure path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></td>
+        <td><p>A node at <code data-dev-comment-type="paramref" class="paramref">nibbles</code>, if any.
+Otherwise <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+There may be more than one <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> at <code data-dev-comment-type="paramref" class="paramref">nibbles</code>.
+For instance, a <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>, a <a class="xref" href="Libplanet.Store.Trie.Nodes.ValueNode.html">ValueNode</a> as the value of the
+aforementioned <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>, and up to two additional <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a>s
+is possible.
+</p>
+<p>
+As such, for two equivalent <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s, <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a>s that
+<em>would have the same committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a>es</em>, this may return different
+types of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> depending on the actual underlying &quot;structure&quot;.
+However, returned <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>s for such <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s are
+equivalent as sub-<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s.
+</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.InvalidTrieNodeException.html">InvalidTrieNodeException</a></td>
+        <td><p>Thrown when an unknown type
+of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> is encountered while traversing to the given path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_IterateNodes.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.IterateNodes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_IterateNodes_" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateNodes*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_IterateNodes" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateNodes">IterateNodes()</h4>

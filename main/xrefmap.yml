@@ -22635,6 +22635,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Get
   nameWithType: ITrie.Get
+- uid: Libplanet.Store.Trie.ITrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  name: GetNode(Nibbles)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_GetNode_Libplanet_Store_Trie_Nibbles_
+  commentId: M:Libplanet.Store.Trie.ITrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  fullName: Libplanet.Store.Trie.ITrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  nameWithType: ITrie.GetNode(Nibbles)
+- uid: Libplanet.Store.Trie.ITrie.GetNode*
+  name: GetNode
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_GetNode_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.GetNode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.GetNode
+  nameWithType: ITrie.GetNode
 - uid: Libplanet.Store.Trie.ITrie.Hash
   name: Hash
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash
@@ -23062,6 +23075,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Get
   nameWithType: MerkleTrie.Get
+- uid: Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  name: GetNode(Nibbles)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  fullName: Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)
+  nameWithType: MerkleTrie.GetNode(Nibbles)
+- uid: Libplanet.Store.Trie.MerkleTrie.GetNode*
+  name: GetNode
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_GetNode_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.GetNode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.GetNode
+  nameWithType: MerkleTrie.GetNode
 - uid: Libplanet.Store.Trie.MerkleTrie.Hash
   name: Hash
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Hash
@@ -23923,6 +23949,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.PathCursor.GetCommonStartingNibbles
   nameWithType: PathCursor.GetCommonStartingNibbles
+- uid: Libplanet.Store.Trie.PathCursor.GetConsumedNibbles
+  name: GetConsumedNibbles()
+  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_GetConsumedNibbles
+  commentId: M:Libplanet.Store.Trie.PathCursor.GetConsumedNibbles
+  fullName: Libplanet.Store.Trie.PathCursor.GetConsumedNibbles()
+  nameWithType: PathCursor.GetConsumedNibbles()
+- uid: Libplanet.Store.Trie.PathCursor.GetConsumedNibbles*
+  name: GetConsumedNibbles
+  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_GetConsumedNibbles_
+  commentId: Overload:Libplanet.Store.Trie.PathCursor.GetConsumedNibbles
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.PathCursor.GetConsumedNibbles
+  nameWithType: PathCursor.GetConsumedNibbles
 - uid: Libplanet.Store.Trie.PathCursor.GetRemainingNibbles
   name: GetRemainingNibbles()
   href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_GetRemainingNibbles
@@ -23936,6 +23975,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.PathCursor.GetRemainingNibbles
   nameWithType: PathCursor.GetRemainingNibbles
+- uid: Libplanet.Store.Trie.PathCursor.Length
+  name: Length
+  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_Length
+  commentId: F:Libplanet.Store.Trie.PathCursor.Length
+  fullName: Libplanet.Store.Trie.PathCursor.Length
+  nameWithType: PathCursor.Length
 - uid: Libplanet.Store.Trie.PathCursor.Next(System.Int32)
   name: Next(Int32)
   href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_Next_System_Int32_
@@ -23962,24 +24007,18 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.PathCursor.NextNibble
   nameWithType: PathCursor.NextNibble
-- uid: Libplanet.Store.Trie.PathCursor.NibbleLength
-  name: NibbleLength
-  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_NibbleLength
-  commentId: F:Libplanet.Store.Trie.PathCursor.NibbleLength
-  fullName: Libplanet.Store.Trie.PathCursor.NibbleLength
-  nameWithType: PathCursor.NibbleLength
-- uid: Libplanet.Store.Trie.PathCursor.NibbleOffset
-  name: NibbleOffset
-  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_NibbleOffset
-  commentId: F:Libplanet.Store.Trie.PathCursor.NibbleOffset
-  fullName: Libplanet.Store.Trie.PathCursor.NibbleOffset
-  nameWithType: PathCursor.NibbleOffset
 - uid: Libplanet.Store.Trie.PathCursor.Nibbles
   name: Nibbles
   href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_Nibbles
   commentId: F:Libplanet.Store.Trie.PathCursor.Nibbles
   fullName: Libplanet.Store.Trie.PathCursor.Nibbles
   nameWithType: PathCursor.Nibbles
+- uid: Libplanet.Store.Trie.PathCursor.Offset
+  name: Offset
+  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_Offset
+  commentId: F:Libplanet.Store.Trie.PathCursor.Offset
+  fullName: Libplanet.Store.Trie.PathCursor.Offset
+  nameWithType: PathCursor.Offset
 - uid: Libplanet.Store.Trie.PathCursor.RemainingAnyNibbles
   name: RemainingAnyNibbles
   href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor_RemainingAnyNibbles

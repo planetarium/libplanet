@@ -74,6 +74,7 @@ method.  [<a href="https://github.com/planetarium/libplanet/issues/3362">#3362</
 <li>(Libplanet.Store) Added <code>Nibbles</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/3399">#3399</a>]</li>
 <li>(Libplanet.Store) Changed <code>KeyBytes</code> to no longer implement
 <code>IEquatable&lt;byte[]&gt;</code> and <code>IEquatable&lt;ImmutableArray&lt;byte&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3402">#3402</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.GetNode()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3401">#3401</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -97,6 +98,8 @@ with one being a subsequence of the other would break <code>MerkleTrie</code>
 and lose data.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
 <li>(Libplanet.Store) Fixed a bug where when trying to add a value to
 an existing <code>FullNode</code> would throw an <code>Exception</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where committing an <code>ITrie</code> may return
+an <code>ITrie</code> with a different path security scheme.  [<a href="https://github.com/planetarium/libplanet/pull/3401">#3401</a>]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
