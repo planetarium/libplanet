@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 #if !NETFRAMEWORK
 using static System.Web.HttpUtility;
 #endif
-using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 #if NETFRAMEWORK
@@ -45,16 +44,6 @@ namespace Libplanet.Tests.Store
             Assert.NotNull(pair);
             Assert.IsAssignableFrom<MemoryStore>(pair.Value.Store);
             Assert.IsAssignableFrom<TrieStateStore>(pair.Value.StateStore);
-            var stateStore = (TrieStateStore)pair.Value.StateStore;
-            Assert.False(stateStore.Secure);
-
-            pair = StoreLoaderAttribute.LoadStore(new Uri("Test:///?secure=true"));
-            Assert.NotNull(pair);
-            Assert.IsAssignableFrom<MemoryStore>(pair.Value.Store);
-            Assert.IsAssignableFrom<TrieStateStore>(pair.Value.StateStore);
-            stateStore = (TrieStateStore)pair.Value.StateStore;
-            Assert.True(stateStore.Secure);
-            Assert.IsAssignableFrom<MemoryKeyValueStore>(stateStore.StateKeyValueStore);
         }
 
         [StoreLoader("test")]
@@ -62,10 +51,7 @@ namespace Libplanet.Tests.Store
         {
             NameValueCollection query = ParseQueryString(storeUri.Query);
             var store = new MemoryStore();
-            var stateStore = new TrieStateStore(
-                new MemoryKeyValueStore(),
-                query.GetBoolean("secure")
-            );
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             return (store, stateStore);
         }
     }

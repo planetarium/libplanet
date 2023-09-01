@@ -36,14 +36,10 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
         /// <see cref="MerkleTrie"/>.</param>
-        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in
-        /// secure mode.  If it is turned on, <see cref="MerkleTrie"/> internally stores hashed keys
-        /// instead of bare keys.  Keys will be hashed with SHA-256.</param>
         public MerkleTrie(
             IKeyValueStore keyValueStore,
-            HashDigest<SHA256> rootHash,
-            bool secure = false)
-            : this(keyValueStore, new HashNode(rootHash), secure)
+            HashDigest<SHA256> rootHash)
+            : this(keyValueStore, new HashNode(rootHash))
         {
         }
 
@@ -54,17 +50,13 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="root">The root node of <see cref="MerkleTrie"/>.  If it is
         /// <see langword="null"/>, it will be treated like empty trie.</param>
-        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
-        /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed
-        /// result from the given key as the key. Keys will be hashed with SHA-256.</param>
-        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null, bool secure = false)
+        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null)
         {
             // FIXME: It might be a good idea to have something like IReadOnlyKeyValueStore.
             KeyValueStore = keyValueStore;
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null
                 : root;
-            Secure = secure;
         }
 
         /// <inheritdoc cref="ITrie.Root"/>
@@ -75,9 +67,6 @@ namespace Libplanet.Store.Trie
 
         /// <inheritdoc cref="ITrie.Recorded"/>
         public bool Recorded => Root is null || KeyValueStore.Exists(new KeyBytes(Hash.ByteArray));
-
-        /// <inheritdoc cref="ITrie.Secure"/>
-        public bool Secure { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -91,15 +80,15 @@ namespace Libplanet.Store.Trie
 
             INode newRootNode = Insert(
                 Root,
-                new PathCursor(key, Secure),
+                new PathCursor(key),
                 new ValueNode(value),
                 true);
 
-            return new MerkleTrie(KeyValueStore, newRootNode, Secure);
+            return new MerkleTrie(KeyValueStore, newRootNode);
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, Secure));
+        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)

@@ -22,8 +22,6 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="stateKeyValueStore">The storage to store states. It used by
         /// <see cref="MerkleTrie"/> in internal.</param>
-        /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure mode.
-        /// <seealso cref="MerkleTrie(IKeyValueStore, INode?, bool)"/>.</param>
         public TrieStateStore(IKeyValueStore stateKeyValueStore)
         {
             StateKeyValueStore = stateKeyValueStore;

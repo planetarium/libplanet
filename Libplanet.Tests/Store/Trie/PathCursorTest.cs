@@ -13,23 +13,16 @@ namespace Libplanet.Tests.Store.Trie
         public void Constructor()
         {
             KeyBytes keyBytes = KeyBytes.FromHex("cfed4460");
-            var cursor = new PathCursor(keyBytes, false);
+            var cursor = new PathCursor(keyBytes);
             Assert.Equal(Nibbles.FromBytes(keyBytes.ByteArray), cursor.Nibbles);
             Assert.Equal(8, cursor.Length);
-            Assert.Equal(0, cursor.Offset);
-
-            cursor = new PathCursor(keyBytes, true);
-            ImmutableArray<byte> hash = ParseHexToImmutable(
-                "42b7a23ca82b1d195f73ac729f216074c7781af7bd808bea825e38556eca13a6");
-            Assert.Equal(Nibbles.FromBytes(hash), cursor.Nibbles);
-            Assert.Equal(64, cursor.Length);
             Assert.Equal(0, cursor.Offset);
         }
 
         [Fact]
         public void Next()
         {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
+            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
             Assert.Equal(0, cursor.Offset);
             Assert.Equal(8, cursor.RemainingNibbleLength);
             Assert.Equal((byte)0xc, cursor.NextNibble);
@@ -85,7 +78,7 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void CountCommonStartingNibbles()
         {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
+            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
             Assert.Equal(
                 0,
                 cursor.CountCommonStartingNibbles(new Nibbles(ImmutableArray<byte>.Empty)));
@@ -123,7 +116,7 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void RemainingNibblesStartWith()
         {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"), false);
+            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
             Assert.True(cursor.RemainingNibblesStartWith(
                 new Nibbles(ParseHexToImmutable("0c0f0e0d04"))));
             Assert.False(

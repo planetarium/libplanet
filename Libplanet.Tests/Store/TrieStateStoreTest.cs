@@ -29,12 +29,10 @@ namespace Libplanet.Tests.Store
 
         public static KeyBytes KeyQuux => new KeyBytes("quux");
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void GetStateRoot(bool secure)
+        [Fact]
+        public void GetStateRoot()
         {
-            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            var stateStore = new TrieStateStore(_stateKeyValueStore);
             ITrie empty = stateStore.GetStateRoot(null);
             Assert.True(empty.Recorded);
             Assert.Null(empty.Get(new[] { KeyFoo })[0]);
@@ -62,10 +60,8 @@ namespace Libplanet.Tests.Store
             Assert.Null(found.Get(new[] { KeyQuux })[0]);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void PruneStates(bool secure)
+        [Fact]
+        public void PruneStates()
         {
             var values = ImmutableDictionary<KeyBytes, IValue>.Empty
                 .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
@@ -80,7 +76,7 @@ namespace Libplanet.Tests.Store
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
 
-            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            var stateStore = new TrieStateStore(_stateKeyValueStore);
             ITrie first = stateStore.Commit(null, values);
 
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
@@ -99,10 +95,8 @@ namespace Libplanet.Tests.Store
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void CopyStates(bool secure)
+        [Fact]
+        public void CopyStates()
         {
             var values = ImmutableDictionary<KeyBytes, IValue>.Empty
                 .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
@@ -117,10 +111,10 @@ namespace Libplanet.Tests.Store
                         .Add("binary", GetRandomBytes(4096))
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
 
-            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+            var stateStore = new TrieStateStore(_stateKeyValueStore);
 
             IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
-            var targetStateStore = new TrieStateStore(targetStateKeyValueStore, secure);
+            var targetStateStore = new TrieStateStore(targetStateKeyValueStore);
             ITrie trie = stateStore.Commit(null, values);
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
