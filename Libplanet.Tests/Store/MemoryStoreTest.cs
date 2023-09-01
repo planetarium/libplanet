@@ -22,11 +22,9 @@ namespace Libplanet.Tests.Store
         protected override Func<StoreFixture> FxConstructor { get; }
 
         [Theory]
-        [InlineData("memory:", false)]
-        [InlineData("memory://", false)]
-        [InlineData("memory://?secure=false", false)]
-        [InlineData("memory://?secure=true", true)]
-        public void Loader(string uri, bool secure)
+        [InlineData("memory:")]
+        [InlineData("memory://")]
+        public void Loader(string uri)
         {
             (IStore Store, IStateStore StateStore)? pair =
                 StoreLoaderAttribute.LoadStore(new Uri(uri));
@@ -34,7 +32,6 @@ namespace Libplanet.Tests.Store
             IStore store = pair.Value.Store;
             Assert.IsAssignableFrom<MemoryStore>(store);
             var stateStore = (TrieStateStore)pair.Value.StateStore;
-            Assert.Equal(secure, stateStore.Secure);
             Assert.IsAssignableFrom<MemoryKeyValueStore>(stateStore.StateKeyValueStore);
         }
 

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Bencodex.Types;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -16,21 +14,6 @@ namespace Libplanet.Tests.Store
         Justification = "Labels purpose to distinguish " + nameof(IStateStore) + " impls.")]
     public class StateStoreExtensionsTest
     {
-        public static (string, IStateStore)[] StateStoreImpls => new (string, IStateStore)[]
-        {
-            (
-                "TrieStateStore(secure: false)",
-                new TrieStateStore(new DefaultKeyValueStore(null), false)
-            ),
-            (
-                "TrieStateStore(secure: true)",
-                new TrieStateStore(new DefaultKeyValueStore(null), true)
-            ),
-        };
-
-        public static IEnumerable<object[]> StateStores =>
-            StateStoreImpls.Select(pair => new object[] { pair.Item1, pair.Item2 });
-
         public static IImmutableDictionary<KeyBytes, IValue> ZeroDelta =>
             ImmutableDictionary<KeyBytes, IValue>.Empty;
 
@@ -48,10 +31,10 @@ namespace Libplanet.Tests.Store
             .Add(KeyFoo, (Text)"ABC")
             .Add(KeyBaz, (Text)"ghi");
 
-        [Theory]
-        [MemberData(nameof(StateStores))]
-        public void Commit(string label, IStateStore stateStore)
+        [Fact]
+        public void Commit()
         {
+            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie a = stateStore.Commit(null, DeltaA);
             Assert.True(a.Recorded);
             AssertBencodexEqual((Text)"abc", a.Get(new[] { KeyFoo })[0]);
@@ -71,10 +54,10 @@ namespace Libplanet.Tests.Store
             AssertBencodexEqual((Text)"ghi", b.Get(new[] { KeyBaz })[0]);
         }
 
-        [Theory]
-        [MemberData(nameof(StateStores))]
-        public void GetState(string label, IStateStore stateStore)
+        [Fact]
+        public void GetState()
         {
+            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie a = stateStore.Commit(null, DeltaA);
             ITrie b = stateStore.Commit(a.Hash, DeltaB);
 
@@ -93,10 +76,10 @@ namespace Libplanet.Tests.Store
                 (Text)"ghi", stateStore.GetStates(b.Hash, new[] { new KeyBytes("baz") })[0]);
         }
 
-        [Theory]
-        [MemberData(nameof(StateStores))]
-        public void ContainsStateRoot(string label, IStateStore stateStore)
+        [Fact]
+        public void ContainsStateRoot()
         {
+            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
             ITrie a = stateStore.Commit(null, DeltaA);
             Assert.True(stateStore.ContainsStateRoot(a.Hash));
         }

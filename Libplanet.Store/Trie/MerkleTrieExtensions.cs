@@ -29,8 +29,6 @@ namespace Libplanet.Store.Trie
         {
             foreach (var pair in origin.IterateValues())
             {
-                // FIXME: Path returned is a real path, but Get() expects an original path.
-                // This would not work if secure option is used.
                 IValue? otherValue = other.Get(pair.Path);
                 if (otherValue is null || !pair.Value.Equals(otherValue))
                 {

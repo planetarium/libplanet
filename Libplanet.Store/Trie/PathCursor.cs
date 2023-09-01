@@ -14,13 +14,8 @@ namespace Libplanet.Store.Trie
 
         public readonly int Offset;
 
-        public PathCursor(in KeyBytes keyBytes, bool secure)
-            : this(
-                Nibbles.FromBytes(
-                    secure
-                        ? HashDigest<SHA256>.DeriveFrom(keyBytes.ByteArray).ByteArray
-                        : keyBytes.ByteArray),
-                0)
+        public PathCursor(in KeyBytes keyBytes)
+            : this(Nibbles.FromBytes(keyBytes.ByteArray), 0)
         {
         }
 

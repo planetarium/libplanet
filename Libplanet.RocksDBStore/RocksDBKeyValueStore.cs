@@ -14,8 +14,6 @@ namespace Libplanet.RocksDBStore
     /// <item><description><c>rocksdb+file:///var/data/planet/</c></description></item>
     /// <item><description><c>rocksdb+file:///c:/Users/john/AppData/Local/planet/</c></description>
     /// </item>
-    /// <item><description><c>rocksdb+file:///var/data/planet/?secure=true</c>
-    /// (trie keys are hashed)</description></item>
     /// </list>
     /// <para>The following query string parameters are supported:</para>
     /// <list type="table">
@@ -65,12 +63,6 @@ namespace Libplanet.RocksDBStore
     /// <term><c>states-dir</c></term>
     /// <description>Corresponds to <see cref="RocksDBKeyValueStore(string)"/>'s <c>path</c>
     /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>secure</c></term>
-    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="Libplanet.Store.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s
-    /// <c>secure</c> parameter.</description>
     /// </item>
     /// </list>
     /// </summary>

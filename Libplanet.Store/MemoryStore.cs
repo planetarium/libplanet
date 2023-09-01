@@ -24,7 +24,6 @@ namespace Libplanet.Store
     /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
     /// <list type="bullet">
     /// <item><description><c>memory:</c></description></item>
-    /// <item><description><c>memory://?secure=true</c> (trie keys are hashed)</description></item>
     /// </list>
     /// </summary>
     public sealed class MemoryStore : IStore
@@ -305,10 +304,7 @@ namespace Libplanet.Store
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
             var store = new MemoryStore();
-            var stateStore = new TrieStateStore(
-                new MemoryKeyValueStore(),
-                query.GetBoolean("secure")
-            );
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             return (store, stateStore);
         }
     }

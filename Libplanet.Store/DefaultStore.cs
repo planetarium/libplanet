@@ -34,8 +34,6 @@ namespace Libplanet.Store
     /// <item><description><c>default+file:///var/data/planet/</c></description></item>
     /// <item><description><c>default+file:///c:/Users/john/AppData/Local/planet/</c></description>
     /// </item>
-    /// <item><description><c>default+file:///var/data/planet/?secure=true</c>
-    /// (trie keys are hashed)</description></item>
     /// </list>
     /// <para>The following query string parameters are supported:</para>
     /// <list type="table">
@@ -76,11 +74,6 @@ namespace Libplanet.Store
     /// <term><c>states-dir</c></term>
     /// <description>Corresponds to <see cref="DefaultKeyValueStore(string)"/>'s <c>path</c>
     /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>secure</c></term>
-    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="TrieStateStore(IKeyValueStore, bool)"/>'s <c>secure</c> parameter.</description>
     /// </item>
     /// </list>
     /// </summary>
@@ -770,7 +763,6 @@ namespace Libplanet.Store
             bool flush = query.GetBoolean("flush", true);
             bool readOnly = query.GetBoolean("readonly");
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
-            bool secure = query.GetBoolean("secure");
             var store = new DefaultStore(
                 storeUri.LocalPath,
                 journal,
@@ -778,12 +770,9 @@ namespace Libplanet.Store
                 blockCacheSize,
                 txCacheSize,
                 flush,
-                readOnly
-            );
+                readOnly);
             var stateStore = new TrieStateStore(
-                new DefaultKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)),
-                secure
-            );
+                new DefaultKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)));
             return (store, stateStore);
         }
 

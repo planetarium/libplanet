@@ -30,8 +30,6 @@ namespace Libplanet.RocksDBStore
     /// <item><description><c>rocksdb+file:///var/data/planet/</c></description></item>
     /// <item><description><c>rocksdb+file:///c:/Users/john/AppData/Local/planet/</c></description>
     /// </item>
-    /// <item><description><c>rocksdb+file:///var/data/planet/?secure=true</c>
-    /// (trie keys are hashed)</description></item>
     /// </list>
     /// <para>The following query string parameters are supported:</para>
     /// <list type="table">
@@ -81,12 +79,6 @@ namespace Libplanet.RocksDBStore
     /// <term><c>states-dir</c></term>
     /// <description>Corresponds to <see cref="RocksDBKeyValueStore(string)"/>'s <c>path</c>
     /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>secure</c></term>
-    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s <c>secure</c>
-    /// parameter.</description>
     /// </item>
     /// </list>
     /// </summary>
@@ -1384,7 +1376,6 @@ namespace Libplanet.RocksDBStore
             int dbConnectionCacheSize = query.GetInt32("connection-cache", 100);
             bool @readonly = query.GetBoolean("readonly", false);
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
-            bool secure = query.GetBoolean("secure");
             var store = new RocksDBStore(
                 storeUri.LocalPath,
                 blockCacheSize,
@@ -1395,11 +1386,10 @@ namespace Libplanet.RocksDBStore
                 txEpochUnitSeconds,
                 blockEpochUnitSeconds,
                 dbConnectionCacheSize,
-                @readonly
-            );
+                @readonly);
             string statesDirPath = Path.Combine(storeUri.LocalPath, statesKvPath);
             var stateStore = new TrieStateStore(
-                new RocksDBKeyValueStore(statesDirPath, @readonly), secure);
+                new RocksDBKeyValueStore(statesDirPath, @readonly));
             return (store, stateStore);
         }
 

@@ -13,7 +13,6 @@ namespace Libplanet.Store.Trie
     /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
     /// <list type="bullet">
     /// <item><description><c>memory:</c></description></item>
-    /// <item><description><c>memory://?secure=true</c> (trie keys are hashed)</description></item>
     /// </list>
     /// </summary>
     public sealed class MemoryKeyValueStore : IKeyValueStore
