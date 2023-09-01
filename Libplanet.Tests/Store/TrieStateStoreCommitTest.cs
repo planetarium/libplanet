@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Store
             Assert.True(keyValueStore.Exists(new KeyBytes(hashAfterCommitOnce.ByteArray)));
 
             trie = stateStore.GetStateRoot(hashAfterCommitOnce);
-            Assert.Equal(2, ((MerkleTrie)trie).ListAllStates().Count());
+            Assert.Equal(2, trie.IterateValues().Count());
             Assert.Equal(new Text("2c73"), trie.Get(new KeyBytes(new byte[] { 0x2c, 0x73 })));
             Assert.Equal(new Text("234f"), trie.Get(new KeyBytes(new byte[] { 0x23, 0x4f })));
         }

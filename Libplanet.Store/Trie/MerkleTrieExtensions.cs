@@ -27,30 +27,16 @@ namespace Libplanet.Store.Trie
             this MerkleTrie origin,
             MerkleTrie other)
         {
-            foreach (var pair in origin.ListAllStates())
+            foreach (var pair in origin.IterateValues())
             {
-                IValue? otherValue = other.Get(new[] { pair.Key })[0];
+                // FIXME: Path returned is a real path, but Get() expects an original path.
+                // This would not work if secure option is used.
+                IValue? otherValue = other.Get(pair.Path);
                 if (otherValue is null || !pair.Value.Equals(otherValue))
                 {
-                    yield return (pair.Key, pair.Value, otherValue);
+                    yield return (pair.Path, pair.Value, otherValue);
                 }
             }
-        }
-
-        /// <summary>
-        /// Lists the all states key and the all states in the given <paramref name="merkleTrie"/>.
-        /// </summary>
-        /// <param name="merkleTrie">A trie to discover.</param>
-        /// <returns>All state keys and the all states.</returns>
-        public static IEnumerable<KeyValuePair<KeyBytes, IValue>> ListAllStates(
-            this MerkleTrie merkleTrie)
-        {
-            return merkleTrie.IterateNodes()
-                .Where(pair => pair.Node is ValueNode)
-                .Select(pair =>
-                    new KeyValuePair<KeyBytes, IValue>(
-                        pair.Path.ToKeyBytes(),
-                        ((ValueNode)pair.Node).Value));
         }
     }
 }

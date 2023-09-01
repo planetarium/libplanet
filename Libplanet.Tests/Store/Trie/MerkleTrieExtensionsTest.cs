@@ -38,13 +38,13 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
-        public void ListAllStates()
+        public void IterateValues()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            MerkleTrie trie = (MerkleTrie)stateStore.GetStateRoot(null);
+            ITrie trie = stateStore.GetStateRoot(null);
 
-            trie = (MerkleTrie)trie
+            trie = trie
                 .Set(new KeyBytes(0x01), Null.Value)
                 .Set(new KeyBytes(0x02), Null.Value)
                 .Set(new KeyBytes(0x03), Null.Value)
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Store.Trie
                 .Set(new KeyBytes(0xbe, 0xef), Dictionary.Empty);
 
             Dictionary<KeyBytes, IValue> states =
-                trie.ListAllStates().ToDictionary(pair => pair.Key, pair => pair.Value);
+                trie.IterateValues().ToDictionary(pair => pair.Path, pair => pair.Value);
             Assert.Equal(5, states.Count);
             Assert.Equal(Null.Value, states[new KeyBytes(0x01)]);
             Assert.Equal(Null.Value, states[new KeyBytes(0x02)]);
@@ -60,8 +60,8 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(Null.Value, states[new KeyBytes(0x04)]);
             Assert.Equal(Dictionary.Empty, states[new KeyBytes(0xbe, 0xef)]);
 
-            trie = (MerkleTrie)stateStore.Commit(trie);
-            states = trie.ListAllStates().ToDictionary(pair => pair.Key, pair => pair.Value);
+            trie = stateStore.Commit(trie);
+            states = trie.IterateValues().ToDictionary(pair => pair.Path, pair => pair.Value);
             Assert.Equal(5, states.Count);
             Assert.Equal(Null.Value, states[new KeyBytes(0x01)]);
             Assert.Equal(Null.Value, states[new KeyBytes(0x02)]);

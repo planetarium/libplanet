@@ -267,7 +267,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key0000, value0000);
             trie = stateStore.Commit(trie);
 
-            Assert.Equal(2, ((MerkleTrie)trie).ListAllStates().Count());
+            Assert.Equal(2, trie.IterateValues().Count());
             Assert.Equal(value00, trie.Get(key00));
             Assert.Equal(value0000, trie.Get(key0000));
         }
@@ -289,7 +289,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key00, value00);
             trie = stateStore.Commit(trie);
 
-            Assert.Equal(3, ((MerkleTrie)trie).ListAllStates().Count());
+            Assert.Equal(3, trie.IterateValues().Count());
             Assert.Equal(value00, trie.Get(key00));
             Assert.Equal(value0000, trie.Get(key0000));
             Assert.Equal(value0010, trie.Get(key0010));
