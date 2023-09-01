@@ -96,5 +96,13 @@ namespace Libplanet.Store.Trie
         /// </para>
         /// </remarks>
         INode? GetNode(Nibbles nibbles);
+
+        /// <summary>
+        /// Iterates and lists every <see cref="INode"/> along with its respective path in
+        /// <see cref="Nibbles"/>.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="INode"/>s
+        /// in no particular order.</returns>
+        IEnumerable<(Nibbles Path, INode Node)> IterateNodes();
     }
 }

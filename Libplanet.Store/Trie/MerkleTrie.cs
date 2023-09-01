@@ -111,20 +111,20 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
         public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
 
-        public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
+        public IEnumerable<(Nibbles Path, INode Node)> IterateNodes()
         {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<(INode, Nibbles)>();
-            queue.Enqueue((Root, Nibbles.Empty));
+            var queue = new Queue<(Nibbles, INode)>();
+            queue.Enqueue((Nibbles.Empty, Root));
 
             while (queue.Count > 0)
             {
-                (INode node, Nibbles path) = queue.Dequeue();
-                yield return (node, path);
+                (Nibbles path, INode node) = queue.Dequeue();
+                yield return (path, node);
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -133,13 +133,13 @@ namespace Libplanet.Store.Trie
                             INode? child = fullNode.Children[index];
                             if (!(child is null))
                             {
-                                queue.Enqueue((child, path.Add((byte)index)));
+                                queue.Enqueue((path.Add((byte)index), child));
                             }
                         }
 
                         if (!(fullNode.Value is null))
                         {
-                            queue.Enqueue((fullNode.Value, path));
+                            queue.Enqueue((path, fullNode.Value));
                         }
 
                         break;
@@ -147,15 +147,13 @@ namespace Libplanet.Store.Trie
                     case ShortNode shortNode:
                         if (!(shortNode.Value is null))
                         {
-                            queue.Enqueue((
-                                    shortNode.Value,
-                                    path.AddRange(shortNode.Key)));
+                            queue.Enqueue((path.AddRange(shortNode.Key), shortNode.Value));
                         }
 
                         break;
 
                     case HashNode hashNode:
-                        queue.Enqueue((UnhashNode(hashNode), path));
+                        queue.Enqueue((path, UnhashNode(hashNode)));
                         break;
                 }
             }
