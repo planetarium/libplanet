@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "bgNv6ml+EzTI6a02lxrBoq66RUWxrkoIXnCIiYl0lh0="
+          "hash": "IhpV5unnQoZQ0UKe2npAtlxJeygZdn/q90x24v8hR/0="
         }
       },
       "is_incremental": false,
@@ -3141,7 +3141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html",
-          "hash": "kEedM1kkABEsjrNRZh6x7s/kXKNiCjk/SKYlSuzPBKE="
+          "hash": "te3GJU9aRoY1nEq+zsmd5XgDo+pGn4nzZiwGA2Ya05M="
         }
       },
       "is_incremental": false,
@@ -3153,7 +3153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.RocksDBStore.html",
-          "hash": "EijHS8lqBT5yJgvfPZgfHu/nyYb59pGHJumJ8lMc5eE="
+          "hash": "kdzQcDX+m/fgQfWVHfmiwwyHfjVHmIBnYdYI67noOu4="
         }
       },
       "is_incremental": false,
@@ -3165,7 +3165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.RocksDBStore.html",
-          "hash": "V4jZJVaSA2CI6t0+Bfyns/LohFIl0g2Vyysn1kvAZCw="
+          "hash": "ILfGd5jHZuCbgUPlI2jYAMFy0lneMUzi+vYdYQGWzY8="
         }
       },
       "is_incremental": false,
@@ -3237,7 +3237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.DefaultStore.html",
-          "hash": "0bVZbjnzl8Zg69XxrlOvJwdeXgHNfpdd8+y416cbvKM="
+          "hash": "xlo6qYoIZwMhmYJQTy4lieWLUH0V64/UrdOp+tzieYw="
         }
       },
       "is_incremental": false,
@@ -3273,7 +3273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.MemoryStore.html",
-          "hash": "qNVIB0GXpaCddWkjfgjyy3nylGMng9/fqo77XJU2+iA="
+          "hash": "/ceiObXBpjhh8bN9RqL3oDpuv3s2K3ZSmMd1wJjl238="
         }
       },
       "is_incremental": false,
@@ -3345,7 +3345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.DefaultKeyValueStore.html",
-          "hash": "ofBPSc3t537G070erccqtB92oj6dMhsVdm+XhZf9oL0="
+          "hash": "oGz49sX1As9LArO0Ua/vCcED+4XToWEgzZ+XyA4ReEU="
         }
       },
       "is_incremental": false,
@@ -3369,7 +3369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.ITrie.html",
-          "hash": "/gaEeDpOWXh/q/FUj97cHH3bwNs8qhOuYFfsguXYDMA="
+          "hash": "MGGs+qqzI0nxdlcXBJDd56TkCBFVWUz0Z0Fzs+Z0ZK4="
         }
       },
       "is_incremental": false,
@@ -3405,7 +3405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MemoryKeyValueStore.html",
-          "hash": "Q6XTG8TahrzPGS4UbOVB4NiHQFstbq5m3LAhxe/6Tns="
+          "hash": "Geb2UrYOHO0xW5VVcQhR6Gw6zPm//Sky2pmGbqAScuI="
         }
       },
       "is_incremental": false,
@@ -3417,7 +3417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
-          "hash": "Xf5/wf1yNmy37OEZGLxl6eUzATtFocwd6IaaJC3gZSc="
+          "hash": "soHpb4NxiBh/gzJlUwDA0dzeyXkRLbV5bzpmgFhYWXk="
         }
       },
       "is_incremental": false,
@@ -3561,7 +3561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.PathCursor.html",
-          "hash": "54tBveXavt7WEzDRjwlgAoLG1yKqTsQVPZOc6QojS90="
+          "hash": "Hm0qy+zo8OPFThYLUjwyd6uGFE6NTW+ZPbTe/8XUcjw="
         }
       },
       "is_incremental": false,
@@ -3585,7 +3585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.html",
-          "hash": "oTVrUzfHCJidgHf4au+wrVUuGMCoC+Qv8Ig4AB5mPSA="
+          "hash": "RsEH0P+MrNjWwrCs9qXX2IafV2wFV3HgDbb+cq0AnMg="
         }
       },
       "is_incremental": false,
@@ -3597,7 +3597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.TrieStateStore.html",
-          "hash": "WENLqJBFL/w2BnEj0v2Wexr6Na80t8l/pVNptezPMp0="
+          "hash": "0eqWrokU7kZv0g/nhFFApKv3iPzegKNpU+rC/uRNGpY="
         }
       },
       "is_incremental": false,
@@ -3609,7 +3609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.html",
-          "hash": "5xzDoohKvLkM2TGn54SEtQtQhiekM0/DnYMb8zgvjDM="
+          "hash": "MzE1unry8mKdARWiEsG57jpxjFf1BY/2P/l4fViJOmU="
         }
       },
       "is_incremental": false,

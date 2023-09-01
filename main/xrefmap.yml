@@ -22713,19 +22713,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Root
   nameWithType: ITrie.Root
-- uid: Libplanet.Store.Trie.ITrie.Secure
-  name: Secure
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure
-  commentId: P:Libplanet.Store.Trie.ITrie.Secure
-  fullName: Libplanet.Store.Trie.ITrie.Secure
-  nameWithType: ITrie.Secure
-- uid: Libplanet.Store.Trie.ITrie.Secure*
-  name: Secure
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure_
-  commentId: Overload:Libplanet.Store.Trie.ITrie.Secure
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.ITrie.Secure
-  nameWithType: ITrie.Secure
 - uid: Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)
   name: Set(in KeyBytes, IValue)
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_
@@ -23064,21 +23051,21 @@ references:
   commentId: T:Libplanet.Store.Trie.MerkleTrie
   fullName: Libplanet.Store.Trie.MerkleTrie
   nameWithType: MerkleTrie
-- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)
-  name: MerkleTrie(IKeyValueStore, HashDigest<SHA256>, Boolean)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)
-  name.vb: MerkleTrie(IKeyValueStore, HashDigest(Of SHA256), Boolean)
-  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Boolean)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Boolean)
-  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest<SHA256>, Boolean)
-  nameWithType.vb: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest(Of SHA256), Boolean)
-- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)
-  name: MerkleTrie(IKeyValueStore, INode, Boolean)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_System_Boolean_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)
-  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.Nodes.INode, System.Boolean)
-  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, INode, Boolean)
+- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: MerkleTrie(IKeyValueStore, HashDigest<SHA256>)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: MerkleTrie(IKeyValueStore, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest<SHA256>)
+  nameWithType.vb: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest(Of SHA256))
+- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode)
+  name: MerkleTrie(IKeyValueStore, INode)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode)
+  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.Nodes.INode)
+  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, INode)
 - uid: Libplanet.Store.Trie.MerkleTrie.#ctor*
   name: MerkleTrie
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_
@@ -23192,19 +23179,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Root
   nameWithType: MerkleTrie.Root
-- uid: Libplanet.Store.Trie.MerkleTrie.Secure
-  name: Secure
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Secure
-  commentId: P:Libplanet.Store.Trie.MerkleTrie.Secure
-  fullName: Libplanet.Store.Trie.MerkleTrie.Secure
-  nameWithType: MerkleTrie.Secure
-- uid: Libplanet.Store.Trie.MerkleTrie.Secure*
-  name: Secure
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Secure_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Secure
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrie.Secure
-  nameWithType: MerkleTrie.Secure
 - uid: Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)
   name: Set(in KeyBytes, IValue)
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_
@@ -24026,15 +24000,15 @@ references:
   commentId: T:Libplanet.Store.Trie.PathCursor
   fullName: Libplanet.Store.Trie.PathCursor
   nameWithType: PathCursor
-- uid: Libplanet.Store.Trie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@,System.Boolean)
-  name: PathCursor(in KeyBytes, Boolean)
-  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor__ctor_Libplanet_Store_Trie_KeyBytes__System_Boolean_
-  commentId: M:Libplanet.Store.Trie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@,System.Boolean)
-  name.vb: PathCursor(ByRef KeyBytes, Boolean)
-  fullName: Libplanet.Store.Trie.PathCursor.PathCursor(in Libplanet.Store.Trie.KeyBytes, System.Boolean)
-  fullName.vb: Libplanet.Store.Trie.PathCursor.PathCursor(ByRef Libplanet.Store.Trie.KeyBytes, System.Boolean)
-  nameWithType: PathCursor.PathCursor(in KeyBytes, Boolean)
-  nameWithType.vb: PathCursor.PathCursor(ByRef KeyBytes, Boolean)
+- uid: Libplanet.Store.Trie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@)
+  name: PathCursor(in KeyBytes)
+  href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor__ctor_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.PathCursor.#ctor(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: PathCursor(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.PathCursor.PathCursor(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.PathCursor.PathCursor(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: PathCursor.PathCursor(in KeyBytes)
+  nameWithType.vb: PathCursor.PathCursor(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.PathCursor.#ctor(Libplanet.Store.Trie.Nibbles@)
   name: PathCursor(in Nibbles)
   href: api/Libplanet.Store.Trie.PathCursor.html#Libplanet_Store_Trie_PathCursor__ctor_Libplanet_Store_Trie_Nibbles__
@@ -24223,12 +24197,12 @@ references:
   commentId: T:Libplanet.Store.TrieStateStore
   fullName: Libplanet.Store.TrieStateStore
   nameWithType: TrieStateStore
-- uid: Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,System.Boolean)
-  name: TrieStateStore(IKeyValueStore, Boolean)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_
-  commentId: M:Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore,System.Boolean)
-  fullName: Libplanet.Store.TrieStateStore.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, System.Boolean)
-  nameWithType: TrieStateStore.TrieStateStore(IKeyValueStore, Boolean)
+- uid: Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore)
+  name: TrieStateStore(IKeyValueStore)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_
+  commentId: M:Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore)
+  fullName: Libplanet.Store.TrieStateStore.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore)
+  nameWithType: TrieStateStore.TrieStateStore(IKeyValueStore)
 - uid: Libplanet.Store.TrieStateStore.#ctor*
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_
@@ -24310,19 +24284,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.PruneStates
   nameWithType: TrieStateStore.PruneStates
-- uid: Libplanet.Store.TrieStateStore.Secure
-  name: Secure
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Secure
-  commentId: P:Libplanet.Store.TrieStateStore.Secure
-  fullName: Libplanet.Store.TrieStateStore.Secure
-  nameWithType: TrieStateStore.Secure
-- uid: Libplanet.Store.TrieStateStore.Secure*
-  name: Secure
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Secure_
-  commentId: Overload:Libplanet.Store.TrieStateStore.Secure
-  isSpec: "True"
-  fullName: Libplanet.Store.TrieStateStore.Secure
-  nameWithType: TrieStateStore.Secure
 - uid: Libplanet.Store.TrieStateStore.StateKeyValueStore
   name: StateKeyValueStore
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_StateKeyValueStore

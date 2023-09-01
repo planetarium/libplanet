@@ -75,9 +75,16 @@ method.  [<a href="https://github.com/planetarium/libplanet/issues/3362">#3362</
 <li>(Libplanet.Store) Changed <code>KeyBytes</code> to no longer implement
 <code>IEquatable&lt;byte[]&gt;</code> and <code>IEquatable&lt;ImmutableArray&lt;byte&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3402">#3402</a>]</li>
 <li>(Libplanet.Store) Added <code>ITrie.GetNode()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3401">#3401</a>]</li>
-<li>(Libplanet.Store) Added <code>ITrie.Secure</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3405">#3405</a>]</li>
 <li>(Libplanet.Store) Added <code>ITrie.IterateValues()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3405">#3405</a>]</li>
 <li>(Libplanet.Store) Added <code>ITrie.IterateNodes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3405">#3405</a>]</li>
+<li>(Libplanet.Store) Removed <code>Secure</code> option from <code>TrieStateStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3407">#3407</a>]
+<ul>
+<li>Removed <code>secure</code> parameter from <code>TrieStateStore()</code>.</li>
+<li>Removed <code>ITrie.Secure</code> property.</li>
+<li>Removed <code>secure</code> parameter from <code>MerkleTrie()</code>.</li>
+<li>Removed <code>secure</code> parameter from <code>PathCursor()</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

@@ -82,8 +82,7 @@ This stores data in the RocksDB.</p>
 <p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
 <see cref="!:TrieStateStore"></see> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
 using <see cref="!:StoreLoaderAttribute.LoadStore(Uri)"></see>, e.g.:</p>
-<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li><li><code>rocksdb+file:///var/data/planet/?secure=true</code>
-(trie keys are hashed)</li></ul>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
 <table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
 <see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
@@ -96,9 +95,7 @@ using <see cref="!:StoreLoaderAttribute.LoadStore(Uri)"></see>, e.g.:</p>
 <code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
 <see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
 <code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
-parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_">TrieStateStore(IKeyValueStore, Boolean)</a>&apos;s
-<code>secure</code> parameter.</td></tr></tbody></table>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </section>
       <h4><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a></h4>
       <section><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
@@ -107,8 +104,7 @@ This stores data in the RocksDB with multiple partitions under the hood.</p>
 <p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
-<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li><li><code>rocksdb+file:///var/data/planet/?secure=true</code>
-(trie keys are hashed)</li></ul>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
 <table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
 <see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
@@ -121,9 +117,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 <code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
 <see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
 <code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
-parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_">TrieStateStore(IKeyValueStore, Boolean)</a>&apos;s <code>secure</code>
-parameter.</td></tr></tbody></table>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </section>
 </article>
           </div>

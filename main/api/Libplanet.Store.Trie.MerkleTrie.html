@@ -119,19 +119,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie__ctor_" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor*"></a>
-  <h4 id="Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)">MerkleTrie(IKeyValueStore, HashDigest&lt;SHA256&gt;, Boolean)</h4>
+  <h4 id="Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})">MerkleTrie(IKeyValueStore, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MerkleTrie(IKeyValueStore keyValueStore, HashDigest&lt;SHA256&gt; rootHash, bool secure = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public MerkleTrie(IKeyValueStore keyValueStore, HashDigest&lt;SHA256&gt; rootHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,31 +157,23 @@ nodes.</p>
 <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
 </td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">secure</span></td>
-        <td><p>Whether to use <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> in
-secure mode.  If it is turned on, <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> internally stores hashed keys
-instead of bare keys.  Keys will be hashed with SHA-256.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Store.Trie.Nodes.INode%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.%23ctor(Libplanet.Store.Trie.IKeyValueStore%2CLibplanet.Store.Trie.Nodes.INode)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L60">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie__ctor_" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor*"></a>
-  <h4 id="Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_System_Boolean_" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,System.Boolean)">MerkleTrie(IKeyValueStore, INode, Boolean)</h4>
+  <h4 id="Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_" data-uid="Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode)">MerkleTrie(IKeyValueStore, INode)</h4>
   <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MerkleTrie(IKeyValueStore keyValueStore, INode root = null, bool secure = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public MerkleTrie(IKeyValueStore keyValueStore, INode root = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,14 +197,6 @@ nodes.</p>
         <td><span class="parametername">root</span></td>
         <td><p>The root node of <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.  If it is
 <span class="xref">null</span>, it will be treated like empty trie.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">secure</span></td>
-        <td><p>Whether to use <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> in secure
-mode. If it is true, <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> will stores the value with the hashed
-result from the given key as the key. Keys will be hashed with SHA-256.</p>
 </td>
       </tr>
     </tbody>
@@ -257,7 +241,7 @@ result from the given key as the key. Keys will be hashed with SHA-256.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Hash_" data-uid="Libplanet.Store.Trie.MerkleTrie.Hash*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Hash" data-uid="Libplanet.Store.Trie.MerkleTrie.Hash">Hash</h4>
@@ -297,7 +281,7 @@ that is <em>never recorded</em>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Recorded.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Recorded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L69">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Recorded_" data-uid="Libplanet.Store.Trie.MerkleTrie.Recorded*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Recorded" data-uid="Libplanet.Store.Trie.MerkleTrie.Recorded">Recorded</h4>
@@ -332,7 +316,7 @@ as recorded.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Root.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Root%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L63">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Root_" data-uid="Libplanet.Store.Trie.MerkleTrie.Root*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Root" data-uid="Libplanet.Store.Trie.MerkleTrie.Root">Root</h4>
@@ -364,56 +348,6 @@ the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> is empty.  
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a></div>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Secure.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Secure%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L80">View Source</a>
-  </span>
-  <a id="Libplanet_Store_Trie_MerkleTrie_Secure_" data-uid="Libplanet.Store.Trie.MerkleTrie.Secure*"></a>
-  <h4 id="Libplanet_Store_Trie_MerkleTrie_Secure" data-uid="Libplanet.Store.Trie.MerkleTrie.Secure">Secure</h4>
-  <div class="markdown level1 summary"><p>Whether values are stored at hashed location or not.  When referring to paths in
-<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> context, we have the following:</p>
-<ul><li>
-        Original path: A path that a user wishes to store a value at.
-        This is what is used to access values via <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set(in KeyBytes, IValue)</a> and
-<a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_">Get(KeyBytes)</a>.
-</li><li>
-    Secure path: A hashed path of an original path.  If <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure">Secure</a>
-    is <span class="xref">true</span>, the actual location of a value accessed
-    is obfuscated internally.
-</li><li>
-    Real path: A path that may be an original path or a secure path
-    depending on the value of <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure">Secure</a>.
-</li></ul>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Secure { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Store_Trie_MerkleTrie_Secure_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set</a>(<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">Bencodex.Types.IValue</span>)</div>
-      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_">Get</a>(<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>)</div>
-      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__">Get</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;)</div>
-  </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -421,7 +355,7 @@ the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> is empty.  
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Get_Libplanet_Store_Trie_KeyBytes_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Get(Libplanet.Store.Trie.KeyBytes)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L91">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Get_" data-uid="Libplanet.Store.Trie.MerkleTrie.Get*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Get_Libplanet_Store_Trie_KeyBytes_" data-uid="Libplanet.Store.Trie.MerkleTrie.Get(Libplanet.Store.Trie.KeyBytes)">Get(KeyBytes)</h4>
@@ -472,7 +406,7 @@ value is represented as <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Get(System.Collections.Generic.IReadOnlyList%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L105">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Get_" data-uid="Libplanet.Store.Trie.MerkleTrie.Get*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.MerkleTrie.Get(System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})">Get(IReadOnlyList&lt;KeyBytes&gt;)</h4>
@@ -524,7 +458,7 @@ values are represented as <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L114">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_GetNode_" data-uid="Libplanet.Store.Trie.MerkleTrie.GetNode*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles_" data-uid="Libplanet.Store.Trie.MerkleTrie.GetNode(Libplanet.Store.Trie.Nibbles)">GetNode(Nibbles)</h4>
@@ -549,8 +483,7 @@ from <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_
       <tr>
         <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
         <td><span class="parametername">nibbles</span></td>
-        <td><p>The path to check.  This must be the <em>real</em> path,
-which depends on <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure">Secure</a>.</p>
+        <td><p>The path to check.</p>
 </td>
       </tr>
     </tbody>
@@ -604,16 +537,12 @@ of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> is enc
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Store_Trie_MerkleTrie_GetNode_Libplanet_Store_Trie_Nibbles__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure">Secure</a></div>
-  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_IterateNodes.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.IterateNodes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L128">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_IterateNodes_" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateNodes*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_IterateNodes" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateNodes">IterateNodes()</h4>
@@ -645,13 +574,12 @@ of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> is enc
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_IterateValues.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.IterateValues%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L106">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_IterateValues_" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateValues*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_IterateValues" data-uid="Libplanet.Store.Trie.MerkleTrie.IterateValues">IterateValues()</h4>
   <div class="markdown level1 summary"><p>Iterates and every stored <span class="xref">Bencodex.Types.IValue</span> along with its respective
-<em>real</em> path in
-<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>.</p>
+path in <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -678,16 +606,12 @@ in no particular order.</p>
   <h5 id="Libplanet_Store_Trie_MerkleTrie_IterateValues_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is a very heavy operation.</p>
 </div>
-  <h5 id="Libplanet_Store_Trie_MerkleTrie_IterateValues_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure">Secure</a></div>
-  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes%40%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L85">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/MerkleTrie.cs/#L74">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_MerkleTrie_Set_" data-uid="Libplanet.Store.Trie.MerkleTrie.Set*"></a>
   <h4 id="Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_" data-uid="Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)">Set(in KeyBytes, IValue)</h4>
