@@ -24,20 +24,11 @@ namespace Libplanet.Store
         /// <see cref="MerkleTrie"/> in internal.</param>
         /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure mode.
         /// <seealso cref="MerkleTrie(IKeyValueStore, INode?, bool)"/>.</param>
-        public TrieStateStore(
-            IKeyValueStore stateKeyValueStore,
-            bool secure = false)
+        public TrieStateStore(IKeyValueStore stateKeyValueStore)
         {
             StateKeyValueStore = stateKeyValueStore;
-            Secure = secure;
             _logger = Log.ForContext<TrieStateStore>();
         }
-
-        /// <summary>
-        /// <see langword="true"/> if the <see cref="MerkleTrie"/> is in secure mode.
-        /// In secure mode, keys are hashed under the hood.
-        /// </summary>
-        public bool Secure { get; }
 
         public IKeyValueStore StateKeyValueStore { get; }
 
@@ -54,9 +45,7 @@ namespace Libplanet.Store
             {
                 var stateTrie = new MerkleTrie(
                     StateKeyValueStore,
-                    new HashNode(stateRootHash),
-                    Secure
-                );
+                    new HashNode(stateRootHash));
                 _logger.Debug("Started to iterate hash nodes");
                 stopwatch.Start();
                 foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
@@ -116,9 +105,7 @@ namespace Libplanet.Store
             {
                 var stateTrie = new MerkleTrie(
                     StateKeyValueStore,
-                    new HashNode(stateRootHash),
-                    Secure
-                );
+                    new HashNode(stateRootHash));
 
                 foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
                 {
@@ -137,8 +124,7 @@ namespace Libplanet.Store
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
             new MerkleTrie(
                 StateKeyValueStore,
-                stateRootHash is { } h2 ? new HashNode(h2) : null,
-                Secure);
+                stateRootHash is { } h2 ? new HashNode(h2) : null);
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()
