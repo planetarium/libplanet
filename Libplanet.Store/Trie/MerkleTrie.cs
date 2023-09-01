@@ -22,8 +22,6 @@ namespace Libplanet.Store.Trie
 
         private static readonly Codec _codec;
 
-        private readonly bool _secure;
-
         static MerkleTrie()
         {
             _codec = new Codec();
@@ -66,8 +64,11 @@ namespace Libplanet.Store.Trie
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null
                 : root;
-            _secure = secure;
+            Secure = secure;
         }
+
+        /// <inheritdoc cref="ITrie.Root"/>
+        public INode? Root { get; }
 
         /// <inheritdoc cref="ITrie.Hash"/>
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
@@ -75,7 +76,8 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.Recorded"/>
         public bool Recorded => Root is null || KeyValueStore.Exists(new KeyBytes(Hash.ByteArray));
 
-        public INode? Root { get; }
+        /// <inheritdoc cref="ITrie.Secure"/>
+        public bool Secure { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -89,15 +91,15 @@ namespace Libplanet.Store.Trie
 
             INode newRootNode = Insert(
                 Root,
-                new PathCursor(key, _secure),
+                new PathCursor(key, Secure),
                 new ValueNode(value),
                 true);
 
-            return new MerkleTrie(KeyValueStore, newRootNode, _secure);
+            return new MerkleTrie(KeyValueStore, newRootNode, Secure);
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, _secure));
+        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, Secure));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
@@ -111,20 +113,32 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
         public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
 
-        public IEnumerable<(INode Node, Nibbles Path)> IterateNodes()
+        /// <inheritdoc cref="ITrie.IterateValues"/>
+        public IEnumerable<(KeyBytes Path, IValue Value)> IterateValues()
+        {
+            foreach ((var path, var node) in IterateNodes())
+            {
+                if (node is ValueNode valueNode)
+                {
+                    yield return (path.ToKeyBytes(), valueNode.Value);
+                }
+            }
+        }
+
+        public IEnumerable<(Nibbles Path, INode Node)> IterateNodes()
         {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue = new Queue<(INode, Nibbles)>();
-            queue.Enqueue((Root, Nibbles.Empty));
+            var queue = new Queue<(Nibbles, INode)>();
+            queue.Enqueue((Nibbles.Empty, Root));
 
             while (queue.Count > 0)
             {
-                (INode node, Nibbles path) = queue.Dequeue();
-                yield return (node, path);
+                (Nibbles path, INode node) = queue.Dequeue();
+                yield return (path, node);
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -133,13 +147,13 @@ namespace Libplanet.Store.Trie
                             INode? child = fullNode.Children[index];
                             if (!(child is null))
                             {
-                                queue.Enqueue((child, path.Add((byte)index)));
+                                queue.Enqueue((path.Add((byte)index), child));
                             }
                         }
 
                         if (!(fullNode.Value is null))
                         {
-                            queue.Enqueue((fullNode.Value, path));
+                            queue.Enqueue((path, fullNode.Value));
                         }
 
                         break;
@@ -147,15 +161,13 @@ namespace Libplanet.Store.Trie
                     case ShortNode shortNode:
                         if (!(shortNode.Value is null))
                         {
-                            queue.Enqueue((
-                                    shortNode.Value,
-                                    path.AddRange(shortNode.Key)));
+                            queue.Enqueue((path.AddRange(shortNode.Key), shortNode.Value));
                         }
 
                         break;
 
                     case HashNode hashNode:
-                        queue.Enqueue((UnhashNode(hashNode), path));
+                        queue.Enqueue((path, UnhashNode(hashNode)));
                         break;
                 }
             }

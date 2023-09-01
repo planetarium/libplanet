@@ -32,6 +32,31 @@ namespace Libplanet.Store.Trie
         HashDigest<SHA256> Hash { get; }
 
         /// <summary>
+        /// Whether values are stored at hashed location or not.  When referring to paths in
+        /// <see cref="ITrie"/> context, we have the following:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         Original path: A path that a user wishes to store a value at.
+        ///         This is what is used to access values via <see cref="Set"/> and
+        ///         <see cref="Get(KeyBytes)"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Secure path: A hashed path of an original path.  If <see cref="Secure"/>
+        ///         is <see langword="true"/>, the actual location of a value accessed
+        ///         is obfuscated internally.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Real path: A path that may be an original path or a secure path
+        ///         depending on the value of <see cref="Secure"/>.
+        ///     </description></item>
+        /// </list>
+        /// </summary>
+        /// <seealso cref="Set"/>
+        /// <seealso cref="Get(KeyBytes)"/>
+        /// <seealso cref="Get(IReadOnlyList{KeyBytes})"/>
+        bool Secure { get; }
+
+        /// <summary>
         /// Whether <see cref="Root"/> is recorded in the store.
         /// </summary>
         /// <remarks>A <see cref="Root"/> that is <see langword="null"/> is always considered
@@ -75,7 +100,8 @@ namespace Libplanet.Store.Trie
         /// Gets the first node encountered at <paramref name="nibbles"/> when traversing down
         /// from <see cref="Root"/>.
         /// </summary>
-        /// <param name="nibbles">The path to check.  This must be a secure path.</param>
+        /// <param name="nibbles">The path to check.  This must be the <em>real</em> path,
+        /// which depends on <see cref="Secure"/>.</param>
         /// <returns>A node at <paramref name="nibbles"/>, if any.
         /// Otherwise <see langword="null"/>.</returns>
         /// <exception cref="InvalidTrieNodeException">Thrown when an unknown type
@@ -95,6 +121,33 @@ namespace Libplanet.Store.Trie
         /// equivalent as sub-<see cref="ITrie"/>s.
         /// </para>
         /// </remarks>
+        /// <seealso cref="Secure"/>
         INode? GetNode(Nibbles nibbles);
+
+        /// <summary>
+        /// Iterates and every stored <see cref="IValue"/> along with its respective
+        /// <em>real</em> path in
+        /// <see cref="KeyBytes"/>.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="IValue"/>s
+        /// in no particular order.</returns>
+        /// <remarks>
+        /// This is a very heavy operation.
+        /// </remarks>
+        /// <seealso cref="Secure"/>
+        IEnumerable<(KeyBytes Path, IValue Value)> IterateValues();
+
+        /// <summary>
+        /// Iterates and every stored <see cref="INode"/> along with its respective
+        /// <em>real</em> path in
+        /// <see cref="Nibbles"/>.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="INode"/>s
+        /// in no particular order.</returns>
+        /// <remarks>
+        /// This is a very heavy operation.
+        /// </remarks>
+        /// <seealso cref="Secure"/>
+        IEnumerable<(Nibbles Path, INode Node)> IterateNodes();
     }
 }
