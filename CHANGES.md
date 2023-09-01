@@ -19,9 +19,13 @@ To be released.
  -  (Libplanet.Store) Changed `KeyBytes` to no longer implement
     `IEquatable<byte[]>` and `IEquatable<ImmutableArray<byte>>`.  [[#3402]]
  -  (Libplanet.Store) Added `ITrie.GetNode()` method.  [[#3401]]
- -  (Libplanet.Store) Added `ITrie.Secure` property.  [[#3405]]
  -  (Libplanet.Store) Added `ITrie.IterateValues()` method.  [[#3405]]
  -  (Libplanet.Store) Added `ITrie.IterateNodes()` method.  [[#3405]]
+ -  (Libplanet.Store) Removed `Secure` option from `TrieStateStore`.  [[#3407]]
+     -  Removed `secure` parameter from `TrieStateStore()`.
+     -  Removed `ITrie.Secure` property.
+     -  Removed `secure` parameter from `MerkleTrie()`.
+     -  Removed `secure` parameter from `PathCursor()`.
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +70,7 @@ To be released.
 [#3401]: https://github.com/planetarium/libplanet/pull/3401
 [#3402]: https://github.com/planetarium/libplanet/pull/3402
 [#3405]: https://github.com/planetarium/libplanet/pull/3405
+[#3407]: https://github.com/planetarium/libplanet/pull/3407
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 

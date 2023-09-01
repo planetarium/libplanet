@@ -99,8 +99,7 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Iterates and every stored <see cref="IValue"/> along with its respective
-        /// <em>real</em> path in
-        /// <see cref="KeyBytes"/>.
+        /// path in <see cref="KeyBytes"/>.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="IValue"/>s
         /// in no particular order.</returns>
@@ -111,8 +110,7 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Iterates and every stored <see cref="INode"/> along with its respective
-        /// <em>real</em> path in
-        /// <see cref="Nibbles"/>.
+        /// path in <see cref="Nibbles"/>.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="INode"/>s
         /// in no particular order.</returns>
