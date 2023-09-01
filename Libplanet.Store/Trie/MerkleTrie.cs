@@ -22,8 +22,6 @@ namespace Libplanet.Store.Trie
 
         private static readonly Codec _codec;
 
-        private readonly bool _secure;
-
         static MerkleTrie()
         {
             _codec = new Codec();
@@ -66,8 +64,11 @@ namespace Libplanet.Store.Trie
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null
                 : root;
-            _secure = secure;
+            Secure = secure;
         }
+
+        /// <inheritdoc cref="ITrie.Root"/>
+        public INode? Root { get; }
 
         /// <inheritdoc cref="ITrie.Hash"/>
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
@@ -75,7 +76,8 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.Recorded"/>
         public bool Recorded => Root is null || KeyValueStore.Exists(new KeyBytes(Hash.ByteArray));
 
-        public INode? Root { get; }
+        /// <inheritdoc cref="ITrie.Secure"/>
+        public bool Secure { get; }
 
         private IKeyValueStore KeyValueStore { get; }
 
@@ -89,15 +91,15 @@ namespace Libplanet.Store.Trie
 
             INode newRootNode = Insert(
                 Root,
-                new PathCursor(key, _secure),
+                new PathCursor(key, Secure),
                 new ValueNode(value),
                 true);
 
-            return new MerkleTrie(KeyValueStore, newRootNode, _secure);
+            return new MerkleTrie(KeyValueStore, newRootNode, Secure);
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, _secure));
+        public IValue? Get(KeyBytes key) => ResolveToValue(Root, new PathCursor(key, Secure));
 
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
@@ -110,6 +112,18 @@ namespace Libplanet.Store.Trie
 
         /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
         public INode? GetNode(Nibbles nibbles) => ResolveToNode(Root, new PathCursor(nibbles));
+
+        /// <inheritdoc cref="ITrie.IterateValues"/>
+        public IEnumerable<(KeyBytes Path, IValue Value)> IterateValues()
+        {
+            foreach ((var path, var node) in IterateNodes())
+            {
+                if (node is ValueNode valueNode)
+                {
+                    yield return (path.ToKeyBytes(), valueNode.Value);
+                }
+            }
+        }
 
         public IEnumerable<(Nibbles Path, INode Node)> IterateNodes()
         {
