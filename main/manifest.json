@@ -3369,7 +3369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.ITrie.html",
-          "hash": "vHN5Q+desNJ8AEU1tveN74PqG6eRkZIwEoSjAnr3KFM="
+          "hash": "/gaEeDpOWXh/q/FUj97cHH3bwNs8qhOuYFfsguXYDMA="
         }
       },
       "is_incremental": false,
@@ -3417,7 +3417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
-          "hash": "Js96TKHJcKAaj2LMIjHgIPQOkbzYJwxHltw1gHIz7nE="
+          "hash": "Xf5/wf1yNmy37OEZGLxl6eUzATtFocwd6IaaJC3gZSc="
         }
       },
       "is_incremental": false,
@@ -3429,7 +3429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.html",
-          "hash": "3p+zLMYddja+VkBcmQZiasLV8SJMudHkGIDcO4NxPrk="
+          "hash": "u8CaPoOw0O68ybf5zh64FpBv6vFfkuaHAWavdQR/8X4="
         }
       },
       "is_incremental": false,

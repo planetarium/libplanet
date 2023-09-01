@@ -22661,6 +22661,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Hash
   nameWithType: ITrie.Hash
+- uid: Libplanet.Store.Trie.ITrie.IterateNodes
+  name: IterateNodes()
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_IterateNodes
+  commentId: M:Libplanet.Store.Trie.ITrie.IterateNodes
+  fullName: Libplanet.Store.Trie.ITrie.IterateNodes()
+  nameWithType: ITrie.IterateNodes()
+- uid: Libplanet.Store.Trie.ITrie.IterateNodes*
+  name: IterateNodes
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_IterateNodes_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.IterateNodes
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.IterateNodes
+  nameWithType: ITrie.IterateNodes
+- uid: Libplanet.Store.Trie.ITrie.IterateValues
+  name: IterateValues()
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_IterateValues
+  commentId: M:Libplanet.Store.Trie.ITrie.IterateValues
+  fullName: Libplanet.Store.Trie.ITrie.IterateValues()
+  nameWithType: ITrie.IterateValues()
+- uid: Libplanet.Store.Trie.ITrie.IterateValues*
+  name: IterateValues
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_IterateValues_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.IterateValues
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.IterateValues
+  nameWithType: ITrie.IterateValues
 - uid: Libplanet.Store.Trie.ITrie.Recorded
   name: Recorded
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Recorded
@@ -22687,6 +22713,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Root
   nameWithType: ITrie.Root
+- uid: Libplanet.Store.Trie.ITrie.Secure
+  name: Secure
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure
+  commentId: P:Libplanet.Store.Trie.ITrie.Secure
+  fullName: Libplanet.Store.Trie.ITrie.Secure
+  nameWithType: ITrie.Secure
+- uid: Libplanet.Store.Trie.ITrie.Secure*
+  name: Secure
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Secure_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.Secure
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.Secure
+  nameWithType: ITrie.Secure
 - uid: Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)
   name: Set(in KeyBytes, IValue)
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_
@@ -23114,6 +23153,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.IterateNodes
   nameWithType: MerkleTrie.IterateNodes
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateValues
+  name: IterateValues()
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateValues
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.IterateValues
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateValues()
+  nameWithType: MerkleTrie.IterateValues()
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateValues*
+  name: IterateValues
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateValues_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.IterateValues
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateValues
+  nameWithType: MerkleTrie.IterateValues
 - uid: Libplanet.Store.Trie.MerkleTrie.Recorded
   name: Recorded
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Recorded
@@ -23140,6 +23192,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Root
   nameWithType: MerkleTrie.Root
+- uid: Libplanet.Store.Trie.MerkleTrie.Secure
+  name: Secure
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Secure
+  commentId: P:Libplanet.Store.Trie.MerkleTrie.Secure
+  fullName: Libplanet.Store.Trie.MerkleTrie.Secure
+  nameWithType: MerkleTrie.Secure
+- uid: Libplanet.Store.Trie.MerkleTrie.Secure*
+  name: Secure
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Secure_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Secure
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.Secure
+  nameWithType: MerkleTrie.Secure
 - uid: Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)
   name: Set(in KeyBytes, IValue)
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_
@@ -23175,19 +23240,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes
   nameWithType: MerkleTrieExtensions.DifferentNodes
-- uid: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
-  name: ListAllStates(MerkleTrie)
-  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_ListAllStates_Libplanet_Store_Trie_MerkleTrie_
-  commentId: M:Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
-  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates(Libplanet.Store.Trie.MerkleTrie)
-  nameWithType: MerkleTrieExtensions.ListAllStates(MerkleTrie)
-- uid: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates*
-  name: ListAllStates
-  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_ListAllStates_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.ListAllStates
-  nameWithType: MerkleTrieExtensions.ListAllStates
 - uid: Libplanet.Store.Trie.Nibbles
   name: Nibbles
   href: api/Libplanet.Store.Trie.Nibbles.html
