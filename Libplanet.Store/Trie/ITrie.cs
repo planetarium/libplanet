@@ -118,5 +118,31 @@ namespace Libplanet.Store.Trie
         /// This is a very heavy operation.
         /// </remarks>
         IEnumerable<(Nibbles Path, INode Node)> IterateNodes();
+
+        /// <summary>
+        /// Lists every non-<see langword="null"/> <see cref="IValue"/> that is different
+        /// from the one stored in <paramref name="other"/> given any <see cref="KeyBytes"/> path.
+        /// </summary>
+        /// <param name="other">The other <see cref="MerkleTrie"/> to compare to.</param>
+        /// <returns>A list of tuples where each tuple consists of the path where
+        /// the difference occurred, the "old" value from <paramref name="other"/> and
+        /// the current "new" value.</returns>
+        /// <exception cref="InvalidTrieNodeException">Thrown when the method fails
+        /// to traverse the <see cref="ITrie"/>.</exception>
+        /// <remarks>
+        /// This operation has the following properties:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         This operation is non-symmetric.  That is, in general,
+        ///         <c>trieA.Diff(trieB)</c> and <c>trieB.Diff(trieA)</c> are not the same.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Values existing in <paramref name="other"/> but not in the source instance,
+        ///         considered as <see langword="null"/> in the source, are not included in the
+        ///         result.
+        ///     </description></item>
+        /// </list>
+        /// </remarks>
+        IEnumerable<(KeyBytes Path, IValue? TargetValue, IValue SourceValue)> Diff(ITrie other);
     }
 }
