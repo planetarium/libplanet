@@ -15,7 +15,7 @@ namespace Libplanet.Store.Trie
         public readonly int Offset;
 
         public PathCursor(in KeyBytes keyBytes)
-            : this(Nibbles.FromBytes(keyBytes.ByteArray), 0)
+            : this(Nibbles.FromKeyBytes(keyBytes), 0)
         {
         }
 

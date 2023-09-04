@@ -1,5 +1,4 @@
 using Bencodex.Types;
-using Libplanet.Common;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
 using Xunit;
@@ -12,14 +11,14 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         public void ToBencodex()
         {
             var shortNode = new ShortNode(
-                new Nibbles(ByteUtil.ParseHexToImmutable("beef")),
+                Nibbles.FromHex("beef"),
                 new ValueNode((Text)"foo")
             );
 
             var expected =
                 new List(new IValue[]
                 {
-                    (Binary)ByteUtil.ParseHexToImmutable("beef"),
+                    (Binary)Nibbles.FromHex("beef").ByteArray,
                     new List(new IValue[] { Null.Value, (Text)"foo" }),
                 });
             var encoded = shortNode.ToBencodex();

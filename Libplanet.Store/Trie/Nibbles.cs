@@ -76,13 +76,13 @@ namespace Libplanet.Store.Trie
             return new Nibbles(bytes.ToImmutableArray());
         }
 
-        public static Nibbles FromBytes(in ImmutableArray<byte> bytes)
+        public static Nibbles FromKeyBytes(in KeyBytes keyBytes)
         {
-            var builder = ImmutableArray.CreateBuilder<byte>(bytes.Length * 2);
-            for (int i = 0; i < bytes.Length; i++)
+            var builder = ImmutableArray.CreateBuilder<byte>(keyBytes.ByteArray.Length * 2);
+            for (int i = 0; i < keyBytes.ByteArray.Length; i++)
             {
-                builder.Add((byte)(bytes[i] >> 4));
-                builder.Add((byte)(bytes[i] & 0x0f));
+                builder.Add((byte)(keyBytes.ByteArray[i] >> 4));
+                builder.Add((byte)(keyBytes.ByteArray[i] & 0x0f));
             }
 
             return new Nibbles(builder.ToImmutable());

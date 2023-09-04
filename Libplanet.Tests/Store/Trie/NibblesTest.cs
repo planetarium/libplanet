@@ -36,10 +36,10 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
-        public void FromBytes()
+        public void FromKeyBytes()
         {
-            byte[] bytes = new byte[] { 0x2f, 0x1c };
-            Nibbles nibbles = Nibbles.FromBytes(bytes.ToImmutableArray());
+            KeyBytes keyBytes = new KeyBytes(new byte[] { 0x2f, 0x1c });
+            Nibbles nibbles = Nibbles.FromKeyBytes(keyBytes);
             Assert.Equal(4, nibbles.Length);
             Assert.Equal("2f1c", nibbles.Hex);
         }
