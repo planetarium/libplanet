@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,6 +35,40 @@ namespace Libplanet.Tests.Store.Trie
             INode rootNode = new HashNode(hashDigest);
             var merkleTrie = new MerkleTrie(new MemoryKeyValueStore(), rootNode);
             Assert.Equal(hashDigest, merkleTrie.Hash);
+        }
+
+        [Fact]
+        public void IterateValues()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            IStateStore stateStore = new TrieStateStore(keyValueStore);
+            ITrie trie = stateStore.GetStateRoot(null);
+
+            trie = trie
+                .Set(new KeyBytes(0x01), Null.Value)
+                .Set(new KeyBytes(0x02), Null.Value)
+                .Set(new KeyBytes(0x03), Null.Value)
+                .Set(new KeyBytes(0x04), Null.Value)
+                .Set(new KeyBytes(0xbe, 0xef), Dictionary.Empty);
+
+            Dictionary<KeyBytes, IValue> states = trie
+                .IterateValues()
+                .ToDictionary(pair => pair.Path, pair => pair.Value);
+            Assert.Equal(5, states.Count);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x01)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x02)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x03)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x04)]);
+            Assert.Equal(Dictionary.Empty, states[new KeyBytes(0xbe, 0xef)]);
+
+            trie = stateStore.Commit(trie);
+            states = trie.IterateValues().ToDictionary(pair => pair.Path, pair => pair.Value);
+            Assert.Equal(5, states.Count);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x01)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x02)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x03)]);
+            Assert.Equal(Null.Value, states[new KeyBytes(0x04)]);
+            Assert.Equal(Dictionary.Empty, states[new KeyBytes(0xbe, 0xef)]);
         }
 
         [Fact]

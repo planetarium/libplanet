@@ -84,14 +84,14 @@ public class MptCommand
 
         string originRootHashHex = ByteUtil.Hex(originRootHash.ByteArray);
         string otherRootHashHex = ByteUtil.Hex(otherRootHash.ByteArray);
-        foreach (var (key, originValue, otherValue) in trie.DifferentNodes(otherTrie))
+        foreach (var (key, targetValue, sourceValue) in trie.Diff(otherTrie))
         {
             var data = new DiffData(ByteUtil.Hex(key.ByteArray), new Dictionary<string, string>
             {
-                [originRootHashHex] = ByteUtil.Hex(codec.Encode(originValue)),
-                [otherRootHashHex] = otherValue is null
+                [otherRootHashHex] = targetValue is null
                     ? "null"
-                    : ByteUtil.Hex(codec.Encode(otherValue)),
+                    : ByteUtil.Hex(codec.Encode(targetValue)),
+                [originRootHashHex] = ByteUtil.Hex(codec.Encode(sourceValue)),
             });
 
             Console.WriteLine(JsonSerializer.Serialize(data));
