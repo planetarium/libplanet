@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "IhpV5unnQoZQ0UKe2npAtlxJeygZdn/q90x24v8hR/0="
+          "hash": "wK6mW4FnVFkQUTMcy0moyPT+9p6V7VYFmLILofsZoCA="
         }
       },
       "is_incremental": false,
@@ -3369,7 +3369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.ITrie.html",
-          "hash": "MGGs+qqzI0nxdlcXBJDd56TkCBFVWUz0Z0Fzs+Z0ZK4="
+          "hash": "mat3YnuTWrw2Gg5pVMKedQFtuRjPYJsBc2yHjfr/h/c="
         }
       },
       "is_incremental": false,
@@ -3417,19 +3417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrie.html",
-          "hash": "soHpb4NxiBh/gzJlUwDA0dzeyXkRLbV5bzpmgFhYWXk="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.html",
-          "hash": "u8CaPoOw0O68ybf5zh64FpBv6vFfkuaHAWavdQR/8X4="
+          "hash": "XY2wbSum7LeQaJrcBwuixpvY0Qr/zctLwYJh62skw1c="
         }
       },
       "is_incremental": false,
@@ -3585,7 +3573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.html",
-          "hash": "RsEH0P+MrNjWwrCs9qXX2IafV2wFV3HgDbb+cq0AnMg="
+          "hash": "4QrQjk5X5MNrwznCKIauXo+OBN8ES3bSCGEVopGxVP8="
         }
       },
       "is_incremental": false,
@@ -5013,7 +5001,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "/BWossuSTKSveduunGXimFQuWSsI0/DXocHNJZuL1Ig="
+          "hash": "YI6Z7uUnaikx+G8uIRjuQ6mG8Zigh59D7iF46hzMs+k="
         }
       },
       "is_incremental": false,
@@ -5122,7 +5110,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 407,
+          "total_file_count": 406,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

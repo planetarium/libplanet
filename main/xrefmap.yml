@@ -22600,6 +22600,19 @@ references:
   commentId: T:Libplanet.Store.Trie.ITrie
   fullName: Libplanet.Store.Trie.ITrie
   nameWithType: ITrie
+- uid: Libplanet.Store.Trie.ITrie.Diff(Libplanet.Store.Trie.ITrie)
+  name: Diff(ITrie)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Store.Trie.ITrie.Diff(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Store.Trie.ITrie.Diff(Libplanet.Store.Trie.ITrie)
+  nameWithType: ITrie.Diff(ITrie)
+- uid: Libplanet.Store.Trie.ITrie.Diff*
+  name: Diff
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.Diff
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.Diff
+  nameWithType: ITrie.Diff
 - uid: Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)
   name: Get(KeyBytes)
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_
@@ -23060,6 +23073,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie
   nameWithType: MerkleTrie.MerkleTrie
+- uid: Libplanet.Store.Trie.MerkleTrie.Diff(Libplanet.Store.Trie.ITrie)
+  name: Diff(ITrie)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Diff_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Diff(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Store.Trie.MerkleTrie.Diff(Libplanet.Store.Trie.ITrie)
+  nameWithType: MerkleTrie.Diff(ITrie)
+- uid: Libplanet.Store.Trie.MerkleTrie.Diff*
+  name: Diff
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Diff_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Diff
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.Diff
+  nameWithType: MerkleTrie.Diff
 - uid: Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   name: EmptyRootHash
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_EmptyRootHash
@@ -23182,25 +23208,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Set
   nameWithType: MerkleTrie.Set
-- uid: Libplanet.Store.Trie.MerkleTrieExtensions
-  name: MerkleTrieExtensions
-  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html
-  commentId: T:Libplanet.Store.Trie.MerkleTrieExtensions
-  fullName: Libplanet.Store.Trie.MerkleTrieExtensions
-  nameWithType: MerkleTrieExtensions
-- uid: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes(Libplanet.Store.Trie.MerkleTrie,Libplanet.Store.Trie.MerkleTrie)
-  name: DifferentNodes(MerkleTrie, MerkleTrie)
-  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_DifferentNodes_Libplanet_Store_Trie_MerkleTrie_Libplanet_Store_Trie_MerkleTrie_
-  commentId: M:Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes(Libplanet.Store.Trie.MerkleTrie,Libplanet.Store.Trie.MerkleTrie)
-  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes(Libplanet.Store.Trie.MerkleTrie, Libplanet.Store.Trie.MerkleTrie)
-  nameWithType: MerkleTrieExtensions.DifferentNodes(MerkleTrie, MerkleTrie)
-- uid: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes*
-  name: DifferentNodes
-  href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html#Libplanet_Store_Trie_MerkleTrieExtensions_DifferentNodes_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrieExtensions.DifferentNodes
-  nameWithType: MerkleTrieExtensions.DifferentNodes
 - uid: Libplanet.Store.Trie.Nibbles
   name: Nibbles
   href: api/Libplanet.Store.Trie.Nibbles.html
