@@ -39,7 +39,7 @@ namespace Libplanet.Store.Trie
                             }
                             else
                             {
-                                queue.Enqueue((UnhashNode(hn)!, path));
+                                queue.Enqueue((UnhashNode(hn), path));
                                 continue;
                             }
 
@@ -96,7 +96,7 @@ namespace Libplanet.Store.Trie
                     switch (node)
                     {
                         case HashNode hashNode:
-                            queue.Enqueue((UnhashNode(hashNode)!, path));
+                            queue.Enqueue((UnhashNode(hashNode), path));
                             continue;
 
                         case ValueNode valueNode:
@@ -145,7 +145,7 @@ namespace Libplanet.Store.Trie
             switch (node)
             {
                 case HashNode hashNode:
-                    return ValueAtNodeRoot(UnhashNode(hashNode)!);
+                    return ValueAtNodeRoot(UnhashNode(hashNode));
                 case ValueNode valueNode:
                     return valueNode.Value;
                 case FullNode fullNode:
