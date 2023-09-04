@@ -8,7 +8,6 @@ using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
-using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -29,31 +28,32 @@ namespace Libplanet.Action.State
         {
         }
 
-        private Account(IAccount previousAccount, IAccountDelta delta)
-            : this(previousAccount.Trie.Set(delta.ToRawDelta()), delta)
+        private Account(ITrie trie, IAccountDelta delta)
+            : this(trie, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
         {
         }
 
-        private Account(ITrie trie, IAccountDelta delta)
+        private Account(
+            ITrie trie,
+            IAccountDelta delta,
+            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
         {
             Trie = trie;
             Delta = delta;
-            TotalUpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+            TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
         /// <inheritdoc/>
-        public IAccountDelta Delta { get; private set; }
+        public IAccountDelta Delta { get; }
 
-        public ITrie Trie { get; private set; }
-
-        public BlockHash BlockHash { get; private set; }
+        public ITrie Trie { get; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             TotalUpdatedFungibles.Keys.ToImmutableHashSet();
 
         public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
-            { get; private set; }
+            { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -85,16 +85,15 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IAccount SetState(Address address, IValue state) =>
-            UpdateStates(Delta.States.SetItem(address, state));
+        public IAccount SetState(Address address, IValue state) => UpdateState(address, state);
 
         /// <inheritdoc/>
         [Pure]
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
-             KeyBytes[] keys = new[] { KeyConverters.ToFungibleAssetKey(address, currency) };
-             IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-             return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+             KeyBytes key = KeyConverters.ToFungibleAssetKey(address, currency);
+             IValue? rawValue = Trie.Get(key);
+             return rawValue is Integer i
                  ? FungibleAssetValue.FromRawValue(currency, i)
                  : currency * 0;
         }
@@ -150,7 +149,6 @@ namespace Libplanet.Action.State
             }
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
-            (Address, Currency) assetKey = (recipient, currency);
             BigInteger rawBalance = (balance + value).RawValue;
 
             if (currency.TotalSupplyTrackable)
@@ -165,16 +163,15 @@ namespace Libplanet.Action.State
                 }
 
                 return UpdateFungibleAssets(
-                    Delta.Fungibles.SetItem(assetKey, rawBalance),
-                    TotalUpdatedFungibles.SetItem(assetKey, rawBalance),
-                    Delta.TotalSupplies.SetItem(currency, (currentTotalSupply + value).RawValue)
-                );
+                    recipient,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply + value).RawValue);
             }
-
-            return UpdateFungibleAssets(
-                Delta.Fungibles.SetItem(assetKey, rawBalance),
-                TotalUpdatedFungibles.SetItem(assetKey, rawBalance)
-            );
+            else
+            {
+                return UpdateFungibleAssets(recipient, currency, rawBalance);
+            }
         }
 
         /// <inheritdoc/>
@@ -220,31 +217,26 @@ namespace Libplanet.Action.State
                 throw new InsufficientBalanceException(msg, owner, balance);
             }
 
-            (Address, Currency) assetKey = (owner, currency);
             BigInteger rawBalance = (balance - value).RawValue;
             if (currency.TotalSupplyTrackable)
             {
+                var currentTotalSupply = GetTotalSupply(currency);
                 return UpdateFungibleAssets(
-                    Delta.Fungibles.SetItem(assetKey, rawBalance),
-                    TotalUpdatedFungibles.SetItem(assetKey, rawBalance),
-                    Delta.TotalSupplies.SetItem(
-                        currency,
-                        (GetTotalSupply(currency) - value).RawValue)
-                );
+                    owner,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply - value).RawValue);
             }
-
-            return UpdateFungibleAssets(
-                Delta.Fungibles.SetItem(assetKey, rawBalance),
-                TotalUpdatedFungibles.SetItem(assetKey, rawBalance)
-            );
+            else
+            {
+                return UpdateFungibleAssets(owner, currency, rawBalance);
+            }
         }
 
         /// <inheritdoc/>
         [Pure]
-        public IAccount SetValidator(Validator validator)
-        {
-            return UpdateValidatorSet(GetValidatorSet().Update(validator));
-        }
+        public IAccount SetValidator(Validator validator) =>
+            UpdateValidatorSet(GetValidatorSet().Update(validator));
 
         /// <summary>
         /// Creates a null account while inheriting <paramref name="account"/>s
@@ -262,76 +254,59 @@ namespace Libplanet.Action.State
         /// </remarks>
         internal static IAccount Flush(IAccount account) =>
             account is Account impl
-                ? new Account(account)
-                    {
-                        TotalUpdatedFungibles = impl.TotalUpdatedFungibles,
-                    }
+                ? new Account(impl.Trie, new AccountDelta(), impl.TotalUpdatedFungibles)
                 : throw new ArgumentException(
                     $"Unknown type for {nameof(account)}: {account.GetType()}");
 
         [Pure]
-        private FungibleAssetValue GetBalance(
+        private Account UpdateState(
+            Address address,
+            IValue value) =>
+            new Account(
+                Trie.Set(KeyConverters.ToStateKey(address), value),
+                new AccountDelta(
+                    Delta.States.SetItem(address, value),
+                    Delta.Fungibles,
+                    Delta.TotalSupplies,
+                    Delta.ValidatorSet),
+                TotalUpdatedFungibles);
+
+        [Pure]
+        private Account UpdateFungibleAssets(
             Address address,
             Currency currency,
-            IImmutableDictionary<(Address, Currency), BigInteger> balances) =>
-            balances.TryGetValue((address, currency), out BigInteger balance)
-                ? FungibleAssetValue.FromRawValue(currency, balance)
-                : GetBalance(address, currency);
-
-        [Pure]
-        private Account UpdateStates(
-            IImmutableDictionary<Address, IValue> updatedStates) =>
-            new Account(
-                this,
-                new AccountDelta(
-                    updatedStates,
-                    Delta.Fungibles,
-                    Delta.TotalSupplies,
-                    Delta.ValidatorSet))
-            {
-                TotalUpdatedFungibles = TotalUpdatedFungibles,
-            };
-
-        [Pure]
-        private Account UpdateFungibleAssets(
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles
-        ) =>
-            UpdateFungibleAssets(
-                updatedFungibleAssets,
-                totalUpdatedFungibles,
-                Delta.TotalSupplies);
-
-        [Pure]
-        private Account UpdateFungibleAssets(
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles,
-            IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
-        ) =>
-            new Account(
-                this,
+            BigInteger amount,
+            BigInteger? supplyAmount = null) => supplyAmount is { } sa
+            ? new Account(
+                Trie
+                    .Set(KeyConverters.ToFungibleAssetKey(address, currency), new Integer(amount))
+                    .Set(KeyConverters.ToTotalSupplyKey(currency), new Integer(sa)),
                 new AccountDelta(
                     Delta.States,
-                    updatedFungibleAssets,
-                    updatedTotalSupply,
-                    Delta.ValidatorSet))
-            {
-                TotalUpdatedFungibles = totalUpdatedFungibles,
-            };
+                    Delta.Fungibles.SetItem((address, currency), amount),
+                    Delta.TotalSupplies.SetItem(currency, sa),
+                    Delta.ValidatorSet),
+                TotalUpdatedFungibles.SetItem((address, currency), amount))
+            : new Account(
+                Trie
+                    .Set(KeyConverters.ToFungibleAssetKey(address, currency), new Integer(amount)),
+                new AccountDelta(
+                    Delta.States,
+                    Delta.Fungibles.SetItem((address, currency), amount),
+                    Delta.TotalSupplies,
+                    Delta.ValidatorSet),
+                TotalUpdatedFungibles.SetItem((address, currency), amount));
 
         [Pure]
-        private Account UpdateValidatorSet(
-            ValidatorSet updatedValidatorSet) =>
+        private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
             new Account(
-                this,
+                Trie.Set(KeyConverters.ValidatorSetKey, validatorSet.Bencoded),
                 new AccountDelta(
                     Delta.States,
                     Delta.Fungibles,
                     Delta.TotalSupplies,
-                    updatedValidatorSet))
-            {
-                TotalUpdatedFungibles = TotalUpdatedFungibles,
-            };
+                    validatorSet),
+                TotalUpdatedFungibles);
 
         [Pure]
         private IAccount TransferAssetV0(
@@ -359,14 +334,8 @@ namespace Libplanet.Action.State
                 throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
-            return UpdateFungibleAssets(
-                Delta.Fungibles
-                    .SetItem((sender, currency), (senderBalance - value).RawValue)
-                    .SetItem((recipient, currency), (recipientBalance + value).RawValue),
-                TotalUpdatedFungibles
-                    .SetItem((sender, currency), (senderBalance - value).RawValue)
-                    .SetItem((recipient, currency), (recipientBalance + value).RawValue)
-            );
+            return UpdateFungibleAssets(sender, currency, (senderBalance - value).RawValue)
+                .UpdateFungibleAssets(recipient, currency, (recipientBalance + value).RawValue);
         }
 
         [Pure]
@@ -394,25 +363,12 @@ namespace Libplanet.Action.State
                 throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
-            (Address, Currency) senderAssetKey = (sender, currency);
             BigInteger senderRawBalance = (senderBalance - value).RawValue;
-
-            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
-                Delta.Fungibles.SetItem(senderAssetKey, senderRawBalance);
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles =
-                TotalUpdatedFungibles.SetItem(senderAssetKey, senderRawBalance);
-
-            FungibleAssetValue recipientBalance = GetBalance(
-                recipient,
-                currency,
-                updatedFungibleAssets);
-            (Address, Currency) recipientAssetKey = (recipient, currency);
+            Account intermediate = UpdateFungibleAssets(sender, currency, senderRawBalance);
+            FungibleAssetValue recipientBalance = intermediate.GetBalance(recipient, currency);
             BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
 
-            return UpdateFungibleAssets(
-                updatedFungibleAssets.SetItem(recipientAssetKey, recipientRawBalance),
-                totalUpdatedFungibles.SetItem(recipientAssetKey, recipientRawBalance)
-            );
+            return intermediate.UpdateFungibleAssets(recipient, currency, recipientRawBalance);
         }
     }
 }
