@@ -1204,19 +1204,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.Account
   nameWithType: Account.Account
-- uid: Libplanet.Action.State.Account.BlockHash
-  name: BlockHash
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_BlockHash
-  commentId: P:Libplanet.Action.State.Account.BlockHash
-  fullName: Libplanet.Action.State.Account.BlockHash
-  nameWithType: Account.BlockHash
-- uid: Libplanet.Action.State.Account.BlockHash*
-  name: BlockHash
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_BlockHash_
-  commentId: Overload:Libplanet.Action.State.Account.BlockHash
-  isSpec: "True"
-  fullName: Libplanet.Action.State.Account.BlockHash
-  nameWithType: Account.BlockHash
 - uid: Libplanet.Action.State.Account.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
   name: BurnAsset(IActionContext, Address, FungibleAssetValue)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
