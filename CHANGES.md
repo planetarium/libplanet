@@ -74,6 +74,7 @@ To be released.
 [#3402]: https://github.com/planetarium/libplanet/pull/3402
 [#3405]: https://github.com/planetarium/libplanet/pull/3405
 [#3407]: https://github.com/planetarium/libplanet/pull/3407
+[#3410]: https://github.com/planetarium/libplanet/pull/3410
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 

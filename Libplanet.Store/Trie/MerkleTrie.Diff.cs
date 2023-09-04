@@ -33,7 +33,7 @@ namespace Libplanet.Store.Trie
                             // NOTE: If source node is a hashed node, check if the target node
                             // is also a hashed node and is the same.  Otherwise queue
                             // the unhashed version.
-                            if (targetNode is HashNode thn && hn.Equals(thn))
+                            if (targetNode is HashNode targetHashNode && hn.Equals(targetHashNode))
                             {
                                 continue;
                             }
