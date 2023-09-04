@@ -65,11 +65,11 @@ public class MptCommandTest : IDisposable
 
             string expected = string.Format(
                 @"{{""Key"":""636f6d6d6f6e"",""StateRootHashToValue"":" +
-                @"{{""{0}"":""75363a6265666f7265"",""{1}"":""75353a6166746572""}}}}" + "\n" +
+                @"{{""{0}"":""75353a6166746572"",""{1}"":""75363a6265666f7265""}}}}" + "\n" +
                 @"{{""Key"":""64656c65746564""," +
-                @"""StateRootHashToValue"":{{""{0}"":""6e"",""{1}"":""null""}}}}" + "\n",
-                stateRootHashHex,
-                otherStateRootHashHex);
+                @"""StateRootHashToValue"":{{""{0}"":""null"",""{1}"":""6e""}}}}" + "\n",
+                otherStateRootHashHex,
+                stateRootHashHex);
             Assert.Equal(
                 expected,
                 stringWriter.ToString());
