@@ -69,8 +69,7 @@ namespace Libplanet.Common
         /// hexadecimal.  Its length must be zero or an even number.  It must not be
         /// <see langword="null"/>.</param>
         /// <returns>A <see cref="byte"/> array that the given <paramref name="hex"/> string
-        /// represented in hexadecimal.  It lengthens the half of the given <paramref name="hex"/>
-        /// string.</returns>
+        /// represented in hexadecimal.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
         /// string is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
