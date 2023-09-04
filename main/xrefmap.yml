@@ -23296,22 +23296,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nibbles.Equals
   nameWithType: Nibbles.Equals
-- uid: Libplanet.Store.Trie.Nibbles.FromBytes(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name: FromBytes(in ImmutableArray<Byte>)
-  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_FromBytes_System_Collections_Immutable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Store.Trie.Nibbles.FromBytes(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name.vb: FromBytes(ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.Store.Trie.Nibbles.FromBytes(in System.Collections.Immutable.ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Store.Trie.Nibbles.FromBytes(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
-  nameWithType: Nibbles.FromBytes(in ImmutableArray<Byte>)
-  nameWithType.vb: Nibbles.FromBytes(ByRef ImmutableArray(Of Byte))
-- uid: Libplanet.Store.Trie.Nibbles.FromBytes*
-  name: FromBytes
-  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_FromBytes_
-  commentId: Overload:Libplanet.Store.Trie.Nibbles.FromBytes
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nibbles.FromBytes
-  nameWithType: Nibbles.FromBytes
 - uid: Libplanet.Store.Trie.Nibbles.FromHex(System.String)
   name: FromHex(String)
   href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_FromHex_System_String_
@@ -23325,6 +23309,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nibbles.FromHex
   nameWithType: Nibbles.FromHex
+- uid: Libplanet.Store.Trie.Nibbles.FromKeyBytes(Libplanet.Store.Trie.KeyBytes@)
+  name: FromKeyBytes(in KeyBytes)
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_FromKeyBytes_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.Nibbles.FromKeyBytes(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: FromKeyBytes(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.Nibbles.FromKeyBytes(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.Nibbles.FromKeyBytes(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: Nibbles.FromKeyBytes(in KeyBytes)
+  nameWithType.vb: Nibbles.FromKeyBytes(ByRef KeyBytes)
+- uid: Libplanet.Store.Trie.Nibbles.FromKeyBytes*
+  name: FromKeyBytes
+  href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_FromKeyBytes_
+  commentId: Overload:Libplanet.Store.Trie.Nibbles.FromKeyBytes
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nibbles.FromKeyBytes
+  nameWithType: Nibbles.FromKeyBytes
 - uid: Libplanet.Store.Trie.Nibbles.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Store.Trie.Nibbles.html#Libplanet_Store_Trie_Nibbles_GetHashCode
