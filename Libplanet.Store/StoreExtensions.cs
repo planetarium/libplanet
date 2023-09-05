@@ -58,15 +58,22 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="store">The store that blocks are stored.</param>
         /// <param name="blockHash">The hash of the block to get the state root hash of.
-        /// If <see langword="null"/> is present, <see langword="null"/> is returned.</param>
-        /// <returns>The state root hash of the block, or <see langword="null"/> if the block is
-        /// not found or <paramref name="blockHash"/> is <see langword="null"/>.</returns>
+        /// This can be <see langword="null"/>.</param>
+        /// <returns>The state root hash of the block associated with <paramref name="blockHash"/>
+        /// if found or <see langword="null"/> if <paramref name="blockHash"/> is itself
+        /// <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="blockHash"/> is
+        /// not <see langword="null"/> but the corresponding block is not found in store.
+        /// </exception>
         public static HashDigest<SHA256>? GetStateRootHash(
             this IStore store,
             BlockHash? blockHash
         ) =>
-            blockHash is { } hash && store.GetBlockDigest(hash) is BlockDigest digest
-                ? digest.StateRootHash
+            blockHash is { } hash
+                ? store.GetBlockDigest(hash) is BlockDigest digest
+                    ? digest.StateRootHash
+                    : throw new ArgumentException(
+                        $"Given {nameof(blockHash)} was not found in storage: {hash}")
                 : (HashDigest<SHA256>?)null;
     }
 }

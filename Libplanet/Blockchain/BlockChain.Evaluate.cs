@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -138,7 +137,7 @@ namespace Libplanet.Blockchain
                         "did not produce any action evaluations",
                         block.Index,
                         block.PreEvaluationHash);
-                    return Store.GetStateRootHash(block.PreviousHash) ?? default;
+                    return StateStore.GetStateRoot(Store.GetStateRootHash(block.PreviousHash)).Hash;
                 }
             }
             finally
