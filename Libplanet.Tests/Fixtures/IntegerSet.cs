@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccount CreateAccount(Address signer, BlockHash? offset = null)
-            => Chain.GetAccount(offset);
+            => new Account(Chain.GetAccountState(offset).Trie);
 
         public IAccount CreateAccount(int signerIndex, BlockHash? offset = null)
             => CreateAccount(Addresses[signerIndex], offset);

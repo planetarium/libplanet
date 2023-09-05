@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Action
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
-            _initAccount = new Account(new MerkleTrie(new MemoryKeyValueStore()))
+            _initAccount = new Account(MockAccountState.Empty
                 .SetState(_addr[0], (Text)"a")
                 .SetState(_addr[1], (Text)"b")
                 .SetBalance(_addr[0], _currencies[0], 5)
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Action
                 .SetBalance(_addr[1], _currencies[2], 20)
                 .SetValidator(new Validator(_keys[0].PublicKey, 1))
                 .SetValidator(new Validator(_keys[1].PublicKey, 1))
-                .SetValidator(new Validator(_keys[2].PublicKey, 1));
+                .SetValidator(new Validator(_keys[2].PublicKey, 1)).Trie);
 
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;
@@ -80,10 +80,7 @@ namespace Libplanet.Tests.Action
                 );
             }
 
-            _initAccount = new Account(_initAccount.Trie);
-
-            _initContext = CreateContext(
-                _initAccount, _addr[0]);
+            _initContext = CreateContext(_initAccount, _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }

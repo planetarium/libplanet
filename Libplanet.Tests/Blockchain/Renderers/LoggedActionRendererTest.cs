@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IAccount _account = MockAccount.Empty;
+        private static IAccount _account = new Account(MockAccountState.Empty.Trie);
 
         private static Exception _exception = new Exception();
 

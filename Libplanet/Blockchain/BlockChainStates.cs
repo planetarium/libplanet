@@ -28,28 +28,28 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetState"/>
         public IValue? GetState(
             Address address, BlockHash? offset) =>
-            GetAccount(offset).GetState(address);
+            GetAccountState(offset).GetState(address);
 
         /// <inheritdoc cref="IBlockChainStates.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetAccount(offset).GetStates(addresses);
+            GetAccountState(offset).GetStates(addresses);
 
         /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetAccount(offset).GetBalance(address, currency);
+            GetAccountState(offset).GetBalance(address, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetAccount(offset).GetTotalSupply(currency);
+            GetAccountState(offset).GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetAccount(offset).GetValidatorSet();
+            GetAccountState(offset).GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccount"/>
-        public IAccount GetAccount(BlockHash? offset) =>
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState"/>
+        public IAccountState GetAccountState(BlockHash? offset) =>
             new Account(GetTrie(offset));
 
         /// <summary>

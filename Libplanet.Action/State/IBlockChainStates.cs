@@ -108,7 +108,7 @@ namespace Libplanet.Action.State
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
-        /// <seealso cref="GetAccount"/>
+        /// <seealso cref="GetAccountState"/>
         FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset);
@@ -124,17 +124,17 @@ namespace Libplanet.Action.State
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="offset"/> cannot be created.</exception>
-        /// <seealso cref="GetAccount"/>
+        /// <seealso cref="GetAccountState"/>
         ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
-        /// Returns the <see cref="IAccount"/> in the <see cref="BlockChain"/>
+        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
         /// at <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        ///     for which to create an <see cref="IAccount"/>.</param>
+        /// for which to create an <see cref="IAccountState"/>.</param>
         /// <returns>
-        /// The <see cref="IAccount"/> at <paramref name="offset"/>.
+        /// The <see cref="IAccountState"/> at <paramref name="offset"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
         /// <see langword="null"/> and one of the following is true.
@@ -148,7 +148,7 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        /// <seealso cref="IAccount"/>
-        IAccount GetAccount(BlockHash? offset);
+        /// <seealso cref="IAccountState"/>
+        IAccountState GetAccountState(BlockHash? offset);
     }
 }

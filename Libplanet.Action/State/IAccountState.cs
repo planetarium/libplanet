@@ -22,12 +22,6 @@ namespace Libplanet.Action.State
     /// <see cref="KeyNotFoundException"/>,
     /// but returns <see langword="null"/> instead, and</description>
     /// </item>
-    /// <item>
-    /// <description>filling an <see cref="Address"/> with
-    /// <see langword="null"/> state cannot be distinguished from
-    /// the <see cref="Address"/> having never been set to
-    /// any state.</description>
-    /// </item>
     /// </list>
     /// </summary>
     public interface IAccountState

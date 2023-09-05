@@ -38,10 +38,11 @@ namespace Libplanet.Action.State
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
+        /// <inheritdoc cref="IAccountState.Trie"/>
+        public ITrie Trie { get; }
+
         /// <inheritdoc/>
         public IAccountDelta Delta { get; }
-
-        public ITrie Trie { get; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
