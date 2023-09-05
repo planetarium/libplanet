@@ -80,7 +80,7 @@ namespace Libplanet.Tests.Action
                 );
             }
 
-            _initAccount = new Account(_initAccount);
+            _initAccount = new Account(_initAccount.Trie);
 
             _initContext = CreateContext(
                 _initAccount, _addr[0]);

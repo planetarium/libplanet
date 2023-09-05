@@ -23,11 +23,6 @@ namespace Libplanet.Action.State
         {
         }
 
-        public Account(IAccount baseState)
-            : this(baseState.Trie, new AccountDelta())
-        {
-        }
-
         private Account(ITrie trie, IAccountDelta delta)
             : this(trie, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
         {

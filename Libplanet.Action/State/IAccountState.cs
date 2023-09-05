@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 
@@ -31,6 +32,9 @@ namespace Libplanet.Action.State
     /// </summary>
     public interface IAccountState
     {
+        [Pure]
+        public ITrie Trie { get; }
+
         /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.
         /// </summary>
