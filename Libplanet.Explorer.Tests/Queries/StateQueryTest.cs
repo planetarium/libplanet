@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using GraphQL;
@@ -9,6 +10,7 @@ using GraphQL.Execution;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -193,6 +195,9 @@ public class StateQueryTest
             GetAccountState(offset).GetValidatorSet();
 
         public IAccountState GetAccountState(BlockHash? offset) => new MockAccount(offset);
+
+        public HashDigest<SHA256> GetStateRootHash(BlockHash? offset) =>
+            GetAccountState(offset).Trie.Hash;
 
         public ITrie GetTrie(BlockHash? offset)
         {
