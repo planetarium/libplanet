@@ -29,6 +29,9 @@ To be released.
  -  (Libplanet.Store) Added `ITrie.Diff()` method.  [[#3410]]
  -  (Libplanet.Store) Removed `MerkleTrieExtensions.DifferentNodes()`
     static method.  [[#3410]]
+ -  Removed `IBlockState` interface.  [[#3413]]
+ -  Removed `IBlockChainState.GetBlockState()` interface method.  [[#3413]]
+ -  Added `IBlockChainState.GetAccountState()` interface method.  [[#3413]]
 
 ### Backward-incompatible network protocol changes
 
@@ -75,6 +78,7 @@ To be released.
 [#3405]: https://github.com/planetarium/libplanet/pull/3405
 [#3407]: https://github.com/planetarium/libplanet/pull/3407
 [#3410]: https://github.com/planetarium/libplanet/pull/3410
+[#3413]: https://github.com/planetarium/libplanet/pull/3413
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
