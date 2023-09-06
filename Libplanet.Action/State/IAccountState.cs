@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 
@@ -21,16 +22,13 @@ namespace Libplanet.Action.State
     /// <see cref="KeyNotFoundException"/>,
     /// but returns <see langword="null"/> instead, and</description>
     /// </item>
-    /// <item>
-    /// <description>filling an <see cref="Address"/> with
-    /// <see langword="null"/> state cannot be distinguished from
-    /// the <see cref="Address"/> having never been set to
-    /// any state.</description>
-    /// </item>
     /// </list>
     /// </summary>
     public interface IAccountState
     {
+        [Pure]
+        public ITrie Trie { get; }
+
         /// <summary>
         /// Gets the account state of the given <paramref name="address"/>.
         /// </summary>

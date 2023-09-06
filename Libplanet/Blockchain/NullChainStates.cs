@@ -20,23 +20,23 @@ namespace Libplanet.Blockchain
 
         public IValue? GetState(
             Address address, BlockHash? offset) =>
-            GetAccount(offset).GetState(address);
+            GetAccountState(offset).GetState(address);
 
         public IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetAccount(offset).GetStates(addresses);
+            GetAccountState(offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
-            GetAccount(offset).GetBalance(address, currency);
+            GetAccountState(offset).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetAccount(offset).GetTotalSupply(currency);
+            GetAccountState(offset).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetAccount(offset).GetValidatorSet();
+            GetAccountState(offset).GetValidatorSet();
 
-        public IAccount GetAccount(BlockHash? offset) =>
+        public IAccountState GetAccountState(BlockHash? offset) =>
             new Account(new MerkleTrie(_keyValueStore));
     }
 }

@@ -23,11 +23,6 @@ namespace Libplanet.Action.State
         {
         }
 
-        public Account(IAccount baseState)
-            : this(baseState.Trie, new AccountDelta())
-        {
-        }
-
         private Account(ITrie trie, IAccountDelta delta)
             : this(trie, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
         {
@@ -43,10 +38,11 @@ namespace Libplanet.Action.State
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
+        /// <inheritdoc cref="IAccountState.Trie"/>
+        public ITrie Trie { get; }
+
         /// <inheritdoc/>
         public IAccountDelta Delta { get; }
-
-        public ITrie Trie { get; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
