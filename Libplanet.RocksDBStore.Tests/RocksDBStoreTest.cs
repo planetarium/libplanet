@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -87,7 +88,7 @@ namespace Libplanet.RocksDBStore.Tests
                     Fx.GenesisBlock,
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => null,
-                        blockChainStates: new BlockChainStates(store, stateStore),
+                        accountStore: new AccountStore(stateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 store.Dispose();
 
