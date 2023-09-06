@@ -24,7 +24,7 @@ namespace Libplanet.Action
     {
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
-        private readonly IBlockChainStates _blockChainStates;
+        private readonly IAccountStore _accountStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
@@ -32,19 +32,19 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
+        /// <param name="accountStore">The <see cref="IAccountStore"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates blockChainStates,
+            IAccountStore accountStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
-            _blockChainStates = blockChainStates;
+            _accountStore = accountStore;
             _actionLoader = actionTypeLoader;
         }
 
@@ -90,7 +90,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccount previousState = PrepareInitialDelta(block);
+                IAccount previousState = PrepareInitialDelta(root);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -483,10 +483,8 @@ namespace Libplanet.Action
         /// <returns>The initial <see cref="IAccount"/> to be used
         /// for evaluating <paramref name="block"/>.
         /// </returns>
-        internal IAccount PrepareInitialDelta(IPreEvaluationBlock block)
-        {
-            return new Account(_blockChainStates.GetAccountState(block.PreviousHash).Trie);
-        }
+        internal IAccount PrepareInitialDelta(HashDigest<SHA256>? root)
+            => new Account(_accountStore.GetAccountState(root).Trie);
 
         [Pure]
         private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
