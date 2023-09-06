@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 using Libplanet.Action.Loader;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
@@ -17,6 +19,9 @@ namespace Libplanet.Action
         /// <summary>
         /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
+        /// <param name="root">
+        /// The root hash of the <see cref="IPreEvaluationBlock"/> to evaluate.
+        /// </param>
         /// <param name="block">The block to evaluate.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
@@ -29,6 +34,8 @@ namespace Libplanet.Action
         /// the end.</para>
         /// </remarks>
         [Pure]
-        IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block);
+        IReadOnlyList<IActionEvaluation> Evaluate(
+            HashDigest<SHA256>? root,
+            IPreEvaluationBlock block);
     }
 }

@@ -76,7 +76,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
+        public IReadOnlyList<IActionEvaluation> Evaluate(
+            HashDigest<SHA256>? root,
+            IPreEvaluationBlock block)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
