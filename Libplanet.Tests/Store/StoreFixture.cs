@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Common;
@@ -105,7 +106,7 @@ namespace Libplanet.Tests.Store
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
-                new BlockChainStates(new MemoryStore(), stateStore),
+                new AccountStore(stateStore),
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
                 Proposer,

@@ -4,6 +4,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -182,7 +183,7 @@ namespace Libplanet.Tests.Blockchain
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
-                new BlockChainStates(store, stateStore),
+                new AccountStore(stateStore),
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
                 actionEvaluator,
@@ -217,6 +218,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.BlockInterval
             );
             var blockChainStates = new BlockChainStates(store, stateStore);
+            var accountStore = new AccountStore(stateStore);
             var chain2 = new BlockChain(
                 policyWithBlockAction,
                 new VolatileStagePolicy(),
@@ -226,7 +228,7 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policyWithBlockAction.BlockAction,
-                    blockChainStates,
+                    accountStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));

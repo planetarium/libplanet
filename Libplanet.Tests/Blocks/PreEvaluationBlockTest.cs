@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -43,7 +44,7 @@ namespace Libplanet.Tests.Blocks
             {
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    new BlockChainStates(fx.Store, fx.StateStore),
+                    new AccountStore(fx.StateStore),
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
@@ -106,7 +107,7 @@ namespace Libplanet.Tests.Blocks
             {
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                    accountStore: new AccountStore(fx.StateStore),
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain.DetermineGenesisStateRootHash(

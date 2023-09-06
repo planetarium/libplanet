@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -43,7 +44,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.GenesisBlock,
                 new ActionEvaluator(
                     _ => _policy.BlockAction,
-                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    accountStore: new AccountStore(_fx.StateStore),
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
         }
 

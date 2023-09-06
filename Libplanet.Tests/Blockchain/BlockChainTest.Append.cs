@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -374,7 +375,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        accountStore: new AccountStore(fx.StateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
@@ -497,6 +498,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy(
                     new BlockPolicyViolationException(string.Empty));
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
+            var accountStore = new AccountStore(_fx.StateStore);
             var blockChain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
@@ -506,7 +508,7 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates,
+                    accountStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)));

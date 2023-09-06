@@ -18,6 +18,7 @@ using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
@@ -607,9 +608,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             };
 
             var blockChainStates = new BlockChainStates(store, stateStore);
+            var accountStore = new AccountStore(stateStore);
             var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates: blockChainStates,
+                    accountStore: accountStore,
                     actionTypeLoader: new SingleActionLoader(typeof(T)));
 
             if (genesisBlock is null)
