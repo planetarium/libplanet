@@ -175,7 +175,8 @@ namespace Libplanet.Blockchain
                 {
                     Block block = Store.GetBlock(hash);
                     ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList();
+                        ActionEvaluator.Evaluate(_blockChainStates.GetStateRootHash(hash), block)
+                            .ToImmutableList();
 
                     count += RenderActions(
                         evaluations: evaluations,
@@ -215,7 +216,9 @@ namespace Libplanet.Blockchain
 
             if (evaluations is null)
             {
-                evaluations = ActionEvaluator.Evaluate(block);
+                evaluations = ActionEvaluator.Evaluate(
+                    _blockChainStates.GetStateRootHash(block.PreviousHash),
+                    block);
             }
 
             long count = 0;
