@@ -10,6 +10,7 @@ using GraphQL.Server;
 using GraphQL.Utilities;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
@@ -227,7 +228,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         blockChainStates,
                         new ActionEvaluator(
                             _ => policy.BlockAction,
-                            blockChainStates,
+                            new AccountStore(stateStore),
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;

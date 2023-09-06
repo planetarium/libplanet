@@ -13,6 +13,7 @@ using ImmutableTrie;
 using global::Cocona;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
@@ -157,8 +158,8 @@ public class BlockCommand
         var blockAction = blockPolicyParams.GetBlockAction();
         var actionEvaluator = new ActionEvaluator(
             _ => blockAction,
-            new BlockChainStates(
-                new MemoryStore(), new TrieStateStore(new DefaultKeyValueStore(null))),
+            new AccountStore(
+                new TrieStateStore(new DefaultKeyValueStore(null))),
             new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(
             actionEvaluator, privateKey: key, transactions: txs);
