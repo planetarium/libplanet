@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -51,6 +53,9 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetAccountState"/>
         public IAccountState GetAccountState(BlockHash? offset) =>
             new Account(GetTrie(offset));
+
+        public HashDigest<SHA256> GetStateRootHash(BlockHash? offset) =>
+            GetTrie(offset).Hash;
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>

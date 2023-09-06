@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -13,6 +16,7 @@ namespace Libplanet.Blockchain
     {
         public static readonly NullChainStates Instance = new NullChainStates();
         private static readonly IKeyValueStore _keyValueStore = new MemoryKeyValueStore();
+        private static readonly IStateStore _stateStore = new TrieStateStore(_keyValueStore);
 
         private NullChainStates()
         {
@@ -38,5 +42,10 @@ namespace Libplanet.Blockchain
 
         public IAccountState GetAccountState(BlockHash? offset) =>
             new Account(new MerkleTrie(_keyValueStore));
+
+        public HashDigest<SHA256> GetStateRootHash(BlockHash? offset) =>
+            GetAccountState(offset).Trie.Hash;
+
+        public IStateStore GetStateStore() => _stateStore;
     }
 }
