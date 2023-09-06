@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -465,7 +466,7 @@ namespace Libplanet.Net.Tests
                     fxs[i].GenesisBlock,
                     new ActionEvaluator(
                         policyBlockActionGetter: _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fxs[i].Store, fxs[i].StateStore),
+                        accountStore: new AccountStore(fxs[i].StateStore),
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 swarms[i] = await CreateSwarm(blockChains[i]).ConfigureAwait(false);
             }
