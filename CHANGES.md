@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.3.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on September 7, 2023.
 
 ### Backward-incompatible API changes
 
@@ -35,10 +33,6 @@ To be released.
  -  Added `IAccountState` interface.  [[#3416]]
  -  Added `AccountState` class.  [[#3416]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore` became to
@@ -61,10 +55,6 @@ To be released.
     an existing `FullNode` would throw an `Exception`.  [[#3390]]
  -  (Libplanet.Store) Fixed a bug where committing an `ITrie` may return
     an `ITrie` with a different path security scheme.  [[#3401]]
-
-### Dependencies
-
-### CLI tools
 
 [#3354]: https://github.com/planetarium/libplanet/issues/3354
 [#3356]: https://github.com/planetarium/libplanet/pull/3356
