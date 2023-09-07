@@ -50,7 +50,7 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc cref="IBlockChainStates.GetAccountState"/>
         public IAccountState GetAccountState(BlockHash? offset) =>
-            new Account(GetTrie(offset));
+            new AccountState(GetTrie(offset));
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
