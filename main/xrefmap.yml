@@ -1185,12 +1185,18 @@ references:
   commentId: T:Libplanet.Action.State.Account
   fullName: Libplanet.Action.State.Account
   nameWithType: Account
-- uid: Libplanet.Action.State.Account.#ctor(Libplanet.Store.Trie.ITrie)
-  name: Account(ITrie)
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Action.State.Account.#ctor(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Action.State.Account.Account(Libplanet.Store.Trie.ITrie)
-  nameWithType: Account.Account(ITrie)
+- uid: Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountDelta)
+  name: Account(IAccountState, IAccountDelta)
+  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Action_State_IAccountState_Libplanet_Action_State_IAccountDelta_
+  commentId: M:Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountDelta)
+  fullName: Libplanet.Action.State.Account.Account(Libplanet.Action.State.IAccountState, Libplanet.Action.State.IAccountDelta)
+  nameWithType: Account.Account(IAccountState, IAccountDelta)
+- uid: Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState)
+  name: Account(IAccountState)
+  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Action_State_IAccountState_
+  commentId: M:Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState)
+  fullName: Libplanet.Action.State.Account.Account(Libplanet.Action.State.IAccountState)
+  nameWithType: Account.Account(IAccountState)
 - uid: Libplanet.Action.State.Account.#ctor*
   name: Account
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_
@@ -1573,6 +1579,106 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.AccountExtensions.GetUpdatedStates
   nameWithType: AccountExtensions.GetUpdatedStates
+- uid: Libplanet.Action.State.AccountState
+  name: AccountState
+  href: api/Libplanet.Action.State.AccountState.html
+  commentId: T:Libplanet.Action.State.AccountState
+  fullName: Libplanet.Action.State.AccountState
+  nameWithType: AccountState
+- uid: Libplanet.Action.State.AccountState.#ctor(Libplanet.Store.Trie.ITrie)
+  name: AccountState(ITrie)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState__ctor_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Action.State.AccountState.#ctor(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Action.State.AccountState.AccountState(Libplanet.Store.Trie.ITrie)
+  nameWithType: AccountState.AccountState(ITrie)
+- uid: Libplanet.Action.State.AccountState.#ctor*
+  name: AccountState
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState__ctor_
+  commentId: Overload:Libplanet.Action.State.AccountState.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.AccountState
+  nameWithType: AccountState.AccountState
+- uid: Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
+  nameWithType: AccountState.GetBalance(Address, Currency)
+- uid: Libplanet.Action.State.AccountState.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetBalance_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetBalance
+  nameWithType: AccountState.GetBalance
+- uid: Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  name: GetState(Address)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  nameWithType: AccountState.GetState(Address)
+- uid: Libplanet.Action.State.AccountState.GetState*
+  name: GetState
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetState_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetState
+  nameWithType: AccountState.GetState
+- uid: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__
+  commentId: M:Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Crypto.Address>)
+  fullName.vb: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Crypto.Address))
+  nameWithType: AccountState.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: AccountState.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.Action.State.AccountState.GetStates*
+  name: GetStates
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetStates_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetStates
+  nameWithType: AccountState.GetStates
+- uid: Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetTotalSupply_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  nameWithType: AccountState.GetTotalSupply(Currency)
+- uid: Libplanet.Action.State.AccountState.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetTotalSupply_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetTotalSupply
+  nameWithType: AccountState.GetTotalSupply
+- uid: Libplanet.Action.State.AccountState.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetValidatorSet
+  commentId: M:Libplanet.Action.State.AccountState.GetValidatorSet
+  fullName: Libplanet.Action.State.AccountState.GetValidatorSet()
+  nameWithType: AccountState.GetValidatorSet()
+- uid: Libplanet.Action.State.AccountState.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetValidatorSet
+  nameWithType: AccountState.GetValidatorSet
+- uid: Libplanet.Action.State.AccountState.Trie
+  name: Trie
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_Trie
+  commentId: P:Libplanet.Action.State.AccountState.Trie
+  fullName: Libplanet.Action.State.AccountState.Trie
+  nameWithType: AccountState.Trie
+- uid: Libplanet.Action.State.AccountState.Trie*
+  name: Trie
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_Trie_
+  commentId: Overload:Libplanet.Action.State.AccountState.Trie
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.Trie
+  nameWithType: AccountState.Trie
 - uid: Libplanet.Action.State.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.Action.State.CurrencyPermissionException.html
