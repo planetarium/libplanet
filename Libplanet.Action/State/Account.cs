@@ -18,28 +18,30 @@ namespace Libplanet.Action.State
     [Pure]
     public class Account : IAccount
     {
-        public Account(ITrie trie)
-            : this(trie, new AccountDelta())
+        private readonly IAccountState _baseState;
+
+        public Account(IAccountState baseState)
+            : this(baseState, new AccountDelta())
         {
         }
 
-        private Account(ITrie trie, IAccountDelta delta)
-            : this(trie, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
+        public Account(IAccountState baseState, IAccountDelta delta)
+            : this(baseState, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
         {
         }
 
         private Account(
-            ITrie trie,
+            IAccountState baseState,
             IAccountDelta delta,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
         {
-            Trie = trie;
+            _baseState = baseState;
             Delta = delta;
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
-        public ITrie Trie { get; }
+        public ITrie Trie => _baseState.Trie;
 
         /// <inheritdoc/>
         public IAccountDelta Delta { get; }
@@ -57,9 +59,11 @@ namespace Libplanet.Action.State
         {
             AccountMetrics.GetStateTimer.Value?.Start();
             AccountMetrics.GetStateCount.Value += 1;
-            IValue? state = GetStates(new[] { address })[0];
+            IValue? value = Delta.States.TryGetValue(address, out IValue? updatedValue)
+                ? updatedValue
+                : _baseState.GetState(address);
             AccountMetrics.GetStateTimer.Value?.Stop();
-            return state;
+            return value;
         }
 
         /// <inheritdoc cref="IAccountState.GetStates(IReadOnlyList{Address})"/>
@@ -69,12 +73,7 @@ namespace Libplanet.Action.State
             AccountMetrics.GetStateTimer.Value?.Start();
             int length = addresses.Count;
             AccountMetrics.GetStateCount.Value += length;
-            var values =
-                Trie.Get(
-                    addresses
-                        .Select(KeyConverters.ToStateKey)
-                        .ToArray());
-
+            List<IValue?> values = addresses.Select(address => GetState(address)).ToList();
             AccountMetrics.GetStateTimer.Value?.Stop();
             return values;
         }
@@ -85,14 +84,10 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public FungibleAssetValue GetBalance(Address address, Currency currency)
-        {
-             KeyBytes key = KeyConverters.ToFungibleAssetKey(address, currency);
-             IValue? rawValue = Trie.Get(key);
-             return rawValue is Integer i
-                 ? FungibleAssetValue.FromRawValue(currency, i)
-                 : currency * 0;
-        }
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            Delta.Fungibles.TryGetValue((address, currency), out BigInteger balance)
+                ? FungibleAssetValue.FromRawValue(currency, balance)
+                : _baseState.GetBalance(address, currency);
 
         /// <inheritdoc/>
         [Pure]
@@ -103,23 +98,16 @@ namespace Libplanet.Action.State
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            KeyBytes[] keys = new[] { KeyConverters.ToTotalSupplyKey(currency) };
-            IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
+            // Return dirty state if it exists.
+            return Delta.TotalSupplies.TryGetValue(currency, out BigInteger totalSupplyValue)
+                ? FungibleAssetValue.FromRawValue(currency, totalSupplyValue)
+                : _baseState.GetTotalSupply(currency);
         }
 
         /// <inheritdoc/>
         [Pure]
-        public ValidatorSet GetValidatorSet()
-        {
-             KeyBytes[] keys = new[] { KeyConverters.ValidatorSetKey };
-             IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-             return rawValues.Count > 0 && rawValues[0] is List list
-                 ? new ValidatorSet(list)
-                 : new ValidatorSet();
-        }
+        public ValidatorSet GetValidatorSet() =>
+            Delta.ValidatorSet ?? _baseState.GetValidatorSet();
 
         /// <inheritdoc/>
         [Pure]
@@ -250,7 +238,7 @@ namespace Libplanet.Action.State
         /// </remarks>
         internal static IAccount Flush(IAccount account) =>
             account is Account impl
-                ? new Account(impl.Trie, new AccountDelta(), impl.TotalUpdatedFungibles)
+                ? new Account(impl, new AccountDelta(), impl.TotalUpdatedFungibles)
                 : throw new ArgumentException(
                     $"Unknown type for {nameof(account)}: {account.GetType()}");
 
@@ -259,7 +247,7 @@ namespace Libplanet.Action.State
             Address address,
             IValue value) =>
             new Account(
-                Trie.Set(KeyConverters.ToStateKey(address), value),
+                _baseState,
                 new AccountDelta(
                     Delta.States.SetItem(address, value),
                     Delta.Fungibles,
@@ -274,9 +262,7 @@ namespace Libplanet.Action.State
             BigInteger amount,
             BigInteger? supplyAmount = null) => supplyAmount is { } sa
             ? new Account(
-                Trie
-                    .Set(KeyConverters.ToFungibleAssetKey(address, currency), new Integer(amount))
-                    .Set(KeyConverters.ToTotalSupplyKey(currency), new Integer(sa)),
+                _baseState,
                 new AccountDelta(
                     Delta.States,
                     Delta.Fungibles.SetItem((address, currency), amount),
@@ -284,8 +270,7 @@ namespace Libplanet.Action.State
                     Delta.ValidatorSet),
                 TotalUpdatedFungibles.SetItem((address, currency), amount))
             : new Account(
-                Trie
-                    .Set(KeyConverters.ToFungibleAssetKey(address, currency), new Integer(amount)),
+                _baseState,
                 new AccountDelta(
                     Delta.States,
                     Delta.Fungibles.SetItem((address, currency), amount),
@@ -296,7 +281,7 @@ namespace Libplanet.Action.State
         [Pure]
         private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
             new Account(
-                Trie.Set(KeyConverters.ValidatorSetKey, validatorSet.Bencoded),
+                _baseState,
                 new AccountDelta(
                     Delta.States,
                     Delta.Fungibles,

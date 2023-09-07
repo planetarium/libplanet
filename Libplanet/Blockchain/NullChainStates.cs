@@ -37,6 +37,6 @@ namespace Libplanet.Blockchain
             GetAccountState(offset).GetValidatorSet();
 
         public IAccountState GetAccountState(BlockHash? offset) =>
-            new Account(new MerkleTrie(_keyValueStore));
+            new AccountState(new MerkleTrie(_keyValueStore));
     }
 }

@@ -32,6 +32,8 @@ To be released.
  -  Removed `IBlockState` interface.  [[#3413]]
  -  Removed `IBlockChainState.GetBlockState()` interface method.  [[#3413]]
  -  Added `IBlockChainState.GetAccountState()` interface method.  [[#3413]]
+ -  Added `IAccountState` interface.  [[#3416]]
+ -  Added `AccountState` class.  [[#3416]]
 
 ### Backward-incompatible network protocol changes
 
@@ -79,6 +81,7 @@ To be released.
 [#3407]: https://github.com/planetarium/libplanet/pull/3407
 [#3410]: https://github.com/planetarium/libplanet/pull/3410
 [#3413]: https://github.com/planetarium/libplanet/pull/3413
+[#3416]: https://github.com/planetarium/libplanet/pull/3416
 [RocksDB Read Only]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 

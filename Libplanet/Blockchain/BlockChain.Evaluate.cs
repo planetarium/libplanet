@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -106,39 +105,37 @@ namespace Libplanet.Blockchain
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 evaluations = EvaluateBlock(block);
+                var totalDelta = evaluations.GetRawTotalDelta();
                 _logger.Debug(
-                    "Took {DurationMs} ms to summarize the states delta " +
+                    "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
                     "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                     stopwatch.ElapsedMilliseconds,
+                    totalDelta.Count,
                     block.Index,
                     block.PreEvaluationHash);
-                if (evaluations.Count > 0)
-                {
-                    ITrie stateRoot = StateStore.Commit(evaluations.Last().OutputState.Trie);
-                    HashDigest<SHA256> rootHash = stateRoot.Hash;
-                    _logger
-                        .ForContext("Tag", "Metric")
-                        .ForContext("Subtag", "StateUpdateDuration")
-                        .Information(
-                            "Took {DurationMs} ms to update the states " +
-                            "and resulting in state root hash {StateRootHash} for " +
-                            "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                            stopwatch.ElapsedMilliseconds,
-                            rootHash,
-                            block.Index,
-                            block.PreEvaluationHash);
 
-                    return rootHash;
-                }
-                else
+                ITrie trie = GetAccountState(block.PreviousHash).Trie;
+                foreach (var kv in totalDelta)
                 {
-                    _logger.Information(
-                        "Block #{BlockIndex} pre-evaluation hash {PreEvaluationHash} " +
-                        "did not produce any action evaluations",
+                    trie = trie.Set(kv.Key, kv.Value);
+                }
+
+                trie = StateStore.Commit(trie);
+                HashDigest<SHA256> rootHash = trie.Hash;
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "StateUpdateDuration")
+                    .Information(
+                        "Took {DurationMs} ms to update the states with {KeyCount} key changes " +
+                        "and resulting in state root hash {StateRootHash} for " +
+                        "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
+                        stopwatch.ElapsedMilliseconds,
+                        totalDelta.Count,
+                        rootHash,
                         block.Index,
                         block.PreEvaluationHash);
-                    return StateStore.GetStateRoot(Store.GetStateRootHash(block.PreviousHash)).Hash;
-                }
+
+                return rootHash;
             }
             finally
             {

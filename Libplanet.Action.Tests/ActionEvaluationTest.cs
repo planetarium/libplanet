@@ -37,11 +37,11 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    new Account(MockAccountState.Empty.Trie),
+                    new Account(MockAccountState.Empty),
                     123,
                     0,
                     false),
-                new Account(MockAccountState.Empty.SetState(address, (Text)"item").Trie));
+                new Account(MockAccountState.Empty.SetState(address, (Text)"item")));
             var action = (DumbAction)evaluation.Action;
 
             Assert.Equal(address, action.TargetAddress);

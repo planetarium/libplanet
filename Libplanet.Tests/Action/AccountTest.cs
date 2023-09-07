@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Action
                 .SetBalance(_addr[1], _currencies[2], 20)
                 .SetValidator(new Validator(_keys[0].PublicKey, 1))
                 .SetValidator(new Validator(_keys[1].PublicKey, 1))
-                .SetValidator(new Validator(_keys[2].PublicKey, 1)).Trie);
+                .SetValidator(new Validator(_keys[2].PublicKey, 1)));
 
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;
