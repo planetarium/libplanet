@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "A0XiAXa1tXSNw0kOIhFHHk+PwuJPkeHO+xgN1UtGKiE="
+          "hash": "97VUDi1+U5rrjNLLT6n4mGVmhfHvUOiA8zbzpf/nGns="
         }
       },
       "is_incremental": false,
@@ -801,7 +801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html",
-          "hash": "6QuKxM4Ab0Z538P4NQ9ahdcPKfd1auPy1wxDa+AbFek="
+          "hash": "lwzeZ3TtC/Fcei2TJSo+6FaCDL7VKRDj5grJx3Uqz6E="
         }
       },
       "is_incremental": false,
@@ -813,7 +813,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.AnonymousRenderer.html",
-          "hash": "KQPmXhxKyoNjd+21rynUtdPL/ZwNvArH+Bd1uCn2MNE="
+          "hash": "NHN2swA+Y9RuGgLtzmSR/Okjyy60bHzORVbykIpfyYs="
         }
       },
       "is_incremental": false,
@@ -993,7 +993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.LoggedRenderer.html",
-          "hash": "G6W6E6/SRYkcr3r6AxhMujuoV5KZQ2BBzStFOAUyEok="
+          "hash": "nCzNKhL+pJNFv+NaA9rYx0UgQOSRJvww2AgtK/3k758="
         }
       },
       "is_incremental": false,
@@ -5025,7 +5025,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/design.html",
-          "hash": "p2CjoiTLSbsf+qm9bPThIJhdF7nUO57QYQHsa4TkZMk="
+          "hash": "DIu63QIp1agoNcBXwIiEJZALdAq8y+egSBF395vXmYk="
         }
       },
       "is_incremental": false,
