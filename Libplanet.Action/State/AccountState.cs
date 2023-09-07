@@ -27,10 +27,19 @@ namespace Libplanet.Action.State
         public ITrie Trie => _trie;
 
         /// <inheritdoc cref="IAccountState.GetState"/>
-        public IValue? GetState(Address address) =>
-            _cache.TryGetValue(address, out IValue? cachedValue)
-                ? cachedValue
-                : Trie.Get(ToStateKey(address));
+        public IValue? GetState(Address address)
+        {
+            if (_cache.TryGetValue(address, out IValue? cachedValue))
+            {
+                return cachedValue;
+            }
+            else
+            {
+                IValue? fetched = Trie.Get(ToStateKey(address));
+                _cache.AddOrUpdate(address, fetched);
+                return fetched;
+            }
+        }
 
         /// <inheritdoc cref="IAccountState.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
