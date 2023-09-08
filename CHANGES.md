@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.3.1
 -------------
 
-To be released.
+Released on September 8, 2023.
 
 -  (Libplanet.Store) Fixed a bug where `ITrie.Get()` could wrongly retrieve
    an `IValue` from a non-existent path.  [[#3420]]
