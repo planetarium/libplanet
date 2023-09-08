@@ -25,6 +25,17 @@ To be released.
 ### CLI tools
 
 
+Version 3.3.1
+-------------
+
+Released on September 8, 2023.
+
+-  (Libplanet.Store) Fixed a bug where `ITrie.Get()` could wrongly retrieve
+   an `IValue` from a non-existent path.  [[#3420]]
+
+[#3420]: https://github.com/planetarium/libplanet/pull/3420
+
+
 Version 3.3.0
 -------------
 
