@@ -289,6 +289,22 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
+        public void ResolveToValueAtTheEndOfShortNode()
+        {
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
+
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            IValue value00 = new Text("00");
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+
+            trie = trie.Set(key00, value00);
+            trie = stateStore.Commit(trie);
+
+            Assert.Null(trie.Get(key0000));
+        }
+
+        [Fact]
         public void SetValueToExtendedKey()
         {
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
