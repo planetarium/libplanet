@@ -1,0 +1,303 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Security.Cryptography;
+using Bencodex.Types;
+using Libplanet.Common;
+using Libplanet.Crypto;
+using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
+
+namespace Libplanet.Action.State
+{
+    public class AccountDiff
+    {
+        private static readonly int _addressKeyLength = Address.Size * 2;
+
+        private static readonly int _currencyKeyLength = HashDigest<SHA1>.Size * 2;
+
+        private static readonly int _stateKeyLength = _addressKeyLength;
+
+        private static readonly int _fungibleAssetKeyLength =
+            _addressKeyLength + _currencyKeyLength + 2;
+
+        private static readonly int _totalSupplyKeyLength = _currencyKeyLength + 2;
+
+        private static readonly int _validatorSetKeyLength = 3;
+
+        private static readonly ImmutableDictionary<int, byte> _reverseConversionTable =
+            new Dictionary<int, byte>()
+            {
+                [48] = 0,   // '0'
+                [49] = 1,   // '1'
+                [50] = 2,   // '2'
+                [51] = 3,   // '3'
+                [52] = 4,   // '4'
+                [53] = 5,   // '5'
+                [54] = 6,   // '6'
+                [55] = 7,   // '7'
+                [56] = 8,   // '8'
+                [57] = 9,   // '9'
+                [97] = 10,  // 'a'
+                [98] = 11,  // 'b'
+                [99] = 12,  // 'c'
+                [100] = 13, // 'd'
+                [101] = 14, // 'e'
+                [102] = 15, // 'f'
+            }.ToImmutableDictionary();
+
+        private AccountDiff(
+            ImmutableDictionary<Address, (IValue?, IValue)> stateDiff,
+            ImmutableDictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>
+                fungibleAssetValueDiff,
+            ImmutableDictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>
+                totalSupplyDiff,
+            (ValidatorSet, ValidatorSet)? validatorSetDiff)
+        {
+            StateDiffs = stateDiff;
+            FungibleAssetValueDiffs = fungibleAssetValueDiff;
+            TotalSupplyDiffs = totalSupplyDiff;
+            ValidatorSetDiff = validatorSetDiff;
+        }
+
+        public ImmutableDictionary<Address, (IValue?, IValue)> StateDiffs { get; }
+
+        public ImmutableDictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>
+            FungibleAssetValueDiffs { get; }
+
+        public ImmutableDictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>
+            TotalSupplyDiffs { get; }
+
+        public (ValidatorSet, ValidatorSet)? ValidatorSetDiff { get; }
+
+        public static AccountDiff Create(IAccountState source, IAccountState target)
+            => Create(source.Trie, target.Trie);
+
+        // NOTE: interpret not actual.
+        public static AccountDiff Create(ITrie source, ITrie target)
+        {
+            var rawDiffs = source.Diff(target).ToList();
+
+            Dictionary<Address, (IValue?, IValue)> stateDiffs =
+                new Dictionary<Address, (IValue?, IValue)>();
+            Dictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)> favDiffs =
+                new Dictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>();
+            Dictionary<Currency, (FungibleAssetValue, FungibleAssetValue)> totalSupplyDiffs =
+                new Dictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>();
+            (ValidatorSet, ValidatorSet)? validatorSetDiff = null;
+
+            foreach (var diff in rawDiffs)
+            {
+                // NOTE: Cannot use switch as some lengths cannot be derived as const.
+                if (diff.Path.Length == _stateKeyLength)
+                {
+                    var sd = ToStateDiff(diff);
+                    stateDiffs[sd.Address] = (sd.TargetValue, sd.SourceValue);
+                }
+                else if (diff.Path.Length == _fungibleAssetKeyLength)
+                {
+                    var favd = ToFAVDiff(diff);
+
+                    // NOTE: Only add when different.  Actual stored data may be different
+                    // as 0 value can also be represented as null.
+                    if (!favd.SourceValue.Equals(favd.TargetValue))
+                    {
+                        favDiffs[(favd.Address, favd.Currency)] =
+                            (favd.TargetValue, favd.SourceValue);
+                    }
+                }
+                else if (diff.Path.Length == _totalSupplyKeyLength)
+                {
+                    var tsd = ToTotalSupplyDiff(diff);
+
+                    // NOTE: Only add when different.  Actual stored data may be different
+                    // as 0 value can also be represented as null.
+                    if (!tsd.SourceValue.Equals(tsd.TargetValue))
+                    {
+                        totalSupplyDiffs[tsd.Currency] = (tsd.TargetValue, tsd.SourceValue);
+                    }
+                }
+                else if (diff.Path.Length == _validatorSetKeyLength)
+                {
+                    var vsd = ToValidatorSetDiff(diff);
+
+                    // NOTE: Only set when different.  Actual stored data may be different
+                    // as empty validator set can also be represented as null.
+                    if (!vsd.SourceValue.Equals(vsd.TargetValue))
+                    {
+                        validatorSetDiff = (vsd.TargetValue, vsd.SourceValue);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"Encountered different values at an invalid location: {diff.Path}");
+                }
+            }
+
+            return new AccountDiff(
+                stateDiffs.ToImmutableDictionary(),
+                favDiffs.ToImmutableDictionary(),
+                totalSupplyDiffs.ToImmutableDictionary(),
+                validatorSetDiff);
+        }
+
+        internal static (Address Address, IValue? TargetValue, IValue SourceValue)
+            ToStateDiff((KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
+        {
+            return (
+                ToAddress(encoded.Path.ToByteArray()),
+                encoded.TargetValue,
+                encoded.SourceValue);
+        }
+
+        internal static (
+            Address Address,
+            Currency Currency,
+            FungibleAssetValue TargetValue,
+            FungibleAssetValue SourceValue) ToFAVDiff(
+                (KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
+        {
+            Address address =
+                ToAddress(
+                    encoded.Path.ByteArray.Skip(1).Take(_addressKeyLength).ToArray());
+            HashDigest<SHA1> currencyHash =
+                ToCurrencyHash(
+                    encoded.Path.ByteArray
+                        .Skip(_addressKeyLength + 2)
+                        .Take(_currencyKeyLength)
+                        .ToArray());
+            FungibleAssetValue sourceFAV = new FungibleAssetValue(encoded.SourceValue);
+            Currency currency = sourceFAV.Currency;
+            FungibleAssetValue targetFAV = encoded.TargetValue is { } value
+                ? new FungibleAssetValue(value)
+                : FungibleAssetValue.FromRawValue(sourceFAV.Currency, 0);
+
+            if (!currency.Hash.Equals(currencyHash))
+            {
+                throw new ArgumentException(
+                    $"The internal trie path {currencyHash} for a stored FAV does not match " +
+                    $"the hash {currency.Hash} of the FAV {currency.Ticker}");
+            }
+            else if (!currency.Equals(targetFAV.Currency))
+            {
+                throw new ArgumentException(
+                    $"The currency of the FAV stored in target {targetFAV.Currency} " +
+                    $"does match the currency of the FAV stored in source {sourceFAV.Currency}");
+            }
+
+            return (address, currency, targetFAV, sourceFAV);
+        }
+
+        internal static (
+            Currency Currency,
+            FungibleAssetValue TargetValue,
+            FungibleAssetValue SourceValue) ToTotalSupplyDiff(
+                (KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
+        {
+            HashDigest<SHA1> currencyHash =
+                ToCurrencyHash(
+                    encoded.Path.ByteArray
+                        .Skip(_addressKeyLength + 2)
+                        .Take(_currencyKeyLength)
+                        .ToArray());
+            FungibleAssetValue sourceFAV = new FungibleAssetValue(encoded.SourceValue);
+            Currency currency = sourceFAV.Currency;
+            FungibleAssetValue targetFAV = encoded.TargetValue is { } value
+                ? new FungibleAssetValue(value)
+                : FungibleAssetValue.FromRawValue(sourceFAV.Currency, 0);
+
+            if (!currency.Hash.Equals(currencyHash))
+            {
+                throw new ArgumentException(
+                    $"The internal trie path {currencyHash} for a stored FAV does not match " +
+                    $"the hash {currency.Hash} of the FAV {currency.Ticker}");
+            }
+            else if (!currency.Equals(targetFAV.Currency))
+            {
+                throw new ArgumentException(
+                    $"The currency of the FAV stored in target {targetFAV.Currency} " +
+                    $"does match the currency of the FAV stored in source {sourceFAV.Currency}");
+            }
+
+            return (currency, targetFAV, sourceFAV);
+        }
+
+        internal static (ValidatorSet TargetValue, ValidatorSet SourceValue)
+            ToValidatorSetDiff(
+                (KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
+        {
+            if (encoded.Path.Equals(KeyConverters.ValidatorSetKey))
+            {
+                ValidatorSet sourceVS = new ValidatorSet(encoded.SourceValue);
+                ValidatorSet targetVS = encoded.TargetValue is { } value
+                    ? new ValidatorSet(value)
+                    : new ValidatorSet();
+                return (targetVS, sourceVS);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Encountered different values at an invalid location: {encoded.Path}");
+            }
+        }
+
+        internal static Address FromStateKey(KeyBytes key)
+        {
+            if (key.Length != _stateKeyLength)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(key)} must be of length {_stateKeyLength}: {key.Length}");
+            }
+
+            byte[] buffer = new byte[Address.Size];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                buffer[i] = Pack(key.ByteArray[i * 2], key.ByteArray[i * 2 + 1]);
+            }
+
+            return new Address(buffer);
+        }
+
+        internal static Address ToAddress(byte[] bytes)
+        {
+            if (bytes.Length != _stateKeyLength)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(bytes)} must be of length {_stateKeyLength}: {bytes.Length}");
+            }
+
+            byte[] buffer = new byte[Address.Size];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                buffer[i] = Pack(bytes[i * 2], bytes[i * 2 + 1]);
+            }
+
+            return new Address(buffer);
+        }
+
+        internal static HashDigest<SHA1> ToCurrencyHash(byte[] bytes)
+        {
+            var expectedLength = HashDigest<SHA1>.Size * 2;
+            if (bytes.Length != expectedLength)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(bytes)} must be of length {_stateKeyLength}: {bytes.Length}");
+            }
+
+            byte[] buffer = new byte[HashDigest<SHA1>.Size];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                buffer[i] = Pack(bytes[i * 2], bytes[i * 2 + 1]);
+            }
+
+            return new HashDigest<SHA1>(buffer);
+        }
+
+        // FIXME: Assumes both x and y are less than 16.
+        private static byte Pack(byte x, byte y) =>
+            (byte)((_reverseConversionTable[x] << 4) + _reverseConversionTable[y]);
+    }
+}
