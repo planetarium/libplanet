@@ -12,6 +12,36 @@ using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {
+    /// <summary>
+    /// Represents a difference between two <see cref="IAccountState"/>s.
+    /// This is an interpretation of a raw difference obtained by <see cref="ITrie.Diff"/>
+    /// from <see cref="IAccountState"/>'s perspective.  Keep in mind of the following properties:
+    /// <list type="bullet">
+    ///     <item><description>
+    ///         Any <see lagnword="null"/> value, which is equivalent to non-existant value in
+    ///         the underlying storage, in the source is <em>ignored</em>.  That is, even if
+    ///         the value in the target and the value in the source are different while
+    ///         the value in the source is <see langword="null"/>, this will not be
+    ///         part of the resulting <see cref="AccountDiff"/>.
+    ///     </description></item>
+    ///     <item><description>
+    ///         Any <see langword="null"/> value, again, which is equivalent to non-existant value
+    ///         in the underlying storage, in the target for <see cref="FungibleAssetValue"/>
+    ///         and <see cref="ValidatorSet"/> is interpreted accordingly.  That is,
+    ///         0 amount of <see cref="FungibleAssetValue"/> and empty <see cref="ValidatorSet"/>
+    ///         are used.  This is in accordance with how <see cref="IAccountState.GetBalance"/>
+    ///         and <see cref="IAccountState.GetValidatorSet"/> would behave.
+    ///     </description></item>
+    ///     <item><description>
+    ///         Due to the reason mentioned directly above, the size of <see cref="AccountDiff"/>
+    ///         derived from <see cref="ITrie.Diff"/> may not be the same.  Moreover,
+    ///         an <see cref="AccountDiff"/> being empty <em>does not guarantee</em>
+    ///         that the data are the same as <see cref="IAccountState"/> is not capable of
+    ///         distinguishing between <see langword="null"/> and 0 <see cref="FungibleAssetValue"/>
+    ///         and so on and so forth.
+    ///     </description></item>
+    /// </list>
+    /// </summary>
     public class AccountDiff
     {
         private static readonly int _addressKeyLength = Address.Size * 2;
@@ -72,11 +102,32 @@ namespace Libplanet.Action.State
 
         public (ValidatorSet, ValidatorSet)? ValidatorSetDiff { get; }
 
-        public static AccountDiff Create(IAccountState source, IAccountState target)
+        /// <summary>
+        /// Creates an <see cref="AccountDiff"/> instance from given parameters.
+        /// </summary>
+        /// <param name="target">The <see cref="IAccountState"/> to use as the target.</param>
+        /// <param name="source">The <see cref="IAccountState"/> to use as the source.</param>
+        /// <returns>An <see cref="AccountDiff"/> created from given parameters.</returns>
+        /// <remarks>Note that the ordering of the parameters are flipped compared to
+        /// <see cref="ITrie.Diff"/> for syntactical reasons.</remarks>
+        /// <seealso cref="ITrie.Diff"/>
+        /// <seealso cref="Create(ITrie, ITrie)"/>
+        public static AccountDiff Create(IAccountState target, IAccountState source)
             => Create(source.Trie, target.Trie);
 
-        // NOTE: interpret not actual.
-        public static AccountDiff Create(ITrie source, ITrie target)
+        /// <summary>
+        /// Creates an <see cref="AccountDiff"/> instance from given parameters.
+        /// </summary>
+        /// <param name="target">The <see cref="ITrie"/> to use as the target.</param>
+        /// <param name="source">The <see cref="ITrie"/> to use as the source.</param>
+        /// <returns>An <see cref="AccountDiff"/> created from given parameters.</returns>
+        /// <exception cref="ArgumentException">Thrown when the diff internally obtained from
+        /// <see cref="ITrie.Diff"/> cannot be properly interpreted.</exception>
+        /// <remarks>Note that the ordering of the parameters are flipped compared to
+        /// <see cref="ITrie.Diff"/> for syntactical reasons.</remarks>
+        /// <seealso cref="ITrie.Diff"/>
+        /// <seealso cref="Create(IAccountState, IAccountState)"/>
+        public static AccountDiff Create(ITrie target, ITrie source)
         {
             var rawDiffs = source.Diff(target).ToList();
 
