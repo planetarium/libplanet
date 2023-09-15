@@ -18,14 +18,14 @@ namespace Libplanet.Action.State
     /// from <see cref="IAccountState"/>'s perspective.  Keep in mind of the following properties:
     /// <list type="bullet">
     ///     <item><description>
-    ///         Any <see lagnword="null"/> value, which is equivalent to non-existant value in
+    ///         Any <see lagnword="null"/> value, which is equivalent to non-existent value in
     ///         the underlying storage, in the source is <em>ignored</em>.  That is, even if
     ///         the value in the target and the value in the source are different while
     ///         the value in the source is <see langword="null"/>, this will not be
     ///         part of the resulting <see cref="AccountDiff"/>.
     ///     </description></item>
     ///     <item><description>
-    ///         Any <see langword="null"/> value, again, which is equivalent to non-existant value
+    ///         Any <see langword="null"/> value, again, which is equivalent to non-existent value
     ///         in the underlying storage, in the target for <see cref="FungibleAssetValue"/>
     ///         and <see cref="ValidatorSet"/> is interpreted accordingly.  That is,
     ///         0 amount of <see cref="FungibleAssetValue"/> and empty <see cref="ValidatorSet"/>
