@@ -14,7 +14,7 @@ namespace Libplanet.Action.State
 {
     /// <summary>
     /// Represents a difference between two <see cref="IAccountState"/>s.
-    /// This is an interpretation of a raw difference obtained by <see cref="ITrie.Diff"/>
+    /// This is a partial interpretation of a raw difference obtained by <see cref="ITrie.Diff"/>
     /// from <see cref="IAccountState"/>'s perspective.  Keep in mind of the following properties:
     /// <list type="bullet">
     ///     <item><description>
@@ -39,6 +39,13 @@ namespace Libplanet.Action.State
     ///         that the data are the same as <see cref="IAccountState"/> is not capable of
     ///         distinguishing between <see langword="null"/> and 0 <see cref="FungibleAssetValue"/>
     ///         and so on and so forth.
+    ///     </description></item>
+    ///     <item><description>
+    ///         As <see cref="Currency"/> information is in the domain of an application using
+    ///         this library, only the hash of a <see cref="Currency"/> is directly stored in
+    ///         the underlying storage.  As such, each <see cref="Currency"/> and
+    ///         <see cref="FungibleAssetValue"/> are handled as raw values, that is, as hash and
+    ///         <see cref="Integer"/>, for an <see cref="AccountDiff"/>.
     ///     </description></item>
     /// </list>
     /// </summary>
@@ -80,9 +87,9 @@ namespace Libplanet.Action.State
 
         private AccountDiff(
             ImmutableDictionary<Address, (IValue?, IValue)> stateDiff,
-            ImmutableDictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>
+            ImmutableDictionary<(Address, HashDigest<SHA1>), (Integer, Integer)>
                 fungibleAssetValueDiff,
-            ImmutableDictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>
+            ImmutableDictionary<HashDigest<SHA1>, (Integer, Integer)>
                 totalSupplyDiff,
             (ValidatorSet, ValidatorSet)? validatorSetDiff)
         {
@@ -94,10 +101,10 @@ namespace Libplanet.Action.State
 
         public ImmutableDictionary<Address, (IValue?, IValue)> StateDiffs { get; }
 
-        public ImmutableDictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>
+        public ImmutableDictionary<(Address, HashDigest<SHA1>), (Integer, Integer)>
             FungibleAssetValueDiffs { get; }
 
-        public ImmutableDictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>
+        public ImmutableDictionary<HashDigest<SHA1>, (Integer, Integer)>
             TotalSupplyDiffs { get; }
 
         public (ValidatorSet, ValidatorSet)? ValidatorSetDiff { get; }
@@ -113,7 +120,7 @@ namespace Libplanet.Action.State
         /// <seealso cref="ITrie.Diff"/>
         /// <seealso cref="Create(ITrie, ITrie)"/>
         public static AccountDiff Create(IAccountState target, IAccountState source)
-            => Create(source.Trie, target.Trie);
+            => Create(target.Trie, source.Trie);
 
         /// <summary>
         /// Creates an <see cref="AccountDiff"/> instance from given parameters.
@@ -133,10 +140,10 @@ namespace Libplanet.Action.State
 
             Dictionary<Address, (IValue?, IValue)> stateDiffs =
                 new Dictionary<Address, (IValue?, IValue)>();
-            Dictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)> favDiffs =
-                new Dictionary<(Address, Currency), (FungibleAssetValue, FungibleAssetValue)>();
-            Dictionary<Currency, (FungibleAssetValue, FungibleAssetValue)> totalSupplyDiffs =
-                new Dictionary<Currency, (FungibleAssetValue, FungibleAssetValue)>();
+            Dictionary<(Address, HashDigest<SHA1>), (Integer, Integer)> favDiffs =
+                new Dictionary<(Address, HashDigest<SHA1>), (Integer, Integer)>();
+            Dictionary<HashDigest<SHA1>, (Integer, Integer)> totalSupplyDiffs =
+                new Dictionary<HashDigest<SHA1>, (Integer, Integer)>();
             (ValidatorSet, ValidatorSet)? validatorSetDiff = null;
 
             foreach (var diff in rawDiffs)
@@ -206,9 +213,9 @@ namespace Libplanet.Action.State
 
         internal static (
             Address Address,
-            Currency Currency,
-            FungibleAssetValue TargetValue,
-            FungibleAssetValue SourceValue) ToFAVDiff(
+            HashDigest<SHA1> Currency,
+            Integer TargetValue,
+            Integer SourceValue) ToFAVDiff(
                 (KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
         {
             Address address =
@@ -220,60 +227,48 @@ namespace Libplanet.Action.State
                         .Skip(_addressKeyLength + 2)
                         .Take(_currencyKeyLength)
                         .ToArray());
-            FungibleAssetValue sourceFAV = new FungibleAssetValue(encoded.SourceValue);
-            Currency currency = sourceFAV.Currency;
-            FungibleAssetValue targetFAV = encoded.TargetValue is { } value
-                ? new FungibleAssetValue(value)
-                : FungibleAssetValue.FromRawValue(sourceFAV.Currency, 0);
+            Integer sourceValue = encoded.SourceValue is Integer sourceInteger
+                ? sourceInteger
+                : throw new ArgumentException(
+                    $"Expected an {nameof(Integer)} but encountered an invalid value " +
+                    $"{encoded.SourceValue} at {encoded.Path}");
+            Integer targetValue = encoded.TargetValue is { } value
+                ? value is Integer targetInteger
+                    ? targetInteger
+                    : throw new ArgumentException(
+                        $"Expected an {nameof(Integer)} but encountered " +
+                        $"an invalid value {encoded.TargetValue} at {encoded.Path}")
+                : new Integer(0);
 
-            if (!currency.Hash.Equals(currencyHash))
-            {
-                throw new ArgumentException(
-                    $"The internal trie path {currencyHash} for a stored FAV does not match " +
-                    $"the hash {currency.Hash} of the FAV {currency.Ticker}");
-            }
-            else if (!currency.Equals(targetFAV.Currency))
-            {
-                throw new ArgumentException(
-                    $"The currency of the FAV stored in target {targetFAV.Currency} " +
-                    $"does match the currency of the FAV stored in source {sourceFAV.Currency}");
-            }
-
-            return (address, currency, targetFAV, sourceFAV);
+            return (address, currencyHash, targetValue, sourceValue);
         }
 
         internal static (
-            Currency Currency,
-            FungibleAssetValue TargetValue,
-            FungibleAssetValue SourceValue) ToTotalSupplyDiff(
+            HashDigest<SHA1> Currency,
+            Integer TargetValue,
+            Integer SourceValue) ToTotalSupplyDiff(
                 (KeyBytes Path, IValue? TargetValue, IValue SourceValue) encoded)
         {
             HashDigest<SHA1> currencyHash =
                 ToCurrencyHash(
                     encoded.Path.ByteArray
-                        .Skip(_addressKeyLength + 2)
+                        .Skip(2)
                         .Take(_currencyKeyLength)
                         .ToArray());
-            FungibleAssetValue sourceFAV = new FungibleAssetValue(encoded.SourceValue);
-            Currency currency = sourceFAV.Currency;
-            FungibleAssetValue targetFAV = encoded.TargetValue is { } value
-                ? new FungibleAssetValue(value)
-                : FungibleAssetValue.FromRawValue(sourceFAV.Currency, 0);
+            Integer sourceValue = encoded.SourceValue is Integer sourceInteger
+                ? sourceInteger
+                : throw new ArgumentException(
+                    $"Expected an {nameof(Integer)} but encountered an invalid value " +
+                    $"{encoded.SourceValue} at {encoded.Path}");
+            Integer targetValue = encoded.TargetValue is { } value
+                ? value is Integer targetInteger
+                    ? targetInteger
+                    : throw new ArgumentException(
+                        $"Expected an {nameof(Integer)} but encountered " +
+                        $"an invalid value {encoded.TargetValue} at {encoded.Path}")
+                : new Integer(0);
 
-            if (!currency.Hash.Equals(currencyHash))
-            {
-                throw new ArgumentException(
-                    $"The internal trie path {currencyHash} for a stored FAV does not match " +
-                    $"the hash {currency.Hash} of the FAV {currency.Ticker}");
-            }
-            else if (!currency.Equals(targetFAV.Currency))
-            {
-                throw new ArgumentException(
-                    $"The currency of the FAV stored in target {targetFAV.Currency} " +
-                    $"does match the currency of the FAV stored in source {sourceFAV.Currency}");
-            }
-
-            return (currency, targetFAV, sourceFAV);
+            return (currencyHash, targetValue, sourceValue);
         }
 
         internal static (ValidatorSet TargetValue, ValidatorSet SourceValue)
@@ -329,13 +324,15 @@ namespace Libplanet.Action.State
             return new Address(buffer);
         }
 
+        // FIXME: This assumes to know that hash algorithm used by Currency is SHA1.
         internal static HashDigest<SHA1> ToCurrencyHash(byte[] bytes)
         {
-            var expectedLength = HashDigest<SHA1>.Size * 2;
+            var expectedLength = _currencyKeyLength;
             if (bytes.Length != expectedLength)
             {
                 throw new ArgumentException(
-                    $"Given {nameof(bytes)} must be of length {_stateKeyLength}: {bytes.Length}");
+                    $"Given {nameof(bytes)} must be of length {_currencyKeyLength}: " +
+                    $"{bytes.Length}");
             }
 
             byte[] buffer = new byte[HashDigest<SHA1>.Size];
