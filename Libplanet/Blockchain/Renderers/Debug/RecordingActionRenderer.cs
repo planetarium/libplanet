@@ -59,7 +59,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public virtual void RenderAction(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             IAccount nextStates
         )
         {
@@ -79,7 +79,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public virtual void RenderActionError(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             Exception exception
         ) =>
             _records.Add(

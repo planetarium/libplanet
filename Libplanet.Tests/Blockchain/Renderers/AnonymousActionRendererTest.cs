@@ -16,8 +16,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static IAccount _account = new Account(MockAccountState.Empty);
 
-        private static IActionContext _actionContext =
-            new ActionContext(
+        private static IActionRenderContext _actionContext =
+            new ActionRenderContext(new ActionContext(
                 default,
                 default,
                 default,
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 _account,
                 default,
-                0);
+                0));
 
         private static Exception _exception = new Exception();
 
@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionRenderer()
         {
-            (IValue, IActionContext, IAccount)? record = null;
+            (IValue, IActionRenderContext, IAccount)? record = null;
             var renderer = new AnonymousActionRenderer
             {
                 ActionRenderer = (action, context, nextStates) =>
@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionErrorRenderer()
         {
-            (IValue, IActionContext, Exception)? record = null;
+            (IValue, IActionRenderContext, Exception)? record = null;
             var renderer = new AnonymousActionRenderer
             {
                 ActionErrorRenderer = (action, context, exception) =>

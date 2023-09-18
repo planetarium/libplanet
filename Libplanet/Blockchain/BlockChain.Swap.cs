@@ -232,14 +232,14 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
+                            new ActionRenderContext(evaluation.InputContext.GetUnconsumedContext()),
                             evaluation.OutputState);
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
+                            new ActionRenderContext(evaluation.InputContext.GetUnconsumedContext()),
                             evaluation.Exception);
                     }
 

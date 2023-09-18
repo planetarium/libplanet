@@ -68,8 +68,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             bool called = false;
             LogEvent firstLog = null;
-            IActionContext actionContext =
-                new ActionContext(
+            IActionRenderContext actionContext =
+                new ActionRenderContext(new ActionContext(
                     default,
                     default,
                     default,
@@ -78,13 +78,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     _account,
                     default,
                     0,
-                    rehearsal
-                );
+                    rehearsal));
             Exception actionError = new Exception();
             IActionRenderer actionRenderer;
             if (error)
             {
-                Action<IValue, IActionContext, Exception> render = (action, cxt, e) =>
+                Action<IValue, IActionRenderContext, Exception> render = (action, cxt, e) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);
@@ -105,7 +104,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
             else
             {
-                Action<IValue, IActionContext, IAccount> render = (action, cxt, next) =>
+                Action<IValue, IActionRenderContext, IAccount> render = (action, cxt, next) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);

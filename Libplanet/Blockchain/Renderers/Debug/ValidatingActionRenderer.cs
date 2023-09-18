@@ -40,11 +40,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public override void RenderAction(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             IAccount nextStates
         )
         {
@@ -52,11 +51,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public override void RenderActionError(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             Exception exception
         )
         {

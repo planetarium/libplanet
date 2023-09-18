@@ -17,8 +17,8 @@ namespace Libplanet.Blockchain.Renderers
     /// <list type="number">
     /// <item><description><see cref="IRenderer.RenderBlock(Block, Block)"/> (one time)
     /// </description></item>
-    /// <item><description><see cref="RenderAction(IValue, IActionContext, IAccount)"/>
-    /// &amp; <see cref="RenderActionError(IValue, IActionContext, Exception)"/> (zero or more
+    /// <item><description><see cref="RenderAction"/>
+    /// &amp; <see cref="RenderActionError"/> (zero or more
     /// times)</description>
     /// </item>
     /// <item><description><see cref="RenderBlockEnd(Block, Block)"/> (one time)</description>
@@ -56,18 +56,17 @@ namespace Libplanet.Blockchain.Renderers
         /// It is guaranteed to be called only once for an <paramref name="action"/>,
         /// and only after applied to the blockchain, unless an exception is thrown during executing
         /// the <paramref name="action"/> (in that case <see
-        /// cref="RenderActionError(IValue, IActionContext, Exception)"/> is called instead) or
+        /// cref="RenderActionError"/> is called instead) or
         /// once the <paramref name="action"/> has been unrendered.
         /// <para>Also note that this method is invoked after <see
         /// cref="IRenderer.RenderBlock(Block, Block)"/> method is called
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
         /// </remarks>
-        void RenderAction(IValue action, IActionContext context, IAccount nextStates);
+        void RenderAction(IValue action, IActionRenderContext context, IAccount nextStates);
 
         /// <summary>
-        /// Does the similar things to <see cref=
-        /// "RenderAction(IValue, IActionContext, IAccount)"/>, except that this method
+        /// Does the similar things to <see cref="RenderAction"/>, except that this method
         /// is invoked when <paramref name="action"/> has terminated with an exception.
         /// </summary>
         /// <param name="action">An action which threw an exception during execution.</param>
@@ -83,7 +82,7 @@ namespace Libplanet.Blockchain.Renderers
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).
         /// </remarks>
-        void RenderActionError(IValue action, IActionContext context, Exception exception);
+        void RenderActionError(IValue action, IActionRenderContext context, Exception exception);
 
         /// <summary>
         /// Does things that should be done right all actions in a new <see cref="Block"/> are

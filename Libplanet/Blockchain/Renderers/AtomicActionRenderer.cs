@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </remarks>
     public sealed class AtomicActionRenderer : IActionRenderer
     {
-        private readonly List<(IValue, IActionContext, IAccount)> _eventBuffer;
+        private readonly List<(IValue, IActionRenderContext, IAccount)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -35,7 +35,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IValue, IActionContext, IAccount)>();
+            _eventBuffer = new List<(IValue, IActionRenderContext, IAccount)>();
             _errored = false;
         }
 
@@ -58,11 +58,10 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             IAccount nextStates
         )
         {
@@ -81,9 +80,11 @@ namespace Libplanet.Blockchain.Renderers
             }
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
-        public void RenderActionError(IValue action, IActionContext context, Exception exception)
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
+        public void RenderActionError(
+            IValue action,
+            IActionRenderContext context,
+            Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))
             {
@@ -102,7 +103,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IValue, IActionContext, IAccount> render
+            Action<IValue, IActionRenderContext, IAccount> render
         )
         {
             if (!_errored)

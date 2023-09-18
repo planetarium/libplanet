@@ -17,7 +17,7 @@ namespace Libplanet.Action
                 blockProtocolVersion: context.BlockProtocolVersion,
                 rehearsal: context.Rehearsal,
                 previousState: context.PreviousState.Trie.Hash,
-                random: context.GetUnconsumedContext().Random,
+                random: context.Random,
                 blockAction: context.BlockAction)
         {
         }

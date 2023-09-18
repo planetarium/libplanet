@@ -67,11 +67,10 @@ namespace Libplanet.Blockchain.Renderers
                 ActionRenderer.RenderBlockEnd
             );
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             IAccount nextStates
         ) =>
             LogActionRendering(
@@ -81,11 +80,10 @@ namespace Libplanet.Blockchain.Renderers
                 () => ActionRenderer.RenderAction(action, context, nextStates)
             );
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public void RenderActionError(
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             Exception exception
         ) =>
             LogActionRendering(
@@ -98,7 +96,7 @@ namespace Libplanet.Blockchain.Renderers
         private void LogActionRendering(
             string methodName,
             IValue action,
-            IActionContext context,
+            IActionRenderContext context,
             System.Action callback
         )
         {
