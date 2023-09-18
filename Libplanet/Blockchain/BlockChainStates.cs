@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -48,9 +50,13 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             GetAccountState(offset).GetValidatorSet();
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState"/>
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(BlockHash?)"/>
         public IAccountState GetAccountState(BlockHash? offset) =>
             new AccountState(GetTrie(offset));
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
+            new AccountState(GetTrie(hash));
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -84,17 +90,7 @@ namespace Libplanet.Blockchain
             }
             else if (_store.GetStateRootHash(hash) is { } stateRootHash)
             {
-                if (_stateStore.ContainsStateRoot(stateRootHash))
-                {
-                    return _stateStore.GetStateRoot(stateRootHash);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"Could not find state root {stateRootHash} associated with " +
-                        $"block hash {offset} in {nameof(IStateStore)}.",
-                        nameof(offset));
-                }
+                return GetTrie(stateRootHash);
             }
             else
             {
@@ -102,6 +98,16 @@ namespace Libplanet.Blockchain
                     $"Could not find block hash {hash} in {nameof(IStore)}.",
                     nameof(offset));
             }
+        }
+
+        private ITrie GetTrie(HashDigest<SHA256>? hash)
+        {
+            ITrie trie = _stateStore.GetStateRoot(hash);
+            return trie.Recorded
+                ? trie
+                : throw new ArgumentException(
+                    $"Could not find state root {hash} in {nameof(IStateStore)}.",
+                    nameof(hash));
         }
     }
 }

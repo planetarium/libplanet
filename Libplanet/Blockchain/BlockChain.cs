@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -560,9 +561,13 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState" />
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(BlockHash?)" />
         public IAccountState GetAccountState(BlockHash? offset) =>
             _blockChainStates.GetAccountState(offset);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)" />
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
+            _blockChainStates.GetAccountState(hash);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

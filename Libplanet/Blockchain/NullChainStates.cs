@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
@@ -37,6 +39,9 @@ namespace Libplanet.Blockchain
             GetAccountState(offset).GetValidatorSet();
 
         public IAccountState GetAccountState(BlockHash? offset) =>
+            new AccountState(new MerkleTrie(_keyValueStore));
+
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
             new AccountState(new MerkleTrie(_keyValueStore));
     }
 }

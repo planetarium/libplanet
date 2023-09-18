@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IBlockChainStates.GetAccountState(HashDigest<SHA256>?)`
+    interface method.  [[#3425]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3425]: https://github.com/planetarium/libplanet/pull/3425
 
 
 Version 3.3.1
