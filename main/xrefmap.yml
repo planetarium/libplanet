@@ -2037,6 +2037,15 @@ references:
   commentId: T:Libplanet.Action.State.IBlockChainStates
   fullName: Libplanet.Action.State.IBlockChainStates
   nameWithType: IBlockChainStates
+- uid: Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetAccountState(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetAccountState(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: IBlockChainStates.GetAccountState(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: IBlockChainStates.GetAccountState(Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable{Libplanet.Types.Blocks.BlockHash})
   name: GetAccountState(Nullable<BlockHash>)
   href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__
@@ -2772,6 +2781,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.Genesis
   nameWithType: BlockChain.Genesis
+- uid: Libplanet.Blockchain.BlockChain.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetAccountState(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Blockchain.BlockChain.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetAccountState(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Blockchain.BlockChain.GetAccountState(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.GetAccountState(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: BlockChain.GetAccountState(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: BlockChain.GetAccountState(Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Blockchain.BlockChain.GetAccountState(System.Nullable{Libplanet.Types.Blocks.BlockHash})
   name: GetAccountState(Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__
@@ -3177,6 +3195,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates
   nameWithType: BlockChainStates.BlockChainStates
+- uid: Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetAccountState(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetAccountState(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: BlockChainStates.GetAccountState(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: BlockChainStates.GetAccountState(Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable{Libplanet.Types.Blocks.BlockHash})
   name: GetAccountState(Nullable<BlockHash>)
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__

@@ -121,7 +121,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates__ctor_Libplanet_Store_IStore_Libplanet_Store_IStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.%23ctor(Libplanet.Store.IStore%2CLibplanet.Store.IStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates__ctor_" data-uid="Libplanet.Blockchain.BlockChainStates.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates__ctor_Libplanet_Store_IStore_Libplanet_Store_IStateStore_" data-uid="Libplanet.Blockchain.BlockChainStates.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)">BlockChainStates(IStore, IStateStore)</h4>
@@ -158,10 +158,83 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L58">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChainStates_GetAccountState_" data-uid="Libplanet.Blockchain.BlockChainStates.GetAccountState*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetAccountState(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> in the <see cref="!:BlockChain"></see>'s state storage
+with <code data-dev-comment-type="paramref" class="paramref">hash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAccountState GetAccountState(HashDigest&lt;SHA256&gt;? hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="parametername">hash</span></td>
+        <td><p>The state root hash for which to create
+an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> with <code data-dev-comment-type="paramref" class="paramref">hash</code> as its state root hash.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when no <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> with
+<code data-dev-comment-type="paramref" class="paramref">hash</code> as its state root hash is found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L54">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetAccountState_" data-uid="Libplanet.Blockchain.BlockChainStates.GetAccountState*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetAccountState(System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetAccountState(Nullable&lt;BlockHash&gt;)</h4>
@@ -240,7 +313,7 @@ for which to create an <a class="xref" href="Libplanet.Action.State.IAccountStat
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetBalance_" data-uid="Libplanet.Blockchain.BlockChainStates.GetBalance*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetBalance(Address, Currency, Nullable&lt;BlockHash&gt;)</h4>
@@ -323,7 +396,7 @@ for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetState(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L29">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetState_" data-uid="Libplanet.Blockchain.BlockChainStates.GetState*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetState(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetState(Address, Nullable&lt;BlockHash&gt;)</h4>
@@ -410,7 +483,7 @@ with a batch of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList%7BLibplanet.Crypto.Address%7D%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L36">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetStates_" data-uid="Libplanet.Blockchain.BlockChainStates.GetStates*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address},System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetStates(IReadOnlyList&lt;Address&gt;, Nullable&lt;BlockHash&gt;)</h4>
@@ -494,7 +567,7 @@ length as <code data-dev-comment-type="paramref" class="paramref">addresses</cod
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetTotalSupply_" data-uid="Libplanet.Blockchain.BlockChainStates.GetTotalSupply*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetTotalSupply(Currency, Nullable&lt;BlockHash&gt;)</h4>
@@ -583,7 +656,7 @@ is <span class="xref">false</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChainStates_GetValidatorSet_" data-uid="Libplanet.Blockchain.BlockChainStates.GetValidatorSet*"></a>
   <h4 id="Libplanet_Blockchain_BlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetValidatorSet(Nullable&lt;BlockHash&gt;)</h4>
@@ -667,7 +740,7 @@ the states from.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChainStates.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChainStates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/BlockChainStates.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
