@@ -1,7 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -53,22 +51,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_txid, f.TxId);
             Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
             Assert.Null(f.ExceptionMetadata);
-        }
-
-        [Fact]
-        public void Serialization()
-        {
-            var formatter = new BinaryFormatter();
-            var stream = new MemoryStream();
-            formatter.Serialize(stream, _fx);
-            stream.Seek(0, SeekOrigin.Begin);
-            object deserialized = formatter.Deserialize(stream);
-            Assert.IsType<TxFailure>(deserialized);
-            var f = (TxFailure)deserialized;
-            Assert.Equal(_blockHash, f.BlockHash);
-            Assert.Equal(_txid, f.TxId);
-            Assert.Equal(_fx.ExceptionName, f.ExceptionName);
-            Assert.Equal(_fx.ExceptionMetadata, f.ExceptionMetadata);
         }
     }
 }

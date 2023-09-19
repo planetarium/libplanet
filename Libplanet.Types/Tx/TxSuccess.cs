@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.Serialization;
 using Bencodex.Types;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -17,8 +11,7 @@ namespace Libplanet.Types.Tx
     /// <summary>
     /// Summarizes an execution result of a successful <see cref="Transaction"/>.
     /// </summary>
-    [Serializable]
-    public sealed class TxSuccess : TxExecution, ISerializable
+    public sealed class TxSuccess : TxExecution
     {
         /// <summary>
         /// Creates a <see cref="TxSuccess"/> instance.
@@ -50,20 +43,6 @@ namespace Libplanet.Types.Tx
             UpdatedFungibleAssets = updatedFungibleAssets;
         }
 
-        private TxSuccess(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            var updatedStates =
-                (Dictionary)_codec.Decode(info.GetValue<byte[]>(nameof(UpdatedStates)));
-            UpdatedStates = updatedStates.ToImmutableDictionary(
-                kv => new Address(kv.Key),
-                kv => kv.Value
-            );
-            UpdatedFungibleAssets = DecodeFungibleAssetGroups(
-                info.GetValue<byte[]>(nameof(UpdatedFungibleAssets))
-            );
-        }
-
         /// <summary>
         /// The states delta made by the actions in the transaction within the block.
         /// </summary>
@@ -87,57 +66,5 @@ namespace Libplanet.Types.Tx
         [Pure]
         public IImmutableSet<Address> UpdatedAddresses =>
             UpdatedStates.Keys.ToImmutableHashSet().Union(UpdatedFungibleAssets.Keys);
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(
-                nameof(UpdatedStates),
-                _codec.Encode(
-                    new Dictionary(
-                        UpdatedStates.Select(kv =>
-                            new KeyValuePair<IKey, IValue>(
-                                new Binary(kv.Key.ToByteArray()),
-                                kv.Value))))
-            );
-            info.AddValue(
-                nameof(UpdatedFungibleAssets),
-                EncodeFungibleAssetGroups(UpdatedFungibleAssets)
-            );
-        }
-
-        private static byte[] EncodeFungibleAssetGroups(
-            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> g
-        ) =>
-            _codec.Encode(
-                new Dictionary(
-                    g.Select(kv =>
-                        new KeyValuePair<Binary, List>(
-                            kv.Key.ByteArray,
-                            new List(
-                                kv.Value.Select(fav =>
-                                    List.Empty
-                                        .Add(fav.Key.Serialize())
-                                        .Add(fav.Value.RawValue)
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-
-        private static IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-        DecodeFungibleAssetGroups(byte[] encoded) =>
-            ((Dictionary)_codec.Decode(encoded)).ToImmutableDictionary(
-                kv => new Address(kv.Key),
-                kv => (IImmutableDictionary<Currency, FAV>)((List)kv.Value)
-                    .Cast<List>()
-                    .Select(pair => (new Currency(pair[0]), (Bencodex.Types.Integer)pair[1]))
-                    .ToImmutableDictionary(
-                        pair => pair.Item1,
-                        pair => FungibleAssetValue.FromRawValue(pair.Item1, (BigInteger)pair.Item2)
-                    )
-            );
     }
 }
