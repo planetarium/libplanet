@@ -25,6 +25,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `AccountDiff` class.  [[#3424]]
  -  Added `IActionRenderContext` interface.  [[#3427]]
 
 ### Behavioral changes
@@ -35,6 +36,7 @@ To be released.
 
 ### CLI tools
 
+[#3424]: https://github.com/planetarium/libplanet/pull/3424
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
 [#3427]: https://github.com/planetarium/libplanet/pull/3427
 
