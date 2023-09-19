@@ -12,12 +12,20 @@ To be released.
 
  -  Added `IBlockChainStates.GetAccountState(HashDigest<SHA256>?)`
     interface method.  [[#3425]]
+ -  Changed `IActionRenderer.RenderAction(IValue, IActionContext, IAccount)`
+    to `IActionRenderer.RenderAction(IValue, IActionRenderContext,
+    HashDigest<SHA256>)`.  [[#3427]]
+ -  Changed `IActionRenderer.RenderActionError(IValue, IActionContext,
+    Exception)` to `IActionRenderer.RenderActionError(IValue,
+    IActionRenderContext, Exception)`.  [[#3427]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `IActionRenderContext` interface.  [[#3427]]
 
 ### Behavioral changes
 
@@ -28,6 +36,7 @@ To be released.
 ### CLI tools
 
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
+[#3427]: https://github.com/planetarium/libplanet/pull/3427
 
 
 Version 3.3.1
