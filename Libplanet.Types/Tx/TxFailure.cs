@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using Bencodex.Types;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Types.Tx
@@ -57,11 +56,5 @@ namespace Libplanet.Types.Tx
         /// </summary>
         [Pure]
         public string ExceptionName { get; }
-
-        /// <summary>
-        /// Optional metadata about the exception.
-        /// </summary>
-        [Pure]
-        public IValue? ExceptionMetadata => null;
     }
 }

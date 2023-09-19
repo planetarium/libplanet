@@ -36,7 +36,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(
                 $"{nameof(System)}.{nameof(ArgumentNullException)}",
                 _fx.ExceptionName);
-            Assert.Null(_fx.ExceptionMetadata);
         }
 
         [Fact]
@@ -50,7 +49,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_blockHash, f.BlockHash);
             Assert.Equal(_txid, f.TxId);
             Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
-            Assert.Null(f.ExceptionMetadata);
         }
     }
 }

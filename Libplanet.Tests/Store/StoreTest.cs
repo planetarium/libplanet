@@ -410,7 +410,6 @@ namespace Libplanet.Tests.Store
                 Assert.Equal(expected.TxId, failure.TxId);
                 Assert.Equal(expected.BlockHash, failure.BlockHash);
                 Assert.Equal(expected.ExceptionName, failure.ExceptionName);
-                Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
             }
 
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));

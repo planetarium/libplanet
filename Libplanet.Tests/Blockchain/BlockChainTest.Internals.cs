@@ -161,7 +161,6 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(expected.TxId, failure.TxId);
                 Assert.Equal(expected.BlockHash, failure.BlockHash);
                 Assert.Equal(expected.ExceptionName, failure.ExceptionName);
-                Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
             }
 
             Func<BlockHash, TxId, TxExecution> getTxExecution

@@ -240,7 +240,6 @@ namespace Libplanet.Tests.Blockchain
                 $"{nameof(System)}.{nameof(ArgumentOutOfRangeException)}",
                 txFailure.ExceptionName
             );
-            Assert.Null(txFailure.ExceptionMetadata);
             var txExecution3 = getTxExecution(block3.Hash, tx3Transfer.Id);
             _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
             Assert.IsType<TxSuccess>(txExecution3);
