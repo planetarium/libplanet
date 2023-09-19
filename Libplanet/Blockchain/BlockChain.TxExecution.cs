@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -5,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.State;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -28,44 +30,83 @@ namespace Libplanet.Blockchain
                 .Where(e => e.InputContext.TxId is { })
                 .GroupBy(e => e.InputContext.TxId!.Value);
             int count = 0;
-            foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
+
+            List<(TxId?, List<IActionEvaluation>)> groupedEvals =
+                new List<(TxId?, List<IActionEvaluation>)>();
+            foreach (IActionEvaluation eval in evaluations)
             {
-                TxId txid = txEvals.Key;
-                IAccount prevStates = txEvals.First().InputContext.PreviousState;
-                IActionEvaluation evalSum = txEvals.Last();
-                TxExecution txExecution;
-                if (evalSum.Exception is { } e)
+                if (groupedEvals.Count == 0)
                 {
-                    txExecution = new TxFailure(
-                        block.Hash,
-                        txid,
-                        e.InnerException ?? e);
+                    groupedEvals.Add(
+                        (eval.InputContext.TxId, new List<IActionEvaluation>() { eval }));
                 }
                 else
                 {
-                    IAccount outputStates = evalSum.OutputState;
-                    txExecution = new TxSuccess(
-                        block.Hash,
-                        txid,
-                        outputStates.GetUpdatedStates(),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
-                            .GroupBy(triple => triple.Item1)
-                            .ToImmutableDictionary(
-                                group => group.Key,
-                                group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
-                                    .ToImmutableDictionary(
-                                        triple => triple.Item2,
-                                        triple => triple.Item3)));
+                    if (groupedEvals.Last().Item1.Equals(eval.InputContext.TxId))
+                    {
+                        groupedEvals.Last().Item2.Add(eval);
+                    }
+                    else
+                    {
+                        groupedEvals.Add(
+                            (eval.InputContext.TxId, new List<IActionEvaluation>() { eval }));
+                    }
                 }
+            }
 
-                yield return txExecution;
-                count++;
+            ITrie trie = GetAccountState(block.PreviousHash).Trie;
+
+            foreach (var group in groupedEvals)
+            {
+                if (group.Item1 is { } txId)
+                {
+                    // make tx execution
+                    ITrie nextTrie = trie;
+                    foreach (var eval in group.Item2)
+                    {
+                        foreach (var kv in eval.OutputState.Delta.ToRawDelta())
+                        {
+                            nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                        }
+                    }
+
+                    nextTrie = StateStore.Commit(nextTrie);
+
+                    List<Exception?> exceptions = group.Item2
+                        .Select(eval => eval.Exception)
+                        .ToList();
+
+                    yield return exceptions.Any(exception => exception is { })
+                        ? new TxFailure(
+                            block.Hash,
+                            txId,
+                            trie.Hash,
+                            nextTrie.Hash,
+                            exceptions)
+                        : new TxSuccess(
+                            block.Hash,
+                            txId,
+                            trie.Hash,
+                            nextTrie.Hash,
+                            exceptions);
+                    count++;
+                    trie = nextTrie;
+                }
+                else
+                {
+                    // move forward
+                    ITrie nextTrie = trie;
+                    foreach (var eval in group.Item2)
+                    {
+                        foreach (var kv in eval.OutputState.Delta.ToRawDelta())
+                        {
+                            nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                        }
+                    }
+
+                    nextTrie = StateStore.Commit(nextTrie);
+                    trie = nextTrie;
+                }
             }
 
             _logger.Verbose(
@@ -73,8 +114,7 @@ namespace Libplanet.Blockchain
                 "s for {Txs} transactions within the block #{BlockIndex} {BlockHash}",
                 count,
                 block.Index,
-                block.Hash
-            );
+                block.Hash);
         }
 
         internal void UpdateTxExecutions(IEnumerable<TxExecution> txExecutions)
