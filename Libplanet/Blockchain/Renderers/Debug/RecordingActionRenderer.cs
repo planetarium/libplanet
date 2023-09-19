@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Serilog;
 
@@ -60,7 +61,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public virtual void RenderAction(
             IValue action,
             IActionRenderContext context,
-            IAccount nextStates
+            HashDigest<SHA256> nextState
         )
         {
             _records.Add(
@@ -69,7 +70,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     stackTrace: RemoveFirstLine(Environment.StackTrace).TrimEnd(),
                     action: action,
                     context: context,
-                    nextStates: nextStates
+                    nextState: nextState
                 )
             );
 

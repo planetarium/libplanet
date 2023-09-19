@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain.Renderers.Debug
@@ -44,10 +45,10 @@ namespace Libplanet.Blockchain.Renderers.Debug
         public override void RenderAction(
             IValue action,
             IActionRenderContext context,
-            IAccount nextStates
+            HashDigest<SHA256> nextState
         )
         {
-            base.RenderAction(action, context, nextStates);
+            base.RenderAction(action, context, nextState);
             Validate();
         }
 

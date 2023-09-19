@@ -311,7 +311,7 @@ namespace Libplanet.Tests.Blockchain
                 new LoggedActionRenderer(
                     new AnonymousActionRenderer
                     {
-                        ActionRenderer = (act, context, nextStates) =>
+                        ActionRenderer = (act, context, nextState) =>
                             // Consuming the random state through IRandom.Next() should not
                             // affect contexts passed to other action renderers.
                             generatedRandomValueLogs.Add(context.Random.Next()),
@@ -382,7 +382,7 @@ namespace Libplanet.Tests.Blockchain
 
             IActionRenderer renderer = new AnonymousActionRenderer
             {
-                ActionRenderer = (a, __, nextStates) =>
+                ActionRenderer = (a, __, nextState) =>
                 {
                     if (!(a is Dictionary dictionary &&
                           dictionary.TryGetValue((Text)"type_id", out IValue typeId) &&

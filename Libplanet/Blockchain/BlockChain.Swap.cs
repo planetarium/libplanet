@@ -229,6 +229,14 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
+                ITrie nextTrie = trie;
+                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
+                {
+                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                }
+
+                nextTrie = StateStore.Commit(nextTrie);
+
                 foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
@@ -245,7 +253,7 @@ namespace Libplanet.Blockchain
                                 previousState: trie.Hash,
                                 random: evaluation.InputContext.GetUnconsumedContext().Random,
                                 blockAction: evaluation.InputContext.BlockAction),
-                            evaluation.OutputState);
+                            nextTrie.Hash);
                     }
                     else
                     {
@@ -264,13 +272,7 @@ namespace Libplanet.Blockchain
                             evaluation.Exception);
                     }
 
-                    foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
-                    {
-                        trie = trie.Set(kv.Key, kv.Value);
-                    }
-
-                    trie = StateStore.Commit(trie);
-
+                    trie = nextTrie;
                     count++;
                 }
             }

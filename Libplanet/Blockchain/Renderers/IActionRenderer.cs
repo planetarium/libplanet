@@ -1,7 +1,8 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -48,8 +49,8 @@ namespace Libplanet.Blockchain.Renderers
         /// the <paramref name="action"/>'s <see cref="IAction.Execute(IActionContext)"/> method.
         /// That means <see cref="IActionContext.PreviousState"/> are the states right
         /// <em>before</em> this action executed.  For the states after this action executed,
-        /// use the <paramref name="nextStates"/> argument instead.</param>
-        /// <param name="nextStates">The states right <em>after</em> this action executed,
+        /// use the <paramref name="nextState"/> argument instead.</param>
+        /// <param name="nextState">The state root hash right <em>after</em> this action executed,
         /// which means it is equivalent to the states <paramref name="action"/>'s
         /// <see cref="IAction.Execute(IActionContext)"/> method returned.</param>
         /// <remarks>
@@ -63,7 +64,10 @@ namespace Libplanet.Blockchain.Renderers
         /// (where its second parameter <c>newTip</c> contains a transaction the <paramref
         /// name="action"/> belongs to).</para>
         /// </remarks>
-        void RenderAction(IValue action, IActionRenderContext context, IAccount nextStates);
+        void RenderAction(
+            IValue action,
+            IActionRenderContext context,
+            HashDigest<SHA256> nextState);
 
         /// <summary>
         /// Does the similar things to <see cref="RenderAction"/>, except that this method

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -20,7 +21,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </remarks>
     public sealed class AtomicActionRenderer : IActionRenderer
     {
-        private readonly List<(IValue, IActionRenderContext, IAccount)> _eventBuffer;
+        private readonly List<(IValue, IActionRenderContext, HashDigest<SHA256>)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -35,7 +36,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IValue, IActionRenderContext, IAccount)>();
+            _eventBuffer = new List<(IValue, IActionRenderContext, HashDigest<SHA256>)>();
             _errored = false;
         }
 
@@ -62,7 +63,7 @@ namespace Libplanet.Blockchain.Renderers
         public void RenderAction(
             IValue action,
             IActionRenderContext context,
-            IAccount nextStates
+            HashDigest<SHA256> nextState
         )
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -72,11 +73,11 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.RenderAction(action, context, nextStates);
+                ActionRenderer.RenderAction(action, context, nextState);
             }
             else if (!_errored)
             {
-                _eventBuffer.Add((action, context, nextStates));
+                _eventBuffer.Add((action, context, nextState));
             }
         }
 
@@ -103,7 +104,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IValue, IActionRenderContext, IAccount> render
+            Action<IValue, IActionRenderContext, HashDigest<SHA256>> render
         )
         {
             if (!_errored)

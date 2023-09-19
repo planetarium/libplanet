@@ -1,7 +1,8 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain.Renderers
@@ -18,7 +19,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <code><![CDATA[
     /// var actionRenderer = new AnonymousActionRenderer
     /// {
-    ///     ActionRenderer = (action, context, nextStates) =>
+    ///     ActionRenderer = (action, context, nextState) =>
     ///     {
     ///         // Implement RenderAction() here.
     ///     };
@@ -29,9 +30,10 @@ namespace Libplanet.Blockchain.Renderers
     {
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderAction(IValue, IActionRenderContext, IAccount)"/>.
+        /// <see cref="RenderAction(IValue, IActionRenderContext, HashDigest{SHA256})"/>.
         /// </summary>
-        public Action<IValue, IActionRenderContext, IAccount>? ActionRenderer { get; set; }
+        public Action<IValue, IActionRenderContext, HashDigest<SHA256>>? ActionRenderer
+            { get; set; }
 
         /// <summary>
         /// A callback function to be invoked together with
@@ -45,14 +47,13 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public Action<Block, Block>? BlockEndRenderer { get; set; }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionRenderContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
             IActionRenderContext context,
-            IAccount nextStates
+            HashDigest<SHA256> nextState
         ) =>
-            ActionRenderer?.Invoke(action, context, nextStates);
+            ActionRenderer?.Invoke(action, context, nextState);
 
         /// <inheritdoc
         /// cref="IActionRenderer.RenderActionError(IValue, IActionRenderContext, Exception)"/>
