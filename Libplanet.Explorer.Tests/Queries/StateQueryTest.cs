@@ -17,6 +17,8 @@ using Libplanet.Explorer.Queries;
 using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
+using Libplanet.Common;
+using System.Security.Cryptography;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -193,6 +195,8 @@ public class StateQueryTest
             GetAccountState(offset).GetValidatorSet();
 
         public IAccountState GetAccountState(BlockHash? offset) => new MockAccount(offset);
+
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) => new MockAccount(null);
 
         public ITrie GetTrie(BlockHash? offset)
         {

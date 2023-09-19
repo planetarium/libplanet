@@ -5,8 +5,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -219,6 +221,7 @@ namespace Libplanet.Blockchain
             }
 
             long count = 0;
+            ITrie trie = GetAccountState(block.PreviousHash).Trie;
             foreach (var evaluation in evaluations)
             {
                 if (evaluation.InputContext.BlockAction && Policy.BlockAction is null)
@@ -226,23 +229,50 @@ namespace Libplanet.Blockchain
                     continue;
                 }
 
+                ITrie nextTrie = trie;
+                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
+                {
+                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                }
+
+                nextTrie = StateStore.Commit(nextTrie);
+
                 foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
-                            evaluation.OutputState);
+                            new ActionRenderContext(
+                                signer: evaluation.InputContext.Signer,
+                                txId: evaluation.InputContext.TxId,
+                                miner: evaluation.InputContext.Miner,
+                                blockIndex: evaluation.InputContext.BlockIndex,
+                                blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
+                                rehearsal: evaluation.InputContext.Rehearsal,
+                                previousState: trie.Hash,
+                                random: evaluation.InputContext.GetUnconsumedContext().Random,
+                                blockAction: evaluation.InputContext.BlockAction),
+                            nextTrie.Hash);
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
+                            new ActionRenderContext(
+                                signer: evaluation.InputContext.Signer,
+                                txId: evaluation.InputContext.TxId,
+                                miner: evaluation.InputContext.Miner,
+                                blockIndex: evaluation.InputContext.BlockIndex,
+                                blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
+                                rehearsal: evaluation.InputContext.Rehearsal,
+                                previousState: trie.Hash,
+                                random: evaluation.InputContext.GetUnconsumedContext().Random,
+                                blockAction: evaluation.InputContext.BlockAction),
                             evaluation.Exception);
                     }
 
+                    trie = nextTrie;
                     count++;
                 }
             }

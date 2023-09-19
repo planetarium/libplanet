@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Serilog;
 using Serilog.Events;
@@ -22,8 +24,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IValue _action = new DumbAction().PlainValue;
 
         private static IAccount _account = new Account(MockAccountState.Empty);
-
-        private static Exception _exception = new Exception();
 
         private static Block _genesis =
             TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
@@ -68,8 +68,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             bool called = false;
             LogEvent firstLog = null;
-            IActionContext actionContext =
-                new ActionContext(
+            IActionRenderContext actionContext =
+                new ActionRenderContext(new ActionContext(
                     default,
                     default,
                     default,
@@ -78,13 +78,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     _account,
                     default,
                     0,
-                    rehearsal
-                );
+                    rehearsal));
             Exception actionError = new Exception();
             IActionRenderer actionRenderer;
             if (error)
             {
-                Action<IValue, IActionContext, Exception> render = (action, cxt, e) =>
+                Action<IValue, IActionRenderContext, Exception> render = (action, cxt, e) =>
                 {
                     LogEvent[] logs = LogEvents.ToArray();
                     Assert.Single(logs);
@@ -105,20 +104,21 @@ namespace Libplanet.Tests.Blockchain.Renderers
             }
             else
             {
-                Action<IValue, IActionContext, IAccount> render = (action, cxt, next) =>
-                {
-                    LogEvent[] logs = LogEvents.ToArray();
-                    Assert.Single(logs);
-                    firstLog = logs[0];
-                    Assert.Same(_action, action);
-                    Assert.Same(actionContext, cxt);
-                    Assert.Same(_account, next);
-                    called = true;
-                    if (exception)
+                Action<IValue, IActionRenderContext, HashDigest<SHA256>> render =
+                    (action, cxt, next) =>
                     {
-                        throw new ThrowException.SomeException(string.Empty);
-                    }
-                };
+                        LogEvent[] logs = LogEvents.ToArray();
+                        Assert.Single(logs);
+                        firstLog = logs[0];
+                        Assert.Same(_action, action);
+                        Assert.Same(actionContext, cxt);
+                        Assert.Equal(_account.Trie.Hash, next);
+                        called = true;
+                        if (exception)
+                        {
+                            throw new ThrowException.SomeException(string.Empty);
+                        }
+                    };
                 actionRenderer = new AnonymousActionRenderer
                 {
                     ActionRenderer = render,
@@ -147,7 +147,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 }
                 else
                 {
-                    actionRenderer.RenderAction(_action, actionContext, _account);
+                    actionRenderer.RenderAction(_action, actionContext, _account.Trie.Hash);
                 }
             }
             catch (ThrowException.SomeException e)

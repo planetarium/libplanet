@@ -638,12 +638,12 @@ namespace Libplanet.Tests.Action
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
                 transactions: txs).Propose();
             IAccount previousState = actionEvaluator.PrepareInitialDelta(block);
-            var nextStates = actionEvaluator.EvaluateTx(
+            var nextState = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
 
-            Assert.Empty(nextStates.GetUpdatedStates());
+            Assert.Empty(nextState.GetUpdatedStates());
         }
 
         [Fact]

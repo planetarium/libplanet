@@ -1,10 +1,12 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Xunit;
 
@@ -16,8 +18,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static IAccount _account = new Account(MockAccountState.Empty);
 
-        private static IActionContext _actionContext =
-            new ActionContext(
+        private static IActionRenderContext _actionContext =
+            new ActionRenderContext(new ActionContext(
                 default,
                 default,
                 default,
@@ -25,7 +27,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 _account,
                 default,
-                0);
+                0));
 
         private static Exception _exception = new Exception();
 
@@ -41,11 +43,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact]
         public void ActionRenderer()
         {
-            (IValue, IActionContext, IAccount)? record = null;
+            (IValue, IActionRenderContext, HashDigest<SHA256>)? record = null;
             var renderer = new AnonymousActionRenderer
             {
-                ActionRenderer = (action, context, nextStates) =>
-                    record = (action, context, nextStates),
+                ActionRenderer = (action, context, nextState) =>
+                    record = (action, context, nextState),
             };
 
             renderer.RenderActionError(_action, _actionContext, _exception);
@@ -53,24 +55,24 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
 
-            renderer.RenderAction(_action, _actionContext, _account);
+            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
-            Assert.Same(_account, record?.Item3);
+            Assert.Equal(_account.Trie.Hash, record?.Item3);
         }
 
         [Fact]
         public void ActionErrorRenderer()
         {
-            (IValue, IActionContext, Exception)? record = null;
+            (IValue, IActionRenderContext, Exception)? record = null;
             var renderer = new AnonymousActionRenderer
             {
                 ActionErrorRenderer = (action, context, exception) =>
                     record = (action, context, exception),
             };
 
-            renderer.RenderAction(_action, _actionContext, _account);
+            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -91,7 +93,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };
 
-            renderer.RenderAction(_action, _actionContext, _account);
+            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
             Assert.Null(record);
             renderer.RenderActionError(_action, _actionContext, _exception);
             Assert.Null(record);

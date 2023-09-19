@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -150,5 +152,20 @@ namespace Libplanet.Action.State
         /// </exception>
         /// <seealso cref="IAccountState"/>
         IAccountState GetAccountState(BlockHash? offset);
+
+        /// <summary>
+        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>'s state storage
+        /// with <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="hash">The state root hash for which to create
+        /// an <see cref="IAccountState"/>.</param>
+        /// <returns>
+        /// The <see cref="IAccountState"/> with <paramref name="hash"/> as its state root hash.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when no <see cref="ITrie"/> with
+        /// <paramref name="hash"/> as its state root hash is found.
+        /// </exception>
+        /// <seealso cref="IAccountState"/>
+        IAccountState GetAccountState(HashDigest<SHA256>? hash);
     }
 }

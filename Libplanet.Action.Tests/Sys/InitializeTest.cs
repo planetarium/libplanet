@@ -59,10 +59,10 @@ namespace Libplanet.Action.Tests.Sys
                 validatorSet: _validatorSet
             );
 
-            var nextStates = initialize.Execute(context);
+            var nextState = initialize.Execute(context);
 
-            Assert.Equal(_validatorSet, nextStates.GetValidatorSet());
-            Assert.Equal(_states[default], nextStates.GetState(default));
+            Assert.Equal(_validatorSet, nextState.GetValidatorSet());
+            Assert.Equal(_states[default], nextState.GetState(default));
         }
 
         [Fact]
