@@ -47,16 +47,10 @@ namespace Libplanet.Tests.Store
             return _store.ContainsBlock(blockHash);
         }
 
-        public void PutTxExecution(TxSuccess txSuccess)
+        public void PutTxExecution(TxExecution txExecution)
         {
-            Log(nameof(PutTxExecution), txSuccess);
-            _store.PutTxExecution(txSuccess);
-        }
-
-        public void PutTxExecution(TxFailure txFailure)
-        {
-            Log(nameof(PutTxExecution), txFailure);
-            _store.PutTxExecution(txFailure);
+            Log(nameof(PutTxExecution), txExecution);
+            _store.PutTxExecution(txExecution);
         }
 
         public TxExecution GetTxExecution(BlockHash blockHash, TxId txid)

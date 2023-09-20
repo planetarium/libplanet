@@ -489,26 +489,15 @@ namespace Libplanet.Store
             return _blocks.FileExists(blockPath);
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(TxSuccess)"/>
-        public override void PutTxExecution(TxSuccess txSuccess)
+        /// <inheritdoc cref="BaseStore.PutTxExecution"/>
+        public override void PutTxExecution(TxExecution txExecution)
         {
-            UPath path = TxExecutionPath(txSuccess);
+            UPath path = TxExecutionPath(txExecution);
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_txExecutions, dirPath);
             using Stream f =
                 _txExecutions.OpenFile(path, System.IO.FileMode.Create, FileAccess.Write);
-            Codec.Encode(SerializeTxExecution(txSuccess), f);
-        }
-
-        /// <inheritdoc cref="BaseStore.PutTxExecution(TxFailure)"/>
-        public override void PutTxExecution(TxFailure txFailure)
-        {
-            UPath path = TxExecutionPath(txFailure);
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(_txExecutions, dirPath);
-            using Stream f =
-                _txExecutions.OpenFile(path, System.IO.FileMode.Create, FileAccess.Write);
-            Codec.Encode(SerializeTxExecution(txFailure), f);
+            Codec.Encode(SerializeTxExecution(txExecution), f);
         }
 
         /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>

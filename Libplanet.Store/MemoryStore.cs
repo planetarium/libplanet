@@ -186,11 +186,8 @@ namespace Libplanet.Store
         bool IStore.ContainsBlock(BlockHash blockHash) =>
             _blocks.ContainsKey(blockHash);
 
-        void IStore.PutTxExecution(TxSuccess txSuccess) =>
-            _txExecutions[(txSuccess.BlockHash, txSuccess.TxId)] = txSuccess;
-
-        void IStore.PutTxExecution(TxFailure txFailure) =>
-            _txExecutions[(txFailure.BlockHash, txFailure.TxId)] = txFailure;
+        void IStore.PutTxExecution(TxExecution txExecution) =>
+            _txExecutions[(txExecution.BlockHash, txExecution.TxId)] = txExecution;
 
         TxExecution IStore.GetTxExecution(BlockHash blockHash, TxId txid) =>
             _txExecutions.TryGetValue((blockHash, txid), out TxExecution e) ? e : null;

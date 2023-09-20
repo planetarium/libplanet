@@ -114,13 +114,9 @@ namespace Libplanet.Tests.Store
         public virtual bool ContainsBlock(BlockHash blockHash) =>
             Store.ContainsBlock(blockHash);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(TxSuccess)"/>
-        public virtual void PutTxExecution(TxSuccess txSuccess) =>
-            Store.PutTxExecution(txSuccess);
-
-        /// <inheritdoc cref="IStore.PutTxExecution(TxFailure)"/>
-        public virtual void PutTxExecution(TxFailure txFailure) =>
-            Store.PutTxExecution(txFailure);
+        /// <inheritdoc cref="IStore.PutTxExecution"/>
+        public virtual void PutTxExecution(TxExecution txExecution) =>
+            Store.PutTxExecution(txExecution);
 
         /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
         public virtual TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
