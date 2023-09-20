@@ -1,10 +1,9 @@
-using System.Collections.Immutable;
-using System.Diagnostics.Contracts;
-using Bencodex.Types;
-using Libplanet.Crypto;
-using Libplanet.Types.Assets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Types.Tx
 {
@@ -20,51 +19,48 @@ namespace Libplanet.Types.Tx
         /// that the <see cref="Transaction"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction"/>'s <see
         /// cref="Transaction.Id"/>.</param>
-        /// <param name="updatedStates">The states delta made by the actions in
-        /// the transaction within the block.</param>
-        /// <param name="fungibleAssetsDelta"><see cref="Address"/>es and sets of
-        /// <see cref="Currency"/> whose fungible assets have been updated by the actions in
-        /// the transaction within the block.  Included <see cref="FungibleAssetValue"/>s are
-        /// the delta values (plus or minus) that the transaction makes.</param>
-        /// <param name="updatedFungibleAssets"><see cref="Address"/>es and sets of
-        /// <see cref="Currency"/> whose fungible assets have been updated by the actions in
-        /// the transaction within the block.  Included <see cref="FungibleAssetValue"/>s are
-        /// the final balances right after the transaction is executed.</param>
+        /// <param name="inputState">The state root hash of the state before the
+        /// execution of a <see cref="Transaction"/>.</param>
+        /// <param name="outputState">The state root hash of the state after the
+        /// execution of a <see cref="Transaction"/>.</param>
+        /// <param name="exceptionNames">The list of excetions thrown while
+        /// executing the actions.</param>
         public TxSuccess(
             BlockHash blockHash,
             TxId txId,
-            IImmutableDictionary<Address, IValue> updatedStates,
-            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-                updatedFungibleAssets
-        )
+            HashDigest<SHA256> inputState,
+            HashDigest<SHA256> outputState,
+            List<string> exceptionNames)
             : base(blockHash, txId)
         {
-            UpdatedStates = updatedStates;
-            UpdatedFungibleAssets = updatedFungibleAssets;
+            InputState = inputState;
+            OutputState = outputState;
+            ExceptionNames = exceptionNames;
         }
 
-        /// <summary>
-        /// The states delta made by the actions in the transaction within the block.
-        /// </summary>
-        [Pure]
-        public IImmutableDictionary<Address, IValue> UpdatedStates { get; }
+        public TxSuccess(
+            BlockHash blockHash,
+            TxId txId,
+            HashDigest<SHA256> inputState,
+            HashDigest<SHA256> outputState,
+            List<Exception?> exceptions)
+            : this(
+                blockHash,
+                txId,
+                inputState,
+                outputState,
+                exceptions
+                    .Select(exception => exception is { } e
+                        ? e.GetType().FullName
+                        : string.Empty)
+                    .ToList())
+        {
+        }
 
-        /// <summary>
-        /// <see cref="Address"/>es and sets of <see cref="Currency"/> whose fungible assets have
-        /// been updated by the actions in the transaction within the block.  Included
-        /// <see cref="FungibleAssetValue"/>s are the final balances right after the transaction is
-        /// executed.
-        /// </summary>
-        [Pure]
-        public IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-            UpdatedFungibleAssets { get; }
+        public HashDigest<SHA256> InputState { get; }
 
-        /// <summary>
-        /// All <seealso cref="Address"/>es of the accounts that have been updated by the actions
-        /// in the transaction within the block.
-        /// </summary>
-        [Pure]
-        public IImmutableSet<Address> UpdatedAddresses =>
-            UpdatedStates.Keys.ToImmutableHashSet().Union(UpdatedFungibleAssets.Keys);
+        public HashDigest<SHA256> OutputState { get; }
+
+        public List<string> ExceptionNames { get; }
     }
 }

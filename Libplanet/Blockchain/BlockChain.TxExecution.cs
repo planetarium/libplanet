@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -26,11 +24,6 @@ namespace Libplanet.Blockchain
             IReadOnlyList<IActionEvaluation> evaluations
         )
         {
-            IEnumerable<IGrouping<TxId, IActionEvaluation>> evaluationsPerTxs = evaluations
-                .Where(e => e.InputContext.TxId is { })
-                .GroupBy(e => e.InputContext.TxId!.Value);
-            int count = 0;
-
             List<(TxId?, List<IActionEvaluation>)> groupedEvals =
                 new List<(TxId?, List<IActionEvaluation>)>();
             foreach (IActionEvaluation eval in evaluations)
@@ -56,11 +49,11 @@ namespace Libplanet.Blockchain
 
             ITrie trie = GetAccountState(block.PreviousHash).Trie;
 
+            int count = 0;
             foreach (var group in groupedEvals)
             {
                 if (group.Item1 is { } txId)
                 {
-                    // make tx execution
                     ITrie nextTrie = trie;
                     foreach (var eval in group.Item2)
                     {
@@ -76,25 +69,30 @@ namespace Libplanet.Blockchain
                         .Select(eval => eval.Exception)
                         .ToList();
 
-                    yield return exceptions.Any(exception => exception is { })
-                        ? new TxFailure(
-                            block.Hash,
-                            txId,
-                            trie.Hash,
-                            nextTrie.Hash,
-                            exceptions)
-                        : new TxSuccess(
+                    if (exceptions.Any(exception => exception is { }))
+                    {
+                        yield return new TxFailure(
                             block.Hash,
                             txId,
                             trie.Hash,
                             nextTrie.Hash,
                             exceptions);
+                    }
+                    else
+                    {
+                        yield return new TxSuccess(
+                            block.Hash,
+                            txId,
+                            trie.Hash,
+                            nextTrie.Hash,
+                            exceptions);
+                    }
+
                     count++;
                     trie = nextTrie;
                 }
                 else
                 {
-                    // move forward
                     ITrie nextTrie = trie;
                     foreach (var eval in group.Item2)
                     {

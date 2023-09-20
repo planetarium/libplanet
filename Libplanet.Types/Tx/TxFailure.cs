@@ -1,5 +1,8 @@
 using System;
-using System.Diagnostics.Contracts;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Types.Tx
@@ -17,44 +20,48 @@ namespace Libplanet.Types.Tx
         /// that the <see cref="Transaction"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction"/>'s <see
         /// cref="Transaction.Id"/>.</param>
-        /// <param name="exceptionName">The name of the exception type,
-        /// e.g., <c>System.ArgumentException</c>.</param>
-        /// <param name="exceptionMetadata">Optional metadata about the exception.</param>
+        /// <param name="inputState">The state root hash of the state before the
+        /// execution of a <see cref="Transaction"/>.</param>
+        /// <param name="outputState">The state root hash of the state after the
+        /// execution of a <see cref="Transaction"/>.</param>
+        /// <param name="exceptionNames">The list of excetions thrown while
+        /// executing the actions.</param>
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
-            string exceptionName
-        )
+            HashDigest<SHA256> inputState,
+            HashDigest<SHA256> outputState,
+            List<string> exceptionNames)
             : base(blockHash, txId)
         {
-            ExceptionName = exceptionName;
+            InputState = inputState;
+            OutputState = outputState;
+            ExceptionNames = exceptionNames;
         }
 
-        /// <summary>
-        /// Creates a <see cref="TxFailure"/> instance.
-        /// </summary>
-        /// <param name="blockHash">The <see cref="Block.Hash"/> of the <see cref="Block"/>
-        /// that the <see cref="Transaction"/> is executed within.</param>
-        /// <param name="txId">The executed <see cref="Transaction"/>'s <see
-        /// cref="Transaction.Id"/>.</param>
-        /// <param name="exception">The uncaught exception thrown by an action in the transaction.
-        /// </param>
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
-            Exception exception)
+            HashDigest<SHA256> inputState,
+            HashDigest<SHA256> outputState,
+            List<Exception?> exceptions)
             : this(
                 blockHash,
                 txId,
-                exception.GetType().FullName ?? string.Empty
-            )
+                inputState,
+                outputState,
+                exceptions
+                    .Select(exception => exception is { } e
+                        ? e.GetType().FullName
+                        : string.Empty)
+                    .ToList())
         {
         }
 
-        /// <summary>
-        /// The name of the exception type, e.g., <c>System.ArgumentException</c>.
-        /// </summary>
-        [Pure]
-        public string ExceptionName { get; }
+        public HashDigest<SHA256> InputState { get; }
+
+        public HashDigest<SHA256> OutputState { get; }
+
+        public List<string> ExceptionNames { get; }
     }
 }
