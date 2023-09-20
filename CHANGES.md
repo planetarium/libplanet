@@ -18,6 +18,9 @@ To be released.
  -  Changed `IActionRenderer.RenderActionError(IValue, IActionContext,
     Exception)` to `IActionRenderer.RenderActionError(IValue,
     IActionRenderContext, Exception)`.  [[#3427]]
+ -  Removed `TxFailure.ExceptionMetadata` property.  [[#3428]]
+ -  Removed `ISerializable` interface from `TxExecution`, `TxSuccess`,
+    and `TxFailure`.  [[#3428]]
 
 ### Backward-incompatible network protocol changes
 
@@ -39,6 +42,7 @@ To be released.
 [#3424]: https://github.com/planetarium/libplanet/pull/3424
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
 [#3427]: https://github.com/planetarium/libplanet/pull/3427
+[#3428]: https://github.com/planetarium/libplanet/pull/3428
 
 
 Version 3.3.1

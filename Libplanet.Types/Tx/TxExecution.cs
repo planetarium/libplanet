@@ -1,8 +1,5 @@
-using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
 using Bencodex;
-using Libplanet.Common.Serialization;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Types.Tx
@@ -15,17 +12,9 @@ namespace Libplanet.Types.Tx
     /// </summary>
     /// <seealso cref="TxSuccess"/>
     /// <seealso cref="TxFailure"/>
-    [Serializable]
-    public abstract class TxExecution : ISerializable
+    public abstract class TxExecution
     {
         protected static readonly Codec _codec = new Codec();
-
-        protected TxExecution(SerializationInfo info, StreamingContext context)
-            : this(
-                info.GetValue<BlockHash>(nameof(BlockHash)),
-                info.GetValue<TxId>(nameof(TxId)))
-        {
-        }
 
         private protected TxExecution(BlockHash blockHash, TxId txId)
         {
@@ -45,12 +34,5 @@ namespace Libplanet.Types.Tx
         /// </summary>
         [Pure]
         public TxId TxId { get; }
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(BlockHash), BlockHash);
-            info.AddValue(nameof(TxId), TxId);
-        }
     }
 }

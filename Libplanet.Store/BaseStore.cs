@@ -203,7 +203,7 @@ namespace Libplanet.Store
                 .Add("fail", true)
                 .Add("exc", txFailure.ExceptionName);
 
-            return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
+            return d;
         }
 
         protected static TxExecution DeserializeTxExecution(

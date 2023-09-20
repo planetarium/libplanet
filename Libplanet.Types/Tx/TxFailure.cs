@@ -1,7 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
-using Bencodex.Types;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Types.Tx
@@ -10,7 +8,6 @@ namespace Libplanet.Types.Tx
     /// Summarizes an execution result of a <see cref="Transaction"/> with any exception-throwing
     /// actions.
     /// </summary>
-    [Serializable]
     public sealed class TxFailure : TxExecution
     {
         /// <summary>
@@ -54,33 +51,10 @@ namespace Libplanet.Types.Tx
         {
         }
 
-        private TxFailure(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            ExceptionName = info.GetString(nameof(ExceptionName)) ?? string.Empty;
-        }
-
         /// <summary>
         /// The name of the exception type, e.g., <c>System.ArgumentException</c>.
         /// </summary>
         [Pure]
         public string ExceptionName { get; }
-
-        /// <summary>
-        /// Optional metadata about the exception.
-        /// </summary>
-        [Pure]
-        public IValue? ExceptionMetadata => null;
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(ExceptionName), ExceptionName);
-            info.AddValue(
-                nameof(ExceptionMetadata),
-                ExceptionMetadata is { } m ? _codec.Encode(m) : null
-            );
-        }
     }
 }
