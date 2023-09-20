@@ -314,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
                     tx.Id,
                     txx
                 );
-                Assert.IsType<TxSuccess>(txx);
+                Assert.False(txx.Fail);
                 Assert.Equal(block.Hash, txx.BlockHash);
                 Assert.Equal(tx.Id, txx.TxId);
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));

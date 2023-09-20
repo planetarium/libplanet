@@ -86,16 +86,19 @@ namespace Libplanet.Types.Tx
             TxId = txId;
 
             if (!encoded.TryGetValue(FailKey, out IValue fail) ||
-                !(fail is Bencodex.Types.Boolean failBoolean) ||
-                (failBoolean.Value == false))
+                !(fail is Bencodex.Types.Boolean failBoolean))
             {
                 throw new ArgumentException($"Invalid fail key value: {fail}");
+            }
+            else
+            {
+                Fail = failBoolean.Value;
             }
 
             if (encoded.TryGetValue(InputStateKey, out IValue input) &&
                 input is Binary inputBinary)
             {
-                InputState = HashDigest<SHA256>.DeriveFrom(inputBinary.ByteArray);
+                InputState = new HashDigest<SHA256>(inputBinary.ByteArray);
             }
             else
             {
@@ -103,9 +106,9 @@ namespace Libplanet.Types.Tx
             }
 
             if (encoded.TryGetValue(OutputStateKey, out IValue output) &&
-                input is Binary outputBinary)
+                output is Binary outputBinary)
             {
-                InputState = HashDigest<SHA256>.DeriveFrom(outputBinary.ByteArray);
+                OutputState = new HashDigest<SHA256>(outputBinary.ByteArray);
             }
             else
             {

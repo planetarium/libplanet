@@ -65,6 +65,9 @@ namespace Libplanet.Blockchain
 
                     List<Exception?> exceptions = group.Item2
                         .Select(eval => eval.Exception)
+                        .Select(exception => exception is { } e && e.InnerException is { } i
+                            ? i
+                            : exception)
                         .ToList();
 
                     yield return new TxExecution(
@@ -73,7 +76,7 @@ namespace Libplanet.Blockchain
                         exceptions.Any(exception => exception is { }),
                         trie.Hash,
                         nextTrie.Hash,
-                        exceptions);
+                        exceptions.ToList());
 
                     count++;
                     trie = nextTrie;
