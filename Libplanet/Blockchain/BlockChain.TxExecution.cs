@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.State;
@@ -69,24 +67,13 @@ namespace Libplanet.Blockchain
                         .Select(eval => eval.Exception)
                         .ToList();
 
-                    if (exceptions.Any(exception => exception is { }))
-                    {
-                        yield return new TxFailure(
-                            block.Hash,
-                            txId,
-                            trie.Hash,
-                            nextTrie.Hash,
-                            exceptions);
-                    }
-                    else
-                    {
-                        yield return new TxSuccess(
-                            block.Hash,
-                            txId,
-                            trie.Hash,
-                            nextTrie.Hash,
-                            exceptions);
-                    }
+                    yield return new TxExecution(
+                        block.Hash,
+                        txId,
+                        exceptions.Any(exception => exception is { }),
+                        trie.Hash,
+                        nextTrie.Hash,
+                        exceptions);
 
                     count++;
                     trie = nextTrie;
@@ -120,42 +107,13 @@ namespace Libplanet.Blockchain
             int count = 0;
             foreach (TxExecution txExecution in txExecutions)
             {
-                // Note that there are two overloaded methods of the same name PutTxExecution()
-                // in IStore.  As those two have different signatures, run-time polymorphism
-                // does not work.  Instead, we need the following hard-coded branch:
-                switch (txExecution)
-                {
-                    case TxSuccess s:
-                        Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
-                        _logger.Verbose(
-                            "Updated " + nameof(TxSuccess) +
-                            " for tx {TxId} within block {BlockHash}",
-                            s.TxId,
-                            s.BlockHash
-                        );
-                        break;
-                    case TxFailure f:
-                        Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
-                        _logger.Verbose(
-                            "Updated " + nameof(TxFailure) +
-                            " for tx {TxId} within block {BlockHash}",
-                            f.TxId,
-                            f.BlockHash
-                        );
-                        break;
-                    default:
-                        // In theory, this case must not happen.  The following case is for just in
-                        // case.  (For example, we might add a new subtype for TxExecution.)
-                        const string msg = "Unexpected subtype of " + nameof(TxExecution) + ": {0}";
-                        _logger.Fatal(msg, txExecution);
-                        Trace.Assert(
-                            false,
-                            string.Format(CultureInfo.InvariantCulture, msg, txExecution)
-                        );
-                        break;
-                }
-
+                Store.PutTxExecution(txExecution);
                 count++;
+
+                _logger.Verbose(
+                    "Updated " + nameof(TxExecution) + " for tx {TxId} within block {BlockHash}",
+                    txExecution.TxId,
+                    txExecution.BlockHash);
             }
 
             _logger.Verbose(
