@@ -268,30 +268,13 @@ namespace Libplanet.Explorer.Queries
                         );
                         var txExecutedBlock = blockChain[txExecutedBlockHashValue];
 
-                        return execution switch
-                        {
-                            TxSuccess txSuccess => new TxResult(
-                                TxStatus.SUCCESS,
-                                txExecutedBlock.Index,
-                                txExecutedBlock.Hash.ToString(),
-                                null,
-                                txSuccess.UpdatedStates,
-                                txSuccess.UpdatedFungibleAssets
-                            ),
-                            TxFailure txFailure => new TxResult(
-                                TxStatus.FAILURE,
-                                txExecutedBlock.Index,
-                                txExecutedBlock.Hash.ToString(),
-                                txFailure.ExceptionName,
-                                null,
-                                null
-                            ),
-                            _ => throw new NotSupportedException(
-                                #pragma warning disable format
-                                $"{nameof(execution)} is not expected concrete class."
-                                #pragma warning restore format
-                            ),
-                        };
+                        return new TxResult(
+                            execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
+                            txExecutedBlock.Index,
+                            txExecutedBlock.Hash.ToString(),
+                            null,
+                            null,
+                            null);
                     }
                     catch (Exception)
                     {
