@@ -272,7 +272,7 @@ namespace Libplanet.Explorer.Queries
                             execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
                             txExecutedBlock.Index,
                             txExecutedBlock.Hash.ToString(),
-                            null,
+                            execution.ExceptionNames,
                             null,
                             null);
                     }

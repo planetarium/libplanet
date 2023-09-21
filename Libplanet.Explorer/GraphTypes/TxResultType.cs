@@ -28,10 +28,10 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.BlockHash
             );
 
-            Field<StringGraphType>(
-                nameof(TxResult.ExceptionName),
+            Field<ListGraphType<StringGraphType>>(
+                nameof(TxResult.ExceptionNames),
                 description: "The name of exception. (when only failed)",
-                resolve: context => context.Source.ExceptionName
+                resolve: context => context.Source.ExceptionNames
             );
 
             Field<ListGraphType<NonNullGraphType<UpdatedStateType>>>(
