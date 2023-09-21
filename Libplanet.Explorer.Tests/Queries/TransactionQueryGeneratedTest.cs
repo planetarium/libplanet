@@ -64,7 +64,7 @@ public class TransactionQueryGeneratedTest
         Assert.Equal("SUCCESS", queryResult.TxStatus);
         Assert.Equal(successBlock.Index, queryResult.BlockIndex);
         Assert.Equal(successBlock.Hash.ToString(), queryResult.BlockHash);
-        Assert.Equal(new string[] { "" }, queryResult.ExceptionNames);
+        Assert.Equal(new string?[] { null }, queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(failTx.Id);
         Assert.Equal("FAILURE", queryResult.TxStatus);
         Assert.Equal(failBlock.Index, queryResult.BlockIndex);
@@ -300,7 +300,7 @@ public class TransactionQueryGeneratedTest
     }
 
     private async Task<
-            (string TxStatus, long? BlockIndex, string? BlockHash, string[]? ExceptionNames)>
+            (string TxStatus, long? BlockIndex, string? BlockHash, string?[]? ExceptionNames)>
         ExecuteTransactionResultQueryAsync(TxId txId)
     {
         ExecutionResult result = await ExecuteQueryAsync(@$"
@@ -320,11 +320,11 @@ public class TransactionQueryGeneratedTest
             (IDictionary<string, object>)Assert.IsAssignableFrom<IDictionary<string, object>>(
                 resultData.ToValue())["transactionResult"];
         var exceptionNames = ((object[]?)resultDict["exceptionNames"])?.Select(
-            name => Assert.IsType<string>(name)).ToArray();
+            name => name is { } n ? Assert.IsType<string>(n) : null).ToArray();
         return (
             (string)resultDict["txStatus"],
             (long?)resultDict["blockIndex"],
             (string?)resultDict["blockHash"],
-            (string[]?)exceptionNames);
+            (string?[]?)exceptionNames);
     }
 }

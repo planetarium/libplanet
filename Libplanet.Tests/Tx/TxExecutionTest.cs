@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Tx
                 true,
                 random.NextHashDigest<SHA256>(),
                 random.NextHashDigest<SHA256>(),
-                new List<string>() { string.Empty, "SomeException", "AnotherException" });
+                new List<string>() { null, "SomeException", "AnotherException" });
             var encoded = execution.ToBencodex();
             var decoded = new TxExecution(
                 execution.BlockHash,
@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Tx
                 exceptions
                     .Select(exception => exception is Exception e
                         ? e.GetType().FullName
-                        : string.Empty),
+                        : null),
                 execution.ExceptionNames);
         }
 

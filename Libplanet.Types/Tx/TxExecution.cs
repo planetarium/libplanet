@@ -41,7 +41,7 @@ namespace Libplanet.Types.Tx
                 exceptions
                     .Select(exception => exception is { } e
                         ? e.GetType().FullName
-                        : string.Empty)
+                        : null)
                     .ToList())
         {
         }
@@ -52,7 +52,7 @@ namespace Libplanet.Types.Tx
             bool fail,
             HashDigest<SHA256> inputState,
             HashDigest<SHA256> outputState,
-            List<string> exceptionNames)
+            List<string?> exceptionNames)
         {
             BlockHash = blockHash;
             TxId = txId;
@@ -66,13 +66,16 @@ namespace Libplanet.Types.Tx
         public TxExecution(
             BlockHash blockHash,
             TxId txId,
-            IValue encoded)
+            IValue bencoded)
             : this(
                 blockHash,
                 txId,
-                encoded is Dictionary dict
+                bencoded is Dictionary dict
                     ? dict
-                    : throw new ArgumentException())
+                    : throw new ArgumentException(
+                        $"Given {nameof(bencoded)} must be of type " +
+                        $"{typeof(Bencodex.Types.Dictionary)}: {bencoded.GetType()}",
+                        nameof(bencoded)))
 #pragma warning restore SA1118
         {
         }
@@ -80,22 +83,29 @@ namespace Libplanet.Types.Tx
         private TxExecution(
             BlockHash blockHash,
             TxId txId,
-            Dictionary encoded)
+            Dictionary bencoded)
         {
             BlockHash = blockHash;
             TxId = txId;
 
-            if (!encoded.TryGetValue(FailKey, out IValue fail) ||
-                !(fail is Bencodex.Types.Boolean failBoolean))
+            if (!bencoded.TryGetValue(FailKey, out IValue fail))
             {
-                throw new ArgumentException($"Invalid fail key value: {fail}");
+                throw new ArgumentException(
+                    $"Given {nameof(bencoded)} is missing fail value",
+                    nameof(bencoded));
+            }
+            else if (!(fail is Bencodex.Types.Boolean failBoolean))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(bencoded)} has an invalid fail value: {fail}",
+                    nameof(bencoded));
             }
             else
             {
                 Fail = failBoolean.Value;
             }
 
-            if (encoded.TryGetValue(InputStateKey, out IValue input) &&
+            if (bencoded.TryGetValue(InputStateKey, out IValue input) &&
                 input is Binary inputBinary)
             {
                 InputState = new HashDigest<SHA256>(inputBinary.ByteArray);
@@ -105,7 +115,7 @@ namespace Libplanet.Types.Tx
                 InputState = null;
             }
 
-            if (encoded.TryGetValue(OutputStateKey, out IValue output) &&
+            if (bencoded.TryGetValue(OutputStateKey, out IValue output) &&
                 output is Binary outputBinary)
             {
                 OutputState = new HashDigest<SHA256>(outputBinary.ByteArray);
@@ -115,13 +125,17 @@ namespace Libplanet.Types.Tx
                 OutputState = null;
             }
 
-            if (encoded.TryGetValue(ExceptionNamesKey, out IValue exceptions) &&
+            if (bencoded.TryGetValue(ExceptionNamesKey, out IValue exceptions) &&
                 exceptions is List exceptionsList)
             {
                 ExceptionNames = exceptionsList
                     .Select(value => value is Text t
-                        ? t.Value
-                        : throw new ArgumentException())
+                        ? (string?)t.Value
+                        : value is Null
+                            ? (string?)null
+                            : throw new ArgumentException(
+                                $"Expected either {nameof(Text)} or {nameof(Null)} " +
+                                $"but got {value.GetType()}"))
                     .ToList();
             }
             else
@@ -149,7 +163,7 @@ namespace Libplanet.Types.Tx
 
         public HashDigest<SHA256>? OutputState { get; }
 
-        public List<string>? ExceptionNames { get; }
+        public List<string?>? ExceptionNames { get; }
 
         public IValue ToBencodex()
         {
@@ -170,7 +184,10 @@ namespace Libplanet.Types.Tx
             {
                 dict = dict.Add(
                     ExceptionNamesKey,
-                    new List(exceptionNames.Select(exceptionName => new Text(exceptionName))));
+                    new List(exceptionNames
+                        .Select(exceptionName => exceptionName is { } name
+                            ? (IValue)new Text(exceptionName)
+                            : (IValue)Null.Value)));
             }
 
             return dict;
