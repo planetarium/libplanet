@@ -157,12 +157,37 @@ namespace Libplanet.Types.Tx
         [Pure]
         public TxId TxId { get; }
 
+        /// <summary>
+        /// Whether <em>every</em> action in the <see cref="Transaction"/> was
+        /// executed without throwing and <see cref="Exception"/>.
+        /// </summary>
         public bool Fail { get; }
 
+        /// <summary>
+        /// The state before the execution of the <see cref="Transaction"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is marked <see langword="null"/>-able for backward compatibility.
+        /// </remarks>
         public HashDigest<SHA256>? InputState { get; }
 
+        /// <summary>
+        /// The state after the execution of the <see cref="Transaction"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is marked <see langword="null"/>-able for backward compatibility.
+        /// </remarks>
         public HashDigest<SHA256>? OutputState { get; }
 
+        /// <summary>
+        /// The list of <see cref="Exception"/> names thrown by actions
+        /// in the <see cref="Transaction"/>.  A value of <see langword="null"/>
+        /// as an element represents no <see cref="Exception"/> being thrown for
+        /// the action of the same index.
+        /// </summary>
+        /// <remarks>
+        /// This is marked <see langword="null"/>-able for backward compatibility.
+        /// </remarks>
         public List<string?>? ExceptionNames { get; }
 
         public IValue ToBencodex()

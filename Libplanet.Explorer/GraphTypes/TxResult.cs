@@ -8,7 +8,7 @@ namespace Libplanet.Explorer.GraphTypes
             TxStatus status,
             long? blockIndex,
             string? blockHash,
-            List<string>? exceptionNames)
+            List<string?>? exceptionNames)
         {
             TxStatus = status;
             BlockIndex = blockIndex;
@@ -22,6 +22,6 @@ namespace Libplanet.Explorer.GraphTypes
 
         public string? BlockHash { get; private set; }
 
-        public List<string>? ExceptionNames { get; private set; }
+        public List<string?>? ExceptionNames { get; private set; }
     }
 }
