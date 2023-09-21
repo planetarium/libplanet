@@ -22,20 +22,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     blockIndex
                     blockHash
                     exceptionNames
-                    updatedStates {
-                        address
-                        state
-                    }
-                    updatedFungibleAssets {
-                        address
-                        fungibleAssetValues {
-                            currency {
-                                ticker
-                                decimalPlaces
-                            }
-                            quantity
-                        }
-                    }
                 }";
 
             var txResultType = new TxResultType();
@@ -52,25 +38,19 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         }
 
         public static IEnumerable<object[]> TestCases() {
-            Currency KRW = Currency.Uncapped("KRW", 18, null);
-            Address address = new Address("76ca86fa821c8241f9422c22b1386021047faf0d");
             return new object[][] {
                 new object[] {
                     new TxResult(
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        new List<string>() { "" },
-                        null,
-                        null
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
                         ["exceptionNames"] = new string[] { "" },
-                        ["updatedStates"] = null,
-                        ["updatedFungibleAssets"] = null,
                     }
                 },
                 new object[] {
@@ -78,17 +58,13 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        new List<string>() { "" },
-                        null,
-                        null
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
                         ["exceptionNames"] = new string[] { "" },
-                        ["updatedStates"] = null,
-                        ["updatedFungibleAssets"] = null,
                     }
                 }
             };

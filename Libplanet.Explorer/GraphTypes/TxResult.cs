@@ -1,9 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using Bencodex.Types;
-using Libplanet.Crypto;
-using Libplanet.Types.Assets;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -13,18 +8,12 @@ namespace Libplanet.Explorer.GraphTypes
             TxStatus status,
             long? blockIndex,
             string? blockHash,
-            List<string>? exceptionNames,
-            IImmutableDictionary<Address, IValue>? updatedStates,
-            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>?
-                updatedFungibleAssets
-        )
+            List<string>? exceptionNames)
         {
             TxStatus = status;
             BlockIndex = blockIndex;
             BlockHash = blockHash;
             ExceptionNames = exceptionNames;
-            UpdatedStates = updatedStates;
-            UpdatedFungibleAssets = updatedFungibleAssets;
         }
 
         public TxStatus TxStatus { get; private set; }
@@ -34,10 +23,5 @@ namespace Libplanet.Explorer.GraphTypes
         public string? BlockHash { get; private set; }
 
         public List<string>? ExceptionNames { get; private set; }
-
-        public IImmutableDictionary<Address, IValue>? UpdatedStates { get; }
-
-        public IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>?
-            UpdatedFungibleAssets { get; }
     }
 }

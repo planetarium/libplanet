@@ -248,13 +248,9 @@ namespace Libplanet.Explorer.Queries
                                 TxStatus.STAGING,
                                 null,
                                 null,
-                                null,
-                                null,
                                 null)
                             : new TxResult(
                                 TxStatus.INVALID,
-                                null,
-                                null,
                                 null,
                                 null,
                                 null);
@@ -272,9 +268,7 @@ namespace Libplanet.Explorer.Queries
                             execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
                             txExecutedBlock.Index,
                             txExecutedBlock.Hash.ToString(),
-                            execution.ExceptionNames,
-                            null,
-                            null);
+                            execution.ExceptionNames);
                     }
                     catch (Exception)
                     {
@@ -282,10 +276,7 @@ namespace Libplanet.Explorer.Queries
                             TxStatus.INVALID,
                             null,
                             null,
-                            null,
-                            null,
-                            null
-                        );
+                            null);
                     }
                 }
             );
