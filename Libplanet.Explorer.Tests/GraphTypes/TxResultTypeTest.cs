@@ -21,21 +21,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     txStatus
                     blockIndex
                     blockHash
-                    exceptionName
-                    updatedStates {
-                        address
-                        state
-                    }
-                    updatedFungibleAssets {
-                        address
-                        fungibleAssetValues {
-                            currency {
-                                ticker
-                                decimalPlaces
-                            }
-                            quantity
-                        }
-                    }
+                    exceptionNames
                 }";
 
             var txResultType = new TxResultType();
@@ -52,25 +38,19 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         }
 
         public static IEnumerable<object[]> TestCases() {
-            Currency KRW = Currency.Uncapped("KRW", 18, null);
-            Address address = new Address("76ca86fa821c8241f9422c22b1386021047faf0d");
             return new object[][] {
                 new object[] {
                     new TxResult(
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        null,
-                        ImmutableDictionary<Address, Bencodex.Types.IValue>.Empty,
-                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        ["exceptionName"] = null,
-                        ["updatedStates"] = new object[0],
-                        ["updatedFungibleAssets"] = new object[0],
+                        ["exceptionNames"] = new string[] { "" },
                     }
                 },
                 new object[] {
@@ -78,41 +58,13 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        null,
-                        ImmutableDictionary<Address, Bencodex.Types.IValue>.Empty
-                            .Add(address, Bencodex.Types.Null.Value),
-                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty
-                            .Add(
-                                address,
-                                ImmutableDictionary<Currency, FungibleAssetValue>.Empty
-                                    .Add(KRW, KRW * 20000)
-                            )
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        ["exceptionName"] = null,
-                        ["updatedStates"] = new object[] {
-                            new Dictionary<string, object> {
-                                ["address"] = address.ToString(),
-                                ["state"] = new byte[] { 110, },
-                            },
-                        },
-                        ["updatedFungibleAssets"] = new object[] {
-                            new Dictionary<string, object> {
-                                ["address"] = address.ToString(),
-                                ["fungibleAssetValues"] = new object[] {
-                                    new Dictionary<string, object> {
-                                        ["currency"] = new Dictionary<string, object> {
-                                            ["ticker"] = KRW.Ticker,
-                                            ["decimalPlaces"] = KRW.DecimalPlaces,
-                                        },
-                                        ["quantity"] = "20000",
-                                    },
-                                },
-                            },
-                        },
+                        ["exceptionNames"] = new string[] { "" },
                     }
                 }
             };

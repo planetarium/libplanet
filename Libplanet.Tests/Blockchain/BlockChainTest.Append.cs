@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -15,7 +16,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -157,11 +157,15 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Null(getTxExecution(block1.Hash, tx.Id));
 
                 TxExecution e = getTxExecution(block2.Hash, tx.Id);
-                Assert.IsType<TxSuccess>(e);
-                var s = (TxSuccess)e;
-                Assert.Equal(block2.Hash, s.BlockHash);
-                Assert.Equal(tx.Id, s.TxId);
-                Assert.Empty(s.UpdatedFungibleAssets);
+                Assert.False(e.Fail);
+                Assert.Equal(block2.Hash, e.BlockHash);
+                Assert.Equal(tx.Id, e.TxId);
+                var inputAccount =
+                    _blockChain.GetAccountState(Assert.IsType<HashDigest<SHA256>>(e.InputState));
+                var outputAccount =
+                    _blockChain.GetAccountState(Assert.IsType<HashDigest<SHA256>>(e.OutputState));
+                var accountDiff = AccountDiff.Create(inputAccount, outputAccount);
+                Assert.Empty(accountDiff.FungibleAssetValueDiffs);
             }
 
             var pk = new PrivateKey();
@@ -199,65 +203,57 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
             _logger.Verbose(nameof(txExecution1) + " = {@TxExecution}", txExecution1);
-            Assert.IsType<TxSuccess>(txExecution1);
-            var txSuccess1 = (TxSuccess)txExecution1;
+            Assert.False(txExecution1.Fail);
+            var inputAccount1 = _blockChain.GetAccountState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution1.InputState));
+            var outputAccount1 = _blockChain.GetAccountState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution1.OutputState));
+            var accountDiff1 = AccountDiff.Create(inputAccount1, outputAccount1);
+
             Assert.Equal(
-                addresses.Take(3).Append(pk.ToAddress()).ToImmutableHashSet(),
-                txSuccess1.UpdatedAddresses
-            );
+                (new Address[] { addresses[0], pk.ToAddress() }).ToImmutableHashSet(),
+                accountDiff1.StateDiffs.Select(kv => kv.Key).ToImmutableHashSet());
             Assert.Equal(
-                ImmutableDictionary<Address, IValue>.Empty
-                    .Add(pk.ToAddress(), (Text)"foo")
-                    .Add(addresses[0], (Text)"foo,bar"),
-                txSuccess1.UpdatedStates
-            );
+                (new Address[] { addresses[1], addresses[2], pk.ToAddress() })
+                    .ToImmutableHashSet(),
+                accountDiff1.FungibleAssetValueDiffs.Select(kv => kv.Key.Item1)
+                    .ToImmutableHashSet());
             Assert.Equal(
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
-                    .Add(
-                        pk.ToAddress(),
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -30)
-                    )
-                    .Add(
-                        addresses[1],
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 10)
-                    )
-                    .Add(
-                        addresses[2],
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 20)
-                    ),
-                txSuccess1.UpdatedFungibleAssets
-            );
+                new Text("foo"),
+                outputAccount1.GetState(pk.ToAddress()));
+            Assert.Equal(
+                new Text("foo,bar"),
+                outputAccount1.GetState(addresses[0]));
+            Assert.Equal(
+                DumbAction.DumbCurrency * -30,
+                outputAccount1.GetBalance(pk.ToAddress(), DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 10,
+                outputAccount1.GetBalance(addresses[1], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 20,
+                outputAccount1.GetBalance(addresses[2], DumbAction.DumbCurrency));
+
             var txExecution2 = getTxExecution(block3.Hash, tx2Error.Id);
             _logger.Verbose(nameof(txExecution2) + " = {@TxExecution}", txExecution2);
-            Assert.IsType<TxFailure>(txExecution2);
-            var txFailure = (TxFailure)txExecution2;
-            Assert.Equal(block3.Hash, txFailure.BlockHash);
-            Assert.Equal(tx2Error.Id, txFailure.TxId);
-            Assert.Equal(
+            Assert.True(txExecution2.Fail);
+            Assert.Equal(block3.Hash, txExecution2.BlockHash);
+            Assert.Equal(tx2Error.Id, txExecution2.TxId);
+            Assert.Contains(
                 $"{nameof(System)}.{nameof(ArgumentOutOfRangeException)}",
-                txFailure.ExceptionName
-            );
+                txExecution2.ExceptionNames);
+
             var txExecution3 = getTxExecution(block3.Hash, tx3Transfer.Id);
             _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
-            Assert.IsType<TxSuccess>(txExecution3);
-            var txSuccess3 = (TxSuccess)txExecution3;
+            Assert.False(txExecution3.Fail);
+            var outputAccount3 = _blockChain.GetAccountState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState));
             Assert.Equal(
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
-                    .Add(
-                        pk.ToAddress(),
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * -35)
-                    )
-                    .Add(
-                        addresses[1],
-                        ImmutableDictionary<Currency, FAV>.Empty
-                            .Add(DumbAction.DumbCurrency, DumbAction.DumbCurrency * 15)
-                    ),
-                txSuccess3.UpdatedFungibleAssets
-            );
+                DumbAction.DumbCurrency * -35,
+                outputAccount3.GetBalance(pk.ToAddress(), DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 15,
+                outputAccount3.GetBalance(addresses[1], DumbAction.DumbCurrency));
         }
 
         [SkippableFact]

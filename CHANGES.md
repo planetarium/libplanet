@@ -21,6 +21,17 @@ To be released.
  -  Removed `TxFailure.ExceptionMetadata` property.  [[#3428]]
  -  Removed `ISerializable` interface from `TxExecution`, `TxSuccess`,
     and `TxFailure`.  [[#3428]]
+ -  Removed `TxSuccess` and `TxFailure` class.  [[#3429]]
+ -  Changed `TxExecution` class as `sealed` from `abstract.`  [[#3429]]
+ -  All properties of `TxExecution` except `BlockHash` and `TxId` were
+    overhauled.  [[#3429]]
+ -  (Libplanet.Store) Removed `IStore.PutTxExecution(TxSuccess)` and
+    `IStore.PutTxExecution(TxFailure)`;
+    added `IStore.PutTxExecution(TxExecution)`.  [[#3429]]
+ -  (Libplanet.Explorer) Removed `TxResult.ExceptionName` of type `string?`
+    and added `TxResult.ExceptionNames` of type `List<string?>?`.  [[#3429]]
+ -  (Libplanet.Explorer) Removed `TxResult.UpdatedStates` and
+    `TxResult.UpdatedFungibleAssets`.  [[#3429]]
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +54,7 @@ To be released.
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
 [#3427]: https://github.com/planetarium/libplanet/pull/3427
 [#3428]: https://github.com/planetarium/libplanet/pull/3428
+[#3429]: https://github.com/planetarium/libplanet/pull/3429
 
 
 Version 3.3.1
