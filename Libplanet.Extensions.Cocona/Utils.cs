@@ -260,7 +260,7 @@ public static class Utils
         public IValue PlainValue { get; private set; }
 
         /// <inheritdoc/>
-        public IAccount Execute(IActionContext context) =>
+        public IWorld Execute(IActionContext context) =>
             context.PreviousState;
 
         /// <inheritdoc/>

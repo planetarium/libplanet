@@ -18,11 +18,27 @@ public class StateQuery
     public StateQuery()
     {
         Name = "StateQuery";
+        Field<NonNullGraphType<WorldStateType>>(
+            "worldState",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveWorldState
+        );
+        Field<NonNullGraphType<AccountStateType>>(
+            "accountState",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<AddressType>> { Name = "accountAddress" },
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
+            ),
+            resolve: ResolveAccountState
+        );
         Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
             "states",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
-                    { Name = "addresses" },
+                { Name = "addresses" },
+                new QueryArgument<NonNullGraphType<AddressType>> { Name = "accountAddress" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
@@ -57,10 +73,54 @@ public class StateQuery
         );
     }
 
+    private static object ResolveWorldState(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    {
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetWorldState(offset);
+    }
+
+    private static object ResolveAccountState(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    {
+        Address accountAddress = context.GetArgument<Address>("accountAddress");
+        string offsetBlockHash = context.GetArgument<string>("offsetBlockHash");
+
+        BlockHash offset;
+        try
+        {
+            offset = BlockHash.FromString(offsetBlockHash);
+        }
+        catch (Exception e)
+        {
+            throw new ExecutionError(
+                "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                e
+            );
+        }
+
+        return context.Source.ChainStates.GetAccountState(accountAddress, offset);
+    }
+
     private static object ResolveStates(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
+        Address accountAddress = context.GetArgument<Address>("accountAddress");
         string? offsetBlockHash = context.GetArgument<string?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -90,15 +150,15 @@ public class StateQuery
                     );
                 }
 
-                return context.Source.ChainStates.GetAccountState(
+                return context.Source.ChainStates.GetStates(
+                    addresses,
+                    accountAddress,
                     offset
-                ).GetStates(addresses);
+                );
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates.GetAccountState(
-                    offsetStateRootHash
-                ).GetStates(addresses);
+                return context.Source.ChainStates.GetStates(addresses, offsetStateRootHash);
         }
     }
 
@@ -136,9 +196,7 @@ public class StateQuery
                     );
                 }
 
-                return context.Source.ChainStates.GetAccountState(
-                    offset
-                ).GetBalance(owner, currency);
+                return context.Source.ChainStates.GetBalance(owner, currency, offset);
             }
 
             case (_, srh: not null):
@@ -190,15 +248,13 @@ public class StateQuery
                     );
                 }
 
-                return context.Source.ChainStates.GetAccountState(
-                    offset
-                ).GetTotalSupply(currency);
+                return context.Source.ChainStates.GetTotalSupply(currency, offset);
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates.GetAccountState(
-                    offsetStateRootHash
-                ).GetTotalSupply(currency);
+                return context.Source.ChainStates.GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetTotalSupply(currency);
         }
     }
 
@@ -234,15 +290,14 @@ public class StateQuery
                     );
                 }
 
-                return context.Source.ChainStates.GetAccountState(
-                    offset
-                ).GetValidatorSet().Validators;
+                return context.Source.ChainStates.GetValidatorSet(offset).Validators;
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates.GetAccountState(
-                    offsetStateRootHash
-                ).GetValidatorSet().Validators;
+                return context.Source.ChainStates.GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet()
+                    .Validators;
         }
     }
 }
