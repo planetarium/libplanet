@@ -349,30 +349,42 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
-        public IValue GetState(Address address, BlockHash? offset) =>
-            GetAccountState(offset).GetState(address);
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset) =>
+            GetAccountState(accountAddress, offset).GetState(address);
 
         public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses, BlockHash? offset) =>
-            GetAccountState(offset).GetStates(addresses);
+            IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset) =>
+            GetAccountState(accountAddress, offset).GetStates(addresses);
 
         public FungibleAssetValue GetBalance(
-            Address address, Currency currency, BlockHash? offset) =>
-            GetAccountState(offset).GetBalance(address, currency);
+            Address address,
+            Currency currency,
+            BlockHash? offset) =>
+            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetAccountState(offset).GetTotalSupply(currency);
+            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetAccountState(offset).GetValidatorSet();
+            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetValidatorSet();
 
-        public IAccountState GetAccountState(BlockHash? offset) =>
-            new MockAccount(offset, null);
+        public IWorldState GetWorldState(BlockHash? offset)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IAccountState GetAccountState(Address address, BlockHash? offset) =>
+            new MockAccount(address, null);
 
         public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
             new MockAccount(null, hash);
 
         public ITrie GetTrie(BlockHash? offset)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ITrie GetTrie(HashDigest<SHA256>? hash)
         {
             throw new System.NotImplementedException();
         }

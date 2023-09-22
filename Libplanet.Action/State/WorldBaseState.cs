@@ -16,20 +16,22 @@ namespace Libplanet.Action.State
     /// </summary>
     public class WorldBaseState : IWorldState
     {
-        private readonly ITrie _trie;
         private readonly IStateStore _stateStore;
 
         public WorldBaseState(ITrie trie, IStateStore stateStore)
         {
-            _trie = trie;
+            Trie = trie;
             _stateStore = stateStore;
-            Legacy = _trie
+            Legacy = Trie
                 .Get(new[]
                 {
                     ToStateKey(ReservedAddresses.LegacyAccount),
                 })
                 .Any(v => v == null);
         }
+
+        /// <inheritdoc cref="IWorldState.Trie"/>
+        public ITrie Trie { get; }
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; }
@@ -59,7 +61,7 @@ namespace Libplanet.Action.State
             }
             else
             {
-                return _trie
+                return Trie
                     .Get(addresses.Select(ToStateKey).ToList())
                     .Select(GetTrieFromBencodex)
                     .ToList();
@@ -68,7 +70,7 @@ namespace Libplanet.Action.State
 
         private ITrie GetLegacyTrieOnly(Address address) =>
             address == ReservedAddresses.LegacyAccount
-                ? _trie
+                ? Trie
                 : _stateStore.GetStateRoot(null);
 
         private ITrie GetTrieFromBencodex(IValue? value) =>

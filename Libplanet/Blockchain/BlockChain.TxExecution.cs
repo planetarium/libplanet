@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
-using Libplanet.Action.State;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -48,7 +47,7 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            ITrie trie = GetAccountState(block.PreviousHash).Trie;
+            ITrie trie = GetWorldState(block.PreviousHash).Trie;
 
             int count = 0;
             foreach (var group in groupedEvals)

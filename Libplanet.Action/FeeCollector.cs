@@ -70,8 +70,8 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccountState accountState = world.GetFungibleAssetsAccountState();
-            var balance = accountState.GetBalance(_context.Signer, realGasPrice.Currency);
+            IAccount account = world.GetFungibleAssetsAccount();
+            var balance = account.GetBalance(_context.Signer, realGasPrice.Currency);
             if (balance < realGasPrice * _context.GasLimit())
             {
                 var msg =
@@ -81,7 +81,7 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(msg, _context.Signer, balance);
             }
 
-            IAccount nextAccount = new Account(accountState).BurnAsset(
+            IAccount nextAccount = new Account(account).BurnAsset(
                 _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
@@ -108,7 +108,7 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = new Account(world.GetFungibleAssetsAccountState()).MintAsset(
+            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
                 _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
@@ -135,7 +135,7 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = new Account(world.GetFungibleAssetsAccountState()).MintAsset(
+            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
                 _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());

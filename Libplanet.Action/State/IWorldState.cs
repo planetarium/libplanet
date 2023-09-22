@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
-using Libplanet.Types.Blocks;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Action.State
 {
@@ -29,6 +29,11 @@ namespace Libplanet.Action.State
     /// </summary>
     public interface IWorldState
     {
+        /// <summary>
+        /// The <see cref="ITrie"/> of the <see cref="IWorldState"/>.
+        /// </summary>
+        public ITrie Trie { get; }
+
         /// <summary>
         /// Whether <see cref="IWorldState"/> is in legacy state or not.
         /// </summary>
