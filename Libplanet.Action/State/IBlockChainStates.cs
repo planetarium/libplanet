@@ -185,12 +185,12 @@ namespace Libplanet.Action.State
         IAccountState GetAccountState(Address address, BlockHash? offset);
 
         /// <summary>
-        /// Returns the state trie associated with <see cref="BlockHash"/>
+        /// Returns the state root associated with <see cref="BlockHash"/>
         /// <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> to look up in
         /// the internally held <see cref="IStore"/>.</param>
-        /// <returns>An <see cref="ITrie"/> representing the state trie associated with
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
         /// <paramref name="offset"/>.</returns>
         /// <exception cref="ArgumentException">Thrown for one of the following reasons.
         /// <list type="bullet">
@@ -205,7 +205,10 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        ITrie GetBlockTrie(BlockHash? offset);
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
+        ITrie GetTrie(BlockHash? offset);
 
         /// <summary>
         /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
@@ -213,21 +216,24 @@ namespace Libplanet.Action.State
         /// </summary>
         /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
         /// the internally held <see cref="IStore"/>.</param>
-        /// <returns>An <see cref="ITrie"/> representing the state trie associated with
-        /// <paramref name="hash"/>.</returns>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <see cref="HashDigest{SHA256}"/> <paramref name="hash"/>.</returns>
         /// <exception cref="ArgumentException">Thrown for one of the following reasons.
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <paramref name="hash"/> is not <see langword="null"/> and
-        ///         <paramref name="hash"/> cannot be found in <see cref="IStore"/>.
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
         ///     </description></item>
         ///     <item><description>
-        ///         If <paramref name="hash"/> is not <see langword="null"/> and
-        ///         the state root hash associated with <paramref name="hash"/>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="offset"/>
         ///         cannot be found in <see cref="IStateStore"/>.
         ///     </description></item>
         /// </list>
         /// </exception>
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
         ITrie GetTrie(HashDigest<SHA256>? hash);
     }
 }

@@ -81,14 +81,14 @@ namespace Libplanet.Action.Sys
 
             if (ValidatorSet is { } vs)
             {
-                IAccount account = world.GetValidatorSetAccountState();
+                IAccount account = world.GetValidatorSetAccount();
 
                 foreach (Validator v in vs.Validators)
                 {
                     account = account.SetValidator(v);
                 }
 
-                world = world.SetAccount(account);
+                world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
             }
 
             if (States is { } s)
@@ -101,7 +101,7 @@ namespace Libplanet.Action.Sys
                         acc = acc.SetState(kv2.Key, kv2.Value);
                     }
 
-                    world = world.SetAccount(acc);
+                    world = world.SetAccount(kv.Key, acc);
                 }
             }
 

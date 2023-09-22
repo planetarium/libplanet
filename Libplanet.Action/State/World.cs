@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 
 namespace Libplanet.Action.State
 {
@@ -28,6 +29,10 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IWorldDelta Delta { get; private set; }
+
+        /// <inheritdoc/>
+        [Pure]
+        public ITrie Trie => _baseState.Trie;
 
         /// <inheritdoc/>
         [Pure]

@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,7 +115,7 @@ namespace Libplanet.Blockchain
 
                 return evaluations.Count > 0
                     ? evaluations.Last().OutputState
-                    : GetAccountState(block.PreviousHash).Trie.Hash;
+                    : GetWorldState(block.PreviousHash).Trie.Hash;
             }
             finally
             {
