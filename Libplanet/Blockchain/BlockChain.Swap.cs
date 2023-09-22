@@ -233,7 +233,7 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            new ActionRenderContext(
+                            new CommittedActionContext(
                                 signer: evaluation.InputContext.Signer,
                                 txId: evaluation.InputContext.TxId,
                                 miner: evaluation.InputContext.Miner,
@@ -249,7 +249,7 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            new ActionRenderContext(
+                            new CommittedActionContext(
                                 signer: evaluation.InputContext.Signer,
                                 txId: evaluation.InputContext.TxId,
                                 miner: evaluation.InputContext.Miner,

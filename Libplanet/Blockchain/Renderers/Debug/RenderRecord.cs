@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionRenderContext context,
+                ICommittedActionContext context,
                 bool unrender = false
             )
                 : base(index, stackTrace)
@@ -58,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <summary>
             /// The action evaluation context.
             /// </summary>
-            public IActionRenderContext Context { get; }
+            public ICommittedActionContext Context { get; }
 
             /// <summary>
             /// Whether it is not an unrender event, but a render event.
@@ -94,7 +94,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionRenderContext context,
+                ICommittedActionContext context,
                 HashDigest<SHA256> nextState,
                 bool unrender = false
             )
@@ -130,7 +130,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionRenderContext context,
+                ICommittedActionContext context,
                 Exception exception,
                 bool unrender = false
             )

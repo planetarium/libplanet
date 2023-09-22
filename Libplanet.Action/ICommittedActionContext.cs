@@ -10,7 +10,7 @@ namespace Libplanet.Action
     /// <summary>
     /// Contextual data determined by a transaction and a block for rendering.
     /// </summary>
-    public interface IActionRenderContext
+    public interface ICommittedActionContext
     {
         /// <summary>
         /// The <see cref="Transaction.Signer"/> of the <see cref="Transaction"/> that contains
