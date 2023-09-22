@@ -25,7 +25,7 @@ namespace Libplanet.Action
             PlainValue = plainValue;
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
             return context.PreviousState;
         }
