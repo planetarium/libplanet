@@ -23,6 +23,7 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Serilog;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
@@ -504,12 +505,22 @@ namespace Libplanet.Blockchain
             IReadOnlyList<Address> addresses, Address accountAddress) =>
             GetStates(addresses, accountAddress, Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetStates"/>
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address}, Address, BlockHash?)"/>
+#pragma warning restore MEN002
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
             Address accountAddress,
             BlockHash? offset) =>
             GetAccountState(accountAddress, offset).GetStates(addresses);
+
+#pragma warning disable MEN002
+        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address},HashDigest{SHA256}?"/>
+#pragma warning restore MEN002
+        public IReadOnlyList<IValue> GetStates(
+            IReadOnlyList<Address> addresses,
+            HashDigest<SHA256>? stateRootHash) =>
+            StateStore.GetStateRoot(stateRootHash).Get(addresses.Select(ToStateKey).ToList());
 
         /// <summary>
         /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
@@ -561,6 +572,34 @@ namespace Libplanet.Blockchain
         public IWorldState GetWorldState(BlockHash? offset) =>
             new WorldBaseState(GetTrie(offset), StateStore);
 
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
+        public IWorldState GetWorldState(HashDigest<SHA256>? hash) =>
+            new WorldBaseState(GetTrie(hash), StateStore);
+
+        /// <summary>
+        /// Returns the state root associated with <see cref="BlockHash"/>
+        /// <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="BlockHash"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <paramref name="offset"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown for one of the following reasons.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="offset"/>
+        ///         cannot be found in <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
         public ITrie GetTrie(BlockHash? offset)
         {
             if (!(offset is { } hash))
@@ -579,6 +618,20 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
+        /// <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <see cref="HashDigest{SHA256}"/> <paramref name="hash"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the <see cref="ITrie"/> found in
+        /// <see cref="IStateStore"/> with given <paramref name="hash"/> is not recorded.
+        /// </exception>
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
         public ITrie GetTrie(HashDigest<SHA256>? hash)
         {
             ITrie trie = StateStore.GetStateRoot(hash);
