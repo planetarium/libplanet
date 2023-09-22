@@ -471,9 +471,10 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
-        internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
+        internal IWorld PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
         {
-            return new Account(new AccountState(_stateStore.GetStateRoot(stateRootHash)));
+            return new World(
+                new WorldBaseState(_stateStore.GetStateRoot(stateRootHash), _stateStore));
         }
 
         internal IReadOnlyList<ICommittedActionEvaluation>

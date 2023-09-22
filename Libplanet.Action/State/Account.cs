@@ -40,7 +40,7 @@ namespace Libplanet.Action.State
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
-        /// <inheritdoc cref="IAccountState.Trie"/>
+        /// <inheritdoc/>
         public ITrie Trie => _baseState.Trie;
 
         /// <inheritdoc/>

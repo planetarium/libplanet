@@ -4,6 +4,7 @@ using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -26,6 +27,9 @@ namespace Libplanet.Action.State
     /// </summary>
     public interface IAccountState
     {
+        /// <summary>
+        /// The <see cref="ITrie"/> of the <see cref="IAccountState"/>.
+        /// </summary>
         [Pure]
         public ITrie Trie { get; }
 

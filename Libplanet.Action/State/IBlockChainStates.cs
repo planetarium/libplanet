@@ -22,8 +22,10 @@ namespace Libplanet.Action.State
         /// Gets a state associated to specified <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> of the state to query.</param>
+        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
+        /// the state from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
-        /// the states from.</param>
+        /// the state from.</param>
         /// <returns>The state associated to specified <paramref name="address"/>.
         /// An absent state is represented as <see langword="null"/>.  The returned value
         /// must be the same as the single element when retrieved via
@@ -45,18 +47,20 @@ namespace Libplanet.Action.State
         /// For performance reasons, it is generally recommended to use <see cref="GetStates"/>
         /// with a batch of <see cref="Address"/>es instead of iterating over this method.
         /// </remarks>
-        IValue? GetState(Address address, BlockHash? offset);
+        IValue? GetState(Address address, Address accountAddress, BlockHash? offset);
 
         /// <summary>
         /// Gets multiple states associated to specified <paramref name="addresses"/>.
         /// </summary>
         /// <param name="addresses">The <see cref="Address"/>es of the states to query.</param>
+        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
+        /// the states from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
         /// <returns>The states associated to specified <paramref name="addresses"/>.
         /// Associated values are ordered in the same way to the corresponding
         /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
-        /// Hence, the returned <see cref="IReadOnlyList{T}"/> is guaranteeed to be of the same
+        /// Hence, the returned <see cref="IReadOnlyList{T}"/> is guarenteeed to be of the same
         /// length as <paramref name="addresses"/> with possible <see langword="null"/> values.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
@@ -73,6 +77,7 @@ namespace Libplanet.Action.State
         /// </exception>
         IReadOnlyList<IValue?> GetStates(
             IReadOnlyList<Address> addresses,
+            Address accountAddress,
             BlockHash? offset);
 
         /// <summary>
@@ -130,9 +135,35 @@ namespace Libplanet.Action.State
         ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
+        /// Returns the <see cref="IWorldState"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
+        /// for which to create an <see cref="IWorldState"/>.</param>
+        /// <returns>
+        /// The <see cref="IWorldState"/> at <paramref name="offset"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
+        /// <see langword="null"/> and one of the following is true.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Corresponding <see cref="Block"/> is found but its state root is not found
+        ///         in the <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
+        /// <seealso cref="IWorldState"/>
+        IWorldState GetWorldState(BlockHash? offset);
+
+        /// <summary>
         /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
         /// at <paramref name="offset"/>.
         /// </summary>
+        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
+        /// to be returned.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
         /// for which to create an <see cref="IAccountState"/>.</param>
         /// <returns>
@@ -151,21 +182,52 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(BlockHash? offset);
+        IAccountState GetAccountState(Address address, BlockHash? offset);
 
         /// <summary>
-        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>'s state storage
-        /// with <paramref name="hash"/>.
+        /// Returns the state trie associated with <see cref="BlockHash"/>
+        /// <paramref name="offset"/>.
         /// </summary>
-        /// <param name="hash">The state root hash for which to create
-        /// an <see cref="IAccountState"/>.</param>
-        /// <returns>
-        /// The <see cref="IAccountState"/> with <paramref name="hash"/> as its state root hash.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when no <see cref="ITrie"/> with
-        /// <paramref name="hash"/> as its state root hash is found.
+        /// <param name="offset">The <see cref="BlockHash"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state trie associated with
+        /// <paramref name="offset"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown for one of the following reasons.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="offset"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="offset"/>
+        ///         cannot be found in <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
         /// </exception>
-        /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(HashDigest<SHA256>? hash);
+        ITrie GetBlockTrie(BlockHash? offset);
+
+        /// <summary>
+        /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
+        /// <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state trie associated with
+        /// <paramref name="hash"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown for one of the following reasons.
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <paramref name="hash"/> is not <see langword="null"/> and
+        ///         <paramref name="hash"/> cannot be found in <see cref="IStore"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="hash"/> is not <see langword="null"/> and
+        ///         the state root hash associated with <paramref name="hash"/>
+        ///         cannot be found in <see cref="IStateStore"/>.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
+        ITrie GetTrie(HashDigest<SHA256>? hash);
     }
 }
