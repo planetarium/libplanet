@@ -18,7 +18,7 @@ namespace Libplanet.Action.Sys
     {
         public Initialize(
             ValidatorSet validatorSet,
-            IImmutableDictionary<Address, IValue> states
+            IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>> states
         )
         {
             ValidatorSet = validatorSet;
@@ -30,7 +30,11 @@ namespace Libplanet.Action.Sys
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }
 
-        public IImmutableDictionary<Address, IValue>? States { get; private set; }
+        public IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>? States
+        {
+            get;
+            private set;
+        }
 
         public ValidatorSet? ValidatorSet { get; private set; }
 
@@ -47,7 +51,12 @@ namespace Libplanet.Action.Sys
                         s.Select(
                             kv => new KeyValuePair<IKey, IValue>(
                                 (Binary)kv.Key.Bencoded,
-                                kv.Value
+                                new Dictionary(kv.Value.Select(
+                                    kv2 => new KeyValuePair<IKey, IValue>(
+                                        (Binary)kv2.Key.Bencoded,
+                                        kv2.Value
+                                    )
+                                ))
                             )
                         )
                     )
@@ -59,8 +68,10 @@ namespace Libplanet.Action.Sys
             }
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
+            IWorld world = context.PreviousState;
+
             if (context.BlockIndex != 0)
             {
                 throw new InvalidOperationException(
@@ -68,24 +79,33 @@ namespace Libplanet.Action.Sys
                 );
             }
 
-            IAccount states = context.PreviousState;
             if (ValidatorSet is { } vs)
             {
+                IAccount account = world.GetValidatorSetAccountState();
+
                 foreach (Validator v in vs.Validators)
                 {
-                    states = states.SetValidator(v);
+                    account = account.SetValidator(v);
                 }
+
+                world = world.SetAccount(account);
             }
 
             if (States is { } s)
             {
-                foreach (KeyValuePair<Address, IValue> kv in s)
+                foreach (KeyValuePair<Address, IImmutableDictionary<Address, IValue>> kv in s)
                 {
-                    states = states.SetState(kv.Key, kv.Value);
+                    var acc = world.GetAccount(kv.Key);
+                    foreach (KeyValuePair<Address, IValue> kv2 in kv.Value)
+                    {
+                        acc = acc.SetState(kv2.Key, kv2.Value);
+                    }
+
+                    world = world.SetAccount(acc);
                 }
             }
 
-            return states;
+            return world;
         }
 
         public void LoadPlainValue(IValue plainValue)
@@ -128,7 +148,13 @@ namespace Libplanet.Action.Sys
 
             ValidatorSet = new ValidatorSet((List)valuesList[0]);
             States = ((Dictionary)valuesList[1])
-                .Select(kv => new KeyValuePair<Address, IValue>(new Address(kv.Key), kv.Value))
+                .Select(kv => new KeyValuePair<Address, IImmutableDictionary<Address, IValue>>(
+                    new Address(kv.Key),
+                    ((Dictionary)kv.Value)
+                        .Select(kv2 => new KeyValuePair<Address, IValue>(
+                            new Address(kv2.Key),
+                            kv2.Value))
+                        .ToImmutableDictionary()))
                 .ToImmutableDictionary();
         }
     }
