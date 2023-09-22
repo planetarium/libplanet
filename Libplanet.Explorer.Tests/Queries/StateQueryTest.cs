@@ -174,7 +174,7 @@ public class StateQueryTest
         Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
-    
+
     [Fact]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
@@ -194,7 +194,7 @@ public class StateQueryTest
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
     }
-    
+
     [Fact]
     public async Task StatesBySrh()
     {
@@ -345,7 +345,7 @@ public class StateQueryTest
         Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
-    
+
 
     private class MockChainStates : IBlockChainStates
     {
@@ -366,7 +366,7 @@ public class StateQueryTest
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             GetAccountState(offset).GetValidatorSet();
 
-        public IAccountState GetAccountState(BlockHash? offset) => 
+        public IAccountState GetAccountState(BlockHash? offset) =>
             new MockAccount(offset, null);
 
         public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
@@ -380,11 +380,13 @@ public class StateQueryTest
 
     private class MockAccount : IAccount
     {
-        public MockAccount(BlockHash? blockHash, HashDigest<SHA256>? stateRootHash)
+        public MockAccount(Address? address, HashDigest<SHA256>? stateRootHash)
         {
-            BlockHash = blockHash ?? default;
+            Address = address ?? default;
             StateRootHash = stateRootHash ?? default;
         }
+
+        public Address Address { get; }
 
         public ITrie Trie { get; }
 
