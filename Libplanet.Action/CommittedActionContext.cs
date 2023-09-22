@@ -78,5 +78,19 @@ namespace Libplanet.Action
         /// <inheritdoc cref="ICommittedActionContext.BlockAction"/>
         [Pure]
         public bool BlockAction { get; }
+
+        /// <inheritdoc cref="ICommittedActionContext.Copy"/>
+        [Pure]
+        public ICommittedActionContext Copy() =>
+            new CommittedActionContext(
+                Signer,
+                TxId,
+                Miner,
+                BlockIndex,
+                BlockProtocolVersion,
+                Rehearsal,
+                PreviousState,
+                new Random(Random.Seed),
+                BlockAction);
     }
 }

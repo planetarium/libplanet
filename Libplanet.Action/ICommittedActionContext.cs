@@ -82,5 +82,7 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        ICommittedActionContext Copy();
     }
 }

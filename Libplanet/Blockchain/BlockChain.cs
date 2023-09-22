@@ -964,7 +964,7 @@ namespace Libplanet.Blockchain
             Block block,
             BlockCommit blockCommit,
             bool render,
-            IReadOnlyList<IActionEvaluation> actionEvaluations = null
+            IReadOnlyList<ICommittedActionEvaluation> actionEvaluations = null
         )
         {
             if (Count == 0)
