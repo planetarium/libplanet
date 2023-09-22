@@ -65,12 +65,12 @@ namespace Libplanet.Action
         /// <para>Although a <see cref="IAccount"/> instance is
         /// immutable, it has several manipulative methods that returns
         /// new <see cref="IAccount"/> instances with some "dirty"
-        /// states.  These kinds of dirty <see cref="IAccount"/>
+        /// states.  These kinds of dirty <see cref="IWorld"/>
         /// instances can be returned by <see
         /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
         [Pure]
-        IAccount PreviousState { get; }
+        IWorld PreviousState { get; }
 
         /// <summary>
         /// The random seed to use for pseudorandom number generator.  This value

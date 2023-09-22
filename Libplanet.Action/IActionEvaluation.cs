@@ -24,7 +24,7 @@ namespace Libplanet.Action
         /// <summary>
         /// The result states that <see cref="Action"/> makes.
         /// </summary>
-        public IAccount OutputState { get; }
+        public IWorld OutputState { get; }
 
         /// <summary>
         /// An exception that had risen during evaluation.
