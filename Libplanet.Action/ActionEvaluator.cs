@@ -91,7 +91,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccount previousState = PrepareInitialDelta(baseStateRootHash);
+                IWorld previousState = PrepareInitialDelta(baseStateRootHash);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -165,12 +165,12 @@ namespace Libplanet.Action
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
-            IAccount previousState,
+            IWorld previousState,
             IImmutableList<IAction> actions,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
-                IAccount prevState,
+                IWorld prevState,
                 int randomSeed,
                 long actionGasLimit)
             {
@@ -197,7 +197,7 @@ namespace Libplanet.Action
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
-            IAccount state = previousState;
+            IWorld state = previousState;
             foreach (IAction action in actions)
             {
                 IActionContext context = CreateActionContext(state, seed, gasLimit);
@@ -228,11 +228,11 @@ namespace Libplanet.Action
             ILogger? logger = null)
         {
             IActionContext inputContext = context;
-            IAccount state = inputContext.PreviousState;
+            IWorld state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
 
-            IActionContext CreateActionContext(IAccount newPrevState)
+            IActionContext CreateActionContext(IWorld newPrevState)
             {
                 return new ActionContext(
                     signer: inputContext.Signer,
@@ -373,9 +373,9 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock block,
-            IAccount previousState)
+            IWorld previousState)
         {
-            IAccount delta = previousState;
+            IWorld delta = previousState;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
@@ -385,7 +385,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = Account.Flush(delta);
+                delta = World.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -423,7 +423,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateTx(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
-            IAccount previousState)
+            IWorld previousState)
         {
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
@@ -449,7 +449,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             IPreEvaluationBlockHeader blockHeader,
-            IAccount previousState)
+            IWorld previousState)
         {
             var policyBlockAction = _policyBlockActionGetter(blockHeader);
             if (policyBlockAction is null)
