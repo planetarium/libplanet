@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IAccount _account = new Account(MockAccountState.Empty);
+        private static IWorld _world = World.Create(new MockWorldState());
 
         private static ICommittedActionContext _actionContext =
             new CommittedActionContext(new ActionContext(
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 Block.CurrentProtocolVersion,
                 default,
-                _account,
+                _world,
                 default,
                 0));
 
@@ -55,11 +55,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
 
-            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
+            renderer.RenderAction(_action, _actionContext, _world.Trie.Hash);
             Assert.NotNull(record);
             Assert.Same(_action, record?.Item1);
             Assert.Same(_actionContext, record?.Item2);
-            Assert.Equal(_account.Trie.Hash, record?.Item3);
+            Assert.Equal(_world.Trie.Hash, record?.Item3);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     record = (action, context, exception),
             };
 
-            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
+            renderer.RenderAction(_action, _actionContext, _world.Trie.Hash);
             Assert.Null(record);
             renderer.RenderBlock(_genesis, _blockA);
             Assert.Null(record);
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 BlockRenderer = (oldTip, newTip) => record = (oldTip, newTip),
             };
 
-            renderer.RenderAction(_action, _actionContext, _account.Trie.Hash);
+            renderer.RenderAction(_action, _actionContext, _world.Trie.Hash);
             Assert.Null(record);
             renderer.RenderActionError(_action, _actionContext, _exception);
             Assert.Null(record);

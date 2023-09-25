@@ -200,9 +200,9 @@ public class StateQuery
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates.GetAccountState(
-                    offsetStateRootHash
-                ).GetBalance(owner, currency);
+                return context.Source.ChainStates.GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetBalance(owner, currency);
         }
     }
 

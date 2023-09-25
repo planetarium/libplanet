@@ -23,7 +23,7 @@ public abstract class SimpleAction : IAction
     {
     }
 
-    public virtual IAccount Execute(IActionContext context) => context.PreviousState;
+    public virtual IWorld Execute(IActionContext context) => context.PreviousState;
 
     public static SimpleAction GetAction(int seed) =>
         (seed % 10) switch
@@ -90,6 +90,6 @@ public class SimpleAction8 : SimpleAction
 [ActionType(nameof(SimpleAction0Fail))]
 public class SimpleAction0Fail : SimpleAction
 {
-    public override IAccount Execute(IActionContext context) =>
+    public override IWorld Execute(IActionContext context) =>
         throw new CurrencyPermissionException("test message", context.Signer, default);
 }

@@ -515,7 +515,7 @@ namespace Libplanet.Blockchain
             GetAccountState(accountAddress, offset).GetStates(addresses);
 
 #pragma warning disable MEN002
-        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address},HashDigest{SHA256}?"/>
+        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address},HashDigest{SHA256}?)" />
 #pragma warning restore MEN002
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
@@ -565,6 +565,10 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
         public IAccountState GetAccountState(Address address, BlockHash? offset) =>
             GetWorldState(offset).GetAccount(address);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
+        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash) =>
+            new AccountBaseState(GetTrie(stateRootHash));
 
         public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 

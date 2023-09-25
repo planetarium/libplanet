@@ -215,5 +215,17 @@ namespace Libplanet.Action.State
         /// </exception>
         /// <seealso cref="IAccountState"/>
         IAccountState GetAccountState(Address address, BlockHash? offset);
+
+        /// <summary>
+        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
+        /// of root hash <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> of the root hash
+        /// for which to create an <see cref="IAccountState"/>.</param>
+        /// <returns>
+        /// The <see cref="IAccountState"/> of state root hash <paramref name="stateRootHash"/>.
+        /// </returns>
+        /// <seealso cref="IAccountState"/>
+        IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash);
     }
 }
