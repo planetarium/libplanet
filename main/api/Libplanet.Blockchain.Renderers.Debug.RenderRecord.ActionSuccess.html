@@ -131,19 +131,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.%23ctor(System.Int64%2CSystem.String%2CBencodex.Types.IValue%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IAccount%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.%23ctor(System.Int64%2CSystem.String%2CBencodex.Types.IValue%2CLibplanet.Action.ICommittedActionContext%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Boolean_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Boolean)">ActionSuccess(Int64, String, IValue, IActionContext, IAccount, Boolean)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)">ActionSuccess(Int64, String, IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creates a succeeded action render/unrender event record.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionSuccess(long index, string stackTrace, IValue action, IActionContext context, IAccount nextStates, bool unrender = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionSuccess(long index, string stackTrace, IValue action, ICommittedActionContext context, HashDigest&lt;SHA256&gt; nextState, bool unrender = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,15 +174,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><a class="xref" href="Libplanet.Action.ICommittedActionContext.html">ICommittedActionContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The action evaluation context.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
-        <td><span class="parametername">nextStates</span></td>
-        <td><p>The resulting states after the action is evaluated.</p>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">nextState</span></td>
+        <td><p>The resulting state after the action is evaluated.</p>
 </td>
       </tr>
       <tr>
@@ -197,19 +197,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextStates.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextState.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L109">View Source</a>
   </span>
-  <a id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextStates_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextStates" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates">NextStates</h4>
+  <a id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextState_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextState" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState">NextState</h4>
   <div class="markdown level1 summary"><p>The resulting states after the action is evaluated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAccount NextStates { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; NextState { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,7 +221,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -233,7 +233,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_ToString_" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ToString*"></a>
   <h4 id="Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_ToString" data-uid="Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ToString">ToString()</h4>
@@ -272,7 +272,7 @@
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L81" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/Debug/RenderRecord.cs/#L82" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

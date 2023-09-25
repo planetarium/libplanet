@@ -68,10 +68,32 @@
 <ul>
 <li>Added <code>IBlockChainStates.GetAccountState(HashDigest&lt;SHA256&gt;?)</code>
 interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3425">#3425</a>]</li>
+<li>Removed <code>TxFailure.ExceptionMetadata</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3428">#3428</a>]</li>
+<li>Removed <code>ISerializable</code> interface from <code>TxExecution</code>, <code>TxSuccess</code>,
+and <code>TxFailure</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3428">#3428</a>]</li>
+<li>Removed <code>TxSuccess</code> and <code>TxFailure</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>Changed <code>TxExecution</code> class as <code>sealed</code> from <code>abstract.</code>  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>All properties of <code>TxExecution</code> except <code>BlockHash</code> and <code>TxId</code> were
+overhauled.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Store) Removed <code>IStore.PutTxExecution(TxSuccess)</code> and
+<code>IStore.PutTxExecution(TxFailure)</code>;
+added <code>IStore.PutTxExecution(TxExecution)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.ExceptionName</code> of type <code>string?</code>
+and added <code>TxResult.ExceptionNames</code> of type <code>List&lt;string?&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.UpdatedStates</code> and
+<code>TxResult.UpdatedFungibleAssets</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>Changed <code>IActionRenderer.RenderAction(IValue, IActionContext, IAccount)</code>
+to <code>IActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+<li>Changed <code>IActionRenderer.RenderActionError(IValue, IActionContext, Exception)</code> to <code>IActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>AccountDiff</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3424">#3424</a>]</li>
+<li>Added <code>ICommittedActionContext</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+<li>Added <code>ICommittedActionEvaluation</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>

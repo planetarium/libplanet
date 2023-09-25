@@ -256,6 +256,238 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
   nameWithType: ActionTypeAttribute.TypeIdentifier
+- uid: Libplanet.Action.CommittedActionContext
+  name: CommittedActionContext
+  href: api/Libplanet.Action.CommittedActionContext.html
+  commentId: T:Libplanet.Action.CommittedActionContext
+  fullName: Libplanet.Action.CommittedActionContext
+  nameWithType: CommittedActionContext
+- uid: Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Action.IActionContext)
+  name: CommittedActionContext(IActionContext)
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Action.IActionContext)
+  nameWithType: CommittedActionContext.CommittedActionContext(IActionContext)
+- uid: Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.IRandom,System.Boolean)
+  name: CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, Boolean, HashDigest<SHA256>, IRandom, Boolean)
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_IRandom_System_Boolean_
+  commentId: M:Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.IRandom,System.Boolean)
+  name.vb: CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, Boolean, HashDigest(Of SHA256), IRandom, Boolean)
+  fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable<Libplanet.Types.Tx.TxId>, Libplanet.Crypto.Address, System.Int64, System.Int32, System.Boolean, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Action.IRandom, System.Boolean)
+  fullName.vb: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable(Of Libplanet.Types.Tx.TxId), Libplanet.Crypto.Address, System.Int64, System.Int32, System.Boolean, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Action.IRandom, System.Boolean)
+  nameWithType: CommittedActionContext.CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, Boolean, HashDigest<SHA256>, IRandom, Boolean)
+  nameWithType.vb: CommittedActionContext.CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, Boolean, HashDigest(Of SHA256), IRandom, Boolean)
+- uid: Libplanet.Action.CommittedActionContext.#ctor*
+  name: CommittedActionContext
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext
+  nameWithType: CommittedActionContext.CommittedActionContext
+- uid: Libplanet.Action.CommittedActionContext.BlockAction
+  name: BlockAction
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockAction
+  commentId: P:Libplanet.Action.CommittedActionContext.BlockAction
+  fullName: Libplanet.Action.CommittedActionContext.BlockAction
+  nameWithType: CommittedActionContext.BlockAction
+- uid: Libplanet.Action.CommittedActionContext.BlockAction*
+  name: BlockAction
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockAction_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.BlockAction
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.BlockAction
+  nameWithType: CommittedActionContext.BlockAction
+- uid: Libplanet.Action.CommittedActionContext.BlockIndex
+  name: BlockIndex
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockIndex
+  commentId: P:Libplanet.Action.CommittedActionContext.BlockIndex
+  fullName: Libplanet.Action.CommittedActionContext.BlockIndex
+  nameWithType: CommittedActionContext.BlockIndex
+- uid: Libplanet.Action.CommittedActionContext.BlockIndex*
+  name: BlockIndex
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockIndex_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.BlockIndex
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.BlockIndex
+  nameWithType: CommittedActionContext.BlockIndex
+- uid: Libplanet.Action.CommittedActionContext.BlockProtocolVersion
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockProtocolVersion
+  commentId: P:Libplanet.Action.CommittedActionContext.BlockProtocolVersion
+  fullName: Libplanet.Action.CommittedActionContext.BlockProtocolVersion
+  nameWithType: CommittedActionContext.BlockProtocolVersion
+- uid: Libplanet.Action.CommittedActionContext.BlockProtocolVersion*
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_BlockProtocolVersion_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.BlockProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.BlockProtocolVersion
+  nameWithType: CommittedActionContext.BlockProtocolVersion
+- uid: Libplanet.Action.CommittedActionContext.Copy
+  name: Copy()
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Copy
+  commentId: M:Libplanet.Action.CommittedActionContext.Copy
+  fullName: Libplanet.Action.CommittedActionContext.Copy()
+  nameWithType: CommittedActionContext.Copy()
+- uid: Libplanet.Action.CommittedActionContext.Copy*
+  name: Copy
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Copy_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.Copy
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.Copy
+  nameWithType: CommittedActionContext.Copy
+- uid: Libplanet.Action.CommittedActionContext.Miner
+  name: Miner
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Miner
+  commentId: P:Libplanet.Action.CommittedActionContext.Miner
+  fullName: Libplanet.Action.CommittedActionContext.Miner
+  nameWithType: CommittedActionContext.Miner
+- uid: Libplanet.Action.CommittedActionContext.Miner*
+  name: Miner
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Miner_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.Miner
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.Miner
+  nameWithType: CommittedActionContext.Miner
+- uid: Libplanet.Action.CommittedActionContext.PreviousState
+  name: PreviousState
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_PreviousState
+  commentId: P:Libplanet.Action.CommittedActionContext.PreviousState
+  fullName: Libplanet.Action.CommittedActionContext.PreviousState
+  nameWithType: CommittedActionContext.PreviousState
+- uid: Libplanet.Action.CommittedActionContext.PreviousState*
+  name: PreviousState
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_PreviousState_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.PreviousState
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.PreviousState
+  nameWithType: CommittedActionContext.PreviousState
+- uid: Libplanet.Action.CommittedActionContext.Random
+  name: Random
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Random
+  commentId: P:Libplanet.Action.CommittedActionContext.Random
+  fullName: Libplanet.Action.CommittedActionContext.Random
+  nameWithType: CommittedActionContext.Random
+- uid: Libplanet.Action.CommittedActionContext.Random*
+  name: Random
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Random_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.Random
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.Random
+  nameWithType: CommittedActionContext.Random
+- uid: Libplanet.Action.CommittedActionContext.Rehearsal
+  name: Rehearsal
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Rehearsal
+  commentId: P:Libplanet.Action.CommittedActionContext.Rehearsal
+  fullName: Libplanet.Action.CommittedActionContext.Rehearsal
+  nameWithType: CommittedActionContext.Rehearsal
+- uid: Libplanet.Action.CommittedActionContext.Rehearsal*
+  name: Rehearsal
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Rehearsal_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.Rehearsal
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.Rehearsal
+  nameWithType: CommittedActionContext.Rehearsal
+- uid: Libplanet.Action.CommittedActionContext.Signer
+  name: Signer
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Signer
+  commentId: P:Libplanet.Action.CommittedActionContext.Signer
+  fullName: Libplanet.Action.CommittedActionContext.Signer
+  nameWithType: CommittedActionContext.Signer
+- uid: Libplanet.Action.CommittedActionContext.Signer*
+  name: Signer
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Signer_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.Signer
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.Signer
+  nameWithType: CommittedActionContext.Signer
+- uid: Libplanet.Action.CommittedActionContext.TxId
+  name: TxId
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_TxId
+  commentId: P:Libplanet.Action.CommittedActionContext.TxId
+  fullName: Libplanet.Action.CommittedActionContext.TxId
+  nameWithType: CommittedActionContext.TxId
+- uid: Libplanet.Action.CommittedActionContext.TxId*
+  name: TxId
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_TxId_
+  commentId: Overload:Libplanet.Action.CommittedActionContext.TxId
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionContext.TxId
+  nameWithType: CommittedActionContext.TxId
+- uid: Libplanet.Action.CommittedActionEvaluation
+  name: CommittedActionEvaluation
+  href: api/Libplanet.Action.CommittedActionEvaluation.html
+  commentId: T:Libplanet.Action.CommittedActionEvaluation
+  fullName: Libplanet.Action.CommittedActionEvaluation
+  nameWithType: CommittedActionEvaluation
+- uid: Libplanet.Action.CommittedActionEvaluation.#ctor(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Exception)
+  name: CommittedActionEvaluation(IValue, ICommittedActionContext, HashDigest<SHA256>, Exception)
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation__ctor_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Exception_
+  commentId: M:Libplanet.Action.CommittedActionEvaluation.#ctor(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Exception)
+  name.vb: CommittedActionEvaluation(IValue, ICommittedActionContext, HashDigest(Of SHA256), Exception)
+  fullName: Libplanet.Action.CommittedActionEvaluation.CommittedActionEvaluation(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Exception)
+  fullName.vb: Libplanet.Action.CommittedActionEvaluation.CommittedActionEvaluation(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Exception)
+  nameWithType: CommittedActionEvaluation.CommittedActionEvaluation(IValue, ICommittedActionContext, HashDigest<SHA256>, Exception)
+  nameWithType.vb: CommittedActionEvaluation.CommittedActionEvaluation(IValue, ICommittedActionContext, HashDigest(Of SHA256), Exception)
+- uid: Libplanet.Action.CommittedActionEvaluation.#ctor*
+  name: CommittedActionEvaluation
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation__ctor_
+  commentId: Overload:Libplanet.Action.CommittedActionEvaluation.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionEvaluation.CommittedActionEvaluation
+  nameWithType: CommittedActionEvaluation.CommittedActionEvaluation
+- uid: Libplanet.Action.CommittedActionEvaluation.Action
+  name: Action
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_Action
+  commentId: P:Libplanet.Action.CommittedActionEvaluation.Action
+  fullName: Libplanet.Action.CommittedActionEvaluation.Action
+  nameWithType: CommittedActionEvaluation.Action
+- uid: Libplanet.Action.CommittedActionEvaluation.Action*
+  name: Action
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_Action_
+  commentId: Overload:Libplanet.Action.CommittedActionEvaluation.Action
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionEvaluation.Action
+  nameWithType: CommittedActionEvaluation.Action
+- uid: Libplanet.Action.CommittedActionEvaluation.Exception
+  name: Exception
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_Exception
+  commentId: P:Libplanet.Action.CommittedActionEvaluation.Exception
+  fullName: Libplanet.Action.CommittedActionEvaluation.Exception
+  nameWithType: CommittedActionEvaluation.Exception
+- uid: Libplanet.Action.CommittedActionEvaluation.Exception*
+  name: Exception
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_Exception_
+  commentId: Overload:Libplanet.Action.CommittedActionEvaluation.Exception
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionEvaluation.Exception
+  nameWithType: CommittedActionEvaluation.Exception
+- uid: Libplanet.Action.CommittedActionEvaluation.InputContext
+  name: InputContext
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_InputContext
+  commentId: P:Libplanet.Action.CommittedActionEvaluation.InputContext
+  fullName: Libplanet.Action.CommittedActionEvaluation.InputContext
+  nameWithType: CommittedActionEvaluation.InputContext
+- uid: Libplanet.Action.CommittedActionEvaluation.InputContext*
+  name: InputContext
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_InputContext_
+  commentId: Overload:Libplanet.Action.CommittedActionEvaluation.InputContext
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionEvaluation.InputContext
+  nameWithType: CommittedActionEvaluation.InputContext
+- uid: Libplanet.Action.CommittedActionEvaluation.OutputState
+  name: OutputState
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_OutputState
+  commentId: P:Libplanet.Action.CommittedActionEvaluation.OutputState
+  fullName: Libplanet.Action.CommittedActionEvaluation.OutputState
+  nameWithType: CommittedActionEvaluation.OutputState
+- uid: Libplanet.Action.CommittedActionEvaluation.OutputState*
+  name: OutputState
+  href: api/Libplanet.Action.CommittedActionEvaluation.html#Libplanet_Action_CommittedActionEvaluation_OutputState_
+  commentId: Overload:Libplanet.Action.CommittedActionEvaluation.OutputState
+  isSpec: "True"
+  fullName: Libplanet.Action.CommittedActionEvaluation.OutputState
+  nameWithType: CommittedActionEvaluation.OutputState
 - uid: Libplanet.Action.DuplicateActionTypeIdentifierException
   name: DuplicateActionTypeIdentifierException
   href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html
@@ -716,6 +948,200 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionTypeLoaderContext.Index
   nameWithType: IActionTypeLoaderContext.Index
+- uid: Libplanet.Action.ICommittedActionContext
+  name: ICommittedActionContext
+  href: api/Libplanet.Action.ICommittedActionContext.html
+  commentId: T:Libplanet.Action.ICommittedActionContext
+  fullName: Libplanet.Action.ICommittedActionContext
+  nameWithType: ICommittedActionContext
+- uid: Libplanet.Action.ICommittedActionContext.BlockAction
+  name: BlockAction
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockAction
+  commentId: P:Libplanet.Action.ICommittedActionContext.BlockAction
+  fullName: Libplanet.Action.ICommittedActionContext.BlockAction
+  nameWithType: ICommittedActionContext.BlockAction
+- uid: Libplanet.Action.ICommittedActionContext.BlockAction*
+  name: BlockAction
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockAction_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.BlockAction
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.BlockAction
+  nameWithType: ICommittedActionContext.BlockAction
+- uid: Libplanet.Action.ICommittedActionContext.BlockIndex
+  name: BlockIndex
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockIndex
+  commentId: P:Libplanet.Action.ICommittedActionContext.BlockIndex
+  fullName: Libplanet.Action.ICommittedActionContext.BlockIndex
+  nameWithType: ICommittedActionContext.BlockIndex
+- uid: Libplanet.Action.ICommittedActionContext.BlockIndex*
+  name: BlockIndex
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockIndex_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.BlockIndex
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.BlockIndex
+  nameWithType: ICommittedActionContext.BlockIndex
+- uid: Libplanet.Action.ICommittedActionContext.BlockProtocolVersion
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockProtocolVersion
+  commentId: P:Libplanet.Action.ICommittedActionContext.BlockProtocolVersion
+  fullName: Libplanet.Action.ICommittedActionContext.BlockProtocolVersion
+  nameWithType: ICommittedActionContext.BlockProtocolVersion
+- uid: Libplanet.Action.ICommittedActionContext.BlockProtocolVersion*
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_BlockProtocolVersion_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.BlockProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.BlockProtocolVersion
+  nameWithType: ICommittedActionContext.BlockProtocolVersion
+- uid: Libplanet.Action.ICommittedActionContext.Copy
+  name: Copy()
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Copy
+  commentId: M:Libplanet.Action.ICommittedActionContext.Copy
+  fullName: Libplanet.Action.ICommittedActionContext.Copy()
+  nameWithType: ICommittedActionContext.Copy()
+- uid: Libplanet.Action.ICommittedActionContext.Copy*
+  name: Copy
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Copy_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.Copy
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.Copy
+  nameWithType: ICommittedActionContext.Copy
+- uid: Libplanet.Action.ICommittedActionContext.Miner
+  name: Miner
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Miner
+  commentId: P:Libplanet.Action.ICommittedActionContext.Miner
+  fullName: Libplanet.Action.ICommittedActionContext.Miner
+  nameWithType: ICommittedActionContext.Miner
+- uid: Libplanet.Action.ICommittedActionContext.Miner*
+  name: Miner
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Miner_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.Miner
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.Miner
+  nameWithType: ICommittedActionContext.Miner
+- uid: Libplanet.Action.ICommittedActionContext.PreviousState
+  name: PreviousState
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_PreviousState
+  commentId: P:Libplanet.Action.ICommittedActionContext.PreviousState
+  fullName: Libplanet.Action.ICommittedActionContext.PreviousState
+  nameWithType: ICommittedActionContext.PreviousState
+- uid: Libplanet.Action.ICommittedActionContext.PreviousState*
+  name: PreviousState
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_PreviousState_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.PreviousState
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.PreviousState
+  nameWithType: ICommittedActionContext.PreviousState
+- uid: Libplanet.Action.ICommittedActionContext.Random
+  name: Random
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Random
+  commentId: P:Libplanet.Action.ICommittedActionContext.Random
+  fullName: Libplanet.Action.ICommittedActionContext.Random
+  nameWithType: ICommittedActionContext.Random
+- uid: Libplanet.Action.ICommittedActionContext.Random*
+  name: Random
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Random_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.Random
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.Random
+  nameWithType: ICommittedActionContext.Random
+- uid: Libplanet.Action.ICommittedActionContext.Rehearsal
+  name: Rehearsal
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Rehearsal
+  commentId: P:Libplanet.Action.ICommittedActionContext.Rehearsal
+  fullName: Libplanet.Action.ICommittedActionContext.Rehearsal
+  nameWithType: ICommittedActionContext.Rehearsal
+- uid: Libplanet.Action.ICommittedActionContext.Rehearsal*
+  name: Rehearsal
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Rehearsal_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.Rehearsal
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.Rehearsal
+  nameWithType: ICommittedActionContext.Rehearsal
+- uid: Libplanet.Action.ICommittedActionContext.Signer
+  name: Signer
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Signer
+  commentId: P:Libplanet.Action.ICommittedActionContext.Signer
+  fullName: Libplanet.Action.ICommittedActionContext.Signer
+  nameWithType: ICommittedActionContext.Signer
+- uid: Libplanet.Action.ICommittedActionContext.Signer*
+  name: Signer
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Signer_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.Signer
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.Signer
+  nameWithType: ICommittedActionContext.Signer
+- uid: Libplanet.Action.ICommittedActionContext.TxId
+  name: TxId
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_TxId
+  commentId: P:Libplanet.Action.ICommittedActionContext.TxId
+  fullName: Libplanet.Action.ICommittedActionContext.TxId
+  nameWithType: ICommittedActionContext.TxId
+- uid: Libplanet.Action.ICommittedActionContext.TxId*
+  name: TxId
+  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_TxId_
+  commentId: Overload:Libplanet.Action.ICommittedActionContext.TxId
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionContext.TxId
+  nameWithType: ICommittedActionContext.TxId
+- uid: Libplanet.Action.ICommittedActionEvaluation
+  name: ICommittedActionEvaluation
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html
+  commentId: T:Libplanet.Action.ICommittedActionEvaluation
+  fullName: Libplanet.Action.ICommittedActionEvaluation
+  nameWithType: ICommittedActionEvaluation
+- uid: Libplanet.Action.ICommittedActionEvaluation.Action
+  name: Action
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_Action
+  commentId: P:Libplanet.Action.ICommittedActionEvaluation.Action
+  fullName: Libplanet.Action.ICommittedActionEvaluation.Action
+  nameWithType: ICommittedActionEvaluation.Action
+- uid: Libplanet.Action.ICommittedActionEvaluation.Action*
+  name: Action
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_Action_
+  commentId: Overload:Libplanet.Action.ICommittedActionEvaluation.Action
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionEvaluation.Action
+  nameWithType: ICommittedActionEvaluation.Action
+- uid: Libplanet.Action.ICommittedActionEvaluation.Exception
+  name: Exception
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_Exception
+  commentId: P:Libplanet.Action.ICommittedActionEvaluation.Exception
+  fullName: Libplanet.Action.ICommittedActionEvaluation.Exception
+  nameWithType: ICommittedActionEvaluation.Exception
+- uid: Libplanet.Action.ICommittedActionEvaluation.Exception*
+  name: Exception
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_Exception_
+  commentId: Overload:Libplanet.Action.ICommittedActionEvaluation.Exception
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionEvaluation.Exception
+  nameWithType: ICommittedActionEvaluation.Exception
+- uid: Libplanet.Action.ICommittedActionEvaluation.InputContext
+  name: InputContext
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_InputContext
+  commentId: P:Libplanet.Action.ICommittedActionEvaluation.InputContext
+  fullName: Libplanet.Action.ICommittedActionEvaluation.InputContext
+  nameWithType: ICommittedActionEvaluation.InputContext
+- uid: Libplanet.Action.ICommittedActionEvaluation.InputContext*
+  name: InputContext
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_InputContext_
+  commentId: Overload:Libplanet.Action.ICommittedActionEvaluation.InputContext
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionEvaluation.InputContext
+  nameWithType: ICommittedActionEvaluation.InputContext
+- uid: Libplanet.Action.ICommittedActionEvaluation.OutputState
+  name: OutputState
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_OutputState
+  commentId: P:Libplanet.Action.ICommittedActionEvaluation.OutputState
+  fullName: Libplanet.Action.ICommittedActionEvaluation.OutputState
+  nameWithType: ICommittedActionEvaluation.OutputState
+- uid: Libplanet.Action.ICommittedActionEvaluation.OutputState*
+  name: OutputState
+  href: api/Libplanet.Action.ICommittedActionEvaluation.html#Libplanet_Action_ICommittedActionEvaluation_OutputState_
+  commentId: Overload:Libplanet.Action.ICommittedActionEvaluation.OutputState
+  isSpec: "True"
+  fullName: Libplanet.Action.ICommittedActionEvaluation.OutputState
+  nameWithType: ICommittedActionEvaluation.OutputState
 - uid: Libplanet.Action.IFeeCollector
   name: IFeeCollector
   href: api/Libplanet.Action.IFeeCollector.html
@@ -1560,6 +1986,83 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta
   nameWithType: AccountDeltaExtensions.ToRawDelta
+- uid: Libplanet.Action.State.AccountDiff
+  name: AccountDiff
+  href: api/Libplanet.Action.State.AccountDiff.html
+  commentId: T:Libplanet.Action.State.AccountDiff
+  fullName: Libplanet.Action.State.AccountDiff
+  nameWithType: AccountDiff
+- uid: Libplanet.Action.State.AccountDiff.Create(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountState)
+  name: Create(IAccountState, IAccountState)
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_Create_Libplanet_Action_State_IAccountState_Libplanet_Action_State_IAccountState_
+  commentId: M:Libplanet.Action.State.AccountDiff.Create(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountState)
+  fullName: Libplanet.Action.State.AccountDiff.Create(Libplanet.Action.State.IAccountState, Libplanet.Action.State.IAccountState)
+  nameWithType: AccountDiff.Create(IAccountState, IAccountState)
+- uid: Libplanet.Action.State.AccountDiff.Create(Libplanet.Store.Trie.ITrie,Libplanet.Store.Trie.ITrie)
+  name: Create(ITrie, ITrie)
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_Create_Libplanet_Store_Trie_ITrie_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Action.State.AccountDiff.Create(Libplanet.Store.Trie.ITrie,Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Action.State.AccountDiff.Create(Libplanet.Store.Trie.ITrie, Libplanet.Store.Trie.ITrie)
+  nameWithType: AccountDiff.Create(ITrie, ITrie)
+- uid: Libplanet.Action.State.AccountDiff.Create*
+  name: Create
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_Create_
+  commentId: Overload:Libplanet.Action.State.AccountDiff.Create
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountDiff.Create
+  nameWithType: AccountDiff.Create
+- uid: Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs
+  name: FungibleAssetValueDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_FungibleAssetValueDiffs
+  commentId: P:Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs
+  fullName: Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs
+  nameWithType: AccountDiff.FungibleAssetValueDiffs
+- uid: Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs*
+  name: FungibleAssetValueDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_FungibleAssetValueDiffs_
+  commentId: Overload:Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountDiff.FungibleAssetValueDiffs
+  nameWithType: AccountDiff.FungibleAssetValueDiffs
+- uid: Libplanet.Action.State.AccountDiff.StateDiffs
+  name: StateDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_StateDiffs
+  commentId: P:Libplanet.Action.State.AccountDiff.StateDiffs
+  fullName: Libplanet.Action.State.AccountDiff.StateDiffs
+  nameWithType: AccountDiff.StateDiffs
+- uid: Libplanet.Action.State.AccountDiff.StateDiffs*
+  name: StateDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_StateDiffs_
+  commentId: Overload:Libplanet.Action.State.AccountDiff.StateDiffs
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountDiff.StateDiffs
+  nameWithType: AccountDiff.StateDiffs
+- uid: Libplanet.Action.State.AccountDiff.TotalSupplyDiffs
+  name: TotalSupplyDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_TotalSupplyDiffs
+  commentId: P:Libplanet.Action.State.AccountDiff.TotalSupplyDiffs
+  fullName: Libplanet.Action.State.AccountDiff.TotalSupplyDiffs
+  nameWithType: AccountDiff.TotalSupplyDiffs
+- uid: Libplanet.Action.State.AccountDiff.TotalSupplyDiffs*
+  name: TotalSupplyDiffs
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_TotalSupplyDiffs_
+  commentId: Overload:Libplanet.Action.State.AccountDiff.TotalSupplyDiffs
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountDiff.TotalSupplyDiffs
+  nameWithType: AccountDiff.TotalSupplyDiffs
+- uid: Libplanet.Action.State.AccountDiff.ValidatorSetDiff
+  name: ValidatorSetDiff
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_ValidatorSetDiff
+  commentId: P:Libplanet.Action.State.AccountDiff.ValidatorSetDiff
+  fullName: Libplanet.Action.State.AccountDiff.ValidatorSetDiff
+  nameWithType: AccountDiff.ValidatorSetDiff
+- uid: Libplanet.Action.State.AccountDiff.ValidatorSetDiff*
+  name: ValidatorSetDiff
+  href: api/Libplanet.Action.State.AccountDiff.html#Libplanet_Action_State_AccountDiff_ValidatorSetDiff_
+  commentId: Overload:Libplanet.Action.State.AccountDiff.ValidatorSetDiff
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountDiff.ValidatorSetDiff
+  nameWithType: AccountDiff.ValidatorSetDiff
 - uid: Libplanet.Action.State.AccountExtensions
   name: AccountExtensions
   href: api/Libplanet.Action.State.AccountExtensions.html
@@ -2668,15 +3171,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.Create
   nameWithType: BlockChain.Create
-- uid: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name: DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineBlockStateRootHash_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
-  commentId: M:Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name.vb: DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of IActionEvaluation))
-  fullName: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
-  nameWithType: BlockChain.DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)
-  nameWithType.vb: BlockChain.DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of IActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ICommittedActionEvaluation}@)
+  name: DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineBlockStateRootHash_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_ICommittedActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ICommittedActionEvaluation}@)
+  name.vb: DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of ICommittedActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.ICommittedActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash(Libplanet.Types.Blocks.IPreEvaluationBlock, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.ICommittedActionEvaluation))
+  nameWithType: BlockChain.DetermineBlockStateRootHash(IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)
+  nameWithType.vb: BlockChain.DetermineBlockStateRootHash(IPreEvaluationBlock, ByRef IReadOnlyList(Of ICommittedActionEvaluation))
 - uid: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash*
   name: DetermineBlockStateRootHash
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineBlockStateRootHash_
@@ -4070,12 +4573,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.BlockEndRenderer
   nameWithType: AnonymousActionRenderer.BlockEndRenderer
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: AnonymousActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: AnonymousActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: AnonymousActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderAction_
@@ -4083,12 +4589,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderAction
   nameWithType: AnonymousActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AnonymousActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: AnonymousActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.AnonymousActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html#Libplanet_Blockchain_Renderers_AnonymousActionRenderer_RenderActionError_
@@ -4173,12 +4679,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.ActionRenderer
   nameWithType: AtomicActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: AtomicActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: AtomicActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: AtomicActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderAction_
@@ -4186,12 +4695,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderAction
   nameWithType: AtomicActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: AtomicActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: AtomicActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.AtomicActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.AtomicActionRenderer.html#Libplanet_Blockchain_Renderers_AtomicActionRenderer_RenderActionError_
@@ -4311,12 +4820,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.Records
   nameWithType: RecordingActionRenderer.Records
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: RecordingActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: RecordingActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: RecordingActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderAction_
@@ -4324,12 +4836,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderAction
   nameWithType: RecordingActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: RecordingActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: RecordingActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.RecordingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_RecordingActionRenderer_RenderActionError_
@@ -4401,12 +4913,12 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase
   nameWithType: RenderRecord.ActionBase
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Boolean)
-  name: ActionBase(Int64, String, IValue, IActionContext, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionBase__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.ActionBase(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Boolean)
-  nameWithType: RenderRecord.ActionBase.ActionBase(Int64, String, IValue, IActionContext, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Boolean)
+  name: ActionBase(Int64, String, IValue, ICommittedActionContext, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionBase__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.ActionBase(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Boolean)
+  nameWithType: RenderRecord.ActionBase.ActionBase(Int64, String, IValue, ICommittedActionContext, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.#ctor*
   name: ActionBase
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionBase.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionBase__ctor_
@@ -4485,12 +4997,12 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError
   nameWithType: RenderRecord.ActionError
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
-  name: ActionError(Int64, String, IValue, IActionContext, Exception, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionError__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.ActionError(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception, System.Boolean)
-  nameWithType: RenderRecord.ActionError.ActionError(Int64, String, IValue, IActionContext, Exception, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception,System.Boolean)
+  name: ActionError(Int64, String, IValue, ICommittedActionContext, Exception, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionError__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception,System.Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.ActionError(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception, System.Boolean)
+  nameWithType: RenderRecord.ActionError.ActionError(Int64, String, IValue, ICommittedActionContext, Exception, Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.#ctor*
   name: ActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionError.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionError__ctor_
@@ -4530,12 +5042,15 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess
   nameWithType: RenderRecord.ActionSuccess
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Boolean)
-  name: ActionSuccess(Int64, String, IValue, IActionContext, IAccount, Boolean)
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_System_Boolean_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount,System.Boolean)
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount, System.Boolean)
-  nameWithType: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, IActionContext, IAccount, Boolean)
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)
+  name: ActionSuccess(Int64, String, IValue, ICommittedActionContext, HashDigest<SHA256>, Boolean)
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_System_Int64_System_String_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Boolean_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor(System.Int64,System.String,Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Boolean)
+  name.vb: ActionSuccess(Int64, String, IValue, ICommittedActionContext, HashDigest(Of SHA256), Boolean)
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess(System.Int64, System.String, Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Boolean)
+  nameWithType: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, ICommittedActionContext, HashDigest<SHA256>, Boolean)
+  nameWithType.vb: RenderRecord.ActionSuccess.ActionSuccess(Int64, String, IValue, ICommittedActionContext, HashDigest(Of SHA256), Boolean)
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.#ctor*
   name: ActionSuccess
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess__ctor_
@@ -4543,19 +5058,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ActionSuccess
   nameWithType: RenderRecord.ActionSuccess.ActionSuccess
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates
-  name: NextStates
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextStates
-  commentId: P:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates
-  nameWithType: RenderRecord.ActionSuccess.NextStates
-- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates*
-  name: NextStates
-  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextStates_
-  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState
+  name: NextState
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextState
+  commentId: P:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState
+  nameWithType: RenderRecord.ActionSuccess.NextState
+- uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState*
+  name: NextState
+  href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_NextState_
+  commentId: Overload:Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextStates
-  nameWithType: RenderRecord.ActionSuccess.NextStates
+  fullName: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.NextState
+  nameWithType: RenderRecord.ActionSuccess.NextState
 - uid: Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.ToString
   name: ToString()
   href: api/Libplanet.Blockchain.Renderers.Debug.RenderRecord.ActionSuccess.html#Libplanet_Blockchain_Renderers_Debug_RenderRecord_ActionSuccess_ToString
@@ -4746,12 +5261,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.ValidatingActionRenderer
   nameWithType: ValidatingActionRenderer.ValidatingActionRenderer
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: ValidatingActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: ValidatingActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: ValidatingActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderAction_
@@ -4759,12 +5277,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderAction
   nameWithType: ValidatingActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: ValidatingActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: ValidatingActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.Debug.ValidatingActionRenderer.html#Libplanet_Blockchain_Renderers_Debug_ValidatingActionRenderer_RenderActionError_
@@ -4804,12 +5322,15 @@ references:
   commentId: T:Libplanet.Blockchain.Renderers.IActionRenderer
   fullName: Libplanet.Blockchain.Renderers.IActionRenderer
   nameWithType: IActionRenderer
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: IActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: IActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: IActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_
@@ -4817,12 +5338,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderAction
   nameWithType: IActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: IActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: IActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.IActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_
@@ -4894,12 +5415,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.ActionRenderer
   nameWithType: LoggedActionRenderer.ActionRenderer
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  name: RenderAction(IValue, IActionContext, IAccount)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_IActionContext_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.IActionContext,Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.IActionContext, Libplanet.Action.State.IAccount)
-  nameWithType: LoggedActionRenderer.RenderAction(IValue, IActionContext, IAccount)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LoggedActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest<SHA256>)
+  nameWithType.vb: LoggedActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction*
   name: RenderAction
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderAction_
@@ -4907,12 +5431,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderAction
   nameWithType: LoggedActionRenderer.RenderAction
-- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  name: RenderActionError(IValue, IActionContext, Exception)
-  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_IActionContext_System_Exception_
-  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.IActionContext,System.Exception)
-  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.IActionContext, System.Exception)
-  nameWithType: LoggedActionRenderer.RenderActionError(IValue, IActionContext, Exception)
+- uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  name: RenderActionError(IValue, ICommittedActionContext, Exception)
+  href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_
+  commentId: M:Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue,Libplanet.Action.ICommittedActionContext,System.Exception)
+  fullName: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError(Bencodex.Types.IValue, Libplanet.Action.ICommittedActionContext, System.Exception)
+  nameWithType: LoggedActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)
 - uid: Libplanet.Blockchain.Renderers.LoggedActionRenderer.RenderActionError*
   name: RenderActionError
   href: api/Libplanet.Blockchain.Renderers.LoggedActionRenderer.html#Libplanet_Blockchain_Renderers_LoggedActionRenderer_RenderActionError_
@@ -19197,18 +19721,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.PutTransaction
   nameWithType: RocksDBStore.PutTransaction
-- uid: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxFailure)
-  name: PutTxExecution(TxFailure)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_TxFailure_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxFailure)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxFailure)
-  nameWithType: RocksDBStore.PutTxExecution(TxFailure)
-- uid: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxSuccess)
-  name: PutTxExecution(TxSuccess)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_TxSuccess_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxSuccess)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxSuccess)
-  nameWithType: RocksDBStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxExecution)
+  name: PutTxExecution(TxExecution)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_TxExecution_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxExecution)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxExecution)
+  nameWithType: RocksDBStore.PutTxExecution(TxExecution)
 - uid: Libplanet.RocksDBStore.RocksDBStore.PutTxExecution*
   name: PutTxExecution
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_
@@ -20030,18 +20548,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.PutTransaction
   nameWithType: BaseStore.PutTransaction
-- uid: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  name: PutTxExecution(TxFailure)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Types_Tx_TxFailure_
-  commentId: M:Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  fullName: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  nameWithType: BaseStore.PutTxExecution(TxFailure)
-- uid: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name: PutTxExecution(TxSuccess)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Types_Tx_TxSuccess_
-  commentId: M:Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  fullName: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  nameWithType: BaseStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  name: PutTxExecution(TxExecution)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_
+  commentId: M:Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  fullName: Libplanet.Store.BaseStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  nameWithType: BaseStore.PutTxExecution(TxExecution)
 - uid: Libplanet.Store.BaseStore.PutTxExecution*
   name: PutTxExecution
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_
@@ -20062,18 +20574,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.PutTxIdBlockHashIndex
   nameWithType: BaseStore.PutTxIdBlockHashIndex
-- uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxFailure)
-  name: SerializeTxExecution(TxFailure)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Types_Tx_TxFailure_
-  commentId: M:Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxFailure)
-  fullName: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxFailure)
-  nameWithType: BaseStore.SerializeTxExecution(TxFailure)
-- uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name: SerializeTxExecution(TxSuccess)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Types_Tx_TxSuccess_
-  commentId: M:Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxSuccess)
-  fullName: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxSuccess)
-  nameWithType: BaseStore.SerializeTxExecution(TxSuccess)
+- uid: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxExecution)
+  name: SerializeTxExecution(TxExecution)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Types_Tx_TxExecution_
+  commentId: M:Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxExecution)
+  fullName: Libplanet.Store.BaseStore.SerializeTxExecution(Libplanet.Types.Tx.TxExecution)
+  nameWithType: BaseStore.SerializeTxExecution(TxExecution)
 - uid: Libplanet.Store.BaseStore.SerializeTxExecution*
   name: SerializeTxExecution
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_
@@ -20951,18 +21457,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.PutTransaction
   nameWithType: DefaultStore.PutTransaction
-- uid: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  name: PutTxExecution(TxFailure)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Types_Tx_TxFailure_
-  commentId: M:Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  fullName: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  nameWithType: DefaultStore.PutTxExecution(TxFailure)
-- uid: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name: PutTxExecution(TxSuccess)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Types_Tx_TxSuccess_
-  commentId: M:Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  fullName: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  nameWithType: DefaultStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  name: PutTxExecution(TxExecution)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_
+  commentId: M:Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  fullName: Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  nameWithType: DefaultStore.PutTxExecution(TxExecution)
 - uid: Libplanet.Store.DefaultStore.PutTxExecution*
   name: PutTxExecution
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTxExecution_
@@ -21498,18 +21998,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.PutTransaction
   nameWithType: IStore.PutTransaction
-- uid: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  name: PutTxExecution(TxFailure)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxFailure_
-  commentId: M:Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  fullName: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  nameWithType: IStore.PutTxExecution(TxFailure)
-- uid: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name: PutTxExecution(TxSuccess)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxSuccess_
-  commentId: M:Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  fullName: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  nameWithType: IStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  name: PutTxExecution(TxExecution)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_
+  commentId: M:Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  fullName: Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  nameWithType: IStore.PutTxExecution(TxExecution)
 - uid: Libplanet.Store.IStore.PutTxExecution*
   name: PutTxExecution
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_
@@ -22074,22 +22568,14 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTransaction
   nameWithType: MemoryStore.IStore.PutTransaction
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTransaction
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  name: IStore.PutTxExecution(TxFailure)
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxFailure_
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  name.vb: Libplanet.Store.IStore.PutTxExecution(TxFailure)
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxFailure)
-  nameWithType: MemoryStore.IStore.PutTxExecution(TxFailure)
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution(TxFailure)
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name: IStore.PutTxExecution(TxSuccess)
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxSuccess_
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  name.vb: Libplanet.Store.IStore.PutTxExecution(TxSuccess)
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxSuccess)
-  nameWithType: MemoryStore.IStore.PutTxExecution(TxSuccess)
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution(TxSuccess)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  name: IStore.PutTxExecution(TxExecution)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  name.vb: Libplanet.Store.IStore.PutTxExecution(TxExecution)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)
+  nameWithType: MemoryStore.IStore.PutTxExecution(TxExecution)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PutTxExecution(TxExecution)
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution*
   name: IStore.PutTxExecution
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_
@@ -32700,18 +33186,30 @@ references:
   commentId: T:Libplanet.Types.Tx.TxExecution
   fullName: Libplanet.Types.Tx.TxExecution
   nameWithType: TxExecution
-- uid: Libplanet.Types.Tx.TxExecution._codec
-  name: _codec
-  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__codec
-  commentId: F:Libplanet.Types.Tx.TxExecution._codec
-  fullName: Libplanet.Types.Tx.TxExecution._codec
-  nameWithType: TxExecution._codec
-- uid: Libplanet.Types.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: TxExecution(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxExecution.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Types.Tx.TxExecution.TxExecution(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: TxExecution.TxExecution(SerializationInfo, StreamingContext)
+- uid: Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,Bencodex.Types.IValue)
+  name: TxExecution(BlockHash, TxId, IValue)
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,Bencodex.Types.IValue)
+  fullName: Libplanet.Types.Tx.TxExecution.TxExecution(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, Bencodex.Types.IValue)
+  nameWithType: TxExecution.TxExecution(BlockHash, TxId, IValue)
+- uid: Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Collections.Generic.List{System.Exception})
+  name: TxExecution(BlockHash, TxId, Boolean, HashDigest<SHA256>, HashDigest<SHA256>, List<Exception>)
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Collections_Generic_List_System_Exception__
+  commentId: M:Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Collections.Generic.List{System.Exception})
+  name.vb: TxExecution(BlockHash, TxId, Boolean, HashDigest(Of SHA256), HashDigest(Of SHA256), List(Of Exception))
+  fullName: Libplanet.Types.Tx.TxExecution.TxExecution(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Boolean, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Collections.Generic.List<System.Exception>)
+  fullName.vb: Libplanet.Types.Tx.TxExecution.TxExecution(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Boolean, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Collections.Generic.List(Of System.Exception))
+  nameWithType: TxExecution.TxExecution(BlockHash, TxId, Boolean, HashDigest<SHA256>, HashDigest<SHA256>, List<Exception>)
+  nameWithType.vb: TxExecution.TxExecution(BlockHash, TxId, Boolean, HashDigest(Of SHA256), HashDigest(Of SHA256), List(Of Exception))
+- uid: Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Collections.Generic.List{System.String})
+  name: TxExecution(BlockHash, TxId, Boolean, HashDigest<SHA256>, HashDigest<SHA256>, List<String>)
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Collections_Generic_List_System_String__
+  commentId: M:Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Collections.Generic.List{System.String})
+  name.vb: TxExecution(BlockHash, TxId, Boolean, HashDigest(Of SHA256), HashDigest(Of SHA256), List(Of String))
+  fullName: Libplanet.Types.Tx.TxExecution.TxExecution(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Boolean, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Collections.Generic.List<System.String>)
+  fullName.vb: Libplanet.Types.Tx.TxExecution.TxExecution(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Boolean, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Collections.Generic.List(Of System.String))
+  nameWithType: TxExecution.TxExecution(BlockHash, TxId, Boolean, HashDigest<SHA256>, HashDigest<SHA256>, List<String>)
+  nameWithType.vb: TxExecution.TxExecution(BlockHash, TxId, Boolean, HashDigest(Of SHA256), HashDigest(Of SHA256), List(Of String))
 - uid: Libplanet.Types.Tx.TxExecution.#ctor*
   name: TxExecution
   href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution__ctor_
@@ -32732,19 +33230,71 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.TxExecution.BlockHash
   nameWithType: TxExecution.BlockHash
-- uid: Libplanet.Types.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Types.Tx.TxExecution.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: TxExecution.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Tx.TxExecution.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_GetObjectData_
-  commentId: Overload:Libplanet.Types.Tx.TxExecution.GetObjectData
+- uid: Libplanet.Types.Tx.TxExecution.ExceptionNames
+  name: ExceptionNames
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_ExceptionNames
+  commentId: P:Libplanet.Types.Tx.TxExecution.ExceptionNames
+  fullName: Libplanet.Types.Tx.TxExecution.ExceptionNames
+  nameWithType: TxExecution.ExceptionNames
+- uid: Libplanet.Types.Tx.TxExecution.ExceptionNames*
+  name: ExceptionNames
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_ExceptionNames_
+  commentId: Overload:Libplanet.Types.Tx.TxExecution.ExceptionNames
   isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxExecution.GetObjectData
-  nameWithType: TxExecution.GetObjectData
+  fullName: Libplanet.Types.Tx.TxExecution.ExceptionNames
+  nameWithType: TxExecution.ExceptionNames
+- uid: Libplanet.Types.Tx.TxExecution.Fail
+  name: Fail
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_Fail
+  commentId: P:Libplanet.Types.Tx.TxExecution.Fail
+  fullName: Libplanet.Types.Tx.TxExecution.Fail
+  nameWithType: TxExecution.Fail
+- uid: Libplanet.Types.Tx.TxExecution.Fail*
+  name: Fail
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_Fail_
+  commentId: Overload:Libplanet.Types.Tx.TxExecution.Fail
+  isSpec: "True"
+  fullName: Libplanet.Types.Tx.TxExecution.Fail
+  nameWithType: TxExecution.Fail
+- uid: Libplanet.Types.Tx.TxExecution.InputState
+  name: InputState
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_InputState
+  commentId: P:Libplanet.Types.Tx.TxExecution.InputState
+  fullName: Libplanet.Types.Tx.TxExecution.InputState
+  nameWithType: TxExecution.InputState
+- uid: Libplanet.Types.Tx.TxExecution.InputState*
+  name: InputState
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_InputState_
+  commentId: Overload:Libplanet.Types.Tx.TxExecution.InputState
+  isSpec: "True"
+  fullName: Libplanet.Types.Tx.TxExecution.InputState
+  nameWithType: TxExecution.InputState
+- uid: Libplanet.Types.Tx.TxExecution.OutputState
+  name: OutputState
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_OutputState
+  commentId: P:Libplanet.Types.Tx.TxExecution.OutputState
+  fullName: Libplanet.Types.Tx.TxExecution.OutputState
+  nameWithType: TxExecution.OutputState
+- uid: Libplanet.Types.Tx.TxExecution.OutputState*
+  name: OutputState
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_OutputState_
+  commentId: Overload:Libplanet.Types.Tx.TxExecution.OutputState
+  isSpec: "True"
+  fullName: Libplanet.Types.Tx.TxExecution.OutputState
+  nameWithType: TxExecution.OutputState
+- uid: Libplanet.Types.Tx.TxExecution.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_ToBencodex
+  commentId: M:Libplanet.Types.Tx.TxExecution.ToBencodex
+  fullName: Libplanet.Types.Tx.TxExecution.ToBencodex()
+  nameWithType: TxExecution.ToBencodex()
+- uid: Libplanet.Types.Tx.TxExecution.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_ToBencodex_
+  commentId: Overload:Libplanet.Types.Tx.TxExecution.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Types.Tx.TxExecution.ToBencodex
+  nameWithType: TxExecution.ToBencodex
 - uid: Libplanet.Types.Tx.TxExecution.TxId
   name: TxId
   href: api/Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx_TxExecution_TxId
@@ -32758,70 +33308,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.TxExecution.TxId
   nameWithType: TxExecution.TxId
-- uid: Libplanet.Types.Tx.TxFailure
-  name: TxFailure
-  href: api/Libplanet.Types.Tx.TxFailure.html
-  commentId: T:Libplanet.Types.Tx.TxFailure
-  fullName: Libplanet.Types.Tx.TxFailure
-  nameWithType: TxFailure
-- uid: Libplanet.Types.Tx.TxFailure.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Exception)
-  name: TxFailure(BlockHash, TxId, Exception)
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Exception_
-  commentId: M:Libplanet.Types.Tx.TxFailure.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Exception)
-  fullName: Libplanet.Types.Tx.TxFailure.TxFailure(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Exception)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, Exception)
-- uid: Libplanet.Types.Tx.TxFailure.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.String)
-  name: TxFailure(BlockHash, TxId, String)
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_String_
-  commentId: M:Libplanet.Types.Tx.TxFailure.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.String)
-  fullName: Libplanet.Types.Tx.TxFailure.TxFailure(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.String)
-  nameWithType: TxFailure.TxFailure(BlockHash, TxId, String)
-- uid: Libplanet.Types.Tx.TxFailure.#ctor*
-  name: TxFailure
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure__ctor_
-  commentId: Overload:Libplanet.Types.Tx.TxFailure.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxFailure.TxFailure
-  nameWithType: TxFailure.TxFailure
-- uid: Libplanet.Types.Tx.TxFailure.ExceptionMetadata
-  name: ExceptionMetadata
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_ExceptionMetadata
-  commentId: P:Libplanet.Types.Tx.TxFailure.ExceptionMetadata
-  fullName: Libplanet.Types.Tx.TxFailure.ExceptionMetadata
-  nameWithType: TxFailure.ExceptionMetadata
-- uid: Libplanet.Types.Tx.TxFailure.ExceptionMetadata*
-  name: ExceptionMetadata
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_ExceptionMetadata_
-  commentId: Overload:Libplanet.Types.Tx.TxFailure.ExceptionMetadata
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxFailure.ExceptionMetadata
-  nameWithType: TxFailure.ExceptionMetadata
-- uid: Libplanet.Types.Tx.TxFailure.ExceptionName
-  name: ExceptionName
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_ExceptionName
-  commentId: P:Libplanet.Types.Tx.TxFailure.ExceptionName
-  fullName: Libplanet.Types.Tx.TxFailure.ExceptionName
-  nameWithType: TxFailure.ExceptionName
-- uid: Libplanet.Types.Tx.TxFailure.ExceptionName*
-  name: ExceptionName
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_ExceptionName_
-  commentId: Overload:Libplanet.Types.Tx.TxFailure.ExceptionName
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxFailure.ExceptionName
-  nameWithType: TxFailure.ExceptionName
-- uid: Libplanet.Types.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Types.Tx.TxFailure.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: TxFailure.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Tx.TxFailure.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Tx.TxFailure.html#Libplanet_Types_Tx_TxFailure_GetObjectData_
-  commentId: Overload:Libplanet.Types.Tx.TxFailure.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxFailure.GetObjectData
-  nameWithType: TxFailure.GetObjectData
 - uid: Libplanet.Types.Tx.TxId
   name: TxId
   href: api/Libplanet.Types.Tx.TxId.html
@@ -33692,80 +34178,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.TxSigningMetadata.ToString
   nameWithType: TxSigningMetadata.ToString
-- uid: Libplanet.Types.Tx.TxSuccess
-  name: TxSuccess
-  href: api/Libplanet.Types.Tx.TxSuccess.html
-  commentId: T:Libplanet.Types.Tx.TxSuccess
-  fullName: Libplanet.Types.Tx.TxSuccess
-  nameWithType: TxSuccess
-- uid: Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
-  name: TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_System_Collections_Immutable_IImmutableDictionary_Libplanet_Types_Assets_Currency_Libplanet_Types_Assets_FungibleAssetValue___
-  commentId: M:Libplanet.Types.Tx.TxSuccess.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue},System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,System.Collections.Immutable.IImmutableDictionary{Libplanet.Types.Assets.Currency,Libplanet.Types.Assets.FungibleAssetValue}})
-  name.vb: TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
-  fullName: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, Bencodex.Types.IValue>, System.Collections.Immutable.IImmutableDictionary<Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary<Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue>>)
-  fullName.vb: Libplanet.Types.Tx.TxSuccess.TxSuccess(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Tx.TxId, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, Bencodex.Types.IValue), System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Crypto.Address, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Types.Assets.Currency, Libplanet.Types.Assets.FungibleAssetValue)))
-  nameWithType: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary<Address, IValue>, IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>)
-  nameWithType.vb: TxSuccess.TxSuccess(BlockHash, TxId, IImmutableDictionary(Of Address, IValue), IImmutableDictionary(Of Address, IImmutableDictionary(Of Currency, FungibleAssetValue)))
-- uid: Libplanet.Types.Tx.TxSuccess.#ctor*
-  name: TxSuccess
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess__ctor_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.TxSuccess
-  nameWithType: TxSuccess.TxSuccess
-- uid: Libplanet.Types.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Types.Tx.TxSuccess.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: TxSuccess.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Tx.TxSuccess.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_GetObjectData_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.GetObjectData
-  nameWithType: TxSuccess.GetObjectData
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedAddresses
-  commentId: P:Libplanet.Types.Tx.TxSuccess.UpdatedAddresses
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedAddresses
-  nameWithType: TxSuccess.UpdatedAddresses
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedAddresses_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedAddresses
-  nameWithType: TxSuccess.UpdatedAddresses
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedFungibleAssets
-  commentId: P:Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets
-  nameWithType: TxSuccess.UpdatedFungibleAssets
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets*
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedFungibleAssets
-  nameWithType: TxSuccess.UpdatedFungibleAssets
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedStates
-  name: UpdatedStates
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedStates
-  commentId: P:Libplanet.Types.Tx.TxSuccess.UpdatedStates
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedStates
-  nameWithType: TxSuccess.UpdatedStates
-- uid: Libplanet.Types.Tx.TxSuccess.UpdatedStates*
-  name: UpdatedStates
-  href: api/Libplanet.Types.Tx.TxSuccess.html#Libplanet_Types_Tx_TxSuccess_UpdatedStates_
-  commentId: Overload:Libplanet.Types.Tx.TxSuccess.UpdatedStates
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxSuccess.UpdatedStates
-  nameWithType: TxSuccess.UpdatedStates
 - uid: Libplanet.Types.Tx.UnsignedTx
   name: UnsignedTx
   href: api/Libplanet.Types.Tx.UnsignedTx.html
