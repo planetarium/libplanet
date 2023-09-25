@@ -12,12 +12,6 @@ To be released.
 
  -  Added `IBlockChainStates.GetAccountState(HashDigest<SHA256>?)`
     interface method.  [[#3425]]
- -  Changed `IActionRenderer.RenderAction(IValue, IActionContext, IAccount)`
-    to `IActionRenderer.RenderAction(IValue, IActionRenderContext,
-    HashDigest<SHA256>)`.  [[#3427]]
- -  Changed `IActionRenderer.RenderActionError(IValue, IActionContext,
-    Exception)` to `IActionRenderer.RenderActionError(IValue,
-    IActionRenderContext, Exception)`.  [[#3427]]
  -  Removed `TxFailure.ExceptionMetadata` property.  [[#3428]]
  -  Removed `ISerializable` interface from `TxExecution`, `TxSuccess`,
     and `TxFailure`.  [[#3428]]
@@ -32,6 +26,12 @@ To be released.
     and added `TxResult.ExceptionNames` of type `List<string?>?`.  [[#3429]]
  -  (Libplanet.Explorer) Removed `TxResult.UpdatedStates` and
     `TxResult.UpdatedFungibleAssets`.  [[#3429]]
+ -  Changed `IActionRenderer.RenderAction(IValue, IActionContext, IAccount)`
+    to `IActionRenderer.RenderAction(IValue, ICommittedActionContext,
+    HashDigest<SHA256>)`.  [[#3431]]
+ -  Changed `IActionRenderer.RenderActionError(IValue, IActionContext,
+    Exception)` to `IActionRenderer.RenderActionError(IValue,
+    ICommittedActionContext, Exception)`.  [[#3431]]
 
 ### Backward-incompatible network protocol changes
 
@@ -40,7 +40,8 @@ To be released.
 ### Added APIs
 
  -  Added `AccountDiff` class.  [[#3424]]
- -  Added `IActionRenderContext` interface.  [[#3427]]
+ -  Added `ICommittedActionContext` interface.  [[#3431]]
+ -  Added `ICommittedActionEvaluation` interface.  [[#3431]]
 
 ### Behavioral changes
 
@@ -52,9 +53,9 @@ To be released.
 
 [#3424]: https://github.com/planetarium/libplanet/pull/3424
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
-[#3427]: https://github.com/planetarium/libplanet/pull/3427
 [#3428]: https://github.com/planetarium/libplanet/pull/3428
 [#3429]: https://github.com/planetarium/libplanet/pull/3429
+[#3431]: https://github.com/planetarium/libplanet/pull/3431
 
 
 Version 3.3.1

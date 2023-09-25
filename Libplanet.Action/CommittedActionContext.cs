@@ -6,9 +6,9 @@ using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
-    public class ActionRenderContext : IActionRenderContext
+    public class CommittedActionContext : ICommittedActionContext
     {
-        public ActionRenderContext(IActionContext context)
+        public CommittedActionContext(IActionContext context)
             : this(
                 signer: context.Signer,
                 txId: context.TxId,
@@ -22,7 +22,7 @@ namespace Libplanet.Action
         {
         }
 
-        public ActionRenderContext(
+        public CommittedActionContext(
             Address signer,
             TxId? txId,
             Address miner,
@@ -44,39 +44,53 @@ namespace Libplanet.Action
             BlockAction = blockAction;
         }
 
-        /// <inheritdoc cref="IActionRenderContext.Signer"/>
+        /// <inheritdoc cref="ICommittedActionContext.Signer"/>
         [Pure]
         public Address Signer { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.TxId"/>
+        /// <inheritdoc cref="ICommittedActionContext.TxId"/>
         [Pure]
         public TxId? TxId { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.Miner"/>
+        /// <inheritdoc cref="ICommittedActionContext.Miner"/>
         [Pure]
         public Address Miner { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.BlockIndex"/>
+        /// <inheritdoc cref="ICommittedActionContext.BlockIndex"/>
         [Pure]
         public long BlockIndex { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.BlockProtocolVersion"/>
+        /// <inheritdoc cref="ICommittedActionContext.BlockProtocolVersion"/>
         [Pure]
         public int BlockProtocolVersion { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.Rehearsal"/>
+        /// <inheritdoc cref="ICommittedActionContext.Rehearsal"/>
         [Pure]
         public bool Rehearsal { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.PreviousState"/>
+        /// <inheritdoc cref="ICommittedActionContext.PreviousState"/>
         [Pure]
         public HashDigest<SHA256> PreviousState { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.Random"/>
+        /// <inheritdoc cref="ICommittedActionContext.Random"/>
         public IRandom Random { get; }
 
-        /// <inheritdoc cref="IActionRenderContext.BlockAction"/>
+        /// <inheritdoc cref="ICommittedActionContext.BlockAction"/>
         [Pure]
         public bool BlockAction { get; }
+
+        /// <inheritdoc cref="ICommittedActionContext.Copy"/>
+        [Pure]
+        public ICommittedActionContext Copy() =>
+            new CommittedActionContext(
+                Signer,
+                TxId,
+                Miner,
+                BlockIndex,
+                BlockProtocolVersion,
+                Rehearsal,
+                PreviousState,
+                new Random(Random.Seed),
+                BlockAction);
     }
 }

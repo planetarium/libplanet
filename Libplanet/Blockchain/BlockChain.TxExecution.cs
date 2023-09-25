@@ -19,17 +19,17 @@ namespace Libplanet.Blockchain
         /// <returns>The corresponding <see cref="TxExecution"/>s.</returns>
         internal IEnumerable<TxExecution> MakeTxExecutions(
             Block block,
-            IReadOnlyList<IActionEvaluation> evaluations
+            IReadOnlyList<ICommittedActionEvaluation> evaluations
         )
         {
-            List<(TxId?, List<IActionEvaluation>)> groupedEvals =
-                new List<(TxId?, List<IActionEvaluation>)>();
-            foreach (IActionEvaluation eval in evaluations)
+            List<(TxId?, List<ICommittedActionEvaluation>)> groupedEvals =
+                new List<(TxId?, List<ICommittedActionEvaluation>)>();
+            foreach (ICommittedActionEvaluation eval in evaluations)
             {
                 if (groupedEvals.Count == 0)
                 {
                     groupedEvals.Add(
-                        (eval.InputContext.TxId, new List<IActionEvaluation>() { eval }));
+                        (eval.InputContext.TxId, new List<ICommittedActionEvaluation>() { eval }));
                 }
                 else
                 {
@@ -40,7 +40,10 @@ namespace Libplanet.Blockchain
                     else
                     {
                         groupedEvals.Add(
-                            (eval.InputContext.TxId, new List<IActionEvaluation>() { eval }));
+                            (
+                                eval.InputContext.TxId,
+                                new List<ICommittedActionEvaluation>() { eval }
+                            ));
                     }
                 }
             }
@@ -52,17 +55,7 @@ namespace Libplanet.Blockchain
             {
                 if (group.Item1 is { } txId)
                 {
-                    ITrie nextTrie = trie;
-                    foreach (var eval in group.Item2)
-                    {
-                        foreach (var kv in eval.OutputState.Delta.ToRawDelta())
-                        {
-                            nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                        }
-                    }
-
-                    nextTrie = StateStore.Commit(nextTrie);
-
+                    // If txId is not null, group has at least one element.
                     List<Exception?> exceptions = group.Item2
                         .Select(eval => eval.Exception)
                         .Select(exception => exception is { } e && e.InnerException is { } i
@@ -74,26 +67,11 @@ namespace Libplanet.Blockchain
                         block.Hash,
                         txId,
                         exceptions.Any(exception => exception is { }),
-                        trie.Hash,
-                        nextTrie.Hash,
+                        group.Item2.First().InputContext.PreviousState,
+                        group.Item2.Last().OutputState,
                         exceptions.ToList());
 
                     count++;
-                    trie = nextTrie;
-                }
-                else
-                {
-                    ITrie nextTrie = trie;
-                    foreach (var eval in group.Item2)
-                    {
-                        foreach (var kv in eval.OutputState.Delta.ToRawDelta())
-                        {
-                            nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                        }
-                    }
-
-                    nextTrie = StateStore.Commit(nextTrie);
-                    trie = nextTrie;
                 }
             }
 

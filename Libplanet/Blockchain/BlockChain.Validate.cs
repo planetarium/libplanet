@@ -318,7 +318,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="DetermineBlockStateRootHash"/>
         internal void ValidateBlockStateRootHash(
-            Block block, out IReadOnlyList<IActionEvaluation> evaluations)
+            Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
             var rootHash = DetermineBlockStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))

@@ -21,7 +21,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </remarks>
     public sealed class AtomicActionRenderer : IActionRenderer
     {
-        private readonly List<(IValue, IActionRenderContext, HashDigest<SHA256>)> _eventBuffer;
+        private readonly List<(IValue, ICommittedActionContext, HashDigest<SHA256>)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IValue, IActionRenderContext, HashDigest<SHA256>)>();
+            _eventBuffer = new List<(IValue, ICommittedActionContext, HashDigest<SHA256>)>();
             _errored = false;
         }
 
@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionRenderContext context,
+            ICommittedActionContext context,
             HashDigest<SHA256> nextState
         )
         {
@@ -84,7 +84,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public void RenderActionError(
             IValue action,
-            IActionRenderContext context,
+            ICommittedActionContext context,
             Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -104,7 +104,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IValue, IActionRenderContext, HashDigest<SHA256>> render
+            Action<IValue, ICommittedActionContext, HashDigest<SHA256>> render
         )
         {
             if (!_errored)

@@ -610,7 +610,8 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
             Block block = _blockChain.ProposeBlock(miner);
-            IReadOnlyList<IActionEvaluation> actionEvaluations = _blockChain.EvaluateBlock(block);
+            (IReadOnlyList<ICommittedActionEvaluation> actionEvaluations, _) =
+                _blockChain.ToCommittedEvaluation(block, _blockChain.EvaluateBlock(block));
             Assert.Equal(0L, _blockChain.Tip.Index);
             _blockChain.Append(
                 block,

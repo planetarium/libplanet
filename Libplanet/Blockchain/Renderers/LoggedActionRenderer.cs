@@ -71,7 +71,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionRenderContext context,
+            ICommittedActionContext context,
             HashDigest<SHA256> nextState
         ) =>
             LogActionRendering(
@@ -84,7 +84,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public void RenderActionError(
             IValue action,
-            IActionRenderContext context,
+            ICommittedActionContext context,
             Exception exception
         ) =>
             LogActionRendering(
@@ -97,7 +97,7 @@ namespace Libplanet.Blockchain.Renderers
         private void LogActionRendering(
             string methodName,
             IValue action,
-            IActionRenderContext context,
+            ICommittedActionContext context,
             System.Action callback
         )
         {

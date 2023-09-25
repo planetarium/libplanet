@@ -5,10 +5,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
-using Libplanet.Action.State;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -175,9 +173,10 @@ namespace Libplanet.Blockchain
                     Block block = Store.GetBlock(hash);
                     ImmutableList<IActionEvaluation> evaluations =
                         ActionEvaluator.Evaluate(block).ToImmutableList();
+                    (var committedEvaluations, _) = ToCommittedEvaluation(block, evaluations);
 
                     RenderActions(
-                        evaluations: evaluations,
+                        evaluations: committedEvaluations,
                         block: block);
                 }
 
@@ -200,9 +199,14 @@ namespace Libplanet.Blockchain
         /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block"/> to render actions.</param>
         internal void RenderActions(
-            IReadOnlyList<IActionEvaluation> evaluations,
+            IReadOnlyList<ICommittedActionEvaluation> evaluations,
             Block block)
         {
+            if (evaluations is null)
+            {
+                throw new NullReferenceException(nameof(evaluations));
+            }
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             _logger.Debug(
@@ -210,59 +214,26 @@ namespace Libplanet.Blockchain
                 block.Index,
                 block.Hash);
 
-            if (evaluations is null)
-            {
-                evaluations = ActionEvaluator.Evaluate(block);
-            }
-
             long count = 0;
-            ITrie trie = GetAccountState(block.PreviousHash).Trie;
             foreach (var evaluation in evaluations)
             {
-                ITrie nextTrie = trie;
-                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
-                {
-                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                }
-
-                nextTrie = StateStore.Commit(nextTrie);
-
                 foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            new ActionRenderContext(
-                                signer: evaluation.InputContext.Signer,
-                                txId: evaluation.InputContext.TxId,
-                                miner: evaluation.InputContext.Miner,
-                                blockIndex: evaluation.InputContext.BlockIndex,
-                                blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                                rehearsal: evaluation.InputContext.Rehearsal,
-                                previousState: trie.Hash,
-                                random: evaluation.InputContext.GetUnconsumedContext().Random,
-                                blockAction: evaluation.InputContext.BlockAction),
-                            nextTrie.Hash);
+                            evaluation.InputContext.Copy(),
+                            evaluation.OutputState);
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            new ActionRenderContext(
-                                signer: evaluation.InputContext.Signer,
-                                txId: evaluation.InputContext.TxId,
-                                miner: evaluation.InputContext.Miner,
-                                blockIndex: evaluation.InputContext.BlockIndex,
-                                blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                                rehearsal: evaluation.InputContext.Rehearsal,
-                                previousState: trie.Hash,
-                                random: evaluation.InputContext.GetUnconsumedContext().Random,
-                                blockAction: evaluation.InputContext.BlockAction),
+                            evaluation.InputContext.Copy(),
                             evaluation.Exception);
                     }
 
-                    trie = nextTrie;
                     count++;
                 }
             }
