@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(diff.TotalSupplyDiffs);
             Assert.Null(diff.ValidatorSetDiff);
 
-            IAccount targetAccount = new Account(new AccountState(targetTrie));
+            IAccount targetAccount = new Account(new AccountBaseState(targetTrie));
             PrivateKey signer = new PrivateKey();
             IActionContext context = CreateActionContext(signer.ToAddress(), targetTrie);
             targetAccount = targetAccount.MintAsset(
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(diff.TotalSupplyDiffs);
             Assert.Null(diff.ValidatorSetDiff);
 
-            IAccount targetAccount = new Account(new AccountState(targetTrie));
+            IAccount targetAccount = new Account(new AccountBaseState(targetTrie));
             PrivateKey signer = new PrivateKey();
             IActionContext context = CreateActionContext(signer.ToAddress(), targetTrie);
             targetAccount = targetAccount.SetState(addr1, new Text("One"));
@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Action
             targetTrie = Commit(stateStore, targetTrie, targetAccount.Delta);
             sourceTrie = targetTrie;
 
-            IAccount sourceAccount = new Account(new AccountState(sourceTrie));
+            IAccount sourceAccount = new Account(new AccountBaseState(sourceTrie));
             sourceAccount = sourceAccount.SetState(addr2, new Text("Two_"));
             sourceAccount = sourceAccount.SetState(addr3, new Text("Three"));
             sourceAccount = sourceAccount.MintAsset(
@@ -148,7 +148,10 @@ namespace Libplanet.Tests.Action
                 signer,
                 0,
                 Block.CurrentProtocolVersion,
-                new Account(new AccountState(trie)),
+                new World(
+                    new WorldBaseState(
+                        trie,
+                        new TrieStateStore(new MemoryKeyValueStore()))),
                 0,
                 0,
                 false);

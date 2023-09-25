@@ -1,5 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Crypto;
@@ -47,7 +48,10 @@ namespace Libplanet.Action.Tests.Loader
                         new ValidatorSet(
                             new List<Validator>()
                                 { new Validator(new PrivateKey().PublicKey, 1) }).Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                            ReservedAddresses.LegacyAccount.ToByteArray(),
+                            Dictionary.Empty.Add(
+                                default(Address).ToByteArray(), "initial value"))));
             var action = new Initialize();
             action.LoadPlainValue(plainValue);
 

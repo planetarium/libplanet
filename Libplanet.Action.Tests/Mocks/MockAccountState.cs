@@ -5,6 +5,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.Tests.Mocks
@@ -60,7 +61,11 @@ namespace Libplanet.Action.Tests.Mocks
 
         public static MockAccountState Empty => _empty;
 
+        public Address Address { get; }
+
         public ITrie Trie { get; }
+
+        public BlockHash? BlockHash { get; }
 
         public IValue GetState(Address address) =>
             Trie.Get(KeyConverters.ToStateKey(address));
@@ -95,7 +100,8 @@ namespace Libplanet.Action.Tests.Mocks
                 : new ValidatorSet();
 
         public MockAccountState SetState(Address address, IValue state) =>
-            new MockAccountState(Trie.Set(KeyConverters.ToStateKey(address), state));
+            new MockAccountState(
+                Trie.Set(KeyConverters.ToStateKey(address), state));
 
         public MockAccountState SetBalance(
             Address address, FungibleAssetValue amount) =>
@@ -107,9 +113,10 @@ namespace Libplanet.Action.Tests.Mocks
 
         public MockAccountState SetBalance(
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
-            new MockAccountState(Trie.Set(
-                KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency),
-                new Integer(rawAmount)));
+            new MockAccountState(
+                Trie.Set(
+                    KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency),
+                    new Integer(rawAmount)));
 
         public MockAccountState AddBalance(Address address, FungibleAssetValue amount) =>
             AddBalance((address, amount.Currency), amount.RawValue);
@@ -182,8 +189,8 @@ namespace Libplanet.Action.Tests.Mocks
                     Integer amount ? amount : 0) - rawAmount);
 
         public MockAccountState SetValidator(Validator validator) =>
-            new MockAccountState(Trie.Set(
-                KeyConverters.ValidatorSetKey,
-                GetValidatorSet().Update(validator).Bencoded));
+            new MockAccountState(
+                Trie.Set(
+                    KeyConverters.ValidatorSetKey, GetValidatorSet().Update(validator).Bencoded));
     }
 }

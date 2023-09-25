@@ -28,15 +28,19 @@ namespace Libplanet.Action.Tests.Common
             Address = new Address((string)(Text)dictionary["address"]);
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
-            IAccount states = context.PreviousState;
+            IWorld states = context.PreviousState;
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
             if (context.Rehearsal)
             {
-                return states.SetState(Address, Null.Value);
+                return states.SetAccount(
+                    ReservedAddresses.LegacyAccount,
+                    legacyAccount.SetState(Address, Null.Value));
             }
 
-            return states.SetState(Address, (Integer)context.GetRandom().Next());
+            legacyAccount = legacyAccount.SetState(Address, (Integer)context.GetRandom().Next());
+            return states.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using GraphQL;
@@ -9,25 +10,79 @@ using GraphQL.Execution;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Explorer.Queries;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using Libplanet.Explorer.Queries;
-using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
-using Libplanet.Common;
-using System.Security.Cryptography;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
 public class StateQueryTest
 {
     [Fact]
+    public async Task WorldStates()
+    {
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            worldState(
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            )
+            {
+                stateRootHash
+                legacy
+            }
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        IDictionary<string, object> states =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["worldState"]);
+        Assert.NotNull(states["stateRootHash"]);
+        Assert.True((bool)states["legacy"]);
+    }
+
+    [Fact]
+    public async Task AccountStates()
+    {
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            accountState(
+                 accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a"",
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            )
+            {
+                stateRootHash
+            }
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        IDictionary<string, object> states =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["accountState"]);
+        Assert.NotNull(states["stateRootHash"]);
+    }
+
+    [Fact]
     public async Task States()
     {
-        var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(), new BlockPolicy()
         );
@@ -35,6 +90,7 @@ public class StateQueryTest
         {
             states(
                  addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
+                 accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             )
@@ -93,12 +149,12 @@ public class StateQueryTest
     [Fact]
     public async Task TotalSupply()
     {
-         var currency = Currency.Uncapped("ABC", 2, minters: null);
+        var currency = Currency.Uncapped("ABC", 2, minters: null);
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
-         var legacyToken = Currency.Legacy("LEG", 0, null);
+        var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy());
+        (IBlockChainStates, IBlockPolicy) source = (
+           new MockChainStates(), new BlockPolicy());
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
@@ -149,10 +205,10 @@ public class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy()
-        );
+        (IBlockChainStates, IBlockPolicy) source = (
+           new MockChainStates(),
+           new BlockPolicy()
+       );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
@@ -349,37 +405,38 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
-        public IValue GetState(Address address, Address accountAddress, BlockHash? offset) =>
-            GetAccountState(accountAddress, offset).GetState(address);
-
         public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset) =>
-            GetAccountState(accountAddress, offset).GetStates(addresses);
+            IReadOnlyList<Address> addresses,
+            HashDigest<SHA256>? stateRootHash)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
-            BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetBalance(address, currency);
+            Address address, Currency currency, BlockHash? offset) =>
+            new MockAccount().GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetTotalSupply(currency);
+            new MockAccount().GetTotalSupply(currency);
 
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetValidatorSet();
+            new MockAccount().GetValidatorSet();
 
+
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
+            => new MockAccount().GetState(address);
         public IWorldState GetWorldState(BlockHash? offset)
         {
             throw new System.NotImplementedException();
         }
 
-        public IAccountState GetAccountState(Address address, BlockHash? offset) =>
-            new MockAccount(address, null);
+        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset)
+            => new MockAccount().GetStates(addresses);
 
-        public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
-            new MockAccount(null, hash);
+        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
+            => new MockAccount();
 
-        public ITrie GetTrie(BlockHash? offset)
+        public ITrie GetBlockTrie(BlockHash? offset)
         {
             throw new System.NotImplementedException();
         }
@@ -388,27 +445,75 @@ public class StateQueryTest
         {
             throw new System.NotImplementedException();
         }
+
+        public IWorldState GetBlockWorldState(BlockHash? offset)
+            => new MockWorld();
+
+        public IWorldState GetWorldState(HashDigest<SHA256>? hash)
+            => new MockWorld();
+
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash)
+            => new MockAccount();
+    }
+
+    private class MockWorld : IWorld
+    {
+        public MockWorld()
+        {
+            Trie = new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null);
+        }
+        public ITrie Trie { get; }
+
+        public bool Legacy => true;
+
+        public IWorldDelta Delta => throw new System.NotImplementedException();
+
+        public IAccount GetAccount(Address address)
+            => new MockAccount();
+
+        public IWorld SetAccount(Address address, IAccount account)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     private class MockAccount : IAccount
     {
-        public MockAccount(Address? address, HashDigest<SHA256>? stateRootHash)
+        public MockAccount()
         {
-            Address = address ?? default;
-            StateRootHash = stateRootHash ?? default;
+            Trie = new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null);
         }
-
-        public Address Address { get; }
 
         public ITrie Trie { get; }
 
-        public IAccountDelta Delta { get; }
+        public IAccountDelta Delta => throw new System.NotImplementedException();
 
-        public BlockHash BlockHash { get; }
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets => throw new System.NotImplementedException();
 
-        public HashDigest<SHA256> StateRootHash { get; }
+        public IValue GetState(Address address) => GetStates(new[] { address }).First();
 
-        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
+        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+            addresses.Select(address => address.ToString() switch
+            {
+                "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
+                _ => null,
+            }).ToImmutableList();
+
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            currency * 123;
+
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            currency * 10000;
+
+        public ValidatorSet GetValidatorSet() =>
+            new ValidatorSet(new List<Validator>
+            {
+                new(
+                    PublicKey.FromHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                    new BigInteger(1)),
+            });
+
         public IAccount SetState(Address address, IValue state)
         {
             throw new System.NotImplementedException();
@@ -419,8 +524,7 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
-        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient,
-            FungibleAssetValue value, bool allowNegativeBalance = false)
+        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)
         {
             throw new System.NotImplementedException();
         }
@@ -434,36 +538,5 @@ public class StateQueryTest
         {
             throw new System.NotImplementedException();
         }
-
-
-        public IValue GetState(Address address) => GetStates(new[] { address }).First();
-
-        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
-            addresses.Select(address => address.ToString() switch
-            {
-                "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
-                _ => null,
-            }).ToImmutableList();
-
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            BlockHash is { } && StateRootHash is { }
-                ? currency * 123
-                : currency * 0;
-
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            BlockHash is { } && StateRootHash is { }
-                ? currency * 10000
-                : currency * 0;
-
-        public ValidatorSet GetValidatorSet() =>
-            BlockHash is { } && StateRootHash is { }
-                ? new ValidatorSet(new List<Validator>
-                {
-                    new(
-                        PublicKey.FromHex(
-                            "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                        new BigInteger(1)),
-                })
-                : new ValidatorSet();
     }
 }

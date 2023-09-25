@@ -10,24 +10,27 @@ using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Action.Tests.Common
 {
-    public sealed class DumbAction : IAction, IEquatable<DumbAction>
+    public sealed class DumbModernAction : IAction, IEquatable<DumbModernAction>
     {
+        public static readonly Address DumbModernAddress =
+            new Address("0123456789abcdef0123456789abcdef12345678");
+
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
         public static readonly Currency DumbCurrency =
-            Currency.Uncapped("DUMB", 0,  null);
+            Currency.Uncapped("DUMB", 0, null);
 
-        public DumbAction()
+        public DumbModernAction()
         {
         }
 
-        public DumbAction(IEnumerable<PublicKey> validators)
+        public DumbModernAction(IEnumerable<PublicKey> validators)
         {
             Validators = validators;
         }
 
-        public DumbAction(
+        public DumbModernAction(
             Address targetAddress,
             string item,
             bool recordRehearsal = false,
@@ -43,7 +46,7 @@ namespace Libplanet.Action.Tests.Common
             Transfer = transfer;
         }
 
-        public DumbAction(
+        public DumbModernAction(
             Address targetAddress,
             string item,
             Address transferFrom,
@@ -65,10 +68,12 @@ namespace Libplanet.Action.Tests.Common
         }
 
         public static AsyncLocal<ImmutableList<ExecuteRecord>>
-            ExecuteRecords { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
+            ExecuteRecords
+        { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
         public static AsyncLocal<ImmutableList<(Address, string)>>
-            RehearsalRecords { get; } =
+            RehearsalRecords
+        { get; } =
                 new AsyncLocal<ImmutableList<(Address, string)>>();
 
         public Address TargetAddress { get; private set; }
@@ -150,7 +155,7 @@ namespace Libplanet.Action.Tests.Common
                 return world;
             }
 
-            IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
+            IAccount account = world.GetAccount(DumbModernAddress);
             string items = (Text?)account.GetState(TargetAddress);
             string item = RecordRehearsal
                 ? $"{Item}:{context.Rehearsal}"
@@ -221,7 +226,8 @@ namespace Libplanet.Action.Tests.Common
                 Rehearsal = context.Rehearsal,
             });
 
-            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world = world.SetAccount(DumbModernAddress, account);
+            return world;
         }
 
         public void LoadPlainValue(IValue plainValue)
@@ -231,9 +237,9 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Item = (Text)plainValue["item"];
-            TargetAddress = new Address(plainValue["target_address"]);
-            RecordRehearsal = (Boolean)plainValue["record_rehearsal"];
+            Item = plainValue.GetValue<Text>("item");
+            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
+            RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
@@ -241,7 +247,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"idempotent"))
             {
-                Idempotent = (Boolean)plainValue["idempotent"];
+                Idempotent = plainValue.GetValue<Boolean>("idempotent");
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
@@ -254,12 +260,12 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"validators"))
             {
-                Validators = ((List)plainValue["validators"])
+                Validators = plainValue.GetValue<List>("validators")
                     .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
         }
 
-        public bool Equals(DumbAction other)
+        public bool Equals(DumbModernAction other)
         {
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
@@ -274,7 +280,7 @@ namespace Libplanet.Action.Tests.Common
         {
             return !(obj is null) && (
                 ReferenceEquals(this, obj) ||
-                (obj is DumbAction other && Equals(other))
+                (obj is DumbModernAction other && Equals(other))
             );
         }
 
@@ -301,7 +307,7 @@ namespace Libplanet.Action.Tests.Common
                 : Validators
                     .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
                     .TrimEnd(',', ' ');
-            return $"{nameof(DumbAction)} {{ " +
+            return $"{nameof(DumbModernAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +
                 $"{nameof(RecordRehearsal)} = {(RecordRehearsal ? T : F)}, " +
