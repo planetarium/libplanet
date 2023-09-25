@@ -162,13 +162,13 @@ namespace Libplanet.Store
         bool ContainsBlock(BlockHash blockHash);
 
         /// <summary>
-        /// Records the given <paramref name="txSuccess"/>.
+        /// Records the given <paramref name="txExecution"/>.
         /// </summary>
         /// <remarks>If there is already the record for the same <see cref="TxExecution.BlockHash"/>
         /// and <see cref="TxExecution.TxId"/>, the record is silently overwritten.</remarks>
         /// <param name="txExecution">The transaction execution summary to record.
         /// Must not be <see langword="null"/>.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="txSuccess"/> is
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="txExecution"/> is
         /// <see langword="null"/>.</exception>
         /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
         void PutTxExecution(TxExecution txExecution);
