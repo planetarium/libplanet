@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.4.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on September 25, 2023.
 
 ### Backward-incompatible API changes
 
@@ -33,23 +31,11 @@ To be released.
     Exception)` to `IActionRenderer.RenderActionError(IValue,
     ICommittedActionContext, Exception)`.  [[#3431]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `AccountDiff` class.  [[#3424]]
  -  Added `ICommittedActionContext` interface.  [[#3431]]
  -  Added `ICommittedActionEvaluation` interface.  [[#3431]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3424]: https://github.com/planetarium/libplanet/pull/3424
 [#3425]: https://github.com/planetarium/libplanet/pull/3425
