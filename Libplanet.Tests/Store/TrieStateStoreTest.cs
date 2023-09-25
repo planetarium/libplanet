@@ -80,9 +80,9 @@ namespace Libplanet.Tests.Store
             ITrie first = stateStore.Commit(null, values);
 
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            ImmutableDictionary<KeyBytes, IValue> nextStates =
+            ImmutableDictionary<KeyBytes, IValue> nextState =
                 values.SetItem(new KeyBytes("foo"), (Binary)GetRandomBytes(4096));
-            ITrie second = stateStore.Commit(first.Hash, nextStates);
+            ITrie second = stateStore.Commit(first.Hash, nextState);
 
             // foo = 0x666f6f
             // updated branch node (0x6, aka root) + updated branch node (0x66) +

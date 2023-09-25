@@ -1,7 +1,8 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Serilog;
 using Serilog.Events;
@@ -67,25 +68,23 @@ namespace Libplanet.Blockchain.Renderers
                 ActionRenderer.RenderBlockEnd
             );
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionContext context,
-            IAccount nextStates
+            ICommittedActionContext context,
+            HashDigest<SHA256> nextState
         ) =>
             LogActionRendering(
                 nameof(RenderAction),
                 action,
                 context,
-                () => ActionRenderer.RenderAction(action, context, nextStates)
+                () => ActionRenderer.RenderAction(action, context, nextState)
             );
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public void RenderActionError(
             IValue action,
-            IActionContext context,
+            ICommittedActionContext context,
             Exception exception
         ) =>
             LogActionRendering(
@@ -98,7 +97,7 @@ namespace Libplanet.Blockchain.Renderers
         private void LogActionRendering(
             string methodName,
             IValue action,
-            IActionContext context,
+            ICommittedActionContext context,
             System.Action callback
         )
         {

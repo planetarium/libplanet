@@ -248,13 +248,9 @@ namespace Libplanet.Explorer.Queries
                                 TxStatus.STAGING,
                                 null,
                                 null,
-                                null,
-                                null,
                                 null)
                             : new TxResult(
                                 TxStatus.INVALID,
-                                null,
-                                null,
                                 null,
                                 null,
                                 null);
@@ -268,30 +264,11 @@ namespace Libplanet.Explorer.Queries
                         );
                         var txExecutedBlock = blockChain[txExecutedBlockHashValue];
 
-                        return execution switch
-                        {
-                            TxSuccess txSuccess => new TxResult(
-                                TxStatus.SUCCESS,
-                                txExecutedBlock.Index,
-                                txExecutedBlock.Hash.ToString(),
-                                null,
-                                txSuccess.UpdatedStates,
-                                txSuccess.UpdatedFungibleAssets
-                            ),
-                            TxFailure txFailure => new TxResult(
-                                TxStatus.FAILURE,
-                                txExecutedBlock.Index,
-                                txExecutedBlock.Hash.ToString(),
-                                txFailure.ExceptionName,
-                                null,
-                                null
-                            ),
-                            _ => throw new NotSupportedException(
-                                #pragma warning disable format
-                                $"{nameof(execution)} is not expected concrete class."
-                                #pragma warning restore format
-                            ),
-                        };
+                        return new TxResult(
+                            execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
+                            txExecutedBlock.Index,
+                            txExecutedBlock.Hash.ToString(),
+                            execution.ExceptionNames);
                     }
                     catch (Exception)
                     {
@@ -299,10 +276,7 @@ namespace Libplanet.Explorer.Queries
                             TxStatus.INVALID,
                             null,
                             null,
-                            null,
-                            null,
-                            null
-                        );
+                            null);
                     }
                 }
             );

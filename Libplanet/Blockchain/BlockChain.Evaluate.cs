@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -97,44 +98,27 @@ namespace Libplanet.Blockchain
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         public HashDigest<SHA256> DetermineBlockStateRootHash(
-            IPreEvaluationBlock block, out IReadOnlyList<IActionEvaluation> evaluations)
+            IPreEvaluationBlock block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
             _rwlock.EnterWriteLock();
             try
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                evaluations = EvaluateBlock(block);
-                var totalDelta = evaluations.GetRawTotalDelta();
+                var rawEvaluations = EvaluateBlock(block);
+
                 _logger.Debug(
-                    "Took {DurationMs} ms to summarize the states delta with {KeyCount} key " +
-                    "changes made by block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
+                    "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
+                    "pre-evaluation hash {PreEvaluationHash} with {Count} action evaluations",
                     stopwatch.ElapsedMilliseconds,
-                    totalDelta.Count,
                     block.Index,
-                    block.PreEvaluationHash);
+                    block.PreEvaluationHash,
+                    rawEvaluations.Count);
 
-                ITrie trie = GetAccountState(block.PreviousHash).Trie;
-                foreach (var kv in totalDelta)
-                {
-                    trie = trie.Set(kv.Key, kv.Value);
-                }
+                (var committedEvaluations, var rootHash) =
+                    ToCommittedEvaluation(block, rawEvaluations);
 
-                trie = StateStore.Commit(trie);
-                HashDigest<SHA256> rootHash = trie.Hash;
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "StateUpdateDuration")
-                    .Information(
-                        "Took {DurationMs} ms to update the states with {KeyCount} key changes " +
-                        "and resulting in state root hash {StateRootHash} for " +
-                        "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                        stopwatch.ElapsedMilliseconds,
-                        totalDelta.Count,
-                        rootHash,
-                        block.Index,
-                        block.PreEvaluationHash);
-
+                evaluations = committedEvaluations;
                 return rootHash;
             }
             finally
@@ -183,5 +167,62 @@ namespace Libplanet.Blockchain
                 : throw new ArgumentException(
                     $"Given {nameof(preEvaluationBlock)} must have protocol version " +
                     $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
+
+        internal (IReadOnlyList<ICommittedActionEvaluation>, HashDigest<SHA256>)
+            ToCommittedEvaluation(
+                IPreEvaluationBlock block,
+                IReadOnlyList<IActionEvaluation> evaluations)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            ITrie trie = GetAccountState(block.PreviousHash).Trie;
+            var committedEvaluations = new List<CommittedActionEvaluation>();
+
+            int setCount = 0;
+            foreach (var evaluation in evaluations)
+            {
+                ITrie nextTrie = trie;
+                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
+                {
+                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                    setCount++;
+                }
+
+                nextTrie = StateStore.Commit(nextTrie);
+                var committedEvaluation = new CommittedActionEvaluation(
+                    action: evaluation.Action,
+                    inputContext: new CommittedActionContext(
+                        signer: evaluation.InputContext.Signer,
+                        txId: evaluation.InputContext.TxId,
+                        miner: evaluation.InputContext.Miner,
+                        blockIndex: evaluation.InputContext.BlockIndex,
+                        blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
+                        rehearsal: evaluation.InputContext.Rehearsal,
+                        previousState: trie.Hash,
+                        random: evaluation.InputContext.GetUnconsumedContext().Random,
+                        blockAction: evaluation.InputContext.BlockAction),
+                    outputState: nextTrie.Hash,
+                    exception: evaluation.Exception);
+                committedEvaluations.Add(committedEvaluation);
+
+                trie = nextTrie;
+            }
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "StateUpdateDuration")
+                .Information(
+                    "Took {DurationMs} ms to update the states with {Count} key changes " +
+                    "and resulting in state root hash {StateRootHash} for " +
+                    "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
+                    stopwatch.ElapsedMilliseconds,
+                    setCount,
+                    trie.Hash,
+                    block.Index,
+                    block.PreEvaluationHash);
+
+            return (committedEvaluations, trie.Hash);
+        }
     }
 }

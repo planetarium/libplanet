@@ -1,6 +1,3 @@
-#nullable disable
-using System;
-
 namespace Libplanet.Action
 {
     internal class Random : System.Random, IRandom

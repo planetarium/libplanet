@@ -196,7 +196,7 @@ public class StateQueryTest
 
         public IAccountState GetAccountState(BlockHash? offset) => new MockAccount(offset);
 
-        public IAccountState GetAccountState(HashDigest<SHA256>? offset) => new MockAccount(null);
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) => new MockAccount(null);
 
         public ITrie GetTrie(BlockHash? offset)
         {

@@ -986,18 +986,11 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        /// <inheritdoc cref="BaseStore.PutTxExecution(TxSuccess)"/>
-        public override void PutTxExecution(TxSuccess txSuccess) =>
+        /// <inheritdoc cref="BaseStore.PutTxExecution"/>
+        public override void PutTxExecution(TxExecution txExecution) =>
             _txExecutionDb.Put(
-                TxExecutionKey(txSuccess),
-                Codec.Encode(SerializeTxExecution(txSuccess))
-            );
-
-        /// <inheritdoc cref="BaseStore.PutTxExecution(TxFailure)"/>
-        public override void PutTxExecution(TxFailure txFailure) =>
-            _txExecutionDb.Put(
-                TxExecutionKey(txFailure),
-                Codec.Encode(SerializeTxExecution(txFailure))
+                TxExecutionKey(txExecution),
+                Codec.Encode(SerializeTxExecution(txExecution))
             );
 
         /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>

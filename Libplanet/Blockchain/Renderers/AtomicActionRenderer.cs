@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -20,7 +21,7 @@ namespace Libplanet.Blockchain.Renderers
     /// </remarks>
     public sealed class AtomicActionRenderer : IActionRenderer
     {
-        private readonly List<(IValue, IActionContext, IAccount)> _eventBuffer;
+        private readonly List<(IValue, ICommittedActionContext, HashDigest<SHA256>)> _eventBuffer;
         private TxId? _lastTxId;
         private bool _errored;
 
@@ -35,7 +36,7 @@ namespace Libplanet.Blockchain.Renderers
         {
             ActionRenderer = actionRenderer;
             _lastTxId = null;
-            _eventBuffer = new List<(IValue, IActionContext, IAccount)>();
+            _eventBuffer = new List<(IValue, ICommittedActionContext, HashDigest<SHA256>)>();
             _errored = false;
         }
 
@@ -58,12 +59,11 @@ namespace Libplanet.Blockchain.Renderers
             ActionRenderer.RenderBlockEnd(oldTip, newTip);
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionContext context,
-            IAccount nextStates
+            ICommittedActionContext context,
+            HashDigest<SHA256> nextState
         )
         {
             if (!context.TxId.Equals(_lastTxId))
@@ -73,17 +73,19 @@ namespace Libplanet.Blockchain.Renderers
 
             if (context.TxId is null)
             {
-                ActionRenderer.RenderAction(action, context, nextStates);
+                ActionRenderer.RenderAction(action, context, nextState);
             }
             else if (!_errored)
             {
-                _eventBuffer.Add((action, context, nextStates));
+                _eventBuffer.Add((action, context, nextState));
             }
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
-        public void RenderActionError(IValue action, IActionContext context, Exception exception)
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
+        public void RenderActionError(
+            IValue action,
+            ICommittedActionContext context,
+            Exception exception)
         {
             if (!context.TxId.Equals(_lastTxId))
             {
@@ -102,7 +104,7 @@ namespace Libplanet.Blockchain.Renderers
 
         private void FlushBuffer(
             TxId? newTxId,
-            Action<IValue, IActionContext, IAccount> render
+            Action<IValue, ICommittedActionContext, HashDigest<SHA256>> render
         )
         {
             if (!_errored)

@@ -11,9 +11,9 @@ using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
@@ -21,7 +21,6 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Store
 {
@@ -393,24 +392,14 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void TxExecution()
         {
-            void AssertTxSuccessesEqual(TxSuccess expected, TxExecution actual)
+            void AssertTxExecutionEqual(TxExecution expected, TxExecution actual)
             {
-                Assert.IsType<TxSuccess>(actual);
-                var success = (TxSuccess)actual;
-                Assert.Equal(expected.TxId, success.TxId);
-                Assert.Equal(expected.BlockHash, success.BlockHash);
-                Assert.Equal(expected.UpdatedStates, success.UpdatedStates);
-                Assert.Equal(expected.UpdatedFungibleAssets, success.UpdatedFungibleAssets);
-            }
-
-            void AssertTxFailuresEqual(TxFailure expected, TxExecution actual)
-            {
-                Assert.IsType<TxFailure>(actual);
-                var failure = (TxFailure)actual;
-                Assert.Equal(expected.TxId, failure.TxId);
-                Assert.Equal(expected.BlockHash, failure.BlockHash);
-                Assert.Equal(expected.ExceptionName, failure.ExceptionName);
-                Assert.Equal(expected.ExceptionMetadata, failure.ExceptionMetadata);
+                Assert.Equal(expected.Fail, actual.Fail);
+                Assert.Equal(expected.TxId, actual.TxId);
+                Assert.Equal(expected.BlockHash, actual.BlockHash);
+                Assert.Equal(expected.InputState, actual.InputState);
+                Assert.Equal(expected.OutputState, actual.OutputState);
+                Assert.Equal(expected.ExceptionNames, actual.ExceptionNames);
             }
 
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
@@ -418,52 +407,46 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
 
-            var random = new System.Random();
-            var inputA = new TxSuccess(
+            var inputA = new TxExecution(
                 Fx.Hash1,
                 Fx.TxId1,
-                ImmutableDictionary<Address, IValue>.Empty.Add(
-                    random.NextAddress(),
-                    (Text)"state value"
-                ),
-                ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>.Empty
-                    .Add(
-                        random.NextAddress(),
-                        ImmutableDictionary<Currency, FAV>.Empty.Add(
-                            DumbAction.DumbCurrency,
-                            DumbAction.DumbCurrency * 10
-                        )
-                    )
-            );
+                false,
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new List<string>() { string.Empty });
             Fx.Store.PutTxExecution(inputA);
 
-            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
 
-            var inputB = new TxFailure(
+            var inputB = new TxExecution(
                 Fx.Hash1,
                 Fx.TxId2,
-                "AnExceptionName"
-            );
+                true,
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new List<string>() { "AnExceptionName" });
             Fx.Store.PutTxExecution(inputB);
 
-            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
-            AssertTxFailuresEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
 
-            var inputC = new TxFailure(
+            var inputC = new TxExecution(
                 Fx.Hash2,
                 Fx.TxId1,
-                "AnotherExceptionName"
-            );
+                true,
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                new List<string>() { "AnotherExceptionName", "YetAnotherExceptionName" });
             Fx.Store.PutTxExecution(inputC);
 
-            AssertTxSuccessesEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
-            AssertTxFailuresEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
-            AssertTxFailuresEqual(inputC, Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            AssertTxExecutionEqual(inputC, Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
         }
 

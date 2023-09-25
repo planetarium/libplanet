@@ -64,24 +64,24 @@ public class TransactionQueryGeneratedTest
         Assert.Equal("SUCCESS", queryResult.TxStatus);
         Assert.Equal(successBlock.Index, queryResult.BlockIndex);
         Assert.Equal(successBlock.Hash.ToString(), queryResult.BlockHash);
-        Assert.Null(queryResult.ExceptionName);
+        Assert.Equal(new string?[] { null }, queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(failTx.Id);
         Assert.Equal("FAILURE", queryResult.TxStatus);
         Assert.Equal(failBlock.Index, queryResult.BlockIndex);
         Assert.Equal(failBlock.Hash.ToString(), queryResult.BlockHash);
         Assert.Equal(
-            "Libplanet.Action.State.CurrencyPermissionException",
-            queryResult.ExceptionName);
+            new string[] { "Libplanet.Action.State.CurrencyPermissionException" },
+            queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(new TxId());
         Assert.Equal("INVALID", queryResult.TxStatus);
         Assert.Null(queryResult.BlockIndex);
         Assert.Null(queryResult.BlockHash);
-        Assert.Null(queryResult.ExceptionName);
+        Assert.Null(queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(stagingTx.Id);
         Assert.Equal("STAGING", queryResult.TxStatus);
         Assert.Null(queryResult.BlockIndex);
         Assert.Null(queryResult.BlockHash);
-        Assert.Null(queryResult.ExceptionName);
+        Assert.Null(queryResult.ExceptionNames);
     }
 
     [Fact]
@@ -300,7 +300,7 @@ public class TransactionQueryGeneratedTest
     }
 
     private async Task<
-            (string TxStatus, long? BlockIndex, string? BlockHash, string? ExceptionName)>
+            (string TxStatus, long? BlockIndex, string? BlockHash, string?[]? ExceptionNames)>
         ExecuteTransactionResultQueryAsync(TxId txId)
     {
         ExecutionResult result = await ExecuteQueryAsync(@$"
@@ -310,7 +310,7 @@ public class TransactionQueryGeneratedTest
                 txStatus
                 blockIndex
                 blockHash
-                exceptionName
+                exceptionNames
             }}
          }}
         ", QueryGraph, source: Source);
@@ -319,10 +319,12 @@ public class TransactionQueryGeneratedTest
         IDictionary<string, object> resultDict =
             (IDictionary<string, object>)Assert.IsAssignableFrom<IDictionary<string, object>>(
                 resultData.ToValue())["transactionResult"];
+        var exceptionNames = ((object[]?)resultDict["exceptionNames"])?.Select(
+            name => name is { } n ? Assert.IsType<string>(n) : null).ToArray();
         return (
             (string)resultDict["txStatus"],
             (long?)resultDict["blockIndex"],
             (string?)resultDict["blockHash"],
-            (string?)resultDict["exceptionName"]);
+            (string?[]?)exceptionNames);
     }
 }

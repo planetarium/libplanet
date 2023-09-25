@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain.Renderers.Debug
@@ -40,23 +41,21 @@ namespace Libplanet.Blockchain.Renderers.Debug
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public override void RenderAction(
             IValue action,
-            IActionContext context,
-            IAccount nextStates
+            ICommittedActionContext context,
+            HashDigest<SHA256> nextState
         )
         {
-            base.RenderAction(action, context, nextStates);
+            base.RenderAction(action, context, nextState);
             Validate();
         }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderActionError"/>
         public override void RenderActionError(
             IValue action,
-            IActionContext context,
+            ICommittedActionContext context,
             Exception exception
         )
         {

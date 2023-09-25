@@ -1,11 +1,9 @@
+using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.State;
-using Libplanet.Types.Assets;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -21,51 +19,60 @@ namespace Libplanet.Blockchain
         /// <returns>The corresponding <see cref="TxExecution"/>s.</returns>
         internal IEnumerable<TxExecution> MakeTxExecutions(
             Block block,
-            IReadOnlyList<IActionEvaluation> evaluations
+            IReadOnlyList<ICommittedActionEvaluation> evaluations
         )
         {
-            IEnumerable<IGrouping<TxId, IActionEvaluation>> evaluationsPerTxs = evaluations
-                .Where(e => e.InputContext.TxId is { })
-                .GroupBy(e => e.InputContext.TxId!.Value);
-            int count = 0;
-            foreach (IGrouping<TxId, IActionEvaluation> txEvals in evaluationsPerTxs)
+            List<(TxId?, List<ICommittedActionEvaluation>)> groupedEvals =
+                new List<(TxId?, List<ICommittedActionEvaluation>)>();
+            foreach (ICommittedActionEvaluation eval in evaluations)
             {
-                TxId txid = txEvals.Key;
-                IAccount prevStates = txEvals.First().InputContext.PreviousState;
-                IActionEvaluation evalSum = txEvals.Last();
-                TxExecution txExecution;
-                if (evalSum.Exception is { } e)
+                if (groupedEvals.Count == 0)
                 {
-                    txExecution = new TxFailure(
-                        block.Hash,
-                        txid,
-                        e.InnerException ?? e);
+                    groupedEvals.Add(
+                        (eval.InputContext.TxId, new List<ICommittedActionEvaluation>() { eval }));
                 }
                 else
                 {
-                    IAccount outputStates = evalSum.OutputState;
-                    txExecution = new TxSuccess(
-                        block.Hash,
-                        txid,
-                        outputStates.GetUpdatedStates(),
-                        outputStates.Delta.UpdatedFungibleAssets
-                            .Select(pair =>
-                                (
-                                    pair.Item1,
-                                    pair.Item2,
-                                    outputStates.GetBalance(pair.Item1, pair.Item2)
-                                ))
-                            .GroupBy(triple => triple.Item1)
-                            .ToImmutableDictionary(
-                                group => group.Key,
-                                group => (IImmutableDictionary<Currency, FungibleAssetValue>)group
-                                    .ToImmutableDictionary(
-                                        triple => triple.Item2,
-                                        triple => triple.Item3)));
+                    if (groupedEvals.Last().Item1.Equals(eval.InputContext.TxId))
+                    {
+                        groupedEvals.Last().Item2.Add(eval);
+                    }
+                    else
+                    {
+                        groupedEvals.Add(
+                            (
+                                eval.InputContext.TxId,
+                                new List<ICommittedActionEvaluation>() { eval }
+                            ));
+                    }
                 }
+            }
 
-                yield return txExecution;
-                count++;
+            ITrie trie = GetAccountState(block.PreviousHash).Trie;
+
+            int count = 0;
+            foreach (var group in groupedEvals)
+            {
+                if (group.Item1 is { } txId)
+                {
+                    // If txId is not null, group has at least one element.
+                    List<Exception?> exceptions = group.Item2
+                        .Select(eval => eval.Exception)
+                        .Select(exception => exception is { } e && e.InnerException is { } i
+                            ? i
+                            : exception)
+                        .ToList();
+
+                    yield return new TxExecution(
+                        block.Hash,
+                        txId,
+                        exceptions.Any(exception => exception is { }),
+                        group.Item2.First().InputContext.PreviousState,
+                        group.Item2.Last().OutputState,
+                        exceptions.ToList());
+
+                    count++;
+                }
             }
 
             _logger.Verbose(
@@ -73,8 +80,7 @@ namespace Libplanet.Blockchain
                 "s for {Txs} transactions within the block #{BlockIndex} {BlockHash}",
                 count,
                 block.Index,
-                block.Hash
-            );
+                block.Hash);
         }
 
         internal void UpdateTxExecutions(IEnumerable<TxExecution> txExecutions)
@@ -82,42 +88,13 @@ namespace Libplanet.Blockchain
             int count = 0;
             foreach (TxExecution txExecution in txExecutions)
             {
-                // Note that there are two overloaded methods of the same name PutTxExecution()
-                // in IStore.  As those two have different signatures, run-time polymorphism
-                // does not work.  Instead, we need the following hard-coded branch:
-                switch (txExecution)
-                {
-                    case TxSuccess s:
-                        Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
-                        _logger.Verbose(
-                            "Updated " + nameof(TxSuccess) +
-                            " for tx {TxId} within block {BlockHash}",
-                            s.TxId,
-                            s.BlockHash
-                        );
-                        break;
-                    case TxFailure f:
-                        Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
-                        _logger.Verbose(
-                            "Updated " + nameof(TxFailure) +
-                            " for tx {TxId} within block {BlockHash}",
-                            f.TxId,
-                            f.BlockHash
-                        );
-                        break;
-                    default:
-                        // In theory, this case must not happen.  The following case is for just in
-                        // case.  (For example, we might add a new subtype for TxExecution.)
-                        const string msg = "Unexpected subtype of " + nameof(TxExecution) + ": {0}";
-                        _logger.Fatal(msg, txExecution);
-                        Trace.Assert(
-                            false,
-                            string.Format(CultureInfo.InvariantCulture, msg, txExecution)
-                        );
-                        break;
-                }
-
+                Store.PutTxExecution(txExecution);
                 count++;
+
+                _logger.Verbose(
+                    "Updated " + nameof(TxExecution) + " for tx {TxId} within block {BlockHash}",
+                    txExecution.TxId,
+                    txExecution.BlockHash);
             }
 
             _logger.Verbose(
