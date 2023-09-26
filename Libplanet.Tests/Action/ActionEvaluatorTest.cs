@@ -332,7 +332,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
-                randomValue = eval.InputContext.Random.Next();
+                randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
                     (Integer)eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
@@ -456,7 +456,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
-                randomValue = eval.InputContext.Random.Next();
+                randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
                     eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
@@ -564,7 +564,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(
                     (Integer)eval.OutputState.GetState(
                         DumbAction.RandomRecordsAddress),
-                    (Integer)eval.InputContext.Random.Next());
+                    (Integer)eval.InputContext.GetRandom().Next());
                 IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                 Assert.Equal(
                     prevEval is null
@@ -1295,7 +1295,7 @@ namespace Libplanet.Tests.Action
             {
                 IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
-                Assert.Equal(initialRandomSeed + i, context.Random.Seed);
+                Assert.Equal(initialRandomSeed + i, context.RandomSeed);
             }
         }
 

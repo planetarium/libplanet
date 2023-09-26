@@ -188,7 +188,7 @@ namespace Libplanet.Action
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            byte[] signature = tx?.Signature ?? new byte[0];
+            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
@@ -243,7 +243,7 @@ namespace Libplanet.Action
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
-                    randomSeed: inputContext.Random.Seed,
+                    randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit());
             }
 

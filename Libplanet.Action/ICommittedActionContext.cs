@@ -66,15 +66,15 @@ namespace Libplanet.Action
         HashDigest<SHA256> PreviousState { get; }
 
         /// <summary>
-        /// An initialized pseudorandom number generator.  Its seed (state)
-        /// is determined by a block and a transaction, which is
+        /// The random seed to use for pseudorandom number generator.  This value
+        /// is determined by various block properties, the signature of the transaction
+        /// containing the action to execute, and index of the action to execute, which is
         /// deterministic so that every node can replay the same action and
         /// then reproduce the same result, while neither a single block miner
         /// nor a single transaction signer can predict the result and cheat.
         /// </summary>
-        /// <returns>A random object that shares interface mostly equivalent
-        /// to <see cref="System.Random"/>.</returns>
-        IRandom Random { get; }
+        /// <seealso cref="GetRandom"/>
+        int RandomSeed { get; }
 
         /// <summary>
         /// Whether this action is executed as a block action.
@@ -82,6 +82,15 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        /// <summary>
+        /// Returns a newly intialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// as its seed value.
+        /// </summary>
+        /// <returns>A newly intialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// as its seed value.</returns>
+        [Pure]
+        IRandom GetRandom();
 
         ICommittedActionContext Copy();
     }

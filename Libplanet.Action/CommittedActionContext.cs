@@ -17,7 +17,7 @@ namespace Libplanet.Action
                 blockProtocolVersion: context.BlockProtocolVersion,
                 rehearsal: context.Rehearsal,
                 previousState: context.PreviousState.Trie.Hash,
-                random: context.Random,
+                randomSeed: context.RandomSeed,
                 blockAction: context.BlockAction)
         {
         }
@@ -30,7 +30,7 @@ namespace Libplanet.Action
             int blockProtocolVersion,
             bool rehearsal,
             HashDigest<SHA256> previousState,
-            IRandom random,
+            int randomSeed,
             bool blockAction)
         {
             Signer = signer;
@@ -40,7 +40,7 @@ namespace Libplanet.Action
             BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
             PreviousState = previousState;
-            Random = random;
+            RandomSeed = randomSeed;
             BlockAction = blockAction;
         }
 
@@ -72,12 +72,16 @@ namespace Libplanet.Action
         [Pure]
         public HashDigest<SHA256> PreviousState { get; }
 
-        /// <inheritdoc cref="ICommittedActionContext.Random"/>
-        public IRandom Random { get; }
+        /// <inheritdoc cref="ICommittedActionContext.RandomSeed"/>
+        public int RandomSeed { get; }
 
         /// <inheritdoc cref="ICommittedActionContext.BlockAction"/>
         [Pure]
         public bool BlockAction { get; }
+
+        /// <inheritdoc cref="ICommittedActionContext.GetRandom"/>
+        [Pure]
+        public IRandom GetRandom() => new Random(RandomSeed);
 
         /// <inheritdoc cref="ICommittedActionContext.Copy"/>
         [Pure]
@@ -90,7 +94,7 @@ namespace Libplanet.Action
                 BlockProtocolVersion,
                 Rehearsal,
                 PreviousState,
-                new Random(Random.Seed),
+                RandomSeed,
                 BlockAction);
     }
 }

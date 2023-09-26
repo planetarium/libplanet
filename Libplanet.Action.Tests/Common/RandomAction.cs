@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests.Common
                 return states.SetState(Address, Null.Value);
             }
 
-            return states.SetState(Address, (Integer)context.Random.Next());
+            return states.SetState(Address, (Integer)context.GetRandom().Next());
         }
     }
 }
