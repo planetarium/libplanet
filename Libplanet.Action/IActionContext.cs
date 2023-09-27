@@ -99,17 +99,6 @@ namespace Libplanet.Action
         void UseGas(long gas);
 
         /// <summary>
-        /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed
-        /// state (with the same seed).  The clone and its original are a distinct instance
-        /// each other, in other words, one's state transfer must not affect the other one
-        /// (i.e., consuming <see cref="Random"/> source should be local to a context instance).
-        /// </summary>
-        /// <returns>A clone instance, which is distinct from its original.  Its internal state
-        /// is entirely equivalent to the original's unconsumed initial state.</returns>
-        [Pure]
-        IActionContext GetUnconsumedContext();
-
-        /// <summary>
         /// Returns a newly intialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.
         /// </summary>

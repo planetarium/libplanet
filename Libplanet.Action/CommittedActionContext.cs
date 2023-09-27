@@ -82,19 +82,5 @@ namespace Libplanet.Action
         /// <inheritdoc cref="ICommittedActionContext.GetRandom"/>
         [Pure]
         public IRandom GetRandom() => new Random(RandomSeed);
-
-        /// <inheritdoc cref="ICommittedActionContext.Copy"/>
-        [Pure]
-        public ICommittedActionContext Copy() =>
-            new CommittedActionContext(
-                Signer,
-                TxId,
-                Miner,
-                BlockIndex,
-                BlockProtocolVersion,
-                Rehearsal,
-                PreviousState,
-                RandomSeed,
-                BlockAction);
     }
 }

@@ -67,20 +67,6 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
 
-        /// <inheritdoc cref="IActionContext.GetUnconsumedContext"/>
-        [Pure]
-        public IActionContext GetUnconsumedContext() =>
-            new ActionContext(
-                Signer,
-                TxId,
-                Miner,
-                BlockIndex,
-                BlockProtocolVersion,
-                PreviousState,
-                RandomSeed,
-                _gasLimit,
-                Rehearsal);
-
         /// <inheritdoc cref="IActionContext.GetRandom"/>
         public IRandom GetRandom() => new Random(RandomSeed);
 

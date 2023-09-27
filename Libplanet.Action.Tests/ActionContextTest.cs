@@ -125,35 +125,5 @@ namespace Libplanet.Action.Tests
                 Assert.True(guid[19] >= '8' && guid[19] <= 'b');
             }
         }
-
-        [Fact]
-        public void GetUnconsumedContext()
-        {
-            var original = new ActionContext(
-                signer: _address,
-                txid: _txid,
-                miner: _address,
-                blockIndex: 1,
-                blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new Account(MockAccountState.Empty),
-                randomSeed: _random.Next(),
-                gasLimit: 0);
-
-            // Consume original's random state...
-            var originalRandom = original.GetRandom();
-            int[] values =
-            {
-                originalRandom.Next(),
-                originalRandom.Next(),
-                originalRandom.Next(),
-            };
-
-            IActionContext clone = original.GetUnconsumedContext();
-            var clonedRandom = clone.GetRandom();
-            Assert.Equal(
-                values,
-                new[] { clonedRandom.Next(), clonedRandom.Next(), clonedRandom.Next() }
-            );
-        }
     }
 }

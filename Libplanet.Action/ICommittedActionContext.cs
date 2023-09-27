@@ -91,7 +91,5 @@ namespace Libplanet.Action
         /// as its seed value.</returns>
         [Pure]
         IRandom GetRandom();
-
-        ICommittedActionContext Copy();
     }
 }

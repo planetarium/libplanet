@@ -228,8 +228,7 @@ namespace Libplanet.Action
             IAction action,
             ILogger? logger = null)
         {
-            // Make a copy since ActionContext is stateful.
-            IActionContext inputContext = context.GetUnconsumedContext();
+            IActionContext inputContext = context;
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
