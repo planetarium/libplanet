@@ -84,10 +84,10 @@ namespace Libplanet.Action
         bool BlockAction { get; }
 
         /// <summary>
-        /// Returns a newly intialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.
         /// </summary>
-        /// <returns>A newly intialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// <returns>A newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.</returns>
         [Pure]
         IRandom GetRandom();
