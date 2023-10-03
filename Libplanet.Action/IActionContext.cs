@@ -73,15 +73,15 @@ namespace Libplanet.Action
         IAccount PreviousState { get; }
 
         /// <summary>
-        /// An initialized pseudorandom number generator.  Its seed (state)
-        /// is determined by a block and a transaction, which is
+        /// The random seed to use for pseudorandom number generator.  This value
+        /// is determined by various block properties, the signature of the transaction
+        /// containing the action to execute, and index of the action to execute, which is
         /// deterministic so that every node can replay the same action and
         /// then reproduce the same result, while neither a single block miner
         /// nor a single transaction signer can predict the result and cheat.
         /// </summary>
-        /// <returns>A random object that shares interface mostly equivalent
-        /// to <see cref="System.Random"/>.</returns>
-        IRandom Random { get; }
+        /// <seealso cref="GetRandom"/>
+        int RandomSeed { get; }
 
         /// <summary>
         /// Whether this action is executed as a block action.
@@ -99,15 +99,13 @@ namespace Libplanet.Action
         void UseGas(long gas);
 
         /// <summary>
-        /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed
-        /// state (with the same seed).  The clone and its original are a distinct instance
-        /// each other, in other words, one's state transfer must not affect the other one
-        /// (i.e., consuming <see cref="Random"/> source should be local to a context instance).
+        /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// as its seed value.
         /// </summary>
-        /// <returns>A clone instance, which is distinct from its original.  Its internal state
-        /// is entirely equivalent to the original's unconsumed initial state.</returns>
+        /// <returns>A newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
+        /// as its seed value.</returns>
         [Pure]
-        IActionContext GetUnconsumedContext();
+        IRandom GetRandom();
 
         /// <summary>
         /// Returns the total gas used by the current action.

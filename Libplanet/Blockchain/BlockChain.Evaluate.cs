@@ -200,7 +200,7 @@ namespace Libplanet.Blockchain
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
                         rehearsal: evaluation.InputContext.Rehearsal,
                         previousState: trie.Hash,
-                        random: evaluation.InputContext.GetUnconsumedContext().Random,
+                        randomSeed: evaluation.InputContext.RandomSeed,
                         blockAction: evaluation.InputContext.BlockAction),
                     outputState: nextTrie.Hash,
                     exception: evaluation.Exception);

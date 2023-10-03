@@ -314,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
                         ActionRenderer = (act, context, nextState) =>
                             // Consuming the random state through IRandom.Next() should not
                             // affect contexts passed to other action renderers.
-                            generatedRandomValueLogs.Add(context.Random.Next()),
+                            generatedRandomValueLogs.Add(context.GetRandom().Next()),
                     },
                     Log.Logger.ForContext("RendererIndex", i)
                 )

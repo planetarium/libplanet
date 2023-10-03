@@ -223,14 +223,14 @@ namespace Libplanet.Blockchain
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            evaluation.InputContext.Copy(),
+                            evaluation.InputContext,
                             evaluation.OutputState);
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            evaluation.InputContext.Copy(),
+                            evaluation.InputContext,
                             evaluation.Exception);
                     }
 

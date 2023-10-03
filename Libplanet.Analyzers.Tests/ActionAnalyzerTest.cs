@@ -43,7 +43,7 @@ namespace Libplanet.Analyzers.Tests
             {
                 Id = "LAA1001",
                 Message = "The System.Random makes an IAction indeterministic; " +
-                    "use IActionContext.Random property instead.",
+                    "use IActionContext.GetRandom method instead.",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation(12, 29) },
             };

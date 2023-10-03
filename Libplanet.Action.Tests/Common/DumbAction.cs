@@ -178,7 +178,7 @@ namespace Libplanet.Action.Tests.Common
             {
                 states = states.SetState(
                     RandomRecordsAddress,
-                    (Integer)context.Random.Next()
+                    (Integer)context.GetRandom().Next()
                 );
             }
 

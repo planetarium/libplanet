@@ -188,7 +188,7 @@ namespace Libplanet.Action
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            byte[] signature = tx?.Signature ?? new byte[0];
+            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
@@ -228,8 +228,7 @@ namespace Libplanet.Action
             IAction action,
             ILogger? logger = null)
         {
-            // Make a copy since ActionContext is stateful.
-            IActionContext inputContext = context.GetUnconsumedContext();
+            IActionContext inputContext = context;
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
@@ -243,7 +242,7 @@ namespace Libplanet.Action
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
-                    randomSeed: inputContext.Random.Seed,
+                    randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit());
             }
 
