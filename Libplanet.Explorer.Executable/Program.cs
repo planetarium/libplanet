@@ -227,7 +227,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         blockChainStates,
                         new ActionEvaluator(
                             _ => policy.BlockAction,
-                            blockChainStates,
+                            stateStore,
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
                 Startup.BlockChainSingleton = blockChain;

@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Blocks
             {
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    new BlockChainStates(fx.Store, fx.StateStore),
+                    fx.StateStore,
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blocks
             {
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                    stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain.DetermineGenesisStateRootHash(
