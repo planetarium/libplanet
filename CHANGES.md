@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.5.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on October 4, 2023.
 
 ### Backward-incompatible API changes
 
@@ -19,20 +17,6 @@ To be released.
     [[#3438]]
  -  Changed `ActionEvaluator` to accept `IStateStore` instead of
     `IBlockChainStates`  [[#3439]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3437]: https://github.com/planetarium/libplanet/pull/3437
 [#3438]: https://github.com/planetarium/libplanet/pull/3438
