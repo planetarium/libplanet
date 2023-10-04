@@ -337,8 +337,8 @@ implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface sepa
 attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
 <p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
-Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
-<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
+Use <see cref="!:IActionContext.Random"></see> instead.
+<see cref="!:IActionContext.Random"></see> guarantees the same action
 has the consistent result for every node in the network.</p>
 <p>Also do not perform I/O operations such as file system access
 or networking.  These bring an action indeterministic.  You maybe

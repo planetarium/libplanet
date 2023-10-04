@@ -65,6 +65,17 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IActionContext.Random</code> property.  Use <code>IActionContext.GetRandom()</code>
+instead.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Added <code>IActionContext.RandomSeed</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Added <code>IActionContext.GetRandom()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Changed <code>IActionEvaluator.Evaluate(IPreEvaluationBlock)</code> to
+<code>IActionEvaluator.Evaluate(IPreEvaluationBlock, HashDigest&lt;SHA256&gt;)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3438">#3438</a>]</li>
+<li>Changed <code>ActionEvaluator</code> to accept <code>IStateStore</code> instead of
+<code>IBlockChainStates</code>  [<a href="https://github.com/planetarium/libplanet/pull/3439">#3439</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>

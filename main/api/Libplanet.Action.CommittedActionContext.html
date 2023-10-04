@@ -149,18 +149,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_IRandom_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.%23ctor(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Tx.TxId%7D%2CLibplanet.Crypto.Address%2CSystem.Int64%2CSystem.Int32%2CSystem.Boolean%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.IRandom%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.%23ctor(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Tx.TxId%7D%2CLibplanet.Crypto.Address%2CSystem.Int64%2CSystem.Int32%2CSystem.Boolean%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/CommittedActionContext.cs/#L25">View Source</a>
   </span>
   <a id="Libplanet_Action_CommittedActionContext__ctor_" data-uid="Libplanet.Action.CommittedActionContext.#ctor*"></a>
-  <h4 id="Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_IRandom_System_Boolean_" data-uid="Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.IRandom,System.Boolean)">CommittedActionContext(Address, Nullable&lt;TxId&gt;, Address, Int64, Int32, Boolean, HashDigest&lt;SHA256&gt;, IRandom, Boolean)</h4>
+  <h4 id="Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Int32_System_Boolean_" data-uid="Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int32,System.Boolean)">CommittedActionContext(Address, Nullable&lt;TxId&gt;, Address, Int64, Int32, Boolean, HashDigest&lt;SHA256&gt;, Int32, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CommittedActionContext(Address signer, TxId? txId, Address miner, long blockIndex, int blockProtocolVersion, bool rehearsal, HashDigest&lt;SHA256&gt; previousState, IRandom random, bool blockAction)</code></pre>
+    <pre><code class="lang-csharp hljs">public CommittedActionContext(Address signer, TxId? txId, Address miner, long blockIndex, int blockProtocolVersion, bool rehearsal, HashDigest&lt;SHA256&gt; previousState, int randomSeed, bool blockAction)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,8 +208,8 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
-        <td><span class="parametername">random</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">randomSeed</span></td>
         <td></td>
       </tr>
       <tr>
@@ -387,15 +387,16 @@ public HashDigest&lt;SHA256&gt; PreviousState { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext_Random.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.Random%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext_RandomSeed.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.RandomSeed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/CommittedActionContext.cs/#L76">View Source</a>
   </span>
-  <a id="Libplanet_Action_CommittedActionContext_Random_" data-uid="Libplanet.Action.CommittedActionContext.Random*"></a>
-  <h4 id="Libplanet_Action_CommittedActionContext_Random" data-uid="Libplanet.Action.CommittedActionContext.Random">Random</h4>
-  <div class="markdown level1 summary"><p>An initialized pseudorandom number generator.  Its seed (state)
-is determined by a block and a transaction, which is
+  <a id="Libplanet_Action_CommittedActionContext_RandomSeed_" data-uid="Libplanet.Action.CommittedActionContext.RandomSeed*"></a>
+  <h4 id="Libplanet_Action_CommittedActionContext_RandomSeed" data-uid="Libplanet.Action.CommittedActionContext.RandomSeed">RandomSeed</h4>
+  <div class="markdown level1 summary"><p>The random seed to use for pseudorandom number generator.  This value
+is determined by various block properties, the signature of the transaction
+containing the action to execute, and index of the action to execute, which is
 deterministic so that every node can replay the same action and
 then reproduce the same result, while neither a single block miner
 nor a single transaction signer can predict the result and cheat.</p>
@@ -403,7 +404,7 @@ nor a single transaction signer can predict the result and cheat.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IRandom Random { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int RandomSeed { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -415,13 +416,15 @@ nor a single transaction signer can predict the result and cheat.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
-        <td><p>A random object that shares interface mostly equivalent
-to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>.</p>
-</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_CommittedActionContext_RandomSeed_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_GetRandom">GetRandom</a>()</div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext_Rehearsal.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.Rehearsal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -530,19 +533,21 @@ public TxId? TxId { get; }</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext_Copy.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.Copy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_CommittedActionContext_GetRandom.md&amp;value=---%0Auid%3A%20Libplanet.Action.CommittedActionContext.GetRandom%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/CommittedActionContext.cs/#L83">View Source</a>
   </span>
-  <a id="Libplanet_Action_CommittedActionContext_Copy_" data-uid="Libplanet.Action.CommittedActionContext.Copy*"></a>
-  <h4 id="Libplanet_Action_CommittedActionContext_Copy" data-uid="Libplanet.Action.CommittedActionContext.Copy">Copy()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Libplanet_Action_CommittedActionContext_GetRandom_" data-uid="Libplanet.Action.CommittedActionContext.GetRandom*"></a>
+  <h4 id="Libplanet_Action_CommittedActionContext_GetRandom" data-uid="Libplanet.Action.CommittedActionContext.GetRandom">GetRandom()</h4>
+  <div class="markdown level1 summary"><p>Returns a newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public ICommittedActionContext Copy()</code></pre>
+public IRandom GetRandom()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -554,8 +559,10 @@ public ICommittedActionContext Copy()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.ICommittedActionContext.html">ICommittedActionContext</a></td>
-        <td></td>
+        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
+        <td><p>A newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
+</td>
       </tr>
     </tbody>
   </table>

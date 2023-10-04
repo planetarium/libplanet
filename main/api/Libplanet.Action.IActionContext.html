@@ -256,15 +256,16 @@ IAccount PreviousState { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Random.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Random%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_RandomSeed.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.RandomSeed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L84">View Source</a>
   </span>
-  <a id="Libplanet_Action_IActionContext_Random_" data-uid="Libplanet.Action.IActionContext.Random*"></a>
-  <h4 id="Libplanet_Action_IActionContext_Random" data-uid="Libplanet.Action.IActionContext.Random">Random</h4>
-  <div class="markdown level1 summary"><p>An initialized pseudorandom number generator.  Its seed (state)
-is determined by a block and a transaction, which is
+  <a id="Libplanet_Action_IActionContext_RandomSeed_" data-uid="Libplanet.Action.IActionContext.RandomSeed*"></a>
+  <h4 id="Libplanet_Action_IActionContext_RandomSeed" data-uid="Libplanet.Action.IActionContext.RandomSeed">RandomSeed</h4>
+  <div class="markdown level1 summary"><p>The random seed to use for pseudorandom number generator.  This value
+is determined by various block properties, the signature of the transaction
+containing the action to execute, and index of the action to execute, which is
 deterministic so that every node can replay the same action and
 then reproduce the same result, while neither a single block miner
 nor a single transaction signer can predict the result and cheat.</p>
@@ -272,7 +273,7 @@ nor a single transaction signer can predict the result and cheat.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IRandom Random { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">int RandomSeed { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -284,13 +285,15 @@ nor a single transaction signer can predict the result and cheat.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
-        <td><p>A random object that shares interface mostly equivalent
-to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>.</p>
-</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IActionContext_RandomSeed_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GetRandom">GetRandom()</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_Rehearsal.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Rehearsal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -402,7 +405,7 @@ TxId? TxId { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GasLimit.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasLimit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GasLimit_" data-uid="Libplanet.Action.IActionContext.GasLimit*"></a>
   <h4 id="Libplanet_Action_IActionContext_GasLimit" data-uid="Libplanet.Action.IActionContext.GasLimit">GasLimit()</h4>
@@ -435,7 +438,7 @@ long GasLimit()</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GasUsed.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasUsed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L116">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_GasUsed_" data-uid="Libplanet.Action.IActionContext.GasUsed*"></a>
   <h4 id="Libplanet_Action_IActionContext_GasUsed" data-uid="Libplanet.Action.IActionContext.GasUsed">GasUsed()</h4>
@@ -465,23 +468,21 @@ long GasUsed()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GetUnconsumedContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GetUnconsumedContext%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionContext_GetRandom.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GetRandom%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L109">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionContext.cs/#L107">View Source</a>
   </span>
-  <a id="Libplanet_Action_IActionContext_GetUnconsumedContext_" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext*"></a>
-  <h4 id="Libplanet_Action_IActionContext_GetUnconsumedContext" data-uid="Libplanet.Action.IActionContext.GetUnconsumedContext">GetUnconsumedContext()</h4>
-  <div class="markdown level1 summary"><p>Returns a clone of this context, except that its <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> has the unconsumed
-state (with the same seed).  The clone and its original are a distinct instance
-each other, in other words, one's state transfer must not affect the other one
-(i.e., consuming <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> source should be local to a context instance).</p>
+  <a id="Libplanet_Action_IActionContext_GetRandom_" data-uid="Libplanet.Action.IActionContext.GetRandom*"></a>
+  <h4 id="Libplanet_Action_IActionContext_GetRandom" data-uid="Libplanet.Action.IActionContext.GetRandom">GetRandom()</h4>
+  <div class="markdown level1 summary"><p>Returns a newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-IActionContext GetUnconsumedContext()</code></pre>
+IRandom GetRandom()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -493,9 +494,9 @@ IActionContext GetUnconsumedContext()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><p>A clone instance, which is distinct from its original.  Its internal state
-is entirely equivalent to the original's unconsumed initial state.</p>
+        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
+        <td><p>A newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
 </td>
       </tr>
     </tbody>
