@@ -314,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
                 miner,
                 manyTxs.ToImmutableList(),
                 TestUtils.CreateBlockCommit(_blockChain.Tip));
-            Assert.Equal(manyTxs.Count, block.Transactions.Count());
+            Assert.Equal(manyTxs.Count, block.Transactions.Count);
 
             var e = Assert.Throws<InvalidBlockTxCountException>(() =>
                 _blockChain.Append(block, TestUtils.CreateBlockCommit(block))
@@ -376,11 +376,11 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
-                var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
-                var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+                var validTx = blockChain.MakeTransaction(validKey, Array.Empty<DumbAction>());
+                var invalidTx = blockChain.MakeTransaction(invalidKey, Array.Empty<DumbAction>());
 
                 var miner = new PrivateKey();
 
@@ -405,7 +405,6 @@ namespace Libplanet.Tests.Blockchain
             PrivateKey privateKey = new PrivateKey();
             (Address[] addresses, Transaction[] txs) =
                 MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
-            var genesis = _blockChain.Genesis;
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
             // Mining with empty staged.
@@ -452,7 +451,6 @@ namespace Libplanet.Tests.Blockchain
             PrivateKey privateKey = new PrivateKey();
             (_, Transaction[] txs) =
                 MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
-            var genesis = _blockChain.Genesis;
             Assert.Empty(_blockChain.GetStagedTransactionIds());
             var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
             Assert.Empty(_blockChain.ListStagedTransactions());
@@ -508,7 +506,7 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates,
+                    _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
                 () => blockChain.Append(_fx.Block1, TestUtils.CreateBlockCommit(_fx.Block1)));

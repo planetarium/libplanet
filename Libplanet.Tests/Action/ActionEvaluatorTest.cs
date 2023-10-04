@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
-                NullChainStates.Instance,
+                new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(RandomAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
@@ -270,7 +270,7 @@ namespace Libplanet.Tests.Action
             Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates.Instance,
+                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             Transaction[] block1Txs =
@@ -303,7 +303,7 @@ namespace Libplanet.Tests.Action
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
-                Enumerable.Range(0, block1Txs.Count()), (x, y) => (x, y)))
+                Enumerable.Range(0, block1Txs.Length), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
@@ -312,7 +312,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 GenesisProposer,
                 block1Txs);
-            IAccount previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(null);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
@@ -346,7 +346,7 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            previousState = actionEvaluator.PrepareInitialDelta(null);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
@@ -415,7 +415,7 @@ namespace Libplanet.Tests.Action
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
-                Enumerable.Range(0, block2Txs.Count()), (x, y) => (x, y)))
+                Enumerable.Range(0, block2Txs.Length), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
@@ -526,7 +526,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates.Instance,
+                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             DumbAction.RehearsalRecords.Value =
@@ -628,7 +628,7 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                blockChainStates: NullChainStates.Instance,
+                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
             var block = new BlockContent(
