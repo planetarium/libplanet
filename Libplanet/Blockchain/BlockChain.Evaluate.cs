@@ -72,7 +72,7 @@ namespace Libplanet.Blockchain
                     nameof(preEvaluationBlock));
             }
 
-            return actionEvaluator.Evaluate(preEvaluationBlock);
+            return actionEvaluator.Evaluate(preEvaluationBlock, null);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
         public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
-            ActionEvaluator.Evaluate(block);
+            ActionEvaluator.Evaluate(block, Store.GetStateRootHash(block.PreviousHash));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and

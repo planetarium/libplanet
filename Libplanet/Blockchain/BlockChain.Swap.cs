@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -171,8 +173,10 @@ namespace Libplanet.Blockchain
                 foreach (BlockHash hash in fastForwardPath)
                 {
                     Block block = Store.GetBlock(hash);
+                    HashDigest<SHA256>? baseStateRootHash =
+                        Store.GetStateRootHash(block.PreviousHash);
                     ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList();
+                        ActionEvaluator.Evaluate(block, baseStateRootHash).ToImmutableList();
                     (var committedEvaluations, _) = ToCommittedEvaluation(block, evaluations);
 
                     RenderActions(

@@ -14,6 +14,9 @@ To be released.
     instead.  [[#3437]]
  -  Added `IActionContext.RandomSeed` property.  [[#3437]]
  -  Added `IActionContext.GetRandom()` method.  [[#3437]]
+ -  Changed `IActionEvaluator.Evaluate(IPreEvaluationBlock)` to
+    `IActionEvaluator.Evaluate(IPreEvaluationBlock, HashDigest<SHA256>)`.
+    [[#3438]]
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +33,7 @@ To be released.
 ### CLI tools
 
 [#3437]: https://github.com/planetarium/libplanet/pull/3437
+[#3438]: https://github.com/planetarium/libplanet/pull/3438
 
 
 Version 3.4.0
