@@ -36,7 +36,7 @@ namespace Libplanet.Benchmarks
                 _fx.GenesisBlock,
                 new ActionEvaluator(
                     policyBlockActionGetter: _ => null,
-                    blockChainStates: new BlockChainStates(_fx.Store, _fx.StateStore),
+                    stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             var key = new PrivateKey();
             for (var i = 0; i < 500; i++)

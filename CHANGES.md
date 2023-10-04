@@ -10,6 +10,16 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `IActionContext.Random` property.  Use `IActionContext.GetRandom()`
+    instead.  [[#3437]]
+ -  Added `IActionContext.RandomSeed` property.  [[#3437]]
+ -  Added `IActionContext.GetRandom()` method.  [[#3437]]
+ -  Changed `IActionEvaluator.Evaluate(IPreEvaluationBlock)` to
+    `IActionEvaluator.Evaluate(IPreEvaluationBlock, HashDigest<SHA256>)`.
+    [[#3438]]
+ -  Changed `ActionEvaluator` to accept `IStateStore` instead of
+    `IBlockChainStates`  [[#3439]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +33,10 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3437]: https://github.com/planetarium/libplanet/pull/3437
+[#3438]: https://github.com/planetarium/libplanet/pull/3438
+[#3439]: https://github.com/planetarium/libplanet/pull/3439
 
 
 Version 3.4.0

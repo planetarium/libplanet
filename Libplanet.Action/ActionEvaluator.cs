@@ -10,7 +10,7 @@ using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
-using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
@@ -24,7 +24,7 @@ namespace Libplanet.Action
     {
         private readonly ILogger _logger;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
-        private readonly IBlockChainStates _blockChainStates;
+        private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
@@ -32,19 +32,19 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> to use to retrieve
-        /// the states for a provided <see cref="Address"/>.</param>
+        /// <param name="stateStore">The <see cref="IStateStore"/> to use to retrieve
+        /// the states for a provided <see cref="HashDigest{SHA256}"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
             PolicyBlockActionGetter policyBlockActionGetter,
-            IBlockChainStates blockChainStates,
+            IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
             _policyBlockActionGetter = policyBlockActionGetter;
-            _blockChainStates = blockChainStates;
+            _stateStore = stateStore;
             _actionLoader = actionTypeLoader;
         }
 
@@ -76,7 +76,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
+        public IReadOnlyList<IActionEvaluation> Evaluate(
+            IPreEvaluationBlock block,
+            HashDigest<SHA256>? baseStateRootHash)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -88,7 +90,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccount previousState = PrepareInitialDelta(block);
+                IAccount previousState = PrepareInitialDelta(baseStateRootHash);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -188,7 +190,7 @@ namespace Libplanet.Action
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            byte[] signature = tx?.Signature ?? new byte[0];
+            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
@@ -228,8 +230,7 @@ namespace Libplanet.Action
             IAction action,
             ILogger? logger = null)
         {
-            // Make a copy since ActionContext is stateful.
-            IActionContext inputContext = context.GetUnconsumedContext();
+            IActionContext inputContext = context;
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
@@ -243,7 +244,7 @@ namespace Libplanet.Action
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
-                    randomSeed: inputContext.Random.Seed,
+                    randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit());
             }
 
@@ -473,17 +474,9 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
-        /// <summary>
-        /// Prepares the initial <see cref="IAccount"/> to for evaluating
-        /// <paramref name="block"/>.
-        /// </summary>
-        /// <param name="block">The <see cref="Block"/> to evaluate..</param>
-        /// <returns>The initial <see cref="IAccount"/> to be used
-        /// for evaluating <paramref name="block"/>.
-        /// </returns>
-        internal IAccount PrepareInitialDelta(IPreEvaluationBlock block)
+        internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
         {
-            return new Account(_blockChainStates.GetAccountState(block.PreviousHash));
+            return new Account(new AccountState(_stateStore.GetStateRoot(stateRootHash)));
         }
 
         [Pure]

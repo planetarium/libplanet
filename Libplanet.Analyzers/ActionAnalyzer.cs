@@ -37,7 +37,7 @@ namespace Libplanet.Analyzers
                 title: "SystemRandomBreaksActionDeterminism",
                 messageFormat:
                     $"The {{0}} makes an {nameof(IAction)} indeterministic; use " +
-                    $"{nameof(IActionContext)}.{nameof(IActionContext.Random)} property instead.",
+                    $"{nameof(IActionContext)}.{nameof(IActionContext.GetRandom)} method instead.",
                 category: "Determinism",
                 defaultSeverity: DiagnosticSeverity.Warning,
                 isEnabledByDefault: true,
