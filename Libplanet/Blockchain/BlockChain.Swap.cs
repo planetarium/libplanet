@@ -1,7 +1,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
@@ -175,12 +174,11 @@ namespace Libplanet.Blockchain
                     Block block = Store.GetBlock(hash);
                     HashDigest<SHA256>? baseStateRootHash =
                         Store.GetStateRootHash(block.PreviousHash);
-                    ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, baseStateRootHash).ToImmutableList();
-                    (var committedEvaluations, _) = ToCommittedEvaluation(block, evaluations);
+                    IReadOnlyList<ICommittedActionEvaluation> evaluations =
+                        ActionEvaluator.Evaluate(block, baseStateRootHash);
 
                     RenderActions(
-                        evaluations: committedEvaluations,
+                        evaluations: evaluations,
                         block: block);
                 }
 

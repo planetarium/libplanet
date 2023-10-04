@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
@@ -39,13 +38,12 @@ namespace Libplanet.Blockchain
         public static HashDigest<SHA256> DetermineGenesisStateRootHash(
             IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock,
-            out IReadOnlyList<IActionEvaluation> evaluations)
+            out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetRawTotalDelta();
-            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
-            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
-            return trie.Hash;
+            return evaluations.Count > 0
+                ? evaluations.Last().OutputState
+                : new TrieStateStore(new DefaultKeyValueStore(null)).GetStateRoot(null).Hash;
         }
 
         /// <summary>
@@ -55,13 +53,13 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="ICommittedActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
         /// <paramref name="actionEvaluator"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="preEvaluationBlock"/>s
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
-        public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
+        public static IReadOnlyList<ICommittedActionEvaluation> EvaluateGenesis(
             IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock)
         {
@@ -105,7 +103,7 @@ namespace Libplanet.Blockchain
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var rawEvaluations = EvaluateBlock(block);
+                evaluations = EvaluateBlock(block);
 
                 _logger.Debug(
                     "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
@@ -113,13 +111,11 @@ namespace Libplanet.Blockchain
                     stopwatch.ElapsedMilliseconds,
                     block.Index,
                     block.PreEvaluationHash,
-                    rawEvaluations.Count);
+                    evaluations.Count);
 
-                (var committedEvaluations, var rootHash) =
-                    ToCommittedEvaluation(block, rawEvaluations);
-
-                evaluations = committedEvaluations;
-                return rootHash;
+                return evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : GetAccountState(block.PreviousHash).Trie.Hash;
             }
             finally
             {
@@ -131,13 +127,13 @@ namespace Libplanet.Blockchain
         /// Evaluates the <see cref="IAction"/>s in given <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="IActionEvaluation"/>s for
-        /// given <paramref name="block"/>.</returns>
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ICommittedActionEvaluation"/>s
+        /// for given <paramref name="block"/>.</returns>
         /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
         /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
+        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
             ActionEvaluator.Evaluate(block, Store.GetStateRootHash(block.PreviousHash));
 
         /// <summary>
