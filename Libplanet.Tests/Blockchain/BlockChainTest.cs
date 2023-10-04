@@ -1707,7 +1707,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Build a store with incomplete states
             Block b = chain.Genesis;
-            IAccount previousState = actionEvaluator.PrepareInitialDelta(b);
+            IAccount previousState = actionEvaluator.PrepareInitialDelta(null);
             ActionEvaluation[] evals =
                 actionEvaluator.EvaluateBlock(b, previousState).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();

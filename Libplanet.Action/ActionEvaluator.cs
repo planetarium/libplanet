@@ -76,7 +76,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block)
+        public IReadOnlyList<IActionEvaluation> Evaluate(
+            IPreEvaluationBlock block,
+            HashDigest<SHA256>? baseStateRootHash)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -88,7 +90,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccount previousState = PrepareInitialDelta(block);
+                IAccount previousState = PrepareInitialDelta(baseStateRootHash);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -472,17 +474,9 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
-        /// <summary>
-        /// Prepares the initial <see cref="IAccount"/> to for evaluating
-        /// <paramref name="block"/>.
-        /// </summary>
-        /// <param name="block">The <see cref="Block"/> to evaluate..</param>
-        /// <returns>The initial <see cref="IAccount"/> to be used
-        /// for evaluating <paramref name="block"/>.
-        /// </returns>
-        internal IAccount PrepareInitialDelta(IPreEvaluationBlock block)
+        internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
         {
-            return new Account(_blockChainStates.GetAccountState(block.PreviousHash));
+            return new Account(_blockChainStates.GetAccountState(stateRootHash));
         }
 
         [Pure]
