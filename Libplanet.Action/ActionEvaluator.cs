@@ -10,7 +10,6 @@ using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -33,8 +32,8 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="stateStore">The <see cref="IBlockChainStates"/> to use to retrieve
-        /// the states for a provided <see cref="Address"/>.</param>
+        /// <param name="stateStore">The <see cref="IStateStore"/> to use to retrieve
+        /// the states for a provided <see cref="HashDigest{SHA256}"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
