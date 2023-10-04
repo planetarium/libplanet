@@ -24,16 +24,15 @@ namespace Libplanet.Action
         /// <paramref name="block"/>.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
-        /// <see cref="IActionEvaluation"/>s.</returns>
+        /// <see cref="ICommittedActionEvaluation"/>s.</returns>
         /// <remarks>
-        /// <para>Publicly exposed for benchmarking.</para>
-        /// <para>First evaluates all <see cref="IAction"/>s in
+        /// First evaluates all <see cref="IAction"/>s in
         /// <see cref="IBlockContent.Transactions"/> of <paramref name="block"/> and appends the
         /// evaluation of the <see cref="IBlockPolicy.BlockAction"/> held by the instance at
-        /// the end.</para>
+        /// the end.
         /// </remarks>
         [Pure]
-        IReadOnlyList<IActionEvaluation> Evaluate(
+        IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
             HashDigest<SHA256>? baseStateRootHash);
     }
