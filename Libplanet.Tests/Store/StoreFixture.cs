@@ -112,8 +112,7 @@ namespace Libplanet.Tests.Store
                 BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
-                    out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetRawTotalDelta());
+                    out IReadOnlyList<ICommittedActionEvaluation> evals));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,
