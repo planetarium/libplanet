@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.6.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on October 6, 2023.
 
 ### Backward-incompatible API changes
 
@@ -25,10 +23,6 @@ To be released.
     `IReadOnlyList<ICommittedActionEvaluation>` from
     `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
  -  Removed `StateStoreExtensions` class.  [[#3323], [#3450]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -54,12 +48,6 @@ To be released.
  -  `IActionEvaluator.Evaluate()`, `BlockChain.EvaluateGenesis()`,
     and `BlockChain.EvaluateBlock()` have a side-effect of storing
     data to `IStateStore` when called.  [[#3445]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3323]: https://github.com/planetarium/libplanet/issues/3323
 [#3445]: https://github.com/planetarium/libplanet/pull/3445
