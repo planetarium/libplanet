@@ -19,13 +19,13 @@ namespace Libplanet.Tests.Store
             HashDigest<SHA256> emptyRootHash = emptyTrie.Hash;
 
             Assert.Null(emptyTrie.Root);
-            Assert.True(stateStore.ContainsStateRoot(emptyRootHash));
+            Assert.True(stateStore.GetStateRoot(emptyRootHash).Recorded);
             Assert.False(keyValueStore.Exists(new KeyBytes(emptyRootHash.ByteArray)));
 
             emptyTrie = stateStore.Commit(emptyTrie);
             Assert.Null(emptyTrie.Root);
             Assert.Equal(emptyRootHash, emptyTrie.Hash);
-            Assert.True(stateStore.ContainsStateRoot(emptyRootHash));
+            Assert.True(stateStore.GetStateRoot(emptyRootHash).Recorded);
             Assert.False(keyValueStore.Exists(new KeyBytes(emptyRootHash.ByteArray)));
         }
 
@@ -47,8 +47,8 @@ namespace Libplanet.Tests.Store
 
             Assert.NotEqual(hashBeforeCommit, hashAfterCommitOnce);
             Assert.Equal(hashAfterCommitOnce, hashAfterCommitTwice);
-            Assert.False(stateStore.ContainsStateRoot(hashBeforeCommit));
-            Assert.True(stateStore.ContainsStateRoot(hashAfterCommitOnce));
+            Assert.False(stateStore.GetStateRoot(hashBeforeCommit).Recorded);
+            Assert.True(stateStore.GetStateRoot(hashAfterCommitOnce).Recorded);
             Assert.False(keyValueStore.Exists(new KeyBytes(hashBeforeCommit.ByteArray)));
             Assert.True(keyValueStore.Exists(new KeyBytes(hashAfterCommitOnce.ByteArray)));
 

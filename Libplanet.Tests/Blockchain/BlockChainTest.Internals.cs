@@ -131,10 +131,9 @@ namespace Libplanet.Tests.Blockchain
             {
                 AssertBencodexEqual(
                     pair.Value,
-                    _fx.StateStore.GetStates(
-                        block1.StateRootHash,
-                        new[] { ToStateKey(pair.Key) }
-                    )[0]
+                    _fx.StateStore
+                        .GetStateRoot(block1.StateRootHash)
+                        .Get(new[] { ToStateKey(pair.Key) })[0]
                 );
             }
         }
