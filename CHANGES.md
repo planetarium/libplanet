@@ -36,6 +36,18 @@ To be released.
     `HashDigest<SHA256>?`.  [[#3446], [#3447]]
  -  (Libplanet.Explorer) Added `TxResult.OutputState` of type
     `HashDigest<SHA256>?`.  [[#3446], [#3447]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.states` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.balance` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.totalSupply` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.validators` field.
+    [[#3448], [#3449]]
 
 ### Behavioral changes
 
@@ -53,6 +65,8 @@ To be released.
 [#3445]: https://github.com/planetarium/libplanet/pull/3445
 [#3446]: https://github.com/planetarium/libplanet/issues/3446
 [#3447]: https://github.com/planetarium/libplanet/pull/3447
+[#3448]: https://github.com/planetarium/libplanet/issues/3448
+[#3449]: https://github.com/planetarium/libplanet/pull/3449
 [#3450]: https://github.com/planetarium/libplanet/pull/3450
 
 
