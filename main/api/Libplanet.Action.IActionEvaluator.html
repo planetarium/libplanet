@@ -87,7 +87,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionEvaluator_ActionLoader.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionEvaluator.ActionLoader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L16">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L17">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionEvaluator_ActionLoader_" data-uid="Libplanet.Action.IActionEvaluator.ActionLoader*"></a>
   <h4 id="Libplanet_Action_IActionEvaluator_ActionLoader" data-uid="Libplanet.Action.IActionEvaluator.ActionLoader">ActionLoader</h4>
@@ -122,7 +122,7 @@ IActionLoader ActionLoader { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L35">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L40">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionEvaluator_Evaluate_" data-uid="Libplanet.Action.IActionEvaluator.Evaluate*"></a>
   <h4 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
@@ -132,7 +132,7 @@ IActionLoader ActionLoader { get; }</code></pre>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-IReadOnlyList&lt;IActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
+IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,20 +169,24 @@ IReadOnlyList&lt;IActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashD
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Action.IActionEvaluation.html">IActionEvaluation</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>&gt;</td>
         <td><p>The result of evaluating every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> related to
 <code data-dev-comment-type="paramref" class="paramref">block</code> as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList&lt;T&gt;</a> of
-<a class="xref" href="Libplanet.Action.IActionEvaluation.html">IActionEvaluation</a>s.</p>
+<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>s.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Publicly exposed for benchmarking.</p>
-<p>First evaluates all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s in
+  <div class="markdown level1 remarks"><p>
+This has a side-effect of writing data to internally held <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
+</p>
+<p>
+First evaluates all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s in
 <a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html#Libplanet_Types_Blocks_IBlockContent_Transactions">Transactions</a> of <code data-dev-comment-type="paramref" class="paramref">block</code> and appends the
 evaluation of the <see cref="!:IBlockPolicy.BlockAction"></see> held by the instance at
-the end.</p>
+the end.
+</p>
 </div>
 </article>
           </div>
@@ -195,7 +199,7 @@ the end.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionEvaluator.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionEvaluator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/IActionEvaluator.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

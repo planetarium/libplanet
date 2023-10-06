@@ -3193,15 +3193,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.DetermineBlockStateRootHash
   nameWithType: BlockChain.DetermineBlockStateRootHash
-- uid: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_IActionEvaluation___
-  commentId: M:Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.IActionEvaluation}@)
-  name.vb: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, ByRef IReadOnlyList(Of IActionEvaluation))
-  fullName: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Types.Blocks.IPreEvaluationBlock, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.IActionEvaluation>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Types.Blocks.IPreEvaluationBlock, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.IActionEvaluation))
-  nameWithType: BlockChain.DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)
-  nameWithType.vb: BlockChain.DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, ByRef IReadOnlyList(Of IActionEvaluation))
+- uid: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ICommittedActionEvaluation}@)
+  name: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineGenesisStateRootHash_Libplanet_Action_IActionEvaluator_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Action_ICommittedActionEvaluation___
+  commentId: M:Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator,Libplanet.Types.Blocks.IPreEvaluationBlock,System.Collections.Generic.IReadOnlyList{Libplanet.Action.ICommittedActionEvaluation}@)
+  name.vb: DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, ByRef IReadOnlyList(Of ICommittedActionEvaluation))
+  fullName: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Types.Blocks.IPreEvaluationBlock, out System.Collections.Generic.IReadOnlyList<Libplanet.Action.ICommittedActionEvaluation>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash(Libplanet.Action.IActionEvaluator, Libplanet.Types.Blocks.IPreEvaluationBlock, ByRef System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.ICommittedActionEvaluation))
+  nameWithType: BlockChain.DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)
+  nameWithType.vb: BlockChain.DetermineGenesisStateRootHash(IActionEvaluator, IPreEvaluationBlock, ByRef IReadOnlyList(Of ICommittedActionEvaluation))
 - uid: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash*
   name: DetermineGenesisStateRootHash
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_DetermineGenesisStateRootHash_
