@@ -24,6 +24,7 @@ To be released.
  -  Changed `BlockChain.EvaluateBlock()`'s return type to
     `IReadOnlyList<ICommittedActionEvaluation>` from
     `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Removed `StateStoreExtensions` class.  [[#3323], [#3450]]
 
 ### Backward-incompatible network protocol changes
 
@@ -48,9 +49,11 @@ To be released.
 
 ### CLI tools
 
+[#3323]: https://github.com/planetarium/libplanet/issues/3323
 [#3445]: https://github.com/planetarium/libplanet/pull/3445
 [#3446]: https://github.com/planetarium/libplanet/issues/3446
 [#3447]: https://github.com/planetarium/libplanet/pull/3447
+[#3450]: https://github.com/planetarium/libplanet/pull/3450
 
 
 Version 3.5.0
