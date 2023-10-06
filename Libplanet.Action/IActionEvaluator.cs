@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Action.Loader;
 using Libplanet.Common;
+using Libplanet.Store;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
@@ -26,10 +27,15 @@ namespace Libplanet.Action
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ICommittedActionEvaluation"/>s.</returns>
         /// <remarks>
+        /// <para>
+        /// This has a side-effect of writing data to internally held <see cref="IStateStore"/>.
+        /// </para>
+        /// <para>
         /// First evaluates all <see cref="IAction"/>s in
         /// <see cref="IBlockContent.Transactions"/> of <paramref name="block"/> and appends the
         /// evaluation of the <see cref="IBlockPolicy.BlockAction"/> held by the instance at
         /// the end.
+        /// </para>
         /// </remarks>
         [Pure]
         IReadOnlyList<ICommittedActionEvaluation> Evaluate(
