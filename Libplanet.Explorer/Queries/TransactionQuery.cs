@@ -248,9 +248,13 @@ namespace Libplanet.Explorer.Queries
                                 TxStatus.STAGING,
                                 null,
                                 null,
+                                null,
+                                null,
                                 null)
                             : new TxResult(
                                 TxStatus.INVALID,
+                                null,
+                                null,
                                 null,
                                 null,
                                 null);
@@ -268,12 +272,16 @@ namespace Libplanet.Explorer.Queries
                             execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
                             txExecutedBlock.Index,
                             txExecutedBlock.Hash.ToString(),
+                            execution.InputState,
+                            execution.OutputState,
                             execution.ExceptionNames);
                     }
                     catch (Exception)
                     {
                         return new TxResult(
                             TxStatus.INVALID,
+                            null,
+                            null,
                             null,
                             null,
                             null);
