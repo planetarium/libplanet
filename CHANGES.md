@@ -16,6 +16,11 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Explorer) Added `TxResult.InputState` of type 
+    `HashDigest<SHA256>?`.  [[#3446], [#3447]]
+ -  (Libplanet.Explorer) Added `TxResult.OutputState` of type 
+    `HashDigest<SHA256>?`.  [[#3446], [#3447]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -24,6 +29,8 @@ To be released.
 
 ### CLI tools
 
+[#3446]: https://github.com/planetarium/libplanet/issues/3446
+[#3447]: https://github.com/planetarium/libplanet/pull/3447
 
 Version 3.5.0
 -------------
