@@ -42,7 +42,7 @@ public class StateQuery
             "totalSupply",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
@@ -50,7 +50,7 @@ public class StateQuery
         Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
             "validators",
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
