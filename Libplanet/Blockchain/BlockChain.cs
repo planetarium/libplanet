@@ -384,7 +384,7 @@ namespace Libplanet.Blockchain
             var computedStateRootHash = DetermineGenesisStateRootHash(
                 actionEvaluator,
                 preEval,
-                out IReadOnlyList<IActionEvaluation> evals);
+                out var _);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -413,9 +413,6 @@ namespace Libplanet.Blockchain
             }
 
             store.SetCanonicalChainId(id);
-
-            var delta = evals.GetRawTotalDelta();
-            stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
 

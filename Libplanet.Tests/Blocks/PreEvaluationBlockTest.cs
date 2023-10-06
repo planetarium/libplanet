@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blocks
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash =
                     BlockChain.DetermineGenesisStateRootHash(
-                        actionEvaluator, preEvalGenesis, out _);
+                        actionEvaluator, preEvalGenesis, out var _);
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);

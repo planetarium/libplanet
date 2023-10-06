@@ -11,6 +11,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
@@ -76,7 +77,7 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> Evaluate(
+        public IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
             HashDigest<SHA256>? baseStateRootHash)
         {
@@ -95,19 +96,15 @@ namespace Libplanet.Action
                     EvaluateBlock(block, previousState).ToImmutableList();
 
                 var policyBlockAction = _policyBlockActionGetter(block);
-                if (policyBlockAction is null)
-                {
-                    return evaluations;
-                }
-                else
+                if (policyBlockAction is { } blockAction)
                 {
                     previousState = evaluations.Count > 0
                         ? evaluations.Last().OutputState
                         : previousState;
-                    return evaluations.Add(
-                        EvaluatePolicyBlockAction(block, previousState)
-                    );
+                    evaluations = evaluations.Add(EvaluatePolicyBlockAction(block, previousState));
                 }
+
+                return ToCommittedEvaluation(block, evaluations, baseStateRootHash);
             }
             finally
             {
@@ -477,6 +474,64 @@ namespace Libplanet.Action
         internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
         {
             return new Account(new AccountState(_stateStore.GetStateRoot(stateRootHash)));
+        }
+
+        internal IReadOnlyList<ICommittedActionEvaluation>
+            ToCommittedEvaluation(
+                IPreEvaluationBlock block,
+                IReadOnlyList<IActionEvaluation> evaluations,
+                HashDigest<SHA256>? baseStateRootHash)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            ITrie trie = _stateStore.GetStateRoot(baseStateRootHash);
+            var committedEvaluations = new List<CommittedActionEvaluation>();
+
+            int setCount = 0;
+            foreach (var evaluation in evaluations)
+            {
+                ITrie nextTrie = trie;
+                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
+                {
+                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
+                    setCount++;
+                }
+
+                nextTrie = _stateStore.Commit(nextTrie);
+                var committedEvaluation = new CommittedActionEvaluation(
+                    action: evaluation.Action,
+                    inputContext: new CommittedActionContext(
+                        signer: evaluation.InputContext.Signer,
+                        txId: evaluation.InputContext.TxId,
+                        miner: evaluation.InputContext.Miner,
+                        blockIndex: evaluation.InputContext.BlockIndex,
+                        blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
+                        rehearsal: evaluation.InputContext.Rehearsal,
+                        previousState: trie.Hash,
+                        randomSeed: evaluation.InputContext.RandomSeed,
+                        blockAction: evaluation.InputContext.BlockAction),
+                    outputState: nextTrie.Hash,
+                    exception: evaluation.Exception);
+                committedEvaluations.Add(committedEvaluation);
+
+                trie = nextTrie;
+            }
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "StateUpdateDuration")
+                .Information(
+                    "Took {DurationMs} ms to update the states with {Count} key changes " +
+                    "and resulting in state root hash {StateRootHash} for " +
+                    "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
+                    stopwatch.ElapsedMilliseconds,
+                    setCount,
+                    trie.Hash,
+                    block.Index,
+                    block.PreEvaluationHash);
+
+            return committedEvaluations;
         }
 
         [Pure]

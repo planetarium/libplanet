@@ -10,18 +10,37 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `IActionEvaluator.Evaluate()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Changed `BlockChain.DetermineStateRootHash(IActionEvaluator,
+    IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)` to
+    `BlockChain.DetermineStateRootHash(IActionEvaluator,
+    IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)`.
+    [[#3445]]
+ -  Changed `BlockChain.EvaluateGenesis()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Changed `BlockChain.EvaluateBlock()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
- -  (Libplanet.Explorer) Added `TxResult.InputState` of type 
+ -  (Libplanet.Explorer) Added `TxResult.InputState` of type
     `HashDigest<SHA256>?`.  [[#3446], [#3447]]
- -  (Libplanet.Explorer) Added `TxResult.OutputState` of type 
+ -  (Libplanet.Explorer) Added `TxResult.OutputState` of type
     `HashDigest<SHA256>?`.  [[#3446], [#3447]]
 
 ### Behavioral changes
+
+ -  `IActionEvaluator.Evaluate()`, `BlockChain.EvaluateGenesis()`,
+    and `BlockChain.EvaluateBlock()` have a side-effect of storing
+    data to `IStateStore` when called.  [[#3445]]
 
 ### Bug fixes
 
@@ -29,8 +48,10 @@ To be released.
 
 ### CLI tools
 
+[#3445]: https://github.com/planetarium/libplanet/pull/3445
 [#3446]: https://github.com/planetarium/libplanet/issues/3446
 [#3447]: https://github.com/planetarium/libplanet/pull/3447
+
 
 Version 3.5.0
 -------------

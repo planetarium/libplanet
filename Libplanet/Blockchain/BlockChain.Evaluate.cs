@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -39,13 +37,12 @@ namespace Libplanet.Blockchain
         public static HashDigest<SHA256> DetermineGenesisStateRootHash(
             IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock,
-            out IReadOnlyList<IActionEvaluation> evaluations)
+            out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
             evaluations = EvaluateGenesis(actionEvaluator, preEvaluationBlock);
-            IImmutableDictionary<KeyBytes, IValue> delta = evaluations.GetRawTotalDelta();
-            IStateStore stateStore = new TrieStateStore(new DefaultKeyValueStore(null));
-            ITrie trie = stateStore.Commit(stateStore.GetStateRoot(null).Hash, delta);
-            return trie.Hash;
+            return evaluations.Count > 0
+                ? evaluations.Last().OutputState
+                : new TrieStateStore(new DefaultKeyValueStore(null)).GetStateRoot(null).Hash;
         }
 
         /// <summary>
@@ -55,13 +52,13 @@ namespace Libplanet.Blockchain
         /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to
         /// evaluate.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="IActionEvaluation"/>s
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <see cref="ICommittedActionEvaluation"/>s
         /// resulting from evaluating <paramref name="preEvaluationBlock"/> using
         /// <paramref name="actionEvaluator"/>.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="preEvaluationBlock"/>s
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         [Pure]
-        public static IReadOnlyList<IActionEvaluation> EvaluateGenesis(
+        public static IReadOnlyList<ICommittedActionEvaluation> EvaluateGenesis(
             IActionEvaluator actionEvaluator,
             IPreEvaluationBlock preEvaluationBlock)
         {
@@ -105,7 +102,7 @@ namespace Libplanet.Blockchain
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var rawEvaluations = EvaluateBlock(block);
+                evaluations = EvaluateBlock(block);
 
                 _logger.Debug(
                     "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
@@ -113,13 +110,11 @@ namespace Libplanet.Blockchain
                     stopwatch.ElapsedMilliseconds,
                     block.Index,
                     block.PreEvaluationHash,
-                    rawEvaluations.Count);
+                    evaluations.Count);
 
-                (var committedEvaluations, var rootHash) =
-                    ToCommittedEvaluation(block, rawEvaluations);
-
-                evaluations = committedEvaluations;
-                return rootHash;
+                return evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : GetAccountState(block.PreviousHash).Trie.Hash;
             }
             finally
             {
@@ -131,13 +126,13 @@ namespace Libplanet.Blockchain
         /// Evaluates the <see cref="IAction"/>s in given <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute.</param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="IActionEvaluation"/>s for
-        /// given <paramref name="block"/>.</returns>
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ICommittedActionEvaluation"/>s
+        /// for given <paramref name="block"/>.</returns>
         /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
         /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <seealso cref="ValidateBlockStateRootHash"/>
         [Pure]
-        public IReadOnlyList<IActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
+        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlock(IPreEvaluationBlock block) =>
             ActionEvaluator.Evaluate(block, Store.GetStateRootHash(block.PreviousHash));
 
         /// <summary>
@@ -167,62 +162,5 @@ namespace Libplanet.Blockchain
                 : throw new ArgumentException(
                     $"Given {nameof(preEvaluationBlock)} must have protocol version " +
                     $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
-
-        internal (IReadOnlyList<ICommittedActionEvaluation>, HashDigest<SHA256>)
-            ToCommittedEvaluation(
-                IPreEvaluationBlock block,
-                IReadOnlyList<IActionEvaluation> evaluations)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            ITrie trie = GetAccountState(block.PreviousHash).Trie;
-            var committedEvaluations = new List<CommittedActionEvaluation>();
-
-            int setCount = 0;
-            foreach (var evaluation in evaluations)
-            {
-                ITrie nextTrie = trie;
-                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
-                {
-                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                    setCount++;
-                }
-
-                nextTrie = StateStore.Commit(nextTrie);
-                var committedEvaluation = new CommittedActionEvaluation(
-                    action: evaluation.Action,
-                    inputContext: new CommittedActionContext(
-                        signer: evaluation.InputContext.Signer,
-                        txId: evaluation.InputContext.TxId,
-                        miner: evaluation.InputContext.Miner,
-                        blockIndex: evaluation.InputContext.BlockIndex,
-                        blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        rehearsal: evaluation.InputContext.Rehearsal,
-                        previousState: trie.Hash,
-                        randomSeed: evaluation.InputContext.RandomSeed,
-                        blockAction: evaluation.InputContext.BlockAction),
-                    outputState: nextTrie.Hash,
-                    exception: evaluation.Exception);
-                committedEvaluations.Add(committedEvaluation);
-
-                trie = nextTrie;
-            }
-
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "StateUpdateDuration")
-                .Information(
-                    "Took {DurationMs} ms to update the states with {Count} key changes " +
-                    "and resulting in state root hash {StateRootHash} for " +
-                    "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                    stopwatch.ElapsedMilliseconds,
-                    setCount,
-                    trie.Hash,
-                    block.Index,
-                    block.PreEvaluationHash);
-
-            return (committedEvaluations, trie.Hash);
-        }
     }
 }
