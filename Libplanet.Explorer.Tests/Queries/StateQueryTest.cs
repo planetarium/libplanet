@@ -174,6 +174,26 @@ public class StateQueryTest
         Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
+    
+    [Fact]
+    public async Task ThrowExecutionErrorIfViolateMutualExclusive()
+    {
+        (IBlockChainStates, IBlockPolicy) source = (
+            new MockChainStates(), new BlockPolicy()
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            states(
+                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"",
+                 offsetStateRootHash:
+                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
+            )
+        }
+        ", source: source);
+        Assert.IsType<ExecutionErrors>(result.Errors);
+    }
 
     private class MockChainStates : IBlockChainStates
     {
