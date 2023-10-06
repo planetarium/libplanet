@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "TV+iHx37gBGz4tZ7rzggOZuJZBuPCEJXpvD+sJt5yAQ="
+          "hash": "X4MlebW5btkBF1HvaondpfRcSIcp+eBawtbkozZeR48="
         }
       },
       "is_incremental": false,
@@ -3321,7 +3321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStateStore.html",
-          "hash": "0tNrgYiOkLdEU0VHXjBEtnPquaXUsl6h58jCQFEjVSI="
+          "hash": "c0xVtVTnFZ8NbWHfhSkjUQgV0j77OizZ9NrFoVyrGUc="
         }
       },
       "is_incremental": false,
@@ -3346,18 +3346,6 @@
         ".html": {
           "relative_path": "api/Libplanet.Store.MemoryStore.html",
           "hash": "Bwj0lYv7y5QM7GuDZN8mf0OBawQpqFtt1+WqmcJZ9zA="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Store.StateStoreExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Store.StateStoreExtensions.html",
-          "hash": "vqcbt5PpyL5dPZUg533pop1eNwVM5ojJcasGxGtyq68="
         }
       },
       "is_incremental": false,
@@ -3657,7 +3645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.TrieStateStore.html",
-          "hash": "0eqWrokU7kZv0g/nhFFApKv3iPzegKNpU+rC/uRNGpY="
+          "hash": "A28bn4iPwc6dQfilvfJrdxNqLAH82xtB/VJALY5+vEA="
         }
       },
       "is_incremental": false,
@@ -3669,7 +3657,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.html",
-          "hash": "MzE1unry8mKdARWiEsG57jpxjFf1BY/2P/l4fViJOmU="
+          "hash": "IDP6CVW0scqjLB2n/qKP4/OKrTgAdRpjFIJQDXUj7T4="
         }
       },
       "is_incremental": false,
@@ -5049,7 +5037,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "i2UOROjiDkrzuiAG4I63bQlllBNPwm3fB3rsEzX/q00="
+          "hash": "ARyMWPb2korHM/hFyLbnPO95eW6EZObBd1kmG9NiG1s="
         }
       },
       "is_incremental": false,
@@ -5158,7 +5146,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 410,
+          "total_file_count": 409,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
