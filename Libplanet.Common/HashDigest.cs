@@ -15,6 +15,8 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Common.Serialization;
 
 namespace Libplanet.Common
@@ -36,7 +38,7 @@ namespace Libplanet.Common
     [TypeConverter(typeof(HashDigestTypeConverter))]
     [JsonConverter(typeof(HashDigestJsonConverter))]
     [Serializable]
-    public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>
+    public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>, IBencodable
         where T : HashAlgorithm
     {
         /// <summary>
@@ -114,6 +116,21 @@ namespace Libplanet.Common
             _byteArray = hashDigest;
         }
 
+        public HashDigest(IValue bencoded)
+            : this(bencoded is Binary binary
+                ? binary
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+        private HashDigest(Binary binary)
+            : this(binary.ByteArray)
+        {
+        }
+
         private HashDigest(
             SerializationInfo info,
             StreamingContext context)
@@ -129,6 +146,9 @@ namespace Libplanet.Common
         /// <seealso cref="ToByteArray()"/>
         public ImmutableArray<byte> ByteArray =>
             _byteArray.IsDefault ? DefaultByteArray : _byteArray;
+
+        /// <inheritdoc cref="IBencodable.Bencoded"/>
+        public IValue Bencoded => new Binary(ByteArray);
 
         /// <summary>
         /// Converts a given hexadecimal representation of a digest into
