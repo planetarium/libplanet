@@ -197,12 +197,12 @@ namespace Libplanet.Types.Tx
 
             if (InputState is { } inputState)
             {
-                dict = dict.Add(InputStateKey, inputState.ByteArray);
+                dict = dict.Add(InputStateKey, inputState.Bencoded);
             }
 
             if (OutputState is { } outputState)
             {
-                dict = dict.Add(OutputStateKey, outputState.ByteArray);
+                dict = dict.Add(OutputStateKey, outputState.Bencoded);
             }
 
             if (ExceptionNames is { } exceptionNames)
