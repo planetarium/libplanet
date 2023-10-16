@@ -216,14 +216,12 @@ namespace Libplanet.Tests.Blockchain
                 new SetStatesAtBlock(default, (Text)"foo", 1),
                 policy.BlockInterval
             );
-            var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain(
                 policyWithBlockAction,
                 new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policyWithBlockAction.BlockAction,
                     stateStore,

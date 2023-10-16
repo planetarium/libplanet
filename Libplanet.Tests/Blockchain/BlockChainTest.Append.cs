@@ -496,14 +496,12 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy(
                     new BlockPolicyViolationException(string.Empty));
-            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var blockChain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,
