@@ -18,11 +18,15 @@ To be released.
 
 ### Behavioral changes
 
+ -  Slightly optimized `BlockMarshaler`.  [[#3454]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3454]: https://github.com/planetarium/libplanet/pull/3454
 
 
 Version 3.6.0
