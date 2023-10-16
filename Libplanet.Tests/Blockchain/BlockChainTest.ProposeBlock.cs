@@ -448,7 +448,6 @@ namespace Libplanet.Tests.Blockchain
 
             var blockAction = new DumbAction(address1, "foo");
             var policy = new BlockPolicy(blockAction);
-            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
             var blockChain = new BlockChain(
                 policy,
@@ -456,7 +455,6 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,

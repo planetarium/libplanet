@@ -128,14 +128,12 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
             var policy = new BlockPolicy(new MinerReward(1));
-            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var z = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,
@@ -178,7 +176,6 @@ namespace Libplanet.Tests.Blockchain
         {
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var blockChainStates = new BlockChainStates(store, stateStore);
             var policy = new BlockPolicy();
             var actionLoader = TypedActionLoader.Create(
                 typeof(BaseAction).Assembly, typeof(BaseAction));
@@ -1106,14 +1103,12 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy();
             var tracker = new StoreTracker(_fx.Store);
-            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 tracker,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,
@@ -1160,14 +1155,12 @@ namespace Libplanet.Tests.Blockchain
         {
             var policy = new NullBlockPolicy();
             var tracker = new StoreTracker(_fx.Store);
-            var blockChainStates = new BlockChainStates(tracker, _fx.StateStore);
             var chain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 tracker,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,
@@ -1235,14 +1228,12 @@ namespace Libplanet.Tests.Blockchain
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var policy = new NullBlockPolicy();
-            var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var chain = new BlockChain(
                 policy,
                 new VolatileStagePolicy(),
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
                     _fx.StateStore,
@@ -1673,7 +1664,6 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy blockPolicy = new NullBlockPolicy();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            var chainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 _ => blockPolicy.BlockAction,
                 stateStore: stateStore,
@@ -1689,7 +1679,6 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisBlock,
                 renderers: renderer is null ? null : new[] { renderer },
-                blockChainStates: chainStates,
                 actionEvaluator: actionEvaluator);
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
@@ -1896,8 +1885,6 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
-            var blockChainStates = new BlockChainStates(
-                storeFixture.Store, storeFixture.StateStore);
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 storeFixture.StateStore,
@@ -1937,7 +1924,6 @@ namespace Libplanet.Tests.Blockchain
             var stagePolicy = new VolatileStagePolicy();
             IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 _ => policy.BlockAction,
                 stateStore,
@@ -1961,7 +1947,6 @@ namespace Libplanet.Tests.Blockchain
                     store,
                     stateStore,
                     genesisBlockB,
-                    blockChainStates,
                     actionEvaluator);
             });
         }
