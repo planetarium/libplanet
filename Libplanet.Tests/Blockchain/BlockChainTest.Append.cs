@@ -222,10 +222,12 @@ namespace Libplanet.Tests.Blockchain
             var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
             _logger.Verbose(nameof(txExecution1) + " = {@TxExecution}", txExecution1);
             Assert.False(txExecution1.Fail);
-            var inputAccount1 = _blockChain.GetAccountState(
-                Assert.IsType<HashDigest<SHA256>>(txExecution1.InputState));
-            var outputAccount1 = _blockChain.GetAccountState(
-                Assert.IsType<HashDigest<SHA256>>(txExecution1.OutputState));
+            var inputAccount1 = _blockChain.GetWorldState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution1.InputState))
+                    .GetAccount(ReservedAddresses.LegacyAccount);
+            var outputAccount1 = _blockChain.GetWorldState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution1.OutputState))
+                    .GetAccount(ReservedAddresses.LegacyAccount);
             var accountDiff1 = AccountDiff.Create(inputAccount1, outputAccount1);
 
             Assert.Equal(
@@ -264,8 +266,9 @@ namespace Libplanet.Tests.Blockchain
             var txExecution3 = getTxExecution(block3.Hash, tx3Transfer.Id);
             _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
             Assert.False(txExecution3.Fail);
-            var outputAccount3 = _blockChain.GetAccountState(
-                Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState));
+            var outputAccount3 = _blockChain.GetWorldState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState))
+                    .GetAccount(ReservedAddresses.LegacyAccount);
             Assert.Equal(
                 DumbAction.DumbCurrency * -35,
                 outputAccount3.GetBalance(pk.ToAddress(), DumbAction.DumbCurrency));
