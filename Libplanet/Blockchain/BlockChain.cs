@@ -478,107 +478,28 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets the current state of given <paramref name="address"/> in the
-        /// <see cref="BlockChain"/>.
+        /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
+        /// <paramref name="hash"/>.
         /// </summary>
-        /// <param name="address">An <see cref="Address"/> to get the states of.</param>
-        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
-        /// <returns>The current state of given <paramref name="address"/>.  This can be
-        /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
-        public IValue GetState(Address address, Address accountAddress) =>
-            GetState(address, accountAddress, Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetState"/>
-        public IValue GetState(Address address, Address accountAddress, BlockHash? offset) =>
-            GetAccountState(accountAddress, offset).GetState(address);
-
-        /// <summary>
-        /// Gets multiple states associated to the specified <paramref name="addresses"/>.
-        /// </summary>
-        /// <param name="addresses">Addresses of states to query.</param>
-        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
-        /// <returns>The states associated to the specified <paramref name="addresses"/>.
-        /// Associated values are ordered in the same way to the corresponding
-        /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
-        /// </returns>
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses, Address accountAddress) =>
-            GetStates(addresses, accountAddress, Tip.Hash);
-
-#pragma warning disable MEN002
-        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address}, Address, BlockHash?)"/>
-#pragma warning restore MEN002
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses,
-            Address accountAddress,
-            BlockHash? offset) =>
-            GetAccountState(accountAddress, offset).GetStates(addresses);
-
-#pragma warning disable MEN002
-        /// <inheritdoc cref="IBlockChainStates.GetStates(IReadOnlyList{Address},HashDigest{SHA256}?)" />
-#pragma warning restore MEN002
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses,
-            HashDigest<SHA256>? stateRootHash) =>
-            StateStore.GetStateRoot(stateRootHash).Get(addresses.Select(ToStateKey).ToList());
-
-        /// <summary>
-        /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
-        /// in the <see cref="BlockChain"/>.
-        /// </summary>
-        /// <param name="address">The owner <see cref="Address"/> to query.</param>
-        /// <param name="currency">The currency type to query.</param>
-        /// <returns>The <paramref name="address"/>'s current balance.
-        /// </returns>
-        public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency) =>
-            GetBalance(address, currency, Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
-        public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
-            BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetBalance(address, currency);
-
-        /// <summary>
-        /// Gets the current total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/>.
-        /// </summary>
-        /// <param name="currency">The currency type to query.</param>
-        /// <returns>The total supply value of <paramref name="currency"/> at
-        /// <see cref="BlockChain.Tip"/> in <see cref="FungibleAssetValue"/>.</returns>
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetTotalSupply(currency, Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
-        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetTotalSupply(currency);
-
-        public ValidatorSet GetValidatorSet() => GetValidatorSet(Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
-        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetAccountState(ReservedAddresses.LegacyAccount, offset).GetValidatorSet();
-
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
-        public IAccountState GetAccountState(Address address, BlockHash? offset) =>
-            GetWorldState(offset).GetAccount(address);
-
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
-        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash) =>
-            new AccountBaseState(GetTrie(stateRootHash));
-
-        public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)" />
-        public IWorldState GetWorldState(BlockHash? offset) =>
-            new WorldBaseState(GetTrie(offset), StateStore);
-
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
-        public IWorldState GetWorldState(HashDigest<SHA256>? hash) =>
-            new WorldBaseState(GetTrie(hash), StateStore);
+        /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
+        /// the internally held <see cref="IStore"/>.</param>
+        /// <returns>An <see cref="ITrie"/> representing the state root associated with
+        /// <see cref="HashDigest{SHA256}"/> <paramref name="hash"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the <see cref="ITrie"/> found in
+        /// <see cref="IStateStore"/> with given <paramref name="hash"/> is not recorded.
+        /// </exception>
+        /// <remarks>
+        /// An <see cref="ITrie"/> returned by this method is read-only.
+        /// </remarks>
+        public ITrie GetTrie(HashDigest<SHA256>? hash)
+        {
+            ITrie trie = StateStore.GetStateRoot(hash);
+            return trie.Recorded
+                ? trie
+                : throw new ArgumentException(
+                    $"Could not find state root {hash} in {nameof(IStateStore)}.",
+                    nameof(hash));
+        }
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -623,28 +544,155 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
-        /// <paramref name="hash"/>.
+        /// Returns the <see cref="IValue"/> from <see cref="StateStore"/>, with given
+        /// <paramref name="keyBytes"/> and <paramref name="stateRootHash"/>.
         /// </summary>
-        /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
-        /// the internally held <see cref="IStore"/>.</param>
-        /// <returns>An <see cref="ITrie"/> representing the state root associated with
-        /// <see cref="HashDigest{SHA256}"/> <paramref name="hash"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown when the <see cref="ITrie"/> found in
-        /// <see cref="IStateStore"/> with given <paramref name="hash"/> is not recorded.
-        /// </exception>
-        /// <remarks>
-        /// An <see cref="ITrie"/> returned by this method is read-only.
-        /// </remarks>
-        public ITrie GetTrie(HashDigest<SHA256>? hash)
+        /// <param name="keyBytes"><see cref="KeyBytes"/> where <see cref="IValue"/> is stored.
+        /// </param>
+        /// <param name="stateRootHash">State root hash of reference <see cref="ITrie"/>.
+        /// </param>
+        /// <returns><see cref="IValue"/> retrieved from <see cref="StateStore"/>.</returns>
+        public IValue GetValue(
+            KeyBytes keyBytes,
+            HashDigest<SHA256>? stateRootHash)
+            => StateStore.GetStateRoot(stateRootHash).Get(keyBytes);
+
+        /// <summary>
+        /// Returns the <see cref="IValue"/> from <see cref="StateStore"/>, with given
+        /// <paramref name="address"/> and <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="address"><see cref="Address"/> where <see cref="IValue"/> is stored.
+        /// </param>
+        /// <param name="stateRootHash">State root hash of reference <see cref="ITrie"/>.
+        /// </param>
+        /// <returns><see cref="IValue"/> retrieved from <see cref="StateStore"/>.</returns>
+        public IValue GetValue(
+            Address address,
+            HashDigest<SHA256>? stateRootHash)
+            => StateStore.GetStateRoot(stateRootHash).Get(ToStateKey(address));
+
+        /// <summary>
+        /// Returns the sub state root hash from <see cref="StateStore"/>, with given
+        /// <paramref name="address"/> and <paramref name="stateRootHash"/>.
+        /// </summary>
+        /// <param name="address"><see cref="Address"/> where sub state root hash is stored.
+        /// </param>
+        /// <param name="stateRootHash">State root hash of reference <see cref="ITrie"/>.
+        /// </param>
+        /// <returns><see cref="HashDigest{SHA256}"/> retrieved from <see cref="StateStore"/>
+        /// as sub state root hash.</returns>
+        /// <exception cref="InvalidCastException">Thrown if retrieved <see cref="IValue"/>
+        /// cannot be cast as <see cref="HashDigest{SHA256}"/>.</exception>
+        public HashDigest<SHA256> GetSubStateRootHash(
+            Address address,
+            HashDigest<SHA256>? stateRootHash)
         {
-            ITrie trie = StateStore.GetStateRoot(hash);
-            return trie.Recorded
-                ? trie
-                : throw new ArgumentException(
-                    $"Could not find state root {hash} in {nameof(IStateStore)}.",
-                    nameof(hash));
+            try
+            {
+                IValue value = GetValue(address, stateRootHash);
+                return new HashDigest<SHA256>((Binary)value);
+
+                throw new InvalidCastException($"IValue {value} cannot be cast as state root hash");
+            }
+            finally
+            {
+            }
         }
+
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
+        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+            => new WorldBaseState(GetTrie(stateRootHash), StateStore);
+
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)" />
+        public IWorldState GetWorldState(BlockHash? offset)
+            => new WorldBaseState(GetTrie(offset), StateStore);
+
+        /// <summary>
+        /// Gets the current world state in the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <returns>The current world state.</returns>
+        public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
+        public IAccountState GetAccountState(Address address, BlockHash? offset) =>
+            GetWorldState(offset).GetAccount(address);
+
+        /// <summary>
+        /// Gets the current account state of given <paramref name="address"/> in the
+        /// <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="address">An <see cref="Address"/> to get the account states of.</param>
+        /// <returns>The current account state of given <paramref name="address"/>.  This can be
+        /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
+        public IAccountState GetAccountState(Address address) =>
+            GetWorldState().GetAccount(address);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
+        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash) =>
+            new AccountBaseState(GetTrie(stateRootHash));
+
+        /// <inheritdoc cref="IBlockChainStates.GetState(Address, Address, BlockHash?)"/>
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset) =>
+            GetAccountState(accountAddress, offset).GetState(address);
+
+        /// <inheritdoc cref="IBlockChainStates.GetState(Address, HashDigest{SHA256}?)"/>
+        public IValue GetState(Address address, HashDigest<SHA256>? stateRootHash) =>
+            GetAccountState(stateRootHash).GetState(address);
+
+        /// <summary>
+        /// Gets the current state of given <paramref name="address"/> and
+        /// <paramref name="accountAddress"/> in the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="address">An <see cref="Address"/> to get the states of.</param>
+        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
+        /// <returns>The current state of given <paramref name="address"/> and
+        /// <paramref name="accountAddress"/>.  This can be <see langword="null"/>
+        /// if <paramref name="address"/> or <paramref name="accountAddress"/> has no value.
+        /// </returns>
+        public IValue GetState(Address address, Address accountAddress) =>
+            GetState(address, accountAddress, Tip.Hash);
+
+        /// <summary>
+        /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
+        /// in the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="address">The owner <see cref="Address"/> to query.</param>
+        /// <param name="currency">The currency type to query.</param>
+        /// <returns>The <paramref name="address"/>'s current balance.
+        /// </returns>
+        public FungibleAssetValue GetBalance(
+            Address address,
+            Currency currency)
+            => GetBalance(address, currency, Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetBalance"/>
+        public FungibleAssetValue GetBalance(
+            Address address,
+            Currency currency,
+            BlockHash? offset)
+            => GetWorldState(offset)
+                .GetAccount(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+
+        /// <summary>
+        /// Gets the current total supply of a <paramref name="currency"/> in the
+        /// <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="currency">The currency type to query.</param>
+        /// <returns>The total supply value of <paramref name="currency"/> at
+        /// <see cref="BlockChain.Tip"/> in <see cref="FungibleAssetValue"/>.</returns>
+        public FungibleAssetValue GetTotalSupply(Currency currency)
+            => GetTotalSupply(currency, Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply"/>
+        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset)
+            => GetWorldState(offset)
+                .GetAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+
+        public ValidatorSet GetValidatorSet() => GetValidatorSet(Tip.Hash);
+
+        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet" />
+        public ValidatorSet GetValidatorSet(BlockHash? offset)
+            => GetWorldState(offset).GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet();
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed

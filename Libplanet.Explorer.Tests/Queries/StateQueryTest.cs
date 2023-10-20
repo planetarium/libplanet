@@ -81,15 +81,15 @@ public class StateQueryTest
     }
 
     [Fact]
-    public async Task States()
+    public async Task State()
     {
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
-            states(
-                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
+            state(
+                 address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
                  accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
@@ -100,9 +100,9 @@ public class StateQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object[] states =
-            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
-        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
+        object state =
+            Assert.IsAssignableFrom<object>(resultDict["state"]);
+        Assert.Equal(new byte[] { 110, }, state);
     }
 
     [Fact]
@@ -252,7 +252,7 @@ public class StateQueryTest
     }
 
     [Fact]
-    public async Task StatesBySrh()
+    public async Task StateBySrh()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy) source = (
@@ -260,8 +260,9 @@ public class StateQueryTest
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
-            states(
-                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
+            state(
+                 address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             )
@@ -271,9 +272,9 @@ public class StateQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object[] states =
-            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
-        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
+        object state =
+            Assert.IsAssignableFrom<object>(resultDict["state"]);
+        Assert.Equal(new byte[] { 110, }, state);
     }
 
     [Fact]
@@ -407,10 +408,8 @@ public class StateQueryTest
     {
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
-            HashDigest<SHA256>? stateRootHash)
-        {
-            throw new System.NotImplementedException();
-        }
+            HashDigest<SHA256>? stateRootHash) =>
+            addresses.Select(addr => GetAccountState(stateRootHash).GetState(addr)).ToList().AsReadOnly();
 
         public FungibleAssetValue GetBalance(
             Address address, Currency currency, BlockHash? offset) =>
@@ -423,15 +422,12 @@ public class StateQueryTest
             new MockAccount().GetValidatorSet();
 
 
-        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
+        public IValue? GetState(Address address, Address accountAddress, BlockHash? offset)
             => new MockAccount().GetState(address);
-        public IWorldState GetWorldState(BlockHash? offset)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses, Address accountAddress, BlockHash? offset)
-            => new MockAccount().GetStates(addresses);
+        public IWorldState GetWorldState(BlockHash? offset)
+            => new MockWorld();
+
 
         public IAccountState GetAccountState(Address address, BlockHash? blockHash)
             => new MockAccount();
@@ -446,14 +442,14 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
-        public IWorldState GetBlockWorldState(BlockHash? offset)
-            => new MockWorld();
-
         public IWorldState GetWorldState(HashDigest<SHA256>? hash)
             => new MockWorld();
 
         public IAccountState GetAccountState(HashDigest<SHA256>? hash)
             => new MockAccount();
+
+        public IValue? GetState(Address address, HashDigest<SHA256>? hash)
+            => new MockAccount().GetState(address);
     }
 
     private class MockWorld : IWorld
