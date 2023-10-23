@@ -38,7 +38,6 @@
     "@vitest/ui": "^0.29.3",
     "es-aggregate-error": "^1.0.9",
     "nanobundle": "^1.5.0",
-    "tsup": "^7.2.0",
     "vite": "^4.1.1",
     "vitest": "^0.29.3"
   },
