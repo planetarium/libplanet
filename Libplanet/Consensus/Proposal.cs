@@ -21,8 +21,8 @@ namespace Libplanet.Consensus
     public class Proposal : IEquatable<Proposal>
     {
         // FIXME: This should be private.  Left as internal for testing reasons.
-        internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
-        private static Codec _codec = new Codec();
+        internal static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
+        private static readonly Codec _codec = new Codec();
 
         private readonly ProposalMetadata _proposalMetadata;
 
@@ -64,7 +64,7 @@ namespace Libplanet.Consensus
             : this(
                 new ProposalMetadata(encoded),
                 encoded.ContainsKey(SignatureKey)
-                    ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
+                    ? ((Binary)encoded[SignatureKey]).ByteArray
                     : ImmutableArray<byte>.Empty)
         {
         }

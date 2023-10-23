@@ -17,13 +17,22 @@ namespace Libplanet.Consensus
     public class ProposalClaimMetadata : IEquatable<ProposalClaimMetadata>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly byte[] HeightKey = { 0x48 };                // 'H'
-        private static readonly byte[] RoundKey = { 0x52 };                 // 'R'
-        private static readonly byte[] BlockHashKey = { 0x68 };             // 'h'
-        private static readonly byte[] TimestampKey = { 0x74 };             // 't'
-        private static readonly byte[] ValidatorPublicKeyKey = { 0x50 };    // 'P'
+        private static readonly Binary HeightKey =
+            new Binary(new byte[] { 0x48 }); // 'H'
 
-        private static Codec _codec = new Codec();
+        private static readonly Binary RoundKey =
+            new Binary(new byte[] { 0x52 }); // 'R'
+
+        private static readonly Binary BlockHashKey =
+            new Binary(new byte[] { 0x68 }); // 'h'
+
+        private static readonly Binary TimestampKey =
+            new Binary(new byte[] { 0x74 }); // 't'
+
+        private static readonly Binary ValidatorPublicKeyKey =
+            new Binary(new byte[] { 0x50 }); // 'P'
+
+        private static readonly Codec _codec = new Codec();
 
         /// <summary>
         /// Instantiates <see cref="ProposalClaimMetadata"/> with given parameters.
@@ -74,15 +83,15 @@ namespace Libplanet.Consensus
 #pragma warning disable SA1118 // The parameter spans multiple lines
         public ProposalClaimMetadata(Dictionary encoded)
             : this(
-                height: encoded.GetValue<Integer>(HeightKey),
-                round: encoded.GetValue<Integer>(RoundKey),
-                blockHash: new BlockHash(encoded.GetValue<Binary>(BlockHashKey).ByteArray),
+                height: (Integer)encoded[HeightKey],
+                round: (Integer)encoded[RoundKey],
+                blockHash: new BlockHash(encoded[BlockHashKey]),
                 timestamp: DateTimeOffset.ParseExact(
-                    encoded.GetValue<Text>(TimestampKey),
+                    (Text)encoded[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    encoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray))
+                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray))
         {
         }
 #pragma warning restore SA1118

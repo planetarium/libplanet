@@ -19,7 +19,7 @@ namespace Libplanet.Types.Consensus
     /// </summary>
     public class Vote : IVoteMetadata, IEquatable<Vote>, IBencodable
     {
-        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
+        private static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
 
         private static readonly Codec _codec = new Codec();
         private readonly VoteMetadata _metadata;
@@ -80,7 +80,7 @@ namespace Libplanet.Types.Consensus
             : this(
                 new VoteMetadata((IValue)encoded),
                 encoded.ContainsKey(SignatureKey)
-                    ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
+                    ? ((Binary)encoded[SignatureKey]).ByteArray
                     : ImmutableArray<byte>.Empty)
         {
         }

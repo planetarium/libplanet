@@ -18,7 +18,7 @@ namespace Libplanet.Consensus
     public class VoteSetBits : IEquatable<VoteSetBits>
     {
         // FIXME: This should be private.  Left as internal for testing reasons.
-        internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
+        internal static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
         private static Codec _codec = new Codec();
 
         private readonly VoteSetBitsMetadata _voteSetBitsMetadata;
@@ -62,7 +62,7 @@ namespace Libplanet.Consensus
             : this(
                 new VoteSetBitsMetadata(encoded),
                 encoded.ContainsKey(SignatureKey)
-                    ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
+                    ? ((Binary)encoded[SignatureKey]).ByteArray
                     : ImmutableArray<byte>.Empty)
         {
         }
