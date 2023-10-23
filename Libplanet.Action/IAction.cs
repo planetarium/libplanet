@@ -103,7 +103,7 @@ namespace Libplanet.Action
     ///                     dictionary.SetItem(
     ///                         (Text)"hp",
     ///                         (Integer)Math.Max(
-    ///                             dictionary.GetValue<Integer>("hp") - 5,
+    ///                             (Integer)dictionary["hp"] - 5,
     ///                             0)
     ///                     );
     ///                 break;
@@ -113,7 +113,7 @@ namespace Libplanet.Action
     ///                     dictionary.SetItem(
     ///                         (Text)"hp",
     ///                         (Integer)Math.Min(
-    ///                             dictionary.GetValue<Integer>("hp") + 5,
+    ///                             (Integer)dictionary["hp"] + 5,
     ///                             20)
     ///                     );
     ///                 break;
@@ -140,9 +140,9 @@ namespace Libplanet.Action
     ///         IValue plainValue)
     ///     {
     ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
-    ///         Type = (ActType)(int)dictionary.GetValue<Integer>("type");
+    ///         Type = (ActType)(int)(Integer)dictionary["type"];
     ///         TargetAddress =
-    ///             new Address(dictionary.GetValue<Binary>("target_address"));
+    ///             new Address(dictionary["target_address"]);
     ///     }
     /// }
     /// ]]></code>

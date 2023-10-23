@@ -1262,8 +1262,8 @@ namespace Libplanet.Tests.Store
 
             public void LoadPlainValue(Dictionary plainValue)
             {
-                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ByteArray;
-                Md5Digest = plainValue.GetValue<Binary>("md5").ByteArray;
+                ArbitraryBytes = ((Binary)plainValue["bytes"]).ByteArray;
+                Md5Digest = ((Binary)plainValue["md5"]).ByteArray;
             }
 
             public IAccount Execute(IActionContext context)

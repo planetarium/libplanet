@@ -230,9 +230,9 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
-            RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
+            Item = (Text)plainValue["item"];
+            TargetAddress = new Address(plainValue["target_address"]);
+            RecordRehearsal = (Boolean)plainValue["record_rehearsal"];
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
@@ -240,7 +240,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"idempotent"))
             {
-                Idempotent = plainValue.GetValue<Boolean>("idempotent");
+                Idempotent = (Boolean)plainValue["idempotent"];
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
@@ -253,7 +253,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"validators"))
             {
-                Validators = plainValue.GetValue<List>("validators")
+                Validators = ((List)plainValue["validators"])
                     .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
         }

@@ -33,7 +33,7 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Reward = plainValue.GetValue<Integer>("reward");
+            Reward = (Integer)plainValue["reward"];
         }
 
         public IAccount Execute(IActionContext ctx)

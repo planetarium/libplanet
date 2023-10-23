@@ -33,7 +33,7 @@ namespace Libplanet.Action.Tests.Common
         public void LoadPlainValue(IValue plainValue)
         {
             var dict = (Bencodex.Types.Dictionary)plainValue;
-            Validator = new Validator(dict.GetValue<Dictionary>("validator"));
+            Validator = new Validator((Dictionary)dict["validator"]);
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>

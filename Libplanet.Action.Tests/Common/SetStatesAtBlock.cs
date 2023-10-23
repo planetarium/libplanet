@@ -29,9 +29,9 @@ namespace Libplanet.Action.Tests.Common
         public void LoadPlainValue(IValue plainValue)
         {
             var dict = (Bencodex.Types.Dictionary)plainValue;
-            _address = new Address(dict.GetValue<IValue>("address"));
+            _address = new Address(dict["address"]);
             _value = dict["value"];
-            _blockIndex = dict.GetValue<Bencodex.Types.Integer>("block_index");
+            _blockIndex = (Integer)dict["block_index"];
         }
 
         public IAccount Execute(IActionContext context)

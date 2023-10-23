@@ -17,9 +17,9 @@ namespace Libplanet.Store
     /// </summary>
     public readonly struct BlockDigest : IBlockMetadata, IBlockExcerpt
     {
-        private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
+        private static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 });         // 'H'
 
-        private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
+        private static readonly Binary TransactionIdsKey = new Binary(new byte[] { 0x54 }); // 'T'
 
         private readonly BlockMetadata _metadata;
         private readonly HashDigest<SHA256> _preEvaluationHash;
@@ -50,15 +50,15 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
-            var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
+            var headerDict = (Dictionary)dict[HeaderKey];
             _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
             _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
             Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
             TxIds = dict.ContainsKey((Binary)TransactionIdsKey)
-                ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
-                    .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()
+                ? ((List)dict[TransactionIdsKey])
+                    .Select(txId => ((Binary)txId).ByteArray).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
