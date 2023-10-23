@@ -1,7 +1,8 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain.Renderers.Debug
@@ -39,7 +40,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionContext context,
+                ICommittedActionContext context,
                 bool unrender = false
             )
                 : base(index, stackTrace)
@@ -57,7 +58,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <summary>
             /// The action evaluation context.
             /// </summary>
-            public IActionContext Context { get; }
+            public ICommittedActionContext Context { get; }
 
             /// <summary>
             /// Whether it is not an unrender event, but a render event.
@@ -87,25 +88,25 @@ namespace Libplanet.Blockchain.Renderers.Debug
             /// <param name="stackTrace">The stack trace of the render event.</param>
             /// <param name="action">The rendered action.</param>
             /// <param name="context">The action evaluation context.</param>
-            /// <param name="nextStates">The resulting states after the action is evaluated.</param>
+            /// <param name="nextState">The resulting state after the action is evaluated.</param>
             /// <param name="unrender">Whether it is an unrender event.</param>
             public ActionSuccess(
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionContext context,
-                IAccount nextStates,
+                ICommittedActionContext context,
+                HashDigest<SHA256> nextState,
                 bool unrender = false
             )
                 : base(index, stackTrace, action, context, unrender: unrender)
             {
-                NextStates = nextStates;
+                NextState = nextState;
             }
 
             /// <summary>
             /// The resulting states after the action is evaluated.
             /// </summary>
-            public IAccount NextStates { get; }
+            public HashDigest<SHA256> NextState { get; }
 
             /// <inheritdoc cref="RenderRecord.ToString()"/>
             public override string ToString() => $"{base.ToString()} [success]";
@@ -129,7 +130,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 long index,
                 string stackTrace,
                 IValue action,
-                IActionContext context,
+                ICommittedActionContext context,
                 Exception exception,
                 bool unrender = false
             )

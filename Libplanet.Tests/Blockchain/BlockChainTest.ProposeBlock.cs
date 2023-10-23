@@ -125,7 +125,7 @@ namespace Libplanet.Tests.Blockchain
                 var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
-                    new BlockChainStates(fx.Store, fx.StateStore),
+                    fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
                     actionEvaluator,
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
                 {
@@ -314,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
                     tx.Id,
                     txx
                 );
-                Assert.IsType<TxSuccess>(txx);
+                Assert.False(txx.Fail);
                 Assert.Equal(block.Hash, txx.BlockHash);
                 Assert.Equal(tx.Id, txx.TxId);
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
@@ -347,7 +347,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         _ => policy.BlockAction,
-                        blockChainStates: new BlockChainStates(fx.Store, fx.StateStore),
+                        stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
                 var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
@@ -459,7 +459,7 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     _ => policy.BlockAction,
-                    blockChainStates,
+                    _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });

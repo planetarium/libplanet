@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Crypto;
-using Libplanet.Types.Assets;
+using Libplanet.Common;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -21,21 +20,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     txStatus
                     blockIndex
                     blockHash
-                    exceptionName
-                    updatedStates {
-                        address
-                        state
-                    }
-                    updatedFungibleAssets {
-                        address
-                        fungibleAssetValues {
-                            currency {
-                                ticker
-                                decimalPlaces
-                            }
-                            quantity
-                        }
-                    }
+                    inputState
+                    outputState
+                    exceptionNames
                 }";
 
             var txResultType = new TxResultType();
@@ -52,67 +39,85 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         }
 
         public static IEnumerable<object[]> TestCases() {
-            Currency KRW = Currency.Uncapped("KRW", 18, null);
-            Address address = new Address("76ca86fa821c8241f9422c22b1386021047faf0d");
             return new object[][] {
                 new object[] {
                     new TxResult(
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        null,
-                        ImmutableDictionary<Address, Bencodex.Types.IValue>.Empty,
-                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty
+                        HashDigest<SHA256>.FromString(
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
+                        HashDigest<SHA256>.FromString(
+                            "72bb2e17da644cbca9045f5e689fae0323b6af56a0acab9fd828d2243b50df1c"),
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        ["exceptionName"] = null,
-                        ["updatedStates"] = new object[0],
-                        ["updatedFungibleAssets"] = new object[0],
+                        ["inputState"] = 
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f",
+                        ["outputState"] = 
+                            "72bb2e17da644cbca9045f5e689fae0323b6af56a0acab9fd828d2243b50df1c",
+                        ["exceptionNames"] = new string[] { "" },
                     }
                 },
                 new object[] {
                     new TxResult(
-                        TxStatus.SUCCESS,
+                        TxStatus.FAILURE,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        null,
-                        ImmutableDictionary<Address, Bencodex.Types.IValue>.Empty
-                            .Add(address, Bencodex.Types.Null.Value),
-                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty
-                            .Add(
-                                address,
-                                ImmutableDictionary<Currency, FungibleAssetValue>.Empty
-                                    .Add(KRW, KRW * 20000)
-                            )
+                        HashDigest<SHA256>.FromString(
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
+                        HashDigest<SHA256>.FromString(
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
+                        new List<string>() { "" }
                     ),
                     new Dictionary<string, object> {
-                        ["txStatus"] = "SUCCESS",
+                        ["txStatus"] = "FAILURE",
                         ["blockIndex"] = 0L,
+                        ["inputState"] = 
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f",
+                        ["outputState"] = 
+                            "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f",
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        ["exceptionName"] = null,
-                        ["updatedStates"] = new object[] {
-                            new Dictionary<string, object> {
-                                ["address"] = address.ToString(),
-                                ["state"] = new byte[] { 110, },
-                            },
-                        },
-                        ["updatedFungibleAssets"] = new object[] {
-                            new Dictionary<string, object> {
-                                ["address"] = address.ToString(),
-                                ["fungibleAssetValues"] = new object[] {
-                                    new Dictionary<string, object> {
-                                        ["currency"] = new Dictionary<string, object> {
-                                            ["ticker"] = KRW.Ticker,
-                                            ["decimalPlaces"] = KRW.DecimalPlaces,
-                                        },
-                                        ["quantity"] = "20000",
-                                    },
-                                },
-                            },
-                        },
+                        ["exceptionNames"] = new string[] { "" },
+                    }
+                },
+                new object[] {
+                    new TxResult(
+                        TxStatus.INVALID,
+                        null,
+                        null,
+                        null,
+                        null,
+                        new List<string>() { "" }
+                    ),
+                    new Dictionary<string, object> {
+                        ["txStatus"] = "INVALID",
+                        ["blockIndex"] = null,
+                        ["blockHash"] = null,
+                        ["inputState"] = null,
+                        ["outputState"] = null,
+                        ["exceptionNames"] = new string[] { "" },
+                    }
+                },
+                new object[] {
+                    new TxResult(
+                        TxStatus.STAGING,
+                        null,
+                        null,
+                        null,
+                        null,
+                        new List<string>() { "" }
+                    ),
+                    new Dictionary<string, object> {
+                        ["txStatus"] = "STAGING",
+                        ["blockIndex"] = null,
+                        ["blockHash"] = null,
+                        ["inputState"] = null,
+                        ["outputState"] = null,
+                        ["exceptionNames"] = new string[] { "" },
                     }
                 }
             };

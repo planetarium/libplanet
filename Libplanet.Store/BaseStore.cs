@@ -99,10 +99,7 @@ namespace Libplanet.Store
         public abstract bool ContainsBlock(BlockHash blockHash);
 
         /// <inheritdoc/>
-        public abstract void PutTxExecution(TxSuccess txSuccess);
-
-        /// <inheritdoc/>
-        public abstract void PutTxExecution(TxFailure txFailure);
+        public abstract void PutTxExecution(TxExecution txExecution);
 
         /// <inheritdoc/>
         public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
@@ -178,32 +175,9 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
 
-        protected static IValue SerializeTxExecution(TxSuccess txSuccess)
+        protected static IValue SerializeTxExecution(TxExecution txExecution)
         {
-            var sDelta = new Dictionary(
-                txSuccess.UpdatedStates.Select(kv =>
-                    new KeyValuePair<IKey, IValue>(
-                        new Binary(kv.Key.ByteArray),
-                        kv.Value is { } v ? List.Empty.Add(v) : List.Empty
-                    )
-                )
-            );
-            var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
-            var serialized = Dictionary.Empty
-                .Add("fail", false)
-                .Add("sDelta", sDelta)
-                .Add("updatedFAVs", new Dictionary(updatedFAVs));
-
-            return serialized;
-        }
-
-        protected static IValue SerializeTxExecution(TxFailure txFailure)
-        {
-            Dictionary d = Dictionary.Empty
-                .Add("fail", true)
-                .Add("exc", txFailure.ExceptionName);
-
-            return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
+            return txExecution.ToBencodex();
         }
 
         protected static TxExecution DeserializeTxExecution(
@@ -223,28 +197,7 @@ namespace Libplanet.Store
 
             try
             {
-                bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
-
-                if (fail)
-                {
-                    string excName = d.GetValue<Text>("exc");
-                    return new TxFailure(blockHash, txid, excName);
-                }
-
-                ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
-                    .ToImmutableDictionary(
-                        kv => new Address((IValue)kv.Key),
-                        kv => kv.Value is List l && l.Any() ? l[0] : null
-                    );
-                IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
-                    updatedFAVs = DeserializeGroupedFAVs(d.GetValue<Dictionary>("updatedFAVs"));
-
-                return new TxSuccess(
-                    blockHash,
-                    txid,
-                    sDelta,
-                    updatedFAVs
-                );
+                return new TxExecution(blockHash, txid, d);
             }
             catch (Exception e)
             {

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 using Libplanet.Action.Loader;
+using Libplanet.Common;
+using Libplanet.Store;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Action
@@ -18,17 +21,25 @@ namespace Libplanet.Action
         /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
+        /// <param name="baseStateRootHash">The base state to use when evaluating
+        /// <paramref name="block"/>.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
-        /// <see cref="IActionEvaluation"/>s.</returns>
+        /// <see cref="ICommittedActionEvaluation"/>s.</returns>
         /// <remarks>
-        /// <para>Publicly exposed for benchmarking.</para>
-        /// <para>First evaluates all <see cref="IAction"/>s in
+        /// <para>
+        /// This has a side-effect of writing data to internally held <see cref="IStateStore"/>.
+        /// </para>
+        /// <para>
+        /// First evaluates all <see cref="IAction"/>s in
         /// <see cref="IBlockContent.Transactions"/> of <paramref name="block"/> and appends the
         /// evaluation of the <see cref="IBlockPolicy.BlockAction"/> held by the instance at
-        /// the end.</para>
+        /// the end.
+        /// </para>
         /// </remarks>
         [Pure]
-        IReadOnlyList<IActionEvaluation> Evaluate(IPreEvaluationBlock block);
+        IReadOnlyList<ICommittedActionEvaluation> Evaluate(
+            IPreEvaluationBlock block,
+            HashDigest<SHA256>? baseStateRootHash);
     }
 }

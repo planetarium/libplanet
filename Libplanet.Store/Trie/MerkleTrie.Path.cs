@@ -9,7 +9,9 @@ namespace Libplanet.Store.Trie
             node switch
             {
                 null => null,
-                ValueNode valueNode => valueNode.Value,
+                ValueNode valueNode => !cursor.RemainingAnyNibbles
+                    ? valueNode.Value
+                    : null,
                 ShortNode shortNode => cursor.RemainingNibblesStartWith(shortNode.Key)
                     ? ResolveToValue(shortNode.Value, cursor.Next(shortNode.Key.Length))
                     : null,

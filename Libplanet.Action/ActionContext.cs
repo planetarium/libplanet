@@ -11,7 +11,6 @@ namespace Libplanet.Action
     {
         public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
 
-        private readonly int _randomSeed;
         private readonly long _gasLimit;
 
         public ActionContext(
@@ -32,8 +31,7 @@ namespace Libplanet.Action
             BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
             PreviousState = previousState;
-            Random = new Random(randomSeed);
-            _randomSeed = randomSeed;
+            RandomSeed = randomSeed;
             _gasLimit = gasLimit;
 
             GetGasMeter.Value = new GasMeter(_gasLimit);
@@ -60,8 +58,8 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.PreviousState"/>
         public IAccount PreviousState { get; }
 
-        /// <inheritdoc cref="IActionContext.Random"/>
-        public IRandom Random { get; }
+        /// <inheritdoc cref="IActionContext.RandomSeed"/>
+        public int RandomSeed { get; }
 
         /// <inheritdoc cref="IActionContext.BlockAction"/>
         public bool BlockAction => TxId is null;
@@ -69,18 +67,8 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
 
-        [Pure]
-        public IActionContext GetUnconsumedContext() =>
-            new ActionContext(
-                Signer,
-                TxId,
-                Miner,
-                BlockIndex,
-                BlockProtocolVersion,
-                PreviousState,
-                _randomSeed,
-                _gasLimit,
-                Rehearsal);
+        /// <inheritdoc cref="IActionContext.GetRandom"/>
+        public IRandom GetRandom() => new Random(RandomSeed);
 
         /// <summary>
         /// Returns the elapsed gas of the current action.

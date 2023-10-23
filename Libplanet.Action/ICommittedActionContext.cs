@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
-using Libplanet.Action.State;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -7,10 +8,9 @@ using Libplanet.Types.Tx;
 namespace Libplanet.Action
 {
     /// <summary>
-    /// Contextual data determined by a transaction and a block.
-    /// Passed to <see cref="IAction.Execute(IActionContext)"/> method.
+    /// Contextual data determined by a transaction and a block for rendering.
     /// </summary>
-    public interface IActionContext
+    public interface ICommittedActionContext
     {
         /// <summary>
         /// The <see cref="Transaction.Signer"/> of the <see cref="Transaction"/> that contains
@@ -60,17 +60,10 @@ namespace Libplanet.Action
         bool Rehearsal { get; }
 
         /// <summary>
-        /// A null delta of states, which means it represents the states
-        /// before <see cref="IAction"/> executes.
-        /// <para>Although a <see cref="IAccount"/> instance is
-        /// immutable, it has several manipulative methods that returns
-        /// new <see cref="IAccount"/> instances with some "dirty"
-        /// states.  These kinds of dirty <see cref="IAccount"/>
-        /// instances can be returned by <see
-        /// cref="IAction.Execute(IActionContext)"/> method.</para>
+        /// The state root hash of the previous state.
         /// </summary>
         [Pure]
-        IAccount PreviousState { get; }
+        HashDigest<SHA256> PreviousState { get; }
 
         /// <summary>
         /// The random seed to use for pseudorandom number generator.  This value
@@ -91,14 +84,6 @@ namespace Libplanet.Action
         bool BlockAction { get; }
 
         /// <summary>
-        /// Consumes the specified amount of gas.
-        /// </summary>
-        /// <param name="gas">
-        /// The amount of gas to consume.
-        /// </param>
-        void UseGas(long gas);
-
-        /// <summary>
         /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.
         /// </summary>
@@ -106,21 +91,5 @@ namespace Libplanet.Action
         /// as its seed value.</returns>
         [Pure]
         IRandom GetRandom();
-
-        /// <summary>
-        /// Returns the total gas used by the current action.
-        /// </summary>
-        /// <returns>The total gas used by the current action.</returns>
-        [Pure]
-        long GasUsed();
-
-        /// <summary>
-        /// Returns the limit gas of the current action.
-        /// </summary>
-        /// <returns>
-        /// The limit gas of the current action.
-        /// </returns>
-        [Pure]
-        long GasLimit();
     }
 }

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -383,7 +384,7 @@ namespace Libplanet.Blockchain
             var computedStateRootHash = DetermineGenesisStateRootHash(
                 actionEvaluator,
                 preEval,
-                out IReadOnlyList<IActionEvaluation> evals);
+                out var _);
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
@@ -412,9 +413,6 @@ namespace Libplanet.Blockchain
             }
 
             store.SetCanonicalChainId(id);
-
-            var delta = evals.GetRawTotalDelta();
-            stateStore.Commit(null, delta);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
 
@@ -560,9 +558,13 @@ namespace Libplanet.Blockchain
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             _blockChainStates.GetValidatorSet(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState" />
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(BlockHash?)" />
         public IAccountState GetAccountState(BlockHash? offset) =>
             _blockChainStates.GetAccountState(offset);
+
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)" />
+        public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
+            _blockChainStates.GetAccountState(hash);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
@@ -959,7 +961,7 @@ namespace Libplanet.Blockchain
             Block block,
             BlockCommit blockCommit,
             bool render,
-            IReadOnlyList<IActionEvaluation> actionEvaluations = null
+            IReadOnlyList<ICommittedActionEvaluation> actionEvaluations = null
         )
         {
             if (Count == 0)

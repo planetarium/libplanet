@@ -1,8 +1,6 @@
-using System.Collections.Immutable;
-using Bencodex.Types;
-using Libplanet.Crypto;
-using Libplanet.Types.Assets;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using Libplanet.Common;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -12,18 +10,16 @@ namespace Libplanet.Explorer.GraphTypes
             TxStatus status,
             long? blockIndex,
             string? blockHash,
-            string? exceptionName,
-            IImmutableDictionary<Address, IValue>? updatedStates,
-            IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>?
-                updatedFungibleAssets
-        )
+            HashDigest<SHA256>? inputState,
+            HashDigest<SHA256>? outputState,
+            List<string?>? exceptionNames)
         {
             TxStatus = status;
             BlockIndex = blockIndex;
             BlockHash = blockHash;
-            ExceptionName = exceptionName;
-            UpdatedStates = updatedStates;
-            UpdatedFungibleAssets = updatedFungibleAssets;
+            InputState = inputState;
+            OutputState = outputState;
+            ExceptionNames = exceptionNames;
         }
 
         public TxStatus TxStatus { get; private set; }
@@ -32,11 +28,10 @@ namespace Libplanet.Explorer.GraphTypes
 
         public string? BlockHash { get; private set; }
 
-        public string? ExceptionName { get; private set; }
+        public HashDigest<SHA256>? InputState { get; private set; }
 
-        public IImmutableDictionary<Address, IValue>? UpdatedStates { get; }
+        public HashDigest<SHA256>? OutputState { get; private set; }
 
-        public IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>?
-            UpdatedFungibleAssets { get; }
+        public List<string?>? ExceptionNames { get; private set; }
     }
 }

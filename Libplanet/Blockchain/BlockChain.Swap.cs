@@ -1,11 +1,12 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -122,7 +123,6 @@ namespace Libplanet.Blockchain
                     oldTip: oldTip,
                     newTip: newTip,
                     branchpoint: branchpoint,
-                    rewindPath: rewindPath,
                     fastForwardPath: fastForwardPath);
             }
             finally
@@ -138,7 +138,6 @@ namespace Libplanet.Blockchain
             Block oldTip,
             Block newTip,
             Block branchpoint,
-            IReadOnlyList<BlockHash> rewindPath,
             IReadOnlyList<BlockHash> fastForwardPath)
         {
             if (render)
@@ -170,23 +169,23 @@ namespace Libplanet.Blockchain
             {
                 _logger.Debug("Rendering actions in new chain");
 
-                long count = 0;
                 foreach (BlockHash hash in fastForwardPath)
                 {
                     Block block = Store.GetBlock(hash);
-                    ImmutableList<IActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block).ToImmutableList();
+                    HashDigest<SHA256>? baseStateRootHash =
+                        Store.GetStateRootHash(block.PreviousHash);
+                    IReadOnlyList<ICommittedActionEvaluation> evaluations =
+                        ActionEvaluator.Evaluate(block, baseStateRootHash);
 
-                    count += RenderActions(
+                    RenderActions(
                         evaluations: evaluations,
-                        block: block
-                    );
+                        block: block);
                 }
 
                 _logger.Debug(
-                    "{MethodName}() completed rendering {Count} actions",
+                    "{MethodName}() completed rendering actions in {Count} blocks",
                     nameof(Swap),
-                    count);
+                    fastForwardPath.Count);
 
                 foreach (IActionRenderer renderer in ActionRenderers)
                 {
@@ -201,11 +200,15 @@ namespace Libplanet.Blockchain
         /// <param name="evaluations"><see cref="IActionEvaluation"/>s of the block.  If it is
         /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block"/> to render actions.</param>
-        /// <returns>The number of actions rendered.</returns>
-        internal long RenderActions(
-            IReadOnlyList<IActionEvaluation> evaluations,
+        internal void RenderActions(
+            IReadOnlyList<ICommittedActionEvaluation> evaluations,
             Block block)
         {
+            if (evaluations is null)
+            {
+                throw new NullReferenceException(nameof(evaluations));
+            }
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             _logger.Debug(
@@ -213,33 +216,23 @@ namespace Libplanet.Blockchain
                 block.Index,
                 block.Hash);
 
-            if (evaluations is null)
-            {
-                evaluations = ActionEvaluator.Evaluate(block);
-            }
-
             long count = 0;
             foreach (var evaluation in evaluations)
             {
-                if (evaluation.InputContext.BlockAction && Policy.BlockAction is null)
-                {
-                    continue;
-                }
-
                 foreach (IActionRenderer renderer in ActionRenderers)
                 {
                     if (evaluation.Exception is null)
                     {
                         renderer.RenderAction(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.InputContext,
                             evaluation.OutputState);
                     }
                     else
                     {
                         renderer.RenderActionError(
                             evaluation.Action,
-                            evaluation.InputContext.GetUnconsumedContext(),
+                            evaluation.InputContext,
                             evaluation.Exception);
                     }
 
@@ -257,7 +250,6 @@ namespace Libplanet.Blockchain
                     block.Index,
                     block.Hash,
                     stopwatch.ElapsedMilliseconds);
-            return count;
         }
 
         /// <summary>

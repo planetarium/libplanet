@@ -40,7 +40,7 @@ namespace Libplanet.Action.Tests
                     randomSeed: seed,
                     gasLimit: 0
                 );
-                IRandom random = context.Random;
+                IRandom random = context.GetRandom();
                 Assert.Equal(expected, random.Next());
             }
         }
@@ -93,11 +93,14 @@ namespace Libplanet.Action.Tests
                 ),
             };
 
+            var rand1 = context1.GetRandom();
+            var rand2 = context2.GetRandom();
+            var rand3 = context3.GetRandom();
             foreach (var (expected, diff) in testCases)
             {
-                Assert.Equal(expected, context1.Random.GenerateRandomGuid());
-                Assert.Equal(expected, context2.Random.GenerateRandomGuid());
-                Assert.Equal(diff, context3.Random.GenerateRandomGuid());
+                Assert.Equal(expected, rand1.GenerateRandomGuid());
+                Assert.Equal(expected, rand2.GenerateRandomGuid());
+                Assert.Equal(diff, rand3.GenerateRandomGuid());
             }
         }
 
@@ -116,39 +119,11 @@ namespace Libplanet.Action.Tests
                     randomSeed: i,
                     gasLimit: 0
                 );
-                var guid = context.Random.GenerateRandomGuid().ToString();
+                var guid = context.GetRandom().GenerateRandomGuid().ToString();
 
                 Assert.Equal('4', guid[14]);
                 Assert.True(guid[19] >= '8' && guid[19] <= 'b');
             }
-        }
-
-        [Fact]
-        public void GetUnconsumedContext()
-        {
-            var original = new ActionContext(
-                signer: _address,
-                txid: _txid,
-                miner: _address,
-                blockIndex: 1,
-                blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new Account(MockAccountState.Empty),
-                randomSeed: _random.Next(),
-                gasLimit: 0);
-
-            // Consume original's random state...
-            int[] values =
-            {
-                original.Random.Next(),
-                original.Random.Next(),
-                original.Random.Next(),
-            };
-
-            IActionContext clone = original.GetUnconsumedContext();
-            Assert.Equal(
-                values,
-                new[] { clone.Random.Next(), clone.Random.Next(), clone.Random.Next() }
-            );
         }
     }
 }

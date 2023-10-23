@@ -50,7 +50,11 @@ namespace Libplanet.Tests.Store
                 .Add(barKey, (Text)ByteUtil.Hex(GetRandomBytes(32)))
                 .Add(bazKey, (Bencodex.Types.Boolean)false)
                 .Add(quxKey, Bencodex.Types.Dictionary.Empty);
-            HashDigest<SHA256> hash = stateStore.Commit(null, values).Hash;
+            ITrie trie = stateStore.Commit(
+                values.Aggregate(
+                    stateStore.GetStateRoot(null),
+                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
+            HashDigest<SHA256> hash = trie.Hash;
             ITrie found = stateStore.GetStateRoot(hash);
             Assert.True(found.Recorded);
             AssertBencodexEqual(values[fooKey], found.Get(new[] { KeyFoo })[0]);
@@ -77,12 +81,18 @@ namespace Libplanet.Tests.Store
                         .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
 
             var stateStore = new TrieStateStore(_stateKeyValueStore);
-            ITrie first = stateStore.Commit(null, values);
+            ITrie first = stateStore.Commit(
+                values.Aggregate(
+                    stateStore.GetStateRoot(null),
+                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
 
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            ImmutableDictionary<KeyBytes, IValue> nextStates =
+            ImmutableDictionary<KeyBytes, IValue> nextState =
                 values.SetItem(new KeyBytes("foo"), (Binary)GetRandomBytes(4096));
-            ITrie second = stateStore.Commit(first.Hash, nextStates);
+            ITrie second = stateStore.Commit(
+                nextState.Aggregate(
+                    first,
+                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
 
             // foo = 0x666f6f
             // updated branch node (0x6, aka root) + updated branch node (0x66) +
@@ -115,7 +125,10 @@ namespace Libplanet.Tests.Store
 
             IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
             var targetStateStore = new TrieStateStore(targetStateKeyValueStore);
-            ITrie trie = stateStore.Commit(null, values);
+            ITrie trie = stateStore.Commit(
+                values.Aggregate(
+                    stateStore.GetStateRoot(null),
+                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             _stateKeyValueStore.Set(

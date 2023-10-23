@@ -1,7 +1,8 @@
 using System;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain.Renderers
@@ -18,7 +19,7 @@ namespace Libplanet.Blockchain.Renderers
     /// <code><![CDATA[
     /// var actionRenderer = new AnonymousActionRenderer
     /// {
-    ///     ActionRenderer = (action, context, nextStates) =>
+    ///     ActionRenderer = (action, context, nextState) =>
     ///     {
     ///         // Implement RenderAction() here.
     ///     };
@@ -29,15 +30,16 @@ namespace Libplanet.Blockchain.Renderers
     {
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderAction(IValue, IActionContext, IAccount)"/>.
+        /// <see cref="RenderAction(IValue, ICommittedActionContext, HashDigest{SHA256})"/>.
         /// </summary>
-        public Action<IValue, IActionContext, IAccount>? ActionRenderer { get; set; }
+        public Action<IValue, ICommittedActionContext, HashDigest<SHA256>>? ActionRenderer
+            { get; set; }
 
         /// <summary>
         /// A callback function to be invoked together with
-        /// <see cref="RenderActionError(IValue, IActionContext, Exception)"/>.
+        /// <see cref="RenderActionError(IValue, ICommittedActionContext, Exception)"/>.
         /// </summary>
-        public Action<IValue, IActionContext, Exception>? ActionErrorRenderer { get; set; }
+        public Action<IValue, ICommittedActionContext, Exception>? ActionErrorRenderer { get; set; }
 
         /// <summary>
         /// A callback function to be invoked together with
@@ -45,19 +47,21 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         public Action<Block, Block>? BlockEndRenderer { get; set; }
 
-        /// <inheritdoc
-        /// cref="IActionRenderer.RenderAction(IValue, IActionContext, IAccount)"/>
+        /// <inheritdoc cref="IActionRenderer.RenderAction"/>
         public void RenderAction(
             IValue action,
-            IActionContext context,
-            IAccount nextStates
+            ICommittedActionContext context,
+            HashDigest<SHA256> nextState
         ) =>
-            ActionRenderer?.Invoke(action, context, nextStates);
+            ActionRenderer?.Invoke(action, context, nextState);
 
         /// <inheritdoc
-        /// cref="IActionRenderer.RenderActionError(IValue, IActionContext, Exception)"/>
-        public void RenderActionError(IValue action, IActionContext context, Exception exception)
-            => ActionErrorRenderer?.Invoke(action, context, exception);
+        /// cref="IActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)"/>
+        public void RenderActionError(
+            IValue action,
+            ICommittedActionContext context,
+            Exception exception) =>
+                ActionErrorRenderer?.Invoke(action, context, exception);
 
         /// <inheritdoc cref="IActionRenderer.RenderBlockEnd(Block, Block)"/>
         public void RenderBlockEnd(Block oldTip, Block newTip) =>

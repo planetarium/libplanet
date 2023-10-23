@@ -105,15 +105,14 @@ namespace Libplanet.Tests.Store
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
                 _ => blockAction,
-                new BlockChainStates(new MemoryStore(), stateStore),
+                stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
                 Proposer,
                 BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
                     preEval,
-                    out IReadOnlyList<IActionEvaluation> evals));
-            stateStore.Commit(null, evals.GetRawTotalDelta());
+                    out IReadOnlyList<ICommittedActionEvaluation> evals));
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,

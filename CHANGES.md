@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 3.4.0
+Version 3.7.0
 -------------
 
 To be released.
@@ -18,11 +18,148 @@ To be released.
 
 ### Behavioral changes
 
+ -  Slightly optimized `BlockMarshaler`.  [[#3454]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3454]: https://github.com/planetarium/libplanet/pull/3454
+
+
+Version 3.6.0
+-------------
+
+Released on October 6, 2023.
+
+### Backward-incompatible API changes
+
+ -  Changed `IActionEvaluator.Evaluate()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Changed `BlockChain.DetermineStateRootHash(IActionEvaluator,
+    IPreEvaluationBlock, out IReadOnlyList<IActionEvaluation>)` to
+    `BlockChain.DetermineStateRootHash(IActionEvaluator,
+    IPreEvaluationBlock, out IReadOnlyList<ICommittedActionEvaluation>)`.
+    [[#3445]]
+ -  Changed `BlockChain.EvaluateGenesis()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Changed `BlockChain.EvaluateBlock()`'s return type to
+    `IReadOnlyList<ICommittedActionEvaluation>` from
+    `IReadOnlyList<IActionEvaluation>`.  [[#3445]]
+ -  Removed `StateStoreExtensions` class.  [[#3323], [#3450]]
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResult.InputState` of type
+    `HashDigest<SHA256>?`.  [[#3446], [#3447]]
+ -  (Libplanet.Explorer) Added `TxResult.OutputState` of type
+    `HashDigest<SHA256>?`.  [[#3446], [#3447]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.states` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.balance` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.totalSupply` field.
+    [[#3448], [#3449]]
+ -  (Libplanet.Explorer) Added `offsetStateRootHash` of type
+    `HashDigest<SHA256>?` argument for `StateQuery.validators` field.
+    [[#3448], [#3449]]
+
+### Behavioral changes
+
+ -  `IActionEvaluator.Evaluate()`, `BlockChain.EvaluateGenesis()`,
+    and `BlockChain.EvaluateBlock()` have a side-effect of storing
+    data to `IStateStore` when called.  [[#3445]]
+
+[#3323]: https://github.com/planetarium/libplanet/issues/3323
+[#3445]: https://github.com/planetarium/libplanet/pull/3445
+[#3446]: https://github.com/planetarium/libplanet/issues/3446
+[#3447]: https://github.com/planetarium/libplanet/pull/3447
+[#3448]: https://github.com/planetarium/libplanet/issues/3448
+[#3449]: https://github.com/planetarium/libplanet/pull/3449
+[#3450]: https://github.com/planetarium/libplanet/pull/3450
+
+
+Version 3.5.0
+-------------
+
+Released on October 4, 2023.
+
+### Backward-incompatible API changes
+
+ -  Removed `IActionContext.Random` property.  Use `IActionContext.GetRandom()`
+    instead.  [[#3437]]
+ -  Added `IActionContext.RandomSeed` property.  [[#3437]]
+ -  Added `IActionContext.GetRandom()` method.  [[#3437]]
+ -  Changed `IActionEvaluator.Evaluate(IPreEvaluationBlock)` to
+    `IActionEvaluator.Evaluate(IPreEvaluationBlock, HashDigest<SHA256>)`.
+    [[#3438]]
+ -  Changed `ActionEvaluator` to accept `IStateStore` instead of
+    `IBlockChainStates`  [[#3439]]
+
+[#3437]: https://github.com/planetarium/libplanet/pull/3437
+[#3438]: https://github.com/planetarium/libplanet/pull/3438
+[#3439]: https://github.com/planetarium/libplanet/pull/3439
+
+
+Version 3.4.0
+-------------
+
+Released on September 25, 2023.
+
+### Backward-incompatible API changes
+
+ -  Added `IBlockChainStates.GetAccountState(HashDigest<SHA256>?)`
+    interface method.  [[#3425]]
+ -  Removed `TxFailure.ExceptionMetadata` property.  [[#3428]]
+ -  Removed `ISerializable` interface from `TxExecution`, `TxSuccess`,
+    and `TxFailure`.  [[#3428]]
+ -  Removed `TxSuccess` and `TxFailure` class.  [[#3429]]
+ -  Changed `TxExecution` class as `sealed` from `abstract.`  [[#3429]]
+ -  All properties of `TxExecution` except `BlockHash` and `TxId` were
+    overhauled.  [[#3429]]
+ -  (Libplanet.Store) Removed `IStore.PutTxExecution(TxSuccess)` and
+    `IStore.PutTxExecution(TxFailure)`;
+    added `IStore.PutTxExecution(TxExecution)`.  [[#3429]]
+ -  (Libplanet.Explorer) Removed `TxResult.ExceptionName` of type `string?`
+    and added `TxResult.ExceptionNames` of type `List<string?>?`.  [[#3429]]
+ -  (Libplanet.Explorer) Removed `TxResult.UpdatedStates` and
+    `TxResult.UpdatedFungibleAssets`.  [[#3429]]
+ -  Changed `IActionRenderer.RenderAction(IValue, IActionContext, IAccount)`
+    to `IActionRenderer.RenderAction(IValue, ICommittedActionContext,
+    HashDigest<SHA256>)`.  [[#3431]]
+ -  Changed `IActionRenderer.RenderActionError(IValue, IActionContext,
+    Exception)` to `IActionRenderer.RenderActionError(IValue,
+    ICommittedActionContext, Exception)`.  [[#3431]]
+
+### Added APIs
+
+ -  Added `AccountDiff` class.  [[#3424]]
+ -  Added `ICommittedActionContext` interface.  [[#3431]]
+ -  Added `ICommittedActionEvaluation` interface.  [[#3431]]
+
+[#3424]: https://github.com/planetarium/libplanet/pull/3424
+[#3425]: https://github.com/planetarium/libplanet/pull/3425
+[#3428]: https://github.com/planetarium/libplanet/pull/3428
+[#3429]: https://github.com/planetarium/libplanet/pull/3429
+[#3431]: https://github.com/planetarium/libplanet/pull/3431
+
+
+Version 3.3.1
+-------------
+
+Released on September 8, 2023.
+
+-  (Libplanet.Store) Fixed a bug where `ITrie.Get()` could wrongly retrieve
+   an `IValue` from a non-existent path.  [[#3420]]
+
+[#3420]: https://github.com/planetarium/libplanet/pull/3420
 
 
 Version 3.3.0

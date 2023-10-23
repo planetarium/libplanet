@@ -17,27 +17,56 @@ namespace Libplanet.Types.Blocks
     public static class BlockMarshaler
     {
         // Block fields:
-        internal static readonly byte[] HeaderKey = { 0x48 }; // 'H'
-        internal static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
+        internal static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 }); // 'H'
+        internal static readonly Binary TransactionsKey = new Binary(new byte[] { 0x54 }); // 'T'
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         // Header fields:
-        private static readonly byte[] ProtocolVersionKey = { 0x00 };
-        private static readonly byte[] IndexKey = { 0x69 }; // 'i'
-        private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'; Legacy, unused.
-        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'; Legacy, unused.
-        private static readonly byte[] MinerKey = { 0x6d }; // 'm'
-        private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
-        private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
-        private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
-        private static readonly byte[] HashKey = { 0x68 }; // 'h'
-        private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
-        private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
-        private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
-        private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
+        private static readonly Binary ProtocolVersionKey =
+            new Binary(new byte[] { 0x00 });
+
+        private static readonly Binary IndexKey =
+            new Binary(new byte[] { 0x69 }); // 'i'
+
+        private static readonly Binary TimestampKey =
+            new Binary(new byte[] { 0x74 }); // 't'
+
+        private static readonly Binary DifficultyKey =
+            new Binary(new byte[] { 0x64 }); // 'd'; Legacy, unused.
+
+        private static readonly Binary TotalDifficultyKey =
+            new Binary(new byte[] { 0x54 }); // 'T'; Legacy, unused.
+
+        private static readonly Binary NonceKey =
+            new Binary(new byte[] { 0x6e }); // 'n'; Legacy, unused.
+
+        private static readonly Binary MinerKey =
+            new Binary(new byte[] { 0x6d }); // 'm'
+
+        private static readonly Binary PublicKeyKey =
+            new Binary(new byte[] { 0x50 }); // 'P'
+
+        private static readonly Binary PreviousHashKey =
+            new Binary(new byte[] { 0x70 }); // 'p'
+
+        private static readonly Binary TxHashKey =
+            new Binary(new byte[] { 0x78 }); // 'x'
+
+        private static readonly Binary HashKey =
+            new Binary(new byte[] { 0x68 }); // 'h'
+
+        private static readonly Binary StateRootHashKey =
+            new Binary(new byte[] { 0x73 }); // 's'
+
+        private static readonly Binary SignatureKey =
+            new Binary(new byte[] { 0x53 }); // 'S'
+
+        private static readonly Binary PreEvaluationHashKey =
+            new Binary(new byte[] { 0x63 }); // 'c'
+
+        private static readonly Binary LastCommitKey =
+            new Binary(new byte[] { 0x43 }); // 'C'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
@@ -150,7 +179,7 @@ namespace Libplanet.Types.Blocks
                 MarshalTransactions(block.Transactions));
 
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
-            marshaledMetadata.GetValue<Integer>(IndexKey);
+            (Integer)marshaledMetadata[IndexKey];
 
         public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
         {
@@ -158,40 +187,40 @@ namespace Libplanet.Types.Blocks
             PublicKey? publicKey = null;
             if (marshaled.ContainsKey(PublicKeyKey))
             {
-                publicKey = new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+                publicKey = new PublicKey(((Binary)marshaled[PublicKeyKey]).ByteArray);
                 miner = publicKey.ToAddress();
             }
             else
             {
-                miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+                miner = new Address(marshaled[MinerKey]);
             }
 
 #pragma warning disable SA1118 // The parameter spans multiple lines
             return new BlockMetadata(
                 protocolVersion: marshaled.ContainsKey(ProtocolVersionKey)
-                    ? (int)marshaled.GetValue<Integer>(ProtocolVersionKey)
+                    ? (int)(Integer)marshaled[ProtocolVersionKey]
                     : 0,
                 index: UnmarshalBlockMetadataIndex(marshaled),
                 timestamp: DateTimeOffset.ParseExact(
-                    marshaled.GetValue<Text>(TimestampKey),
+                    (Text)marshaled[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 miner: miner,
                 publicKey: publicKey,
                 previousHash: marshaled.ContainsKey(PreviousHashKey)
-                    ? new BlockHash(marshaled.GetValue<IValue>(PreviousHashKey))
+                    ? new BlockHash(marshaled[PreviousHashKey])
                     : (BlockHash?)null,
                 txHash: marshaled.ContainsKey(TxHashKey)
-                    ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
+                    ? new HashDigest<SHA256>(((Binary)marshaled[TxHashKey]).ByteArray)
                     : (HashDigest<SHA256>?)null,
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
-                    ? new BlockCommit(marshaled.GetValue<IValue>(LastCommitKey))
+                    ? new BlockCommit(marshaled[LastCommitKey])
                     : (BlockCommit?)null);
 #pragma warning restore SA1118
         }
 
         public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
-            new HashDigest<SHA256>(marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray);
+            new HashDigest<SHA256>(((Binary)marshaled[PreEvaluationHashKey]).ByteArray);
 
         public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
             Dictionary marshaled)
@@ -203,25 +232,24 @@ namespace Libplanet.Types.Blocks
 
         public static BlockHash UnmarshalBlockHash(Dictionary marshaledBlock)
         {
-            Dictionary blockHeader = marshaledBlock.GetValue<Dictionary>(HeaderKey);
+            Dictionary blockHeader = (Dictionary)marshaledBlock[HeaderKey];
             return UnmarshalBlockHeaderHash(blockHeader);
         }
 
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
-            new BlockHash(marshaledBlockHeader.GetValue<IValue>(HashKey));
+            new BlockHash(marshaledBlockHeader[HashKey]);
 
         public static HashDigest<SHA256> UnmarshalBlockHeaderStateRootHash(
             Dictionary marshaledBlockHeader
         ) =>
             new HashDigest<SHA256>(
-                marshaledBlockHeader.GetValue<Binary>(StateRootHashKey).ByteArray
-            );
+                ((Binary)marshaledBlockHeader[StateRootHashKey]).ByteArray);
 
         public static ImmutableArray<byte>? UnmarshalBlockHeaderSignature(
             Dictionary marshaledBlockHeader
         ) =>
             marshaledBlockHeader.ContainsKey(SignatureKey)
-                ? marshaledBlockHeader.GetValue<Binary>(SignatureKey).ByteArray
+                ? ((Binary)marshaledBlockHeader[SignatureKey]).ByteArray
                 : (ImmutableArray<byte>?)null;
 
         public static BlockHeader UnmarshalBlockHeader(Dictionary marshaled)
@@ -241,12 +269,12 @@ namespace Libplanet.Types.Blocks
         public static IReadOnlyList<Transaction> UnmarshalBlockTransactions(
             Dictionary marshaledBlock) =>
             marshaledBlock.ContainsKey(TransactionsKey)
-                ? UnmarshalTransactions(marshaledBlock.GetValue<List>(TransactionsKey))
+                ? UnmarshalTransactions((List)marshaledBlock[TransactionsKey])
                 : ImmutableArray<Transaction>.Empty;
 
         public static Block UnmarshalBlock(Dictionary marshaled)
         {
-            BlockHeader header = UnmarshalBlockHeader(marshaled.GetValue<Dictionary>(HeaderKey));
+            BlockHeader header = UnmarshalBlockHeader((Dictionary)marshaled[HeaderKey]);
             IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
             return new Block(header, txs);
         }
