@@ -31,9 +31,9 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal");
-            ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution");
-            Deterministic = plainValue.GetValue<Boolean>("deterministic");
+            ThrowOnRehearsal = (Boolean)plainValue["throw_on_rehearsal"];
+            ThrowOnExecution = (Boolean)plainValue["throw_on_execution"];
+            Deterministic = (Boolean)plainValue["deterministic"];
         }
 
         public IAccount Execute(IActionContext context)

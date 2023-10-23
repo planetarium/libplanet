@@ -302,8 +302,8 @@ namespace Libplanet.Tests.Tx
             var action0 = actionLoader.LoadAction(0, tx.Actions[0]);
             Assert.IsType<Attack>(action0);
             var targetAddress =
-                ((Dictionary)((Dictionary)action0.PlainValue)["values"])
-                    .GetValue<Binary>("target_address").ByteArray;
+                ((Binary)((Dictionary)((Dictionary)action0.PlainValue)["values"])["target_address"])
+                    .ByteArray;
             AssertBytesEqual(
                 new Address(publicKey).ByteArray,
                 targetAddress

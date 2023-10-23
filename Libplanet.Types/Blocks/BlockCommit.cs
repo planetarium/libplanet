@@ -17,10 +17,10 @@ namespace Libplanet.Types.Blocks
 {
     public sealed class BlockCommit : IEquatable<BlockCommit>, IBencodable
     {
-        private static readonly byte[] HeightKey = { 0x48 };    // 'H'
-        private static readonly byte[] RoundKey = { 0x52 };     // 'R'
-        private static readonly byte[] BlockHashKey = { 0x68 }; // 'h'
-        private static readonly byte[] VotesKey = { 0x56 };     // 'V'
+        private static readonly Binary HeightKey = new Binary(new byte[] { 0x48 });    // 'H'
+        private static readonly Binary RoundKey = new Binary(new byte[] { 0x52 });     // 'R'
+        private static readonly Binary BlockHashKey = new Binary(new byte[] { 0x68 }); // 'h'
+        private static readonly Binary VotesKey = new Binary(new byte[] { 0x56 });     // 'V'
 
         private static Codec _codec = new Codec();
 
@@ -126,11 +126,11 @@ namespace Libplanet.Types.Blocks
                 "constructor for checking not allowed values.")]
         private BlockCommit(Bencodex.Types.Dictionary bencoded)
             : this(
-                bencoded.GetValue<Integer>(HeightKey),
-                bencoded.GetValue<Integer>(RoundKey),
-                new BlockHash(bencoded.GetValue<IValue>(BlockHashKey)),
+                (Integer)bencoded[HeightKey],
+                (Integer)bencoded[RoundKey],
+                new BlockHash(bencoded[BlockHashKey]),
                 bencoded.ContainsKey(VotesKey)
-                    ? bencoded.GetValue<List>(VotesKey)
+                    ? ((List)bencoded[VotesKey])
                         .Select(vote => new Vote(vote))
                         .ToImmutableArray()
                     : ImmutableArray<Vote>.Empty)
