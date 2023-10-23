@@ -15,12 +15,23 @@ namespace Libplanet.Types.Consensus
     public class VoteMetadata : IVoteMetadata, IEquatable<VoteMetadata>, IBencodable
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly byte[] HeightKey = { 0x48 };                // 'H'
-        private static readonly byte[] RoundKey = { 0x52 };                 // 'R'
-        private static readonly byte[] TimestampKey = { 0x74 };             // 't'
-        private static readonly byte[] BlockHashKey = { 0x68 };             // 'h'
-        private static readonly byte[] ValidatorPublicKeyKey = { 0x50 };    // 'P'
-        private static readonly byte[] FlagKey = { 0x46 };                  // 'F'
+        private static readonly Binary HeightKey =
+            new Binary(new byte[] { 0x48 }); // 'H'
+
+        private static readonly Binary RoundKey =
+            new Binary(new byte[] { 0x52 }); // 'R'
+
+        private static readonly Binary TimestampKey =
+            new Binary(new byte[] { 0x74 }); // 't'
+
+        private static readonly Binary BlockHashKey =
+            new Binary(new byte[] { 0x68 }); // 'h'
+
+        private static readonly Binary ValidatorPublicKeyKey =
+            new Binary(new byte[] { 0x50 }); // 'P'
+
+        private static readonly Binary FlagKey =
+            new Binary(new byte[] { 0x46 }); // 'F'
 
         private static readonly Codec _codec = new Codec();
 
@@ -94,16 +105,16 @@ namespace Libplanet.Types.Consensus
 #pragma warning disable SA1118 // The parameter spans multiple lines
         private VoteMetadata(Bencodex.Types.Dictionary bencoded)
             : this(
-                height: bencoded.GetValue<Integer>(HeightKey),
-                round: bencoded.GetValue<Integer>(RoundKey),
-                blockHash: new BlockHash(bencoded.GetValue<IValue>(BlockHashKey)),
+                height: (Integer)bencoded[HeightKey],
+                round: (Integer)bencoded[RoundKey],
+                blockHash: new BlockHash(bencoded[BlockHashKey]),
                 timestamp: DateTimeOffset.ParseExact(
-                    bencoded.GetValue<Text>(TimestampKey),
+                    (Text)bencoded[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    bencoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
-                flag: (VoteFlag)(long)bencoded.GetValue<Integer>(FlagKey))
+                    ((Binary)bencoded[ValidatorPublicKeyKey]).ByteArray),
+                flag: (VoteFlag)(int)(Integer)bencoded[FlagKey])
         {
         }
 #pragma warning restore SA1118

@@ -15,15 +15,28 @@ namespace Libplanet.Consensus
     public class VoteSetBitsMetadata : IEquatable<VoteSetBitsMetadata>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly byte[] HeightKey = { 0x48 };                // 'H'
-        private static readonly byte[] RoundKey = { 0x52 };                 // 'R'
-        private static readonly byte[] TimestampKey = { 0x74 };             // 't'
-        private static readonly byte[] ValidatorPublicKeyKey = { 0x50 };    // 'P'
-        private static readonly byte[] BlockHashKey = { 0x42 };             // 'B'
-        private static readonly byte[] FlagKey = { 0x46 };                  // 'F'
-        private static readonly byte[] VoteBitsKey = { 0x56 };              // 'V'
+        private static readonly Binary HeightKey =
+            new Binary(new byte[] { 0x48 }); // 'H'
 
-        private static Codec _codec = new Codec();
+        private static readonly Binary RoundKey =
+            new Binary(new byte[] { 0x52 }); // 'R'
+
+        private static readonly Binary TimestampKey =
+            new Binary(new byte[] { 0x74 }); // 't'
+
+        private static readonly Binary ValidatorPublicKeyKey =
+            new Binary(new byte[] { 0x50 }); // 'P'
+
+        private static readonly Binary BlockHashKey =
+            new Binary(new byte[] { 0x42 }); // 'B'
+
+        private static readonly Binary FlagKey =
+            new Binary(new byte[] { 0x46 }); // 'F'
+
+        private static readonly Binary VoteBitsKey =
+            new Binary(new byte[] { 0x56 }); // 'V'
+
+        private static readonly Codec _codec = new Codec();
 
         public VoteSetBitsMetadata(
             long height,
@@ -66,17 +79,17 @@ namespace Libplanet.Consensus
 #pragma warning disable SA1118 // The parameter spans multiple lines
         public VoteSetBitsMetadata(Dictionary encoded)
             : this(
-                height: encoded.GetValue<Integer>(HeightKey),
-                round: encoded.GetValue<Integer>(RoundKey),
-                blockHash: new BlockHash(encoded.GetValue<Binary>(BlockHashKey).ByteArray),
+                height: (Integer)encoded[HeightKey],
+                round: (Integer)encoded[RoundKey],
+                blockHash: new BlockHash(encoded[BlockHashKey]),
                 timestamp: DateTimeOffset.ParseExact(
-                    encoded.GetValue<Text>(TimestampKey),
+                    (Text)encoded[TimestampKey],
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    encoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
-                flag: (VoteFlag)(int)encoded.GetValue<Integer>(FlagKey).Value,
-                voteBits: encoded.GetValue<List>(VoteBitsKey)
+                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray),
+                flag: (VoteFlag)(int)(Integer)encoded[FlagKey],
+                voteBits: ((List)encoded[VoteBitsKey])
                     .Select(bit => (bool)(Bencodex.Types.Boolean)bit))
         {
         }
