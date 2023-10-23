@@ -19,8 +19,8 @@ namespace Libplanet.Consensus
     public class Maj23 : IEquatable<Maj23>
     {
         // FIXME: This should be private.  Left as internal for testing reasons.
-        internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
-        private static Codec _codec = new Codec();
+        internal static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
+        private static readonly Codec _codec = new Codec();
 
         private readonly Maj23Metadata _maj23Metadata;
 
@@ -62,7 +62,7 @@ namespace Libplanet.Consensus
             : this(
                 new Maj23Metadata(encoded),
                 encoded.ContainsKey(SignatureKey)
-                    ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
+                    ? ((Binary)encoded[SignatureKey]).ByteArray
                     : ImmutableArray<byte>.Empty)
         {
         }

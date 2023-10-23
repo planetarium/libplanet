@@ -14,8 +14,8 @@ namespace Libplanet.Types.Consensus
     /// </summary>
     public class Validator : IEquatable<Validator>, IBencodable
     {
-        private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
-        private static readonly byte[] PowerKey = { 0x70 }; // 'p'
+        private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x50 }); // 'P'
+        private static readonly Binary PowerKey = new Binary(new byte[] { 0x70 });     // 'p'
 
         /// <summary>
         /// Creates an instance of <see cref="Validator"/>, with given <paramref name="publicKey"/>
@@ -53,8 +53,8 @@ namespace Libplanet.Types.Consensus
 
         private Validator(Bencodex.Types.Dictionary bencoded)
             : this(
-                new PublicKey(bencoded.GetValue<Binary>(PublicKeyKey).ByteArray),
-                new BigInteger(bencoded.GetValue<Integer>(PowerKey)))
+                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray),
+                (Integer)bencoded[PowerKey])
         {
         }
 

@@ -15,16 +15,16 @@ namespace Libplanet.Types.Tx
     /// </summary>
     public sealed class TxMetadata
     {
-        internal static readonly byte[] CustomActionsKey = { 0x61 }; // 'a'
-        internal static readonly byte[] SystemActionKey = { 0x41 }; // 'A'
-        internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
+        internal static readonly Binary CustomActionsKey = new Binary(new byte[] { 0x61 }); // 'a'
+        internal static readonly Binary SystemActionKey = new Binary(new byte[] { 0x41 }); // 'A'
+        internal static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
-        private static readonly byte[] SignerKey = { 0x73 }; // 's'
-        private static readonly byte[] GenesisHashKey = { 0x67 }; // 'g'
-        private static readonly byte[] UpdatedAddressesKey = { 0x75 }; // 'u'
-        private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
-        private static readonly byte[] TimestampKey = { 0x74 }; // 't'
+        private static readonly Binary NonceKey = new Binary(new byte[] { 0x6e }); // 'n'
+        private static readonly Binary SignerKey = new Binary(new byte[] { 0x73 }); // 's'
+        private static readonly Binary GenesisHashKey = new Binary(new byte[] { 0x67 }); // 'g'
+        private static readonly Binary UpdatedAddressesKey = new Binary(new byte[] { 0x75 }); // 'u'
+        private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x70 }); // 'p'
+        private static readonly Binary TimestampKey = new Binary(new byte[] { 0x74 }); // 't'
 
         /// <summary>
         /// Creates a <see cref="TxMetadata"/> instance with a <paramref name="publicKey"/>.
@@ -65,16 +65,16 @@ namespace Libplanet.Types.Tx
         /// <paramref name="dictionary"/> has some invalid values.</exception>
         public TxMetadata(Bencodex.Types.Dictionary dictionary)
         {
-            Nonce = dictionary.GetValue<Integer>(NonceKey);
-            GenesisHash = dictionary.TryGetValue(new Binary(GenesisHashKey), out IValue v)
+            Nonce = (Integer)dictionary[NonceKey];
+            GenesisHash = dictionary.TryGetValue(GenesisHashKey, out IValue v)
                     ? new BlockHash(v)
                     : (BlockHash?)null;
-            UpdatedAddresses = dictionary.GetValue<List>(UpdatedAddressesKey)
+            UpdatedAddresses = ((List)dictionary[UpdatedAddressesKey])
                 .Select(v => new Address(v))
                 .ToImmutableHashSet();
-            PublicKey = new PublicKey(dictionary.GetValue<Binary>(PublicKeyKey).ByteArray);
+            PublicKey = new PublicKey(((Binary)dictionary[PublicKeyKey]).ByteArray);
             Timestamp = DateTimeOffset.ParseExact(
-                dictionary.GetValue<Text>(TimestampKey),
+                (Text)dictionary[TimestampKey],
                 TimestampFormat,
                 CultureInfo.InvariantCulture
             ).ToUniversalTime();

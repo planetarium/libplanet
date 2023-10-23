@@ -25,7 +25,7 @@ namespace Libplanet.Action.Tests.Common
         public void LoadPlainValue(IValue plainValue)
         {
             var dictionary = (Bencodex.Types.Dictionary)plainValue;
-            Address = new Address((string)dictionary.GetValue<Text>("address"));
+            Address = new Address((string)(Text)dictionary["address"]);
         }
 
         public IAccount Execute(IActionContext context)

@@ -35,8 +35,8 @@ namespace Libplanet.Action.Tests.Common
         public static BattleResult FromBencodex(Bencodex.Types.Dictionary dictionary)
         {
             return new BattleResult(
-                dictionary.GetValue<List>("used_weapons").Select(x => ((Text)x).Value),
-                dictionary.GetValue<List>("targets").Select(x => ((Text)x).Value));
+                ((List)dictionary["used_weapons"]).Select(x => ((Text)x).Value),
+                ((List)dictionary["targets"]).Select(x => ((Text)x).Value));
         }
 
         public Bencodex.Types.Dictionary ToBencodex() =>
