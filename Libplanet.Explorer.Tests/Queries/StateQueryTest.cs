@@ -117,6 +117,7 @@ public class StateQueryTest
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -159,6 +160,7 @@ public class StateQueryTest
         {
             totalSupply(
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -212,6 +214,7 @@ public class StateQueryTest
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -289,6 +292,7 @@ public class StateQueryTest
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
@@ -331,6 +335,7 @@ public class StateQueryTest
         {
             totalSupply(
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
@@ -363,6 +368,7 @@ public class StateQueryTest
         {
             totalSupply(
                  currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -384,6 +390,7 @@ public class StateQueryTest
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
+                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
@@ -406,50 +413,42 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
-        public IReadOnlyList<IValue> GetStates(
-            IReadOnlyList<Address> addresses,
-            HashDigest<SHA256>? stateRootHash) =>
-            addresses.Select(addr => GetAccountState(stateRootHash).GetState(addr)).ToList().AsReadOnly();
-
-        public FungibleAssetValue GetBalance(
-            Address address, Currency currency, BlockHash? offset) =>
-            new MockAccount().GetBalance(address, currency);
-
-        public FungibleAssetValue GetTotalSupply(Currency currency, BlockHash? offset) =>
-            new MockAccount().GetTotalSupply(currency);
-
-        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            new MockAccount().GetValidatorSet();
-
-
-        public IValue? GetState(Address address, Address accountAddress, BlockHash? offset)
-            => new MockAccount().GetState(address);
-
-        public IWorldState GetWorldState(BlockHash? offset)
+        public IWorldState GetWorldState(HashDigest<SHA256>? hash)
             => new MockWorld();
 
-
-        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
-            => new MockAccount();
-
-        public ITrie GetBlockTrie(BlockHash? offset)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ITrie GetTrie(HashDigest<SHA256>? hash)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IWorldState GetWorldState(HashDigest<SHA256>? hash)
+        public IWorldState GetWorldState(BlockHash? offset)
             => new MockWorld();
 
         public IAccountState GetAccountState(HashDigest<SHA256>? hash)
             => new MockAccount();
 
+        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
+            => new MockAccount();
+
         public IValue? GetState(Address address, HashDigest<SHA256>? hash)
             => new MockAccount().GetState(address);
+
+        public IValue? GetState(Address address, Address accountAddress, BlockHash? offset)
+            => new MockAccount().GetState(address);
+
+        public FungibleAssetValue GetBalance(
+            Address address, Currency currency, HashDigest<SHA256>? hash) =>
+            new MockAccount().GetBalance(address, currency);
+
+        public FungibleAssetValue GetBalance(
+            Address address, Currency currency, Address accountAddress, BlockHash? offset) =>
+            new MockAccount().GetBalance(address, currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency, HashDigest<SHA256>? hash) =>
+            new MockAccount().GetTotalSupply(currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency, Address accountAddress, BlockHash? offset) =>
+            new MockAccount().GetTotalSupply(currency);
+        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? hash) =>
+            new MockAccount().GetValidatorSet();
+
+        public ValidatorSet GetValidatorSet(Address accountAddress, BlockHash? offset) =>
+            new MockAccount().GetValidatorSet();
     }
 
     private class MockWorld : IWorld

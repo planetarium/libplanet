@@ -238,11 +238,11 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain.GetBalance(_addr[0], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * -5,
-                chain.GetBalance(_addr[1], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[1], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
 
             return chain;
