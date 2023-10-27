@@ -24,7 +24,7 @@ namespace Libplanet.Store.Trie
                         cursor),
                 HashNode hashNode => ResolveToValue(UnhashNode(hashNode), cursor),
                 _ => throw new InvalidTrieNodeException(
-                    $"Invalid node value: {node.ToBencodex().Inspect(false)}"),
+                    $"Invalid node value: {node.ToBencodex().Inspect()}"),
             };
 
         private INode? ResolveToNode(INode? node, in PathCursor cursor)

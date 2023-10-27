@@ -50,7 +50,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Inspection",
                 description: "A readable representation for debugging.",
-                resolve: ctx => ctx.Source.Inspect(true)
+                resolve: ctx => ctx.Source.Inspect()
             );
 
             Field<NonNullGraphType<StringGraphType>>(

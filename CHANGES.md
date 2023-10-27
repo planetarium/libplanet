@@ -26,10 +26,19 @@ To be released.
 
 ### Dependencies
 
+ -  Upgrade *Bencodex* from [0.14.0][Bencodex 0.14.0] to
+    [0.16.0][Bencodex 0.16.0].  [[#3461]]
+ -  Upgrade *Bencodex.Json* from [0.11.0][Bencodex.Json 0.11.0] to
+    [0.16.0][Bencodex.Json 0.16.0].  [[#3461]]
+
 ### CLI tools
 
 [#3454]: https://github.com/planetarium/libplanet/pull/3454
 [#3455]: https://github.com/planetarium/libplanet/pull/3455
+[#3461]: https://github.com/planetarium/libplanet/pull/3461
+[Bencodex 0.16.0]: https://www.nuget.org/packages/Bencodex/0.16.0
+[Bencodex.Json 0.11.0]: https://www.nuget.org/packages/Bencodex.json/0.11.0
+[Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
 
 
 Version 3.6.0

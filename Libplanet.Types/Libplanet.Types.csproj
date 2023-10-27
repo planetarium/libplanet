@@ -22,8 +22,8 @@
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
-    <PackageReference Include="Bencodex" Version="0.14.0" />
-    <PackageReference Include="Bencodex.Json" Version="0.11.0" />
+    <PackageReference Include="Bencodex" Version="0.16.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.16.0" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>

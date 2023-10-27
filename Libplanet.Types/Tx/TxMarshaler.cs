@@ -15,16 +15,16 @@ namespace Libplanet.Types.Tx
     public static class TxMarshaler
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private static readonly Binary UpdatedAddressesKey = new byte[] { 0x75 }; // 'u'
-        private static readonly Binary TimestampKey = new byte[] { 0x74 }; // 't'
-        private static readonly Binary GenesisHashKey = new byte[] { 0x67 }; // 'g'
-        private static readonly Binary MaxGasPriceKey = new byte[] { 0x6d }; // 'm'
-        private static readonly Binary GasLimitKey = new byte[] { 0x6c }; // 'l'
-        private static readonly Binary NonceKey = new byte[] { 0x6e }; // 'n'
-        private static readonly Binary SignerKey = new byte[] { 0x73 }; // 's'
-        private static readonly Binary PublicKeyKey = new byte[] { 0x70 }; // 'p'
-        private static readonly Binary SignatureKey = new byte[] { 0x53 }; // 'S'
-        private static readonly Binary ActionsKey = new byte[] { 0x61 }; // 'a'
+        private static readonly Binary UpdatedAddressesKey = new Binary(new byte[] { 0x75 }); // 'u'
+        private static readonly Binary TimestampKey = new Binary(new byte[] { 0x74 }); // 't'
+        private static readonly Binary GenesisHashKey = new Binary(new byte[] { 0x67 }); // 'g'
+        private static readonly Binary MaxGasPriceKey = new Binary(new byte[] { 0x6d }); // 'm'
+        private static readonly Binary GasLimitKey = new Binary(new byte[] { 0x6c }); // 'l'
+        private static readonly Binary NonceKey = new Binary(new byte[] { 0x6e }); // 'n'
+        private static readonly Binary SignerKey = new Binary(new byte[] { 0x73 }); // 's'
+        private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x70 }); // 'p'
+        private static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
+        private static readonly Binary ActionsKey = new Binary(new byte[] { 0x61 }); // 'a'
         private static readonly Codec Codec = new Codec();
 
         [Pure]
@@ -139,8 +139,8 @@ namespace Libplanet.Types.Tx
         public static ImmutableArray<byte>? UnmarshalTransactionSignature(
             Bencodex.Types.Dictionary dictionary
         ) =>
-            dictionary.TryGetValue(SignatureKey, out IValue v)
-                ? (Binary)v
+            dictionary.TryGetValue(SignatureKey, out IValue v) && v is Binary bin
+                ? bin.ToImmutableArray()
                 : (ImmutableArray<byte>?)null;
 
         [Pure]
@@ -182,8 +182,8 @@ namespace Libplanet.Types.Tx
         {
             ImmutableArray<byte> sig
                 = dictionary.TryGetValue(SignatureKey, out IValue s) && s is Binary bin
-                ? bin
-                : new Binary(Array.Empty<byte>());
+                ? bin.ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
             return UnmarshalUnsignedTx(dictionary).CombineWithoutVerification(sig);
         }
 

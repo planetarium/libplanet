@@ -63,7 +63,7 @@
     <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
-    <PackageReference Include="Bencodex.Json" Version="0.11.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.16.0" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>

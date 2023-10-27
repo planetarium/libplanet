@@ -62,7 +62,7 @@ namespace Libplanet.Store.Trie.Nodes
                     return (allowed & NodeType.Full) == NodeType.Full
                         ? DecodeFull(list)
                         : throw new InvalidTrieNodeException(
-                            $"Can't decode a node from value {value.Inspect(false)}");
+                            $"Can't decode a node from value {value.Inspect()}");
                 }
                 else if (list.Count == 2)
                 {
@@ -71,25 +71,25 @@ namespace Libplanet.Store.Trie.Nodes
                         return (allowed & NodeType.Short) == NodeType.Short
                             ? DecodeShort(list)
                             : throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect(false)}");
+                                $"Can't decode a node from value {value.Inspect()}");
                     }
                     else if (list[0] is Null)
                     {
                         return (allowed & NodeType.Value) == NodeType.Value
                             ? DecodeValue(list)
                             : throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect(false)}");
+                                $"Can't decode a node from value {value.Inspect()}");
                     }
                     else
                     {
                         throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect(false)}");
+                                $"Can't decode a node from value {value.Inspect()}");
                     }
                 }
                 else
                 {
                     throw new InvalidTrieNodeException(
-                        $"Can't decode a node from the bencodex value: {value.Inspect(false)}");
+                        $"Can't decode a node from the bencodex value: {value.Inspect()}");
                 }
             }
             else if (value is Binary binary)
@@ -97,19 +97,19 @@ namespace Libplanet.Store.Trie.Nodes
                 return (allowed & NodeType.Hash) == NodeType.Hash
                     ? DecodeHash(binary)
                     : throw new InvalidTrieNodeException(
-                        $"Can't decode a node from value {value.Inspect(false)}");
+                        $"Can't decode a node from value {value.Inspect()}");
             }
             else if (value is Null)
             {
                 return (allowed & NodeType.Null) == NodeType.Null
                     ? (INode?)null
                     : throw new InvalidTrieNodeException(
-                        $"Can't decode a node from value {value.Inspect(false)}");
+                        $"Can't decode a node from value {value.Inspect()}");
             }
             else
             {
                 throw new InvalidTrieNodeException(
-                    $"Can't decode a node from value {value.Inspect(false)}");
+                    $"Can't decode a node from value {value.Inspect()}");
             }
         }
 
