@@ -63,7 +63,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             var actions = Assert.IsType<Dictionary<string, object>>(
                 ((object[])resultData["actions"])[0]);
             Assert.Equal(
-                transaction.Actions[0].Inspect(true),
+                transaction.Actions[0].Inspect(),
                 actions["inspection"]);
         }
     }

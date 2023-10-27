@@ -250,7 +250,7 @@ public class ApvCommand
                         {
                             string k = kv.Key switch
                             {
-                                Binary bk => ByteUtil.Hex(bk),
+                                Binary bk => ByteUtil.Hex(bk.ToArray()),
                                 Text txt => txt.Value,
                                 _ => kv.Key.ToString() ?? string.Empty,
                             };

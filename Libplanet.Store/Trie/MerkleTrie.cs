@@ -308,7 +308,7 @@ namespace Libplanet.Store.Trie
 
                 default:
                     throw new InvalidTrieNodeException(
-                        $"Unsupported node value: {node.ToBencodex().Inspect(false)}");
+                        $"Unsupported node value: {node.ToBencodex().Inspect()}");
             }
         }
 

@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
-    <PackageReference Include="Bencodex" Version="0.14.0" />
+    <PackageReference Include="Bencodex" Version="0.16.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
     <PackageReference Include="LiteDB" Version="4.1.4" />

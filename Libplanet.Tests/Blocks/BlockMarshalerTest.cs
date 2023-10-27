@@ -179,7 +179,7 @@ namespace Libplanet.Tests.Blocks
             _output.WriteLine(
                 "{0} = {1}",
                 nameof(_marshaledGenesis),
-                _marshaledGenesis.Inspect(true));
+                _marshaledGenesis.Inspect());
             Assert.Equal(
                 _fx.Genesis,
                 BlockMarshaler.UnmarshalBlock(_marshaledGenesis)
@@ -187,7 +187,7 @@ namespace Libplanet.Tests.Blocks
             _output.WriteLine(
                 "{0} = {1}",
                 nameof(_marshaledNext),
-                _marshaledNext.Inspect(true));
+                _marshaledNext.Inspect());
             Assert.Equal(
                 _fx.Next,
                 BlockMarshaler.UnmarshalBlock(_marshaledNext)
@@ -195,7 +195,7 @@ namespace Libplanet.Tests.Blocks
             _output.WriteLine(
                 "{0} = {1}",
                 nameof(_marshaledHasTx),
-                _marshaledHasTx.Inspect(true));
+                _marshaledHasTx.Inspect());
             Assert.Equal(
                 _fx.HasTx,
                 BlockMarshaler.UnmarshalBlock(_marshaledHasTx)
