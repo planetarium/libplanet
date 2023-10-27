@@ -88,7 +88,7 @@ namespace Libplanet.Types.Blocks
 
             if (metadata.TxHash is { } th)
             {
-                dict = dict.Add(TxHashKey, th.ByteArray);
+                dict = dict.Add(TxHashKey, th.Bencoded);
             }
 
             dict = metadata.PublicKey is { } pubKey
@@ -109,13 +109,7 @@ namespace Libplanet.Types.Blocks
         )
         {
             Dictionary dict = marshaledMetadata;
-            ImmutableArray<byte> preEvaluationHashBytes = preEvaluationHash.ByteArray;
-
-            if (!preEvaluationHashBytes.IsDefaultOrEmpty)
-            {
-                dict = dict.Add(PreEvaluationHashKey, preEvaluationHashBytes);
-            }
-
+            dict = dict.Add(PreEvaluationHashKey, preEvaluationHash.Bencoded);
             return dict;
         }
 
@@ -135,8 +129,8 @@ namespace Libplanet.Types.Blocks
         )
         {
             Dictionary dict = marshaledPreEvaluatedBlockHeader
-                .Add(StateRootHashKey, stateRootHash.ByteArray)
-                .Add(HashKey, hash.ByteArray);
+                .Add(StateRootHashKey, stateRootHash.Bencoded)
+                .Add(HashKey, hash.Bencoded);
             if (signature is { } sig)
             {
                 dict = dict.Add(SignatureKey, sig);
@@ -207,11 +201,11 @@ namespace Libplanet.Types.Blocks
                     CultureInfo.InvariantCulture),
                 miner: miner,
                 publicKey: publicKey,
-                previousHash: marshaled.ContainsKey(PreviousHashKey)
-                    ? new BlockHash(marshaled[PreviousHashKey])
+                previousHash: marshaled.TryGetValue(PreviousHashKey, out IValue phv)
+                    ? new BlockHash(phv)
                     : (BlockHash?)null,
-                txHash: marshaled.ContainsKey(TxHashKey)
-                    ? new HashDigest<SHA256>(((Binary)marshaled[TxHashKey]).ByteArray)
+                txHash: marshaled.TryGetValue(TxHashKey, out IValue thv)
+                    ? new HashDigest<SHA256>(thv)
                     : (HashDigest<SHA256>?)null,
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
                     ? new BlockCommit(marshaled[LastCommitKey])
@@ -220,7 +214,7 @@ namespace Libplanet.Types.Blocks
         }
 
         public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
-            new HashDigest<SHA256>(((Binary)marshaled[PreEvaluationHashKey]).ByteArray);
+            new HashDigest<SHA256>(marshaled[PreEvaluationHashKey]);
 
         public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
             Dictionary marshaled)
@@ -242,8 +236,7 @@ namespace Libplanet.Types.Blocks
         public static HashDigest<SHA256> UnmarshalBlockHeaderStateRootHash(
             Dictionary marshaledBlockHeader
         ) =>
-            new HashDigest<SHA256>(
-                ((Binary)marshaledBlockHeader[StateRootHashKey]).ByteArray);
+            new HashDigest<SHA256>(marshaledBlockHeader[StateRootHashKey]);
 
         public static ImmutableArray<byte>? UnmarshalBlockHeaderSignature(
             Dictionary marshaledBlockHeader

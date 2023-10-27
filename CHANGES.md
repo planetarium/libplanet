@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IBencodable` interface to `HashDigest<T>`.  [[#3455]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -27,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#3454]: https://github.com/planetarium/libplanet/pull/3454
+[#3455]: https://github.com/planetarium/libplanet/pull/3455
 
 
 Version 3.6.0

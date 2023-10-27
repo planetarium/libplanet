@@ -26,11 +26,20 @@ namespace Libplanet.Tests
         public void DisallowNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new HashDigest<SHA1>(null)
-            );
+                () => new HashDigest<SHA1>((byte[])null));
             Assert.Throws<ArgumentNullException>(
-                () => new HashDigest<SHA256>(null)
-            );
+                () => new HashDigest<SHA256>((byte[])null));
+        }
+
+        [Fact]
+        public void Bencoded()
+        {
+            Assert.NotEqual(HashDigest<SHA1>.Size, HashDigest<SHA256>.Size);
+            var digest = new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
+            var bencoded = digest.Bencoded;
+            var decoded = new HashDigest<SHA256>(bencoded);
+            Assert.Equal(digest, decoded);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new HashDigest<SHA1>(bencoded));
         }
 
         [Fact]
