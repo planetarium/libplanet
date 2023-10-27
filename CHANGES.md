@@ -4,25 +4,15 @@ Libplanet changelog
 Version 3.7.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on October 27, 2023.
 
 ### Backward-incompatible API changes
 
  -  Added `IBencodable` interface to `HashDigest<T>`.  [[#3455]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
 ### Behavioral changes
 
  -  Slightly optimized `BlockMarshaler`.  [[#3454]]
-
-### Bug fixes
 
 ### Dependencies
 
@@ -30,8 +20,6 @@ To be released.
     [0.16.0][Bencodex 0.16.0].  [[#3461]]
  -  Upgrade *Bencodex.Json* from [0.11.0][Bencodex.Json 0.11.0] to
     [0.16.0][Bencodex.Json 0.16.0].  [[#3461]]
-
-### CLI tools
 
 [#3454]: https://github.com/planetarium/libplanet/pull/3454
 [#3455]: https://github.com/planetarium/libplanet/pull/3455
