@@ -5870,6 +5870,14 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T)
   nameWithType: HashDigest<T>
   nameWithType.vb: HashDigest(Of T)
+- uid: Libplanet.Common.HashDigest`1.#ctor(Bencodex.Types.IValue)
+  name: HashDigest(IValue)
+  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Common.HashDigest`1.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Common.HashDigest<T>.HashDigest(Bencodex.Types.IValue)
+  fullName.vb: Libplanet.Common.HashDigest(Of T).HashDigest(Bencodex.Types.IValue)
+  nameWithType: HashDigest<T>.HashDigest(IValue)
+  nameWithType.vb: HashDigest(Of T).HashDigest(IValue)
 - uid: Libplanet.Common.HashDigest`1.#ctor(System.Byte[])
   name: HashDigest(Byte[])
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1__ctor_System_Byte___
@@ -5897,6 +5905,23 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T).HashDigest
   nameWithType: HashDigest<T>.HashDigest
   nameWithType.vb: HashDigest(Of T).HashDigest
+- uid: Libplanet.Common.HashDigest`1.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Bencoded
+  commentId: P:Libplanet.Common.HashDigest`1.Bencoded
+  fullName: Libplanet.Common.HashDigest<T>.Bencoded
+  fullName.vb: Libplanet.Common.HashDigest(Of T).Bencoded
+  nameWithType: HashDigest<T>.Bencoded
+  nameWithType.vb: HashDigest(Of T).Bencoded
+- uid: Libplanet.Common.HashDigest`1.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Bencoded_
+  commentId: Overload:Libplanet.Common.HashDigest`1.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Common.HashDigest<T>.Bencoded
+  fullName.vb: Libplanet.Common.HashDigest(Of T).Bencoded
+  nameWithType: HashDigest<T>.Bencoded
+  nameWithType.vb: HashDigest(Of T).Bencoded
 - uid: Libplanet.Common.HashDigest`1.ByteArray
   name: ByteArray
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_ByteArray
