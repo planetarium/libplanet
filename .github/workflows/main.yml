@@ -4,7 +4,7 @@ on:
     branches:
     - main
 env:
-  CODECOV_TOKEN: xxxx73d4
+  CODECOV_TOKEN: ${{ secrets.CODECOV_API_ACCESS_TOKEN }}
 jobs:
   linux-netcore-build:
     defaults:
