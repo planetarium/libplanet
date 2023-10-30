@@ -1,6 +1,5 @@
 {
   "include": ["./src", "*.d.ts", "*.ts"],
-  "rootDir": "./src",
   "compilerOptions": {
     "outDir": "dist",
     "target": "ES2022",
