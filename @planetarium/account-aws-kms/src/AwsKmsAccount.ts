@@ -1,3 +1,4 @@
+import { encode } from "@planetarium/bencodex";
 import { AwsKmsKeyId } from "./AwsKmsKeyId.js";
 import { KMSClient, SignCommand } from "@aws-sdk/client-kms";
 import { Signature as NobleSignature } from "@noble/secp256k1";
@@ -37,10 +38,7 @@ export class AwsKmsAccount implements Account {
   }
 
   async sign(message: Message): Promise<Signature> {
-    const digest = await crypto.subtle.digest(
-      "SHA-256",
-      crypto.encode(message)
-    );
+    const digest = await crypto.subtle.digest("SHA-256", encode(message));
     const digestArray = new Uint8Array(digest);
 
     const cmd = new SignCommand({

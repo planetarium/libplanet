@@ -1335,6 +1335,7 @@ __metadata:
     "@aws-sdk/client-kms": "npm:^3.272.0"
     "@noble/secp256k1": "npm:^1.7.1"
     "@planetarium/account": "workspace:^"
+    "@planetarium/bencodex": "npm:^0.2.2"
     "@types/node": "npm:^18.13.0"
     "@vitest/coverage-c8": "npm:^0.29.3"
     "@vitest/ui": "npm:^0.29.3"
