@@ -4,11 +4,21 @@
   "description": "Libplanet account implementation using AWS KMS",
   "type": "module",
   "main": "./dist/index.js",
+  "imports": {
+    "#crypto": {
+      "node": "./src/crypto/node.ts",
+      "default": "./src/crypto/browser.ts"
+    }
+  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "node": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "browser": "./dist/index.browser.mjs",
+      "default": "./dist/index.js"
     }
   },
   "files": [

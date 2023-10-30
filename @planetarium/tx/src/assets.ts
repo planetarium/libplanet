@@ -1,6 +1,5 @@
 import { encode, RecordValue, RecordView, Value } from "@planetarium/bencodex";
 import { Address, encodeAddressSet } from "./address.js";
-import { crypto } from "#crypto";
 
 export interface Currency {
   ticker: string;

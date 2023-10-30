@@ -4,21 +4,11 @@
   "description": "Creating Libplanet transactions from JavaScript/TypeScript",
   "type": "module",
   "main": "./dist/index.js",
-  "imports": {
-    "#crypto": {
-      "node": "./src/crypto/node.ts",
-      "default": "./src/crypto/browser.ts"
-    }
-  },
   "exports": {
     ".": {
-      "node": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.cjs"
-      },
-      "browser": "./dist/index.browser.mjs",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "types": "./dist/index.d.ts",

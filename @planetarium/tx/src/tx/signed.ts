@@ -1,6 +1,5 @@
 import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { Account, Address, Signature } from "@planetarium/account";
-import { crypto } from "#crypto";
 import { type UnsignedTx, encodeUnsignedTx } from "./unsigned.js";
 import { bytesEqual } from "../bytes.js";
 
@@ -10,8 +9,7 @@ export type SignedTx<T extends UnsignedTx> = T & { signature: Signature };
 
 export async function signTx(
   tx: UnsignedTx,
-  signAccount: Account,
-  isDigest: boolean = false
+  signAccount: Account
 ): Promise<SignedTx<typeof tx>> {
   if (
     !bytesEqual(
@@ -29,12 +27,6 @@ export async function signTx(
     throw new Error("The transaction signer does not match to the signAccount");
   }
   const payload = encodeUnsignedTx(tx);
-  if (isDigest) {
-    const digest = await crypto.subtle.digest("SHA-256", encode(payload));
-    const array = new Uint8Array(digest);
-    const signature = await signAccount.sign(array, true);
-    return { ...tx, signature };
-  }
   const signature = await signAccount.sign(encode(payload));
   return {
     ...tx,
