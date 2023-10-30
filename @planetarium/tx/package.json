@@ -4,6 +4,12 @@
   "description": "Creating Libplanet transactions from JavaScript/TypeScript",
   "type": "module",
   "main": "./dist/index.js",
+  "imports": {
+    "#crypto": {
+      "node": "./src/webcrypto/crypto.ts",
+      "default": "./src/webcrypto/cryptoNode.ts"
+    }
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -11,13 +17,13 @@
       "require": "./dist/index.cjs"
     },
     "./webcrypto/crypto": {
-      "types": "./webcrypto/crypto.d.ts",
+      "types": "./src/webcrypto/crypto.d.ts",
       "node": {
-        "import": "./esm/webcrypto/cryptoNode.js",
-        "default": "./webcrypto/cryptoNode.js"
+        "import": "./src/webcrypto/cryptoNode.js",
+        "default": "./src/webcrypto/cryptoNode.cjs"
       },
-      "import": "./esm/webcrypto/crypto.js",
-      "default": "./webcrypto/crypto.js"
+      "import": "./src/webcrypto/crypto.js",
+      "default": "./src/webcrypto/crypto.cjs"
     }
   },
   "browser": {
@@ -59,7 +65,7 @@
     "@vitest/ui": "^0.29.2",
     "execa": "^6.1.0",
     "fast-check": "^3.1.2",
-    "nanobundle": "^1.5.0",
+    "nanobundle": "^1.6.0",
     "vite": "^4.1.3",
     "vitest": "^0.29.2"
   },
