@@ -7,7 +7,7 @@ import Signature from "./Signature.js";
 export interface Account {
   getAddress(): Promise<Address>;
   getPublicKey(): Promise<PublicKey>;
-  sign(message: Message): Promise<Signature>;
+  sign(message: Message, isDigest?: boolean): Promise<Signature>;
 }
 
 export function isAccount(account: unknown): account is Account {

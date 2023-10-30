@@ -35,10 +35,11 @@ export class AwsKmsAccount implements Account {
     return Promise.resolve(this.publicKey);
   }
 
-  async sign(message: Message): Promise<Signature> {
+  async sign(message: Message, isDigest: boolean = false): Promise<Signature> {
     const cmd = new SignCommand({
       KeyId: this.keyId,
       Message: message,
+      MessageType: isDigest ? "DIGEST" : "RAW",
       SigningAlgorithm: "ECDSA_SHA_256",
     });
     const response = await this.#client.send(cmd);
