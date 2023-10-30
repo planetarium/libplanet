@@ -1,2 +1,6 @@
-import { Crypto } from "@peculiar/webcrypto";
-export const crypto = new Crypto();
+// @ts-ignore
+import * as nc from "node:crypto";
+export const crypto =
+  nc && typeof nc === "object" && "webcrypto" in nc
+    ? (nc.webcrypto as any)
+    : undefined;
