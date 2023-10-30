@@ -77,7 +77,7 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BlockChainStates</span></div>
   </div>
   <div class="implements">
@@ -105,7 +105,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
@@ -184,7 +184,7 @@ with <code data-dev-comment-type="paramref" class="paramref">hash</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">hash</span></td>
         <td><p>The state root hash for which to create
 an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
@@ -505,7 +505,7 @@ with a batch of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">addresses</span></td>
         <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es of the states to query.</p>
 </td>
@@ -529,11 +529,11 @@ the states from.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
         <td><p>The states associated to specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
 Associated values are ordered in the same way to the corresponding
 <code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.
-Hence, the returned <span class="xref">System.Collections.Generic.IReadOnlyList&lt;T&gt;</span> is guaranteeed to be of the same
+Hence, the returned <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList&lt;T&gt;</a> is guaranteeed to be of the same
 length as <code data-dev-comment-type="paramref" class="paramref">addresses</code> with possible <span class="xref">null</span> values.</p>
 </td>
       </tr>
