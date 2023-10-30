@@ -40,7 +40,6 @@ export class AwsKmsAccount implements Account {
     const digest = await crypto.subtle.digest("SHA-256", message);
     const digestArray = new Uint8Array(digest);
 
-    console.log(message, digestArray);
     const cmd = new SignCommand({
       KeyId: this.keyId,
       Message: digestArray,

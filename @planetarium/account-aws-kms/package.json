@@ -54,7 +54,6 @@
   "dependencies": {
     "@aws-sdk/client-kms": "^3.272.0",
     "@noble/secp256k1": "^1.7.1",
-    "@planetarium/bencodex": "^0.2.2",
     "asn1js": "^3.0.5"
   },
   "peerDependencies": {
