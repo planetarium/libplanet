@@ -9,6 +9,12 @@ inputs:
   code_coverage:
     required: false
     default: true
+  matrix_node_total:
+    required: false
+    default: 1
+  matrix_node_index:
+    required: false
+    default: 0
 runs:
   using: composite
   steps:
@@ -16,19 +22,13 @@ runs:
     uses: actions/cache@v3.3.2
     with:
       key: v1-dotcover-{{ arch }}
-      path: UPDATE_ME
+      path: "~/.nuget/packages"
       restore-keys: v1-dotcover-{{ arch }}
     if: "${{ inputs.code_coverage }}"
   - name: Install JetBrains dotCover
     run: dotnet tool install --global JetBrains.dotCover.GlobalTool --version 2021.2.2
     if: "${{ inputs.code_coverage }}"
     shell: bash
-  - name: save_cache
-    uses: actions/cache@v3.3.2
-    with:
-      path: "~/.nuget/packages"
-      key: v1-dotcover-{{ arch }}
-    if: "${{ inputs.code_coverage }}"
   - uses: actions/checkout@v4.1.0
   - uses: actions/download-artifact@v3.0.2
     with:
@@ -38,8 +38,10 @@ runs:
       set -evx
       tests_collection="${{ inputs.collect_tests_from }}"
       total="$(wc -l "$tests_collection" | awk '{ print $1 }')"
-      part="$(( (total + CIRCLE_NODE_TOTAL - 1) / CIRCLE_NODE_TOTAL ))"
-      tail -n +$((CIRCLE_NODE_INDEX * part + 1)) "$tests_collection" \
+      node_total="${{ inputs.matrix_node_total }}"
+      node_index="${{ inputs.matrix_node_index }}"
+      part="$(( (total + "$node_total" - 1) / "$node_total" ))"
+      tail -n +$(("$node_index" * part + 1)) "$tests_collection" \
       > .head_tests.txt
       if [[ "$part" = "0" ]]; then
         cp .head_tests.txt .current_tests.txt
