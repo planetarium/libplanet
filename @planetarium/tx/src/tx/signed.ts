@@ -10,23 +10,30 @@ export type SignedTx<T extends UnsignedTx> = T & { signature: Signature };
 export async function signTx(
   tx: UnsignedTx,
   signAccount: Account,
+  isDigest: boolean = false
 ): Promise<SignedTx<typeof tx>> {
   if (
     !bytesEqual(
       tx.publicKey,
-      (await signAccount.getPublicKey()).toBytes("uncompressed"),
+      (await signAccount.getPublicKey()).toBytes("uncompressed")
     )
   ) {
     throw new Error("Public keys in the tx and the signAccount are mismatched");
   } else if (
     !bytesEqual(
       tx.signer,
-      Address.deriveFrom(await signAccount.getPublicKey()).toBytes(),
+      Address.deriveFrom(await signAccount.getPublicKey()).toBytes()
     )
   ) {
     throw new Error("The transaction signer does not match to the signAccount");
   }
   const payload = encodeUnsignedTx(tx);
+  if (isDigest) {
+    const digest = await crypto.subtle.digest("SHA-256", encode2(payload));
+    const array = new Uint8Array(digest);
+    const signature = await signAccount.sign(array, true);
+    return { ...tx, signature };
+  }
   const signature = await signAccount.sign(encode(payload));
   return {
     ...tx,
@@ -35,7 +42,7 @@ export async function signTx(
 }
 
 export function encodeSignedTx<T extends UnsignedTx>(
-  tx: SignedTx<T>,
+  tx: SignedTx<T>
 ): Dictionary {
   const dict = encodeUnsignedTx(tx);
   const sig = tx.signature.toBytes();
