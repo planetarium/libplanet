@@ -9,7 +9,20 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./webcrypto/crypto": {
+      "types": "./webcrypto/crypto.d.ts",
+      "node": {
+        "import": "./esm/webcrypto/cryptoNode.js",
+        "default": "./webcrypto/cryptoNode.js"
+      },
+      "import": "./esm/webcrypto/crypto.js",
+      "default": "./webcrypto/crypto.js"
     }
+  },
+  "browser": {
+    "node:crypto": false,
+    "./webcrypto/crypto": "./webcrypto/crypto.js"
   },
   "types": "./dist/index.d.ts",
   "files": [
