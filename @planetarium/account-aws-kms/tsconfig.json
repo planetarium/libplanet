@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "nodenext",
     "moduleResolution": "nodenext",
     "lib": ["ES2022"]
   }
