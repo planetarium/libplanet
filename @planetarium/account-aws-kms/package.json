@@ -58,5 +58,8 @@
   },
   "peerDependencies": {
     "@planetarium/account": "workspace:^"
+  },
+  "engines": {
+    "node": ">=19.0.0"
   }
 }
