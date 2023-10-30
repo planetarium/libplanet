@@ -29,7 +29,7 @@ export async function signTx(
   }
   const payload = encodeUnsignedTx(tx);
   if (isDigest) {
-    const digest = await crypto.subtle.digest("SHA-256", encode2(payload));
+    const digest = await crypto.subtle.digest("SHA-256", encode(payload));
     const array = new Uint8Array(digest);
     const signature = await signAccount.sign(array, true);
     return { ...tx, signature };
