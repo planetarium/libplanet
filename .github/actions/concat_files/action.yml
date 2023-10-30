@@ -1,0 +1,12 @@
+name: concat_files
+inputs:
+  glob:
+    required: false
+  to:
+    required: false
+runs:
+  using: composite
+  steps:
+  - name: Concatenate file contents
+    run: cat -s ${{ inputs.glob }} > ${{ inputs.to }}
+    shell: bash

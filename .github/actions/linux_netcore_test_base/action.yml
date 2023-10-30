@@ -1,0 +1,22 @@
+name: linux_netcore_test_base
+inputs:
+  collect_tests_from:
+    required: false
+    default: ".tests.txt"
+  locale:
+    required: false
+    default: en_US.UTF-8
+  code_coverage:
+    required: false
+    default: true
+runs:
+  using: composite
+  steps:
+  - name: Install lib6c-dev (for RocksDBSharp)
+    run: apt update -y && apt install -y libc6-dev
+    shell: bash
+  - uses: "./.github/actions/netcore_test_base"
+    with:
+      collect_tests_from: "${{ inputs.collect_tests_from }}"
+      locale: "${{ inputs.locale }}"
+      code_coverage: "${{ inputs.code_coverage }}"

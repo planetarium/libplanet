@@ -1,0 +1,41 @@
+name: codecov
+inputs:
+  file:
+    required: false
+runs:
+  using: composite
+  steps:
+  - name: restore_cache
+    uses: actions/cache@v3.3.2
+    with:
+      key: v1-codecov
+      path: UPDATE_ME
+      restore-keys: v1-codecov
+  - name: Upload a code coverage report file to Codecov.io
+    run: |-
+      set -evx
+      case "$OSTYPE" in
+        darwin*) plat=macos;;
+        msys*)   plat=windows; suffix=.exe;;
+        cygwin*) plat=windows; suffix=.exe;;
+        *)       plat=linux;;
+      esac
+      mkdir -p _codecov_uploader/$plat/
+      pushd _codecov_uploader/$plat/
+      if [[ ! -f "codecov$suffix" ]]; then
+        curl -OL "https://uploader.codecov.io/latest/$plat/codecov$suffix"
+      fi
+      chmod +x "codecov$suffix"
+      popd
+      "_codecov_uploader/$plat/codecov$suffix" \
+        -K \
+        -f '${{ inputs.file }}' \
+        -n "$CIRCLE_BUILD_NUM"
+    shell: bash
+    if: always()
+  - name: save_cache
+    uses: actions/cache@v3.3.2
+    if: always()
+    with:
+      path: _codecov_uploader/
+      key: v1-codecov
