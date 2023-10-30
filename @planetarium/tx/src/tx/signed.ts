@@ -1,5 +1,6 @@
 import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { Account, Address, Signature } from "@planetarium/account";
+import { crypto } from "#crypto";
 import { type UnsignedTx, encodeUnsignedTx } from "./unsigned.js";
 import { bytesEqual } from "../bytes.js";
 

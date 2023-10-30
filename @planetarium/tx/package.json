@@ -6,29 +6,20 @@
   "main": "./dist/index.js",
   "imports": {
     "#crypto": {
-      "node": "./src/webcrypto/crypto.ts",
-      "default": "./src/webcrypto/cryptoNode.ts"
+      "node": "./src/crypto/node.ts",
+      "default": "./src/crypto/browser.ts"
     }
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./webcrypto/crypto": {
-      "types": "./src/webcrypto/crypto.d.ts",
       "node": {
-        "import": "./src/webcrypto/cryptoNode.js",
-        "default": "./src/webcrypto/cryptoNode.cjs"
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
       },
-      "import": "./src/webcrypto/crypto.js",
-      "default": "./src/webcrypto/crypto.cjs"
+      "browser": "./dist/index.browser.mjs",
+      "default": "./dist/index.js"
     }
-  },
-  "browser": {
-    "./webcrypto/crypto": "./webcrypto/crypto.js",
-    "node:crypto": false
   },
   "types": "./dist/index.d.ts",
   "files": [
