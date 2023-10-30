@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [19]  # TODO: Add LTS
+        node-version: ['lts/*']  # TODO: Add LTS
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
