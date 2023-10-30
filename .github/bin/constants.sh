@@ -48,3 +48,5 @@ if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && [[ \
   ]]; then
   publish_package=true
 fi
+
+publish_package=false
