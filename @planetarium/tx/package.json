@@ -21,8 +21,8 @@
     }
   },
   "browser": {
-    "node:crypto": false,
-    "./webcrypto/crypto": "./webcrypto/crypto.js"
+    "./webcrypto/crypto": "./webcrypto/crypto.js",
+    "node:crypto": false
   },
   "types": "./dist/index.d.ts",
   "files": [
