@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "nodenext",
-    "module": "ESNext",
+    "module": "NodeNext",
     "lib": ["ESNext", "DOM"]
   }
 }

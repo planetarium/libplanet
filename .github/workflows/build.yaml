@@ -39,7 +39,7 @@ jobs:
       with:
         registry-url: 'https://registry.npmjs.org'
         scope: '@planetarium'
-        node-version: 18
+        node-version: 'lts/*'
     - id: determine-version
       run: node scripts/determine-version.js
     - shell: bash
