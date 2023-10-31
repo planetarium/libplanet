@@ -581,22 +581,12 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns><see cref="HashDigest{SHA256}"/> retrieved from <see cref="StateStore"/>
         /// as sub state root hash.</returns>
-        /// <exception cref="InvalidCastException">Thrown if retrieved <see cref="IValue"/>
-        /// cannot be cast as <see cref="HashDigest{SHA256}"/>.</exception>
         public HashDigest<SHA256> GetSubStateRootHash(
             Address address,
             HashDigest<SHA256>? stateRootHash)
         {
-            try
-            {
-                IValue value = GetValue(address, stateRootHash);
-                return new HashDigest<SHA256>((Binary)value);
-
-                throw new InvalidCastException($"IValue {value} cannot be cast as state root hash");
-            }
-            finally
-            {
-            }
+            IValue value = GetValue(address, stateRootHash);
+            return new HashDigest<SHA256>(value);
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
