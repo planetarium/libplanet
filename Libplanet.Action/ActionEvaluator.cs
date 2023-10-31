@@ -671,7 +671,7 @@ namespace Libplanet.Action
                 HashDigest<SHA256>? hash = null;
                 if (iValue is IValue value)
                 {
-                    hash = new HashDigest<SHA256>(((Binary?)value)?.ToByteArray());
+                    hash = new HashDigest<SHA256>(value);
                 }
 
                 result.Add(key, hash);
