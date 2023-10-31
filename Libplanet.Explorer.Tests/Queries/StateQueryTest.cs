@@ -425,10 +425,10 @@ public class StateQueryTest
         public IAccountState GetAccountState(Address address, BlockHash? blockHash)
             => new MockAccount();
 
-        public IValue? GetState(Address address, HashDigest<SHA256>? hash)
+        public IValue GetState(Address address, HashDigest<SHA256>? hash)
             => new MockAccount().GetState(address);
 
-        public IValue? GetState(Address address, Address accountAddress, BlockHash? offset)
+        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
             => new MockAccount().GetState(address);
 
         public FungibleAssetValue GetBalance(
