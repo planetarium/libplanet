@@ -621,7 +621,7 @@ namespace Libplanet.Action
                 }
 
                 accountTrie = _stateStore.Commit(accountTrie);
-                worldTrie = worldTrie.Set(kv.Key, new Binary(accountTrie.Hash.ToByteArray()));
+                worldTrie = worldTrie.Set(kv.Key, new Binary(accountTrie.Hash.ByteArray));
             }
 
             worldTrie = _stateStore.Commit(worldTrie);
@@ -645,8 +645,7 @@ namespace Libplanet.Action
             Stopwatch stopwatch = new Stopwatch();
             worldTrie = _stateStore.GetStateRoot(null).Set(
                 KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
-                new Binary(
-                    worldTrie.Hash.ToByteArray()));
+                new Binary(worldTrie.Hash.ByteArray));
 
             _logger
                 .ForContext("Tag", "Metric")
@@ -668,12 +667,9 @@ namespace Libplanet.Action
             foreach (var updatedAddress in evaluation.OutputState.Delta.UpdatedAddresses)
             {
                 var key = KeyConverters.ToStateKey(updatedAddress);
-                var iValue = worldTrie.Get(new KeyBytes[] { key }).First();
-                HashDigest<SHA256>? hash = null;
-                if (iValue is IValue value)
-                {
-                    hash = new HashDigest<SHA256>(value);
-                }
+                HashDigest<SHA256>? hash = worldTrie.Get(key) is { } value
+                    ? new HashDigest<SHA256>(value)
+                    : (HashDigest<SHA256>?)null;
 
                 result.Add(key, hash);
             }
