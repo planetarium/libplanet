@@ -263,11 +263,16 @@ namespace Libplanet.Store.Trie
                     break;
             }
 
-            bool GuessValueNodeByPath(in ImmutableArray<byte> path)
+            bool GuessValueNode(in ImmutableArray<byte> path, byte[] value)
             {
                 if (path.Length < 2)
                 {
                     return false;
+                }
+
+                if (value.Length > 597)
+                {
+                    return true;
                 }
 
                 bool isStartedWithUnderbar = (path[0] << 4) + path[1] == '_';
@@ -284,7 +289,7 @@ namespace Libplanet.Store.Trie
 
                 // It assumes every length of value nodes is same with Address' hexadecimal
                 // string's hexadecimal string's size.
-                bool isValueNode = GuessValueNodeByPath(path);
+                bool isValueNode = GuessValueNode(path, value);
                 bool noFingerprint = value.All(x => x != '*');
                 if (noFingerprint)
                 {
@@ -292,21 +297,17 @@ namespace Libplanet.Store.Trie
 
                     // To avoid decode value node, it decodes when only there is '*' character,
                     // fingerprint.
-                    if (isValueNode)
-                    {
-                        continue;
-                    }
+                }
+
+                if (isValueNode)
+                {
+                    continue;
                 }
 
                 var node = NodeDecoder.Decode(_codec.Decode(value, LoadIndirectValue));
                 if (!noFingerprint && !(node is null))
                 {
                     yield return (key, _codec.Encode(node.ToBencodex()));
-                }
-
-                if (isValueNode)
-                {
-                    continue;
                 }
 
                 switch (node)
