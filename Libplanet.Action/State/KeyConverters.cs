@@ -4,7 +4,7 @@ using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
-    public static class KeyConverters
+    internal static class KeyConverters
     {
         // "___"
         public static readonly KeyBytes ValidatorSetKey =

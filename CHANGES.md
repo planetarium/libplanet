@@ -83,7 +83,6 @@ To be released.
  -  (Libplanet.Action) Added `IWorldState` interface and its implementation.
     [[#3462]]
      -  Added `WorldBaseState` class.
- -  (Libplanet.Action) Added `KeyConverters` static class.  [[#3462]]
  -  (Libplanet.Action) Added `ReservedAddresses` static class.  [[#3462]]
  -  (Libplanet.Action) Added `WorldDeltaExtensions` static class.  [[#3462]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
