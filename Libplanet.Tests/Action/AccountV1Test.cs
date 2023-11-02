@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Action
 
         public override IActionContext CreateContext(IAccount delta, Address signer)
         {
-            IWorld world = World.Create(new MockWorldState());
+            IWorld world = new World(new MockWorldState());
             world = world.SetAccount(_accountAddress, delta);
             return new ActionContext(
                 signer,

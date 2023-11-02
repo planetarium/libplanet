@@ -47,7 +47,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = World.Create(new MockWorldState());
+            var prevState = new World(new MockWorldState());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -79,7 +79,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = World.Create(new MockWorldState());
+            var prevState = new World(new MockWorldState());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,

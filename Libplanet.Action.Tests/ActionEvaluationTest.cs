@@ -37,11 +37,11 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    World.Create(new MockWorldState()),
+                    new World(new MockWorldState()),
                     123,
                     0,
                     false),
-                World.Create(
+                new World(
                     new MockWorldState().SetAccount(
                         ReservedAddresses.LegacyAccount,
                         new Account(MockAccountState.Empty.SetState(address, (Text)"item"))))

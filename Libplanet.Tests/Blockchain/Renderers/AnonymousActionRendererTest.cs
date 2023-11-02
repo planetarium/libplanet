@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IWorld _world = World.Create(new MockWorldState());
+        private static IWorld _world = new World(new MockWorldState());
 
         private static ICommittedActionContext _actionContext =
             new CommittedActionContext(new ActionContext(
