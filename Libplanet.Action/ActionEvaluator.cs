@@ -15,6 +15,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action
 {
@@ -644,7 +645,7 @@ namespace Libplanet.Action
         {
             Stopwatch stopwatch = new Stopwatch();
             worldTrie = _stateStore.GetStateRoot(null).Set(
-                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                ToHashKey(ReservedAddresses.LegacyAccount),
                 new Binary(worldTrie.Hash.ByteArray));
 
             _logger
@@ -666,7 +667,7 @@ namespace Libplanet.Action
             var result = new Dictionary<KeyBytes, HashDigest<SHA256>?>();
             foreach (var updatedAddress in evaluation.OutputState.Delta.UpdatedAddresses)
             {
-                var key = KeyConverters.ToStateKey(updatedAddress);
+                var key = ToHashKey(updatedAddress);
                 HashDigest<SHA256>? hash = worldTrie.Get(key) is { } value
                     ? new HashDigest<SHA256>(value)
                     : (HashDigest<SHA256>?)null;

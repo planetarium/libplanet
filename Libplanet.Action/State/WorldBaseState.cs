@@ -25,7 +25,7 @@ namespace Libplanet.Action.State
             Legacy = Trie
                 .Get(new[]
                 {
-                    ToStateKey(ReservedAddresses.LegacyAccount),
+                    ToHashKey(ReservedAddresses.LegacyAccount),
                 })
                 .Any(v => v == null);
         }
@@ -62,7 +62,7 @@ namespace Libplanet.Action.State
             else
             {
                 return Trie
-                    .Get(addresses.Select(ToStateKey).ToList())
+                    .Get(addresses.Select(ToHashKey).ToList())
                     .Select(GetTrieFromBencodex)
                     .ToList();
             }

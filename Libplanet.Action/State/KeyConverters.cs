@@ -92,5 +92,24 @@ namespace Libplanet.Action.State
 
             return new KeyBytes(buffer);
         }
+
+        // $"___{ByteUtil.Hex(address.ByteArray)}"
+        public static KeyBytes ToHashKey(Address address)
+        {
+            var addressBytes = address.ByteArray;
+            byte[] buffer = new byte[addressBytes.Length * 2 + 3];
+
+            buffer[0] = _underScore;
+            buffer[1] = _underScore;
+            buffer[2] = _underScore;
+
+            for (int i = 0; i < addressBytes.Length; i++)
+            {
+                buffer[3 + i * 2] = _conversionTable[addressBytes[i] >> 4];
+                buffer[3 + i * 2 + 1] = _conversionTable[addressBytes[i] & 0xf];
+            }
+
+            return new KeyBytes(buffer);
+        }
     }
 }

@@ -32,6 +32,10 @@ namespace Libplanet.Action.State.Tests
                 KeyConverters.ToTotalSupplyKey(currency));
 
             Assert.Equal(
+                new KeyBytes($"___{ByteUtil.Hex(address.ByteArray)}"),
+                KeyConverters.ToHashKey(address));
+
+            Assert.Equal(
                 new KeyBytes("___"),
                 KeyConverters.ValidatorSetKey);
         }

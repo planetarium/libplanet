@@ -43,7 +43,7 @@ namespace Libplanet.Action.State
             // NOTE: Is this key correct?
             var rawStates = delta.Accounts.Select(
                 kv => new KeyValuePair<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>(
-                    ToStateKey(kv.Key),
+                    ToHashKey(kv.Key),
                     kv.Value.Delta.ToRawDelta()));
             return ImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>.Empty
                 .SetItems(rawStates)
