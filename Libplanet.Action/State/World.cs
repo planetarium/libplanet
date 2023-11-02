@@ -23,7 +23,7 @@ namespace Libplanet.Action.State
         {
             _baseState = baseState;
             Delta = delta;
-            Legacy = true;
+            Legacy = baseState.Legacy;
         }
 
         /// <inheritdoc/>
@@ -37,16 +37,6 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public bool Legacy { get; private set; }
-
-        /// <summary>
-        /// Creates a new World from given <paramref name="previousWorld"/>.
-        /// </summary>
-        /// <param name="previousWorld">The previous <see cref="WorldBaseState"/> to initialize
-        /// new World.</param>
-        /// <returns>A null world using <paramref name="previousWorld"/> as its base state.
-        /// </returns>
-        public static IWorld Create(IWorldState previousWorld) =>
-            new World(previousWorld) { Legacy = previousWorld.Legacy };
 
         /// <summary>
         /// Creates a null worlds from given <see cref="IWorld"/>.
