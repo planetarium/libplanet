@@ -261,8 +261,7 @@ namespace Libplanet.Types.Tx
                 maxGasPrice,
                 gasLimit,
                 updatedAddresses,
-                timestamp
-            );
+                timestamp);
 
         /// <summary>
         /// Encodes this <see cref="Transaction"/> into a <see cref="byte"/> array.

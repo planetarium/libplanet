@@ -344,8 +344,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             PublicKey publicKey = privateKey.PublicKey;
@@ -372,10 +373,11 @@ namespace Libplanet.Tests.Tx
             {
                 var diffInvoice = new TxInvoice(
                     i == 0 ? (BlockHash?)null : invoice.GenesisHash,
-                    i == 1 ? null : invoice.UpdatedAddresses,
-                    i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : invoice.Timestamp,
-                    i == 3 ? null : invoice.Actions
-                );
+                    i == 1 ? AddressSet.Empty : invoice.UpdatedAddresses,
+                    i == 2 ? DateTimeOffset.MinValue : invoice.Timestamp,
+                    i == 3 ? TxActionList.Empty : invoice.Actions,
+                    null,
+                    null);
                 var diffSigningMetadata = new TxSigningMetadata(
                     i == 4 ? wrongKey.PublicKey : signingMetadata.PublicKey,
                     i == 5 ? 456L : signingMetadata.Nonce
@@ -422,8 +424,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             PublicKey publicKey = privateKey.PublicKey;

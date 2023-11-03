@@ -628,7 +628,6 @@ namespace Libplanet.Tests.Blockchain
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(
                     _blockChain.Genesis.Hash,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
                     new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 1));

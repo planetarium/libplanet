@@ -23,7 +23,6 @@ namespace Libplanet.Types.Tx
         /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.
         /// </summary>
         /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
-        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.</param>
         /// <param name="timestamp">The value for <see cref="Timestamp"/>.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.</param>
         /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
@@ -31,6 +30,74 @@ namespace Libplanet.Types.Tx
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
         /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
         public TxInvoice(
+            BlockHash? genesisHash,
+            DateTimeOffset timestamp,
+            TxActionList actions,
+            FungibleAssetValue? maxGasPrice,
+            long? gasLimit)
+        {
+            GenesisHash = genesisHash;
+            UpdatedAddresses = ImmutableHashSet<Address>.Empty;
+            Timestamp = timestamp;
+            Actions = actions ?? throw new ArgumentNullException(nameof(actions));
+            MaxGasPrice = maxGasPrice;
+            GasLimit = gasLimit;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.  There
+        /// are some default values for some fields.
+        /// </summary>
+        /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
+        /// <param name="timestamp">The value for <see cref="Timestamp"/>.
+        /// Time of creation by default.</param>
+        /// <param name="actions">The value of <see cref="Actions"/>.
+        /// <see cref="TxActionList"/> by default.</param>
+        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
+        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
+        public TxInvoice(
+            BlockHash? genesisHash = null,
+            DateTimeOffset? timestamp = null,
+            TxActionList? actions = null,
+            FungibleAssetValue? maxGasPrice = null,
+            long? gasLimit = null)
+            : this(
+                genesisHash,
+                timestamp ?? DateTimeOffset.UtcNow,
+                actions ?? TxActionList.Empty,
+                maxGasPrice,
+                gasLimit)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TxInvoice"/> instance by copying everything from another
+        /// <paramref name="invoice"/>.
+        /// </summary>
+        /// <param name="invoice">Another invoice to copy data from.</param>
+        public TxInvoice(ITxInvoice invoice)
+            : this(
+                  genesisHash: invoice.GenesisHash,
+                  updatedAddresses: invoice.UpdatedAddresses,
+                  timestamp: invoice.Timestamp,
+                  actions: invoice.Actions,
+                  maxGasPrice: invoice.MaxGasPrice,
+                  gasLimit: invoice.GasLimit)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.
+        /// </summary>
+        /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
+        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.</param>
+        /// <param name="timestamp">The value for <see cref="Timestamp"/>.</param>
+        /// <param name="actions">The value of <see cref="Actions"/>.</param>
+        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
+        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
+        /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
+        internal TxInvoice(
             BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
@@ -51,54 +118,6 @@ namespace Libplanet.Types.Tx
             Actions = actions ?? throw new ArgumentNullException(nameof(actions));
             MaxGasPrice = maxGasPrice;
             GasLimit = gasLimit;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.  There
-        /// are some default values for some fields.
-        /// </summary>
-        /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
-        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.
-        /// Empty by default.</param>
-        /// <param name="timestamp">The value for <see cref="Timestamp"/>.
-        /// Time of creation by default.</param>
-        /// <param name="actions">The value of <see cref="Actions"/>.
-        /// <see cref="TxActionList"/> by default.</param>
-        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
-        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
-        public TxInvoice(
-            BlockHash? genesisHash = null,
-            IEnumerable<Address>? updatedAddresses = null,
-            DateTimeOffset? timestamp = null,
-            TxActionList? actions = null,
-            FungibleAssetValue? maxGasPrice = null,
-            long? gasLimit = null
-        )
-            : this(
-                genesisHash,
-                updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
-                timestamp ?? DateTimeOffset.UtcNow,
-                actions ?? TxActionList.Empty,
-                maxGasPrice,
-                gasLimit
-            )
-        {
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="TxInvoice"/> instance by copying everything from another
-        /// <paramref name="invoice"/>.
-        /// </summary>
-        /// <param name="invoice">Another invoice to copy data from.</param>
-        public TxInvoice(ITxInvoice invoice)
-            : this(
-                  genesisHash: invoice.GenesisHash,
-                  updatedAddresses: invoice.UpdatedAddresses,
-                  timestamp: invoice.Timestamp,
-                  actions: invoice.Actions,
-                  maxGasPrice: invoice.MaxGasPrice,
-                  gasLimit: invoice.GasLimit)
-        {
         }
 
         /// <inheritdoc cref="ITxInvoice.GenesisHash" />
