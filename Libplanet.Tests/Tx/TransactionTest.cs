@@ -137,7 +137,6 @@ namespace Libplanet.Tests.Tx
                 }.Select(x => x.PlainValue),
                 null,
                 null,
-                ImmutableHashSet<Address>.Empty,
                 timestamp
             );
 
@@ -179,25 +178,8 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                Array.Empty<DumbAction>().Select(x => x.PlainValue)
-            );
+                Array.Empty<DumbAction>().Select(x => x.PlainValue));
             Assert.Empty(emptyTx.UpdatedAddresses);
-
-            Address updatedAddr = new PrivateKey().Address;
-            var txWithAddr = Transaction.Create(
-                0,
-                _fx.PrivateKey1,
-                null,
-                _fx.TxWithActions.Actions,
-                null,
-                null,
-                new[] { updatedAddr }.ToImmutableHashSet()
-            );
-
-            Assert.Equal(
-                new[] { updatedAddr }.ToHashSet(),
-                txWithAddr.UpdatedAddresses.ToHashSet()
-            );
         }
 
         [Fact]
@@ -210,9 +192,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 Array.Empty<DumbAction>().Select(x => x.PlainValue),
                 null,
-                null,
-                ImmutableHashSet<Address>.Empty
-            );
+                null);
             DateTimeOffset rightAfter = DateTimeOffset.UtcNow;
 
             Assert.InRange(tx.Timestamp, rightBefore, rightAfter);
@@ -230,7 +210,6 @@ namespace Libplanet.Tests.Tx
                     Array.Empty<DumbAction>().Select(x => x.PlainValue),
                     null,
                     null,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 )
             );

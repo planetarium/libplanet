@@ -671,8 +671,6 @@ namespace Libplanet.Blockchain
         /// <param name="maxGasPrice"> The maximum gas price this transaction can pay fee. </param>
         /// <param name="gasLimit"> The maximum amount of gas this transaction can consume.
         /// </param>
-        /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
-        /// <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/> is created and
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction"/> signed by the given
@@ -682,7 +680,6 @@ namespace Libplanet.Blockchain
             IEnumerable<IAction> actions,
             FungibleAssetValue? maxGasPrice = null,
             long? gasLimit = null,
-            IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
@@ -696,7 +693,6 @@ namespace Libplanet.Blockchain
                     actions.Select(x => x.PlainValue),
                     maxGasPrice,
                     gasLimit,
-                    updatedAddresses,
                     timestamp);
                 StageTransaction(tx);
                 return tx;

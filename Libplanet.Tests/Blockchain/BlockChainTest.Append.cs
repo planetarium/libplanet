@@ -639,17 +639,13 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 0,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
                 invalidTx,
                 Transaction.Create(
                     nonce: 2,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
             }.OrderBy(tx => tx.Id);
 
             var metadata = new BlockMetadata(

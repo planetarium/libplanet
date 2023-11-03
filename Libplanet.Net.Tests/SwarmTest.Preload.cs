@@ -466,9 +466,7 @@ namespace Libplanet.Net.Tests
                     new[] { action }.ToPlainValues(),
                     null,
                     null,
-                    ImmutableHashSet<Address>.Empty,
-                    DateTimeOffset.UtcNow
-                );
+                    DateTimeOffset.UtcNow);
 
                 Block block = minerChain.ProposeBlock(
                     ChainPrivateKey,

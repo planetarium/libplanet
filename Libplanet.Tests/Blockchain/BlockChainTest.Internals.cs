@@ -35,9 +35,7 @@ namespace Libplanet.Tests.Blockchain
                     Array.Empty<DumbAction>().ToPlainValues(),
                     null,
                     null,
-                    null,
-                    ts ?? DateTimeOffset.UtcNow
-                );
+                    ts ?? DateTimeOffset.UtcNow);
 
             PrivateKey a = new PrivateKey();
             PrivateKey b = new PrivateKey();
