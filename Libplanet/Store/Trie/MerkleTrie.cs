@@ -290,22 +290,15 @@ namespace Libplanet.Store.Trie
                 // It assumes every length of value nodes is same with Address' hexadecimal
                 // string's hexadecimal string's size.
                 bool isValueNode = GuessValueNode(path, value);
-                bool noFingerprint = value.All(x => x != '*');
-                if (noFingerprint)
-                {
-                    yield return (key, value);
-
-                    // To avoid decode value node, it decodes when only there is '*' character,
-                    // fingerprint.
-                }
 
                 if (isValueNode)
                 {
+                    yield return (key, value);
                     continue;
                 }
 
                 var node = NodeDecoder.Decode(_codec.Decode(value, LoadIndirectValue));
-                if (!noFingerprint && !(node is null))
+                if (!(node is null))
                 {
                     yield return (key, _codec.Encode(node.ToBencodex()));
                 }
