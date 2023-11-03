@@ -291,17 +291,13 @@ namespace Libplanet.Store.Trie
                 // string's hexadecimal string's size.
                 bool isValueNode = GuessValueNode(path, value);
 
+                yield return (key, value);
                 if (isValueNode)
                 {
-                    yield return (key, value);
                     continue;
                 }
 
                 var node = NodeDecoder.Decode(_codec.Decode(value, LoadIndirectValue));
-                if (!(node is null))
-                {
-                    yield return (key, _codec.Encode(node.ToBencodex()));
-                }
 
                 switch (node)
                 {
