@@ -47,11 +47,9 @@ namespace Libplanet.Action.State
         /// <returns>The list of <see cref="IAccountState"/>s of the given
         /// <paramref name="addresses"/>.</returns>
         public IReadOnlyList<IAccount> GetAccounts(IReadOnlyList<Address> addresses) =>
-            GetAccountStateRoot(addresses)
-                .Zip(addresses, (trie, address) => CreateAccount(trie))
-                .ToList();
+            GetAccountStateRoots(addresses).Select(CreateAccount).ToList();
 
-        private IReadOnlyList<ITrie> GetAccountStateRoot(IReadOnlyList<Address> addresses)
+        private IReadOnlyList<ITrie> GetAccountStateRoots(IReadOnlyList<Address> addresses)
         {
             if (Legacy)
             {

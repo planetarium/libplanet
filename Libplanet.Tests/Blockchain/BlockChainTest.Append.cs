@@ -298,21 +298,21 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.CreateBlockCommit(_blockChain.Tip));
             var commit1 = TestUtils.CreateBlockCommit(block1);
             _blockChain.Append(block1, commit1);
+            var world1 = _blockChain.GetWorldState();
+            Assert.False(world1.Legacy);
             Assert.Equal(
                 (Text)"foo",
-                _blockChain.GetWorldState()
-                    .GetAccount(DumbModernAction.DumbModernAddress)
-                    .GetState(address1));
+                world1.GetAccount(DumbModernAction.DumbModernAddress).GetState(address1));
             var block2 = _blockChain.ProposeBlock(
                 miner,
                 new[] { tx2 }.ToImmutableList(),
                 commit1);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+            var world2 = _blockChain.GetWorldState();
+            Assert.False(world2.Legacy);
             Assert.Equal(
                 (Text)"bar",
-                _blockChain.GetWorldState()
-                    .GetAccount(DumbModernAction.DumbModernAddress)
-                    .GetState(address2));
+                world2.GetAccount(DumbModernAction.DumbModernAddress).GetState(address2));
         }
 
         [SkippableFact]
