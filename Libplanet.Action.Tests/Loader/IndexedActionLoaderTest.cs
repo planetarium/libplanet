@@ -46,7 +46,7 @@ namespace Libplanet.Action.Tests.Loader
                 .Add("values", Dictionary.Empty
                     .Add("weapon", "sword")
                     .Add("target", "dummy")
-                    .Add("target_address", new PrivateKey().PublicKey.ToAddress().ByteArray)));
+                    .Add("target_address", new PrivateKey().PublicKey.ToAddress().Bencoded)));
             var action3 = new RandomAction(new PrivateKey().PublicKey.ToAddress());
 
             var loader = new IndexedActionLoader(

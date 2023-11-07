@@ -296,7 +296,7 @@ namespace Libplanet.Types.Blocks
             // and its ProtocolVersion is >= 2 when it is not null:
             dict = PublicKey is { } pubKey && ProtocolVersion >= 2
                 ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
-                : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
+                : dict.Add("reward_beneficiary", Miner.Bencoded); /////// ProtocolVersion <= 1
 
             return dict;
         }

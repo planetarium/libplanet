@@ -314,7 +314,7 @@ namespace Libplanet.Tests.Tx
                     .Add("values", Dictionary.Empty
                         .Add("weapon", "wand")
                         .Add("target", "orc")
-                        .Add("target_address", new Address(publicKey).ByteArray)),
+                        .Add("target_address", new Address(publicKey).Bencoded)),
                 action0.PlainValue
             );
 

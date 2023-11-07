@@ -96,7 +96,7 @@ namespace Libplanet.Action.Tests.Common
                         new Dictionary<string, IValue>
                         {
                             ["item"] = (Text)Item,
-                            ["target_address"] = new Binary(TargetAddress.ByteArray),
+                            ["target_address"] = TargetAddress.Bencoded,
                             ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                         });
                 }
@@ -116,8 +116,8 @@ namespace Libplanet.Action.Tests.Common
                 if (!(Transfer is null))
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", Transfer.Item1.ByteArray)
-                        .Add("transfer_to", Transfer.Item2.ByteArray)
+                        .Add("transfer_from", Transfer.Item1.Bencoded)
+                        .Add("transfer_to", Transfer.Item2.Bencoded)
                         .Add("transfer_amount", Transfer.Item3);
                 }
 
