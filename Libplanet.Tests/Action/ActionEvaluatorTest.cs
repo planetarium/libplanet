@@ -1323,10 +1323,9 @@ namespace Libplanet.Tests.Action
             public Address BlockIndexKey { get; set; }
 
             public IValue PlainValue => new List(
-                (Binary)SignerKey.ByteArray,
-                (Binary)MinerKey.ByteArray,
-                (Binary)BlockIndexKey.ByteArray
-            );
+                SignerKey.Bencoded,
+                MinerKey.Bencoded,
+                BlockIndexKey.Bencoded);
 
             public void LoadPlainValue(IValue plainValue)
             {

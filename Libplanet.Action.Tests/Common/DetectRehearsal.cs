@@ -10,7 +10,7 @@ namespace Libplanet.Action.Tests.Common
         public override IValue PlainValue => Dictionary.Empty
             .Add("type_id", TypeId)
             .Add("values", Dictionary.Empty
-                .Add("target_address", TargetAddress.ByteArray));
+                .Add("target_address", TargetAddress.Bencoded));
 
         public bool ResultState { get; set; }
 

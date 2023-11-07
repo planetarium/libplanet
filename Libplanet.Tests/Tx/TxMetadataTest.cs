@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Tx
         {
             Bencodex.Types.Dictionary dict1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
-                .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key1.ToAddress().Bencoded)
                 .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false));
@@ -115,12 +115,12 @@ namespace Libplanet.Tests.Tx
 
             Bencodex.Types.Dictionary dict2 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 0L)
-                .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key2.ToAddress().Bencoded)
                 .Add(
                     new byte[] { 0x75 },
                     Bencodex.Types.List.Empty
-                        .Add(_key1.ToAddress().ToByteArray())
-                        .Add(_key2.ToAddress().ToByteArray()))
+                        .Add(_key1.ToAddress().Bencoded)
+                        .Add(_key2.ToAddress().Bencoded))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
                 .Add(
@@ -155,7 +155,7 @@ namespace Libplanet.Tests.Tx
             };
             Bencodex.Types.Dictionary expected1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
-                .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key1.ToAddress().Bencoded)
                 .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false));
@@ -177,12 +177,12 @@ namespace Libplanet.Tests.Tx
             };
             Bencodex.Types.Dictionary expected2 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 0L)
-                .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key2.ToAddress().Bencoded)
                 .Add(
                     new byte[] { 0x75 },
                     Bencodex.Types.List.Empty
-                        .Add(_key1.ToAddress().ToByteArray())
-                        .Add(_key2.ToAddress().ToByteArray()))
+                        .Add(_key1.ToAddress().Bencoded)
+                        .Add(_key2.ToAddress().Bencoded))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
                 .Add(

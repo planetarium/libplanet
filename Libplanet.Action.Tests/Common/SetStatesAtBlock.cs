@@ -22,7 +22,7 @@ namespace Libplanet.Action.Tests.Common
         }
 
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("address", _address.ByteArray)
+            .Add("address", _address.Bencoded)
             .Add("value", _value)
             .Add("block_index", _blockIndex);
 

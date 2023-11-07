@@ -688,7 +688,7 @@ namespace Libplanet.Types.Assets
         public IValue Serialize()
         {
             IValue minters = Minters is IImmutableSet<Address> m
-                ? new Bencodex.Types.List(m.Select<Address, IValue>(a => new Binary(a.ByteArray)))
+                ? new Bencodex.Types.List(m.Select<Address, IValue>(a => a.Bencoded))
                 : (IValue)Null.Value;
             var serialized = Bencodex.Types.Dictionary.Empty
                 .Add("ticker", Ticker)
@@ -727,7 +727,7 @@ namespace Libplanet.Types.Assets
         private IValue SerializeForHash()
         {
             IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => m.ByteArray))
+                ? new List(a.OrderBy(m => m).Select(m => m.Bencoded))
                 : (IValue)Null.Value;
 
             var serialized = Dictionary.Empty
