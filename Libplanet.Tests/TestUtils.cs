@@ -427,8 +427,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             {
                                 new Initialize(
                                     validatorSet: validatorSet,
-                                    states: ImmutableDictionary.Create<
-                                        Address, IImmutableDictionary<Address, IValue>>()),
+                                    states: ImmutableDictionary.Create<Address, IValue>()),
                             }.Select(x => x.PlainValue),
                         timestamp: DateTimeOffset.MinValue)));
             txs = txs.OrderBy(tx => tx.Id).ToList();

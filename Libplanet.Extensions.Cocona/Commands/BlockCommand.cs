@@ -139,7 +139,7 @@ public class BlockCommand
                 .Select(k => new Validator(k, BigInteger.One))
                 .ToList());
         var emptyState =
-            ImmutableTrieDictionary<Address, IImmutableDictionary<Address, IValue>>.Empty;
+            ImmutableTrieDictionary<Address, IValue>.Empty;
         ImmutableList<Transaction> txs = Array.Empty<Transaction>()
 
             // FIXME: Remove this pragma after fixing the following issue:

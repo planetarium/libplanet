@@ -48,8 +48,7 @@ namespace Libplanet.Tests.Fixtures
                     {
                         new Initialize(
                             validatorSet: TestUtils.ValidatorSet,
-                            states: ImmutableDictionary.Create<
-                                Address, IImmutableDictionary<Address, IValue>>()),
+                            states: ImmutableDictionary.Create<Address, IValue>()),
                     }.ToPlainValues(),
                 timestamp: DateTimeOffset.MinValue
             );

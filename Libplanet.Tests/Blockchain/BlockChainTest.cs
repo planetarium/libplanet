@@ -193,8 +193,7 @@ namespace Libplanet.Tests.Blockchain
                         {
                             new Initialize(
                                 validatorSet: TestUtils.ValidatorSet,
-                                states: ImmutableDictionary.Create
-                                <Address, IImmutableDictionary<Address, IValue>>()),
+                                states: ImmutableDictionary.Create<Address, IValue>()),
                         }.ToPlainValues(),
                     timestamp: DateTimeOffset.UtcNow))
                 .OrderBy(tx => tx.Id)
@@ -1535,13 +1534,9 @@ namespace Libplanet.Tests.Blockchain
             var action = new Initialize(
                 new ValidatorSet(
                     new List<Validator>() { new Validator(new PrivateKey().PublicKey, 1) }),
-                new Dictionary<Address, IImmutableDictionary<Address, IValue>>
+                new Dictionary<Address, IValue>
                 {
-                    [default] =
-                    new Dictionary<Address, IValue>
-                    {
-                        [default] = (Text)"initial value",
-                    }.ToImmutableDictionary(),
+                    [default] = (Text)"initial value",
                 }.ToImmutableDictionary());
 
             _blockChain.MakeTransaction(privateKey, actions: new IAction[] { action });
@@ -1888,8 +1883,7 @@ namespace Libplanet.Tests.Blockchain
             var systemActions = new IAction[]
             {
                 new Initialize(
-                    states: ImmutableDictionary.Create<
-                        Address, IImmutableDictionary<Address, IValue>>(),
+                    states: ImmutableDictionary.Create<Address, IValue>(),
                     validatorSet: new ValidatorSet(
                         new List<Validator>
                         {
@@ -2093,8 +2087,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 new Initialize(
                     validatorSet: initialValidatorSet,
-                    states: ImmutableDictionary.Create<
-                        Address, IImmutableDictionary<Address, IValue>>()
+                    states: ImmutableDictionary.Create<Address, IValue>()
                 ),
             };
             var privateKey = new PrivateKey();

@@ -19,15 +19,11 @@ namespace Libplanet.Action.Tests.Sys
             }
         );
 
-        private static readonly IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>
+        private static readonly IImmutableDictionary<Address, IValue>
             _states =
-            new Dictionary<Address, IImmutableDictionary<Address, IValue>>
+            new Dictionary<Address, IValue>
             {
-                [default] =
-                new Dictionary<Address, IValue>
-                {
-                    [default] = (Text)"initial value",
-                }.ToImmutableDictionary(),
+                [default] = (Text)"initial value",
             }.ToImmutableDictionary();
 
         private static readonly Currency FooCurrency = Currency.Uncapped("FOO", 2, null);

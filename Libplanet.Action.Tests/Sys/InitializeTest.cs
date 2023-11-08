@@ -20,15 +20,11 @@ namespace Libplanet.Action.Tests.Sys
             }
         );
 
-        private static readonly IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>
+        private static readonly IImmutableDictionary<Address, IValue>
             _states =
-            new Dictionary<Address, IImmutableDictionary<Address, IValue>>
+            new Dictionary<Address, IValue>
             {
-                [default] =
-                new Dictionary<Address, IValue>
-                {
-                    [default] = (Text)"initial value",
-                }.ToImmutableDictionary(),
+                [default] = (Text)"initial value",
             }.ToImmutableDictionary();
 
         [Fact]
@@ -70,7 +66,7 @@ namespace Libplanet.Action.Tests.Sys
                 _validatorSet,
                 nextState.GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet());
             Assert.Equal(
-                _states[default][default],
+                _states[default],
                 nextState.GetAccount(default).GetState(default));
         }
 
