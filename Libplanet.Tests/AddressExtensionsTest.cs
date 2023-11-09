@@ -18,7 +18,7 @@ namespace Libplanet.Tests
             );
             var expected = new Address("f45A22dD63f6428e85eE0a6E13a763278f57626d");
             Assert.Equal(expected, privateKey.ToAddress());
-            Assert.Equal(expected, privateKey.PublicKey.ToAddress());
+            Assert.Equal(expected, privateKey.ToAddress());
         }
     }
 }

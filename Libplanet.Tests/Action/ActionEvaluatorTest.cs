@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Action
                     protocolVersion: Block.CurrentProtocolVersion,
                     index: 0,
                     timestamp: timestamp,
-                    miner: GenesisProposer.PublicKey.ToAddress(),
+                    miner: GenesisProposer.ToAddress(),
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),

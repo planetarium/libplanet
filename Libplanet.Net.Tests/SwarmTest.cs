@@ -1104,7 +1104,7 @@ namespace Libplanet.Net.Tests
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
+                var validAddress = validKey.ToAddress();
                 return tx.Signer.Equals(validAddress) ||
                        tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null
@@ -1163,7 +1163,7 @@ namespace Libplanet.Net.Tests
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
+                var validAddress = validKey.ToAddress();
                 return tx.Signer.Equals(validAddress) ||
                        tx.Signer.Equals(GenesisProposer.ToAddress())
                     ? null

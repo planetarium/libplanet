@@ -359,7 +359,7 @@ namespace Libplanet.Tests.Blockchain
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
+                var validAddress = validKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);

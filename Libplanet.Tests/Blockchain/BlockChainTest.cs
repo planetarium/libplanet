@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: 1,
                         timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                        miner: _fx.Proposer.PublicKey.ToAddress(),
+                        miner: _fx.Proposer.ToAddress(),
                         publicKey: _fx.Proposer.PublicKey,
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,

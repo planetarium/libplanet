@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Blockchain
                             null,
                             actions: new[]
                             {
-                                new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
+                                new DumbAction(new PrivateKey().ToAddress(), "foo"),
                             }.ToPlainValues()),
                     }.ToImmutableList());
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Blockchain
                         _blockChain.Genesis.Hash,
                         new[]
                         {
-                            new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
+                            new DumbAction(new PrivateKey().ToAddress(), "foo"),
                         }.ToPlainValues()),
                 }.ToImmutableList();
 
@@ -330,7 +330,7 @@ namespace Libplanet.Tests.Blockchain
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
+                var validAddress = validKey.ToAddress();
                 return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
