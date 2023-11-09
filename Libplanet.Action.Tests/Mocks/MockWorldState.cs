@@ -1,30 +1,34 @@
-using System.Collections.Immutable;
+using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.Tests.Mocks
 {
     public class MockWorldState : IWorldState
     {
-        private readonly IImmutableDictionary<Address, IAccount> _accounts;
+        private readonly IStateStore _stateStore;
 
         public MockWorldState()
-            : this(ImmutableDictionary<Address, IAccount>.Empty)
+            : this(new TrieStateStore(new MemoryKeyValueStore()), null)
         {
         }
 
-        public MockWorldState(IImmutableDictionary<Address, IAccount> accounts)
-            : this(new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null), accounts)
+        public MockWorldState(
+            IStateStore stateStore,
+            HashDigest<SHA256>? stateRootHash = null)
         {
-        }
-
-        public MockWorldState(ITrie trie, IImmutableDictionary<Address, IAccount> accounts)
-        {
-            Trie = trie;
-            Legacy = true;
-            _accounts = accounts;
+            Trie = stateStore.GetStateRoot(stateRootHash);
+            Legacy = Trie
+                .Get(new[]
+                {
+                    ToStateKey(ReservedAddresses.LegacyAccount),
+                })
+                .Any(v => v == null);
         }
 
         public ITrie Trie { get; }
@@ -32,11 +36,17 @@ namespace Libplanet.Action.Tests.Mocks
         public bool Legacy { get; private set; }
 
         public IAccount GetAccount(Address address)
-            => _accounts.TryGetValue(address, out IAccount account)
-            ? account
-            : new Account(new MockAccountState());
+            => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
+            ? new Account(new MockAccountState(_stateStore, Trie.Hash))
+            : new Account(new MockAccountState(
+                _stateStore, new HashDigest<SHA256>(Trie.Get(ToStateKey(address)))));
 
-        public IWorldState SetAccount(Address address, IAccount account) =>
-            new MockWorldState(_accounts.SetItem(address, account));
+        public IWorldState SetAccountState(Address address, IAccount account)
+            => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
+            ? new MockWorldState(_stateStore, account.Trie.Hash)
+            : new MockWorldState(
+                _stateStore,
+                _stateStore.Commit(
+                    Trie.Set(ToStateKey(address), new Binary(account.Trie.Hash.ByteArray))).Hash);
     }
 }

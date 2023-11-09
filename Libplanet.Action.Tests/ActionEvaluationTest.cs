@@ -42,9 +42,9 @@ namespace Libplanet.Action.Tests
                     0,
                     false),
                 new World(
-                    new MockWorldState().SetAccount(
+                    new MockWorldState().SetAccountState(
                         ReservedAddresses.LegacyAccount,
-                        new Account(MockAccountState.Empty.SetState(address, (Text)"item"))))
+                        new Account(new MockAccountState().SetState(address, (Text)"item"))))
             );
             var action = (DumbAction)evaluation.Action;
 

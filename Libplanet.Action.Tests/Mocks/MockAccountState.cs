@@ -1,12 +1,14 @@
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
-using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.Tests.Mocks
 {
@@ -47,34 +49,31 @@ namespace Libplanet.Action.Tests.Mocks
     /// </remarks>
     public class MockAccountState : IAccountState
     {
-        private static readonly MockAccountState _empty = new MockAccountState();
+        private readonly IStateStore _stateStore;
 
         public MockAccountState()
-            : this(new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null))
+            : this(new TrieStateStore(new MemoryKeyValueStore()), null)
         {
         }
 
-        private MockAccountState(ITrie trie)
+        public MockAccountState(
+            IStateStore stateStore,
+            HashDigest<SHA256>? stateRootHash = null)
         {
-            Trie = trie;
+            _stateStore = stateStore;
+            Trie = stateStore.GetStateRoot(stateRootHash);
         }
-
-        public static MockAccountState Empty => _empty;
-
-        public Address Address { get; }
 
         public ITrie Trie { get; }
 
-        public BlockHash? BlockHash { get; }
-
         public IValue GetState(Address address) =>
-            Trie.Get(KeyConverters.ToStateKey(address));
+            Trie.Get(ToStateKey(address));
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(GetState).ToList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            Trie.Get(KeyConverters.ToFungibleAssetKey(address, currency)) is Integer rawValue
+            Trie.Get(ToFungibleAssetKey(address, currency)) is Integer rawValue
                 ? FungibleAssetValue.FromRawValue(currency, rawValue)
                 : currency * 0;
 
@@ -89,19 +88,20 @@ namespace Libplanet.Action.Tests.Mocks
                 throw new TotalSupplyNotTrackableException(msg, currency);
             }
 
-            return Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is Integer rawValue
+            return Trie.Get(ToTotalSupplyKey(currency)) is Integer rawValue
                 ? FungibleAssetValue.FromRawValue(currency, rawValue)
                 : currency * 0;
         }
 
         public ValidatorSet GetValidatorSet() =>
-             Trie.Get(KeyConverters.ValidatorSetKey) is List list
+             Trie.Get(ValidatorSetKey) is List list
                 ? new ValidatorSet(list)
                 : new ValidatorSet();
 
         public MockAccountState SetState(Address address, IValue state) =>
             new MockAccountState(
-                Trie.Set(KeyConverters.ToStateKey(address), state));
+                _stateStore,
+                _stateStore.Commit(Trie.Set(ToStateKey(address), state)).Hash);
 
         public MockAccountState SetBalance(
             Address address, FungibleAssetValue amount) =>
@@ -114,9 +114,11 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState SetBalance(
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             new MockAccountState(
-                Trie.Set(
-                    KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency),
-                    new Integer(rawAmount)));
+                _stateStore,
+                _stateStore.Commit(
+                    Trie.Set(
+                        ToFungibleAssetKey(pair.Address, pair.Currency),
+                        new Integer(rawAmount))).Hash);
 
         public MockAccountState AddBalance(Address address, FungibleAssetValue amount) =>
             AddBalance((address, amount.Currency), amount.RawValue);
@@ -129,7 +131,7 @@ namespace Libplanet.Action.Tests.Mocks
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             SetBalance(
                 pair,
-                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency)) is
+                (Trie.Get(ToFungibleAssetKey(pair.Address, pair.Currency)) is
                     Integer amount ? amount : 0) + rawAmount);
 
         public MockAccountState SubtractBalance(
@@ -144,7 +146,7 @@ namespace Libplanet.Action.Tests.Mocks
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             SetBalance(
                 pair,
-                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency)) is
+                (Trie.Get(ToFungibleAssetKey(pair.Address, pair.Currency)) is
                     Integer amount ? amount : 0) - rawAmount);
 
         public MockAccountState TransferBalance(
@@ -163,7 +165,9 @@ namespace Libplanet.Action.Tests.Mocks
                 ? !(currency.MaximumSupply is FungibleAssetValue maximumSupply) ||
                     rawAmount <= maximumSupply.RawValue
                     ? new MockAccountState(
-                        Trie.Set(KeyConverters.ToTotalSupplyKey(currency), new Integer(rawAmount)))
+                        _stateStore,
+                        _stateStore.Commit(
+                            Trie.Set(ToTotalSupplyKey(currency), new Integer(rawAmount))).Hash)
                     : throw new ArgumentException(
                         $"Given {currency}'s total supply is capped at {maximumSupply.RawValue} " +
                         $"and cannot be set to {rawAmount}.")
@@ -176,7 +180,7 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState AddTotalSupply(Currency currency, BigInteger rawAmount) =>
             SetTotalSupply(
                 currency,
-                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is
+                (Trie.Get(ToTotalSupplyKey(currency)) is
                     Integer amount ? amount : 0) + rawAmount);
 
         public MockAccountState SubtractTotalSupply(FungibleAssetValue amount) =>
@@ -185,12 +189,13 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState SubtractTotalSupply(Currency currency, BigInteger rawAmount) =>
             SetTotalSupply(
                 currency,
-                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is
+                (Trie.Get(ToTotalSupplyKey(currency)) is
                     Integer amount ? amount : 0) - rawAmount);
 
         public MockAccountState SetValidator(Validator validator) =>
             new MockAccountState(
-                Trie.Set(
-                    KeyConverters.ValidatorSetKey, GetValidatorSet().Update(validator).Bencoded));
+                _stateStore,
+                _stateStore.Commit(
+                    Trie.Set(ValidatorSetKey, GetValidatorSet().Update(validator).Bencoded)).Hash);
     }
 }
