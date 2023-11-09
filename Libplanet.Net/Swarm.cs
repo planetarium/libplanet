@@ -79,7 +79,7 @@ namespace Libplanet.Net
 
             _runningMutex = new AsyncLock();
 
-            string loggerId = _privateKey.ToAddress().ToHex();
+            string loggerId = _privateKey.Address.ToHex();
             _logger = Log
                 .ForContext<Swarm>()
                 .ForContext("Source", nameof(Swarm))
@@ -138,7 +138,7 @@ namespace Libplanet.Net
 
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
-        public Address Address => _privateKey.ToAddress();
+        public Address Address => _privateKey.Address;
 
         public BoundPeer AsPeer => Transport?.AsPeer;
 

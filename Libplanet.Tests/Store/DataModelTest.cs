@@ -283,7 +283,7 @@ namespace Libplanet.Tests.Store
             random.NextBytes(buffer);
             ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
             Guid randGuid = Guid.NewGuid();
-            Address randAddress = new PrivateKey().ToAddress();
+            Address randAddress = new PrivateKey().Address;
 
             BTypes.Dictionary encoded;
 
@@ -409,7 +409,7 @@ namespace Libplanet.Tests.Store
             random.NextBytes(buffer);
             ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
             Guid randGuid = Guid.NewGuid();
-            Address randAddress = new PrivateKey().ToAddress();
+            Address randAddress = new PrivateKey().Address;
 
             BTypes.Dictionary encoded;
 
@@ -465,7 +465,7 @@ namespace Libplanet.Tests.Store
                 random.NextBytes(buffer);
                 Bytes = buffer.ToImmutableArray();
                 Guid = Guid.NewGuid();
-                Addr = new PrivateKey().ToAddress();
+                Addr = new PrivateKey().Address;
                 Str = Guid.NewGuid().ToString();
 
                 ListEmpty = ImmutableList<int>.Empty;
@@ -495,7 +495,7 @@ namespace Libplanet.Tests.Store
                     .ToImmutableList();
                 ListAddr = Enumerable
                     .Range(0, 2)
-                    .Select(_ => new PrivateKey().ToAddress())
+                    .Select(_ => new PrivateKey().Address)
                     .ToImmutableList();
                 ListStr = Enumerable
                     .Range(0, 2)
@@ -537,7 +537,7 @@ namespace Libplanet.Tests.Store
                     .Range(0, 2)
                     .Select(_ => new KeyValuePair<ImmutableArray<byte>, Address>(
                         Guid.NewGuid().ToByteArray().ToImmutableArray(),
-                        new PrivateKey().ToAddress()))
+                        new PrivateKey().Address))
                     .ToImmutableDictionary();
                 DictBytesStr = Enumerable
                     .Range(0, 2)
@@ -554,7 +554,7 @@ namespace Libplanet.Tests.Store
                 DictAddrStr = Enumerable
                     .Range(0, 2)
                     .Select(_ => new KeyValuePair<Address, string>(
-                        new PrivateKey().ToAddress(),
+                        new PrivateKey().Address,
                         Guid.NewGuid().ToString()))
                     .ToImmutableDictionary();
                 DictStrStr = Enumerable

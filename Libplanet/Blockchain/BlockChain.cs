@@ -690,7 +690,7 @@ namespace Libplanet.Blockchain
             {
                 // FIXME: Exception should be documented when the genesis block does not exist.
                 Transaction tx = Transaction.Create(
-                    GetNextTxNonce(privateKey.ToAddress()),
+                    GetNextTxNonce(privateKey.Address),
                     privateKey,
                     Genesis.Hash,
                     actions.Select(x => x.PlainValue),

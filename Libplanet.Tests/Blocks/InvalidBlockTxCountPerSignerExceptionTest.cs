@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialization()
         {
-            Address signer = new PrivateKey().ToAddress();
+            Address signer = new PrivateKey().Address;
             var e = new InvalidBlockTxCountPerSignerException("A message.", signer, 10);
             var f = new BinaryFormatter();
             InvalidBlockTxCountPerSignerException e2;

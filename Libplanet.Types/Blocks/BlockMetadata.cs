@@ -90,7 +90,7 @@ namespace Libplanet.Types.Blocks
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
                 timestamp: timestamp,
-                miner: publicKey.ToAddress(),
+                miner: publicKey.Address,
                 publicKey: publicKey,
                 previousHash: previousHash,
                 txHash: txHash,
@@ -180,7 +180,7 @@ namespace Libplanet.Types.Blocks
                         $"Argument {nameof(publicKey)} cannot be null for " +
                         $"{nameof(protocolVersion)} >= 2.",
                         publicKey);
-                Miner = miner == p.ToAddress()
+                Miner = miner == p.Address
                     ? miner
                     : throw new InvalidBlockPublicKeyException(
                         $"Argument {nameof(miner)} should match the derived address of " +

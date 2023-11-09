@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Action
                 new PrivateKey(),
             };
 
-            _addr = _keys.Select(AddressExtensions.ToAddress).ToArray();
+            _addr = _keys.Select(key => key.Address).ToArray();
 
             _currencies = new[]
             {

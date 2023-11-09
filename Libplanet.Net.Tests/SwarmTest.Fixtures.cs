@@ -39,7 +39,7 @@ namespace Libplanet.Net.Tests
                         MakeBlockChain<DumbAction>(policy, storeFx.Store, storeFx.StateStore);
                     var miner = new PrivateKey();
                     var signer = new PrivateKey();
-                    Address address = signer.ToAddress();
+                    Address address = signer.Address;
                     Log.Logger.Information("Fixture blocks:");
                     for (int i = 0; i < 20; i++)
                     {

@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests
             {
                 privateKey = new PrivateKey();
             }
-            while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
+            while (table.GetBucketIndexOf(privateKey.Address) != target);
 
             return privateKey;
         }

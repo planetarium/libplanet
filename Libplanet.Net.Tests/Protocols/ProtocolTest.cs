@@ -514,7 +514,7 @@ namespace Libplanet.Net.Tests.Protocols
             const int peersCount = 10;
             var privateKey = new PrivateKey();
             var privateKeys = Enumerable.Range(0, peersCount).Select(
-                i => GeneratePrivateKeyOfBucketIndex(privateKey.ToAddress(), i / 2));
+                i => GeneratePrivateKeyOfBucketIndex(privateKey.Address, i / 2));
             TestTransport transport = CreateTestTransport(privateKey);
             TestTransport[] transports =
                 privateKeys.Select(key => CreateTestTransport(key)).ToArray();

@@ -38,7 +38,7 @@ namespace Libplanet.Net.Tests.Protocols
         public void AddSelf()
         {
             var pubKey = new PrivateKey().PublicKey;
-            var table = new RoutingTable(pubKey.ToAddress());
+            var table = new RoutingTable(pubKey.Address);
             var peer = new BoundPeer(pubKey, new DnsEndPoint("0.0.0.0", 1234));
             Assert.Throws<ArgumentException>(() => table.AddPeer(peer));
         }
@@ -50,7 +50,7 @@ namespace Libplanet.Net.Tests.Protocols
             var pubKey1 = new PrivateKey().PublicKey;
             var pubKey2 = new PrivateKey().PublicKey;
             var pubKey3 = new PrivateKey().PublicKey;
-            var table = new RoutingTable(pubKey0.ToAddress(), 1, 2);
+            var table = new RoutingTable(pubKey0.Address, 1, 2);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
             var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234));
@@ -70,7 +70,7 @@ namespace Libplanet.Net.Tests.Protocols
         {
             var pubKey1 = new PrivateKey().PublicKey;
             var pubKey2 = new PrivateKey().PublicKey;
-            var table = new RoutingTable(pubKey1.ToAddress(), 1, 2);
+            var table = new RoutingTable(pubKey1.Address, 1, 2);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234));
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
 
@@ -101,14 +101,14 @@ namespace Libplanet.Net.Tests.Protocols
                 count++;
                 publicKey = new PrivateKey().PublicKey;
             }
-            while (table.GetBucketIndexOf(publicKey.ToAddress()) != targetBucket);
+            while (table.GetBucketIndexOf(publicKey.Address) != targetBucket);
 
             Log.Debug(
                 "Found public key of bucket index {Index} in {Count} tries: {Key}",
-                table.GetBucketIndexOf(publicKey.ToAddress()),
+                table.GetBucketIndexOf(publicKey.Address),
                 count,
                 ByteArrayToString(publicKey.Format(true)));
-            Assert.Equal(targetBucket, table.GetBucketIndexOf(publicKey.ToAddress()));
+            Assert.Equal(targetBucket, table.GetBucketIndexOf(publicKey.Address));
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Libplanet.Net.Tests.Protocols
         {
             var (publicKey, publicKeys) = GeneratePeersDifferentBuckets();
 
-            var table = new RoutingTable(publicKey.ToAddress());
+            var table = new RoutingTable(publicKey.Address);
             var peers = publicKeys
                 .Select(pk => new BoundPeer(pk, new DnsEndPoint("0.0.0.0", 1234)))
                 .ToArray();
@@ -144,7 +144,7 @@ namespace Libplanet.Net.Tests.Protocols
         public void PeersToRefresh()
         {
             var (publicKey, publicKeys) = GeneratePeersDifferentBuckets();
-            var table = new RoutingTable(publicKey.ToAddress());
+            var table = new RoutingTable(publicKey.Address);
             int peerCount = publicKeys.Length;
             BoundPeer[] peers = publicKeys
                 .Select(
@@ -171,7 +171,7 @@ namespace Libplanet.Net.Tests.Protocols
         public void PeersToRefreshInSingleBucket()
         {
             var publicKey = new PrivateKey().PublicKey;
-            var table = new RoutingTable(publicKey.ToAddress(), 1);
+            var table = new RoutingTable(publicKey.Address, 1);
             const int peerCount = 10;
             BoundPeer[] peers = Enumerable.Range(0, peerCount)
                 .Select(

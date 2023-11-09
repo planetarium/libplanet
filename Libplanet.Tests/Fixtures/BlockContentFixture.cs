@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Fixtures
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx0Key.ToAddress() },
+                        updatedAddresses: new[] { Block1Tx0Key.Address },
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                         actions: new TxActionList(new IAction[]
                         {
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Fixtures
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx1Key.ToAddress() },
+                        updatedAddresses: new[] { Block1Tx1Key.Address },
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                         actions: new TxActionList(new IAction[]
                         {
@@ -129,7 +129,7 @@ namespace Libplanet.Tests.Fixtures
                     protocolVersion: 0,
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                    miner: GenesisKey.ToAddress(),
+                    miner: GenesisKey.Address,
                     publicKey: null,
                     previousHash: null,
                     txHash: null,
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Fixtures
                     protocolVersion: 1,
                     index: 1,
                     timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                    miner: Block1Key.ToAddress(),
+                    miner: Block1Key.Address,
                     publicKey: null,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),

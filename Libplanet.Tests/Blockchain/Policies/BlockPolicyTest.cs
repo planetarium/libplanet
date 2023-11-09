@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.ToAddress();
+                var validAddress = validKey.Address;
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.ToAddress();
+                var validAddress = validKey.Address;
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             TxPolicyViolationException IsSignerValidWithInnerException(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.ToAddress();
+                var validAddress = validKey.Address;
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException(
@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             privateKeys.ForEach(
                 key => Assert.Equal(
                     policyLimit,
-                    block.Transactions.Count(tx => tx.Signer.Equals(key.ToAddress()))));
+                    block.Transactions.Count(tx => tx.Signer.Equals(key.Address))));
         }
     }
 }

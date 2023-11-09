@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Tx
                        Currency.Uncapped(
                            "FOO",
                            18,
-                           new PrivateKey().ToAddress()),
+                           new PrivateKey().Address),
                        100),
                    i == 5 ? (long?)null : 10);
                 Assert.False(invoice1.Equals(invoice));

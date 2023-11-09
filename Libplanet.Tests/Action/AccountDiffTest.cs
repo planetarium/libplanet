@@ -42,10 +42,10 @@ namespace Libplanet.Tests.Action
 
             IAccount targetAccount = new Account(new AccountState(targetTrie));
             PrivateKey signer = new PrivateKey();
-            IActionContext context = CreateActionContext(signer.ToAddress(), targetTrie);
+            IActionContext context = CreateActionContext(signer.Address, targetTrie);
             targetAccount = targetAccount.MintAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(USD, 123, 45));
-            targetAccount = targetAccount.SetState(signer.ToAddress(), new Text("Foo"));
+                context, signer.Address, new FungibleAssetValue(USD, 123, 45));
+            targetAccount = targetAccount.SetState(signer.Address, new Text("Foo"));
 
             targetTrie = Commit(stateStore, targetTrie, targetAccount.Delta);
 
@@ -75,11 +75,11 @@ namespace Libplanet.Tests.Action
 
             IAccount targetAccount = new Account(new AccountState(targetTrie));
             PrivateKey signer = new PrivateKey();
-            IActionContext context = CreateActionContext(signer.ToAddress(), targetTrie);
+            IActionContext context = CreateActionContext(signer.Address, targetTrie);
             targetAccount = targetAccount.SetState(addr1, new Text("One"));
             targetAccount = targetAccount.SetState(addr2, new Text("Two"));
             targetAccount = targetAccount.MintAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(USD, 123, 45));
+                context, signer.Address, new FungibleAssetValue(USD, 123, 45));
 
             targetTrie = Commit(stateStore, targetTrie, targetAccount.Delta);
             sourceTrie = targetTrie;
@@ -88,13 +88,13 @@ namespace Libplanet.Tests.Action
             sourceAccount = sourceAccount.SetState(addr2, new Text("Two_"));
             sourceAccount = sourceAccount.SetState(addr3, new Text("Three"));
             sourceAccount = sourceAccount.MintAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(USD, 456, 78));
+                context, signer.Address, new FungibleAssetValue(USD, 456, 78));
             sourceAccount = sourceAccount.MintAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(KRW, 10, 0));
+                context, signer.Address, new FungibleAssetValue(KRW, 10, 0));
             sourceAccount = sourceAccount.BurnAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(KRW, 10, 0));
+                context, signer.Address, new FungibleAssetValue(KRW, 10, 0));
             sourceAccount = sourceAccount.MintAsset(
-                context, signer.ToAddress(), new FungibleAssetValue(JPY, 321, 0));
+                context, signer.Address, new FungibleAssetValue(JPY, 321, 0));
             sourceAccount = sourceAccount.SetValidator(new Validator(signer.PublicKey, 1));
 
             sourceTrie = Commit(stateStore, sourceTrie, sourceAccount.Delta);
@@ -107,10 +107,10 @@ namespace Libplanet.Tests.Action
             Assert.Equal(2, diff.FungibleAssetValueDiffs.Count);    // KRW is treated as unchanged
             Assert.Equal(
                 (new Integer(12345), new Integer(12345 + 45678)),
-                diff.FungibleAssetValueDiffs[(signer.ToAddress(), USD.Hash)]);
+                diff.FungibleAssetValueDiffs[(signer.Address, USD.Hash)]);
             Assert.Equal(
                 (new Integer(0), new Integer(321)),
-                diff.FungibleAssetValueDiffs[(signer.ToAddress(), JPY.Hash)]);
+                diff.FungibleAssetValueDiffs[(signer.Address, JPY.Hash)]);
 
             Assert.Equal(2, diff.TotalSupplyDiffs.Count);           // KRW is treated as unchanged
             Assert.Equal(
@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Action
             Assert.Single(diff.FungibleAssetValueDiffs);    // Only USD is tracked
             Assert.Equal(
                 (new Integer(12345 + 45678), new Integer(12345)),
-                diff.FungibleAssetValueDiffs[(signer.ToAddress(), USD.Hash)]);
+                diff.FungibleAssetValueDiffs[(signer.Address, USD.Hash)]);
             Assert.Single(diff.TotalSupplyDiffs);           // Only USD is tracked
             Assert.Equal(
                 (new Integer(12345 + 45678), new Integer(12345)),

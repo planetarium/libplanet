@@ -454,7 +454,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             var privateKeys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToArray();
             // Order keys as validator set's order to run test as intended.
-            privateKeys = privateKeys.OrderBy(key => key.ToAddress()).ToArray();
+            privateKeys = privateKeys.OrderBy(key => key.Address).ToArray();
             var proposer = privateKeys[1];
             var key1 = privateKeys[2];
             var key2 = privateKeys[3];

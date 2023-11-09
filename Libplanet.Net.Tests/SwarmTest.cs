@@ -1026,8 +1026,8 @@ namespace Libplanet.Net.Tests
             var privateKeyA = new PrivateKey();
             var privateKeyB = new PrivateKey();
 
-            var targetAddress1 = new PrivateKey().ToAddress();
-            var targetAddress2 = new PrivateKey().ToAddress();
+            var targetAddress1 = new PrivateKey().Address;
+            var targetAddress2 = new PrivateKey().Address;
 
             try
             {
@@ -1104,9 +1104,9 @@ namespace Libplanet.Net.Tests
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.ToAddress();
+                var validAddress = validKey.Address;
                 return tx.Signer.Equals(validAddress) ||
-                       tx.Signer.Equals(GenesisProposer.ToAddress())
+                       tx.Signer.Equals(GenesisProposer.Address)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1163,9 +1163,9 @@ namespace Libplanet.Net.Tests
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.ToAddress();
+                var validAddress = validKey.Address;
                 return tx.Signer.Equals(validAddress) ||
-                       tx.Signer.Equals(GenesisProposer.ToAddress())
+                       tx.Signer.Equals(GenesisProposer.Address)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -1256,8 +1256,8 @@ namespace Libplanet.Net.Tests
                 stateRootHash: genesis.StateRootHash,
                 lastCommit: CreateBlockCommit(bBlock1));
 
-            policyA.BlockedMiners.Add(keyB.ToAddress());
-            policyB.BlockedMiners.Add(keyA.ToAddress());
+            policyA.BlockedMiners.Add(keyB.Address);
+            policyB.BlockedMiners.Add(keyA.Address);
 
             var minerSwarmA =
                 await CreateSwarm(keyA, policy: policyA, genesis: genesis).ConfigureAwait(false);
@@ -1339,7 +1339,7 @@ namespace Libplanet.Net.Tests
             var privateKeyB = new PrivateKey(keyB);
             var privateKeyC = new PrivateKey(keyC);
 
-            var signerAddress = new PrivateKey().ToAddress();
+            var signerAddress = new PrivateKey().Address;
 
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };

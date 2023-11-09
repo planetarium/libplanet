@@ -22,8 +22,8 @@ namespace Libplanet.Benchmarks.DataModel
                 BigDict = Enumerable
                     .Range(0, 1000)
                     .Select(_ => new KeyValuePair<Address, string>(
-                        new PrivateKey().ToAddress(),
-                        new PrivateKey().ToAddress().ToString()))
+                        new PrivateKey().Address,
+                        new PrivateKey().Address.ToString()))
                     .ToImmutableDictionary();
             }
 
