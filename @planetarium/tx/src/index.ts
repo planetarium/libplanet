@@ -3,6 +3,7 @@ export {
   type Currency,
   encodeCurrency,
   type FungibleAssetValue,
+  encodeFungibleAssetValue,
   getCurrencyHash,
   getMajorUnit,
   getMinorUnit,
