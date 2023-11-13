@@ -79,6 +79,9 @@
       <h4><a class="xref" href="Libplanet.Action.State.Account.html">Account</a></h4>
       <section><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountBaseState.html">AccountBaseState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> interface.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.State.AccountDelta.html">AccountDelta</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.State.AccountDeltaExtensions.html">AccountDeltaExtensions</a></h4>
@@ -117,9 +120,6 @@ from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountSt
 </section>
       <h4><a class="xref" href="Libplanet.Action.State.AccountExtensions.html">AccountExtensions</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Action.State.AccountState.html">AccountState</a></h4>
-      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> interface.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
 to mint a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a>.</p>
@@ -128,6 +128,8 @@ to mint a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionExcepti
       <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to
 transfer or an owner has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.State.ReservedAddresses.html">ReservedAddresses</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Action.State.SupplyOverflowException.html">SupplyOverflowException</a></h4>
       <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
 supply exceed the maximum amount.</p>
@@ -138,6 +140,15 @@ legacy untracked currency with
 <see cref="!:Common.Types.Assets.Currency.TotalSupplyTrackable"></see> set to
 <span class="xref">false</span>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.State.World.html">World</a></h4>
+      <section><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.WorldBaseState.html">WorldBaseState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
+It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.WorldDeltaExtensions.html">WorldDeltaExtensions</a></h4>
+      <section></section>
     <h3 id="interfaces">Interfaces
 </h3>
       <h4><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></h4>
@@ -167,6 +178,33 @@ but returns <span class="xref">null</span> instead, and</li></ul>
       <h4><a class="xref" href="Libplanet.Action.State.IBlockChainStates.html">IBlockChainStates</a></h4>
       <section><p>A minimal interface to get states from a <see cref="!:BlockChain"></see>.</p>
 <p>Note that <see cref="!:BlockChain"></see> implements this interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></h4>
+      <section><p>An interface to manipulate an world state with
+maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_Delta">Delta</a>.</p>
+<p>It is like a map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
+<span class="xref">null</span> account cannot be distinguished from
+the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
+any account.</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorldDelta.html">IWorldDelta</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a></h4>
+      <section><p>An interface to fetch world states.</p>
+<p>It is like a readonly map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
+<span class="xref">null</span> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
+any state.</li></ul>
 </section>
 </article>
           </div>

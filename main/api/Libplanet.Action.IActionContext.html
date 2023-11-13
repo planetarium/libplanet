@@ -230,14 +230,14 @@ before <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> executes
 <p>Although a <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instance is
 immutable, it has several manipulative methods that returns
 new <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instances with some &quot;dirty&quot;
-states.  These kinds of dirty <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>
+states.  These kinds of dirty <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>
 instances can be returned by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-IAccount PreviousState { get; }</code></pre>
+IWorld PreviousState { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -249,7 +249,7 @@ IAccount PreviousState { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
         <td></td>
       </tr>
     </tbody>

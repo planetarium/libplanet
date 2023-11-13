@@ -65,9 +65,117 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>BlockChainStates</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Changed <code>ActionEvaluator</code> to accept <code>IWorld</code>
+instead of <code>IAccount</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) <code>IActionEvaluator.OutputState</code> became <code>IWorld</code>.
+(was <code>IAccount</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Added
+<code>ActionEvaluationsExtensions.GetLegacyRawTotalDelta()</code> extension method.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) <code>ActionEvaluationsExtensions.GetRawTotalDelta()</code>
+became to return
+<code>IImmutableDictionary&lt;KeyBytes, IImmutableDictionary&lt;KeyBytes, IValue&gt;&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) <code>IAction.Execute()</code> became to return <code>IWorld</code>.
+(was <code>IAccount</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) <code>IActionContext.PreviousState</code> became <code>IWorld</code>.
+(was <code>IAccount</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Following methods in <code>IFeeCollector</code> interface
+became to accept and return <code>IWorld</code>. (was <code>IAccount</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<ul>
+<li><code>IFeeCollector.Mortgage()</code></li>
+<li><code>IFeeCollector.Refund()</code></li>
+<li><code>IFeeCollector.Reward()</code></li>
+</ul>
+</li>
+<li>(Libplanet.Action) Renamed <code>AccountState</code> class to <code>AccountBaseState</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) <code>IBlockChainStates</code> interface has modified.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<ul>
+<li>Added <code>IBlockChainStates.GetWorldState()</code> method.</li>
+<li>Added <code>IBlockChainStates.GetAccountState(Address, BlockHash?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetState(Address, Address, BlockHash?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetState(Address, HashDigest&lt;SHA256&gt;?)</code> method.</li>
+<li>Added
+<code>IBlockChainStates.GetBalance(Address, Currency, Address, BlockHash?)</code>
+method.</li>
+<li>Added
+<code>IBlockChainStates.GetBalance(Address, Currency, HashDigest&lt;SHA256&gt;?)</code>
+method.</li>
+<li>Added
+<code>IBlockChainStates.GetTotalSupply(Currency, Address, BlockHash?)</code>
+method.</li>
+<li>Added
+<code>IBlockChainStates.GetTotalSupply(Currency, HashDigest&lt;SHA256&gt;?)</code>
+method.</li>
+<li>Added <code>IBlockChainStates.GetValidatorSet(Address, BlockHash?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetValidatorSet(HashDigest&lt;SHA256&gt;?)</code> method.</li>
+<li>Removed <code>IBlockChainStates.GetAccountState(BlockHash?)</code> method.</li>
+<li>Removed <code>IBlockChainStates.GetState(Address, BlockHash?)</code> method.</li>
+<li>Removed
+<code>IBlockChainStates.GetStates(IReadOnlyList&lt;Address&gt;, BlockHash?)</code>
+method.</li>
+<li>Removed
+<code>IBlockChainStates.GetBalance(Address, Currency, BlockHash?)</code>
+method.</li>
+<li>Removed <code>IBlockChainStates.GetTotalSupply(Currency, BlockHash?)</code> method.</li>
+<li>Removed <code>IBlockChainStates.GetValidatorSet(BlockHash?)</code> method.</li>
+</ul>
+</li>
+<li>(Libplanet.Action) <code>Initialize.Initialize()</code> method became to accept
+<code>IImmutableDictionary&lt;Address, IImmutableDictionary&lt;Address, IValue&gt;&gt;</code>.
+(was <code>IImmutableDictionary&lt;Address, IValue&gt;</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Type of <code>Initialize.States</code> property became
+<code>IImmutableDictionary&lt;Address, IImmutableDictionary&lt;Address, IValue&gt;&gt;?</code>.
+(was <code>IImmutableDictionary&lt;Address, IValue&gt;?</code>)  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.Action) Added <code>IWorld</code> interface and its implementation.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<ul>
+<li>Added <code>World</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Action) Added <code>IWorldDelta</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Added <code>IWorldState</code> interface and its implementation.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<ul>
+<li>Added <code>WorldBaseState</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Action) Added <code>ReservedAddresses</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Action) Added <code>WorldDeltaExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Explorer) Added <code>AccountStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Explorer) Added <code>WorldStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Explorer) Added <code>WorldStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Explorer) Modified some fields of <code>StateQuery</code> query.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<ul>
+<li>Added <code>StateQuery.worldState</code> field.</li>
+<li>Added <code>StateQuery.accountState</code> field.</li>
+<li>Added <code>accountAddress</code> of type <code>Address</code> argument
+for <code>StateQuery.states</code> field.</li>
+<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
+for <code>StateQuery.states</code> field.</li>
+<li>Added <code>accountAddress</code> of type <code>Address</code> argument
+for <code>StateQuery.balance</code> field.</li>
+<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
+for <code>StateQuery.balance</code> field.</li>
+<li>Added <code>accountAddress</code> of type <code>Address</code> argument
+for <code>StateQuery.totalSupply</code> field.</li>
+<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
+for <code>StateQuery.totalSupply</code> field.</li>
+<li>Added <code>accountAddress</code> of type <code>Address</code> argument
+for <code>StateQuery.validators</code> field.</li>
+<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
+for <code>StateQuery.validators</code> field.</li>
+</ul>
+</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>

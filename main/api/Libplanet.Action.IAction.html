@@ -281,13 +281,13 @@ its states immediately before the execution,
 and a deterministic random seed.</p>
 <p>Other “bound” information resides in the action
 object in itself, as its properties (or fields).</p>
-<p>A returned <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> object functions as
+<p>A returned <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> object functions as
 a delta which shifts from previous states to next states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAccount Execute(IActionContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">IWorld Execute(IActionContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -320,7 +320,7 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
         <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
 </td>
       </tr>
@@ -335,7 +335,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface separately and
 attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
-<p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
+<p>For randomness, <em>never</em> use <span class="xref">System.Random</span>
 nor any other PRNGs provided by other than Libplanet.
 Use <see cref="!:IActionContext.Random"></see> instead.
 <see cref="!:IActionContext.Random"></see> guarantees the same action
@@ -348,10 +348,10 @@ could be logged multiple times.</p>
 underspecified so that it can make different results on different
 machines, platforms, runtimes, compilers, and builds</a>.</p>
 <p>Lastly, you need to be aware and keep in mind that there
-is a global state named <span class="xref">System.Globalization.CultureInfo.CurrentCulture</span> on .NET;
+is a global state named <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a> on .NET;
 if you format numbers, dates and times, currencies, or other such
 things into strings and parse these strings back these can rely on
-<span class="xref">System.Globalization.CultureInfo.CurrentCulture</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.currentculture#system-globalization-cultureinfo-currentculture">CurrentCulture</a>,
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
