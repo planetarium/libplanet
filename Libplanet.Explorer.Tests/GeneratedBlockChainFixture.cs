@@ -4,6 +4,7 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -12,7 +13,6 @@ using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 
@@ -102,7 +102,7 @@ public class GeneratedBlockChainFixture
                                     new ValidatorSet(
                                         ImmutableList<Validator>.Empty.Add(
                                             new Validator(pk.PublicKey, 1)).ToList()),
-                                    ImmutableDictionary<Address, IValue>.Empty),
+                                    ImmutableDictionary.Create<Address, IValue>())
                             }.ToPlainValues()))
                 .ToImmutableList());
         Chain = BlockChain.Create(
@@ -188,7 +188,7 @@ public class GeneratedBlockChainFixture
     {
         var random = new System.Random(seed);
         var addr = pk.ToAddress();
-        var bal = (int)(Chain.GetBalance(addr, TestCurrency).MajorUnit & int.MaxValue);
+        var bal = (int)(Chain.GetBalance(addr, TestCurrency, ReservedAddresses.LegacyAccount).MajorUnit & int.MaxValue);
         return Transaction.Create(
             nonce,
             pk,

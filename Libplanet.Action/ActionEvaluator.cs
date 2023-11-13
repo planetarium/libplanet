@@ -49,6 +49,9 @@ namespace Libplanet.Action
             _actionLoader = actionTypeLoader;
         }
 
+        private delegate (ITrie, int) StateCommitter(
+            ITrie worldTrie, IActionEvaluation evaluation);
+
         /// <inheritdoc cref="IActionEvaluator.ActionLoader"/>
         [Pure]
         public IActionLoader ActionLoader => _actionLoader;
@@ -91,7 +94,7 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IAccount previousState = PrepareInitialDelta(baseStateRootHash);
+                IWorld previousState = PrepareInitialDelta(baseStateRootHash);
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -165,12 +168,12 @@ namespace Libplanet.Action
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
-            IAccount previousState,
+            IWorld previousState,
             IImmutableList<IAction> actions,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
-                IAccount prevState,
+                IWorld prevState,
                 int randomSeed,
                 long actionGasLimit)
             {
@@ -197,7 +200,7 @@ namespace Libplanet.Action
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
-            IAccount state = previousState;
+            IWorld state = previousState;
             foreach (IAction action in actions)
             {
                 IActionContext context = CreateActionContext(state, seed, gasLimit);
@@ -228,11 +231,11 @@ namespace Libplanet.Action
             ILogger? logger = null)
         {
             IActionContext inputContext = context;
-            IAccount state = inputContext.PreviousState;
+            IWorld state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
 
-            IActionContext CreateActionContext(IAccount newPrevState)
+            IActionContext CreateActionContext(IWorld newPrevState)
             {
                 return new ActionContext(
                     signer: inputContext.Signer,
@@ -249,6 +252,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
+                AccountMetrics.Initialize();
                 state = feeCollector.Mortgage(state);
                 context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);
@@ -373,9 +377,9 @@ namespace Libplanet.Action
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock block,
-            IAccount previousState)
+            IWorld previousState)
         {
-            IAccount delta = previousState;
+            IWorld delta = previousState;
             IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
@@ -385,7 +389,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = Account.Flush(delta);
+                delta = World.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -423,7 +427,7 @@ namespace Libplanet.Action
         internal IEnumerable<ActionEvaluation> EvaluateTx(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction tx,
-            IAccount previousState)
+            IWorld previousState)
         {
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
@@ -449,7 +453,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
             IPreEvaluationBlockHeader blockHeader,
-            IAccount previousState)
+            IWorld previousState)
         {
             var policyBlockAction = _policyBlockActionGetter(blockHeader);
             if (policyBlockAction is null)
@@ -471,9 +475,10 @@ namespace Libplanet.Action
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
         }
 
-        internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
+        internal IWorld PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
         {
-            return new Account(new AccountState(_stateStore.GetStateRoot(stateRootHash)));
+            return new World(
+                new WorldBaseState(_stateStore.GetStateRoot(stateRootHash), _stateStore));
         }
 
         internal IReadOnlyList<ICommittedActionEvaluation>
@@ -485,20 +490,42 @@ namespace Libplanet.Action
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            ITrie trie = _stateStore.GetStateRoot(baseStateRootHash);
+            ITrie worldTrie = _stateStore.GetStateRoot(baseStateRootHash);
+            IWorldState previousBlockWorld = new WorldBaseState(worldTrie, _stateStore);
+            IWorldState world = previousBlockWorld;
+
+            IWorldState nextWorld;
+            ITrie nextWorldTrie;
+
             var committedEvaluations = new List<CommittedActionEvaluation>();
 
             int setCount = 0;
+            int subCount;
             foreach (var evaluation in evaluations)
             {
-                ITrie nextTrie = trie;
-                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
+                nextWorld = evaluation.OutputState;
+                StateCommitter committer;
+
+                if (world.Legacy && nextWorld.Legacy)
                 {
-                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                    setCount++;
+                    committer = CommitLegacyState;
+                }
+                else if (world.Legacy && !nextWorld.Legacy)
+                {
+                    committer = CommitLegacyToModernState;
+                }
+                else if (!world.Legacy && !nextWorld.Legacy)
+                {
+                    committer = CommitModernState;
+                }
+                else
+                {
+                    throw new ApplicationException("World cannot be mutated from modern to legacy");
                 }
 
-                nextTrie = _stateStore.Commit(nextTrie);
+                (nextWorldTrie, subCount) = committer(worldTrie, evaluation);
+                setCount += subCount;
+
                 var committedEvaluation = new CommittedActionEvaluation(
                     action: evaluation.Action,
                     inputContext: new CommittedActionContext(
@@ -508,14 +535,15 @@ namespace Libplanet.Action
                         blockIndex: evaluation.InputContext.BlockIndex,
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
                         rehearsal: evaluation.InputContext.Rehearsal,
-                        previousState: trie.Hash,
+                        previousState: worldTrie.Hash,
                         randomSeed: evaluation.InputContext.RandomSeed,
                         blockAction: evaluation.InputContext.BlockAction),
-                    outputState: nextTrie.Hash,
+                    outputState: nextWorldTrie.Hash,
                     exception: evaluation.Exception);
                 committedEvaluations.Add(committedEvaluation);
 
-                trie = nextTrie;
+                world = nextWorld;
+                worldTrie = nextWorldTrie;
             }
 
             _logger
@@ -527,11 +555,126 @@ namespace Libplanet.Action
                     "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
                     stopwatch.ElapsedMilliseconds,
                     setCount,
-                    trie.Hash,
+                    worldTrie.Hash,
                     block.Index,
                     block.PreEvaluationHash);
 
             return committedEvaluations;
+        }
+
+        internal (ITrie, int) CommitLegacyState(
+            ITrie worldTrie, IActionEvaluation evaluation)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var totalDelta = evaluation.OutputState.GetAccount(
+                ReservedAddresses.LegacyAccount).Delta.ToRawDelta();
+
+            int setCount = 0;
+
+            foreach (var kv in totalDelta)
+            {
+                worldTrie = worldTrie.Set(kv.Key, kv.Value);
+                setCount++;
+            }
+
+            worldTrie = _stateStore.Commit(worldTrie);
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CommitDuration")
+                .Information(
+                    "Took {DurationMs} ms to commit the trie with {KeyCount} key changes " +
+                    "and resulting in state root hash {StateRootHash} ",
+                    stopwatch.ElapsedMilliseconds,
+                    setCount,
+                    worldTrie.Hash);
+
+            return (worldTrie, setCount);
+        }
+
+        internal (ITrie, int) CommitModernState(
+            ITrie worldTrie, IActionEvaluation evaluation)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
+            IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>
+                accountSubStateDelta = evaluation.OutputState.Delta.ToRawDelta();
+
+            IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
+                accountSubStateRoot = GetAccountSubStateRootHashes(worldTrie, evaluation);
+
+            int setCount = 0;
+
+            foreach (var kv in accountSubStateDelta)
+            {
+                ITrie accountTrie = _stateStore.GetStateRoot(accountSubStateRoot[kv.Key]);
+                var accountDelta = kv.Value;
+
+                foreach (KeyValuePair<KeyBytes, IValue> pair in accountDelta)
+                {
+                    accountTrie = accountTrie.Set(pair.Key, pair.Value);
+                    setCount++;
+                }
+
+                accountTrie = _stateStore.Commit(accountTrie);
+                worldTrie = worldTrie.Set(kv.Key, new Binary(accountTrie.Hash.ByteArray));
+            }
+
+            worldTrie = _stateStore.Commit(worldTrie);
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "CommitDuration")
+                .Information(
+                    "Took {DurationMs} ms to commit the trie with {KeyCount} key changes " +
+                    "and resulting in state root hash {StateRootHash} ",
+                    stopwatch.ElapsedMilliseconds,
+                    setCount,
+                    worldTrie);
+
+            return (worldTrie, setCount);
+        }
+
+        internal (ITrie, int) CommitLegacyToModernState(
+            ITrie worldTrie, IActionEvaluation evaluation)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            worldTrie = _stateStore.GetStateRoot(null).Set(
+                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                new Binary(worldTrie.Hash.ByteArray));
+
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "LegacyCommitDuration")
+                .Information(
+                    "Took {DurationMs} ms to commit the legacy trie " +
+                    "and resulting in state root hash {StateRootHash} ",
+                    stopwatch.ElapsedMilliseconds,
+                    worldTrie.Hash);
+
+            return CommitModernState(worldTrie, evaluation);
+        }
+
+        internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
+            GetAccountSubStateRootHashes(
+                ITrie worldTrie, IActionEvaluation evaluation)
+        {
+            var result = new Dictionary<KeyBytes, HashDigest<SHA256>?>();
+            foreach (var updatedAddress in evaluation.OutputState.Delta.UpdatedAddresses)
+            {
+                var key = KeyConverters.ToStateKey(updatedAddress);
+                HashDigest<SHA256>? hash = worldTrie.Get(key) is { } value
+                    ? new HashDigest<SHA256>(value)
+                    : (HashDigest<SHA256>?)null;
+
+                result.Add(key, hash);
+            }
+
+            return result.ToImmutableDictionary();
         }
 
         [Pure]

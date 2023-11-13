@@ -12,12 +12,12 @@ namespace Libplanet.Action.State
     /// <summary>
     /// A default implementation of <see cref="IAccountState"/> interface.
     /// </summary>
-    public class AccountState : IAccountState
+    public class AccountBaseState : IAccountState
     {
         private ITrie _trie;
         private AccountStateCache _cache;
 
-        public AccountState(ITrie trie)
+        public AccountBaseState(ITrie trie)
         {
             _trie = trie;
             _cache = new AccountStateCache();

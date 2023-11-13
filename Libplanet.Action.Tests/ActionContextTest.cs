@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: new Account(MockAccountState.Empty),
+                    previousState: new World(new MockWorldState()),
                     randomSeed: seed,
                     gasLimit: 0
                 );
@@ -54,7 +54,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new Account(MockAccountState.Empty),
+                previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -65,7 +65,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new Account(MockAccountState.Empty),
+                previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -76,7 +76,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new Account(MockAccountState.Empty),
+                previousState: new World(new MockWorldState()),
                 randomSeed: 1,
                 gasLimit: 0
             );
@@ -115,7 +115,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: new Account(MockAccountState.Empty),
+                    previousState: new World(new MockWorldState()),
                     randomSeed: i,
                     gasLimit: 0
                 );

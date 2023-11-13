@@ -112,9 +112,10 @@ namespace Libplanet.Tests.Fixtures
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
                 Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
-            BigInteger prevState = Chain.GetState(signerAddress) is Bencodex.Types.Integer i
-                ? i.Value
-                : 0;
+            BigInteger prevState = Chain.GetWorldState().GetAccount(
+                ReservedAddresses.LegacyAccount).GetState(signerAddress) is Bencodex.Types.Integer i
+                    ? i.Value
+                    : 0;
             HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash;
             ITrie prevTrie = GetTrie(Chain.Tip.Hash);
             (BigInteger, HashDigest<SHA256>) prevPair = (prevState, prevStateRootHash);
@@ -178,11 +179,8 @@ namespace Libplanet.Tests.Fixtures
         public void Append(Block block) =>
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
-        public IAccount CreateAccount(Address signer, BlockHash? offset = null)
-            => new Account(Chain.GetAccountState(offset));
-
-        public IAccount CreateAccount(int signerIndex, BlockHash? offset = null)
-            => CreateAccount(Addresses[signerIndex], offset);
+        public IWorld CreateWorld(BlockHash? offset = null)
+            => new World(Chain.GetWorldState(offset ?? Tip.Hash));
 
         public ITrie GetTrie(BlockHash? blockHash)
         {

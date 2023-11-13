@@ -213,17 +213,15 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.GenesisProposer);
 
             var policyWithBlockAction = new BlockPolicy(
-                new SetStatesAtBlock(default, (Text)"foo", 1),
+                new SetStatesAtBlock(default, (Text)"foo", default, 1),
                 policy.BlockInterval
             );
-            var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain(
                 policyWithBlockAction,
                 new VolatileStagePolicy(),
                 store,
                 stateStore,
                 genesisBlock,
-                blockChainStates,
                 new ActionEvaluator(
                     _ => policyWithBlockAction.BlockAction,
                     stateStore,

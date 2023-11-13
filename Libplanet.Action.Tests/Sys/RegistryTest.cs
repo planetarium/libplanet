@@ -19,7 +19,8 @@ namespace Libplanet.Action.Tests.Sys
             }
         );
 
-        private static readonly ImmutableDictionary<Address, IValue> _states =
+        private static readonly IImmutableDictionary<Address, IValue>
+            _states =
             new Dictionary<Address, IValue>
             {
                 [default] = (Text)"initial value",
@@ -36,7 +37,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                            default(Address).ToByteArray(),
+                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                            ))));
             IAction action = Registry.Deserialize(value);
             var initialize = Assert.IsType<Initialize>(action);
             Assert.Equal(_validatorSet, initialize.ValidatorSet);
@@ -82,7 +86,10 @@ namespace Libplanet.Action.Tests.Sys
                     "values",
                     new List(
                         _validatorSet.Bencoded,
-                        Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value")));
+                        Dictionary.Empty.Add(
+                            default(Address).ToByteArray(),
+                            Dictionary.Empty.Add(default(Address).ToByteArray(), "initial value"
+                            ))));
             TestUtils.AssertBencodexEqual(expected, actual);
         }
 

@@ -1,6 +1,7 @@
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
+using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -12,6 +13,9 @@ namespace Libplanet.Tests.Action
 {
     public class AccountV0Test : AccountTest
     {
+        private readonly Address _accountAddress
+            = new Address("2000000000000000000000000000000000000000");
+
         public AccountV0Test(ITestOutputHelper output)
             : base(output)
         {
@@ -20,16 +24,20 @@ namespace Libplanet.Tests.Action
         public override int ProtocolVersion { get; } = 0;
 
         public override IActionContext CreateContext(
-            IAccount delta, Address signer) =>
-            new ActionContext(
+            IAccount delta, Address signer)
+        {
+            IWorld world = new World(new MockWorldState());
+            world = world.SetAccount(_accountAddress, delta);
+            return new ActionContext(
                 signer,
                 null,
                 signer,
                 0,
                 ProtocolVersion,
-                delta,
+                world,
                 0,
                 0);
+        }
 
         [Fact]
         public override void TransferAsset()
@@ -73,7 +81,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
-                chain.GetBalance(_addr[0], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
 
             return chain;

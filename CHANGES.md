@@ -10,11 +10,103 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `BlockChainStates` class.  [[#3462]]
+ -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
+    instead of `IAccount`.  [[#3462]]
+ -  (Libplanet.Action) `IActionEvaluator.OutputState` became `IWorld`.
+    (was `IAccount`)  [[#3462]]
+ -  (Libplanet.Action) Added
+    `ActionEvaluationsExtensions.GetLegacyRawTotalDelta()` extension method.
+    [[#3462]]
+ -  (Libplanet.Action) `ActionEvaluationsExtensions.GetRawTotalDelta()`
+    became to return
+    `IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>`.
+    [[#3462]]
+ -  (Libplanet.Action) `IAction.Execute()` became to return `IWorld`.
+    (was `IAccount`)  [[#3462]]
+ -  (Libplanet.Action) `IActionContext.PreviousState` became `IWorld`.
+    (was `IAccount`)  [[#3462]]
+ -  (Libplanet.Action) Following methods in `IFeeCollector` interface
+    became to accept and return `IWorld`. (was `IAccount`)  [[#3462]]
+     -  `IFeeCollector.Mortgage()`
+     -  `IFeeCollector.Refund()`
+     -  `IFeeCollector.Reward()`
+ -  (Libplanet.Action) Renamed `AccountState` class to `AccountBaseState`.
+    [[#3462]]
+ -  (Libplanet.Action) `IBlockChainStates` interface has modified.  [[#3462]]
+     -  Added `IBlockChainStates.GetWorldState()` method.
+     -  Added `IBlockChainStates.GetAccountState(Address, BlockHash?)` method.
+     -  Added `IBlockChainStates.GetState(Address, Address, BlockHash?)` method.
+     -  Added `IBlockChainStates.GetState(Address, HashDigest<SHA256>?)` method.
+     -  Added
+        `IBlockChainStates.GetBalance(Address, Currency, Address, BlockHash?)`
+        method.
+     -  Added
+        `IBlockChainStates.GetBalance(Address, Currency, HashDigest<SHA256>?)`
+        method.
+     -  Added
+        `IBlockChainStates.GetTotalSupply(Currency, Address, BlockHash?)`
+        method.
+     -  Added
+        `IBlockChainStates.GetTotalSupply(Currency, HashDigest<SHA256>?)`
+        method.
+     -  Added `IBlockChainStates.GetValidatorSet(Address, BlockHash?)` method.
+     -  Added `IBlockChainStates.GetValidatorSet(HashDigest<SHA256>?)` method.
+     -  Removed `IBlockChainStates.GetAccountState(BlockHash?)` method.
+     -  Removed `IBlockChainStates.GetState(Address, BlockHash?)` method.
+     -  Removed
+        `IBlockChainStates.GetStates(IReadOnlyList<Address>, BlockHash?)`
+        method.
+     -  Removed
+        `IBlockChainStates.GetBalance(Address, Currency, BlockHash?)`
+        method.
+     -  Removed `IBlockChainStates.GetTotalSupply(Currency, BlockHash?)` method.
+     -  Removed `IBlockChainStates.GetValidatorSet(BlockHash?)` method.
+ -  (Libplanet.Action) `Initialize.Initialize()` method became to accept
+    `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>`.
+    (was `IImmutableDictionary<Address, IValue>`)  [[#3462]]
+ -  (Libplanet.Action) Type of `Initialize.States` property became
+    `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>?`.
+    (was `IImmutableDictionary<Address, IValue>?`)  [[#3462]]
+
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Action) Added `IWorld` interface and its implementation.
+    [[#3462]]
+     -  Added `World` class.
+ -  (Libplanet.Action) Added `IWorldDelta` interface.  [[#3462]]
+ -  (Libplanet.Action) Added `IWorldState` interface and its implementation.
+    [[#3462]]
+     -  Added `WorldBaseState` class.
+ -  (Libplanet.Action) Added `ReservedAddresses` static class.  [[#3462]]
+ -  (Libplanet.Action) Added `WorldDeltaExtensions` static class.  [[#3462]]
+ -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
+ -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
+ -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
+ -  (Libplanet.Explorer) Modified some fields of `StateQuery` query.  [[#3462]]
+     -  Added `StateQuery.worldState` field.
+     -  Added `StateQuery.accountState` field.
+     -  Added `accountAddress` of type `Address` argument
+        for `StateQuery.states` field.
+     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
+        for `StateQuery.states` field.
+     -  Added `accountAddress` of type `Address` argument
+        for `StateQuery.balance` field.
+     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
+        for `StateQuery.balance` field.
+     -  Added `accountAddress` of type `Address` argument
+        for `StateQuery.totalSupply` field.
+     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
+        for `StateQuery.totalSupply` field.
+     -  Added `accountAddress` of type `Address` argument
+        for `StateQuery.validators` field.
+     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
+        for `StateQuery.validators` field.
 
 ### Behavioral changes
 
@@ -23,6 +115,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3462]: https://github.com/planetarium/libplanet/pull/3462
 
 
 Version 3.7.0

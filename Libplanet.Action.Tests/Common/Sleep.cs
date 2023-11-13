@@ -13,7 +13,7 @@ namespace Libplanet.Action.Tests.Common
             .Add("values", Dictionary.Empty
                 .Add("zone_id", ZoneId));
 
-        public override IAccount Execute(IActionContext context)
+        public override IWorld Execute(IActionContext context)
         {
             // No-op.
             return context.PreviousState;

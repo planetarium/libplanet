@@ -72,7 +72,9 @@ namespace Libplanet.Tests.Tx
                 new ValidatorSet(new List<Validator>()
                     { new Validator(privateKey.PublicKey, 1) }),
                 new Dictionary<Address, IValue>
-                    { [default] = (Text)"initial value" }.ToImmutableDictionary());
+                {
+                    [default] = (Text)"initial value",
+                }.ToImmutableDictionary());
             Transaction tx = Transaction.Create(
                 0,
                 privateKey,

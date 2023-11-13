@@ -7,7 +7,7 @@ namespace Libplanet.Action.State
     internal static class KeyConverters
     {
         // "___"
-        internal static readonly KeyBytes ValidatorSetKey =
+        public static readonly KeyBytes ValidatorSetKey =
             new KeyBytes(new byte[] { _underScore, _underScore, _underScore });
 
         private const byte _underScore = 95;  // '_'
@@ -33,7 +33,7 @@ namespace Libplanet.Action.State
         };
 
         // $"{ByteUtil.Hex(address.ByteArray)}"
-        internal static KeyBytes ToStateKey(Address address)
+        public static KeyBytes ToStateKey(Address address)
         {
             var addressBytes = address.ByteArray;
             byte[] buffer = new byte[addressBytes.Length * 2];
@@ -47,7 +47,7 @@ namespace Libplanet.Action.State
         }
 
         // $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}"
-        internal static KeyBytes ToFungibleAssetKey(Address address, Currency currency)
+        public static KeyBytes ToFungibleAssetKey(Address address, Currency currency)
         {
             var addressBytes = address.ByteArray;
             var currencyBytes = currency.Hash.ByteArray;
@@ -71,12 +71,12 @@ namespace Libplanet.Action.State
             return new KeyBytes(buffer);
         }
 
-        internal static KeyBytes ToFungibleAssetKey(
+        public static KeyBytes ToFungibleAssetKey(
             (Address Address, Currency Currency) pair) =>
             ToFungibleAssetKey(pair.Address, pair.Currency);
 
         // $"__{ByteUtil.Hex(currency.Hash.ByteArray)}"
-        internal static KeyBytes ToTotalSupplyKey(Currency currency)
+        public static KeyBytes ToTotalSupplyKey(Currency currency)
         {
             var currencyBytes = currency.Hash.ByteArray;
             byte[] buffer = new byte[currencyBytes.Length * 2 + 2];

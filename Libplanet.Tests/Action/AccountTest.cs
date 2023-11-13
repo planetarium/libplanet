@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Action
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
-            _initAccount = new Account(MockAccountState.Empty
+            _initAccount = new Account(new MockAccountState()
                 .SetState(_addr[0], (Text)"a")
                 .SetState(_addr[1], (Text)"b")
                 .SetBalance(_addr[0], _currencies[0], 5)
@@ -238,11 +238,11 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain.GetBalance(_addr[0], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * -5,
-                chain.GetBalance(_addr[1], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[1], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
 
             return chain;

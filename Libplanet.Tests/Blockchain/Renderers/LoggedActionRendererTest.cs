@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IAccount _account = new Account(MockAccountState.Empty);
+        private static IWorld _world = new World(new MockWorldState());
 
         private static Block _genesis =
             TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     Block.CurrentProtocolVersion,
                     123,
-                    _account,
+                    _world,
                     default,
                     0,
                     rehearsal));
@@ -112,7 +112,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                         firstLog = logs[0];
                         Assert.Same(_action, action);
                         Assert.Same(actionContext, cxt);
-                        Assert.Equal(_account.Trie.Hash, next);
+                        Assert.Equal(_world.Trie.Hash, next);
                         called = true;
                         if (exception)
                         {
@@ -147,7 +147,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 }
                 else
                 {
-                    actionRenderer.RenderAction(_action, actionContext, _account.Trie.Hash);
+                    actionRenderer.RenderAction(_action, actionContext, _world.Trie.Hash);
                 }
             }
             catch (ThrowException.SomeException e)

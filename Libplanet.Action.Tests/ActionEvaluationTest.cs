@@ -37,11 +37,15 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    new Account(MockAccountState.Empty),
+                    new World(new MockWorldState()),
                     123,
                     0,
                     false),
-                new Account(MockAccountState.Empty.SetState(address, (Text)"item")));
+                new World(
+                    new MockWorldState().SetAccountState(
+                        ReservedAddresses.LegacyAccount,
+                        new Account(new MockAccountState().SetState(address, (Text)"item"))))
+            );
             var action = (DumbAction)evaluation.Action;
 
             Assert.Equal(address, action.TargetAddress);
@@ -51,11 +55,12 @@ namespace Libplanet.Action.Tests
             Assert.Equal(address, evaluation.InputContext.Miner);
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
-                evaluation.InputContext.PreviousState.GetState(address)
+                evaluation.InputContext.PreviousState.GetAccount(
+                    ReservedAddresses.LegacyAccount).GetState(address)
             );
             Assert.Equal(
                 (Text)"item",
-                evaluation.OutputState.GetState(address)
+                evaluation.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(address)
             );
         }
     }

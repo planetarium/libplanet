@@ -76,7 +76,9 @@ public class TransactionQueryTest
             new ValidatorSet(new List<Validator>()
                 { new Validator(new PrivateKey().PublicKey, 1 )}),
             new Dictionary<Address, IValue>
-                { [default] = (Text)"initial value" }.ToImmutableDictionary());
+            {
+                [default] = (Text)"initial value"
+            }.ToImmutableDictionary());
         var tx = Transaction.Create(
             0L,
             new PrivateKey(),

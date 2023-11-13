@@ -30,7 +30,11 @@ namespace Libplanet.Action.Sys
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }
 
-        public IImmutableDictionary<Address, IValue>? States { get; private set; }
+        public IImmutableDictionary<Address, IValue>? States
+        {
+            get;
+            private set;
+        }
 
         public ValidatorSet? ValidatorSet { get; private set; }
 
@@ -59,8 +63,11 @@ namespace Libplanet.Action.Sys
             }
         }
 
-        public IAccount Execute(IActionContext context)
+        public IWorld Execute(IActionContext context)
         {
+            IWorld world = context.PreviousState;
+            IAccount legacyAccount = world.GetAccount(ReservedAddresses.LegacyAccount);
+
             if (context.BlockIndex != 0)
             {
                 throw new InvalidOperationException(
@@ -68,12 +75,11 @@ namespace Libplanet.Action.Sys
                 );
             }
 
-            IAccount states = context.PreviousState;
             if (ValidatorSet is { } vs)
             {
                 foreach (Validator v in vs.Validators)
                 {
-                    states = states.SetValidator(v);
+                    legacyAccount = legacyAccount.SetValidator(v);
                 }
             }
 
@@ -81,11 +87,13 @@ namespace Libplanet.Action.Sys
             {
                 foreach (KeyValuePair<Address, IValue> kv in s)
                 {
-                    states = states.SetState(kv.Key, kv.Value);
+                    legacyAccount = legacyAccount.SetState(kv.Key, kv.Value);
                 }
             }
 
-            return states;
+            world = world.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
+
+            return world;
         }
 
         public void LoadPlainValue(IValue plainValue)
@@ -128,7 +136,8 @@ namespace Libplanet.Action.Sys
 
             ValidatorSet = new ValidatorSet((List)valuesList[0]);
             States = ((Dictionary)valuesList[1])
-                .Select(kv => new KeyValuePair<Address, IValue>(new Address(kv.Key), kv.Value))
+                .Select(kv => new KeyValuePair<Address, IValue>(
+                    new Address(kv.Key), kv.Value))
                 .ToImmutableDictionary();
         }
     }

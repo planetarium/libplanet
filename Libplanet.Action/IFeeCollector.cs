@@ -16,31 +16,31 @@ namespace Libplanet.Action
         /// <summary>
         /// Mortgage the fee from the sender of the transaction.
         /// </summary>
-        /// <param name="state"> The state of the account.</param>
+        /// <param name="world"> The state of the account.</param>
         /// <returns> The state of the account after the fee is mortgaged.</returns>
-        IAccount Mortgage(IAccount state);
+        IWorld Mortgage(IWorld world);
 
         /// <summary>
         /// Refund the fee to the sender of the transaction.
         /// </summary>
-        /// <param name="state">
+        /// <param name="world">
         /// The state of the account after the action is executed.
         /// </param>
         /// <returns>
         /// The state of the account after the fee is refunded.
         /// </returns>
-        IAccount Refund(IAccount state);
+        IWorld Refund(IWorld world);
 
         /// <summary>
         /// Reward the proposer of the block.
         /// </summary>
-        /// <param name="state">
+        /// <param name="world">
         /// The state of the account after the fee is refunded.
         /// </param>
         /// <returns>
         /// The state of the account after the proposer is rewarded.
         /// </returns>
-        IAccount Reward(IAccount state);
+        IWorld Reward(IWorld world);
 
         /// <summary>
         /// Change the action context and return the next fee collector.
