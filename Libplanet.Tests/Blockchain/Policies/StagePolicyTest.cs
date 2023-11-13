@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -19,10 +20,12 @@ namespace Libplanet.Tests.Blockchain.Policies
         protected readonly BlockChain _chain;
         protected readonly PrivateKey _key;
         protected readonly Transaction[] _txs;
+        protected readonly ISystemAccountsGetter _systemAccountsGetter
+            = new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount);
 
         protected StagePolicyTest()
         {
-            _policy = new BlockPolicy();
+            _policy = new BlockPolicy(_systemAccountsGetter);
             _fx = new MemoryStoreFixture();
             _chain = BlockChain.Create(
                 _policy,
@@ -31,6 +34,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
+                    _policy.SystemAccountsGetter,
                     _ => _policy.BlockAction,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));

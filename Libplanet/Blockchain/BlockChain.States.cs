@@ -161,30 +161,30 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Returns the validator set in the
         /// <see cref="BlockChain"/> at <paramref name="offset"/> and
-        /// <see cref="ReservedAddresses.LegacyAccount"/>.
+        /// <see cref="ReservedAddresses.DefaultAccount"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.DefaultAccount"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.DefaultAccount"/>
         /// cannot be created.
         /// </exception>
         public ValidatorSet GetValidatorSet(BlockHash? offset)
-            => GetValidatorSet(ReservedAddresses.LegacyAccount, offset);
+            => GetValidatorSet(ReservedAddresses.DefaultAccount, offset);
 
         /// <summary>
         /// Returns the current validator set in the <see cref="BlockChain"/>.
         /// </summary>
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <see cref="BlockChain.Tip"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
+        /// <see cref="BlockChain.Tip"/> and <see cref="ReservedAddresses.DefaultAccount"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
-        /// <see cref="ReservedAddresses.LegacyAccount"/> cannot be created.
+        /// <see cref="ReservedAddresses.DefaultAccount"/> cannot be created.
         /// </exception>
         public ValidatorSet GetValidatorSet()
-            => GetValidatorSet(ReservedAddresses.LegacyAccount);
+            => GetValidatorSet(ReservedAddresses.DefaultAccount);
     }
 }

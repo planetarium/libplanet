@@ -22,6 +22,9 @@ namespace Libplanet.Tests.Blocks
     {
         private readonly ITestOutputHelper _output;
 
+        private readonly ISystemAccountsGetter _systemAccountsGetter
+            = new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount);
+
         public PreEvaluationBlockTest(ITestOutputHelper output)
         {
             _output = output;
@@ -32,8 +35,9 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(
-                address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0);
+                address, (Bencodex.Types.Integer)123, ReservedAddresses.DefaultAccount, 0);
             var policy = new BlockPolicy(
+                _systemAccountsGetter,
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy();
@@ -44,6 +48,7 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
+                    policy.SystemAccountsGetter,
                     _ => policy.BlockAction,
                     fx.StateStore,
                     new SingleActionLoader(typeof(Arithmetic)));
@@ -62,7 +67,7 @@ namespace Libplanet.Tests.Blocks
                     genesis,
                     actionEvaluator);
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(address));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =
                     blockChain.DetermineBlockStateRootHash(preEvalGenesis, out _);
@@ -90,7 +95,7 @@ namespace Libplanet.Tests.Blocks
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
                 AssertBencodexEqual((Bencodex.Types.Integer)158, blockChain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(address));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address));
             }
         }
 
@@ -99,8 +104,9 @@ namespace Libplanet.Tests.Blocks
         {
             Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(
-                address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0);
+                address, (Bencodex.Types.Integer)123, ReservedAddresses.DefaultAccount, 0);
             var policy = new BlockPolicy(
+                _systemAccountsGetter,
                 blockAction: blockAction,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy();
@@ -110,6 +116,7 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
+                    policy.SystemAccountsGetter,
                     _ => policy.BlockAction,
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
@@ -129,7 +136,7 @@ namespace Libplanet.Tests.Blocks
                     genesis,
                     actionEvaluator);
                 AssertBencodexEqual((Bencodex.Types.Integer)123, blockChain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(address));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address));
 
                 HashDigest<SHA256> identicalGenesisStateRootHash =
                     blockChain.DetermineBlockStateRootHash(preEvalGenesis, out _);
@@ -155,7 +162,7 @@ namespace Libplanet.Tests.Blocks
 
                 blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
                 AssertBencodexEqual((Bencodex.Types.Integer)158, blockChain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(address));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address));
             }
         }
     }

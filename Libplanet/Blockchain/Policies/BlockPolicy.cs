@@ -34,6 +34,8 @@ namespace Libplanet.Blockchain.Policies
         /// description for more detail.
         /// </para>
         /// </summary>
+        /// <param name="systemAccountsGetter">A <see cref="ISystemAccountsGetter"/> to
+        /// determine <see cref="ISystemAccounts"/>.</param>
         /// <param name="blockAction">A <see cref="IAction"/> to executed for
         /// every <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
@@ -66,6 +68,7 @@ namespace Libplanet.Blockchain.Policies
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
         public BlockPolicy(
+            ISystemAccountsGetter systemAccountsGetter,
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
             Func<BlockChain, Transaction, TxPolicyViolationException?>?
@@ -77,6 +80,7 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
         {
+            SystemAccountsGetter = systemAccountsGetter;
             BlockAction = blockAction;
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             _getMaxTransactionsBytes = getMaxTransactionsBytes ?? (_ => 100L * 1024L);
@@ -150,6 +154,9 @@ namespace Libplanet.Blockchain.Policies
                 };
             }
         }
+
+        /// <inheritdoc/>
+        public ISystemAccountsGetter SystemAccountsGetter { get; }
 
         /// <inheritdoc/>
         public IAction? BlockAction { get; }

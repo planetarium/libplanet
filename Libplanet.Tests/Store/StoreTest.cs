@@ -1006,9 +1006,10 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy();
+                var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
                 var preEval = ProposeGenesis(proposer: GenesisProposer.PublicKey);
                 var actionEvaluator = new ActionEvaluator(
+                    policy.SystemAccountsGetter,
                     _ => policy.BlockAction,
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));

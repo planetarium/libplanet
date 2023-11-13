@@ -156,8 +156,11 @@ public class BlockCommand
                 }.Select(x => x.PlainValue)))
             .ToImmutableList();
 
+        var systemAccountsGetter = blockPolicyParams.GetSystemAccountsGetter()
+            ?? throw new NullReferenceException("SystemAccountGetter is absent from Policy");
         var blockAction = blockPolicyParams.GetBlockAction();
         var actionEvaluator = new ActionEvaluator(
+            systemAccountsGetter,
             _ => blockAction,
             new TrieStateStore(new DefaultKeyValueStore(null)),
             new SingleActionLoader(typeof(NullAction)));

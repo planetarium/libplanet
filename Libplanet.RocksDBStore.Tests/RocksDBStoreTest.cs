@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -80,12 +81,13 @@ namespace Libplanet.RocksDBStore.Tests
                 var store = new RocksDBStore(path);
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 var blocks = BlockChain.Create(
-                    new NullBlockPolicy(),
+                    new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount),
                     new VolatileStagePolicy(),
                     store,
                     stateStore,
                     Fx.GenesisBlock,
                     new ActionEvaluator(
+                        new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
                         policyBlockActionGetter: _ => null,
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));

@@ -37,6 +37,8 @@ namespace Libplanet.Tests.Action
         private readonly BlockPolicy _policy;
         private readonly StoreFixture _storeFx;
         private readonly TxFixture _txFx;
+        private readonly ISystemAccountsGetter _systemAccountsGetter =
+            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount);
 
         public ActionEvaluatorTest(ITestOutputHelper output)
         {
@@ -49,6 +51,7 @@ namespace Libplanet.Tests.Action
 
             _output = output;
             _policy = new BlockPolicy(
+                _systemAccountsGetter,
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
@@ -85,6 +88,7 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
+                _systemAccountsGetter,
                 _ => null,
                 stateStore,
                 new SingleActionLoader(typeof(RandomAction)));
@@ -104,13 +108,13 @@ namespace Libplanet.Tests.Action
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
-                            .GetAccount(ReservedAddresses.LegacyAccount)
+                            .GetAccount(ReservedAddresses.DefaultAccount)
                             .GetState(txAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
-                            .GetAccount(ReservedAddresses.LegacyAccount)
+                            .GetAccount(ReservedAddresses.DefaultAccount)
                             .GetState(txAddress));
             }
 
@@ -137,7 +141,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction.Create(
@@ -159,14 +163,14 @@ namespace Libplanet.Tests.Action
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
                 chain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.SignerKey),
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(action.SignerKey),
                 (Text)address.ToHex());
             Assert.Equal(
                 chain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.MinerKey),
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(action.MinerKey),
                 (Text)miner.ToAddress().ToHex());
             var state = chain.GetWorldState()
-                .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.BlockIndexKey);
+                .GetAccount(ReservedAddresses.DefaultAccount).GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
         }
 
@@ -181,7 +185,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction.Create(
@@ -223,7 +227,7 @@ namespace Libplanet.Tests.Action
                 new TrieStateStore(new MemoryKeyValueStore());
             var (chain, actionEvaluator) =
                 TestUtils.MakeBlockChainAndActionEvaluator<ThrowException>(
-                    policy: new BlockPolicy(),
+                    policy: new BlockPolicy(_systemAccountsGetter),
                     store: store,
                     stateStore: stateStore);
             var genesis = chain.Genesis;
@@ -281,6 +285,7 @@ namespace Libplanet.Tests.Action
 
             Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
+                _systemAccountsGetter,
                 policyBlockActionGetter: _ => null,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
@@ -350,13 +355,13 @@ namespace Libplanet.Tests.Action
                 randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
                     (Integer)eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
+                        .GetAccount(ReservedAddresses.DefaultAccount)
                         .GetState(DumbAction.RandomRecordsAddress),
                     (Integer)randomValue);
                 Assert.Equal(
                     expect.UpdatedStates,
                     addresses.Select(
-                        eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                        eval.OutputState.GetAccount(ReservedAddresses.DefaultAccount).GetState)
                         .Select(x => x is Text t ? t.Value : null));
             }
 
@@ -460,7 +465,7 @@ namespace Libplanet.Tests.Action
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 List<string> updatedStates = addresses
-                    .Select(eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(eval.OutputState.GetAccount(ReservedAddresses.DefaultAccount).GetState)
                     .Select(x => x is Text t ? t.Value : null)
                     .ToList();
                 Assert.Equal(expect.UpdatedStates, updatedStates);
@@ -476,7 +481,7 @@ namespace Libplanet.Tests.Action
                 randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
                     eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
+                        .GetAccount(ReservedAddresses.DefaultAccount)
                         .GetState(DumbAction.RandomRecordsAddress),
                     (Integer)randomValue);
             }
@@ -540,6 +545,7 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
+                systemAccountsGetter: _systemAccountsGetter,
                 policyBlockActionGetter: _ => null,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
@@ -581,7 +587,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(1, eval.InputContext.BlockIndex);
                 Assert.Equal(
                     (Integer)eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
+                        .GetAccount(ReservedAddresses.DefaultAccount)
                         .GetState(DumbAction.RandomRecordsAddress),
                     (Integer)eval.InputContext.GetRandom().Next());
                 IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
@@ -590,16 +596,16 @@ namespace Libplanet.Tests.Action
                         ? initStates
                         : addresses.Select(
                             prevEval.OutputState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
+                                .GetAccount(ReservedAddresses.DefaultAccount)
                                 .GetState),
                     addresses.Select(
                         eval.InputContext.PreviousState
-                            .GetAccount(ReservedAddresses.LegacyAccount)
+                            .GetAccount(ReservedAddresses.DefaultAccount)
                             .GetState));
                 Assert.Equal(
                     expectedStates[i],
                     addresses.Select(eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
+                        .GetAccount(ReservedAddresses.DefaultAccount)
                         .GetState)
                         .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(
@@ -607,16 +613,16 @@ namespace Libplanet.Tests.Action
                         ? initBalances
                         : addresses.Select(a =>
                             prevEval.OutputState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
+                                .GetAccount(ReservedAddresses.DefaultAccount)
                                 .GetBalance(a, currency).RawValue),
                     addresses.Select(
                         a => eval.InputContext.PreviousState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
+                                .GetAccount(ReservedAddresses.DefaultAccount)
                                 .GetBalance(a, currency).RawValue));
                 Assert.Equal(
                     expectedBalances[i],
                     addresses.Select(a => eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
+                        .GetAccount(ReservedAddresses.DefaultAccount)
                         .GetBalance(a, currency).RawValue));
             }
 
@@ -633,8 +639,8 @@ namespace Libplanet.Tests.Action
                 previousState: previousState).Last().OutputState;
             Assert.Equal(
                 evaluations[3].OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates(),
-                delta.GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates());
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetUpdatedStates(),
+                delta.GetAccount(ReservedAddresses.DefaultAccount).GetUpdatedStates());
 
             Assert.DoesNotContain(
                 (addresses[2], "R"),
@@ -657,6 +663,7 @@ namespace Libplanet.Tests.Action
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator(
+                systemAccountsGetter: _systemAccountsGetter,
                 policyBlockActionGetter: _ => null,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
@@ -676,7 +683,7 @@ namespace Libplanet.Tests.Action
                 tx: tx,
                 previousState: previousState).Last().OutputState;
 
-            Assert.Empty(nextState.GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates());
+            Assert.Empty(nextState.GetAccount(ReservedAddresses.DefaultAccount).GetUpdatedStates());
         }
 
         [Fact]
@@ -695,6 +702,7 @@ namespace Libplanet.Tests.Action
             fx.Append(blockA);
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockHeader: blockA,
+                systemAccountsGetter: _systemAccountsGetter,
                 tx: txA,
                 previousState: fx.CreateWorld(blockA.PreviousHash),
                 actions: txA.Actions
@@ -705,7 +713,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 new Integer(15),
                 evalsA.Last().OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(txA.Signer));
 
             for (int i = 0; i < evalsA.Length; i++)
             {
@@ -724,16 +732,17 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
+                    prevState.GetAccount(ReservedAddresses.DefaultAccount).Delta.UpdatedAddresses);
                 Assert.Equal(
                     (Integer)deltaA[i].Value,
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
+                    prevState.GetAccount(ReservedAddresses.DefaultAccount).GetState(txA.Signer));
                 Assert.Equal(
                     new[] { txA.Signer },
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
+                    outputState.GetAccount(ReservedAddresses.DefaultAccount)
+                        .Delta.UpdatedAddresses);
                 Assert.Equal(
                     (Integer)deltaA[i + 1].Value,
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
+                    outputState.GetAccount(ReservedAddresses.DefaultAccount).GetState(txA.Signer));
                 Assert.Null(eval.Exception);
             }
 
@@ -749,6 +758,7 @@ namespace Libplanet.Tests.Action
             fx.Append(blockB);
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
                 blockHeader: blockB,
+                systemAccountsGetter: _systemAccountsGetter,
                 tx: txB,
                 previousState: fx.CreateWorld(blockB.PreviousHash),
                 actions: txB.Actions
@@ -759,7 +769,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 new Integer(6),
                 evalsB.Last().OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(txB.Signer));
 
             for (int i = 0; i < evalsB.Length; i++)
             {
@@ -779,16 +789,17 @@ namespace Libplanet.Tests.Action
                 Assert.False(context.BlockAction);
                 Assert.Equal(
                     i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
+                    prevState.GetAccount(ReservedAddresses.DefaultAccount).Delta.UpdatedAddresses);
                 Assert.Equal(
                     (Integer)deltaB[i].Value,
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
+                    prevState.GetAccount(ReservedAddresses.DefaultAccount).GetState(txB.Signer));
                 Assert.Equal(
                     new[] { txB.Signer },
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
+                    outputState.GetAccount(ReservedAddresses.DefaultAccount)
+                        .Delta.UpdatedAddresses);
                 Assert.Equal(
                     (Integer)deltaB[i + 1].Value,
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
+                    outputState.GetAccount(ReservedAddresses.DefaultAccount).GetState(txB.Signer));
                 if (i == 1)
                 {
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
@@ -822,7 +833,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)1,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(genesis.Miner));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
             previousState = evaluation.OutputState;
@@ -832,7 +843,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
             chain.Append(block, CreateBlockCommit(block), render: true);
@@ -846,7 +857,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(block.Miner));
         }
 
         [Theory]
@@ -980,18 +991,18 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 2,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets.Count);
+                    .GetAccount(ReservedAddresses.DefaultAccount).TotalUpdatedFungibleAssets.Count);
             Assert.Contains(
                 (addresses[0], currency),
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                    .GetAccount(ReservedAddresses.DefaultAccount).TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (addresses[1], currency),
-                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.GetAccount(ReservedAddresses.DefaultAccount).TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
                 addresses[2],
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccount(ReservedAddresses.DefaultAccount)
                     .TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
         }
 
@@ -1023,7 +1034,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 actions: new[] { freeGasAction, },
                 store: store,
                 stateStore: stateStore);
@@ -1051,12 +1062,12 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 9),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccount(ReservedAddresses.DefaultAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 1),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccount(ReservedAddresses.DefaultAccount)
                     .GetBalance(miner.ToAddress(), foo));
         }
 
@@ -1088,7 +1099,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 actions: new[]
                 {
                     freeGasAction,
@@ -1124,12 +1135,12 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccount(ReservedAddresses.DefaultAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccount(ReservedAddresses.DefaultAccount)
                     .GetBalance(miner.ToAddress(), foo));
         }
 
@@ -1161,7 +1172,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 actions: new[]
                 {
                     freeGasAction,
@@ -1223,7 +1234,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<UseGasAction>(
-                policy: new BlockPolicy(),
+                policy: new BlockPolicy(_systemAccountsGetter),
                 actions: new[]
                 {
                     freeGasAction,
@@ -1348,6 +1359,7 @@ namespace Libplanet.Tests.Action
             Block blockA = fx.Propose();
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 blockHeader: blockA,
+                systemAccountsGetter: _systemAccountsGetter,
                 tx: txA,
                 previousState: fx.CreateWorld(blockA.PreviousHash),
                 actions: txA.Actions
@@ -1399,8 +1411,8 @@ namespace Libplanet.Tests.Action
             public IWorld Execute(IActionContext context) =>
                 context.PreviousState
                     .SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
+                        ReservedAddresses.DefaultAccount,
+                        context.PreviousState.GetAccount(ReservedAddresses.DefaultAccount)
                             .SetState(SignerKey, (Text)context.Signer.ToHex())
                             .SetState(MinerKey, (Text)context.Miner.ToHex())
                             .SetState(BlockIndexKey, (Integer)context.BlockIndex));
@@ -1444,14 +1456,14 @@ namespace Libplanet.Tests.Action
                 context.UseGas(GasUsage);
                 var state = context.PreviousState
                     .SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
+                        ReservedAddresses.DefaultAccount,
+                        context.PreviousState.GetAccount(ReservedAddresses.DefaultAccount)
                             .SetState(context.Signer, (Text)Memo));
                 if (!(Receiver is null) && !(MintValue is null))
                 {
                     state = state.SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        state.GetAccount(ReservedAddresses.LegacyAccount)
+                        ReservedAddresses.DefaultAccount,
+                        state.GetAccount(ReservedAddresses.DefaultAccount)
                             .MintAsset(context, Receiver.Value, MintValue.Value));
                 }
 
@@ -1472,8 +1484,8 @@ namespace Libplanet.Tests.Action
 
             public IWorld Execute(IActionContext context) =>
                 context.PreviousState.SetAccount(
-                    ReservedAddresses.LegacyAccount,
-                    context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
+                    ReservedAddresses.DefaultAccount,
+                    context.PreviousState.GetAccount(ReservedAddresses.DefaultAccount)
                         .MintAsset(
                             context, context.Signer, FungibleAssetValue.FromRawValue(Currency, 1)));
         }

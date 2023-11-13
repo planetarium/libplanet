@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Fixtures
                 throw new InvalidOperationException(Error);
             }
 
-            IValue v = context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
+            IValue v = context.PreviousState.GetAccount(ReservedAddresses.DefaultAccount)
                 .GetState(context.Signer) ?? (Bencodex.Types.Integer)0;
             if (!(v is Bencodex.Types.Integer value))
             {
@@ -126,9 +126,9 @@ namespace Libplanet.Tests.Fixtures
             Func<BigInteger, BigInteger, BigInteger> func = Operator.ToFunc();
             BigInteger result = func(value, Operand);
             return context.PreviousState.SetAccount(
-                ReservedAddresses.LegacyAccount,
+                ReservedAddresses.DefaultAccount,
                 context.PreviousState.GetAccount(
-                    ReservedAddresses.LegacyAccount).SetState(
+                    ReservedAddresses.DefaultAccount).SetState(
                     context.Signer, (Bencodex.Types.Integer)result));
         }
 
