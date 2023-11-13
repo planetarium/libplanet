@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Tx
                 timestamp: timestamp
             );
 
-            AssertBytesEqual(privateKey.ToAddress(), tx.Signer);
+            AssertBytesEqual(privateKey.Address, tx.Signer);
             Assert.Empty(tx.UpdatedAddresses);
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
@@ -183,7 +183,7 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
-            Address updatedAddr = new PrivateKey().ToAddress();
+            Address updatedAddr = new PrivateKey().Address;
             var txWithAddr = Transaction.Create(
                 0,
                 _fx.PrivateKey1,

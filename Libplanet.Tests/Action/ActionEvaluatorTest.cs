@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Action
             const int repeatCount = 2;
             var signer = new PrivateKey();
             var timestamp = DateTimeOffset.UtcNow;
-            var txAddress = signer.ToAddress();
+            var txAddress = signer.Address;
             var txs = new[]
             {
                 Transaction.Create(
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Action
                     protocolVersion: Block.CurrentProtocolVersion,
                     index: 0,
                     timestamp: timestamp,
-                    miner: GenesisProposer.PublicKey.ToAddress(),
+                    miner: GenesisProposer.Address,
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
@@ -122,14 +122,14 @@ namespace Libplanet.Tests.Action
         public void Evaluate()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             long blockIndex = 1;
 
             var action = new EvaluateTestAction()
             {
-                BlockIndexKey = new PrivateKey().ToAddress(),
-                MinerKey = new PrivateKey().ToAddress(),
-                SignerKey = new PrivateKey().ToAddress(),
+                BlockIndexKey = new PrivateKey().Address,
+                MinerKey = new PrivateKey().Address,
+                SignerKey = new PrivateKey().Address,
             };
 
             var store = new MemoryStore();
@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Action
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
-            Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.ToAddress().ToHex());
+            Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.Address.ToHex());
             var state = chain.GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
         }
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
 
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
 
@@ -200,7 +200,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateWithCriticalException()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
 
             var action = new ThrowException
             {
@@ -336,7 +336,7 @@ namespace Libplanet.Tests.Action
                     block1Txs[expect.TxIdx].Actions[expect.ActionIdx],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
-                Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
+                Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
                 randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
@@ -458,7 +458,7 @@ namespace Libplanet.Tests.Action
                     block2Txs[expect.TxIdx].Actions[expect.Item2],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
-                Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
+                Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
@@ -489,7 +489,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateTx()
         {
             PrivateKey[] keys = { new PrivateKey(), new PrivateKey(), new PrivateKey() };
-            Address[] addresses = keys.Select(AddressExtensions.ToAddress).ToArray();
+            Address[] addresses = keys.Select(key => key.Address).ToArray();
             DumbAction[] actions =
             {
                 new DumbAction(
@@ -839,14 +839,14 @@ namespace Libplanet.Tests.Action
                         (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
                     .Select(signerNoncePair =>
                     {
-                        Address targetAddress = signerNoncePair.signer.ToAddress();
+                        Address targetAddress = signerNoncePair.signer.Address;
                         return Transaction.Create(
                             nonce: signerNoncePair.nonce,
                             privateKey: signerNoncePair.signer,
                             genesisHash: null,
                             actions: new[]
                             {
-                                new RandomAction(signerNoncePair.signer.ToAddress()),
+                                new RandomAction(signerNoncePair.signer.Address),
                             }.ToPlainValues(),
                             updatedAddresses: ImmutableHashSet.Create(targetAddress),
                             timestamp: epoch
@@ -868,7 +868,7 @@ namespace Libplanet.Tests.Action
 
             // Sanity check.
             Assert.True(originalAddresses.SequenceEqual(
-                signers.Select(signer => signer.ToAddress().ToString())));
+                signers.Select(signer => signer.Address.ToString())));
 
             var orderedTxs = ActionEvaluator.OrderTxsForEvaluation(
                 protocolVersion: protocolVersion,
@@ -886,7 +886,7 @@ namespace Libplanet.Tests.Action
             // Check nonces are ordered.
             foreach (var signer in signers)
             {
-                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.ToAddress());
+                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.Address);
                 Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
             }
 
@@ -907,7 +907,7 @@ namespace Libplanet.Tests.Action
                 genesisBlock: _storeFx.GenesisBlock,
                 privateKey: ChainPrivateKey);
             var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
-            var addresses = privateKeys.Select(privateKey => privateKey.ToAddress()).ToList();
+            var addresses = privateKeys.Select(privateKey => privateKey.Address).ToList();
 
             // Only addresses[0] and addresses[1] are able to mint
             var currency = Currency.Uncapped(
@@ -945,7 +945,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateActionAndCollectFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1000,14 +1000,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 1),
                 chain.GetAccountState(
-                    evaluations.Single().OutputState).GetBalance(miner.ToAddress(), foo));
+                    evaluations.Single().OutputState).GetBalance(miner.Address, foo));
         }
 
         [Fact]
         public void EvaluateThrowingExceedGasLimit()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1070,14 +1070,14 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetAccountState(
-                    evaluations.Single().OutputState).GetBalance(miner.ToAddress(), foo));
+                    evaluations.Single().OutputState).GetBalance(miner.Address, foo));
         }
 
         [Fact]
         public void EvaluateThrowingInsufficientBalanceForGasFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1139,7 +1139,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateMinusGasFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,

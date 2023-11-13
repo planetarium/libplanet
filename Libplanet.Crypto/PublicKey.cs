@@ -60,6 +60,11 @@ namespace Libplanet.Crypto
             KeyParam = keyParam;
         }
 
+        /// <summary>
+        /// The corresponding <see cref="Crypto.Address"/> derived from a <see cref="PublicKey"/>.
+        /// </summary>
+        public Address Address => new Address(this);
+
         internal ECPublicKeyParameters KeyParam { get; }
 
         public static bool operator ==(PublicKey left, PublicKey right) => left.Equals(right);

@@ -231,7 +231,7 @@ namespace Libplanet.Net.Tests.Consensus
                         protocolVersion: BlockMetadata.CurrentProtocolVersion - 1,
                         index: blockChain.Tip.Index + 2,
                         timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                        miner: TestUtils.PrivateKeys[1].PublicKey.ToAddress(),
+                        miner: TestUtils.PrivateKeys[1].Address,
                         publicKey: TestUtils.PrivateKeys[1].PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
@@ -266,7 +266,7 @@ namespace Libplanet.Net.Tests.Consensus
             TxPolicyViolationException? IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = TestUtils.PrivateKeys[1].PublicKey.ToAddress();
+                var validAddress = TestUtils.PrivateKeys[1].Address;
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);

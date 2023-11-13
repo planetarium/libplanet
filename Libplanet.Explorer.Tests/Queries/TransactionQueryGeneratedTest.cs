@@ -54,7 +54,7 @@ public class TransactionQueryGeneratedTest
         var successTx = successBlock.Transactions.First();
         var pk = Fx.PrivateKeys[0];
         var stagingTx = Transaction.Create(
-            Fx.Chain.GetNextTxNonce(pk.ToAddress()),
+            Fx.Chain.GetNextTxNonce(pk.Address),
             pk,
             Fx.Chain.Genesis.Hash,
             ImmutableArray<SimpleAction>.Empty.Add(new SimpleAction1()).ToPlainValues());
@@ -89,11 +89,11 @@ public class TransactionQueryGeneratedTest
     {
         var allBlocks = Fx.Chain.IterateBlocks().ToImmutableArray();
         await AssertTransactionsQueryPermutation(allBlocks, null, null);
-        foreach (var signer in Fx.PrivateKeys.Select(pk => pk.ToAddress()))
+        foreach (var signer in Fx.PrivateKeys.Select(pk => pk.Address))
         {
             await AssertTransactionsQueryPermutation(allBlocks, signer, null);
             await AssertTransactionsQueryPermutation(allBlocks, null, signer);
-            foreach (var involved in Fx.PrivateKeys.Select(pk => pk.ToAddress()))
+            foreach (var involved in Fx.PrivateKeys.Select(pk => pk.Address))
             {
                 await AssertTransactionsQueryPermutation(allBlocks, signer, involved);
             }

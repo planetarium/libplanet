@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: protocolVersion,
                         index: 1L,
                         timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                        miner: _fx.Proposer.PublicKey.ToAddress(),
+                        miner: _fx.Proposer.Address,
                         publicKey: protocolVersion >= 2 ? _fx.Proposer.PublicKey : null,
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: protocolVersion - 1,
                         index: 2L,
                         timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
-                        miner: _fx.Proposer.PublicKey.ToAddress(),
+                        miner: _fx.Proposer.Address,
                         publicKey: protocolVersion - 1 >= 2 ? _fx.Proposer.PublicKey : null,
                         previousHash: block1.Hash,
                         txHash: null,
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blockchain
                             protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
                             index: 2L,
                             timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
-                            miner: _fx.Proposer.PublicKey.ToAddress(),
+                            miner: _fx.Proposer.Address,
                             publicKey: _fx.Proposer.PublicKey,
                             previousHash: block1.Hash,
                             txHash: null,
@@ -205,7 +205,7 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: 1,
                         timestamp: genesisBlock.Timestamp.AddSeconds(1),
-                        miner: TestUtils.GenesisProposer.PublicKey.ToAddress(),
+                        miner: TestUtils.GenesisProposer.Address,
                         publicKey: TestUtils.GenesisProposer.PublicKey,
                         previousHash: genesisBlock.Hash,
                         txHash: null,
@@ -529,7 +529,7 @@ namespace Libplanet.Tests.Blockchain
                     GenerateVote(privateKey2, flag2),
                     GenerateVote(privateKey3, flag3),
                     GenerateVote(privateKey4, flag4),
-                }.OrderBy(vote => vote.ValidatorPublicKey.ToAddress()).ToImmutableArray();
+                }.OrderBy(vote => vote.ValidatorPublicKey.Address).ToImmutableArray();
             }
 
             var fullBlockCommit = new BlockCommit(

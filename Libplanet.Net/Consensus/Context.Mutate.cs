@@ -135,7 +135,7 @@ namespace Libplanet.Net.Consensus
                         voteMsg,
                         voteMsg.Height,
                         voteMsg.Round,
-                        voteMsg.ValidatorPublicKey.ToAddress(),
+                        voteMsg.ValidatorPublicKey.Address,
                         voteMsg.BlockHash,
                         ToString());
                     return true;

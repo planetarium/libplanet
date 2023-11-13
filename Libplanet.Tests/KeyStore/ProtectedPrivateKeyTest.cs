@@ -106,8 +106,8 @@ namespace Libplanet.Tests.KeyStore
         public void Unprotect()
         {
             Assert.Equal(AddressFixture, Fixture.Address);
-            Assert.Equal(AddressFixture, Fixture.Unprotect(PassphraseFixture).ToAddress());
-            Assert.Equal(AddressFixture2, Fixture2.Unprotect(PassphraseFixture).ToAddress());
+            Assert.Equal(AddressFixture, Fixture.Unprotect(PassphraseFixture).Address);
+            Assert.Equal(AddressFixture2, Fixture2.Unprotect(PassphraseFixture).Address);
             var incorrectPassphraseException = Assert.Throws<IncorrectPassphraseException>(
                 () => Fixture.Unprotect("wrong passphrase")
             );
@@ -813,7 +813,7 @@ namespace Libplanet.Tests.KeyStore
             // TODO: More decent tests should be written.
             ProtectedPrivateKey key = ProtectedPrivateKey.FromJson(json);
             Assert.Equal(AddressFixture, key.Address);
-            Assert.Equal(AddressFixture, key.Unprotect(PassphraseFixture).ToAddress());
+            Assert.Equal(AddressFixture, key.Unprotect(PassphraseFixture).Address);
 
             using (var stream = new MemoryStream())
             {
@@ -823,7 +823,7 @@ namespace Libplanet.Tests.KeyStore
 
             ProtectedPrivateKey key2 = ProtectedPrivateKey.FromJson(json);
             Assert.Equal(AddressFixture2, key2.Address);
-            Assert.Equal(AddressFixture2, key2.Unprotect(PassphraseFixture).ToAddress());
+            Assert.Equal(AddressFixture2, key2.Unprotect(PassphraseFixture).Address);
         }
     }
 }

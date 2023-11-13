@@ -101,8 +101,8 @@ namespace Libplanet.Net.Tests
             AppProtocolVersion untrustedOlder = AppProtocolVersion.Sign(untrustedSigner, 2);
             AppProtocolVersion untrustedNewer = AppProtocolVersion.Sign(untrustedSigner, 3);
 
-            _output.WriteLine("Trusted version signer: {0}", signer.ToAddress());
-            _output.WriteLine("Untrusted version signer: {0}", untrustedSigner.ToAddress());
+            _output.WriteLine("Trusted version signer: {0}", signer.Address);
+            _output.WriteLine("Untrusted version signer: {0}", untrustedSigner.Address);
 
             var logs = new ConcurrentDictionary<BoundPeer, AppProtocolVersion>();
 

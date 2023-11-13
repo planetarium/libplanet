@@ -156,7 +156,7 @@ namespace Libplanet.Blockchain
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: index,
                     timestamp: DateTimeOffset.UtcNow,
-                    miner: proposer.ToAddress(),
+                    miner: proposer.Address,
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),

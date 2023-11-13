@@ -112,15 +112,15 @@ namespace Libplanet.Tests.Tx
 
         public PublicKey PublicKey5 => PrivateKey5.PublicKey;
 
-        public Address Address1 => PublicKey1.ToAddress();
+        public Address Address1 => PublicKey1.Address;
 
-        public Address Address2 => PublicKey2.ToAddress();
+        public Address Address2 => PublicKey2.Address;
 
-        public Address Address3 => PublicKey3.ToAddress();
+        public Address Address3 => PublicKey3.Address;
 
-        public Address Address4 => PublicKey4.ToAddress();
+        public Address Address4 => PublicKey4.Address;
 
-        public Address Address5 => PublicKey5.ToAddress();
+        public Address Address5 => PublicKey5.Address;
 
         public Transaction Tx { get; }
 

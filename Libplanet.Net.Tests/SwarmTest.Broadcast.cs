@@ -347,7 +347,7 @@ namespace Libplanet.Net.Tests
             BlockChain chainC = swarmC.BlockChain;
 
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             var txCount = 10;
 
             var txs = Enumerable.Range(0, txCount).Select(_ =>
@@ -568,7 +568,7 @@ namespace Libplanet.Net.Tests
                 swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
 
                 chainA.UnstageTransaction(tx2);
-                Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
+                Assert.Equal(1, chainA.GetNextTxNonce(privateKey.Address));
 
                 await StopAsync(swarmA);
                 await StopAsync(swarmB);
@@ -941,7 +941,7 @@ namespace Libplanet.Net.Tests
         public async Task CanFillWithInvalidTransaction()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             var swarm1 = await CreateSwarm().ConfigureAwait(false);
             var swarm2 = await CreateSwarm().ConfigureAwait(false);
 

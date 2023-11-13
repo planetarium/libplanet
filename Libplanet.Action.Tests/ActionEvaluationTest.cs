@@ -28,7 +28,7 @@ namespace Libplanet.Action.Tests
         public void Constructor()
         {
             var txid = new System.Random().NextTxId();
-            Address address = new PrivateKey().ToAddress();
+            Address address = new PrivateKey().Address;
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(

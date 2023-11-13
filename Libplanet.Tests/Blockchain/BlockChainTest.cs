@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Blockchain
                         protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: 1,
                         timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                        miner: _fx.Proposer.PublicKey.ToAddress(),
+                        miner: _fx.Proposer.Address,
                         publicKey: _fx.Proposer.PublicKey,
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
@@ -559,7 +559,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var miner = new PrivateKey();
             var signer = new PrivateKey();
-            var address = signer.ToAddress();
+            var address = signer.Address;
             var actions1 = new[] { new DumbAction(address, "foo") };
             var actions2 = new[] { new DumbAction(address, "bar") };
 
@@ -689,12 +689,12 @@ namespace Libplanet.Tests.Blockchain
         {
             // An active account, so that its some recent transactions became "stale" due to a fork.
             var privateKey = new PrivateKey();
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
 
             // An inactive account, so that it has no recent transactions but only an old
             // transaction, so that its all transactions are stale-proof (stale-resistant).
             var lessActivePrivateKey = new PrivateKey();
-            Address lessActiveAddress = lessActivePrivateKey.ToAddress();
+            Address lessActiveAddress = lessActivePrivateKey.Address;
 
             var actions = new[] { new DumbAction(address, "foo") };
 
@@ -772,7 +772,7 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
             var miner = new PrivateKey();
-            var minerAddress = miner.ToAddress();
+            var minerAddress = miner.Address;
 
             Block block1 = _blockChain.ProposeBlock(
                 miner, txs1.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
@@ -1124,7 +1124,7 @@ namespace Libplanet.Tests.Blockchain
             for (int i = 0; i < addresses.Length; ++i)
             {
                 var privateKey = new PrivateKey();
-                Address address = privateKey.ToAddress();
+                Address address = privateKey.Address;
                 addresses[i] = address;
                 DumbAction[] actions =
                 {
@@ -1181,7 +1181,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             tracker.ClearLogs();
-            Address nonexistent = new PrivateKey().ToAddress();
+            Address nonexistent = new PrivateKey().Address;
             IValue result = chain.GetState(nonexistent);
             Assert.Null(result);
             var callCount = tracker.Logs.Where(
@@ -1233,7 +1233,7 @@ namespace Libplanet.Tests.Blockchain
         public void GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
-            var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
+            var addresses = privateKeys.Select(key => key.Address).ToList();
             var policy = new NullBlockPolicy();
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var chain = new BlockChain(
@@ -1356,7 +1356,7 @@ namespace Libplanet.Tests.Blockchain
         public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
             var actions = new[] { new DumbAction(_fx.Address1, "foo") };
             var genesis = _blockChain.Genesis;
 
@@ -1425,7 +1425,7 @@ namespace Libplanet.Tests.Blockchain
         public void GetNextTxNonceWithStaleTx()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             var actions = new[] { new DumbAction(address, "foo") };
 
             Transaction[] txs =
@@ -1513,7 +1513,7 @@ namespace Libplanet.Tests.Blockchain
         public void MakeTransactionWithSystemAction()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
             var action = new Initialize(
                 new ValidatorSet(
                     new List<Validator>() { new Validator(new PrivateKey().PublicKey, 1) }),
@@ -1545,7 +1545,7 @@ namespace Libplanet.Tests.Blockchain
         public void MakeTransactionWithCustomActions()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
             var actions = new[] { new DumbAction(address, "foo") };
 
             _blockChain.MakeTransaction(privateKey, actions);
@@ -1573,7 +1573,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task MakeTransactionConcurrency()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
             var actions = new[] { new DumbAction(address, "foo") };
 
             var tasks = Enumerable.Range(0, 10)
@@ -1614,15 +1614,15 @@ namespace Libplanet.Tests.Blockchain
                 miner2, lastCommit: CreateBlockCommit(_blockChain.Tip));
             _blockChain.Append(block3, CreateBlockCommit(block3));
 
-            IValue miner1state = _blockChain.GetState(miner1.ToAddress());
-            IValue miner2state = _blockChain.GetState(miner2.ToAddress());
+            IValue miner1state = _blockChain.GetState(miner1.Address);
+            IValue miner2state = _blockChain.GetState(miner2.Address);
             IValue rewardState = _blockChain.GetState(rewardRecordAddress);
 
             AssertBencodexEqual((Integer)2, miner1state);
             AssertBencodexEqual((Integer)1, miner2state);
 
             AssertBencodexEqual(
-                (Text)$"{miner0},{miner1.ToAddress()},{miner1.ToAddress()},{miner2.ToAddress()}",
+                (Text)$"{miner0},{miner1.Address},{miner1.Address},{miner2.Address}",
                 rewardState
             );
         }
@@ -1692,7 +1692,7 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates: chainStates,
                 actionEvaluator: actionEvaluator);
             var privateKey = new PrivateKey();
-            Address signer = privateKey.ToAddress();
+            Address signer = privateKey.Address;
 
             void BuildIndex(Guid id, Block block)
             {
@@ -1712,7 +1712,7 @@ namespace Libplanet.Tests.Blockchain
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
-                .Select(_ => new PrivateKey().ToAddress())
+                .Select(_ => new PrivateKey().Address)
                 .ToArray();
             for (int i = 0; i < 2; ++i)
             {
@@ -1771,7 +1771,7 @@ namespace Libplanet.Tests.Blockchain
         )
         {
             Address[] addresses = keys is PrivateKey[] ks
-                ? ks.Select(AddressExtensions.ToAddress).ToArray()
+                ? ks.Select(k => k.Address).ToArray()
                 : new[]
                 {
                     _fx.Address1,
@@ -2113,7 +2113,7 @@ namespace Libplanet.Tests.Blockchain
                         DateTimeOffset.UtcNow,
                         pk.PublicKey,
                         VoteFlag.PreCommit).Sign(pk))
-                .OrderBy(vote => vote.ValidatorPublicKey.ToAddress())
+                .OrderBy(vote => vote.ValidatorPublicKey.Address)
                 .ToImmutableArray());
             blockChain.Append(newBlock, newBlockCommit);
 
@@ -2135,7 +2135,7 @@ namespace Libplanet.Tests.Blockchain
                         DateTimeOffset.UtcNow,
                         pk.PublicKey,
                         VoteFlag.PreCommit).Sign(pk))
-                .OrderBy(vote => vote.ValidatorPublicKey.ToAddress())
+                .OrderBy(vote => vote.ValidatorPublicKey.Address)
                 .ToImmutableArray());
             blockChain.Append(nextBlock, nextBlockCommit);
 

@@ -356,7 +356,7 @@ namespace Libplanet.Net.Consensus
         {
             var dict = new Dictionary<string, object>
             {
-                { "node_id", _privateKey.ToAddress().ToString() },
+                { "node_id", _privateKey.Address.ToString() },
                 { "number_of_validators", _validatorSet.TotalCount },
                 { "height", Height },
                 { "round", Round },

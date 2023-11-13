@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Consensus
                 .Select(_ => new PrivateKey())
                 .ToList();
             var orderedPrivateKeys = unorderedPrivateKeys
-                .OrderBy(key => key.PublicKey.ToAddress())
+                .OrderBy(key => key.Address)
                 .ToList();
             var validatorSet = new ValidatorSet(unorderedPrivateKeys.Select(
                 key => new Validator(key.PublicKey, BigInteger.One)).ToList());
