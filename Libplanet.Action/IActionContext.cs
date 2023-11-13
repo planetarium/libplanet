@@ -38,6 +38,13 @@ namespace Libplanet.Action
         Address Miner { get; }
 
         /// <summary>
+        /// The <see cref="Address"/>es of the <see cref="IAccount"/>s that are used on
+        /// the <see cref="ActionEvaluator"/>.
+        /// </summary>
+        [Pure]
+        ISystemAccounts SystemAccounts { get; }
+
+        /// <summary>
         /// The <see cref="Block.Index"/> of the <see cref="Block"/> that contains
         /// the <see cref="IAction"/>.
         /// </summary>

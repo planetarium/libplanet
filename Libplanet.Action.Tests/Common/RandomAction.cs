@@ -31,16 +31,16 @@ namespace Libplanet.Action.Tests.Common
         public IWorld Execute(IActionContext context)
         {
             IWorld states = context.PreviousState;
-            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.DefaultAccount);
             if (context.Rehearsal)
             {
                 return states.SetAccount(
-                    ReservedAddresses.LegacyAccount,
+                    ReservedAddresses.DefaultAccount,
                     legacyAccount.SetState(Address, Null.Value));
             }
 
             legacyAccount = legacyAccount.SetState(Address, (Integer)context.GetRandom().Next());
-            return states.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
+            return states.SetAccount(ReservedAddresses.DefaultAccount, legacyAccount);
         }
     }
 }

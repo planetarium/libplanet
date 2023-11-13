@@ -1,8 +1,8 @@
 namespace Libplanet.Extensions.Cocona.Tests;
 
 using System;
-using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Blockchain.Policies;
 using Xunit;
 
@@ -134,10 +134,12 @@ public class BlockPolicyParamsTest
     }
 
     internal static BlockPolicy BlockPolicyFactory() =>
-        new BlockPolicy(blockAction: new NullAction());
+        new BlockPolicy(
+            systemAccountsGetter: new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
+            blockAction: new NullAction());
 
     internal static BlockPolicy BlockPolicyFactoryWithParams(bool param) =>
-        new BlockPolicy();
+        new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
 
     internal static int BlockPolicyFactoryWithWrongReturnType() => 0;
 
@@ -145,5 +147,5 @@ public class BlockPolicyParamsTest
         null!;
 
     internal BlockPolicy BlockPolicyFactoryInstanceMethod() =>
-        new BlockPolicy();
+        new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
 }

@@ -7,14 +7,14 @@ namespace Libplanet.Action.State
     internal static class WorldExtensions
     {
         internal static IAccount GetFungibleAssetsAccount(this IWorldState world) =>
-            world.GetAccount(ReservedAddresses.LegacyAccount);
+            world.GetAccount(ReservedAddresses.DefaultAccount);
 
         internal static IAccount GetValidatorSetAccount(this IWorldState world) =>
-            world.GetAccount(ReservedAddresses.LegacyAccount);
+            world.GetAccount(ReservedAddresses.DefaultAccount);
 
         internal static IWorld SetFungibleAssetsAccount(
             this IWorld world,
             IAccount account) =>
-            world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world.SetAccount(ReservedAddresses.DefaultAccount, account);
     }
 }

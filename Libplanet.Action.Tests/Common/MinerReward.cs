@@ -39,7 +39,7 @@ namespace Libplanet.Action.Tests.Common
         public IWorld Execute(IActionContext ctx)
         {
             IWorld states = ctx.PreviousState;
-            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.DefaultAccount);
 
             string rewardRecord = (Text?)legacyAccount.GetState(RewardRecordAddress);
 
@@ -54,7 +54,7 @@ namespace Libplanet.Action.Tests.Common
             int reward = previousReward + Reward;
 
             legacyAccount = legacyAccount.SetState(ctx.Miner, (Integer)reward);
-            return states.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
+            return states.SetAccount(ReservedAddresses.DefaultAccount, legacyAccount);
         }
     }
 }

@@ -27,6 +27,9 @@ namespace Libplanet.Action.Tests.Sys
                 [default] = (Text)"initial value",
             }.ToImmutableDictionary();
 
+        private readonly ISystemAccounts _systemAccounts = new SystemAccounts(
+            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
+
         [Fact]
         public void Constructor()
         {
@@ -44,11 +47,11 @@ namespace Libplanet.Action.Tests.Sys
             var random = new System.Random();
             Address signer = random.NextAddress();
             var prevState = new World(new MockWorldState());
-            BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
                 txid: random.NextTxId(),
                 miner: random.NextAddress(),
+                systemAccounts: _systemAccounts,
                 blockIndex: 0,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
@@ -64,7 +67,7 @@ namespace Libplanet.Action.Tests.Sys
 
             Assert.Equal(
                 _validatorSet,
-                nextState.GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet());
+                nextState.GetAccount(ReservedAddresses.DefaultAccount).GetValidatorSet());
             Assert.Equal(
                 _states[default],
                 nextState.GetAccount(default).GetState(default));
@@ -81,6 +84,7 @@ namespace Libplanet.Action.Tests.Sys
                 signer: signer,
                 txid: random.NextTxId(),
                 miner: random.NextAddress(),
+                systemAccounts: _systemAccounts,
                 blockIndex: 10,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,

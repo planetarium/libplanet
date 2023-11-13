@@ -13,6 +13,8 @@ namespace Libplanet.Action.Tests
     public class ActionEvaluationTest
     {
         private readonly ILogger _logger;
+        private readonly ISystemAccounts _systemAccounts = new SystemAccounts(
+            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
 
         public ActionEvaluationTest(ITestOutputHelper output)
         {
@@ -35,6 +37,7 @@ namespace Libplanet.Action.Tests
                     address,
                     txid,
                     address,
+                    _systemAccounts,
                     1,
                     Block.CurrentProtocolVersion,
                     new World(new MockWorldState()),
@@ -43,7 +46,7 @@ namespace Libplanet.Action.Tests
                     false),
                 new World(
                     new MockWorldState().SetAccountState(
-                        ReservedAddresses.LegacyAccount,
+                        ReservedAddresses.DefaultAccount,
                         new Account(new MockAccountState().SetState(address, (Text)"item"))))
             );
             var action = (DumbAction)evaluation.Action;
@@ -56,11 +59,12 @@ namespace Libplanet.Action.Tests
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
                 evaluation.InputContext.PreviousState.GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(address)
+                    ReservedAddresses.DefaultAccount).GetState(address)
             );
             Assert.Equal(
                 (Text)"item",
-                evaluation.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(address)
+                evaluation.OutputState
+                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address)
             );
         }
     }
