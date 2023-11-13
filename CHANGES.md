@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Rehearsal` property from `IActionContext` and
+    `ICommittedActionContext`.  [[#3485]]
  -  (Libplanet.Crypto) Removed `ToAddress()` extension method for
     `PrivateKey` and `PublicKey`.  [[#3486]]
  -  (Libplanet.Crypto) Added `Address` property to `PrivateKey` and `PublicKey`.
@@ -29,7 +31,8 @@ To be released.
 
 ### CLI tools
 
-[[#3486]]: https://github.com/planetarium/libplanet/pull/3486
+[#3485]: https://github.com/planetarium/libplanet/pull/3485
+[#3486]: https://github.com/planetarium/libplanet/pull/3486
 
 
 Version 3.7.0
