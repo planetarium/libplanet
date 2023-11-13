@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Crypto) Removed `ToAddress()` extension method for
+    `PrivateKey` and `PublicKey`.  [[#3486]]
+ -  (Libplanet.Crypto) Added `Address` property to `PrivateKey` and `PublicKey`.
+    [[#3486]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +28,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[[#3486]]: https://github.com/planetarium/libplanet/pull/3486
 
 
 Version 3.7.0
