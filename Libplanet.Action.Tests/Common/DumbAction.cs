@@ -138,12 +138,6 @@ namespace Libplanet.Action.Tests.Common
                 RehearsalRecords.Value = ImmutableList<(Address, string)>.Empty;
             }
 
-            if (context.Rehearsal)
-            {
-                RehearsalRecords.Value =
-                    RehearsalRecords.Value.Add((TargetAddress, Item));
-            }
-
             IAccount states = context.PreviousState;
             if (Item is null)
             {
@@ -151,9 +145,7 @@ namespace Libplanet.Action.Tests.Common
             }
 
             string items = (Text?)states.GetState(TargetAddress);
-            string item = RecordRehearsal
-                ? $"{Item}:{context.Rehearsal}"
-                : Item;
+            string item = RecordRehearsal ? $"{Item}:{false}" : Item;
 
             if (Idempotent)
             {
@@ -182,7 +174,7 @@ namespace Libplanet.Action.Tests.Common
                 );
             }
 
-            if (Item.Equals("D") && !context.Rehearsal)
+            if (Item.Equals("D"))
             {
                 Item = Item.ToUpperInvariant();
             }
@@ -217,7 +209,6 @@ namespace Libplanet.Action.Tests.Common
             {
                 Action = this,
                 NextState = nextState,
-                Rehearsal = context.Rehearsal,
             });
 
             return nextState;

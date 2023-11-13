@@ -150,8 +150,7 @@ namespace Libplanet.Tests.Action
                 Block.CurrentProtocolVersion,
                 new Account(new AccountState(trie)),
                 0,
-                0,
-                false);
+                0);
 
         public ITrie Commit(
             IStateStore stateStore,

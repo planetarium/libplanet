@@ -507,7 +507,6 @@ namespace Libplanet.Action
                         miner: evaluation.InputContext.Miner,
                         blockIndex: evaluation.InputContext.BlockIndex,
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        rehearsal: evaluation.InputContext.Rehearsal,
                         previousState: trie.Hash,
                         randomSeed: evaluation.InputContext.RandomSeed,
                         blockAction: evaluation.InputContext.BlockAction),

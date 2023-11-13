@@ -38,7 +38,7 @@ namespace Libplanet.Action.Tests.Common
 
         public IAccount Execute(IActionContext context)
         {
-            if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
+            if (ThrowOnExecution)
             {
                 if (Deterministic)
                 {

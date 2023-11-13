@@ -39,8 +39,7 @@ namespace Libplanet.Action.Tests
                     Block.CurrentProtocolVersion,
                     new Account(MockAccountState.Empty),
                     123,
-                    0,
-                    false),
+                    0),
                 new Account(MockAccountState.Empty.SetState(address, (Text)"item")));
             var action = (DumbAction)evaluation.Action;
 
