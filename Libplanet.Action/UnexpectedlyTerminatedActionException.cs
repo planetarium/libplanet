@@ -23,27 +23,24 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="preEvaluationHash">The <see cref="Block.PreEvaluationHash"/> of the
-        /// <see cref="Block"/> that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode.</param>
+        /// <see cref="Block"/> that <paramref name="action"/> belongs to.</param>
         /// <param name="blockIndex">The <see cref="Block.Index"/> of the <see cref="Block"/>
-        /// that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode.
-        /// </param>
+        /// that <paramref name="action"/> belongs to.</param>
         /// <param name="txid">The <see cref="Transaction.Id"/> of
         /// the <see cref="Transaction"/> that <paramref name="action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode or if <paramref name="action"/> is
+        /// This can be <see langword="null"/> if <paramref name="action"/> is
         /// a <see cref="IBlockPolicy.BlockAction"/>.
         /// </param>
         /// <param name="action">The <see cref="IAction"/> object which threw an exception.</param>
         /// <param name="previousStateRootHash">The <see cref="ITrie.Hash"/> of states until
-        /// previous action execution.  This can be null on rehearsal mode or if the chain which
+        /// previous action execution.  This can be <see langword="null"/> if the chain which
         /// executed the action, was not using <see cref="TrieStateStore"/>.</param>
         /// <param name="innerException">The actual exception that the <see cref="Action"/> threw.
         /// </param>
         public UnexpectedlyTerminatedActionException(
             string message,
-            HashDigest<SHA256>? preEvaluationHash,
-            long? blockIndex,
+            HashDigest<SHA256> preEvaluationHash,
+            long blockIndex,
             TxId? txid,
             HashDigest<SHA256>? previousStateRootHash,
             IAction action,
@@ -122,20 +119,20 @@ namespace Libplanet.Action
 
         /// <summary>
         /// The <see cref="Block.PreEvaluationHash"/> of the <see cref="Block"/> that
-        /// <see cref="Action"/> belongs to.  This can be <see langword="null"/> on rehearsal mode.
+        /// <see cref="Action"/> belongs to.
         /// </summary>
-        public HashDigest<SHA256>? PreEvaluationHash { get; }
+        public HashDigest<SHA256> PreEvaluationHash { get; }
 
         /// <summary>
         /// The <see cref="Block.Index"/> of the <see cref="Block"/> that <see cref="Action"/>
-        /// belongs to.  This can be <see langword="null"/> on rehearsal mode.
+        /// belongs to.
         /// </summary>
-        public long? BlockIndex { get; }
+        public long BlockIndex { get; }
 
         /// <summary>
         /// The <see cref="Transaction.Id"/> of the <see cref="Transaction"/> that
         /// <see cref="Action"/> belongs to.
-        /// This can be <see langword="null"/> on rehearsal mode or
+        /// This can be <see langword="null"/>
         /// if <see cref="Action"/> is a <see cref="IBlockPolicy.BlockAction"/>.
         /// </summary>
         public TxId? TxId { get; }
@@ -151,15 +148,8 @@ namespace Libplanet.Action
         {
             base.GetObjectData(info, context);
 
-            if (PreEvaluationHash is { } preEvaluationHash)
-            {
-                info.AddValue(nameof(PreEvaluationHash), preEvaluationHash.ToByteArray());
-            }
-
-            if (BlockIndex is long blockIndex)
-            {
-                info.AddValue(nameof(BlockIndex), blockIndex);
-            }
+            info.AddValue(nameof(PreEvaluationHash), PreEvaluationHash.ToByteArray());
+            info.AddValue(nameof(BlockIndex), BlockIndex);
 
             if (TxId is TxId txId)
             {

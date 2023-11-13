@@ -10,8 +10,6 @@ namespace Libplanet.Action.Tests.Common
         {
         }
 
-        public bool ThrowOnRehearsal { get; set; }
-
         public bool ThrowOnExecution { get; set; }
 
         public bool Deterministic { get; set; } = true;
@@ -19,7 +17,6 @@ namespace Libplanet.Action.Tests.Common
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<string, bool>
             {
-                ["throw_on_rehearsal"] = ThrowOnRehearsal,
                 ["throw_on_execution"] = ThrowOnExecution,
                 ["deterministic"] = Deterministic,
             });
@@ -31,7 +28,6 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            ThrowOnRehearsal = (Boolean)plainValue["throw_on_rehearsal"];
             ThrowOnExecution = (Boolean)plainValue["throw_on_execution"];
             Deterministic = (Boolean)plainValue["deterministic"];
         }

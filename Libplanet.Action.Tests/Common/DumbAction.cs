@@ -145,6 +145,9 @@ namespace Libplanet.Action.Tests.Common
             }
 
             string items = (Text?)states.GetState(TargetAddress);
+
+            // FIXME: Pretend rehearsal is false for backward compatibility for now.
+            // This should be removed.
             string item = RecordRehearsal ? $"{Item}:{false}" : Item;
 
             if (Idempotent)
