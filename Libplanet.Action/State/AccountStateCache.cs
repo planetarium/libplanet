@@ -11,7 +11,7 @@ namespace Libplanet.Action.State
     internal class AccountStateCache
     {
         private const int _cahceSize = 10_000;
-        private const int _reportPeriod = 60_000;
+        private const int _reportPeriod = 1_000;
 
         private LruCache<Address, IValue?> _cache;
         private Stopwatch _stopwatch;
