@@ -10,7 +10,8 @@ namespace Libplanet.Store
 {
     public class HashNodeCache
     {
-        private const int _cahceSize = 400_000;
+        // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
+        private const int _cahceSize = 1_048_576;
         private const int _reportPeriod = 60_000;
 
         private LruCache<HashDigest<SHA256>, IValue> _cache;
@@ -65,11 +66,13 @@ namespace Libplanet.Store
                     .ForContext("Subtag", "HashNodeCacheReport")
                     .Debug(
                         "Successfully fetched {HitCount} cached values out of last " +
-                        "{AttemptCount} attempts with hitrate of {HitRate} " +
-                        "during last {PeriodMs} ms",
+                        "{AttemptCount} attempts with hitrate of {HitRate} and " +
+                        "{CacheUsed}/{CacheSize} cache in use during last {PeriodMs} ms",
                         _hits,
                         _attempts,
                         (double)_hits / _attempts,
+                        _cache.Count,
+                        _cache.Capacity,
                         period);
 
                 _stopwatch.Restart();
