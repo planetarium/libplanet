@@ -22,6 +22,8 @@ namespace Libplanet.Store.Trie
 
         private static readonly Codec _codec;
 
+        private readonly HashNodeCache _cache;
+
         static MerkleTrie()
         {
             _codec = new Codec();
@@ -36,9 +38,11 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
         /// <see cref="MerkleTrie"/>.</param>
+        /// <param name="cache">The <see cref="HashNodeCache"/> to use as a cache.</param>
         public MerkleTrie(
             IKeyValueStore keyValueStore,
-            HashDigest<SHA256> rootHash)
+            HashDigest<SHA256> rootHash,
+            HashNodeCache? cache = null)
             : this(keyValueStore, new HashNode(rootHash))
         {
         }
@@ -50,13 +54,16 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="root">The root node of <see cref="MerkleTrie"/>.  If it is
         /// <see langword="null"/>, it will be treated like empty trie.</param>
-        public MerkleTrie(IKeyValueStore keyValueStore, INode? root = null)
+        /// <param name="cache">The <see cref="HashNodeCache"/> to use as a cache.</param>
+        public MerkleTrie(
+            IKeyValueStore keyValueStore, INode? root = null, HashNodeCache? cache = null)
         {
             // FIXME: It might be a good idea to have something like IReadOnlyKeyValueStore.
             KeyValueStore = keyValueStore;
             Root = root is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash)
                 ? null
                 : root;
+            _cache = cache ?? new HashNodeCache();
         }
 
         /// <inheritdoc cref="ITrie.Root"/>
@@ -439,8 +446,18 @@ namespace Libplanet.Store.Trie
         /// </remarks>
         private INode UnhashNode(HashNode hashNode)
         {
-            IValue intermediateEncoding = _codec.Decode(
-                KeyValueStore.Get(new KeyBytes(hashNode.HashDigest.ByteArray)));
+            IValue intermediateEncoding;
+            if (_cache.TryGetValue(hashNode.HashDigest, out var value))
+            {
+                intermediateEncoding = value!;
+            }
+            else
+            {
+                intermediateEncoding =
+                    _codec.Decode(KeyValueStore.Get(new KeyBytes(hashNode.HashDigest.ByteArray)));
+                _cache.AddOrUpdate(hashNode.HashDigest, intermediateEncoding);
+            }
+
             return NodeDecoder.Decode(intermediateEncoding, NodeDecoder.HashEmbeddedNodeType) ??
                 throw new NullReferenceException();
         }
