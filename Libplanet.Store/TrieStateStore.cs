@@ -15,6 +15,7 @@ namespace Libplanet.Store
     public partial class TrieStateStore : IStateStore
     {
         private readonly ILogger _logger;
+        private readonly HashNodeCache _cache;
         private bool _disposed = false;
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace Libplanet.Store
         public TrieStateStore(IKeyValueStore stateKeyValueStore)
         {
             StateKeyValueStore = stateKeyValueStore;
+            _cache = new HashNodeCache();
             _logger = Log.ForContext<TrieStateStore>();
         }
 

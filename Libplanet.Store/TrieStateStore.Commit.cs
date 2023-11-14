@@ -29,14 +29,16 @@ namespace Libplanet.Store
             else
             {
                 var writeBatch = new WriteBatch(StateKeyValueStore, 4096);
-                INode newRoot = Commit(root, writeBatch);
+                INode newRoot = Commit(root, writeBatch, _cache);
 
                 // It assumes embedded node if it's not HashNode.
                 if (!(newRoot is HashNode))
                 {
-                    byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                    writeBatch.Add(
-                        new KeyBytes(SHA256.Create().ComputeHash(serialized)), serialized);
+                    IValue bencoded = newRoot.ToBencodex();
+                    byte[] serialized = _codec.Encode(bencoded);
+                    byte[] hash = SHA256.Create().ComputeHash(serialized);
+
+                    writeBatch.Add(new KeyBytes(hash), serialized);
                 }
 
                 writeBatch.Flush();
@@ -45,7 +47,7 @@ namespace Libplanet.Store
             }
         }
 
-        private static INode Commit(INode node, WriteBatch writeBatch)
+        private static INode Commit(INode node, WriteBatch writeBatch, HashNodeCache cache)
         {
             switch (node)
             {
@@ -54,23 +56,24 @@ namespace Libplanet.Store
                     return node;
 
                 case FullNode fullNode:
-                    return CommitFullNode(fullNode, writeBatch);
+                    return CommitFullNode(fullNode, writeBatch, cache);
 
                 case ShortNode shortNode:
-                    return CommitShortNode(shortNode, writeBatch);
+                    return CommitShortNode(shortNode, writeBatch, cache);
 
                 case ValueNode valueNode:
-                    return CommitValueNode(valueNode, writeBatch);
+                    return CommitValueNode(valueNode, writeBatch, cache);
 
                 default:
                     throw new NotSupportedException("Not supported node came.");
             }
         }
 
-        private static INode CommitFullNode(FullNode fullNode, WriteBatch writeBatch)
+        private static INode CommitFullNode(
+            FullNode fullNode, WriteBatch writeBatch, HashNodeCache cache)
         {
             var virtualChildren = fullNode.Children
-                .Select(c => c is null ? null : Commit(c, writeBatch))
+                .Select(c => c is null ? null : Commit(c, writeBatch, cache))
                 .ToImmutableArray();
 
             fullNode = new FullNode(virtualChildren);
@@ -81,13 +84,14 @@ namespace Libplanet.Store
                 return fullNode;
             }
 
-            return Write(fullNode.ToBencodex(), writeBatch);
+            return Write(fullNode.ToBencodex(), writeBatch, cache);
         }
 
-        private static INode CommitShortNode(ShortNode shortNode, WriteBatch writeBatch)
+        private static INode CommitShortNode(
+            ShortNode shortNode, WriteBatch writeBatch, HashNodeCache cache)
         {
             // FIXME: Assumes value is not null.
-            var committedValueNode = Commit(shortNode.Value!, writeBatch);
+            var committedValueNode = Commit(shortNode.Value!, writeBatch, cache);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
             IValue encoded = shortNode.ToBencodex();
             if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
@@ -95,10 +99,11 @@ namespace Libplanet.Store
                 return shortNode;
             }
 
-            return Write(encoded, writeBatch);
+            return Write(encoded, writeBatch, cache);
         }
 
-        private static INode CommitValueNode(ValueNode valueNode, WriteBatch writeBatch)
+        private static INode CommitValueNode(
+            ValueNode valueNode, WriteBatch writeBatch, HashNodeCache cache)
         {
             IValue encoded = valueNode.ToBencodex();
             var nodeSize = encoded.EncodingLength;
@@ -107,7 +112,7 @@ namespace Libplanet.Store
                 return valueNode;
             }
 
-            return Write(encoded, writeBatch);
+            return Write(encoded, writeBatch, cache);
         }
 
         /// <summary>
@@ -118,10 +123,13 @@ namespace Libplanet.Store
         /// <param name="writeBatch">A batched writer to use for performance reasons.</param>
         /// <returns>A <see cref="HashNode"/> already written to storage with
         /// <paramref name="bencodedNode"/> embedded inside.</returns>
-        private static HashNode Write(IValue bencodedNode, WriteBatch writeBatch)
+        /// <param name="cache">A <see cref="HashNodeCache"/> to cache nodes.</param>
+        private static HashNode Write(
+            IValue bencodedNode, WriteBatch writeBatch, HashNodeCache cache)
         {
             byte[] serialized = _codec.Encode(bencodedNode);
             var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
+            cache.AddOrUpdate(nodeHash, bencodedNode);
             writeBatch.Add(new KeyBytes(nodeHash.ByteArray), serialized);
             return new HashNode(nodeHash);
         }
