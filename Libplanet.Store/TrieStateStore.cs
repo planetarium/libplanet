@@ -124,7 +124,8 @@ namespace Libplanet.Store
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
             new MerkleTrie(
                 StateKeyValueStore,
-                stateRootHash is { } h2 ? new HashNode(h2) : null);
+                stateRootHash is { } h2 ? new HashNode(h2) : null,
+                _cache);
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()
