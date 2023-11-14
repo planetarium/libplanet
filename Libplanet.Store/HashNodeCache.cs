@@ -10,7 +10,7 @@ namespace Libplanet.Store
 {
     public class HashNodeCache
     {
-        private const int _cahceSize = 10_000;
+        private const int _cahceSize = 400_000;
         private const int _reportPeriod = 60_000;
 
         private LruCache<HashDigest<SHA256>, IValue> _cache;
