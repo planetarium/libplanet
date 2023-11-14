@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -9,52 +10,43 @@ namespace Libplanet.Action.State
 {
     internal class AccountStateCache
     {
-        public const int CacheSize = 1_000;
-        public const int ReportPeriod = 1_000;
+        private const int _cahceSize = 10_000;
+        private const int _reportPeriod = 60_000;
 
         private LruCache<Address, IValue?> _cache;
-        private int _getAttempts;
-        private int _getSuccesses;
+        private Stopwatch _stopwatch;
+        private int _attempts;
+        private int _hits;
+        private object _reportLock;
 
         public AccountStateCache()
         {
-            _cache = new LruCache<Address, IValue?>(CacheSize);
-            _getAttempts = 0;
-            _getSuccesses = 0;
+            _cache = new LruCache<Address, IValue?>(_cahceSize);
+            _stopwatch = new Stopwatch();
+            _attempts = 0;
+            _hits = 0;
+            _reportLock = new object();
+            _stopwatch.Start();
         }
 
         public bool TryGetValue(Address address, out IValue? value)
         {
-            bool result;
-            int getAttempts = Interlocked.Increment(ref _getAttempts);
+            lock (_reportLock)
+            {
+                Report();
+            }
+
+            Interlocked.Increment(ref _attempts);
             if (_cache.TryGetValue(address, out value))
             {
-                Interlocked.Increment(ref _getSuccesses);
-                result = true;
+                Interlocked.Increment(ref _hits);
+                return true;
             }
             else
             {
                 value = null;
-                result = false;
+                return false;
             }
-
-            if (getAttempts == ReportPeriod)
-            {
-                // NOTE: This is only an estimation due to concurrency (or lack there of).
-                Log
-                    .ForContext("Source", nameof(AccountStateCache))
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "StatesCacheReport")
-                    .Debug(
-                        "Successfully fetched {SuccessCount} cached values out of last " +
-                        "{AttemptCount} attempts",
-                        _getSuccesses,
-                        getAttempts);
-                _getAttempts = 0;
-                _getSuccesses = 0;
-            }
-
-            return result;
         }
 
         public void AddOrUpdate(Address address, IValue? value)
@@ -70,6 +62,30 @@ namespace Libplanet.Action.State
             foreach ((Address a, IValue? v) in bulk)
             {
                 AddOrUpdate(a, v);
+            }
+        }
+
+        private void Report()
+        {
+            long period = _stopwatch.ElapsedMilliseconds;
+            if (period > _reportPeriod)
+            {
+                Log
+                    .ForContext("Source", nameof(AccountStateCache))
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "AccountStateCacheReport")
+                    .Debug(
+                        "Successfully fetched {HitCount} cached values out of last " +
+                        "{AttemptCount} attempts with hitrate of {HitRate} " +
+                        "during last {PeriodMs} ms",
+                        _hits,
+                        _attempts,
+                        (double)_hits / _attempts,
+                        period);
+
+                _stopwatch.Restart();
+                Interlocked.Exchange(ref _attempts, 0);
+                Interlocked.Exchange(ref _hits, 0);
             }
         }
     }
