@@ -8,10 +8,8 @@ namespace Libplanet.Action.Tests.Common
 
         public IAccount NextState { get; set; }
 
-        public bool Rehearsal { get; set; }
-
         public override string ToString() =>
-            $"{nameof(ExecuteRecord)} {{ {nameof(Action)} = {Action}, {nameof(NextState)} = " +
-            $"{NextState}, {nameof(Rehearsal)} = {Rehearsal} }}";
+            $"{nameof(ExecuteRecord)} {{ {nameof(Action)} = {Action}, " +
+            $"{nameof(NextState)} = {NextState} }}";
     }
 }

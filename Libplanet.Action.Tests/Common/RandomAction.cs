@@ -31,11 +31,6 @@ namespace Libplanet.Action.Tests.Common
         public IAccount Execute(IActionContext context)
         {
             IAccount states = context.PreviousState;
-            if (context.Rehearsal)
-            {
-                return states.SetState(Address, Null.Value);
-            }
-
             return states.SetState(Address, (Integer)context.GetRandom().Next());
         }
     }

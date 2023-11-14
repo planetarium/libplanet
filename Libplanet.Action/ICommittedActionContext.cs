@@ -52,14 +52,6 @@ namespace Libplanet.Action
         int BlockProtocolVersion { get; }
 
         /// <summary>
-        /// Whether an <see cref="IAction"/> is being executed during
-        /// &#x201c;rehearsal mode&#x201d;, that there is nothing
-        /// in <see cref="PreviousState"/>.
-        /// </summary>
-        [Pure]
-        bool Rehearsal { get; }
-
-        /// <summary>
         /// The state root hash of the previous state.
         /// </summary>
         [Pure]
