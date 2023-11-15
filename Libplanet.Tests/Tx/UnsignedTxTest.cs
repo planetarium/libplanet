@@ -93,14 +93,13 @@ namespace Libplanet.Tests.Tx
             var unsignedTx = new UnsignedTx(_invoice, _signingMetadata);
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
-            ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
-                "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
-            Assert.True(unsignedTx.VerifySignature(signature));
-
+            var signature = ByteUtil.ParseHexToImmutable(
+                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
+                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
             var wrongSignature = ByteUtil.ParseHexToImmutable(
-                "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
-                "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e9");
+                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
+                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b1");
+            Assert.True(unsignedTx.VerifySignature(signature));
             Assert.False(unsignedTx.VerifySignature(wrongSignature));
         }
 
@@ -167,12 +166,10 @@ namespace Libplanet.Tests.Tx
                       ""actions"": [
                         {
                           ""\uFEFFitem"": ""\uFEFFfoo"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
                         },
                         {
                           ""\uFEFFitem"": ""\uFEFFbar"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
                         }
                       ],

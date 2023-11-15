@@ -340,9 +340,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -474,9 +474,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal" }, _txFx.Address3),
+                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))

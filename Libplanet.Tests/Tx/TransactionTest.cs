@@ -149,12 +149,12 @@ namespace Libplanet.Tests.Tx
             AssertBytesEqual(
                 new byte[]
                 {
-                    0x30, 0x44, 0x02, 0x20, 0x67, 0xc7, 0xae, 0x03, 0x9f, 0x23, 0x64, 0x0e, 0x64,
-                    0x7d, 0xfc, 0xc4, 0x34, 0x6a, 0xb5, 0x90, 0x5e, 0xf0, 0x72, 0x93, 0x69, 0x14,
-                    0xf4, 0x0c, 0x40, 0xa7, 0x2c, 0x41, 0xe8, 0xed, 0xa8, 0x14, 0x02, 0x20, 0x72,
-                    0x56, 0x76, 0xe7, 0x4e, 0x8b, 0xb5, 0x89, 0x9d, 0x25, 0x63, 0x24, 0x95, 0x61,
-                    0x20, 0x2f, 0x46, 0xba, 0x85, 0x75, 0xe6, 0xd3, 0x53, 0xaa, 0xdd, 0x75, 0xb9,
-                    0xf0, 0x62, 0x38, 0x5d, 0x6e,
+                    0x30, 0x45, 0x02, 0x21, 0x00, 0xf7, 0xc7, 0xa6, 0xd7, 0x48, 0x8b, 0x18, 0x25,
+                    0x4d, 0x80, 0x9a, 0x6e, 0x08, 0x3e, 0xd9, 0x9c, 0xa0, 0xb0, 0x90, 0x00, 0x00,
+                    0xa7, 0x9e, 0x0e, 0x53, 0x6f, 0x1d, 0x11, 0x4b, 0xc6, 0x88, 0xfd, 0x02, 0x20,
+                    0x39, 0xbf, 0x80, 0x76, 0xc1, 0x61, 0x98, 0x50, 0x71, 0x99, 0x13, 0xa6, 0xe5,
+                    0x4c, 0xb5, 0x79, 0x17, 0x28, 0xe3, 0x3e, 0x38, 0xc5, 0xbe, 0x09, 0x41, 0xfc,
+                    0x29, 0x8d, 0x25, 0x5a, 0x39, 0x6c,
                 },
                 tx.Signature
             );
@@ -162,9 +162,9 @@ namespace Libplanet.Tests.Tx
                 new TxId(
                     new byte[]
                     {
-                        0x33, 0x96, 0xf8, 0x0e, 0x66, 0x65, 0xd9, 0x11, 0xbf, 0x3e, 0x81, 0xc4,
-                        0x81, 0x02, 0xa8, 0xc7, 0x59, 0x52, 0xdf, 0xd6, 0xb8, 0xf4, 0x10, 0x81,
-                        0x5e, 0x14, 0xea, 0x3b, 0xe7, 0x93, 0xee, 0xa6,
+                        0x8d, 0xae, 0xb2, 0x56, 0xfa, 0xf0, 0x26, 0x1c, 0x60, 0x86, 0x27, 0xb5,
+                        0xe4, 0x06, 0xb5, 0x29, 0x2f, 0x2b, 0x17, 0xf7, 0x23, 0xe0, 0x40, 0x61,
+                        0x88, 0x87, 0xdf, 0xba, 0x3c, 0xd9, 0x19, 0x24,
                     }
                 ),
                 tx.Id
@@ -332,8 +332,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
-                "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
+                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
+                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
             var tx = new Transaction(unsignedTx, signature: signature);
 
             Assert.Equal<ITxInvoice>(invoice, tx);
@@ -412,8 +412,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "304302206354e82d2cb88d63a1fd2fac0f458ce869b72bdc330cdc59d0ebebbea896c" +
-                "80f021f5a0ba3a5b7a90c541c29ee52cf111d061e130c4141c1e2a67356bd81b4c0e8");
+                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
+                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
             var tx = new Transaction(unsignedTx, signature: signature);
 
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
@@ -421,23 +421,21 @@ namespace Libplanet.Tests.Tx
                 tx,
                 @"
                     {
-                      ""id"": ""d1475d7f4c84444a0522989876aa0a1aa5d9ba8fdbf84ea5a33c60bd83cbbe7f"",
+                      ""id"": ""b4ce04152a4d197917c3b29eb4620d8e8d02dbe496f844965ee586ff343c3c77"",
                       ""nonce"": 123,
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
                       ""updatedAddresses"": [
                         ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
-                      ""signature"": ""MEMCIGNU6C0suI1jof0vrA9FjOhptyvcMwzcWdDr676olsgPAh9aC6Olt6kMVBwp7lLPER0GHhMMQUHB4qZzVr2BtMDo"",
+                      ""signature"": ""MEUCIQDk3zIro14OXtlgQ7HCFOSg8jc0p0kbXbTEqIg00/R0igIgaRsJcmQah1mskhtzHldQwgUF8F/Zk9RbJOuYneMwGLA="",
                       ""actions"": [
                         {
                           ""\uFEFFitem"": ""\uFEFFfoo"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
                         },
                         {
                           ""\uFEFFitem"": ""\uFEFFbar"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
                         }
                       ],
