@@ -20,6 +20,8 @@ To be released.
     `PrivateKey` and `PublicKey`.  [[#3486]]
  -  (Libplanet.Crypto) Added `Address` property to `PrivateKey` and `PublicKey`.
     [[#3486]]
+ -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
+    to `MerkleTrie()` constructors.  [[#3489]]
 
 ### Backward-incompatible network protocol changes
 
@@ -33,7 +35,12 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Store) Added `HashNodeCache` class.  [[#3489]]
+
 ### Behavioral changes
+
+ -  Changed internal caching strategy of `TrieStateStore` for read/write
+    optimization.  [[#3489]]
 
 ### Bug fixes
 
@@ -45,9 +52,11 @@ To be released.
 [#3480]: https://github.com/planetarium/libplanet/pull/3480
 [#3485]: https://github.com/planetarium/libplanet/pull/3485
 [#3486]: https://github.com/planetarium/libplanet/pull/3486
+[#3487]: https://github.com/planetarium/libplanet/pull/3487
+[#3489]: https://github.com/planetarium/libplanet/pull/3489
 [`RocksDb`]: https://www.nuget.org/packages/RocksDB
 [`RocksDBSharp`]: https://www.nuget.org/packages/Planetarium.RocksDbSharp
-[#3487]: https://github.com/planetarium/libplanet/pull/3487
+
 
 Version 3.7.0
 -------------
