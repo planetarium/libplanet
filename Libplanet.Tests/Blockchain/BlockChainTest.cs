@@ -597,22 +597,24 @@ namespace Libplanet.Tests.Blockchain
                     _ => _policy.BlockAction,
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction)));
+                var privateKey = new PrivateKey();
                 var genesis = ProposeGenesisBlock(
                     actionEvaluator,
                     ProposeGenesis(
                         GenesisProposer.PublicKey,
                         transactions: new[]
                         {
-                            Transaction.Create(
-                                nonce: 0,
-                                privateKey: new PrivateKey(),
-                                genesisHash: null,
-                                actions: new[] { action }.ToPlainValues(),
-                                maxGasPrice: null,
-                                gasLimit: null,
-                                updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
-                                timestamp: DateTimeOffset.UtcNow
-                            ),
+                            new Transaction(
+                                new UnsignedTx(
+                                    new TxInvoice(
+                                        genesisHash: null,
+                                        updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
+                                        timestamp: DateTimeOffset.UtcNow,
+                                        actions: new TxActionList(new[] { action }.ToPlainValues()),
+                                        maxGasPrice: null,
+                                        gasLimit: null),
+                                    new TxSigningMetadata(privateKey.PublicKey, 0)),
+                                privateKey),
                         }),
                     privateKey: GenesisProposer);
 
@@ -1887,13 +1889,17 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             var customTxs = new[]
             {
-                Transaction.Create(
-                    nonce: systemTxs.Length,
-                    privateKey: privateKey,
-                    genesisHash: null,
-                    actions: customActions.ToPlainValues(),
-                    updatedAddresses: addresses.ToImmutableHashSet()
-                ),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: null,
+                            updatedAddresses: addresses.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.UtcNow,
+                            actions: new TxActionList(customActions.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(privateKey.PublicKey, systemTxs.Length)),
+                    privateKey),
             };
             var txs = systemTxs.Concat(customTxs).ToImmutableList();
             var blockChainStates = new BlockChainStates(

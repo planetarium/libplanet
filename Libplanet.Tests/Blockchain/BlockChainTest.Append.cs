@@ -628,7 +628,6 @@ namespace Libplanet.Tests.Blockchain
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(
                     _blockChain.Genesis.Hash,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
                     new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 1));
@@ -640,17 +639,13 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 0,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
                 invalidTx,
                 Transaction.Create(
                     nonce: 2,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
             }.OrderBy(tx => tx.Id);
 
             var metadata = new BlockMetadata(

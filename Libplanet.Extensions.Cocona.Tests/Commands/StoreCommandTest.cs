@@ -369,8 +369,6 @@ public class StoreCommandTest : IDisposable
             new[] { new Utils.DummyAction() }.ToPlainValues(),
             null,
             null,
-            null,
-            DateTimeOffset.UtcNow
-        );
+            DateTimeOffset.UtcNow);
     }
 }

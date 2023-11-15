@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -362,9 +361,7 @@ namespace Libplanet.Net.Tests.Consensus
                 nonce: 0,
                 privateKey: TestUtils.PrivateKeys[1],
                 genesisHash: blockChain.Genesis.Hash,
-                actions: new[] { action }.ToPlainValues(),
-                updatedAddresses: ImmutableHashSet.Create(DelayAction.TrivialUpdatedAddress)
-            );
+                actions: new[] { action }.ToPlainValues());
             blockChain.StageTransaction(tx);
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 

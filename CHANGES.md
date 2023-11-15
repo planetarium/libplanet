@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `updatedAddresses` parameter from `BlockChain.MakeTransaction()`
+    [[#3480]]
+ -  Removed `updatedAddresses` parameter from `Transaction.Create()`.  [[#3480]]
+ -  Removed `updatedAddresses` parameter from all `TxInvoice()`.  [[#3480]]
  -  Removed `Rehearsal` property from `IActionContext` and
     `ICommittedActionContext`.  [[#3485]]
  -  (Libplanet.Crypto) Removed `ToAddress()` extension method for
@@ -31,6 +35,7 @@ To be released.
 
 ### CLI tools
 
+[#3480]: https://github.com/planetarium/libplanet/pull/3480
 [#3485]: https://github.com/planetarium/libplanet/pull/3485
 [#3486]: https://github.com/planetarium/libplanet/pull/3486
 

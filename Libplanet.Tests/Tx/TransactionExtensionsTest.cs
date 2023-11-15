@@ -34,8 +34,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             Transaction tx = invoice.Sign(privateKey, 123L);

@@ -189,16 +189,20 @@ public class GeneratedBlockChainFixture
         var random = new System.Random(seed);
         var addr = pk.Address;
         var bal = (int)(Chain.GetBalance(addr, TestCurrency).MajorUnit & int.MaxValue);
-        return Transaction.Create(
-            nonce,
-            pk,
-            Chain.Genesis.Hash,
-            random.Next() % 2 == 0
-                ? GetRandomActions(random.Next()).ToPlainValues()
-                : ImmutableHashSet<SimpleAction>.Empty.ToPlainValues(),
-            null,
-            null,
-            GetRandomAddresses(random.Next()));
+        return
+        new Transaction(
+            new UnsignedTx(
+                new TxInvoice(
+                    genesisHash: Chain.Genesis.Hash,
+                    updatedAddresses: GetRandomAddresses(random.Next()),
+                    timestamp: DateTimeOffset.UtcNow,
+                    actions: new TxActionList(random.Next() % 2 == 0
+                        ? GetRandomActions(random.Next()).ToPlainValues()
+                        : ImmutableHashSet<SimpleAction>.Empty.ToPlainValues()),
+                    maxGasPrice: null,
+                    gasLimit: null),
+                new TxSigningMetadata(pk.PublicKey, nonce)),
+            pk);
     }
 
     private ImmutableArray<SimpleAction> GetRandomActions(int seed)

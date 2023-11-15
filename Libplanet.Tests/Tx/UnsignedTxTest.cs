@@ -41,8 +41,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             _signingMetadata = new TxSigningMetadata(PublicKey, 123L);
         }
 
@@ -120,10 +121,11 @@ namespace Libplanet.Tests.Tx
             {
                 var diffInvoice = new TxInvoice(
                     i == 0 ? (BlockHash?)null : _invoice.GenesisHash,
-                    i == 1 ? null : _invoice.UpdatedAddresses,
-                    i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : _invoice.Timestamp,
-                    i == 3 ? null : _invoice.Actions
-                );
+                    i == 1 ? AddressSet.Empty : _invoice.UpdatedAddresses,
+                    i == 2 ? DateTimeOffset.MinValue : _invoice.Timestamp,
+                    i == 3 ? TxActionList.Empty : _invoice.Actions,
+                    null,
+                    null);
                 var diffSigningMetadata = new TxSigningMetadata(
                     i == 4 ? wrongKey.PublicKey : _signingMetadata.PublicKey,
                     i == 5 ? 456L : _signingMetadata.Nonce

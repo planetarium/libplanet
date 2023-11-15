@@ -741,9 +741,7 @@ namespace Libplanet.Tests.Store
                     new[] { action }.ToPlainValues(),
                     null,
                     null,
-                    ImmutableHashSet<Address>.Empty,
-                    DateTimeOffset.UtcNow
-                );
+                    DateTimeOffset.UtcNow);
             }
 
             const int taskCount = 5;

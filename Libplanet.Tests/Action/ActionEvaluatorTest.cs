@@ -277,32 +277,50 @@ namespace Libplanet.Tests.Action
 
             Transaction[] block1Txs =
             {
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey1,
-                    genesisHash: genesis.Hash,
-                    actions: new[]
-                    {
-                        MakeAction(addresses[0], 'A', addresses[1]),
-                        MakeAction(addresses[1], 'B', addresses[2]),
-                    }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey2,
-                    genesisHash: genesis.Hash,
-                    actions: new[]
-                    {
-                        MakeAction(addresses[2], 'C', addresses[3]),
-                    }.ToPlainValues(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey3,
-                    genesisHash: genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[]
+                            {
+                                addresses[0],
+                                addresses[1],
+                            }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[0], 'A', addresses[1]),
+                                MakeAction(addresses[1], 'B', addresses[2]),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey1.PublicKey, 0)),
+                    _txFx.PrivateKey1),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: ImmutableHashSet<Address>.Empty,
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[2], 'C', addresses[3]),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey2.PublicKey, 0)),
+                    _txFx.PrivateKey2),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: ImmutableHashSet<Address>.Empty,
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(7),
+                            actions: TxActionList.Empty,
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey3.PublicKey, 0)),
+                    _txFx.PrivateKey3),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
                 Enumerable.Range(0, block1Txs.Length), (x, y) => (x, y)))
@@ -384,37 +402,55 @@ namespace Libplanet.Tests.Action
                 // Note that these timestamps in themselves does not have any meanings but are
                 // only arbitrary.  These purpose to make their evaluation order in a block
                 // equal to the order we (the test) intend:
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey1,
-                    genesis.Hash,
-                    new[] { MakeAction(addresses[0], 'D') }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey2,
-                    genesis.Hash,
-                    new[] { MakeAction(addresses[3], 'E') }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey3,
-                    genesis.Hash,
-                    new[]
-                    {
-                        new DumbAction(
-                            addresses[4],
-                            "RecordRehearsal",
-                            transferFrom: addresses[0],
-                            transferTo: addresses[4],
-                            transferAmount: 8,
-                            recordRehearsal: true,
-                            recordRandom: true),
-                    }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(1),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[0], 'D'),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey1.PublicKey, 0)),
+                    _txFx.PrivateKey1),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[3], 'E'),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey2.PublicKey, 0)),
+                    _txFx.PrivateKey2),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            actions: new TxActionList(new[]
+                            {
+                                new DumbAction(
+                                    addresses[4],
+                                    "RecordRehearsal",
+                                    transferFrom: addresses[0],
+                                    transferTo: addresses[4],
+                                    transferAmount: 8,
+                                    recordRehearsal: true,
+                                    recordRandom: true),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey3.PublicKey, 0)),
+                    _txFx.PrivateKey3),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
                 Enumerable.Range(0, block2Txs.Length), (x, y) => (x, y)))
@@ -623,7 +659,6 @@ namespace Libplanet.Tests.Action
                 new[] { action }.ToPlainValues(),
                 null,
                 null,
-                ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
@@ -838,17 +873,22 @@ namespace Libplanet.Tests.Action
                     .Select(signerNoncePair =>
                     {
                         Address targetAddress = signerNoncePair.signer.Address;
-                        return Transaction.Create(
-                            nonce: signerNoncePair.nonce,
-                            privateKey: signerNoncePair.signer,
-                            genesisHash: null,
-                            actions: new[]
-                            {
-                                new RandomAction(signerNoncePair.signer.Address),
-                            }.ToPlainValues(),
-                            updatedAddresses: ImmutableHashSet.Create(targetAddress),
-                            timestamp: epoch
-                        );
+                        return new Transaction(
+                            new UnsignedTx(
+                                new TxInvoice(
+                                    genesisHash: null,
+                                    updatedAddresses: ImmutableHashSet.Create(targetAddress),
+                                    timestamp: epoch,
+                                    actions: new TxActionList(new[]
+                                    {
+                                        new RandomAction(signerNoncePair.signer.Address),
+                                    }.ToPlainValues()),
+                                    maxGasPrice: null,
+                                    gasLimit: null),
+                                new TxSigningMetadata(
+                                    signerNoncePair.signer.PublicKey,
+                                    signerNoncePair.nonce)),
+                            signerNoncePair.signer);
                     }).ToImmutableArray();
 
             // Rearrange transactions so that transactions are not grouped by signers

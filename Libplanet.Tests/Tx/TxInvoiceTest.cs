@@ -36,8 +36,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             Assert.Equal(genesisHash, invoice.GenesisHash);
             Assert.True(updatedAddresses.SetEquals(invoice.UpdatedAddresses));
             Assert.Equal(timestamp, invoice.Timestamp);
@@ -75,8 +76,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var copy = new TxInvoice(original);
             Assert.Equal(genesisHash, copy.GenesisHash);
             Assert.True(updatedAddresses.SetEquals(copy.UpdatedAddresses));
@@ -109,14 +111,16 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var invoice2 = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             Assert.True(invoice1.Equals(invoice2));
             Assert.True(invoice1.Equals((object)invoice2));
             Assert.Equal(invoice1.GetHashCode(), invoice2.GetHashCode());
@@ -131,9 +135,9 @@ namespace Libplanet.Tests.Tx
             {
                 var invoice = new TxInvoice(
                    i == 0 ? (BlockHash?)null : genesisHash,
-                   i == 1 ? null : updatedAddresses,
-                   i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
-                   i == 3 ? null : actions,
+                   i == 1 ? (IImmutableSet<Address>)AddressSet.Empty : updatedAddresses,
+                   i == 2 ? DateTimeOffset.MinValue : timestamp,
+                   i == 3 ? TxActionList.Empty : actions,
                    i == 4 ? (FungibleAssetValue?)null : FungibleAssetValue.FromRawValue(
                        Currency.Uncapped(
                            "FOO",
