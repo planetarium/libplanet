@@ -444,7 +444,7 @@ namespace Libplanet.Tests.Action
                                     transferFrom: addresses[0],
                                     transferTo: addresses[4],
                                     transferAmount: 8,
-                                    recordRehearsal: true,
+                                    recordRehearsal: false,
                                     recordRandom: true),
                             }.ToPlainValues()),
                             maxGasPrice: null,
@@ -476,9 +476,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -513,7 +513,7 @@ namespace Libplanet.Tests.Action
                 {
                     [addresses[0]] = (Text)"A,D",
                     [addresses[3]] = (Text)"E",
-                    [addresses[4]] = (Text)"RecordRehearsal:False",
+                    [addresses[4]] = (Text)"RecordRehearsal",
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty2);
@@ -580,7 +580,7 @@ namespace Libplanet.Tests.Action
                 new[] { "0", null, null },
                 new[] { "0", "1", null },
                 new[] { "0,2", "1", null },
-                new[] { "0,2", "1", "R:False" },
+                new[] { "0,2", "1", "R" },
             };
             BigInteger[][] expectedBalances =
             {
