@@ -759,7 +759,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 {
                     (Text)"item",
                     (Text)"target_address",
-                    (Text)"record_rehearsal",
                     (Text)"record_random",
                     (Text)"idempotent",
                     (Text)"transfer_from",

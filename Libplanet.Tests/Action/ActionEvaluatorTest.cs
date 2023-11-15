@@ -253,7 +253,6 @@ namespace Libplanet.Tests.Action
                 return new DumbAction(
                     targetAddress: address,
                     item: identifier.ToString(),
-                    recordRehearsal: false,
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
@@ -341,9 +340,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -444,7 +443,6 @@ namespace Libplanet.Tests.Action
                                     transferFrom: addresses[0],
                                     transferTo: addresses[4],
                                     transferAmount: 8,
-                                    recordRehearsal: true,
                                     recordRandom: true),
                             }.ToPlainValues()),
                             maxGasPrice: null,
@@ -477,8 +475,8 @@ namespace Libplanet.Tests.Action
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal" }, _txFx.Address3),
+                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -513,7 +511,7 @@ namespace Libplanet.Tests.Action
                 {
                     [addresses[0]] = (Text)"A,D",
                     [addresses[3]] = (Text)"E",
-                    [addresses[4]] = (Text)"RecordRehearsal:False",
+                    [addresses[4]] = (Text)"RecordRehearsal",
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty2);
@@ -547,7 +545,7 @@ namespace Libplanet.Tests.Action
                     transferTo: addresses[0],
                     transferAmount: 10,
                     recordRandom: true),
-                new DumbAction(addresses[2], "R", true, recordRandom: true),
+                new DumbAction(addresses[2], "R", recordRandom: true),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
@@ -566,8 +564,6 @@ namespace Libplanet.Tests.Action
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             IAccount previousState = actionEvaluator.PrepareInitialDelta(null);
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -580,7 +576,7 @@ namespace Libplanet.Tests.Action
                 new[] { "0", null, null },
                 new[] { "0", "1", null },
                 new[] { "0,2", "1", null },
-                new[] { "0,2", "1", "R:False" },
+                new[] { "0,2", "1", "R" },
             };
             BigInteger[][] expectedBalances =
             {
@@ -628,12 +624,6 @@ namespace Libplanet.Tests.Action
                     addresses.Select(a => eval.OutputState.GetBalance(a, currency).RawValue));
             }
 
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
-
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             previousState = actionEvaluator.PrepareInitialDelta(null);
             IAccount delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -642,10 +632,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 evaluations[3].OutputState.GetUpdatedStates(),
                 delta.GetUpdatedStates());
-
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
         }
 
         [Fact]
