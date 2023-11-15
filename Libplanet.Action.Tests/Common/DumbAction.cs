@@ -38,7 +38,6 @@ namespace Libplanet.Action.Tests.Common
             Idempotent = idempotent;
             TargetAddress = targetAddress;
             Item = item;
-            RecordRehearsal = recordRehearsal;
             RecordRandom = recordRandom;
             Transfer = transfer;
         }
@@ -75,7 +74,7 @@ namespace Libplanet.Action.Tests.Common
 
         public string Item { get; private set; }
 
-        public bool RecordRehearsal { get; private set; }
+        public bool RecordRehearsal => false;
 
         public bool RecordRandom { get; private set; }
 
@@ -226,7 +225,6 @@ namespace Libplanet.Action.Tests.Common
         {
             Item = (Text)plainValue["item"];
             TargetAddress = new Address(plainValue["target_address"]);
-            RecordRehearsal = (Boolean)plainValue["record_rehearsal"];
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
