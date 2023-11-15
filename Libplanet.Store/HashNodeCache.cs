@@ -3,11 +3,15 @@ using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Common;
+using Libplanet.Store.Trie;
 using LruCacheNet;
 using Serilog;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// A class used for internally caching hashed nodes of <see cref="MerkleTrie"/>s.
+    /// </summary>
     public class HashNodeCache
     {
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
@@ -20,7 +24,7 @@ namespace Libplanet.Store
         private int _hits;
         private object _reportLock;
 
-        public HashNodeCache()
+        internal HashNodeCache()
         {
             _cache = new LruCache<HashDigest<SHA256>, IValue>(_cahceSize);
             _stopwatch = new Stopwatch();
