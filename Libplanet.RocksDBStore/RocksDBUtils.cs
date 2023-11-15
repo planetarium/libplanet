@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using RocksDbSharp;
 
@@ -9,23 +10,40 @@ namespace Libplanet.RocksDBStore
             DbOptions options,
             string dbPath,
             ColumnFamilies? columnFamilies = null,
-            bool @readonly = false)
+            RocksDbInstanceType type = RocksDbInstanceType.Primary)
         {
             if (!Directory.Exists(dbPath))
             {
                 Directory.CreateDirectory(dbPath);
             }
 
-            if (@readonly)
+            return type switch
             {
-                return columnFamilies is null
+                RocksDbInstanceType.Primary => columnFamilies is null
+                    ? RocksDb.Open(options, dbPath) : RocksDb.Open(options, dbPath, columnFamilies),
+                RocksDbInstanceType.ReadOnly => columnFamilies is null
                     ? RocksDb.OpenReadOnly(options, dbPath, false)
-                    : RocksDb.OpenReadOnly(options, dbPath, columnFamilies, false);
+                    : RocksDb.OpenReadOnly(options, dbPath, columnFamilies, false),
+                RocksDbInstanceType.Secondary => columnFamilies is null
+                    ? RocksDb.OpenAsSecondary(options, dbPath, CreateSecondaryPath(dbPath))
+                    : RocksDb.OpenAsSecondary(
+                        options,
+                        dbPath,
+                        CreateSecondaryPath(dbPath),
+                        columnFamilies),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+            };
+        }
+
+        private static string CreateSecondaryPath(string dbPath)
+        {
+            string secondaryPath = Path.Combine(dbPath, $"secondary-{Guid.NewGuid()}");
+            if (!Directory.Exists(secondaryPath))
+            {
+                Directory.CreateDirectory(secondaryPath);
             }
 
-            return columnFamilies is null
-                ? RocksDb.Open(options, dbPath)
-                : RocksDb.Open(options, dbPath, columnFamilies);
+            return secondaryPath;
         }
     }
 }

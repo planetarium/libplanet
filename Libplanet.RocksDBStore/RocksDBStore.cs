@@ -125,7 +125,7 @@ namespace Libplanet.RocksDBStore
         private readonly DbOptions _options;
         private readonly ColumnFamilyOptions _colOptions;
         private readonly string _path;
-        private readonly bool _readonly;
+        private readonly RocksDbInstanceType _instanceType;
         private readonly int _txEpochUnitSeconds;
         private readonly int _blockEpochUnitSeconds;
 
@@ -165,7 +165,7 @@ namespace Libplanet.RocksDBStore
         /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>
-        /// <param name="readonly">If it is true, it will open rocksdb in read-only mode.</param>
+        /// <param name="type">Choose type of <see cref="RocksDbInstanceType"/>.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
@@ -176,7 +176,7 @@ namespace Libplanet.RocksDBStore
             int txEpochUnitSeconds = 86400,
             int blockEpochUnitSeconds = 86400,
             int dbConnectionCacheSize = 100,
-            bool @readonly = false
+            RocksDbInstanceType type = RocksDbInstanceType.Primary
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -198,7 +198,7 @@ namespace Libplanet.RocksDBStore
             _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
 
             _path = path;
-            _readonly = @readonly;
+            _instanceType = type;
             _txEpochUnitSeconds = txEpochUnitSeconds > 0
                 ? txEpochUnitSeconds
                 : throw new ArgumentException(
@@ -232,27 +232,27 @@ namespace Libplanet.RocksDBStore
             }
 
             _blockIndexDb = RocksDBUtils.OpenRocksDb(
-                _options, BlockDbPath(BlockIndexDbName), @readonly: _readonly);
+                _options, BlockDbPath(BlockIndexDbName), type: _instanceType);
             _blockPerceptionDb =
                 RocksDBUtils.OpenRocksDb(
-                    _options, RocksDbPath(BlockPerceptionDbName), @readonly: _readonly);
+                    _options, RocksDbPath(BlockPerceptionDbName), type: _instanceType);
             _txIndexDb = RocksDBUtils.OpenRocksDb(
-                _options, TxDbPath(TxIndexDbName), @readonly: _readonly);
+                _options, TxDbPath(TxIndexDbName), type: _instanceType);
             _txExecutionDb =
                 RocksDBUtils.OpenRocksDb(
-                    _options, RocksDbPath(TxExecutionDbName), @readonly: _readonly);
+                    _options, RocksDbPath(TxExecutionDbName), type: _instanceType);
             _txIdBlockHashIndexDb =
                 RocksDBUtils.OpenRocksDb(
-                    _options, RocksDbPath(TxIdBlockHashIndexDbName), @readonly: _readonly);
+                    _options, RocksDbPath(TxIdBlockHashIndexDbName), type: _instanceType);
             _blockCommitDb =
                 RocksDBUtils.OpenRocksDb(
-                    _options, RocksDbPath(BlockCommitDbName), @readonly: _readonly);
+                    _options, RocksDbPath(BlockCommitDbName), type: _instanceType);
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
             var chainDbColumnFamilies = GetColumnFamilies(_options, ChainDbName);
             _chainDb = RocksDBUtils.OpenRocksDb(
-                _options, RocksDbPath(ChainDbName), chainDbColumnFamilies, _readonly);
+                _options, RocksDbPath(ChainDbName), chainDbColumnFamilies, _instanceType);
 
             _rwTxLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
@@ -694,7 +694,7 @@ namespace Libplanet.RocksDBStore
                     if (!_txDbCache.TryGetValue(txDbName, out txDb))
                     {
                         txDb = RocksDBUtils.OpenRocksDb(
-                            _options, TxDbPath(txDbName), @readonly: _readonly);
+                            _options, TxDbPath(txDbName), type: _instanceType);
                         _txDbCache.AddOrUpdate(txDbName, txDb);
                     }
                 }
@@ -742,7 +742,7 @@ namespace Libplanet.RocksDBStore
                     if (!_txDbCache.TryGetValue(txDbName, out txDb))
                     {
                         txDb = RocksDBUtils.OpenRocksDb(
-                            _options, TxDbPath(txDbName), @readonly: _readonly);
+                            _options, TxDbPath(txDbName), type: _instanceType);
                         _txDbCache.AddOrUpdate(txDbName, txDb);
                     }
                 }
@@ -821,7 +821,7 @@ namespace Libplanet.RocksDBStore
                     if (!_blockDbCache.TryGetValue(blockDbName, out blockDb))
                     {
                         blockDb = RocksDBUtils.OpenRocksDb(
-                            _options, BlockDbPath(blockDbName), @readonly: _readonly);
+                            _options, BlockDbPath(blockDbName), type: _instanceType);
                         _blockDbCache.AddOrUpdate(blockDbName, blockDb);
                     }
                 }
@@ -880,7 +880,7 @@ namespace Libplanet.RocksDBStore
                     if (!_blockDbCache.TryGetValue(blockDbName, out blockDb))
                     {
                         blockDb = RocksDBUtils.OpenRocksDb(
-                            _options, BlockDbPath(blockDbName), @readonly: _readonly);
+                            _options, BlockDbPath(blockDbName), type: _instanceType);
                         _blockDbCache.AddOrUpdate(blockDbName, blockDb);
                     }
                 }
@@ -922,7 +922,7 @@ namespace Libplanet.RocksDBStore
                     if (!_blockDbCache.TryGetValue(blockDbName, out blockDb))
                     {
                         blockDb = RocksDBUtils.OpenRocksDb(
-                            _options, BlockDbPath(blockDbName), @readonly: _readonly);
+                            _options, BlockDbPath(blockDbName), type: _instanceType);
                         _blockDbCache.AddOrUpdate(blockDbName, blockDb);
                     }
                 }
@@ -1373,7 +1373,7 @@ namespace Libplanet.RocksDBStore
             int txEpochUnitSeconds = query.GetInt32("tx-epoch-unit-secs", 86400);
             int blockEpochUnitSeconds = query.GetInt32("block-epoch-unit-secs", 86400);
             int dbConnectionCacheSize = query.GetInt32("connection-cache", 100);
-            bool @readonly = query.GetBoolean("readonly", false);
+            var parse = Enum.TryParse(query.Get("instance-type"), out RocksDbInstanceType type);
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
             var store = new RocksDBStore(
                 storeUri.LocalPath,
@@ -1385,10 +1385,12 @@ namespace Libplanet.RocksDBStore
                 txEpochUnitSeconds,
                 blockEpochUnitSeconds,
                 dbConnectionCacheSize,
-                @readonly);
+                parse ? type : RocksDbInstanceType.Primary);
             string statesDirPath = Path.Combine(storeUri.LocalPath, statesKvPath);
             var stateStore = new TrieStateStore(
-                new RocksDBKeyValueStore(statesDirPath, @readonly));
+                new RocksDBKeyValueStore(
+                    statesDirPath,
+                    parse ? type : RocksDbInstanceType.Primary));
             return (store, stateStore);
         }
 
