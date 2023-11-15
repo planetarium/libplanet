@@ -38,12 +38,12 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="rootHash">The root <see cref="ITrie.Hash"/> of
         /// <see cref="MerkleTrie"/>.</param>
-        /// <param name="cache">The <see cref="HashNodeCache"/> to use as a cache.</param>
+        /// <param name="cache">The <see cref="HashNodeCache"/> to use as cache.</param>
         public MerkleTrie(
             IKeyValueStore keyValueStore,
             HashDigest<SHA256> rootHash,
             HashNodeCache? cache = null)
-            : this(keyValueStore, new HashNode(rootHash))
+            : this(keyValueStore, new HashNode(rootHash), cache)
         {
         }
 
@@ -54,9 +54,11 @@ namespace Libplanet.Store.Trie
         /// nodes.</param>
         /// <param name="root">The root node of <see cref="MerkleTrie"/>.  If it is
         /// <see langword="null"/>, it will be treated like empty trie.</param>
-        /// <param name="cache">The <see cref="HashNodeCache"/> to use as a cache.</param>
+        /// <param name="cache">The <see cref="HashNodeCache"/> to use as cache.</param>
         public MerkleTrie(
-            IKeyValueStore keyValueStore, INode? root = null, HashNodeCache? cache = null)
+            IKeyValueStore keyValueStore,
+            INode? root = null,
+            HashNodeCache? cache = null)
         {
             // FIXME: It might be a good idea to have something like IReadOnlyKeyValueStore.
             KeyValueStore = keyValueStore;
