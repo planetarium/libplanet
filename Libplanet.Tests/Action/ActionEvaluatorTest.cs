@@ -253,7 +253,6 @@ namespace Libplanet.Tests.Action
                 return new DumbAction(
                     targetAddress: address,
                     item: identifier.ToString(),
-                    recordRehearsal: false,
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
@@ -444,7 +443,6 @@ namespace Libplanet.Tests.Action
                                     transferFrom: addresses[0],
                                     transferTo: addresses[4],
                                     transferAmount: 8,
-                                    recordRehearsal: false,
                                     recordRandom: true),
                             }.ToPlainValues()),
                             maxGasPrice: null,
@@ -547,7 +545,7 @@ namespace Libplanet.Tests.Action
                     transferTo: addresses[0],
                     transferAmount: 10,
                     recordRandom: true),
-                new DumbAction(addresses[2], "R", true, recordRandom: true),
+                new DumbAction(addresses[2], "R", recordRandom: true),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
