@@ -289,7 +289,7 @@ commands:
       - run:
           name: Install lib6c-dev (for RocksDBSharp)
           shell: bash
-          command: apt update -y && apt install -y libc6-dev
+          command: apt update -y && apt install -y libc6-dev liblz4-dev zlib1g-dev libsnappy-dev libzstd-dev
       - netcore_test_base:
           collect_tests_from: "<<parameters.collect_tests_from>>"
           locale: "<<parameters.locale>>"

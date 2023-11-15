@@ -123,6 +123,7 @@ namespace Libplanet.RocksDBStore
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
         private readonly DbOptions _options;
+        private readonly ColumnFamilyOptions _colOptions;
         private readonly string _path;
         private readonly bool _readonly;
         private readonly int _txEpochUnitSeconds;
@@ -210,20 +211,24 @@ namespace Libplanet.RocksDBStore
                     nameof(blockEpochUnitSeconds));
             _options = new DbOptions()
                 .SetCreateIfMissing();
+            _colOptions = new ColumnFamilyOptions();
 
             if (maxTotalWalSize is ulong maxTotalWalSizeValue)
             {
                 _options = _options.SetMaxTotalWalSize(maxTotalWalSizeValue);
+                _colOptions = _colOptions.SetMaxTotalWalSize(maxTotalWalSizeValue);
             }
 
             if (keepLogFileNum is ulong keepLogFileNumValue)
             {
                 _options = _options.SetKeepLogFileNum(keepLogFileNumValue);
+                _colOptions = _colOptions.SetKeepLogFileNum(keepLogFileNumValue);
             }
 
             if (maxLogFileSize is ulong maxLogFileSizeValue)
             {
                 _options = _options.SetMaxLogFileSize(maxLogFileSizeValue);
+                _colOptions = _colOptions.SetMaxLogFileSize(maxLogFileSizeValue);
             }
 
             _blockIndexDb = RocksDBUtils.OpenRocksDb(
@@ -270,12 +275,13 @@ namespace Libplanet.RocksDBStore
         public static bool MigrateChainDBFromColumnFamilies(string path)
         {
             var opt = new DbOptions();
+            var colOpt = new ColumnFamilyOptions();
             opt.SetCreateIfMissing();
             List<string> cfns = RocksDb.ListColumnFamilies(opt, path).ToList();
             var cfs = new ColumnFamilies();
             foreach (string name in cfns)
             {
-                cfs.Add(name, opt);
+                cfs.Add(name, colOpt);
             }
 
             RocksDb db = RocksDb.Open(opt, path, cfs);
@@ -1521,7 +1527,7 @@ namespace Libplanet.RocksDBStore
 
             foreach (string name in listColumnFamilies)
             {
-                columnFamilies.Add(name, _options);
+                columnFamilies.Add(name, _colOptions);
             }
 
             return columnFamilies;

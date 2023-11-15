@@ -25,6 +25,12 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+  -  (Libplanet.Store) Changed `Libplanet.RocksDBStore` to use
+     [`RocksDb`] instead of [`RocksDBSharp`].
+     *Note* Cannot read new version of `Libplanet.RocksDBStore`
+     storage from under `Libplanet.RocksDBStore` version 3.6.1.
+     [[#1848], [#3487]]
+
 ### Added APIs
 
 ### Behavioral changes
@@ -35,10 +41,13 @@ To be released.
 
 ### CLI tools
 
+[#1848]: https://github.com/planetarium/libplanet/issues/1848
 [#3480]: https://github.com/planetarium/libplanet/pull/3480
 [#3485]: https://github.com/planetarium/libplanet/pull/3485
 [#3486]: https://github.com/planetarium/libplanet/pull/3486
-
+[`RocksDb`]: https://www.nuget.org/packages/RocksDB
+[`RocksDBSharp`]: https://www.nuget.org/packages/Planetarium.RocksDbSharp
+[#3487]: https://github.com/planetarium/libplanet/pull/3487
 
 Version 3.7.0
 -------------
