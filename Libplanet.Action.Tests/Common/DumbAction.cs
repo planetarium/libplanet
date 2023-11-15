@@ -71,8 +71,6 @@ namespace Libplanet.Action.Tests.Common
 
         public string Item { get; private set; }
 
-        public bool RecordRehearsal => false;
-
         public bool RecordRandom { get; private set; }
 
         public bool Idempotent { get; private set; }
@@ -93,7 +91,6 @@ namespace Libplanet.Action.Tests.Common
                         {
                             ["item"] = (Text)Item,
                             ["target_address"] = TargetAddress.Bencoded,
-                            ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                         });
                 }
 
@@ -142,13 +139,9 @@ namespace Libplanet.Action.Tests.Common
 
             string items = (Text?)states.GetState(TargetAddress);
 
-            // FIXME: Pretend rehearsal is false for backward compatibility for now.
-            // This should be removed.
-            string item = RecordRehearsal ? $"{Item}:{false}" : Item;
-
             if (Idempotent)
             {
-                var splitItems = items is null ? new[] { item } : (items + "," + item).Split(',');
+                var splitItems = items is null ? new[] { Item } : (items + "," + Item).Split(',');
                 items = string.Join(
                     ",",
                     splitItems.OrderBy(x =>
@@ -162,7 +155,7 @@ namespace Libplanet.Action.Tests.Common
             }
             else
             {
-                items = items is null ? item : $"{items},{item}";
+                items = items is null ? Item : $"{items},{Item}";
             }
 
             if (RecordRandom)
@@ -288,7 +281,6 @@ namespace Libplanet.Action.Tests.Common
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +
-                $"{nameof(RecordRehearsal)} = {(RecordRehearsal ? T : F)}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
                 $"{nameof(Idempotent)} = {(Idempotent ? T : F)}, " +
                 $"{nameof(Transfer)} = {transfer} " +
