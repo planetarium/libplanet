@@ -27,8 +27,12 @@ namespace Libplanet.Action.Tests
         [Fact]
         public void Constructor()
         {
-            var txid = new System.Random().NextTxId();
             Address address = new PrivateKey().ToAddress();
+            IWorld world = new World(new MockWorldState());
+            world = world.SetAccount(
+                ReservedAddresses.LegacyAccount,
+                world.GetAccount(ReservedAddresses.LegacyAccount).SetState(address, (Text)"item"));
+            var txid = new System.Random().NextTxId();
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
@@ -41,10 +45,7 @@ namespace Libplanet.Action.Tests
                     123,
                     0,
                     false),
-                new World(
-                    new MockWorldState().SetAccountState(
-                        ReservedAddresses.LegacyAccount,
-                        new Account(new MockAccountState().SetState(address, (Text)"item"))))
+                world
             );
             var action = (DumbAction)evaluation.Action;
 
