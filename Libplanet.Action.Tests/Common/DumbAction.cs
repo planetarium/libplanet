@@ -63,10 +63,6 @@ namespace Libplanet.Action.Tests.Common
         public static AsyncLocal<ImmutableList<ExecuteRecord>>
             ExecuteRecords { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
-        public static AsyncLocal<ImmutableList<(Address, string)>>
-            RehearsalRecords { get; } =
-                new AsyncLocal<ImmutableList<(Address, string)>>();
-
         public Address TargetAddress { get; private set; }
 
         public string Item { get; private set; }
@@ -126,11 +122,6 @@ namespace Libplanet.Action.Tests.Common
 
         public IAccount Execute(IActionContext context)
         {
-            if (RehearsalRecords.Value is null)
-            {
-                RehearsalRecords.Value = ImmutableList<(Address, string)>.Empty;
-            }
-
             IAccount states = context.PreviousState;
             if (Item is null)
             {

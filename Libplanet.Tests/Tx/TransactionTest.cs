@@ -125,8 +125,6 @@ namespace Libplanet.Tests.Tx
                     0xdb, 0xc5, 0x56, 0xd9, 0xac, 0x20, 0x41, 0xfe, 0xf9, 0x5f,
                 }
             );
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             Transaction tx = Transaction.Create(
                 0,
                 privateKey,

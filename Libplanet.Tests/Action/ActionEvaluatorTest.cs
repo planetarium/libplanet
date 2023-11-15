@@ -564,8 +564,6 @@ namespace Libplanet.Tests.Action
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             IAccount previousState = actionEvaluator.PrepareInitialDelta(null);
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -626,12 +624,6 @@ namespace Libplanet.Tests.Action
                     addresses.Select(a => eval.OutputState.GetBalance(a, currency).RawValue));
             }
 
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
-
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             previousState = actionEvaluator.PrepareInitialDelta(null);
             IAccount delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -640,10 +632,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 evaluations[3].OutputState.GetUpdatedStates(),
                 delta.GetUpdatedStates());
-
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
         }
 
         [Fact]
