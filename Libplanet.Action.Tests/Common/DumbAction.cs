@@ -30,7 +30,6 @@ namespace Libplanet.Action.Tests.Common
         public DumbAction(
             Address targetAddress,
             string item,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false,
             Tuple<Address, Address, BigInteger> transfer = null)
@@ -48,14 +47,12 @@ namespace Libplanet.Action.Tests.Common
             Address transferFrom,
             Address transferTo,
             BigInteger transferAmount,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false
         )
             : this(
                 targetAddress,
                 item,
-                recordRehearsal,
                 recordRandom,
                 idempotent,
                 Tuple.Create(transferFrom, transferTo, transferAmount)
@@ -255,9 +252,7 @@ namespace Libplanet.Action.Tests.Common
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
                     TargetAddress.Equals(other.TargetAddress) &&
-                    string.Equals(Item, other.Item) &&
-                    RecordRehearsal == other.RecordRehearsal
-                )
+                    string.Equals(Item, other.Item))
             );
         }
 
@@ -274,9 +269,7 @@ namespace Libplanet.Action.Tests.Common
             unchecked
             {
                 int hashCode = TargetAddress.GetHashCode();
-                hashCode = (hashCode * 397) ^
-                    (Item != null ? Item.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RecordRehearsal.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
                 return hashCode;
             }
         }
