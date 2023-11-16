@@ -617,9 +617,7 @@ namespace Libplanet.Tests.Action
                 blockHeader: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
-            Assert.Equal(
-                evaluations[3].OutputState.GetUpdatedStates(),
-                delta.GetUpdatedStates());
+            Assert.Empty(evaluations[3].OutputState.Trie.Diff(delta.Trie));
         }
 
         [Fact]
@@ -656,7 +654,7 @@ namespace Libplanet.Tests.Action
                 tx: tx,
                 previousState: previousState).Last().OutputState;
 
-            Assert.Empty(nextState.GetUpdatedStates());
+            Assert.Empty(nextState.Trie.Diff(previousState.Trie));
         }
 
         [Fact]
