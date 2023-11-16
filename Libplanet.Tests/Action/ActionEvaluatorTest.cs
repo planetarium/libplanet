@@ -8,7 +8,6 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
-using Libplanet.Action.Tests;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -25,6 +24,7 @@ using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Action.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
@@ -367,33 +367,27 @@ namespace Libplanet.Tests.Action
             previousState = actionEvaluator.PrepareInitialDelta(null);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
-            IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
-                evals1.GetDirtyBalances();
-            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies1 =
-                evals1.GetDirtyTotalSupplies();
+            var dirty1 = evals1.Last().OutputState.Trie
+                .Diff(evals1.First().InputContext.PreviousState.Trie)
+                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
+            Assert.Equal((Text)"A", dirty1[ToStateKey(addresses[0])]);
+            Assert.Equal((Text)"B", dirty1[ToStateKey(addresses[1])]);
+            Assert.Equal((Text)"C", dirty1[ToStateKey(addresses[2])]);
             Assert.Equal(
-                new Dictionary<Address, IValue>
-                {
-                    [addresses[0]] = (Text)"A",
-                    [addresses[1]] = (Text)"B",
-                    [addresses[2]] = (Text)"C",
-                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
-                }.ToImmutableDictionary(),
-                dirty1);
+                (Integer)randomValue,
+                dirty1[ToStateKey(DumbAction.RandomRecordsAddress)]);
             Assert.Equal(
-                new Dictionary<(Address, Currency), FungibleAssetValue>
-                {
-                    [(addresses[0], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0),
-                    [(addresses[1], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency),
-                    [(addresses[2], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency),
-                    [(addresses[3], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
-                }.ToImmutableDictionary(),
-                balances1);
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[1], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[2], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[3], DumbAction.DumbCurrency)]);
 
             Transaction[] block2Txs =
             {
@@ -502,18 +496,13 @@ namespace Libplanet.Tests.Action
 
             previousState = evals1.Last().OutputState;
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
-            IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
-                evals2.GetDirtyBalances();
-            Assert.Equal(
-                new Dictionary<Address, IValue>
-                {
-                    [addresses[0]] = (Text)"A,D",
-                    [addresses[3]] = (Text)"E",
-                    [addresses[4]] = (Text)"RecordRehearsal",
-                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
-                }.ToImmutableDictionary(),
-                dirty2);
+            var dirty2 = evals2.Last().OutputState.Trie
+                .Diff(evals2.First().InputContext.PreviousState.Trie)
+                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
+            Assert.Equal((Text)"A,D", dirty2[ToStateKey(addresses[0])]);
+            Assert.Equal((Text)"E", dirty2[ToStateKey(addresses[3])]);
+            Assert.Equal((Text)"RecordRehearsal", dirty2[ToStateKey(addresses[4])]);
+            Assert.Equal((Integer)randomValue, dirty2[ToStateKey(DumbAction.RandomRecordsAddress)]);
         }
 
         [Fact]
@@ -712,11 +701,10 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(txA.Signer, context.Signer);
                 Assert.False(context.BlockAction);
-                Assert.Equal(
-                    i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevState.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaA[i].Value, prevState.GetState(txA.Signer));
-                Assert.Equal(new[] { txA.Signer }, outputState.Delta.UpdatedAddresses);
+                Assert.Equal(
+                    ToStateKey(txA.Signer),
+                    Assert.Single(outputState.Trie.Diff(prevState.Trie)).Path);
                 Assert.Equal((Integer)deltaA[i + 1].Value, outputState.GetState(txA.Signer));
                 Assert.Null(eval.Exception);
             }
@@ -760,19 +748,19 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(txB.Signer, context.Signer);
                 Assert.False(context.BlockAction);
-                Assert.Equal(
-                    i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevState.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i].Value, prevState.GetState(txB.Signer));
-                Assert.Equal(new[] { txB.Signer }, outputState.Delta.UpdatedAddresses);
                 Assert.Equal((Integer)deltaB[i + 1].Value, outputState.GetState(txB.Signer));
                 if (i == 1)
                 {
+                    Assert.Empty(outputState.Trie.Diff(prevState.Trie));
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
                     Assert.IsType<InvalidOperationException>(eval.Exception.InnerException);
                 }
                 else
                 {
+                    Assert.Equal(
+                        ToStateKey(txB.Signer),
+                        Assert.Single(outputState.Trie.Diff(prevState.Trie)).Path);
                     Assert.Null(eval.Exception);
                 }
             }
