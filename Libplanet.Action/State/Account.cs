@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
 {
@@ -218,12 +218,9 @@ namespace Libplanet.Action.State
             Address address,
             IValue value) =>
             new Account(
-                _baseState,
-                new AccountDelta(
-                    Delta.States.SetItem(address, value),
-                    Delta.Fungibles,
-                    Delta.TotalSupplies,
-                    Delta.ValidatorSet),
+                new AccountState(
+                    Trie.Set(ToStateKey(address), value)),
+                new AccountDelta(),
                 TotalUpdatedFungibles);
 
         [Pure]
@@ -233,31 +230,24 @@ namespace Libplanet.Action.State
             BigInteger amount,
             BigInteger? supplyAmount = null) => supplyAmount is { } sa
             ? new Account(
-                _baseState,
-                new AccountDelta(
-                    Delta.States,
-                    Delta.Fungibles.SetItem((address, currency), amount),
-                    Delta.TotalSupplies.SetItem(currency, sa),
-                    Delta.ValidatorSet),
+                new AccountState(
+                    Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))),
+                new AccountDelta(),
                 TotalUpdatedFungibles.SetItem((address, currency), amount))
             : new Account(
-                _baseState,
-                new AccountDelta(
-                    Delta.States,
-                    Delta.Fungibles.SetItem((address, currency), amount),
-                    Delta.TotalSupplies,
-                    Delta.ValidatorSet),
+                new AccountState(
+                    Trie.Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
+                new AccountDelta(),
                 TotalUpdatedFungibles.SetItem((address, currency), amount));
 
         [Pure]
         private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
             new Account(
-                _baseState,
-                new AccountDelta(
-                    Delta.States,
-                    Delta.Fungibles,
-                    Delta.TotalSupplies,
-                    validatorSet),
+                new AccountState(
+                    Trie.Set(ValidatorSetKey, validatorSet.Bencoded)),
+                new AccountDelta(),
                 TotalUpdatedFungibles);
 
         [Pure]
