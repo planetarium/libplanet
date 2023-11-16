@@ -113,22 +113,21 @@ namespace Libplanet.Tests.Action
         public virtual void States()
         {
             IAccount a = _initAccount.SetState(_addr[0], (Text)"A");
+            AccountDiff diffa = AccountDiff.Create(_initAccount.Trie, a.Trie);
             Assert.Equal("A", (Text)a.GetState(_addr[0]));
             Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
             Assert.Equal("b", (Text)a.GetState(_addr[1]));
             Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Null(_initAccount.GetState(_addr[2]));
-            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
-            Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
-            Assert.Empty(a.Delta.UpdatedFungibleAssets);
-            Assert.Empty(a.Delta.UpdatedTotalSupplyCurrencies);
-            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
-            Assert.Empty(_initAccount.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Equal(
+                _addr[0],
+                Assert.Single(diffa.StateDiffs).Key);
+            Assert.Empty(diffa.FungibleAssetValueDiffs);
+            Assert.Empty(diffa.TotalSupplyDiffs);
 
             IAccount b = a.SetState(_addr[0], (Text)"z");
+            AccountDiff diffb = AccountDiff.Create(a.Trie, b.Trie);
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
             Assert.Equal("A", (Text)a.GetState(_addr[0]));
             Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
@@ -136,16 +135,15 @@ namespace Libplanet.Tests.Action
             Assert.Equal("b", (Text)a.GetState(_addr[1]));
             Assert.Null(b.GetState(_addr[2]));
             Assert.Null(a.GetState(_addr[2]));
-            Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.Delta.StateUpdatedAddresses);
-            Assert.Equal(a.Delta.StateUpdatedAddresses, a.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
+            Assert.Equal(
+                _addr[0],
+                Assert.Single(diffb.StateDiffs).Key);
+            Assert.Empty(diffb.FungibleAssetValueDiffs);
+            Assert.Empty(diffb.TotalSupplyDiffs);
 
             IAccount c = b.SetState(_addr[0], (Text)"a");
             Assert.Equal("a", (Text)c.GetState(_addr[0]));
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
-            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
         }
 
         [Fact]
@@ -162,19 +160,17 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Value(1, 15), a.GetBalance(_addr[1], _currencies[1]));
             Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
             Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
+
+            var diff = a.Trie
+                .Diff(_initContext.PreviousState.Trie)
+                .ToDictionary(triple => triple.Path, triple => triple.SourceValue);
+            var accountDiff = AccountDiff.Create(_initContext.PreviousState.Trie, a.Trie);
             Assert.Equal(
-                ImmutableHashSet<(Address, Currency)>.Empty
-                    .Add((_addr[1], _currencies[2]))
-                    .Add((_addr[2], _currencies[2])),
-                a.Delta.UpdatedFungibleAssets);
-            Assert.Equal(
-                a.Delta.UpdatedFungibleAssets.Select(pair => pair.Item1).ToImmutableHashSet(),
-                a.Delta.UpdatedAddresses);
-            Assert.Empty(a.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
-            Assert.Empty(_initAccount.Delta.UpdatedTotalSupplyCurrencies);
+                new[] { (_addr[1], _currencies[2].Hash), (_addr[2], _currencies[2].Hash) }
+                    .ToImmutableHashSet(),
+                accountDiff.FungibleAssetValueDiffs.Select(kv => (kv.Key.Item1, kv.Key.Item2))
+                    .ToImmutableHashSet());
+            Assert.Empty(accountDiff.StateDiffs);
         }
 
         [Fact]

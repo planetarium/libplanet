@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Action
                 context, signer.Address, new FungibleAssetValue(USD, 123, 45));
             targetAccount = targetAccount.SetState(signer.Address, new Text("Foo"));
 
-            targetTrie = Commit(stateStore, targetTrie, targetAccount.Delta);
+            targetTrie = stateStore.Commit(targetAccount.Trie);
 
             diff = AccountDiff.Create(targetTrie, sourceTrie);
             Assert.Empty(diff.StateDiffs);
@@ -73,6 +73,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(diff.TotalSupplyDiffs);
             Assert.Null(diff.ValidatorSetDiff);
 
+            // Setup initial state.
             IAccount targetAccount = new Account(new AccountState(targetTrie));
             PrivateKey signer = new PrivateKey();
             IActionContext context = CreateActionContext(signer.Address, targetTrie);
@@ -80,10 +81,9 @@ namespace Libplanet.Tests.Action
             targetAccount = targetAccount.SetState(addr2, new Text("Two"));
             targetAccount = targetAccount.MintAsset(
                 context, signer.Address, new FungibleAssetValue(USD, 123, 45));
+            targetTrie = stateStore.Commit(targetAccount.Trie);
 
-            targetTrie = Commit(stateStore, targetTrie, targetAccount.Delta);
             sourceTrie = targetTrie;
-
             IAccount sourceAccount = new Account(new AccountState(sourceTrie));
             sourceAccount = sourceAccount.SetState(addr2, new Text("Two_"));
             sourceAccount = sourceAccount.SetState(addr3, new Text("Three"));
@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Action
                 context, signer.Address, new FungibleAssetValue(JPY, 321, 0));
             sourceAccount = sourceAccount.SetValidator(new Validator(signer.PublicKey, 1));
 
-            sourceTrie = Commit(stateStore, sourceTrie, sourceAccount.Delta);
+            sourceTrie = stateStore.Commit(sourceAccount.Trie);
 
             diff = AccountDiff.Create(targetTrie, sourceTrie);
             Assert.Equal(2, diff.StateDiffs.Count);
@@ -151,21 +151,5 @@ namespace Libplanet.Tests.Action
                 new Account(new AccountState(trie)),
                 0,
                 0);
-
-        public ITrie Commit(
-            IStateStore stateStore,
-            ITrie baseTrie,
-            IAccountDelta accountDelta)
-        {
-            var trie = baseTrie;
-            var rawDelta = accountDelta.ToRawDelta();
-
-            foreach (var kv in rawDelta)
-            {
-                trie = trie.Set(kv.Key, kv.Value);
-            }
-
-            return stateStore.Commit(trie);
-        }
     }
 }

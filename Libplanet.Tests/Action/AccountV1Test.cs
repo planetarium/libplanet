@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -89,41 +88,32 @@ namespace Libplanet.Tests.Action
         {
             IAccount account = _initAccount;
             IActionContext context = _initContext;
-
-            Assert.Empty(account.GetUpdatedTotalSupplies());
-            Assert.Empty(account.Delta.UpdatedTotalSupplyCurrencies);
+            AccountDiff diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initAccount.GetTotalSupply(_currencies[0]));
-            Assert.DoesNotContain(
-                new KeyValuePair<Currency, FungibleAssetValue>(
-                    _currencies[0], Value(0, 5)),
-                account.GetUpdatedTotalSupplies());
-            Assert.DoesNotContain(_currencies[0], account.Delta.UpdatedTotalSupplyCurrencies);
+                account.GetTotalSupply(_currencies[0]));
+            Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             Assert.Equal(Value(4, 0), _initAccount.GetTotalSupply(_currencies[4]));
-            Assert.DoesNotContain(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.DoesNotContain(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
 
             account = account.MintAsset(context, _addr[0], Value(0, 10));
+            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                _initAccount.GetTotalSupply(_currencies[0]));
-            Assert.DoesNotContain(_currencies[0], account.Delta.UpdatedTotalSupplyCurrencies);
+                account.GetTotalSupply(_currencies[0]));
+            Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             account = account.MintAsset(context, _addr[0], Value(4, 10));
+            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Equal(Value(4, 10), account.GetTotalSupply(_currencies[4]));
-            Assert.Contains(
-                new KeyValuePair<Currency, FungibleAssetValue>(
-                    _currencies[4], Value(4, 10)),
-                account.GetUpdatedTotalSupplies());
-            Assert.Contains(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
+            Assert.Equal((Integer)10, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
 
             account = account.BurnAsset(context, _addr[0], Value(4, 5));
+            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Equal(Value(4, 5), account.GetTotalSupply(_currencies[4]));
-            Assert.Contains(
-                new KeyValuePair<Currency, FungibleAssetValue>(
-                    _currencies[4], Value(4, 5)),
-                account.GetUpdatedTotalSupplies());
-            Assert.Contains(_currencies[4], account.Delta.UpdatedTotalSupplyCurrencies);
+            Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
+            Assert.Equal((Integer)5, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
         }
 
         [Fact]
