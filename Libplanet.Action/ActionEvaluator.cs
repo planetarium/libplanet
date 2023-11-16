@@ -500,14 +500,7 @@ namespace Libplanet.Action
             int setCount = 0;
             foreach (var evaluation in evaluations)
             {
-                ITrie nextTrie = trie;
-                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
-                {
-                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                    setCount++;
-                }
-
-                nextTrie = _stateStore.Commit(nextTrie);
+                ITrie nextTrie = _stateStore.Commit(evaluation.OutputState.Trie);
                 var committedEvaluation = new CommittedActionEvaluation(
                     action: evaluation.Action,
                     inputContext: new CommittedActionContext(
