@@ -136,10 +136,11 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(EvaluateTestAction)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -180,10 +181,11 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<ThrowException>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(ThrowException)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -222,10 +224,11 @@ namespace Libplanet.Tests.Action
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
             var (chain, actionEvaluator) =
-                TestUtils.MakeBlockChainAndActionEvaluator<ThrowException>(
+                TestUtils.MakeBlockChainAndActionEvaluator(
                     policy: new BlockPolicy(),
                     store: store,
-                    stateStore: stateStore);
+                    stateStore: stateStore,
+                    actionLoader: new SingleActionLoader(typeof(ThrowException)));
             var genesis = chain.Genesis;
             // Evaluation is run with rehearsal true to get updated addresses on tx creation.
             var tx = Transaction.Create(
@@ -804,10 +807,11 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void EvaluatePolicyBlockAction()
         {
-            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator<DumbAction>(
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
+                actionLoader: new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: _storeFx.GenesisBlock,
                 privateKey: ChainPrivateKey);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
@@ -944,10 +948,11 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void TotalUpdatedFungibleAssets()
         {
-            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator<MintAction>(
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
+                actionLoader: new SingleActionLoader(typeof(MintAction)),
                 genesisBlock: _storeFx.GenesisBlock,
                 privateKey: ChainPrivateKey);
             var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
@@ -1022,11 +1027,12 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 actions: new[] { freeGasAction, },
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -1087,14 +1093,15 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,
                 },
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -1160,14 +1167,15 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,
                 },
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -1222,14 +1230,15 @@ namespace Libplanet.Tests.Action
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain<UseGasAction>(
+            var chain = TestUtils.MakeBlockChain(
                 policy: new BlockPolicy(),
                 actions: new[]
                 {
                     freeGasAction,
                 },
                 store: store,
-                stateStore: stateStore);
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,

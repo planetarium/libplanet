@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
@@ -207,10 +208,11 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var privateKey = new PrivateKey();
-            BlockChain chain = TestUtils.MakeBlockChain<DumbAction>(
+            BlockChain chain = TestUtils.MakeBlockChain(
                 new NullBlockPolicy(),
                 store,
                 stateStore,
+                new SingleActionLoader(typeof(DumbAction)),
                 protocolVersion: ProtocolVersion,
                 privateKey: privateKey
             );

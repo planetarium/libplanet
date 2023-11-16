@@ -535,6 +535,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// <param name="policy">A <see cref="BlockPolicy"/> of the chain.</param>
         /// <param name="store">An <see cref="IStore"/> instance to store blocks and txs.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> instance to store states.</param>
+        /// <param name="actionLoader">An <see cref="IActionLoader"/> instance to load actions.
+        /// </param>
         /// <param name="actions"><see cref="Action{T}"/>s to be included in genesis block.
         /// Works only if <paramref name="genesisBlock"/> is null.</param>
         /// <param name="validatorSet"><see cref="ValidatorSet"/> to be included in genesis block.
@@ -550,10 +552,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         /// <param name="protocolVersion">Block protocol version of genesis block.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type.</typeparam>
         /// <returns>A <see cref="BlockChain"/> instance.</returns>
-        public static BlockChain MakeBlockChain<T>(
+        public static BlockChain MakeBlockChain(
             IBlockPolicy policy,
             IStore store,
             IStateStore stateStore,
+            IActionLoader actionLoader,
             IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
@@ -562,12 +565,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Block genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
-            where T : IAction, new()
         {
-            return MakeBlockChainAndActionEvaluator<T>(
+            return MakeBlockChainAndActionEvaluator(
                 policy,
                 store,
                 stateStore,
+                actionLoader,
                 actions,
                 validatorSet,
                 privateKey,
@@ -579,10 +582,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static (BlockChain BlockChain, ActionEvaluator ActionEvaluator)
-            MakeBlockChainAndActionEvaluator<T>(
+            MakeBlockChainAndActionEvaluator(
             IBlockPolicy policy,
             IStore store,
             IStateStore stateStore,
+            IActionLoader actionLoader,
             IEnumerable<IAction> actions = null,
             ValidatorSet validatorSet = null,
             PrivateKey privateKey = null,
@@ -591,7 +595,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Block genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
-            where T : IAction, new()
         {
             actions = actions ?? ImmutableArray<IAction>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
@@ -609,7 +612,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     stateStore: stateStore,
-                    actionTypeLoader: new SingleActionLoader(typeof(T)));
+                    actionTypeLoader: actionLoader);
 
             if (genesisBlock is null)
             {

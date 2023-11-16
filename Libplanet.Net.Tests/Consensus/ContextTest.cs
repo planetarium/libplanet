@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Consensus;
@@ -293,10 +294,11 @@ namespace Libplanet.Net.Tests.Consensus
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain<DelayAction>(
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy,
                 fx.Store,
-                new TrieStateStore(new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()),
+                new SingleActionLoader(typeof(DelayAction)));
 
             Context? context = null;
 

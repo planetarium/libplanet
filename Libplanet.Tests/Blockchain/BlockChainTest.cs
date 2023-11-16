@@ -305,6 +305,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var generatedRandomValueLogs = new List<int>();
             IActionRenderer[] renderers = Enumerable.Range(0, 2).Select(i =>
                 new LoggedActionRenderer(
@@ -318,10 +319,11 @@ namespace Libplanet.Tests.Blockchain
                     Log.Logger.ForContext("RendererIndex", i)
                 )
             ).ToArray();
-            BlockChain blockChain = MakeBlockChain<DumbAction>(
+            BlockChain blockChain = MakeBlockChain(
                 policy,
                 store,
                 stateStore,
+                actionLoader,
                 renderers: renderers
             );
             var privateKey = new PrivateKey();
@@ -343,10 +345,11 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var recordingRenderer = new RecordingActionRenderer();
             var renderer = new LoggedActionRenderer(recordingRenderer, Log.Logger);
-            BlockChain blockChain = MakeBlockChain<DumbAction>(
-                policy, store, stateStore, renderers: new[] { renderer });
+            BlockChain blockChain = MakeBlockChain(
+                policy, store, stateStore, actionLoader, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new DumbAction(default, string.Empty);
@@ -378,6 +381,7 @@ namespace Libplanet.Tests.Blockchain
             var policy = new NullBlockPolicy();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
 
             IActionRenderer renderer = new AnonymousActionRenderer
             {
@@ -392,8 +396,8 @@ namespace Libplanet.Tests.Blockchain
                 },
             };
             renderer = new LoggedActionRenderer(renderer, Log.Logger);
-            BlockChain blockChain = MakeBlockChain<DumbAction>(
-                policy, store, stateStore, renderers: new[] { renderer });
+            BlockChain blockChain = MakeBlockChain(
+                policy, store, stateStore, actionLoader, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new DumbAction(default, string.Empty);
@@ -1204,10 +1208,12 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
-            var chain = MakeBlockChain<DumbAction>(
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
+            var chain = MakeBlockChain(
                 new NullBlockPolicy(),
                 store,
                 stateStore,
+                actionLoader,
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) });
             Assert.Equal("item0.0", (Text)chain.GetWorldState().GetAccount(
                 ReservedAddresses.LegacyAccount).GetState(_fx.Address1));

@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -296,7 +297,8 @@ namespace Libplanet.Net.Tests.Consensus
 
             using var fx = new MemoryStoreFixture(policy.BlockAction);
             var diffPolicyBlockChain =
-                TestUtils.CreateDummyBlockChain(fx, policy, blockChain.Genesis);
+                TestUtils.CreateDummyBlockChain(
+                    fx, policy, new SingleActionLoader(typeof(DumbAction)), blockChain.Genesis);
 
             var invalidTx = diffPolicyBlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
