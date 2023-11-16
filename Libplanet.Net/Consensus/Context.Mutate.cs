@@ -32,38 +32,23 @@ namespace Libplanet.Net.Consensus
 
             Proposal = null;
             Step = ConsensusStep.Propose;
+            _ = OnTimeoutPropose(Round);
+
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
                 _logger.Information(
                     "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
-                if ((_validValue ?? GetValue()) is Block proposalValue)
-                {
-                    Proposal proposal = new ProposalMetadata(
-                        Height,
-                        Round,
-                        DateTimeOffset.UtcNow,
-                        _privateKey.PublicKey,
-                        _codec.Encode(proposalValue.MarshalBlock()),
-                        _validRound).Sign(_privateKey);
 
-                    PublishMessage(new ConsensusProposalMsg(proposal));
-                }
-                else
-                {
-                    _logger.Information(
-                        "Failed to propose a block for round {Round}.",
-                        round);
-                    _ = OnTimeoutPropose(Round);
-                }
+                _ = ProduceProposal(_validValue);
+                _ = Propose();
             }
             else
             {
                 _logger.Information(
                     "Starting round {NewRound} and is not a proposer.",
                     round);
-                _ = OnTimeoutPropose(Round);
             }
         }
 

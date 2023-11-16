@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Consensus;
 
@@ -51,5 +52,17 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal event EventHandler<(int Round, VoteFlag Flag, IEnumerable<Vote> Votes)>?
             VoteSetModified;
+
+        private void TimeoutCancellationRegister(
+            CancellationTokenSource cancellationTokenSource, ConsensusStep consensusStep)
+        {
+            TimeoutProcessed += (sender, eventArgs) =>
+            {
+                if (eventArgs.Step.Equals(consensusStep))
+                {
+                    cancellationTokenSource.Cancel();
+                }
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 
@@ -172,6 +173,54 @@ namespace Libplanet.Net.Consensus
             }
 
             MutationConsumed?.Invoke(this, mutation);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Block"/> to propose.
+        /// </summary>
+        /// <returns>A new <see cref="Block"/> if successfully proposed,
+        /// otherwise <see langword="null"/>.</returns>
+        private async Task ProduceProposal(Block? proposalValue = null)
+        {
+            try
+            {
+                await _proposalRequests.Writer.WriteAsync(
+                    proposalValue ?? _blockChain.ProposeBlock(_privateKey, _lastCommit));
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "Could not propose a block for height {Height} and round {Round}",
+                    Height,
+                    Round);
+                ExceptionOccurred?.Invoke(this, e);
+            }
+        }
+
+        private async Task Propose()
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
+
+            TimeoutCancellationRegister(cancellationTokenSource, ConsensusStep.Propose);
+
+            Block proposalValue = await _proposalRequests.Reader.ReadAsync(cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            _blockChain.Store.PutBlock(proposalValue);
+            Proposal proposal = new ProposalMetadata(
+                Height,
+                Round,
+                DateTimeOffset.UtcNow,
+                _privateKey.PublicKey,
+                _codec.Encode(proposalValue.MarshalBlock()),
+                _validRound).Sign(_privateKey);
+
+            PublishMessage(new ConsensusProposalMsg(proposal));
         }
 
         /// <summary>

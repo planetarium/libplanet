@@ -86,6 +86,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
+        private readonly Channel<Block> _proposalRequests;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -120,7 +121,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">A target <see cref="Context.Height"/> of the consensus state.
         /// </param>
         /// <param name="privateKey">A private key for signing a block and message.
-        /// <seealso cref="GetValue"/>
+        /// <seealso cref="ProduceProposal"/>
         /// <seealso cref="ProcessGenericUponRules"/>
         /// <seealso cref="MakeVote"/>
         /// </param>
@@ -186,6 +187,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
+            _proposalRequests = Channel.CreateUnbounded<Block>();
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
@@ -407,31 +409,6 @@ namespace Libplanet.Net.Consensus
             return TimeSpan.FromSeconds(
                 _contextTimeoutOption.ProposeSecondBase +
                 round * _contextTimeoutOption.ProposeMultiplier);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Block"/> to propose.
-        /// </summary>
-        /// <returns>A new <see cref="Block"/> if successfully proposed,
-        /// otherwise <see langword="null"/>.</returns>
-        private Block? GetValue()
-        {
-            try
-            {
-                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
-                _blockChain.Store.PutBlock(block);
-                return block;
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "Could not propose a block for height {Height} and round {Round}",
-                    Height,
-                    Round);
-                ExceptionOccurred?.Invoke(this, e);
-                return null;
-            }
         }
 
         /// <summary>
