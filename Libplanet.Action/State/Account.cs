@@ -55,28 +55,12 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public IValue? GetState(Address address)
-        {
-            AccountMetrics.GetStateTimer.Value?.Start();
-            AccountMetrics.GetStateCount.Value += 1;
-            IValue? value = Delta.States.TryGetValue(address, out IValue? updatedValue)
-                ? updatedValue
-                : _baseState.GetState(address);
-            AccountMetrics.GetStateTimer.Value?.Stop();
-            return value;
-        }
+        public IValue? GetState(Address address) => _baseState.GetState(address);
 
         /// <inheritdoc cref="IAccountState.GetStates(IReadOnlyList{Address})"/>
         [Pure]
-        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
-        {
-            AccountMetrics.GetStateTimer.Value?.Start();
-            int length = addresses.Count;
-            AccountMetrics.GetStateCount.Value += length;
-            List<IValue?> values = addresses.Select(address => GetState(address)).ToList();
-            AccountMetrics.GetStateTimer.Value?.Stop();
-            return values;
-        }
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
+            _baseState.GetStates(addresses);
 
         /// <inheritdoc/>
         [Pure]
@@ -85,29 +69,16 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            Delta.Fungibles.TryGetValue((address, currency), out BigInteger balance)
-                ? FungibleAssetValue.FromRawValue(currency, balance)
-                : _baseState.GetBalance(address, currency);
+            _baseState.GetBalance(address, currency);
 
         /// <inheritdoc/>
         [Pure]
-        public FungibleAssetValue GetTotalSupply(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            // Return dirty state if it exists.
-            return Delta.TotalSupplies.TryGetValue(currency, out BigInteger totalSupplyValue)
-                ? FungibleAssetValue.FromRawValue(currency, totalSupplyValue)
-                : _baseState.GetTotalSupply(currency);
-        }
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            _baseState.GetTotalSupply(currency);
 
         /// <inheritdoc/>
         [Pure]
-        public ValidatorSet GetValidatorSet() =>
-            Delta.ValidatorSet ?? _baseState.GetValidatorSet();
+        public ValidatorSet GetValidatorSet() => _baseState.GetValidatorSet();
 
         /// <inheritdoc/>
         [Pure]
