@@ -486,10 +486,11 @@ namespace Libplanet.Tests.Blockchain
             var validator4 = new Validator(privateKey4.PublicKey, 1);
             var validatorSet = new ValidatorSet(
                 new[] { validator1, validator2, validator3, validator4 }.ToList());
-            BlockChain blockChain = TestUtils.MakeBlockChain<DumbAction>(
+            BlockChain blockChain = TestUtils.MakeBlockChain(
                 new NullBlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
+                new SingleActionLoader(typeof(DumbAction)),
                 validatorSet: validatorSet);
             Block validNextBlock = blockChain.EvaluateAndSign(
                 new BlockContent(

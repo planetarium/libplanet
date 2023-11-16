@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -29,7 +30,8 @@ namespace Libplanet.Net.Tests.Transports
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy();
-            var blockchain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
+            var blockchain = MakeBlockChain(
+                policy, fx.Store, fx.StateStore, new SingleActionLoader(typeof(DumbAction)));
             var swarmKey = new PrivateKey();
             var consensusKey = new PrivateKey();
             var validators = new List<PublicKey>()

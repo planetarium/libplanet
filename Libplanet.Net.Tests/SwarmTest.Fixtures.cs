@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -36,7 +37,11 @@ namespace Libplanet.Net.Tests
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain =
-                        MakeBlockChain<DumbAction>(policy, storeFx.Store, storeFx.StateStore);
+                        MakeBlockChain(
+                            policy,
+                            storeFx.Store,
+                            storeFx.StateStore,
+                            new SingleActionLoader(typeof(DumbAction)));
                     var miner = new PrivateKey();
                     var signer = new PrivateKey();
                     Address address = signer.Address;
@@ -113,10 +118,11 @@ namespace Libplanet.Net.Tests
         {
             policy = policy ?? new BlockPolicy(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockchain = MakeBlockChain<DumbAction>(
+            var blockchain = MakeBlockChain(
                 policy,
                 fx.Store,
                 fx.StateStore,
+                new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: genesis
             );
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
