@@ -160,7 +160,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void CanProposeInvalidBlock()
         {
-            using (var fx = new MemoryStoreFixture())
+            using (var fx = new MemoryStoreFixture(_policy.BlockAction))
             {
                 var blockChain = BlockChain.Create(
                     _policy,
