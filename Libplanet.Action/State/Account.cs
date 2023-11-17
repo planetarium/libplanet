@@ -30,7 +30,7 @@ namespace Libplanet.Action.State
         {
         }
 
-        private Account(
+        public Account(
             IAccountState baseState,
             IAccountDelta delta,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
