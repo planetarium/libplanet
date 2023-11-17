@@ -93,7 +93,7 @@ namespace Libplanet.Store.Trie
                 new ValueNode(value),
                 true);
 
-            return new MerkleTrie(KeyValueStore, newRootNode);
+            return new MerkleTrie(KeyValueStore, newRootNode, _cache);
         }
 
         /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
