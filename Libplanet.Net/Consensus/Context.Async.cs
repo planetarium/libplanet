@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Net.Consensus
 {
@@ -27,6 +32,8 @@ namespace Libplanet.Net.Consensus
             // FIXME: Exceptions inside tasks should be handled properly.
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
             _ = MutationConsumerTask(_cancellationTokenSource.Token);
+            _ = ProposalConsumerTask(_cancellationTokenSource.Token);
+            _ = ProposalValidationConsumerTask(_cancellationTokenSource.Token);
         }
 
         /// <summary>
@@ -94,6 +101,70 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Consumes every <see cref="Libplanet.Consensus.Proposal"/> in proposal queue.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="Libplanet.Consensus.Proposal"/>s from the proposal queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task ProposalConsumerTask(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                try
+                {
+                    await ConsumeProposal(cancellationToken);
+                }
+                catch (OperationCanceledException oce)
+                {
+                    _logger.Debug(oce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, oce);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Unexpected exception occurred during {FName}",
+                        nameof(ConsumeProposal));
+                    ExceptionOccurred?.Invoke(this, e);
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Consumes every <see cref="ProposalValidation"/> in proposal validation queue.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="ProposalValidation"/>s from the proposal validation queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task ProposalValidationConsumerTask(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                try
+                {
+                    await ConsumeProposalValidation(cancellationToken);
+                }
+                catch (OperationCanceledException oce)
+                {
+                    _logger.Debug(oce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, oce);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Unexpected exception occurred during {FName}",
+                        nameof(ConsumeProposalValidation));
+                    ExceptionOccurred?.Invoke(this, e);
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds <paramref name="message"/> to the message queue.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to be processed.</param>
@@ -118,7 +189,7 @@ namespace Libplanet.Net.Consensus
             {
                 if (AddMessage(message))
                 {
-                    ProcessHeightOrRoundUponRules(message);
+                    ProcessHeightOrRoundUponRules(message: message);
                 }
             });
 
@@ -128,64 +199,87 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
+
             var prevState = new ContextState(
                 _heightVoteSet.Count,
                 Height,
                 Round,
                 Step,
-                Proposal?.BlockHash);
+                Proposal?.BlockHash,
+                GetProposalValidation() is ProposalValidation);
             mutation();
             var nextState = new ContextState(
                 _heightVoteSet.Count,
                 Height,
                 Round,
                 Step,
-                Proposal?.BlockHash);
+                Proposal?.BlockHash,
+                GetProposalValidation() is ProposalValidation);
             while (!prevState.Equals(nextState))
             {
                 _logger.Information(
-                    "State (Proposal, VoteCount, Round, Step) " +
+                    "State (Proposal, VoteCount, Round, Step, ValidationExists) " +
                     "changed from " +
-                    "({PrevProposal}, {PrevVoteCount}, {PrevRound}, {PrevStep}) to " +
-                    "({NextProposal}, {NextVoteCount}, {NextRound}, {NextStep})",
+                    "({PrevProposal}, {PrevVoteCount}, {PrevRound}, {PrevStep}, " +
+                    "{PrevValidationExists}) " +
+                    "to " +
+                    "({NextProposal}, {NextVoteCount}, {NextRound}, {NextStep}, " +
+                    "{NextValidationExists})",
                     prevState.Proposal?.ToString() ?? "Null",
                     prevState.VoteCount,
                     prevState.Round,
                     prevState.Step,
+                    prevState.ProposalValidationExists,
                     nextState.Proposal?.ToString() ?? "Null",
                     nextState.VoteCount,
                     nextState.Round,
-                    nextState.Step);
+                    nextState.Step,
+                    nextState.ProposalValidationExists);
                 StateChanged?.Invoke(this, nextState);
                 prevState = new ContextState(
                     _heightVoteSet.Count,
                     Height,
                     Round,
                     Step,
-                    Proposal?.BlockHash);
+                    Proposal?.BlockHash,
+                    GetProposalValidation() is ProposalValidation);
                 ProcessGenericUponRules();
                 nextState = new ContextState(
                     _heightVoteSet.Count,
                     Height,
                     Round,
                     Step,
-                    Proposal?.BlockHash);
+                    Proposal?.BlockHash,
+                    GetProposalValidation() is ProposalValidation);
             }
 
             MutationConsumed?.Invoke(this, mutation);
         }
 
         /// <summary>
-        /// Creates a new <see cref="Block"/> to propose.
+        /// Creates a new <see cref="Libplanet.Consensus.Proposal"/> to propose,
+        /// and enqueue to proposal queue.
+        /// This can be interrupted by <see cref="ProcessTimeoutPropose"/>.
         /// </summary>
-        /// <returns>A new <see cref="Block"/> if successfully proposed,
-        /// otherwise <see langword="null"/>.</returns>
-        private async Task ProduceProposal(Block? proposalValue = null)
+        /// <param name="block"><see cref="Block"/> to propose.
+        /// if <see langword="null"/>, creates new <see cref="Block"/>.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task Propose(Block? block = null)
         {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            TimeoutCancellationRegister(cancellationTokenSource, ConsensusStep.Propose);
             try
             {
-                await _proposalRequests.Writer.WriteAsync(
-                    proposalValue ?? _blockChain.ProposeBlock(_privateKey, _lastCommit));
+                block ??= await Task.Run(() => _blockChain.ProposeBlock(_privateKey, _lastCommit));
+                Proposal proposal = new ProposalMetadata(
+                    Height,
+                    Round,
+                    DateTimeOffset.UtcNow,
+                    _privateKey.PublicKey,
+                    _codec.Encode(block.MarshalBlock()),
+                    _validRound).Sign(_privateKey);
+
+                await _proposalRequests.Writer.WriteAsync(proposal, cancellationTokenSource.Token);
             }
             catch (Exception e)
             {
@@ -198,29 +292,123 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        private async Task Propose()
+        /// <summary>
+        /// Validates the given <paramref name="proposal"/>, and enque
+        /// generated <see cref="ProposalValidation"/> to proposal validation queue.
+        /// This can be interrupted by <see cref="ProcessTimeoutPropose"/>.
+        /// </summary>
+        /// <param name="proposal">A <see cref="Libplanet.Consensus.Proposal"/> to validate.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task ValidateProposal(Proposal proposal)
         {
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            CancellationToken cancellationToken = cancellationTokenSource.Token;
-
             TimeoutCancellationRegister(cancellationTokenSource, ConsensusStep.Propose);
 
-            Block proposalValue = await _proposalRequests.Reader.ReadAsync(cancellationToken);
-            if (cancellationToken.IsCancellationRequested)
+            (Block block, _) = UnmarshalProposal(proposal);
+
+            (bool isValid, ImmutableArray<ICommittedActionEvaluation> evals) = await Task.Run(() =>
             {
-                return;
-            }
+                if (_proposalValidations.TryGet(block.Hash, out var cached))
+                {
+                    return (cached.IsValid, cached.Evaluations);
+                }
 
-            _blockChain.Store.PutBlock(proposalValue);
-            Proposal proposal = new ProposalMetadata(
-                Height,
-                Round,
-                DateTimeOffset.UtcNow,
-                _privateKey.PublicKey,
-                _codec.Encode(proposalValue.MarshalBlock()),
-                _validRound).Sign(_privateKey);
+                _blockChain._rwlock.EnterUpgradeableReadLock();
 
+                if (block.Index != Height)
+                {
+                    return (false, ImmutableArray<ICommittedActionEvaluation>.Empty);
+                }
+
+                try
+                {
+                    _blockChain.ValidateBlock(block);
+                    _blockChain.ValidateBlockNonces(
+                        block.Transactions
+                            .Select(tx => tx.Signer)
+                            .Distinct()
+                            .ToDictionary(
+                                signer => signer,
+                                signer => _blockChain.Store.GetTxNonce(
+                                    _blockChain.Id, signer)),
+                        block);
+
+                    if (_blockChain.Policy.ValidateNextBlock(
+                        _blockChain, block) is { } bpve)
+                    {
+                        throw bpve;
+                    }
+
+                    foreach (var tx in block.Transactions)
+                    {
+                        if (_blockChain.Policy.ValidateNextBlockTx(
+                            _blockChain, tx) is { } txve)
+                        {
+                            throw txve;
+                        }
+                    }
+
+                    _blockChain.ValidateBlockStateRootHash(
+                        block,
+                        out IReadOnlyList<ICommittedActionEvaluation> evaluations);
+                    _logger.Information(
+                        "Block #{Index} {Hash} is valid.",
+                        block.Index,
+                        block.Hash);
+                    return (true, evaluations.ToImmutableArray());
+                }
+                catch (Exception e) when (
+                    e is InvalidBlockException ||
+                    e is InvalidTxException ||
+                    e is InvalidActionException)
+                {
+                    _logger.Information(
+                        e,
+                        "Block #{Index} {Hash} is invalid",
+                        block.Index,
+                        block.Hash);
+                    return (false, ImmutableArray<ICommittedActionEvaluation>.Empty);
+                }
+                finally
+                {
+                    _blockChain._rwlock.ExitUpgradeableReadLock();
+                }
+            });
+
+            await _proposalValidationRequests.Writer.WriteAsync(
+                new ProposalValidation(
+                    proposal,
+                    isValid,
+                    evals),
+                cancellationTokenSource.Token);
+        }
+
+        /// <summary>
+        /// Consumes generated <see cref="Libplanet.Consensus.Proposal"/>, and
+        /// publish <see cref="ConsensusProposalMsg"/>.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="Libplanet.Consensus.Proposal"/>s from the proposal queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task ConsumeProposal(CancellationToken cancellationToken)
+        {
+            Proposal proposal = await _proposalRequests.Reader.ReadAsync(cancellationToken);
+            _blockChain.Store.PutBlock(UnmarshalProposal(proposal).Item1);
             PublishMessage(new ConsensusProposalMsg(proposal));
+        }
+
+        /// <summary>
+        /// Consumes generated <see cref="ProposalValidation"/>, and cache it.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="ProposalValidation"/>s from the proposal validation queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task ConsumeProposalValidation(CancellationToken cancellationToken)
+        {
+            ProposalValidation validation
+                = await _proposalValidationRequests.Reader.ReadAsync(cancellationToken);
+            ProduceMutation(() => CacheProposalValidation(validation));
+            ProduceMutation(() => ProcessHeightOrRoundUponRules(proposalValidation: validation));
         }
 
         /// <summary>
@@ -278,13 +466,15 @@ namespace Libplanet.Net.Consensus
                 long height,
                 int round,
                 ConsensusStep step,
-                BlockHash? proposal)
+                BlockHash? proposal,
+                bool proposalValidationExists)
             {
                 VoteCount = voteCount;
                 Height = height;
                 Round = round;
                 Step = step;
                 Proposal = proposal;
+                ProposalValidationExists = proposalValidationExists;
             }
 
             public int VoteCount { get; }
@@ -297,12 +487,15 @@ namespace Libplanet.Net.Consensus
 
             public BlockHash? Proposal { get; }
 
+            public bool ProposalValidationExists { get; }
+
             public bool Equals(ContextState other)
             {
                 return VoteCount == other.VoteCount &&
                        Round == other.Round &&
                        Step == other.Step &&
-                       Proposal.Equals(other.Proposal);
+                       Proposal.Equals(other.Proposal) &&
+                       ProposalValidationExists == other.ProposalValidationExists;
             }
 
             public override bool Equals(object? obj)

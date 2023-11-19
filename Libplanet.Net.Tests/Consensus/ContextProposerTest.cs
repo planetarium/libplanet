@@ -351,7 +351,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void CancelOnTimeoutPropose()
+        public async void CancelProposeOnTimeoutPropose()
         {
             var privateKey = new PrivateKey();
             var proposeTimeout = new AsyncAutoResetEvent();
@@ -369,7 +369,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.TimeoutProcessed += (_, eventArgs) =>
             {
-                if (eventArgs.Equals(ConsensusStep.Propose))
+                if (eventArgs.Step.Equals(ConsensusStep.Propose))
                 {
                     proposeTimeout.Set();
                 }
@@ -383,7 +383,8 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            var delayAction = new DelayAction(6000);
+            var delayAction = new DelayAction(
+                contextTimeoutOption.ProposeSecondBase * 1000 + 1000);
             var tx = Transaction.Create(
                 0,
                 new PrivateKey(),
@@ -398,9 +399,11 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.Start();
 
-            await Task.Delay(contextTimeoutOption.ProposeSecondBase * 2000);
-
+            await Task.Delay(contextTimeoutOption.ProposeSecondBase * 1000 + 500);
             Assert.True(proposeTimeout.IsSet);
+            Assert.False(proposalSent.IsSet);
+
+            await Task.Delay(1000);
             Assert.False(proposalSent.IsSet);
         }
     }

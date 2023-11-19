@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
@@ -612,6 +613,61 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(ConsensusStep.Propose, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void CancelValidationOnTimeoutPropose()
+        {
+            var privateKey = new PrivateKey();
+            var proposeTimeout = new AsyncAutoResetEvent();
+            var proposalValidated = new AsyncAutoResetEvent();
+
+            var contextTimeoutOption = new ContextTimeoutOption();
+
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                height: 1,
+                actionLoader: new SingleActionLoader(typeof(DelayAction)),
+                privateKey: TestUtils.PrivateKeys[0],
+                contextTimeoutOptions: contextTimeoutOption,
+                validatorSet: TestUtils.ValidatorSet);
+
+            context.TimeoutProcessed += (_, eventArgs) =>
+            {
+                if (eventArgs.Step.Equals(ConsensusStep.Propose))
+                {
+                    proposeTimeout.Set();
+                }
+            };
+
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.ProposalValidationExists)
+                {
+                    proposalValidated.Set();
+                }
+            };
+
+            var delayAction = new DelayAction(
+                contextTimeoutOption.PreVoteSecondBase * 1000 + 1000);
+            var tx = Transaction.Create(
+                0,
+                new PrivateKey(),
+                blockChain.Genesis.Hash,
+                new[] { delayAction }.ToPlainValues());
+
+            blockChain.StageTransaction(tx);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            context.Start();
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    block, TestUtils.PrivateKeys[1], round: 0));
+
+            await Task.Delay(contextTimeoutOption.ProposeSecondBase * 1000 + 500);
+            Assert.True(proposeTimeout.IsSet);
+            Assert.False(proposalValidated.IsSet);
+
+            await Task.Delay(1000);
+            Assert.False(proposalValidated.IsSet);
         }
     }
 }

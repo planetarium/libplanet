@@ -15,7 +15,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using Libplanet.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -86,7 +85,8 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
-        private readonly Channel<Block> _proposalRequests;
+        private readonly Channel<Proposal> _proposalRequests;
+        private readonly Channel<ProposalValidation> _proposalValidationRequests;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -96,11 +96,7 @@ namespace Libplanet.Net.Consensus
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         private readonly ILogger _logger;
-        private readonly
-            LRUCache<
-                BlockHash,
-                (bool IsValid, IReadOnlyList<ICommittedActionEvaluation> EvaluatedActions)>
-            _blockValidationCache;
+        private readonly LRUCache<BlockHash, ProposalValidation> _proposalValidations;
 
         private Block? _lockedValue;
         private int _lockedRound;
@@ -121,7 +117,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">A target <see cref="Context.Height"/> of the consensus state.
         /// </param>
         /// <param name="privateKey">A private key for signing a block and message.
-        /// <seealso cref="ProduceProposal"/>
+        /// <seealso cref="Propose"/>
         /// <seealso cref="ProcessGenericUponRules"/>
         /// <seealso cref="MakeVote"/>
         /// </param>
@@ -187,15 +183,16 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
-            _proposalRequests = Channel.CreateUnbounded<Block>();
+            _proposalRequests = Channel.CreateUnbounded<Proposal>();
+            _proposalValidationRequests = Channel.CreateUnbounded<ProposalValidation>();
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
-            _blockValidationCache =
-                new LRUCache<BlockHash, (bool, IReadOnlyList<ICommittedActionEvaluation>)>(
+            _proposalValidations =
+                new LRUCache<BlockHash, ProposalValidation>(
                     cacheSize, Math.Max(cacheSize / 64, 8));
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
@@ -221,6 +218,9 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
+        /// <summary>
+        /// A <see cref="Libplanet.Consensus.Proposal"/> that is set for this consensus context.
+        /// </summary>
         public Proposal? Proposal { get; private set; }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
@@ -257,6 +257,18 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Bit Array that have information of <see cref="Vote"/>s this context collected,
+        /// with respect to <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="round">Round to investigate gathered <see cref="Vote"/>s.</param>
+        /// <param name="blockHash"><see cref="BlockHash"/> to filter <see cref="Vote"/>s.</param>
+        /// <param name="flag"><see cref="VoteFlag"/> to filter <see cref="Vote"/>s.</param>
+        /// <returns><see cref="VoteSetBits"/> that has information of
+        /// current <see cref="Context"/>'s <see cref="Vote"/>s,
+        /// with respect to <see cref="ValidatorSet"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="flag"/> is invalid.
+        /// </exception>
         public VoteSetBits GetVoteSetBits(int round, BlockHash blockHash, VoteFlag flag)
         {
             // If executed in correct manner (called by Maj23),
@@ -310,6 +322,14 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Collects <see cref="ConsensusMsg"/> with respect to <paramref name="voteSetBits"/>.
+        /// </summary>
+        /// <param name="voteSetBits"><see cref="VoteSetBits"/> sent from peer that lack
+        /// <see cref="Vote"/>s.</param>
+        /// <returns><see cref="ConsensusMsg"/>s that requested.</returns>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="voteSetBits"/>
+        /// has invalid <see cref="VoteFlag"/>.</exception>
         public IEnumerable<ConsensusMsg> GetVoteSetBitsResponse(VoteSetBits voteSetBits)
         {
             IEnumerable<Vote> votes;
@@ -423,94 +443,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Validates the given block.
-        /// </summary>
-        /// <param name="block">A <see cref="Block"/> to validate.</param>
-        /// <param name="evaluatedActions">A list of evaluated actions from <see cref="Block"/>.
-        /// If a given block is invalid, this will returns
-        /// <see cref="ImmutableArray{ActionEvaluations}.Empty"/>
-        /// lists.
-        /// </param>
-        /// <returns><see langword="true"/> if block is valid, otherwise <see langword="false"/>.
-        /// </returns>
-        private bool IsValid(
-            Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluatedActions)
-        {
-            if (_blockValidationCache.TryGet(block.Hash, out var cached))
-            {
-                evaluatedActions = cached.EvaluatedActions;
-                return cached.IsValid;
-            }
-            else
-            {
-                // Need to get txs from store, lock?
-                // TODO: Remove ChainId, enhancing lock management.
-                _blockChain._rwlock.EnterUpgradeableReadLock();
-                IReadOnlyList<ICommittedActionEvaluation> actionEvaluations;
-
-                if (block.Index != Height)
-                {
-                    evaluatedActions = ImmutableArray<ICommittedActionEvaluation>.Empty;
-                    _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
-                    return false;
-                }
-
-                try
-                {
-                    _blockChain.ValidateBlock(block);
-                    _blockChain.ValidateBlockNonces(
-                        block.Transactions
-                            .Select(tx => tx.Signer)
-                            .Distinct()
-                            .ToDictionary(
-                                signer => signer,
-                                signer => _blockChain.Store.GetTxNonce(
-                                    _blockChain.Id, signer)),
-                        block);
-
-                    if (_blockChain.Policy.ValidateNextBlock(
-                        _blockChain, block) is { } bpve)
-                    {
-                        throw bpve;
-                    }
-
-                    foreach (var tx in block.Transactions)
-                    {
-                        if (_blockChain.Policy.ValidateNextBlockTx(
-                            _blockChain, tx) is { } txve)
-                        {
-                            throw txve;
-                        }
-                    }
-
-                    _blockChain.ValidateBlockStateRootHash(block, out actionEvaluations);
-                }
-                catch (Exception e) when (
-                    e is InvalidBlockException ||
-                    e is InvalidTxException ||
-                    e is InvalidActionException)
-                {
-                    _logger.Debug(
-                        e,
-                        "Block #{Index} {Hash} is invalid",
-                        block.Index,
-                        block.Hash);
-                    evaluatedActions = ImmutableArray<ICommittedActionEvaluation>.Empty;
-                    _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
-                    return false;
-                }
-                finally
-                {
-                    _blockChain._rwlock.ExitUpgradeableReadLock();
-                }
-
-                evaluatedActions = actionEvaluations;
-                _blockValidationCache.AddReplace(block.Hash, (true, actionEvaluations));
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusPreVoteMsg"/> or
         /// a <see cref="ConsensusPreCommitMsg"/>.
         /// </summary>
@@ -578,16 +510,70 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block, int)? GetProposal()
+        private (Block, int) UnmarshalProposal(Proposal proposal)
         {
-            if (Proposal is { } p)
+            var block = BlockMarshaler.UnmarshalBlock(
+                (Dictionary)_codec.Decode(proposal.MarshaledBlock));
+            return (block, proposal.ValidRound);
+        }
+
+        /// <summary>
+        /// Gets cached <see cref="ProposalValidation"/> with current <see cref="Proposal"/>.
+        /// </summary>
+        /// <returns><see cref="ProposalValidation"/> if cached. if not, returns
+        /// <see langword="null"/>.</returns>
+        private ProposalValidation? GetProposalValidation()
+        {
+            if (Proposal is { } proposal)
             {
-                var block = BlockMarshaler.UnmarshalBlock(
-                    (Dictionary)_codec.Decode(p.MarshaledBlock));
-                return (block, p.ValidRound);
+                bool exists = _proposalValidations.TryGet(
+                    proposal.BlockHash, out ProposalValidation proposalValidation);
+
+                if (exists)
+                {
+                    return proposalValidation;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Structure for validation result of <see cref="Proposal"/>.
+        /// </summary>
+        private readonly struct ProposalValidation
+        {
+            public ProposalValidation(
+                Proposal proposal,
+                bool isValid,
+                ImmutableArray<ICommittedActionEvaluation> evaluations)
+            {
+                Proposal = proposal;
+                IsValid = isValid;
+                Evaluations = evaluations;
             }
 
-            return null;
+            /// <summary>
+            /// <see cref="Proposal"/> that has been validated.
+            /// </summary>
+            public Proposal Proposal { get; }
+
+            /// <summary>
+            /// <see langword="true"/> if valid, <see langword="false"/> if not.
+            /// </summary>
+            public bool IsValid { get; }
+
+            /// <summary>
+            /// <see cref="ImmutableArray"/> of <see cref="ICommittedActionEvaluation"/>
+            /// that from action evaluation.
+            /// </summary>
+            public ImmutableArray<ICommittedActionEvaluation> Evaluations { get; }
         }
     }
 }

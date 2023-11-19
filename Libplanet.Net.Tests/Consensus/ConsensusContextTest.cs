@@ -91,6 +91,13 @@ namespace Libplanet.Net.Tests.Consensus
             await proposalMessageSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[0], 3, hash: proposal.BlockHash, flag: VoteFlag.PreVote)));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[1], 3, hash: proposal.BlockHash, flag: VoteFlag.PreVote)));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[2], 3, hash: proposal.BlockHash, flag: VoteFlag.PreVote)));
+
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(

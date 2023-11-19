@@ -41,8 +41,7 @@ namespace Libplanet.Net.Consensus
                     round,
                     ToString());
 
-                _ = ProduceProposal(_validValue);
-                _ = Propose();
+                _ = Propose(_validValue);
             }
             else
             {
@@ -201,6 +200,7 @@ namespace Libplanet.Net.Consensus
             if (Proposal is null)
             {
                 Proposal = proposal;
+                _ = ValidateProposal(proposal);
                 _logger.Debug("Proposal {BlockHash} is set", proposal.BlockHash);
             }
             else
@@ -209,6 +209,17 @@ namespace Libplanet.Net.Consensus
                     $"Proposal already exists for height {Height} and round {Round}",
                     proposal);
             }
+        }
+
+        /// <summary>
+        /// Cache calculated <see cref="ProposalValidation"/> to be used for context.
+        /// </summary>
+        /// <param name="proposalValidation"><see cref="ProposalValidation"/>
+        /// generated from <see cref="ValidateProposal"/>.</param>
+        private void CacheProposalValidation(ProposalValidation proposalValidation)
+        {
+            _proposalValidations.AddReplace(
+                proposalValidation.Proposal.BlockHash, proposalValidation);
         }
 
         /// <summary>
@@ -222,54 +233,143 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            (Block Block, int ValidRound)? propose = GetProposal();
-            if (propose is { } p1 &&
-                p1.ValidRound == -1 &&
-                Step == ConsensusStep.Propose)
-            {
-                _logger.Debug(
-                    "Entering PreVote step due to proposal message with " +
-                    "valid round -1. (context: {Context})",
-                    ToString());
-                Step = ConsensusStep.PreVote;
+            bool preVotesMaj23
+                = _heightVoteSet.PreVotes(Round).TwoThirdsMajority(out BlockHash preVotesMaj23Hash);
 
-                if (IsValid(p1.Block, out _) && (_lockedRound == -1 || _lockedValue == p1.Block))
+            if (Proposal is { } proposal)
+            {
+                (Block block, int validRound) = UnmarshalProposal(Proposal);
+                ProposalValidation? proposalValidation = GetProposalValidation();
+                if (proposalValidation is ProposalValidation validation)
                 {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, p1.Block.Hash, VoteFlag.PreVote)));
+                    if (validRound == -1 &&
+                        Step == ConsensusStep.Propose)
+                    {
+                        _logger.Debug(
+                            "Entering PreVote step due to proposal message with " +
+                            "valid round -1. (context: {Context})",
+                            ToString());
+                        Step = ConsensusStep.PreVote;
+
+                        if (validation.IsValid &&
+                            (_lockedRound == -1 || _lockedValue == block))
+                        {
+                            PublishMessage(
+                                new ConsensusPreVoteMsg(
+                                    MakeVote(Round, block.Hash, VoteFlag.PreVote)));
+                        }
+                        else
+                        {
+                            PublishMessage(
+                                new ConsensusPreVoteMsg(
+                                    MakeVote(Round, default, VoteFlag.PreVote)));
+                        }
+                    }
+
+                    if (validRound >= 0 &&
+                        validRound < Round &&
+                        _heightVoteSet.PreVotes(validRound).TwoThirdsMajority(
+                            out BlockHash validRoundPreVotesMaj23Hash) &&
+                        validRoundPreVotesMaj23Hash.Equals(block.Hash) &&
+                        Step == ConsensusStep.Propose)
+                    {
+                        _logger.Debug(
+                            "Entering PreVote step due to proposal message and have collected " +
+                            "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
+                            validRound,
+                            ToString());
+                        Step = ConsensusStep.PreVote;
+
+                        if (validation.IsValid &&
+                            (_lockedRound <= validRound || _lockedValue == block))
+                        {
+                            PublishMessage(
+                                new ConsensusPreVoteMsg(
+                                    MakeVote(Round, block.Hash, VoteFlag.PreVote)));
+                        }
+                        else
+                        {
+                            PublishMessage(
+                                new ConsensusPreVoteMsg(
+                                    MakeVote(Round, default, VoteFlag.PreVote)));
+                        }
+                    }
+
+                    if (preVotesMaj23 &&
+                        preVotesMaj23Hash.Equals(block.Hash) &&
+                        validation.IsValid &&
+                        (Step == ConsensusStep.PreVote || Step == ConsensusStep.PreCommit) &&
+                        !_hasTwoThirdsPreVoteFlags.Contains(Round))
+                    {
+                        _logger.Debug(
+                            "2/3+ PreVotes for the current round {Round} have collected. " +
+                            "(context: {Context})",
+                            Round,
+                            ToString());
+                        _hasTwoThirdsPreVoteFlags.Add(Round);
+                        if (Step == ConsensusStep.PreVote)
+                        {
+                            _logger.Debug(
+                                "Entering PreCommit step due to proposal message and have " +
+                                "collected 2/3+ PreVote for current round {Round}. " +
+                                "(context: {Context})",
+                                Round,
+                                ToString());
+                            Step = ConsensusStep.PreCommit;
+                            _lockedValue = block;
+                            _lockedRound = Round;
+                            PublishMessage(
+                                new ConsensusPreCommitMsg(
+                                    MakeVote(Round, block.Hash, VoteFlag.PreCommit)));
+
+                            // Maybe need to broadcast periodically?
+                            PublishMessage(
+                                new ConsensusMaj23Msg(
+                                    MakeMaj23(Round, block.Hash, VoteFlag.PreVote)));
+                        }
+
+                        _validValue = block;
+                        _validRound = Round;
+                    }
                 }
-                else
+
+                if (preVotesMaj23 &&
+                    Step == ConsensusStep.PreVote &&
+                    !proposal.BlockHash.Equals(preVotesMaj23Hash))
                 {
+                    // +2/3 votes were collected and is not equal to proposal's,
+                    // remove invalid proposal.
+                    _logger.Debug(
+                        "Remove invalid proposal {Proposal} because 2/3+ PreVotes " +
+                        "for hash {BlockHash} were collected. (context: {Context})",
+                        Round,
+                        preVotesMaj23Hash,
+                        ToString());
+                    Proposal = null;
                     PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
+                        new ConsensusProposalClaimMsg(
+                            new ProposalClaimMetadata(
+                                Height,
+                                Round,
+                                preVotesMaj23Hash,
+                                DateTimeOffset.UtcNow,
+                                _privateKey.PublicKey).Sign(_privateKey)));
                 }
             }
 
-            if (propose is { } p2 &&
-                p2.ValidRound >= 0 &&
-                p2.ValidRound < Round &&
-                _heightVoteSet.PreVotes(p2.ValidRound).TwoThirdsMajority(out BlockHash hash1) &&
-                hash1.Equals(p2.Block.Hash) &&
-                Step == ConsensusStep.Propose)
+            if (preVotesMaj23 &&
+                Step == ConsensusStep.PreVote &&
+                preVotesMaj23Hash.Equals(default))
             {
                 _logger.Debug(
-                    "Entering PreVote step due to proposal message and have collected " +
-                    "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
-                    p2.ValidRound,
+                    "PreCommit nil for the round {Round} because 2/3+ PreVotes " +
+                    "were collected. (context: {Context})",
+                    Round,
                     ToString());
-                Step = ConsensusStep.PreVote;
-
-                if (IsValid(p2.Block, out _) &&
-                    (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
-                {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, p2.Block.Hash, VoteFlag.PreVote)));
-                }
-                else
-                {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
-                }
+                Step = ConsensusStep.PreCommit;
+                PublishMessage(
+                    new ConsensusPreCommitMsg(
+                        MakeVote(Round, default, VoteFlag.PreCommit)));
             }
 
             if (_heightVoteSet.PreVotes(Round).HasTwoThirdsAny() &&
@@ -283,79 +383,6 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 _preVoteTimeoutFlags.Add(Round);
                 _ = OnTimeoutPreVote(Round);
-            }
-
-            if (propose is { } p3 &&
-                _heightVoteSet.PreVotes(Round).TwoThirdsMajority(out BlockHash hash2) &&
-                hash2.Equals(p3.Block.Hash) &&
-                IsValid(p3.Block, out _) &&
-                (Step == ConsensusStep.PreVote || Step == ConsensusStep.PreCommit) &&
-                !_hasTwoThirdsPreVoteFlags.Contains(Round))
-            {
-                _logger.Debug(
-                    "2/3+ PreVotes for the current round {Round} have collected. " +
-                    "(context: {Context})",
-                    Round,
-                    ToString());
-                _hasTwoThirdsPreVoteFlags.Add(Round);
-                if (Step == ConsensusStep.PreVote)
-                {
-                    _logger.Debug(
-                        "Entering PreCommit step due to proposal message and have collected " +
-                        "2/3+ PreVote for current round {Round}. (context: {Context})",
-                        Round,
-                        ToString());
-                    Step = ConsensusStep.PreCommit;
-                    _lockedValue = p3.Block;
-                    _lockedRound = Round;
-                    PublishMessage(
-                        new ConsensusPreCommitMsg(
-                            MakeVote(Round, p3.Block.Hash, VoteFlag.PreCommit)));
-
-                    // Maybe need to broadcast periodically?
-                    PublishMessage(
-                        new ConsensusMaj23Msg(
-                            MakeMaj23(Round, p3.Block.Hash, VoteFlag.PreVote)));
-                }
-
-                _validValue = p3.Block;
-                _validRound = Round;
-            }
-
-            if (_heightVoteSet.PreVotes(Round).TwoThirdsMajority(out BlockHash hash3) &&
-                Step == ConsensusStep.PreVote)
-            {
-                if (hash3.Equals(default))
-                {
-                    _logger.Debug(
-                        "PreCommit nil for the round {Round} because 2/3+ PreVotes " +
-                        "were collected. (context: {Context})",
-                        Round,
-                        ToString());
-                    Step = ConsensusStep.PreCommit;
-                    PublishMessage(
-                        new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
-                }
-                else if (Proposal is { } proposal && !proposal.BlockHash.Equals(hash3))
-                {
-                    // +2/3 votes were collected and is not equal to proposal's,
-                    // remove invalid proposal.
-                    _logger.Debug(
-                        "Remove invalid proposal {Proposal} because 2/3+ PreVotes " +
-                        "for hash {BlockHash} were collected. (context: {Context})",
-                        Round,
-                        hash3,
-                        ToString());
-                    Proposal = null;
-                    PublishMessage(
-                        new ConsensusProposalClaimMsg(
-                            new ProposalClaimMetadata(
-                                Height,
-                                Round,
-                                hash3,
-                                DateTimeOffset.UtcNow,
-                                _privateKey.PublicKey).Sign(_privateKey)));
-                }
             }
 
             if (_heightVoteSet.PreCommits(Round).HasTwoThirdsAny() &&
@@ -375,9 +402,12 @@ namespace Libplanet.Net.Consensus
         /// Checks the current state to mutate <see cref="Round"/> or to terminate
         /// by setting <see cref="ConsensusStep"/> to <see cref="ConsensusStep.EndCommit"/>.
         /// </summary>
-        /// <param name="message">The <see cref="ConsensusMsg"/> to process.
-        /// Although this is not strictly needed, this is used for optimization.</param>
-        private void ProcessHeightOrRoundUponRules(ConsensusMsg message)
+        /// <param name="message">The <see cref="ConsensusMsg"/> to process.</param>
+        /// <param name="proposalValidation"> The <see cref="ProposalValidation"/> to process.
+        /// </param>
+        private void ProcessHeightOrRoundUponRules(
+            ConsensusMsg? message = null,
+            ProposalValidation? proposalValidation = null)
         {
             if (Step == ConsensusStep.Default || Step == ConsensusStep.EndCommit)
             {
@@ -385,53 +415,73 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            int round = message.Round;
-            if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
-                GetProposal() is (Block block4, _) &&
-                _heightVoteSet.PreCommits(Round).TwoThirdsMajority(out BlockHash hash) &&
-                block4.Hash.Equals(hash) &&
-                IsValid(block4, out _))
+            int round;
+            ProposalValidation? validation = null;
+
+            if (message is { } msg)
+            {
+                round = msg.Round;
+                if (msg is ConsensusPreCommitMsg preCommitMsg &&
+                    _proposalValidations.TryGet(preCommitMsg.BlockHash, out var v))
+                {
+                    validation = v;
+                }
+            }
+            else if (proposalValidation is { } v)
+            {
+                round = v.Proposal.Round;
+                validation = v;
+            }
+            else
+            {
+                throw new ArgumentException(
+                    "Only single parameter have to be specified for ProcessHeightOrRoundUponRules");
+            }
+
+            if (validation is { } val &&
+                _heightVoteSet.PreCommits(round).TwoThirdsMajority(
+                    out BlockHash preCommitMaj23Hash) &&
+                val.Proposal.BlockHash.Equals(preCommitMaj23Hash) &&
+                val.IsValid)
             {
                 Step = ConsensusStep.EndCommit;
-                _decision = block4;
+                (_decision, _) = UnmarshalProposal(val.Proposal);
                 _committedRound = round;
 
                 // Maybe need to broadcast periodically?
                 PublishMessage(
                     new ConsensusMaj23Msg(
-                        MakeMaj23(round, block4.Hash, VoteFlag.PreCommit)));
+                        MakeMaj23(round, _decision.Hash, VoteFlag.PreCommit)));
 
                 try
                 {
                     _logger.Information(
                         "Committing block #{Index} {Hash} (context: {Context})",
-                        block4.Index,
-                        block4.Hash,
+                        _decision.Index,
+                        _decision.Hash,
                         ToString());
 
-                    IsValid(block4, out var evaluatedActions);
-
                     _blockChain.Append(
-                        block4,
+                        _decision,
                         GetBlockCommit(),
                         true,
-                        actionEvaluations: evaluatedActions);
+                        actionEvaluations: val.Evaluations);
                 }
                 catch (Exception e)
                 {
                     _logger.Error(
                         e,
                         "Failed to commit block #{Index} {Hash}",
-                        block4.Index,
-                        block4.Hash);
+                        _decision.Index,
+                        _decision.Hash);
                     ExceptionOccurred?.Invoke(this, e);
                     return;
                 }
 
                 _logger.Information(
                     "Committed block #{Index} {Hash}",
-                    block4.Index,
-                    block4.Hash);
+                    _decision.Index,
+                    _decision.Hash);
                 return;
             }
 
@@ -454,6 +504,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A timeout mutation to run if no <see cref="ConsensusProposalMsg"/> is received in
         /// <see cref="TimeoutPropose"/> and is still in <see cref="ConsensusStep.Propose"/> step.
+        /// This interrupt <see cref="Propose"/> and <see cref="ValidateProposal"/> tasks.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPropose(int round)
