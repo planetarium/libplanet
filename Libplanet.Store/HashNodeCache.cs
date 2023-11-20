@@ -15,7 +15,7 @@ namespace Libplanet.Store
     public class HashNodeCache
     {
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
-        private const int _cahceSize = 1_048_576;
+        private const int _cacheSize = 1_048_576;
         private const int _reportPeriod = 60_000;
 
         private LruCache<HashDigest<SHA256>, IValue> _cache;
@@ -26,7 +26,7 @@ namespace Libplanet.Store
 
         internal HashNodeCache()
         {
-            _cache = new LruCache<HashDigest<SHA256>, IValue>(_cahceSize);
+            _cache = new LruCache<HashDigest<SHA256>, IValue>(_cacheSize);
             _stopwatch = new Stopwatch();
             _attempts = 0;
             _hits = 0;
