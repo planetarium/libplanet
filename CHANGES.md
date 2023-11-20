@@ -6,6 +6,11 @@ Version 3.7.1
 
 To be released.
 
+ -  Ported changes from [Libplanet 3.6.1] release.  [[#3500]]
+
+[Libplanet 2.0.1]: https://www.nuget.org/packages/Libplanet/3.6.1
+[#3500]: https://github.com/planetarium/libplanet/3500
+
 
 Version 3.7.0
 -------------
