@@ -52,7 +52,7 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
   "[typescript]": {
-    "editor.defaultFormatter": "rome.rome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports.rome": true

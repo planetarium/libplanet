@@ -35,6 +35,20 @@ Released on October 27, 2023.
 [Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
 
 
+Version 3.6.1
+-------------
+
+Released on November 20, 2023.
+
+ -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
+    to `MerkleTrie()` constructors.  [[#3495]]
+ -  (Libplanet.Store) Added `HashNodeCache` class.  [[#3495]]
+ -  (Libplanet.Store) Changed internal caching strategy of `TrieStateStore` for
+    read/write optimization.  [[#3495]]
+
+[#3495]: https://github.com/planetarium/libplanet/pull/3495
+
+
 Version 3.6.0
 -------------
 

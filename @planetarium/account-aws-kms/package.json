@@ -4,11 +4,21 @@
   "description": "Libplanet account implementation using AWS KMS",
   "type": "module",
   "main": "./dist/index.js",
+  "imports": {
+    "#crypto": {
+      "node": "./src/crypto/node.ts",
+      "default": "./src/crypto/browser.ts"
+    }
+  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "node": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "browser": "./dist/index.browser.mjs",
+      "default": "./dist/index.js"
     }
   },
   "files": [
@@ -37,7 +47,7 @@
     "@vitest/coverage-c8": "^0.29.3",
     "@vitest/ui": "^0.29.3",
     "es-aggregate-error": "^1.0.9",
-    "nanobundle": "^1.5.0",
+    "nanobundle": "^1.6.0",
     "vite": "^4.1.1",
     "vitest": "^0.29.3"
   },
@@ -48,5 +58,8 @@
   },
   "peerDependencies": {
     "@planetarium/account": "workspace:^"
+  },
+  "engines": {
+    "node": ">=19.0.0"
   }
 }
