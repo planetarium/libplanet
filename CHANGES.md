@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.6.1
 -------------
 
-To be released.
+Released on November 20, 2023.
 
  -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
     to `MerkleTrie()` constructors.  [[#3495]]
