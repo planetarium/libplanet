@@ -6,6 +6,14 @@ Version 3.6.1
 
 To be released.
 
+ -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
+    to `MerkleTrie()` constructors.  [[#3495]]
+ -  (Libplanet.Store) Added `HashNodeCache` class.  [[#3495]]
+ -  (Libplanet.Store) Changed internal caching strategy of `TrieStateStore` for
+    read/write optimization.  [[#3495]]
+
+[#3495]: https://github.com/planetarium/libplanet/pull/3495
+
 
 Version 3.6.0
 -------------
