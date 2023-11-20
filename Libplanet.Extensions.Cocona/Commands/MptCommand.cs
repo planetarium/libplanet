@@ -69,14 +69,12 @@ public class MptCommand
         kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
         otherKvStoreUri = ConvertKVStoreUri(otherKvStoreUri, toolConfiguration);
 
-        IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
-        IKeyValueStore otherKeyValueStore = LoadKVStoreFromURI(otherKvStoreUri);
-        var trie = new MerkleTrie(
-            keyValueStore,
-            HashDigest<SHA256>.FromString(stateRootHashHex));
-        var otherTrie = new MerkleTrie(
-            otherKeyValueStore,
-            HashDigest<SHA256>.FromString(otherStateRootHashHex));
+        IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
+        IStateStore otherStateStore = new TrieStateStore(LoadKVStoreFromURI(otherKvStoreUri));
+        var trie =
+            stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
+        var otherTrie =
+            otherStateStore.GetStateRoot(HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
         var codec = new Codec();
         HashDigest<SHA256> originRootHash = trie.Hash;
@@ -113,10 +111,8 @@ public class MptCommand
         ToolConfiguration toolConfiguration = configurationService.Load();
         kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
 
-        IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
-        var trie = new MerkleTrie(
-            keyValueStore,
-            HashDigest<SHA256>.FromString(stateRootHashHex));
+        IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
+        var trie = stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
         var codec = new Codec();
 
         // This assumes the original key was encoded from a sensible string.

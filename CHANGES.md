@@ -6,6 +6,11 @@ Version 3.7.1
 
 To be released.
 
+ -  Ported changes from [Libplanet 3.6.1] release.  [[#3500]]
+
+[Libplanet 2.0.1]: https://www.nuget.org/packages/Libplanet/3.6.1
+[#3500]: https://github.com/planetarium/libplanet/3500
+
 
 Version 3.7.0
 -------------
@@ -33,6 +38,20 @@ Released on October 27, 2023.
 [Bencodex 0.16.0]: https://www.nuget.org/packages/Bencodex/0.16.0
 [Bencodex.Json 0.11.0]: https://www.nuget.org/packages/Bencodex.json/0.11.0
 [Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
+
+
+Version 3.6.1
+-------------
+
+Released on November 20, 2023.
+
+ -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
+    to `MerkleTrie()` constructors.  [[#3495]]
+ -  (Libplanet.Store) Added `HashNodeCache` class.  [[#3495]]
+ -  (Libplanet.Store) Changed internal caching strategy of `TrieStateStore` for
+    read/write optimization.  [[#3495]]
+
+[#3495]: https://github.com/planetarium/libplanet/pull/3495
 
 
 Version 3.6.0
