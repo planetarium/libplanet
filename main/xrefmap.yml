@@ -7,6 +7,12 @@ references:
   commentId: N:Libplanet.Action
   fullName: Libplanet.Action
   nameWithType: Libplanet.Action
+- uid: Libplanet.Action.AccountAddressGetter
+  name: AccountAddressGetter
+  href: api/Libplanet.Action.AccountAddressGetter.html
+  commentId: T:Libplanet.Action.AccountAddressGetter
+  fullName: Libplanet.Action.AccountAddressGetter
+  nameWithType: AccountAddressGetter
 - uid: Libplanet.Action.AccountMetrics
   name: AccountMetrics
   href: api/Libplanet.Action.AccountMetrics.html
@@ -132,12 +138,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
-  name: ActionEvaluator(PolicyBlockActionGetter, IStateStore, IActionLoader)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyBlockActionGetter,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyBlockActionGetter, Libplanet.Store.IStateStore, Libplanet.Action.Loader.IActionLoader)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyBlockActionGetter, IStateStore, IActionLoader)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Action.PolicyBlockActionGetter,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
+  name: ActionEvaluator(ISystemAccountsGetter, PolicyBlockActionGetter, IStateStore, IActionLoader)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_ISystemAccountsGetter_Libplanet_Action_PolicyBlockActionGetter_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Action.PolicyBlockActionGetter,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.ISystemAccountsGetter, Libplanet.Action.PolicyBlockActionGetter, Libplanet.Store.IStateStore, Libplanet.Action.Loader.IActionLoader)
+  nameWithType: ActionEvaluator.ActionEvaluator(ISystemAccountsGetter, PolicyBlockActionGetter, IStateStore, IActionLoader)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -807,6 +813,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.Signer
   nameWithType: IActionContext.Signer
+- uid: Libplanet.Action.IActionContext.SystemAccounts
+  name: SystemAccounts
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_SystemAccounts
+  commentId: P:Libplanet.Action.IActionContext.SystemAccounts
+  fullName: Libplanet.Action.IActionContext.SystemAccounts
+  nameWithType: IActionContext.SystemAccounts
+- uid: Libplanet.Action.IActionContext.SystemAccounts*
+  name: SystemAccounts
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_SystemAccounts_
+  commentId: Overload:Libplanet.Action.IActionContext.SystemAccounts
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.SystemAccounts
+  nameWithType: IActionContext.SystemAccounts
 - uid: Libplanet.Action.IActionContext.TxId
   name: TxId
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_TxId
@@ -1347,6 +1366,83 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IRandom.Seed
   nameWithType: IRandom.Seed
+- uid: Libplanet.Action.ISystemAccounts
+  name: ISystemAccounts
+  href: api/Libplanet.Action.ISystemAccounts.html
+  commentId: T:Libplanet.Action.ISystemAccounts
+  fullName: Libplanet.Action.ISystemAccounts
+  nameWithType: ISystemAccounts
+- uid: Libplanet.Action.ISystemAccounts.DefaultAccount
+  name: DefaultAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_DefaultAccount
+  commentId: P:Libplanet.Action.ISystemAccounts.DefaultAccount
+  fullName: Libplanet.Action.ISystemAccounts.DefaultAccount
+  nameWithType: ISystemAccounts.DefaultAccount
+- uid: Libplanet.Action.ISystemAccounts.DefaultAccount*
+  name: DefaultAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_DefaultAccount_
+  commentId: Overload:Libplanet.Action.ISystemAccounts.DefaultAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.ISystemAccounts.DefaultAccount
+  nameWithType: ISystemAccounts.DefaultAccount
+- uid: Libplanet.Action.ISystemAccounts.FeeAccount
+  name: FeeAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_FeeAccount
+  commentId: P:Libplanet.Action.ISystemAccounts.FeeAccount
+  fullName: Libplanet.Action.ISystemAccounts.FeeAccount
+  nameWithType: ISystemAccounts.FeeAccount
+- uid: Libplanet.Action.ISystemAccounts.FeeAccount*
+  name: FeeAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_FeeAccount_
+  commentId: Overload:Libplanet.Action.ISystemAccounts.FeeAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.ISystemAccounts.FeeAccount
+  nameWithType: ISystemAccounts.FeeAccount
+- uid: Libplanet.Action.ISystemAccounts.StateMetadataAccount
+  name: StateMetadataAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_StateMetadataAccount
+  commentId: P:Libplanet.Action.ISystemAccounts.StateMetadataAccount
+  fullName: Libplanet.Action.ISystemAccounts.StateMetadataAccount
+  nameWithType: ISystemAccounts.StateMetadataAccount
+- uid: Libplanet.Action.ISystemAccounts.StateMetadataAccount*
+  name: StateMetadataAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_StateMetadataAccount_
+  commentId: Overload:Libplanet.Action.ISystemAccounts.StateMetadataAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.ISystemAccounts.StateMetadataAccount
+  nameWithType: ISystemAccounts.StateMetadataAccount
+- uid: Libplanet.Action.ISystemAccounts.ValidatorSetAccount
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_ValidatorSetAccount
+  commentId: P:Libplanet.Action.ISystemAccounts.ValidatorSetAccount
+  fullName: Libplanet.Action.ISystemAccounts.ValidatorSetAccount
+  nameWithType: ISystemAccounts.ValidatorSetAccount
+- uid: Libplanet.Action.ISystemAccounts.ValidatorSetAccount*
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.ISystemAccounts.html#Libplanet_Action_ISystemAccounts_ValidatorSetAccount_
+  commentId: Overload:Libplanet.Action.ISystemAccounts.ValidatorSetAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.ISystemAccounts.ValidatorSetAccount
+  nameWithType: ISystemAccounts.ValidatorSetAccount
+- uid: Libplanet.Action.ISystemAccountsGetter
+  name: ISystemAccountsGetter
+  href: api/Libplanet.Action.ISystemAccountsGetter.html
+  commentId: T:Libplanet.Action.ISystemAccountsGetter
+  fullName: Libplanet.Action.ISystemAccountsGetter
+  nameWithType: ISystemAccountsGetter
+- uid: Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter
+  name: FeeAccountGetter
+  href: api/Libplanet.Action.ISystemAccountsGetter.html#Libplanet_Action_ISystemAccountsGetter_FeeAccountGetter
+  commentId: P:Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter
+  fullName: Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter
+  nameWithType: ISystemAccountsGetter.FeeAccountGetter
+- uid: Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter*
+  name: FeeAccountGetter
+  href: api/Libplanet.Action.ISystemAccountsGetter.html#Libplanet_Action_ISystemAccountsGetter_FeeAccountGetter_
+  commentId: Overload:Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter
+  isSpec: "True"
+  fullName: Libplanet.Action.ISystemAccountsGetter.FeeAccountGetter
+  nameWithType: ISystemAccountsGetter.FeeAccountGetter
 - uid: Libplanet.Action.Loader
   name: Libplanet.Action.Loader
   href: api/Libplanet.Action.Loader.html
@@ -2860,24 +2956,24 @@ references:
   commentId: T:Libplanet.Action.State.ReservedAddresses
   fullName: Libplanet.Action.State.ReservedAddresses
   nameWithType: ReservedAddresses
-- uid: Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  name: FungibleAssetsAccount
-  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_FungibleAssetsAccount
-  commentId: F:Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  fullName: Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  nameWithType: ReservedAddresses.FungibleAssetsAccount
-- uid: Libplanet.Action.State.ReservedAddresses.LegacyAccount
-  name: LegacyAccount
-  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount
-  commentId: F:Libplanet.Action.State.ReservedAddresses.LegacyAccount
-  fullName: Libplanet.Action.State.ReservedAddresses.LegacyAccount
-  nameWithType: ReservedAddresses.LegacyAccount
-- uid: Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  name: ValidatorSetAddress
-  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_ValidatorSetAddress
-  commentId: F:Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  fullName: Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  nameWithType: ReservedAddresses.ValidatorSetAddress
+- uid: Libplanet.Action.State.ReservedAddresses.DefaultAccount
+  name: DefaultAccount
+  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_DefaultAccount
+  commentId: F:Libplanet.Action.State.ReservedAddresses.DefaultAccount
+  fullName: Libplanet.Action.State.ReservedAddresses.DefaultAccount
+  nameWithType: ReservedAddresses.DefaultAccount
+- uid: Libplanet.Action.State.ReservedAddresses.StateMetadataAccount
+  name: StateMetadataAccount
+  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_StateMetadataAccount
+  commentId: F:Libplanet.Action.State.ReservedAddresses.StateMetadataAccount
+  fullName: Libplanet.Action.State.ReservedAddresses.StateMetadataAccount
+  nameWithType: ReservedAddresses.StateMetadataAccount
+- uid: Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_ValidatorSetAccount
+  commentId: F:Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  fullName: Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  nameWithType: ReservedAddresses.ValidatorSetAccount
 - uid: Libplanet.Action.State.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.Action.State.SupplyOverflowException.html
@@ -3365,6 +3461,109 @@ references:
   commentId: F:Libplanet.Action.Sys.Registry.Types
   fullName: Libplanet.Action.Sys.Registry.Types
   nameWithType: Registry.Types
+- uid: Libplanet.Action.SystemAccounts
+  name: SystemAccounts
+  href: api/Libplanet.Action.SystemAccounts.html
+  commentId: T:Libplanet.Action.SystemAccounts
+  fullName: Libplanet.Action.SystemAccounts
+  nameWithType: SystemAccounts
+- uid: Libplanet.Action.SystemAccounts.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Types.Blocks.IPreEvaluationBlockHeader)
+  name: SystemAccounts(ISystemAccountsGetter, IPreEvaluationBlockHeader)
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts__ctor_Libplanet_Action_ISystemAccountsGetter_Libplanet_Types_Blocks_IPreEvaluationBlockHeader_
+  commentId: M:Libplanet.Action.SystemAccounts.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Types.Blocks.IPreEvaluationBlockHeader)
+  fullName: Libplanet.Action.SystemAccounts.SystemAccounts(Libplanet.Action.ISystemAccountsGetter, Libplanet.Types.Blocks.IPreEvaluationBlockHeader)
+  nameWithType: SystemAccounts.SystemAccounts(ISystemAccountsGetter, IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.SystemAccounts.#ctor*
+  name: SystemAccounts
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts__ctor_
+  commentId: Overload:Libplanet.Action.SystemAccounts.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccounts.SystemAccounts
+  nameWithType: SystemAccounts.SystemAccounts
+- uid: Libplanet.Action.SystemAccounts.DefaultAccount
+  name: DefaultAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_DefaultAccount
+  commentId: P:Libplanet.Action.SystemAccounts.DefaultAccount
+  fullName: Libplanet.Action.SystemAccounts.DefaultAccount
+  nameWithType: SystemAccounts.DefaultAccount
+- uid: Libplanet.Action.SystemAccounts.DefaultAccount*
+  name: DefaultAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_DefaultAccount_
+  commentId: Overload:Libplanet.Action.SystemAccounts.DefaultAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccounts.DefaultAccount
+  nameWithType: SystemAccounts.DefaultAccount
+- uid: Libplanet.Action.SystemAccounts.FeeAccount
+  name: FeeAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_FeeAccount
+  commentId: P:Libplanet.Action.SystemAccounts.FeeAccount
+  fullName: Libplanet.Action.SystemAccounts.FeeAccount
+  nameWithType: SystemAccounts.FeeAccount
+- uid: Libplanet.Action.SystemAccounts.FeeAccount*
+  name: FeeAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_FeeAccount_
+  commentId: Overload:Libplanet.Action.SystemAccounts.FeeAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccounts.FeeAccount
+  nameWithType: SystemAccounts.FeeAccount
+- uid: Libplanet.Action.SystemAccounts.StateMetadataAccount
+  name: StateMetadataAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_StateMetadataAccount
+  commentId: P:Libplanet.Action.SystemAccounts.StateMetadataAccount
+  fullName: Libplanet.Action.SystemAccounts.StateMetadataAccount
+  nameWithType: SystemAccounts.StateMetadataAccount
+- uid: Libplanet.Action.SystemAccounts.StateMetadataAccount*
+  name: StateMetadataAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_StateMetadataAccount_
+  commentId: Overload:Libplanet.Action.SystemAccounts.StateMetadataAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccounts.StateMetadataAccount
+  nameWithType: SystemAccounts.StateMetadataAccount
+- uid: Libplanet.Action.SystemAccounts.ValidatorSetAccount
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_ValidatorSetAccount
+  commentId: P:Libplanet.Action.SystemAccounts.ValidatorSetAccount
+  fullName: Libplanet.Action.SystemAccounts.ValidatorSetAccount
+  nameWithType: SystemAccounts.ValidatorSetAccount
+- uid: Libplanet.Action.SystemAccounts.ValidatorSetAccount*
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.SystemAccounts.html#Libplanet_Action_SystemAccounts_ValidatorSetAccount_
+  commentId: Overload:Libplanet.Action.SystemAccounts.ValidatorSetAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccounts.ValidatorSetAccount
+  nameWithType: SystemAccounts.ValidatorSetAccount
+- uid: Libplanet.Action.SystemAccountsGetter
+  name: SystemAccountsGetter
+  href: api/Libplanet.Action.SystemAccountsGetter.html
+  commentId: T:Libplanet.Action.SystemAccountsGetter
+  fullName: Libplanet.Action.SystemAccountsGetter
+  nameWithType: SystemAccountsGetter
+- uid: Libplanet.Action.SystemAccountsGetter.#ctor(Libplanet.Action.AccountAddressGetter)
+  name: SystemAccountsGetter(AccountAddressGetter)
+  href: api/Libplanet.Action.SystemAccountsGetter.html#Libplanet_Action_SystemAccountsGetter__ctor_Libplanet_Action_AccountAddressGetter_
+  commentId: M:Libplanet.Action.SystemAccountsGetter.#ctor(Libplanet.Action.AccountAddressGetter)
+  fullName: Libplanet.Action.SystemAccountsGetter.SystemAccountsGetter(Libplanet.Action.AccountAddressGetter)
+  nameWithType: SystemAccountsGetter.SystemAccountsGetter(AccountAddressGetter)
+- uid: Libplanet.Action.SystemAccountsGetter.#ctor*
+  name: SystemAccountsGetter
+  href: api/Libplanet.Action.SystemAccountsGetter.html#Libplanet_Action_SystemAccountsGetter__ctor_
+  commentId: Overload:Libplanet.Action.SystemAccountsGetter.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccountsGetter.SystemAccountsGetter
+  nameWithType: SystemAccountsGetter.SystemAccountsGetter
+- uid: Libplanet.Action.SystemAccountsGetter.FeeAccountGetter
+  name: FeeAccountGetter
+  href: api/Libplanet.Action.SystemAccountsGetter.html#Libplanet_Action_SystemAccountsGetter_FeeAccountGetter
+  commentId: P:Libplanet.Action.SystemAccountsGetter.FeeAccountGetter
+  fullName: Libplanet.Action.SystemAccountsGetter.FeeAccountGetter
+  nameWithType: SystemAccountsGetter.FeeAccountGetter
+- uid: Libplanet.Action.SystemAccountsGetter.FeeAccountGetter*
+  name: FeeAccountGetter
+  href: api/Libplanet.Action.SystemAccountsGetter.html#Libplanet_Action_SystemAccountsGetter_FeeAccountGetter_
+  commentId: Overload:Libplanet.Action.SystemAccountsGetter.FeeAccountGetter
+  isSpec: "True"
+  fullName: Libplanet.Action.SystemAccountsGetter.FeeAccountGetter
+  nameWithType: SystemAccountsGetter.FeeAccountGetter
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -4317,15 +4516,15 @@ references:
   commentId: T:Libplanet.Blockchain.Policies.BlockPolicy
   fullName: Libplanet.Blockchain.Policies.BlockPolicy
   nameWithType: BlockPolicy
-- uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
-  name: BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain, Transaction, TxPolicyViolationException>, Func<BlockChain, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Tx_Transaction_Libplanet_Types_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockPolicyViolationException__System_Func_System_Int64_System_Int64__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
-  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain, Transaction, TxPolicyViolationException), Func(Of BlockChain, Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException>, System.Func<System.Int64, System.Int64>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException), System.Func(Of System.Int64, System.Int64), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
-  nameWithType: BlockPolicy.BlockPolicy(IAction, Nullable<TimeSpan>, Func<BlockChain, Transaction, TxPolicyViolationException>, Func<BlockChain, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
-  nameWithType.vb: BlockPolicy.BlockPolicy(IAction, Nullable(Of TimeSpan), Func(Of BlockChain, Transaction, TxPolicyViolationException), Func(Of BlockChain, Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name: BlockPolicy(ISystemAccountsGetter, IAction, Nullable<TimeSpan>, Func<BlockChain, Transaction, TxPolicyViolationException>, Func<BlockChain, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_Libplanet_Action_ISystemAccountsGetter_Libplanet_Action_IAction_System_Nullable_System_TimeSpan__System_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Tx_Transaction_Libplanet_Types_Tx_TxPolicyViolationException__System_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockPolicyViolationException__System_Func_System_Int64_System_Int64__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__System_Func_System_Int64_System_Int32__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.ISystemAccountsGetter,Libplanet.Action.IAction,System.Nullable{System.TimeSpan},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException},System.Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException},System.Func{System.Int64,System.Int64},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32},System.Func{System.Int64,System.Int32})
+  name.vb: BlockPolicy(ISystemAccountsGetter, IAction, Nullable(Of TimeSpan), Func(Of BlockChain, Transaction, TxPolicyViolationException), Func(Of BlockChain, Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.ISystemAccountsGetter, Libplanet.Action.IAction, System.Nullable<System.TimeSpan>, System.Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException>, System.Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException>, System.Func<System.Int64, System.Int64>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>, System.Func<System.Int64, System.Int32>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.ISystemAccountsGetter, Libplanet.Action.IAction, System.Nullable(Of System.TimeSpan), System.Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException), System.Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException), System.Func(Of System.Int64, System.Int64), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32), System.Func(Of System.Int64, System.Int32))
+  nameWithType: BlockPolicy.BlockPolicy(ISystemAccountsGetter, IAction, Nullable<TimeSpan>, Func<BlockChain, Transaction, TxPolicyViolationException>, Func<BlockChain, Block, BlockPolicyViolationException>, Func<Int64, Int64>, Func<Int64, Int32>, Func<Int64, Int32>, Func<Int64, Int32>)
+  nameWithType.vb: BlockPolicy.BlockPolicy(ISystemAccountsGetter, IAction, Nullable(Of TimeSpan), Func(Of BlockChain, Transaction, TxPolicyViolationException), Func(Of BlockChain, Block, BlockPolicyViolationException), Func(Of Int64, Int64), Func(Of Int64, Int32), Func(Of Int64, Int32), Func(Of Int64, Int32))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_
@@ -4417,6 +4616,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Policies.BlockPolicy.GetMinTransactionsPerBlock
   nameWithType: BlockPolicy.GetMinTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_SystemAccountsGetter
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter
+  nameWithType: BlockPolicy.SystemAccountsGetter
+- uid: Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter*
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_SystemAccountsGetter_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy.SystemAccountsGetter
+  nameWithType: BlockPolicy.SystemAccountsGetter
 - uid: Libplanet.Blockchain.Policies.BlockPolicy.ValidateNextBlock(Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block)
   name: ValidateNextBlock(BlockChain, Block)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy_ValidateNextBlock_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_
@@ -4514,6 +4726,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Policies.IBlockPolicy.GetMinTransactionsPerBlock
   nameWithType: IBlockPolicy.GetMinTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_SystemAccountsGetter
+  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter
+  nameWithType: IBlockPolicy.SystemAccountsGetter
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter*
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_SystemAccountsGetter_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy.SystemAccountsGetter
+  nameWithType: IBlockPolicy.SystemAccountsGetter
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy.ValidateNextBlock(Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block)
   name: ValidateNextBlock(BlockChain, Block)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy.html#Libplanet_Blockchain_Policies_IBlockPolicy_ValidateNextBlock_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_
@@ -4643,12 +4868,12 @@ references:
   commentId: T:Libplanet.Blockchain.Policies.NullBlockPolicy
   fullName: Libplanet.Blockchain.Policies.NullBlockPolicy
   nameWithType: NullBlockPolicy
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException,System.Int64)
-  name: NullBlockPolicy(BlockPolicyViolationException, Int64)
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_Libplanet_Types_Blocks_BlockPolicyViolationException_System_Int64_
-  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException,System.Int64)
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.NullBlockPolicy(Libplanet.Types.Blocks.BlockPolicyViolationException, System.Int64)
-  nameWithType: NullBlockPolicy.NullBlockPolicy(BlockPolicyViolationException, Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Action.AccountAddressGetter,Libplanet.Types.Blocks.BlockPolicyViolationException)
+  name: NullBlockPolicy(AccountAddressGetter, BlockPolicyViolationException)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_Libplanet_Action_AccountAddressGetter_Libplanet_Types_Blocks_BlockPolicyViolationException_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Action.AccountAddressGetter,Libplanet.Types.Blocks.BlockPolicyViolationException)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.NullBlockPolicy(Libplanet.Action.AccountAddressGetter, Libplanet.Types.Blocks.BlockPolicyViolationException)
+  nameWithType: NullBlockPolicy.NullBlockPolicy(AccountAddressGetter, BlockPolicyViolationException)
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor*
   name: NullBlockPolicy
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_
@@ -4734,6 +4959,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.GetMinTransactionsPerBlock
   nameWithType: NullBlockPolicy.GetMinTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_SystemAccountsGetter
+  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter
+  nameWithType: NullBlockPolicy.SystemAccountsGetter
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter*
+  name: SystemAccountsGetter
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_SystemAccountsGetter_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.SystemAccountsGetter
+  nameWithType: NullBlockPolicy.SystemAccountsGetter
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy.ValidateNextBlock(Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block)
   name: ValidateNextBlock(BlockChain, Block)
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy_ValidateNextBlock_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_
@@ -9594,6 +9832,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetBlockPolicy
   nameWithType: BlockPolicyParams.GetBlockPolicy
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter
+  name: GetSystemAccountsGetter()
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetSystemAccountsGetter
+  commentId: M:Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter()
+  nameWithType: BlockPolicyParams.GetSystemAccountsGetter()
+- uid: Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter*
+  name: GetSystemAccountsGetter
+  href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_GetSystemAccountsGetter_
+  commentId: Overload:Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.BlockPolicyParams.GetSystemAccountsGetter
+  nameWithType: BlockPolicyParams.GetSystemAccountsGetter
 - uid: Libplanet.Extensions.Cocona.BlockPolicyParams.LoadAssemblies
   name: LoadAssemblies()
   href: api/Libplanet.Extensions.Cocona.BlockPolicyParams.html#Libplanet_Extensions_Cocona_BlockPolicyParams_LoadAssemblies
