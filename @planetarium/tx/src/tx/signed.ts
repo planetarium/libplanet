@@ -9,19 +9,19 @@ export type SignedTx<T extends UnsignedTx> = T & { signature: Signature };
 
 export async function signTx(
   tx: UnsignedTx,
-  signAccount: Account,
+  signAccount: Account
 ): Promise<SignedTx<typeof tx>> {
   if (
     !bytesEqual(
       tx.publicKey,
-      (await signAccount.getPublicKey()).toBytes("uncompressed"),
+      (await signAccount.getPublicKey()).toBytes("uncompressed")
     )
   ) {
     throw new Error("Public keys in the tx and the signAccount are mismatched");
   } else if (
     !bytesEqual(
       tx.signer,
-      Address.deriveFrom(await signAccount.getPublicKey()).toBytes(),
+      Address.deriveFrom(await signAccount.getPublicKey()).toBytes()
     )
   ) {
     throw new Error("The transaction signer does not match to the signAccount");
@@ -35,7 +35,7 @@ export async function signTx(
 }
 
 export function encodeSignedTx<T extends UnsignedTx>(
-  tx: SignedTx<T>,
+  tx: SignedTx<T>
 ): Dictionary {
   const dict = encodeUnsignedTx(tx);
   const sig = tx.signature.toBytes();

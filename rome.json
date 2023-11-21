@@ -6,7 +6,8 @@
       "./Libplanet.*/**/*",
       "./@planetarium/*/dist/**/*",
       "./@planetarium/*/coverage/**/*",
-      "./.pnp.*"
+      "./.pnp.*",
+      "./**/*/crypto/**/*"
     ]
   },
   "linter": {
