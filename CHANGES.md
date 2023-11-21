@@ -7,10 +7,12 @@ Version 3.7.1
 To be released.
 
  -  Ported changes from [Libplanet 3.6.1] release.  [[#3500]]
+ -  Ported changes from [Libplanet 3.6.2] release.  [[#3509]]
 
-[Libplanet 2.0.1]: https://www.nuget.org/packages/Libplanet/3.6.1
-[#3500]: https://github.com/planetarium/libplanet/3500
-
+[#3500]: https://github.com/planetarium/libplanet/pull/3500
+[#3509]: https://github.com/planetarium/libplanet/pull/3509
+[Libplanet 3.6.1]: https://www.nuget.org/packages/Libplanet/3.6.1
+[Libplanet 3.6.2]: https://www.nuget.org/packages/Libplanet/3.6.2
 
 Version 3.7.0
 -------------
@@ -38,6 +40,17 @@ Released on October 27, 2023.
 [Bencodex 0.16.0]: https://www.nuget.org/packages/Bencodex/0.16.0
 [Bencodex.Json 0.11.0]: https://www.nuget.org/packages/Bencodex.json/0.11.0
 [Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
+
+
+Version 3.6.2
+-------------
+
+Released on November 21, 2023.
+
+ -  (Libplanet.Net) Changed default `ContextTimeoutOption` values for
+    more consistent and stable consensus.  [[#3506]]
+
+[#3506]: https://github.com/planetarium/libplanet/pull/3506
 
 
 Version 3.6.1
