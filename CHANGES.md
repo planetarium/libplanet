@@ -40,6 +40,17 @@ Released on October 27, 2023.
 [Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
 
 
+Version 3.6.2
+-------------
+
+Released on November 21, 2023.
+
+ -  (Libplanet.Net) Changed default `ContextTimeoutOption` values for
+    more consistent and stable consensus.  [[#3506]]
+
+[#3506]: https://github.com/planetarium/libplanet/pull/3506
+
+
 Version 3.6.1
 -------------
 
