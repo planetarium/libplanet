@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Common;
@@ -104,6 +105,7 @@ namespace Libplanet.Tests.Store
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
+                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
                 _ => blockAction,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));

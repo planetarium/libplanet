@@ -3,6 +3,8 @@ using System;
 using System.Collections.Immutable;
 using System.Net;
 using Bencodex;
+using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -77,7 +79,8 @@ namespace Libplanet.Net.Tests.Messages
         {
             var privateKey = new PrivateKey();
             var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("127.0.0.1", 1000));
-            IBlockPolicy policy = new BlockPolicy();
+            IBlockPolicy policy = new BlockPolicy(
+                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
             BlockChain chain = MakeBlockChain<DumbAction>(
                 policy,
                 new MemoryStore(),

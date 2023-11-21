@@ -49,7 +49,7 @@ namespace Libplanet.Action.Tests.Loader
                             new List<Validator>()
                                 { new Validator(new PrivateKey().PublicKey, 1) }).Bencoded,
                         Dictionary.Empty.Add(
-                            ReservedAddresses.LegacyAccount.ToByteArray(),
+                            ReservedAddresses.DefaultAccount.ToByteArray(),
                             Dictionary.Empty.Add(
                                 default(Address).ToByteArray(), "initial value"))));
             var action = new Initialize();

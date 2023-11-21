@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -20,6 +21,9 @@ namespace Libplanet.Tests.Blockchain.Policies
         private static readonly DateTimeOffset FixtureEpoch =
             new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
+        private readonly ISystemAccountsGetter _systemAccountsGetter
+            = new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount);
+
         private readonly ITestOutputHelper _output;
 
         private StoreFixture _fx;
@@ -32,6 +36,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _fx = new MemoryStoreFixture();
             _output = output;
             _policy = new BlockPolicy(
+                systemAccountsGetter: _systemAccountsGetter,
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy();
@@ -42,6 +47,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
+                    _policy.SystemAccountsGetter,
                     _ => _policy.BlockAction,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
@@ -57,17 +63,19 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy(
+                _systemAccountsGetter,
                 blockAction: null,
                 blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy(
+                _systemAccountsGetter,
                 blockInterval: TimeSpan.FromMilliseconds(65000));
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
 
-            var c = new BlockPolicy();
+            var c = new BlockPolicy(_systemAccountsGetter);
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);
@@ -87,7 +95,8 @@ namespace Libplanet.Tests.Blockchain.Policies
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(
+                _systemAccountsGetter, validateNextBlockTx: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
@@ -131,6 +140,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             // Invalid Transaction without Inner-exception
             var policy = new BlockPolicy(
+                _systemAccountsGetter,
                 validateNextBlockTx: IsSignerValid);
 
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
@@ -140,6 +150,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             // Invalid Transaction with Inner-exception.
             policy = new BlockPolicy(
+                _systemAccountsGetter,
                 validateNextBlockTx: IsSignerValidWithInnerException);
 
             invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
@@ -156,6 +167,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var policy = new BlockPolicy(
+                systemAccountsGetter: _systemAccountsGetter,
                 blockAction: new MinerReward(1),
                 getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
             var privateKey = new PrivateKey();
@@ -179,6 +191,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var policy = new BlockPolicy(
+                systemAccountsGetter: _systemAccountsGetter,
                 getMaxTransactionsPerBlock: _ => policyLimit);
             var privateKey = new PrivateKey();
             var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
@@ -203,6 +216,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var policy = new BlockPolicy(
+                systemAccountsGetter: _systemAccountsGetter,
                 getMaxTransactionsPerSignerPerBlock: _ => policyLimit);
             var privateKeys = Enumerable.Range(0, keyCount).Select(_ => new PrivateKey()).ToList();
             var minerKey = privateKeys.First();

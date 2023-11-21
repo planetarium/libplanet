@@ -27,7 +27,7 @@ namespace Libplanet.Action.Tests.Mocks
             Legacy = Trie
                 .Get(new[]
                 {
-                    ToStateKey(ReservedAddresses.LegacyAccount),
+                    ToStateKey(ReservedAddresses.DefaultAccount),
                 })
                 .Any(v => v == null);
         }
@@ -37,7 +37,7 @@ namespace Libplanet.Action.Tests.Mocks
         public bool Legacy { get; private set; }
 
         public IAccount GetAccount(Address address)
-            => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
+            => Legacy && address.Equals(ReservedAddresses.DefaultAccount)
                 ? new Account(new MockAccountState(_stateStore, Trie.Hash))
                 : new Account(new MockAccountState(
                     _stateStore,
@@ -46,7 +46,7 @@ namespace Libplanet.Action.Tests.Mocks
                         : null));
 
         public IWorldState SetAccountState(Address address, IAccount account)
-            => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
+            => Legacy && address.Equals(ReservedAddresses.DefaultAccount)
             ? new MockWorldState(_stateStore, account.Trie.Hash)
             : new MockWorldState(
                 _stateStore,

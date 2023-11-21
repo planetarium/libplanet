@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -28,7 +30,8 @@ namespace Libplanet.Net.Tests.Transports
         public async Task QueryAppProtocolVersion()
         {
             var fx = new MemoryStoreFixture();
-            var policy = new BlockPolicy();
+            var policy = new BlockPolicy(
+                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
             var blockchain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
             var swarmKey = new PrivateKey();
             var consensusKey = new PrivateKey();

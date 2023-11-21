@@ -21,6 +21,11 @@ namespace Libplanet.Blockchain.Policies
     public interface IBlockPolicy
     {
         /// <summary>
+        /// The <see cref="ISystemAccountsGetter"/> to determine <see cref="ISystemAccounts"/>.
+        /// </summary>
+        ISystemAccountsGetter SystemAccountsGetter { get; }
+
+        /// <summary>
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }

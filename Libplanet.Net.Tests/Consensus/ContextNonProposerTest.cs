@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex.Types;
+using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -259,6 +261,8 @@ namespace Libplanet.Net.Tests.Consensus
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var invalidKey = new PrivateKey();
             var policy = new BlockPolicy(
+                systemAccountsGetter: new SystemAccountsGetter(
+                    _ => ReservedAddresses.DefaultAccount),
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
                 validateNextBlockTx: IsSignerValid);
@@ -331,6 +335,8 @@ namespace Libplanet.Net.Tests.Consensus
             var nilPreCommitSent = new AsyncAutoResetEvent();
             var txSigner = new PrivateKey();
             var policy = new BlockPolicy(
+                systemAccountsGetter: new SystemAccountsGetter(
+                    _ => ReservedAddresses.DefaultAccount),
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
 

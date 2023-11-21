@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -40,7 +41,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlock()
         {
             const int numBlocks = 5;
-            var policy = new NullBlockPolicy();
+            var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var swarmA = await CreateSwarm(
@@ -92,7 +93,7 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullBlockPolicy();
+            var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
@@ -449,7 +450,8 @@ namespace Libplanet.Net.Tests
         {
             int size = 5;
 
-            var policy = new BlockPolicy();
+            var policy = new BlockPolicy(
+                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
             StoreFixture[] fxs = new StoreFixture[size];
             BlockChain[] blockChains = new BlockChain[size];
             Swarm[] swarms = new Swarm[size];
@@ -464,6 +466,7 @@ namespace Libplanet.Net.Tests
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock,
                     new ActionEvaluator(
+                        systemAccountsGetter: policy.SystemAccountsGetter,
                         policyBlockActionGetter: _ => policy.BlockAction,
                         stateStore: fxs[i].StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
@@ -698,7 +701,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
-            var policy = new BlockPolicy(new MinerReward(1));
+            var policy = new BlockPolicy(
+                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
+                new MinerReward(1));
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain<DumbAction>(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();

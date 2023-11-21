@@ -66,7 +66,7 @@ namespace Libplanet.Action.Sys
         public IWorld Execute(IActionContext context)
         {
             IWorld world = context.PreviousState;
-            IAccount legacyAccount = world.GetAccount(ReservedAddresses.LegacyAccount);
+            IAccount legacyAccount = world.GetAccount(ReservedAddresses.DefaultAccount);
 
             if (context.BlockIndex != 0)
             {
@@ -91,7 +91,7 @@ namespace Libplanet.Action.Sys
                 }
             }
 
-            world = world.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
+            world = world.SetAccount(ReservedAddresses.DefaultAccount, legacyAccount);
 
             return world;
         }

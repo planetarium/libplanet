@@ -68,6 +68,10 @@ To be released.
  -  (Libplanet.Action) Type of `Initialize.States` property became
     `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>?`.
     (was `IImmutableDictionary<Address, IValue>?`)  [[#3462]]
+ -  (Libplanet.Action) New property `SystemAccounts` added to
+    `IActionContext` interface.  [[#3494]]
+ -  (Libplanet.Action) New property `SystemAccountsGetter` added to
+    `IBlockPolicy` interface.  [[#3494]]
 
 
 ### Backward-incompatible network protocol changes
@@ -85,6 +89,8 @@ To be released.
      -  Added `WorldBaseState` class.
  -  (Libplanet.Action) Added `ReservedAddresses` static class.  [[#3462]]
  -  (Libplanet.Action) Added `WorldDeltaExtensions` static class.  [[#3462]]
+ -  (Libplanet.Action) Added `ISystemAccounts` interface.  [[#3494]
+ -  (Libplanet.Action) Added `ISystemAccountsGetter` interface.  [[#3494]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
@@ -117,6 +123,7 @@ To be released.
 ### CLI tools
 
 [#3462]: https://github.com/planetarium/libplanet/pull/3462
+[#3494]: https://github.com/planetarium/libplanet/pull/3494
 
 
 Version 3.7.0
