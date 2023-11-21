@@ -81,7 +81,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
   <div class="implements">
     <h5>Implements</h5>
     <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
     <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -93,7 +93,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
       <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
@@ -258,7 +258,7 @@ the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplan
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
         <td><p>An immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <span class="xref">null</span>, and its
@@ -321,7 +321,7 @@ and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -396,7 +396,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -496,7 +496,7 @@ public static HashDigest&lt;T&gt; DeriveFrom(ImmutableArray&lt;byte&gt; input)</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">input</span></td>
         <td><p>The bytes to compute its hash.</p>
 </td>
@@ -808,13 +808,13 @@ public override readonly int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <h5 id="Libplanet_Common_HashDigest_1_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a></div>
@@ -849,12 +849,12 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -949,7 +949,7 @@ public override readonly string ToString()</code></pre>
       <span class="xref">System.Runtime.Serialization.ISerializable</span>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <div>
       <span class="xref">Bencodex.IBencodable</span>
