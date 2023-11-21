@@ -6,6 +6,11 @@ Version 3.6.2
 
 To be released.
 
+ -  (Libplanet.Net) Changed default `ContextTimeoutOption` values for
+    more consistent and stable consensus.  [[#3506]]
+
+[#3506]: https://github.com/planetarium/libplanet/pull/3506
+
 
 Version 3.6.1
 -------------
