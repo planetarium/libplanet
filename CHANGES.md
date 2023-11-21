@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.6.2
 -------------
 
-To be released.
+Released on November 21, 2023.
 
  -  (Libplanet.Net) Changed default `ContextTimeoutOption` values for
     more consistent and stable consensus.  [[#3506]]
