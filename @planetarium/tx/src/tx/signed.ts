@@ -1,16 +1,16 @@
-import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { Account, Address, Signature } from "@planetarium/account";
-import { type UnsignedTx, encodeUnsignedTx } from "./unsigned.js";
+import { BencodexDictionary, Dictionary, encode } from "@planetarium/bencodex";
 import { bytesEqual } from "../bytes.js";
+import { type UnsignedTx, encodeUnsignedTx } from "./unsigned.js";
 
 const SIGNATURE_KEY = new Uint8Array([0x53]); // 'S'
 
-export type SignedTx<T extends UnsignedTx> = T & { signature: Signature };
+export type SignedTx = UnsignedTx & { signature: Signature };
 
 export async function signTx(
   tx: UnsignedTx,
   signAccount: Account
-): Promise<SignedTx<typeof tx>> {
+): Promise<SignedTx> {
   if (
     !bytesEqual(
       tx.publicKey,
@@ -34,9 +34,7 @@ export async function signTx(
   };
 }
 
-export function encodeSignedTx<T extends UnsignedTx>(
-  tx: SignedTx<T>
-): Dictionary {
+export function encodeSignedTx(tx: SignedTx): Dictionary {
   const dict = encodeUnsignedTx(tx);
   const sig = tx.signature.toBytes();
   return new BencodexDictionary([...dict, [SIGNATURE_KEY, sig]]);
