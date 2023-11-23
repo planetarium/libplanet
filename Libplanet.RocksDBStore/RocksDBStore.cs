@@ -1373,7 +1373,9 @@ namespace Libplanet.RocksDBStore
             int txEpochUnitSeconds = query.GetInt32("tx-epoch-unit-secs", 86400);
             int blockEpochUnitSeconds = query.GetInt32("block-epoch-unit-secs", 86400);
             int dbConnectionCacheSize = query.GetInt32("connection-cache", 100);
-            var parse = Enum.TryParse(query.Get("instance-type"), out RocksDBInstanceType type);
+            RocksDBInstanceType instanceType = query.GetEnum<RocksDBInstanceType>(
+                "instance-type", RocksDBInstanceType.Primary);
+
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
             var store = new RocksDBStore(
                 storeUri.LocalPath,
@@ -1385,12 +1387,12 @@ namespace Libplanet.RocksDBStore
                 txEpochUnitSeconds,
                 blockEpochUnitSeconds,
                 dbConnectionCacheSize,
-                parse ? type : RocksDBInstanceType.Primary);
+                instanceType);
             string statesDirPath = Path.Combine(storeUri.LocalPath, statesKvPath);
             var stateStore = new TrieStateStore(
                 new RocksDBKeyValueStore(
                     statesDirPath,
-                    parse ? type : RocksDBInstanceType.Primary));
+                    instanceType));
             return (store, stateStore);
         }
 

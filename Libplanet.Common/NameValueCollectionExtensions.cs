@@ -11,6 +11,58 @@ namespace Libplanet.Common
     public static class NameValueCollectionExtensions
     {
         /// <summary>
+        /// Tries to get the text associated with the specified <paramref name="name"/> as
+        /// given <see cref="Enum"/> type <typeparamref name="T"/> value from the specified
+        /// name-value <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">The <see cref="NameValueCollection"/> that contains the entry
+        /// to find.</param>
+        /// <param name="name">The <see cref="string"/> key of the entry that contains the value to
+        /// find.</param>
+        /// <typeparam name="T">The <see cref="Enum"/> type to parse to.</typeparam>
+        /// <returns>A <typeparamref name="T"/> value converted from the text value associated with
+        /// the specified key <paramref name="name"/> from the <paramref name="collection"/>,
+        /// if found; otherwise, <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the value cannot be parsed to type
+        /// <typeparamref name="T"/>.</exception>
+        /// <remarks>This method assumes the <paramref name="collection"/> contains zero or
+        /// one entry for the specified <paramref name="name"/>.</remarks>
+        public static T? GetEnum<T>(this NameValueCollection collection, string name)
+            where T : struct, Enum
+            => collection.Get(name) is { } value
+                ? (T?)(Enum.TryParse(value, out T result) ? result : throw new ArgumentException())
+                : (T?)null;
+
+        /// <summary>
+        /// Tries to get the text associated with the specified <paramref name="name"/> as
+        /// given <see cref="Enum"/> type <typeparamref name="T"/> value from the specified
+        /// name-value <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">The <see cref="NameValueCollection"/> that contains the entry
+        /// to find.</param>
+        /// <param name="name">The <see cref="string"/> key of the entry that contains the value to
+        /// find.</param>
+        /// <param name="defaultValue">Returns this value if the specified key
+        /// <paramref name="name"/> is not found in the <paramref name="collection"/>, or
+        /// the associated value cannot be parsed to type <typeparamref name="T"/>.</param>
+        /// <typeparam name="T">The <see cref="Enum"/> type to parse to.</typeparam>
+        /// <returns>A <typeparamref name="T"/> value converted from the text value associated with
+        /// the specified key <paramref name="name"/> from the <paramref name="collection"/>,
+        /// if found; otherwise, <see langword="defaultValue"/>.</returns>
+        public static T GetEnum<T>(this NameValueCollection collection, string name, T defaultValue)
+            where T : struct, Enum
+        {
+            try
+            {
+                return GetEnum<T>(collection, name) ?? defaultValue;
+            }
+            catch (ArgumentException)
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
         /// Tries to get the numeric text associated with the specified <paramref name="name"/> as
         /// an <see cref="int"/> value from the specified name-value <paramref name="collection"/>.
         /// </summary>
