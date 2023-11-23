@@ -125,7 +125,7 @@ namespace Libplanet.RocksDBStore
         private readonly DbOptions _options;
         private readonly ColumnFamilyOptions _colOptions;
         private readonly string _path;
-        private readonly RocksDbInstanceType _instanceType;
+        private readonly RocksDBInstanceType _instanceType;
         private readonly int _txEpochUnitSeconds;
         private readonly int _blockEpochUnitSeconds;
 
@@ -165,7 +165,7 @@ namespace Libplanet.RocksDBStore
         /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>
-        /// <param name="type">Choose type of <see cref="RocksDbInstanceType"/>.</param>
+        /// <param name="type">Choose type of <see cref="RocksDBInstanceType"/>.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,
@@ -176,7 +176,7 @@ namespace Libplanet.RocksDBStore
             int txEpochUnitSeconds = 86400,
             int blockEpochUnitSeconds = 86400,
             int dbConnectionCacheSize = 100,
-            RocksDbInstanceType type = RocksDbInstanceType.Primary
+            RocksDBInstanceType type = RocksDBInstanceType.Primary
         )
         {
             _logger = Log.ForContext<RocksDBStore>();
@@ -1373,7 +1373,7 @@ namespace Libplanet.RocksDBStore
             int txEpochUnitSeconds = query.GetInt32("tx-epoch-unit-secs", 86400);
             int blockEpochUnitSeconds = query.GetInt32("block-epoch-unit-secs", 86400);
             int dbConnectionCacheSize = query.GetInt32("connection-cache", 100);
-            var parse = Enum.TryParse(query.Get("instance-type"), out RocksDbInstanceType type);
+            var parse = Enum.TryParse(query.Get("instance-type"), out RocksDBInstanceType type);
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
             var store = new RocksDBStore(
                 storeUri.LocalPath,
@@ -1385,12 +1385,12 @@ namespace Libplanet.RocksDBStore
                 txEpochUnitSeconds,
                 blockEpochUnitSeconds,
                 dbConnectionCacheSize,
-                parse ? type : RocksDbInstanceType.Primary);
+                parse ? type : RocksDBInstanceType.Primary);
             string statesDirPath = Path.Combine(storeUri.LocalPath, statesKvPath);
             var stateStore = new TrieStateStore(
                 new RocksDBKeyValueStore(
                     statesDirPath,
-                    parse ? type : RocksDbInstanceType.Primary));
+                    parse ? type : RocksDBInstanceType.Primary));
             return (store, stateStore);
         }
 

@@ -75,10 +75,10 @@ namespace Libplanet.RocksDBStore
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
         /// </summary>
         /// <param name="path">The path of the storage file will be saved.</param>
-        /// <param name="type">Choose type of <see cref="RocksDbInstanceType"/>.</param>
+        /// <param name="type">Choose type of <see cref="RocksDBInstanceType"/>.</param>
         public RocksDBKeyValueStore(
             string path,
-            RocksDbInstanceType type = RocksDbInstanceType.Primary)
+            RocksDBInstanceType type = RocksDBInstanceType.Primary)
         {
             var options = new DbOptions()
                 .SetCreateIfMissing();
@@ -87,7 +87,7 @@ namespace Libplanet.RocksDBStore
             Type = type;
         }
 
-        public RocksDbInstanceType Type { get; }
+        public RocksDBInstanceType Type { get; }
 
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())

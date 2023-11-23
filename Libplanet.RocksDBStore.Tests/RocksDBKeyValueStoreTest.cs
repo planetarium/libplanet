@@ -34,7 +34,7 @@ namespace Libplanet.RocksDBStore.Tests
                 Path.GetTempPath(),
                 $"rocksdb_key_value_test_{Guid.NewGuid()}");
             var primaryRocksDb = new RocksDBKeyValueStore(basePath);
-            var readonlyRocksDb = new RocksDBKeyValueStore(basePath, RocksDbInstanceType.ReadOnly);
+            var readonlyRocksDb = new RocksDBKeyValueStore(basePath, RocksDBInstanceType.ReadOnly);
 
             var key = new KeyBytes("new");
             var value = new byte[] { 1, 2, 3 };
@@ -53,7 +53,7 @@ namespace Libplanet.RocksDBStore.Tests
             var primaryRocksDb = new RocksDBKeyValueStore(basePath);
             var secondaryRocksDb = new RocksDBKeyValueStore(
                 basePath,
-                RocksDbInstanceType.Secondary);
+                RocksDBInstanceType.Secondary);
 
             var key = new KeyBytes("new");
             var value = new byte[] { 1, 2, 3 };

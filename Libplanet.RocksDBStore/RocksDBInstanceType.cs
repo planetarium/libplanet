@@ -7,7 +7,7 @@ namespace Libplanet.RocksDBStore
     /// href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">
     /// RocksDB's document</a> for more details.
     /// </summary>
-    public enum RocksDbInstanceType
+    public enum RocksDBInstanceType
     {
         /// <summary>
         /// Primary instance.

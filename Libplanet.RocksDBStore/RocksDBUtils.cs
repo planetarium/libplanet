@@ -10,7 +10,7 @@ namespace Libplanet.RocksDBStore
             DbOptions options,
             string dbPath,
             ColumnFamilies? columnFamilies = null,
-            RocksDbInstanceType type = RocksDbInstanceType.Primary)
+            RocksDBInstanceType type = RocksDBInstanceType.Primary)
         {
             if (!Directory.Exists(dbPath))
             {
@@ -19,12 +19,12 @@ namespace Libplanet.RocksDBStore
 
             return type switch
             {
-                RocksDbInstanceType.Primary => columnFamilies is null
+                RocksDBInstanceType.Primary => columnFamilies is null
                     ? RocksDb.Open(options, dbPath) : RocksDb.Open(options, dbPath, columnFamilies),
-                RocksDbInstanceType.ReadOnly => columnFamilies is null
+                RocksDBInstanceType.ReadOnly => columnFamilies is null
                     ? RocksDb.OpenReadOnly(options, dbPath, false)
                     : RocksDb.OpenReadOnly(options, dbPath, columnFamilies, false),
-                RocksDbInstanceType.Secondary => columnFamilies is null
+                RocksDBInstanceType.Secondary => columnFamilies is null
                     ? RocksDb.OpenAsSecondary(options, dbPath, CreateSecondaryPath(dbPath))
                     : RocksDb.OpenAsSecondary(
                         options,
@@ -37,7 +37,7 @@ namespace Libplanet.RocksDBStore
 
         private static string CreateSecondaryPath(string dbPath)
         {
-            string secondaryPath = Path.Combine(dbPath, $"secondary-{Guid.NewGuid()}");
+            string secondaryPath = Path.Combine(dbPath, $"SECONDARY-{Guid.NewGuid()}");
             if (!Directory.Exists(secondaryPath))
             {
                 Directory.CreateDirectory(secondaryPath);
