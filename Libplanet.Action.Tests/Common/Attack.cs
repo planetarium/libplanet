@@ -34,7 +34,7 @@ namespace Libplanet.Action.Tests.Common
             IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
             IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
             IWorld previousState = context.PreviousState;
-            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.DefaultAccount);
+            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.LegacyAccount);
 
             object value = legacyAccount.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
@@ -49,7 +49,7 @@ namespace Libplanet.Action.Tests.Common
             var result = new BattleResult(usedWeapons, targets);
             legacyAccount = legacyAccount.SetState(TargetAddress, result.ToBencodex());
 
-            return previousState.SetAccount(ReservedAddresses.DefaultAccount, legacyAccount);
+            return previousState.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
         }
     }
 }

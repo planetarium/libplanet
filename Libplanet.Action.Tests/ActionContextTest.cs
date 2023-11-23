@@ -12,15 +12,12 @@ namespace Libplanet.Action.Tests
         private readonly System.Random _random;
         private readonly Address _address;
         private readonly TxId _txid;
-        private readonly ISystemAccounts _systemAccounts;
 
         public ActionContextTest()
         {
             _random = new System.Random();
             _address = _random.NextAddress();
             _txid = _random.NextTxId();
-            _systemAccounts = new SystemAccounts(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
         }
 
         [Fact]
@@ -37,7 +34,6 @@ namespace Libplanet.Action.Tests
                     signer: _address,
                     txid: _txid,
                     miner: _address,
-                    systemAccounts: _systemAccounts,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new World(new MockWorldState()),
@@ -56,7 +52,6 @@ namespace Libplanet.Action.Tests
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                systemAccounts: _systemAccounts,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(new MockWorldState()),
@@ -68,7 +63,6 @@ namespace Libplanet.Action.Tests
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                systemAccounts: _systemAccounts,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(new MockWorldState()),
@@ -80,7 +74,6 @@ namespace Libplanet.Action.Tests
                 signer: _address,
                 txid: _txid,
                 miner: _address,
-                systemAccounts: _systemAccounts,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(new MockWorldState()),
@@ -120,7 +113,6 @@ namespace Libplanet.Action.Tests
                     signer: _address,
                     txid: _txid,
                     miner: _address,
-                    systemAccounts: _systemAccounts,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new World(new MockWorldState()),

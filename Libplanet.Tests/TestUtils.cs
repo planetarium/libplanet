@@ -607,10 +607,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             };
 
             var actionEvaluator = new ActionEvaluator(
-                policy.SystemAccountsGetter,
-                _ => policy.BlockAction,
-                stateStore: stateStore,
-                actionTypeLoader: new SingleActionLoader(typeof(T)));
+                    _ => policy.BlockAction,
+                    stateStore: stateStore,
+                    actionTypeLoader: new SingleActionLoader(typeof(T)));
 
             if (genesisBlock is null)
             {

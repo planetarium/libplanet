@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -16,7 +17,6 @@ namespace Libplanet.Action
             Address signer,
             TxId? txid,
             Address miner,
-            ISystemAccounts systemAccounts,
             long blockIndex,
             int blockProtocolVersion,
             IWorld previousState,
@@ -27,7 +27,6 @@ namespace Libplanet.Action
             Signer = signer;
             TxId = txid;
             Miner = miner;
-            SystemAccounts = systemAccounts;
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
             Rehearsal = rehearsal;
@@ -46,9 +45,6 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.Miner"/>
         public Address Miner { get; }
-
-        /// <inheritdoc cref="IActionContext.SystemAccounts"/>
-        public ISystemAccounts SystemAccounts { get; }
 
         /// <inheritdoc cref="IActionContext.BlockIndex"/>
         public long BlockIndex { get; }

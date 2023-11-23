@@ -5,8 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
-using Libplanet.Action;
-using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -46,7 +44,6 @@ namespace Libplanet.Net.Tests
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
         public static readonly IBlockPolicy Policy = new BlockPolicy(
-            systemAccountsGetter: new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
             blockAction: new MinerReward(1),
             getMaxTransactionsBytes: _ => 50 * 1024);
 

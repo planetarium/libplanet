@@ -29,8 +29,7 @@ public class StateQueryTest
     public async Task WorldStates()
     {
         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -58,8 +57,7 @@ public class StateQueryTest
     public async Task AccountStates()
     {
         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -86,8 +84,7 @@ public class StateQueryTest
     public async Task State()
     {
         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -113,7 +110,7 @@ public class StateQueryTest
     {
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -158,8 +155,7 @@ public class StateQueryTest
         var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
         (IBlockChainStates, IBlockPolicy) source = (
-           new MockChainStates(),
-           new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount)));
+           new MockChainStates(), new BlockPolicy());
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
@@ -213,7 +209,7 @@ public class StateQueryTest
     {
         (IBlockChainStates, IBlockPolicy) source = (
            new MockChainStates(),
-           new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+           new BlockPolicy()
        );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -242,8 +238,7 @@ public class StateQueryTest
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -264,8 +259,7 @@ public class StateQueryTest
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new MockChainStates(), new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -291,7 +285,7 @@ public class StateQueryTest
     {
         (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -336,8 +330,7 @@ public class StateQueryTest
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
          (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount)));
+            new MockChainStates(), new BlockPolicy());
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
@@ -392,7 +385,7 @@ public class StateQueryTest
     {
          (IBlockChainStates, IBlockPolicy) source = (
             new MockChainStates(),
-            new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount))
+            new BlockPolicy()
         );
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {

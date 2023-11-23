@@ -70,7 +70,7 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount account = world.GetAccount(_context.SystemAccounts.FeeAccount);
+            IAccount account = world.GetFungibleAssetsAccount();
             var balance = account.GetBalance(_context.Signer, realGasPrice.Currency);
             if (balance < realGasPrice * _context.GasLimit())
             {
@@ -86,7 +86,7 @@ namespace Libplanet.Action
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
             _state = FeeCollectState.Mortgage;
-            return world.SetAccount(_context.SystemAccounts.FeeAccount, nextAccount);
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
         public IWorld Refund(IWorld world)
@@ -108,12 +108,12 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = world.GetAccount(_context.SystemAccounts.FeeAccount).MintAsset(
+            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
                 _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
             _state = FeeCollectState.Refund;
-            return world.SetAccount(_context.SystemAccounts.FeeAccount, nextAccount);
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
         public IWorld Reward(IWorld world)
@@ -135,12 +135,12 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = world.GetAccount(_context.SystemAccounts.FeeAccount).MintAsset(
+            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
                 _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());
             _state = FeeCollectState.Reward;
-            return world.SetAccount(_context.SystemAccounts.FeeAccount, nextAccount);
+            return world.SetFungibleAssetsAccount(nextAccount);
         }
 
         public IFeeCollector Next(IActionContext context)

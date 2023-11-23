@@ -13,8 +13,6 @@ namespace Libplanet.Action.Tests
     public class ActionEvaluationTest
     {
         private readonly ILogger _logger;
-        private readonly ISystemAccounts _systemAccounts = new SystemAccounts(
-            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
 
         public ActionEvaluationTest(ITestOutputHelper output)
         {
@@ -29,19 +27,18 @@ namespace Libplanet.Action.Tests
         [Fact]
         public void Constructor()
         {
-            var txid = new System.Random().NextTxId();
             Address address = new PrivateKey().ToAddress();
             IWorld world = new World(new MockWorldState());
             world = world.SetAccount(
-                ReservedAddresses.DefaultAccount,
-                world.GetAccount(ReservedAddresses.DefaultAccount).SetState(address, (Text)"item"));
+                ReservedAddresses.LegacyAccount,
+                world.GetAccount(ReservedAddresses.LegacyAccount).SetState(address, (Text)"item"));
+            var txid = new System.Random().NextTxId();
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
                     address,
                     txid,
                     address,
-                    _systemAccounts,
                     1,
                     Block.CurrentProtocolVersion,
                     new World(new MockWorldState()),
@@ -60,12 +57,11 @@ namespace Libplanet.Action.Tests
             Assert.Equal(1, evaluation.InputContext.BlockIndex);
             Assert.Null(
                 evaluation.InputContext.PreviousState.GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(address)
+                    ReservedAddresses.LegacyAccount).GetState(address)
             );
             Assert.Equal(
                 (Text)"item",
-                evaluation.OutputState
-                    .GetAccount(ReservedAddresses.DefaultAccount).GetState(address)
+                evaluation.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(address)
             );
         }
     }

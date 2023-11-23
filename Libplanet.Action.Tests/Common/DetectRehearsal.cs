@@ -25,10 +25,10 @@ namespace Libplanet.Action.Tests.Common
         public override IWorld Execute(IActionContext context)
         {
             IWorld previousState = context.PreviousState;
-            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.DefaultAccount);
+            IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.LegacyAccount);
             ResultState = context.Rehearsal;
             return previousState.SetAccount(
-                ReservedAddresses.DefaultAccount,
+                ReservedAddresses.LegacyAccount,
                 legacyAccount.SetState(
                     TargetAddress,
                     new Bencodex.Types.Boolean(context.Rehearsal)

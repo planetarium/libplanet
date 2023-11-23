@@ -176,13 +176,11 @@ namespace Libplanet.Tests.Blockchain
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
             var policy = new BlockPolicy(
-                _systemAccountsGetter,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                policy.SystemAccountsGetter,
                 _ => policy.BlockAction,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
@@ -215,7 +213,6 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.GenesisProposer);
 
             var policyWithBlockAction = new BlockPolicy(
-                _systemAccountsGetter,
                 new SetStatesAtBlock(default, (Text)"foo", default, 1),
                 policy.BlockInterval
             );
@@ -226,7 +223,6 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 genesisBlock,
                 new ActionEvaluator(
-                    policy.SystemAccountsGetter,
                     _ => policyWithBlockAction.BlockAction,
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
@@ -492,7 +488,7 @@ namespace Libplanet.Tests.Blockchain
             var validatorSet = new ValidatorSet(
                 new[] { validator1, validator2, validator3, validator4 }.ToList());
             BlockChain blockChain = TestUtils.MakeBlockChain<DumbAction>(
-                _nullBlockPolicy,
+                new NullBlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 validatorSet: validatorSet);

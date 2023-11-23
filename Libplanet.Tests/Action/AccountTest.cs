@@ -208,7 +208,7 @@ namespace Libplanet.Tests.Action
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var privateKey = new PrivateKey();
             BlockChain chain = TestUtils.MakeBlockChain<DumbAction>(
-                new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount),
+                new NullBlockPolicy(),
                 store,
                 stateStore,
                 protocolVersion: ProtocolVersion,
@@ -238,13 +238,11 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain.GetBalance(
-                    _addr[0], DumbAction.DumbCurrency, ReservedAddresses.DefaultAccount)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * -5,
-                chain.GetBalance(
-                    _addr[1], DumbAction.DumbCurrency, ReservedAddresses.DefaultAccount)
+                chain.GetBalance(_addr[1], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
 
             return chain;

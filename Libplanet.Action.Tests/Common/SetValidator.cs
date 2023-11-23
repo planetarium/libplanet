@@ -40,9 +40,9 @@ namespace Libplanet.Action.Tests.Common
         public IWorld Execute(IActionContext context)
         {
             IWorld states = context.PreviousState;
-            IAccount legacyAccount = states.GetAccount(ReservedAddresses.DefaultAccount);
+            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
             return states.SetAccount(
-                ReservedAddresses.DefaultAccount, legacyAccount.SetValidator(Validator));
+                ReservedAddresses.LegacyAccount, legacyAccount.SetValidator(Validator));
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>

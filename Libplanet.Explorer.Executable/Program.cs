@@ -147,10 +147,6 @@ consecutive blocks.")]
                 Description = "The name of MySQL database to use.")]
             string mysqlDatabase = null,
             [Option(
-                "fee-account-address",
-                Description = "The account address where fee stored.")]
-            string feeAccountAddress = null,
-            [Option(
                 "max-transactions-per-block",
                 Description = @"The number of maximum transactions able to be included
 in a block.")]
@@ -192,7 +188,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 mysqlUsername,
                 mysqlPassword,
                 mysqlDatabase,
-                feeAccountAddress,
                 maxTransactionsPerBlock,
                 maxTransactionsBytes,
                 maxGenesisTransactionsBytes,
@@ -229,7 +224,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         stateStore,
                         options.GetGenesisBlock(policy),
                         new ActionEvaluator(
-                            policy.SystemAccountsGetter,
                             _ => policy.BlockAction,
                             stateStore,
                             new SingleActionLoader(typeof(NullAction))));
@@ -402,7 +396,6 @@ If omitted (default) explorer only the local blockchain store.")]
         private static BlockPolicy LoadBlockPolicy(Options options)
         {
             return new BlockPolicy(
-                systemAccountsGetter: new SystemAccountsGetter(_ => options.FeeAccountAddress),
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 getMaxTransactionsBytes: i => i > 0
@@ -445,8 +438,6 @@ If omitted (default) explorer only the local blockchain store.")]
             {
                 _impl = blockPolicy;
             }
-
-            public ISystemAccountsGetter SystemAccountsGetter => _impl.SystemAccountsGetter;
 
             public IAction BlockAction => _impl.BlockAction;
 

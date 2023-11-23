@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Consensus;
@@ -287,13 +286,10 @@ namespace Libplanet.Net.Tests.Consensus
             var enteredEndCommit = new AsyncAutoResetEvent();
             var blockHeightOneAppended = new AsyncAutoResetEvent();
             var enteredHeightTwo = new AsyncAutoResetEvent();
-            var systemAccountsGetter = new SystemAccountsGetter(
-                _ => ReservedAddresses.DefaultAccount);
 
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
 
             var policy = new BlockPolicy(
-                systemAccountsGetter: systemAccountsGetter,
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var fx = new MemoryStoreFixture(policy.BlockAction);
