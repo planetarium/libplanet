@@ -75,7 +75,8 @@ namespace Libplanet.RocksDBStore
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
         /// </summary>
         /// <param name="path">The path of the storage file will be saved.</param>
-        /// <param name="type">Choose type of <see cref="RocksDBInstanceType"/>.</param>
+        /// <param name="type">Determines the instance type of the internal <see cref="RocksDb"/>
+        /// instances.  <see cref="RocksDBInstanceType.Primary"/> by default.</param>
         public RocksDBKeyValueStore(
             string path,
             RocksDBInstanceType type = RocksDBInstanceType.Primary)

@@ -113,8 +113,6 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ChainBlockCommitKeyPrefix = { (byte)'M' };
         private static readonly byte[] BlockCommitKeyPrefix = { (byte)'m' };
 
-        private static readonly byte[] EmptyBytes = Array.Empty<byte>();
-
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -165,7 +163,8 @@ namespace Libplanet.RocksDBStore
         /// containing blocks.  86,400 seconds by default.</param>
         /// <param name="dbConnectionCacheSize">The capacity of the block and transaction
         /// RocksDB connection cache. 100 by default.</param>
-        /// <param name="type">Choose type of <see cref="RocksDBInstanceType"/>.</param>
+        /// <param name="type">Determines the instance type of the internal <see cref="RocksDb"/>
+        /// instances.  <see cref="RocksDBInstanceType.Primary"/> by default.</param>
         public RocksDBStore(
             string path,
             int blockCacheSize = 512,

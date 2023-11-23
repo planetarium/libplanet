@@ -33,6 +33,12 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.RocksDBStore) Added `RocksDBInstanceType` enum.  [[#3488]]
+ -  (Libplanet.RocksDBStore) Changed `RocksDBStore` and `RocksDBKeyValueStore`
+    to accept `RocksDBInstanceType` type `instanceType` parameter instead of
+    `@readonly` parameter in their constructor.
+    [[#3488], [RocksDb Instance Types]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -45,9 +51,11 @@ To be released.
 [#3480]: https://github.com/planetarium/libplanet/pull/3480
 [#3485]: https://github.com/planetarium/libplanet/pull/3485
 [#3486]: https://github.com/planetarium/libplanet/pull/3486
+[#3487]: https://github.com/planetarium/libplanet/pull/3487
+[#3488]: https://github.com/planetarium/libplanet/pull/3488
 [`RocksDb`]: https://www.nuget.org/packages/RocksDB
 [`RocksDBSharp`]: https://www.nuget.org/packages/Planetarium.RocksDbSharp
-[#3487]: https://github.com/planetarium/libplanet/pull/3487
+[RocksDb Instance Types]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
 
 
 Version 3.7.1
