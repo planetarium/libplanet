@@ -122,14 +122,10 @@ supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAc
       <section><p>This extension class provides some convenient methods
 to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.SystemAccounts.html">SystemAccounts</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Action.SystemAccountsGetter.html">SystemAccountsGetter</a></h4>
-      <section></section>
       <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
       <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
-is stored in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.innerexception#system-exception-innerexception">InnerException</a> property.</p>
+is stored in the <span class="xref">System.Exception.InnerException</span> property.</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
@@ -201,18 +197,8 @@ The fee collector is called only when the transaction is collectible.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.ISystemAccounts.html">ISystemAccounts</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Action.ISystemAccountsGetter.html">ISystemAccountsGetter</a></h4>
-      <section><p>Set of <a class="xref" href="Libplanet.Action.AccountAddressGetter.html">AccountAddressGetter</a> for <a class="xref" href="Libplanet.Action.ISystemAccounts.html">ISystemAccounts</a>
-that have to be defined on the application.</p>
-</section>
     <h3 id="delegates">Delegates
 </h3>
-      <h4><a class="xref" href="Libplanet.Action.AccountAddressGetter.html">AccountAddressGetter</a></h4>
-      <section><p>A delegate to determine <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of account with
-<a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a>.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.PolicyBlockActionGetter.html">PolicyBlockActionGetter</a></h4>
       <section></section>
 </article>
