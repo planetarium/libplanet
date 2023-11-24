@@ -249,6 +249,7 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
+                AccountMetrics.Initialize();
                 state = feeCollector.Mortgage(state);
                 context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);

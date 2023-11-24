@@ -11,8 +11,11 @@ To be released.
  -  (Libplanet.Net) `GossipConsensusMessageCommunicator` now filters
     `ConsensusVoteMsg` which height is different from latest `Context`.
     [[#3519]]
+ -  (Libplanet.Action) Fixed a bug where initialization of `AccountMetrics`
+    is absent.  [[#3521]]
 
 [#3519]: https://github.com/planetarium/libplanet/pull/3519
+[#3521]: https://github.com/planetarium/libplanet/pull/3521
 
 
 Version 3.8.0
