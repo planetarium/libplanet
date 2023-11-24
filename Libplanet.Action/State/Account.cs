@@ -21,22 +21,16 @@ namespace Libplanet.Action.State
         private readonly IAccountState _baseState;
 
         public Account(IAccountState baseState)
-            : this(baseState, new AccountDelta())
-        {
-        }
-
-        public Account(IAccountState baseState, IAccountDelta delta)
-            : this(baseState, delta, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
+            : this(baseState, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
         {
         }
 
         public Account(
             IAccountState baseState,
-            IAccountDelta delta,
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
         {
             _baseState = baseState;
-            Delta = delta;
+            Delta = new AccountDelta();
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
@@ -209,7 +203,7 @@ namespace Libplanet.Action.State
         /// </remarks>
         internal static IAccount Flush(IAccount account) =>
             account is Account impl
-                ? new Account(impl, new AccountDelta(), impl.TotalUpdatedFungibles)
+                ? new Account(impl, impl.TotalUpdatedFungibles)
                 : throw new ArgumentException(
                     $"Unknown type for {nameof(account)}: {account.GetType()}");
 
@@ -220,7 +214,6 @@ namespace Libplanet.Action.State
             new Account(
                 new AccountState(
                     Trie.Set(ToStateKey(address), value)),
-                new AccountDelta(),
                 TotalUpdatedFungibles);
 
         [Pure]
@@ -234,12 +227,10 @@ namespace Libplanet.Action.State
                     Trie
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
                         .Set(ToTotalSupplyKey(currency), new Integer(sa))),
-                new AccountDelta(),
                 TotalUpdatedFungibles.SetItem((address, currency), amount))
             : new Account(
                 new AccountState(
                     Trie.Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
-                new AccountDelta(),
                 TotalUpdatedFungibles.SetItem((address, currency), amount));
 
         [Pure]
@@ -247,7 +238,6 @@ namespace Libplanet.Action.State
             new Account(
                 new AccountState(
                     Trie.Set(ValidatorSetKey, validatorSet.Bencoded)),
-                new AccountDelta(),
                 TotalUpdatedFungibles);
 
         [Pure]

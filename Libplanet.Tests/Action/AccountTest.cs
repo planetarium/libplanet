@@ -92,9 +92,6 @@ namespace Libplanet.Tests.Action
         [Fact]
         public virtual void NullDelta()
         {
-            Assert.Empty(_initAccount.Delta.UpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.StateUpdatedAddresses);
-            Assert.Empty(_initAccount.Delta.UpdatedFungibleAssets);
             Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
             Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
             Assert.Null(_initAccount.GetState(_addr[2]));

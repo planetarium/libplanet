@@ -331,7 +331,6 @@ namespace Libplanet.Action
             state = stateStore is { } s && state is Account a
                 ? new Account(
                     new AccountState(s.Commit(a.Trie)),
-                    new AccountDelta(),
                     a.TotalUpdatedFungibles)
                 : state;
 
