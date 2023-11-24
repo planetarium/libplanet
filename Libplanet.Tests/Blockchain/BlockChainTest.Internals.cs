@@ -5,10 +5,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -127,12 +127,17 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
             };
 
+            IValue legacyStateRootRaw = _fx.StateStore.GetStateRoot(block1.StateRootHash)
+                .Get(ToStateKey(ReservedAddresses.LegacyAccount));
+            Assert.NotNull(legacyStateRootRaw);
+            var legacyStateRoot =
+                new HashDigest<SHA256>(((Binary)legacyStateRootRaw).ByteArray);
             foreach (KeyValuePair<Address, IValue> pair in expectedStates)
             {
                 AssertBencodexEqual(
                     pair.Value,
                     _fx.StateStore
-                        .GetStateRoot(block1.StateRootHash)
+                        .GetStateRoot(legacyStateRoot)
                         .Get(new[] { ToStateKey(pair.Key) })[0]
                 );
             }

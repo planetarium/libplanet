@@ -95,6 +95,17 @@ namespace Libplanet.Action
             try
             {
                 IWorld previousState = PrepareInitialDelta(baseStateRootHash);
+                if (previousState.Legacy &&
+                    block.ProtocolVersion > BlockMetadata.LegacyStateVersion)
+                {
+                    previousState = MigrateLegacyStates(previousState);
+                }
+                else if (!previousState.Legacy &&
+                         block.ProtocolVersion <= BlockMetadata.LegacyStateVersion)
+                {
+                    throw new ApplicationException("World cannot be mutated from modern to legacy");
+                }
+
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
 
@@ -491,8 +502,6 @@ namespace Libplanet.Action
             stopwatch.Start();
 
             ITrie worldTrie = _stateStore.GetStateRoot(baseStateRootHash);
-            IWorldState previousBlockWorld = new WorldBaseState(worldTrie, _stateStore);
-            IWorldState world = previousBlockWorld;
 
             IWorldState nextWorld;
             ITrie nextWorldTrie;
@@ -506,21 +515,13 @@ namespace Libplanet.Action
                 nextWorld = evaluation.OutputState;
                 StateCommitter committer;
 
-                if (world.Legacy && nextWorld.Legacy)
+                if (nextWorld.Legacy)
                 {
                     committer = CommitLegacyState;
                 }
-                else if (world.Legacy && !nextWorld.Legacy)
-                {
-                    committer = CommitLegacyToModernState;
-                }
-                else if (!world.Legacy && !nextWorld.Legacy)
-                {
-                    committer = CommitModernState;
-                }
                 else
                 {
-                    throw new ApplicationException("World cannot be mutated from modern to legacy");
+                    committer = CommitModernState;
                 }
 
                 (nextWorldTrie, subCount) = committer(worldTrie, evaluation);
@@ -542,7 +543,6 @@ namespace Libplanet.Action
                     exception: evaluation.Exception);
                 committedEvaluations.Add(committedEvaluation);
 
-                world = nextWorld;
                 worldTrie = nextWorldTrie;
             }
 
@@ -639,26 +639,6 @@ namespace Libplanet.Action
             return (worldTrie, setCount);
         }
 
-        internal (ITrie, int) CommitLegacyToModernState(
-            ITrie worldTrie, IActionEvaluation evaluation)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            worldTrie = _stateStore.GetStateRoot(null).Set(
-                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
-                new Binary(worldTrie.Hash.ByteArray));
-
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "LegacyCommitDuration")
-                .Information(
-                    "Took {DurationMs} ms to commit the legacy trie " +
-                    "and resulting in state root hash {StateRootHash} ",
-                    stopwatch.ElapsedMilliseconds,
-                    worldTrie.Hash);
-
-            return CommitModernState(worldTrie, evaluation);
-        }
-
         internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
             GetAccountSubStateRootHashes(
                 ITrie worldTrie, IActionEvaluation evaluation)
@@ -675,6 +655,16 @@ namespace Libplanet.Action
             }
 
             return result.ToImmutableDictionary();
+        }
+
+        internal IWorld MigrateLegacyStates(IWorld prevWorld)
+        {
+            _logger.Debug("Migrating states...");
+            var trie = _stateStore.GetStateRoot(null).Set(
+                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                new Binary(prevWorld.Trie.Hash.ByteArray));
+            trie = _stateStore.Commit(trie);
+            return new World(new WorldBaseState(trie, _stateStore));
         }
 
         [Pure]

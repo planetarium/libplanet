@@ -402,14 +402,14 @@ namespace Libplanet.Tests.Action
                     genesis.Hash,
                     new[] { MakeAction(addresses[0], 'D') }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
                 Transaction.Create(
                     0,
                     _txFx.PrivateKey2,
                     genesis.Hash,
                     new[] { MakeAction(addresses[3], 'E') }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
                 Transaction.Create(
                     0,
                     _txFx.PrivateKey3,
@@ -426,7 +426,7 @@ namespace Libplanet.Tests.Action
                             recordRandom: true),
                     }.ToPlainValues(),
                     updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
                 Enumerable.Range(0, block2Txs.Length), (x, y) => (x, y)))

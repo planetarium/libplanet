@@ -228,7 +228,7 @@ namespace Libplanet.Net.Tests.Consensus
             var invalidBlock = blockChain.EvaluateAndSign(
                 new BlockContent(
                     new BlockMetadata(
-                        protocolVersion: BlockMetadata.CurrentProtocolVersion - 1,
+                        protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: blockChain.Tip.Index + 2,
                         timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                         miner: TestUtils.PrivateKeys[1].PublicKey.ToAddress(),

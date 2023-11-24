@@ -7,9 +7,11 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
+using Libplanet.Action.Sys;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -18,6 +20,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
+using Serilog;
 using Xunit;
 using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
@@ -727,6 +730,76 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidActionException>(
                 () => _blockChain.Append(block, TestUtils.CreateBlockCommit(block)));
             Assert.Equal(0, _blockChain.Tip.Index);
+        }
+
+        [SkippableFact]
+        public void MigrateStateWithoutAction()
+        {
+            var policy = new BlockPolicy(
+                blockAction: new MinerReward(1),
+                getMaxTransactionsBytes: _ => 50 * 1024);
+            var stagePolicy = new VolatileStagePolicy();
+            var fx = GetStoreFixture(policy.BlockAction);
+            var renderer = new ValidatingActionRenderer();
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                stateStore: fx.StateStore,
+                actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
+
+            var txs = new[]
+            {
+                Transaction.Create(
+                    0,
+                    fx.Proposer,
+                    null,
+                    actions: new IAction[]
+                    {
+                        new Initialize(
+                            validatorSet: TestUtils.ValidatorSet,
+                            states: ImmutableDictionary.Create<Address, IValue>()),
+                    }.ToPlainValues(),
+                    timestamp: DateTimeOffset.UtcNow),
+            };
+            PreEvaluationBlock preEvalGenesis = new BlockContent(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.LegacyStateVersion,
+                    index: 0L,
+                    timestamp: DateTimeOffset.UtcNow,
+                    miner: fx.Proposer.ToAddress(),
+                    publicKey: fx.Proposer.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent.DeriveTxHash(txs),
+                    lastCommit: null),
+                transactions: txs).Propose();
+            var genesis = preEvalGenesis.Sign(
+                fx.Proposer,
+                BlockChain.DetermineGenesisStateRootHash(actionEvaluator, preEvalGenesis, out _));
+            var blockChain = BlockChain.Create(
+                policy,
+                stagePolicy,
+                fx.Store,
+                fx.StateStore,
+                genesis,
+                actionEvaluator,
+                renderers: new[] { new LoggedActionRenderer(renderer, Log.Logger) });
+            Assert.True(blockChain.GetWorldState().Legacy);
+            var emptyBlockContent = new BlockContent(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.LegacyStateVersion,
+                    index: 0L,
+                    timestamp: DateTimeOffset.UtcNow,
+                    miner: fx.Proposer.ToAddress(),
+                    publicKey: fx.Proposer.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent.DeriveTxHash(txs),
+                    lastCommit: null),
+                transactions: txs);
+            var emptyBlock = blockChain.ProposeBlock(
+                fx.Proposer,
+                ImmutableList<Transaction>.Empty,
+                TestUtils.CreateBlockCommit(blockChain.Tip));
+            blockChain.Append(emptyBlock, TestUtils.CreateBlockCommit(emptyBlock));
+            Assert.False(blockChain.GetWorldState().Legacy);
         }
     }
 }

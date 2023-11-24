@@ -19,12 +19,17 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 4;
+        public const int CurrentProtocolVersion = 5;
 
         /// <summary>
         /// The last PoW protocol version.
         /// </summary>
         public const int PoWProtocolVersion = 3;
+
+        /// <summary>
+        /// The last protocol version with union state model.
+        /// </summary>
+        public const int LegacyStateVersion = 4;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
