@@ -66,6 +66,7 @@ namespace Libplanet.Net.Consensus
         public void OnStartHeight(long height)
         {
             _height = height;
+            _peerCatchupRounds.Clear();
             Gossip.ClearDenySet();
         }
 
@@ -86,6 +87,7 @@ namespace Libplanet.Net.Consensus
         {
             if (message.Content is ConsensusVoteMsg voteMsg)
             {
+                FilterDifferentHeightVote(voteMsg);
                 FilterHigherRoundVoteSpam(voteMsg, message.Remote);
             }
         }
@@ -98,10 +100,33 @@ namespace Libplanet.Net.Consensus
         /// <param name="content"><see cref="MessageContent"/> to validate.</param>
         private void ValidateMessageToSend(MessageContent content)
         {
-            if (content is ConsensusVoteMsg voteMsg && voteMsg.Round > _round)
+            if (content is ConsensusVoteMsg voteMsg)
+            {
+                if (voteMsg.Height != _height)
+                {
+                    throw new InvalidConsensusMessageException(
+                        $"Cannot send vote of height different from context's", voteMsg);
+                }
+
+                if (voteMsg.Round > _round)
+                {
+                    throw new InvalidConsensusMessageException(
+                        $"Cannot send vote of round higher than context's", voteMsg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Filter logic for different height <see cref="ConsensusVoteMsg"/>s.
+        /// </summary>
+        /// <param name="voteMsg"><see cref="ConsensusVoteMsg"/> to filter.</param>
+        private void FilterDifferentHeightVote(ConsensusVoteMsg voteMsg)
+        {
+            if (voteMsg.Height != _height)
             {
                 throw new InvalidConsensusMessageException(
-                    $"Cannot send vote of round higher than context", voteMsg);
+                    $"Filtered vote from different height: {voteMsg.Height}",
+                    voteMsg);
             }
         }
 
@@ -113,7 +138,8 @@ namespace Libplanet.Net.Consensus
         /// </param>
         private void FilterHigherRoundVoteSpam(ConsensusVoteMsg voteMsg, BoundPeer peer)
         {
-            if (voteMsg.Round > _round)
+            if (voteMsg.Height == _height &&
+                voteMsg.Round > _round)
             {
                 if (!_peerCatchupRounds.ContainsKey(peer))
                 {
@@ -130,7 +156,8 @@ namespace Libplanet.Net.Consensus
                 {
                     Gossip.DenyPeer(peer);
                     throw new InvalidConsensusMessageException(
-                        $"Repetitively found higher rounds, add {peer} to deny set",
+                        $"Add {peer} to deny set, since repetitively found higher rounds: " +
+                        $"{string.Join(", ", _peerCatchupRounds[peer])}",
                         voteMsg);
                 }
             }
