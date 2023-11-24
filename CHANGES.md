@@ -4,9 +4,7 @@ Libplanet changelog
 Version 3.8.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on November 24, 2023.
 
 ### Backward-incompatible API changes
 
@@ -20,8 +18,6 @@ To be released.
     `PrivateKey` and `PublicKey`.  [[#3486]]
  -  (Libplanet.Crypto) Added `Address` property to `PrivateKey` and `PublicKey`.
     [[#3486]]
-
-### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
@@ -38,14 +34,6 @@ To be released.
     to accept `RocksDBInstanceType` type `instanceType` parameter instead of
     `@readonly` parameter in their constructor.
     [[#3488], [RocksDb Instance Types]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#1848]: https://github.com/planetarium/libplanet/issues/1848
 [#3480]: https://github.com/planetarium/libplanet/pull/3480
