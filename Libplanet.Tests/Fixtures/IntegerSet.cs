@@ -70,12 +70,11 @@ namespace Libplanet.Tests.Fixtures
                 .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
-            policy = policy ?? new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
+            policy = policy ?? new NullBlockPolicy();
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             var actionEvaluator = new ActionEvaluator(
-                policy.SystemAccountsGetter,
                 _ => policy.BlockAction,
                 StateStore,
                 new SingleActionLoader(typeof(Arithmetic)));
@@ -114,10 +113,9 @@ namespace Libplanet.Tests.Fixtures
             Transaction tx =
                 Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
             BigInteger prevState = Chain.GetWorldState().GetAccount(
-                ReservedAddresses.DefaultAccount)
-                    .GetState(signerAddress) is Bencodex.Types.Integer i
-                        ? i.Value
-                        : 0;
+                ReservedAddresses.LegacyAccount).GetState(signerAddress) is Bencodex.Types.Integer i
+                    ? i.Value
+                    : 0;
             HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash;
             ITrie prevTrie = GetTrie(Chain.Tip.Hash);
             (BigInteger, HashDigest<SHA256>) prevPair = (prevState, prevStateRootHash);

@@ -14,9 +14,6 @@ namespace Libplanet.Tests.Action
 {
     public class AccountDiffTest
     {
-        private readonly ISystemAccounts _systemAccounts = new SystemAccounts(
-            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
-
         public AccountDiffTest()
         {
             USD = Currency.Uncapped("USD", 2, null);
@@ -149,7 +146,6 @@ namespace Libplanet.Tests.Action
                 signer,
                 null,
                 signer,
-                _systemAccounts,
                 0,
                 Block.CurrentProtocolVersion,
                 new World(

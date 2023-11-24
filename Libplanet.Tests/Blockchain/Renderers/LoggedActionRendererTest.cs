@@ -23,9 +23,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static ISystemAccounts _systemAccounts = new SystemAccounts(
-            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
-
         private static IWorld _world = new World(new MockWorldState());
 
         private static Block _genesis =
@@ -76,9 +73,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     default,
                     default,
-                    _systemAccounts,
-                    123,
                     Block.CurrentProtocolVersion,
+                    123,
                     _world,
                     default,
                     0,

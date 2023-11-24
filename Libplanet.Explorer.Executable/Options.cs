@@ -27,7 +27,6 @@ namespace Libplanet.Explorer.Executable
             string mysqlUsername,
             string mysqlPassword,
             string mysqlDatabase,
-            string feeAccountAddressString,
             int maxTransactionsPerBlock,
             int maxTransactionsBytes,
             int maxGenesisTransactionsBytes,
@@ -49,7 +48,6 @@ namespace Libplanet.Explorer.Executable
             MySQLUsername = mysqlUsername;
             MySQLPassword = mysqlPassword;
             MySQLDatabase = mysqlDatabase;
-            FeeAccountAddressString = feeAccountAddressString;
             MaxTransactionsPerBlock = maxTransactionsPerBlock;
             MaxTransactionsBytes = maxTransactionsBytes;
             MaxGenesisTransactionsBytes = maxGenesisTransactionsBytes;
@@ -81,17 +79,6 @@ namespace Libplanet.Explorer.Executable
         public string MySQLPassword { get; set; }
 
         public string MySQLDatabase { get; set; }
-
-        public string FeeAccountAddressString
-        {
-            get => FeeAccountAddress.ToHex();
-            set
-            {
-                FeeAccountAddress = new Address(value);
-            }
-        }
-
-        public Address FeeAccountAddress { get; set; }
 
         public int MaxTransactionsPerBlock { get; set; }
 

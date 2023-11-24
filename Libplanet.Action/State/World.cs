@@ -73,14 +73,14 @@ namespace Libplanet.Action.State
         [Pure]
         public IWorld SetAccount(Address address, IAccount account)
         {
-            if (!address.Equals(ReservedAddresses.DefaultAccount)
+            if (!address.Equals(ReservedAddresses.LegacyAccount)
                 && account.Delta.UpdatedFungibleAssets.Count > 0)
             {
                 return this;
             }
 
             return new World(this, new WorldDelta(Delta.Accounts.SetItem(address, account)))
-            { Legacy = Legacy && address.Equals(ReservedAddresses.DefaultAccount) };
+            { Legacy = Legacy && address.Equals(ReservedAddresses.LegacyAccount) };
         }
     }
 }

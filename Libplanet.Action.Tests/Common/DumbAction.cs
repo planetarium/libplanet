@@ -150,7 +150,7 @@ namespace Libplanet.Action.Tests.Common
                 return world;
             }
 
-            IAccount account = world.GetAccount(ReservedAddresses.DefaultAccount);
+            IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
             string items = (Text?)account.GetState(TargetAddress);
             string item = RecordRehearsal
                 ? $"{Item}:{context.Rehearsal}"
@@ -221,7 +221,7 @@ namespace Libplanet.Action.Tests.Common
                 Rehearsal = context.Rehearsal,
             });
 
-            return world.SetAccount(ReservedAddresses.DefaultAccount, account);
+            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
 
         public void LoadPlainValue(IValue plainValue)

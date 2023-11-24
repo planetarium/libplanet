@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
+using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
-using Libplanet.Types.Blocks;
 
 namespace Libplanet.Benchmarks
 {
@@ -22,13 +22,12 @@ namespace Libplanet.Benchmarks
         {
             var fx = new DefaultStoreFixture();
             _blockChain = Libplanet.Blockchain.BlockChain.Create(
-                new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount),
+                new NullBlockPolicy(),
                 new VolatileStagePolicy(),
                 fx.Store,
                 fx.StateStore,
                 fx.GenesisBlock,
                 new ActionEvaluator(
-                    new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
                     policyBlockActionGetter: _ => null,
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));

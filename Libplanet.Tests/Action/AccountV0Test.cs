@@ -16,9 +16,6 @@ namespace Libplanet.Tests.Action
         private readonly Address _accountAddress
             = new Address("2000000000000000000000000000000000000000");
 
-        private readonly ISystemAccounts _systemAccounts = new SystemAccounts(
-            new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount), null);
-
         public AccountV0Test(ITestOutputHelper output)
             : base(output)
         {
@@ -35,7 +32,6 @@ namespace Libplanet.Tests.Action
                 signer,
                 null,
                 signer,
-                _systemAccounts,
                 0,
                 ProtocolVersion,
                 world,
@@ -85,8 +81,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
-                chain.GetBalance(
-                    _addr[0], DumbAction.DumbCurrency, ReservedAddresses.DefaultAccount)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
             );
 
             return chain;

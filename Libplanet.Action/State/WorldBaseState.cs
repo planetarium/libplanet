@@ -25,7 +25,7 @@ namespace Libplanet.Action.State
             Legacy = Trie
                 .Get(new[]
                 {
-                    ToStateKey(ReservedAddresses.DefaultAccount),
+                    ToStateKey(ReservedAddresses.LegacyAccount),
                 })
                 .Any(v => v == null);
         }
@@ -67,7 +67,7 @@ namespace Libplanet.Action.State
         }
 
         private ITrie GetLegacyTrieOnly(Address address) =>
-            address == ReservedAddresses.DefaultAccount
+            address == ReservedAddresses.LegacyAccount
                 ? Trie
                 : _stateStore.GetStateRoot(null);
 

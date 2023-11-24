@@ -79,13 +79,11 @@ public class GeneratedBlockChainFixture
 
         var privateKey = new PrivateKey();
         var policy = new BlockPolicy(
-            systemAccountsGetter: new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
             blockInterval: TimeSpan.FromMilliseconds(1),
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);
         IStore store = new MemoryStore();
         var actionEvaluator = new ActionEvaluator(
-            policy.SystemAccountsGetter,
             _ => policy.BlockAction,
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
@@ -190,7 +188,7 @@ public class GeneratedBlockChainFixture
     {
         var random = new System.Random(seed);
         var addr = pk.ToAddress();
-        var bal = (int)(Chain.GetBalance(addr, TestCurrency, ReservedAddresses.DefaultAccount).MajorUnit & int.MaxValue);
+        var bal = (int)(Chain.GetBalance(addr, TestCurrency, ReservedAddresses.LegacyAccount).MajorUnit & int.MaxValue);
         return Transaction.Create(
             nonce,
             pk,

@@ -15,7 +15,7 @@ namespace Libplanet.Action.Tests
                 ImmutableDictionary<Address, IValue>.Empty,
                 (dirty, ev) => dirty.SetItems(
                     ev.OutputState.GetAccount(
-                        ReservedAddresses.DefaultAccount).GetUpdatedStates())
+                        ReservedAddresses.LegacyAccount).GetUpdatedStates())
             );
 
         public static IImmutableDictionary<(Address, Currency), FungibleAssetValue>
@@ -26,7 +26,7 @@ namespace Libplanet.Action.Tests
                 ImmutableDictionary<(Address, Currency), FungibleAssetValue>.Empty,
                 (dirty, ev) => dirty.SetItems(
                     ev.OutputState.GetAccount(
-                        ReservedAddresses.DefaultAccount).GetUpdatedBalances())
+                        ReservedAddresses.LegacyAccount).GetUpdatedBalances())
             );
 
         public static IImmutableDictionary<Currency, FungibleAssetValue>
@@ -35,7 +35,7 @@ namespace Libplanet.Action.Tests
                 ImmutableDictionary<Currency, FungibleAssetValue>.Empty,
                 (dirty, ev) => dirty.SetItems(
                     ev.OutputState.GetAccount(
-                        ReservedAddresses.DefaultAccount).GetUpdatedTotalSupplies())
+                        ReservedAddresses.LegacyAccount).GetUpdatedTotalSupplies())
             );
     }
 }

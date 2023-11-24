@@ -396,7 +396,7 @@ namespace Libplanet.Net.Tests
             var roundChangedToOnes = Enumerable.Range(0, 4).Select(i =>
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
-            var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
+            var policy = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
@@ -678,8 +678,7 @@ namespace Libplanet.Net.Tests
         public async Task ThrowArgumentExceptionInConstructor()
         {
             var fx = new MemoryStoreFixture();
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
+            var policy = new BlockPolicy();
             var blockchain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
             var apv = AppProtocolVersion.Sign(key, 1);
@@ -876,9 +875,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain<DumbAction>(
                 policy,
@@ -945,9 +942,7 @@ namespace Libplanet.Net.Tests
         [Fact(Skip = "This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
 
             async Task<Swarm> MakeSwarm(PrivateKey key = null) =>
                 await CreateSwarm(
@@ -1061,9 +1056,9 @@ namespace Libplanet.Net.Tests
                 minerB.BlockChain.Append(blockC, TestUtils.CreateBlockCommit(blockC));
 
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(targetAddress1));
+                    ReservedAddresses.LegacyAccount).GetState(targetAddress1));
                 Assert.Equal((Text)dumbItem, minerB.BlockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(targetAddress2));
+                    ReservedAddresses.LegacyAccount).GetState(targetAddress2));
 
                 await StartAsync(minerA);
                 await StartAsync(minerB);
@@ -1079,9 +1074,9 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     restage ? null : (Text?)dumbItem,
                     minerA.BlockChain.GetWorldState().GetAccount(
-                        ReservedAddresses.DefaultAccount).GetState(targetAddress1));
+                        ReservedAddresses.LegacyAccount).GetState(targetAddress1));
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(targetAddress2));
+                    ReservedAddresses.LegacyAccount).GetState(targetAddress2));
 
                 Log.Debug("Check if txs in unrendered blocks staged again");
                 Assert.Equal(
@@ -1096,9 +1091,9 @@ namespace Libplanet.Net.Tests
 
                 Assert.Equal(minerA.BlockChain.Tip, minerB.BlockChain.Tip);
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(targetAddress1));
+                    ReservedAddresses.LegacyAccount).GetState(targetAddress1));
                 Assert.Equal((Text)dumbItem, minerA.BlockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(targetAddress2));
+                    ReservedAddresses.LegacyAccount).GetState(targetAddress2));
             }
             finally
             {
@@ -1122,9 +1117,7 @@ namespace Libplanet.Net.Tests
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
@@ -1183,9 +1176,7 @@ namespace Libplanet.Net.Tests
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy(validateNextBlockTx: IsSignerValid);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
@@ -1242,9 +1233,9 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
-            var policyA = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
-            var policyB = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
+            var policy = new NullBlockPolicy();
+            var policyA = new NullBlockPolicy();
+            var policyB = new NullBlockPolicy();
             var fx = new DefaultStoreFixture();
             var genesis = fx.GenesisBlock;
             Block aBlock1 = ProposeNextBlock(
@@ -1360,7 +1351,7 @@ namespace Libplanet.Net.Tests
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
             var genesisChainA = MakeBlockChain<DumbAction>(
-                new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount)),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsA,
@@ -1368,14 +1359,14 @@ namespace Libplanet.Net.Tests
                 privateKeyA);
             var genesisBlockA = genesisChainA.Genesis;
             var genesisChainB = MakeBlockChain<DumbAction>(
-                new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount)),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 actionsB,
                 null,
                 privateKeyB);
             var genesisChainC = MakeBlockChain<DumbAction>(
-                new BlockPolicy(new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount)),
+                new BlockPolicy(),
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 genesisBlock: genesisBlockA);
@@ -1411,11 +1402,11 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(2, genesisChainC.Count);
 
                 Assert.Equal("1", (Text)genesisChainA.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(signerAddress));
+                    ReservedAddresses.LegacyAccount).GetState(signerAddress));
                 Assert.Equal("2", (Text)genesisChainB.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(signerAddress));
+                    ReservedAddresses.LegacyAccount).GetState(signerAddress));
                 Assert.Equal("1", (Text)genesisChainC.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(signerAddress));
+                    ReservedAddresses.LegacyAccount).GetState(signerAddress));
             }
             finally
             {

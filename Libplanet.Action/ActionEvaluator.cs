@@ -24,7 +24,6 @@ namespace Libplanet.Action
     public class ActionEvaluator : IActionEvaluator
     {
         private readonly ILogger _logger;
-        private readonly ISystemAccountsGetter _systemAccountsGetter;
         private readonly PolicyBlockActionGetter _policyBlockActionGetter;
         private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
@@ -34,21 +33,17 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
         /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
-        /// <param name="systemAccountsGetter">The <see cref="ISystemAccountsGetter"/> to determine
-        /// <see cref="ISystemAccounts"/> with <see cref="IPreEvaluationBlockHeader"/>.</param>
         /// <param name="stateStore">The <see cref="IStateStore"/> to use to retrieve
         /// the states for a provided <see cref="HashDigest{SHA256}"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
-            ISystemAccountsGetter systemAccountsGetter,
             PolicyBlockActionGetter policyBlockActionGetter,
             IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
-            _systemAccountsGetter = systemAccountsGetter;
             _policyBlockActionGetter = policyBlockActionGetter;
             _stateStore = stateStore;
             _actionLoader = actionTypeLoader;
@@ -135,8 +130,6 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="blockHeader">The <see cref="IPreEvaluationBlockHeader"/> of
         /// the <see cref="Block"/> that <paramref name="actions"/> belong to.</param>
-        /// <param name="systemAccountsGetter">The <see cref="ISystemAccountsGetter"/> to determine
-        /// <see cref="ISystemAccounts"/> with <see cref="IPreEvaluationBlockHeader"/>.</param>
         /// <param name="tx">The <see cref="Transaction"/> that <paramref name="actions"/>
         /// belong to.  This should be <see langword="null"/> if <paramref name="actions"/>
         /// do not belong to a <see cref="Transaction"/>, i.e.
@@ -174,7 +167,6 @@ namespace Libplanet.Action
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
-            ISystemAccountsGetter systemAccountsGetter,
             ITransaction? tx,
             IWorld previousState,
             IImmutableList<IAction> actions,
@@ -189,7 +181,6 @@ namespace Libplanet.Action
                     signer: tx?.Signer ?? blockHeader.Miner,
                     txid: tx?.Id ?? null,
                     miner: blockHeader.Miner,
-                    systemAccounts: new SystemAccounts(systemAccountsGetter, blockHeader),
                     blockIndex: blockHeader.Index,
                     blockProtocolVersion: blockHeader.ProtocolVersion,
                     previousState: prevState,
@@ -250,7 +241,6 @@ namespace Libplanet.Action
                     signer: inputContext.Signer,
                     txid: inputContext.TxId,
                     miner: inputContext.Miner,
-                    systemAccounts: inputContext.SystemAccounts,
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
@@ -443,7 +433,6 @@ namespace Libplanet.Action
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
             return EvaluateActions(
                 blockHeader: blockHeader,
-                systemAccountsGetter: _systemAccountsGetter,
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
@@ -481,7 +470,6 @@ namespace Libplanet.Action
 
             return EvaluateActions(
                 blockHeader: blockHeader,
-                systemAccountsGetter: _systemAccountsGetter,
                 tx: null,
                 previousState: previousState,
                 actions: new[] { policyBlockAction }.ToImmutableList()).Single();
@@ -581,7 +569,7 @@ namespace Libplanet.Action
             stopwatch.Start();
 
             var totalDelta = evaluation.OutputState.GetAccount(
-                ReservedAddresses.DefaultAccount).Delta.ToRawDelta();
+                ReservedAddresses.LegacyAccount).Delta.ToRawDelta();
 
             int setCount = 0;
 
@@ -656,7 +644,7 @@ namespace Libplanet.Action
         {
             Stopwatch stopwatch = new Stopwatch();
             worldTrie = _stateStore.GetStateRoot(null).Set(
-                KeyConverters.ToStateKey(ReservedAddresses.DefaultAccount),
+                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
                 new Binary(worldTrie.Hash.ByteArray));
 
             _logger

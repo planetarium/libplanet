@@ -1,6 +1,7 @@
 namespace Libplanet.Extensions.Cocona;
 
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -73,9 +74,6 @@ public class BlockPolicyParams : ICommandParameterSet
     public IAction? GetBlockAction() =>
         GetBlockAction(LoadAssemblies());
 
-    public ISystemAccountsGetter? GetSystemAccountsGetter() =>
-        GetSystemAccountsGetter(LoadAssemblies());
-
     [SuppressMessage(
         "Major Code Smell",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, " +
@@ -146,19 +144,5 @@ public class BlockPolicyParams : ICommandParameterSet
             .GetType()
             .GetProperty(nameof(IBlockPolicy.BlockAction));
         return (IAction?)prop!.GetValue(policy);
-    }
-
-    internal ISystemAccountsGetter? GetSystemAccountsGetter(Assembly[] assemblies)
-    {
-        object? policy = GetBlockPolicy(assemblies);
-        if (policy is null)
-        {
-            return null;
-        }
-
-        PropertyInfo? prop = policy
-            .GetType()
-            .GetProperty(nameof(IBlockPolicy.SystemAccountsGetter));
-        return (ISystemAccountsGetter?)prop!.GetValue(policy);
     }
 }

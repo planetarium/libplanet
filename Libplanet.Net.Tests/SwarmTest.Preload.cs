@@ -107,7 +107,7 @@ namespace Libplanet.Net.Tests
 
                 await receiverSwarm.PreloadAsync();
                 var state = receiverChain.GetWorldState().GetAccount(
-                    ReservedAddresses.DefaultAccount).GetState(address1);
+                    ReservedAddresses.LegacyAccount).GetState(address1);
 
                 Assert.Equal((Text)"foo,bar,baz", state);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
@@ -264,8 +264,8 @@ namespace Libplanet.Net.Tests
             const int initialSharedTipHeight = 3;
             const int maliciousTipHeight = 5;
             const int honestTipHeight = 7;
-            var policy = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
-            var policyB = new NullBlockPolicy(_ => ReservedAddresses.DefaultAccount);
+            var policy = new NullBlockPolicy();
+            var policyB = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
 
             var swarmA = await CreateSwarm(
@@ -376,9 +376,7 @@ namespace Libplanet.Net.Tests
         [RetryFact(Timeout = Timeout)]
         public async Task NoRenderInPreload()
         {
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain<DumbAction>(
                 policy,
@@ -433,8 +431,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PreloadWithFailedActions()
         {
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
+            var policy = new BlockPolicy();
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
             var minerChain = MakeBlockChain<ThrowException>(policy, fx1.Store, fx1.StateStore);
@@ -500,9 +497,7 @@ namespace Libplanet.Net.Tests
             Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
             Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
             var fxForNominers = new StoreFixture[2];
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
             fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
@@ -751,7 +746,7 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     (Text)string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
                     receiverChain.GetWorldState().GetAccount(
-                        ReservedAddresses.DefaultAccount).GetState(address)
+                        ReservedAddresses.LegacyAccount).GetState(address)
                 );
             }
             else
@@ -765,7 +760,7 @@ namespace Libplanet.Net.Tests
                         )
                     ),
                     receiverChain.GetWorldState().GetAccount(
-                        ReservedAddresses.DefaultAccount).GetState(address)
+                        ReservedAddresses.LegacyAccount).GetState(address)
                 );
             }
 
@@ -1010,8 +1005,7 @@ namespace Libplanet.Net.Tests
         {
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount));
+            var policy = new BlockPolicy();
 
             BlockChain receiverChain = MakeBlockChain<DumbAction>(
                 policy,
@@ -1076,9 +1070,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task ActionExecutionWithBranchpoint()
         {
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain<DumbAction>(policy, fx1.Store, fx1.StateStore);
@@ -1139,9 +1131,7 @@ namespace Libplanet.Net.Tests
         public async Task UpdateTxExecution()
         {
             PrivateKey seedKey = new PrivateKey();
-            var policy = new BlockPolicy(
-                new SystemAccountsGetter(_ => ReservedAddresses.DefaultAccount),
-                new MinerReward(1));
+            var policy = new BlockPolicy(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain<DumbAction>(policy, fx1.Store, fx1.StateStore);

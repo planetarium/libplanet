@@ -42,9 +42,9 @@ namespace Libplanet.Action.Tests.Common
             Thread.Sleep(MilliSecond);
             var ended = DateTimeOffset.UtcNow;
             var delayAccount = state
-                .GetAccount(ReservedAddresses.DefaultAccount)
+                .GetAccount(ReservedAddresses.LegacyAccount)
                 .SetState(TrivialUpdatedAddress, new Bencodex.Types.Integer(MilliSecond));
-            state = state.SetAccount(ReservedAddresses.DefaultAccount, delayAccount);
+            state = state.SetAccount(ReservedAddresses.LegacyAccount, delayAccount);
             Log.Debug(
                 "{MethodName} Total Executed Time: {Elapsed}. Delay target: {MilliSecond}",
                 nameof(DelayAction),
