@@ -153,29 +153,6 @@ namespace Libplanet.Action
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
-        /// <remarks>
-        /// <para>Each <see cref="IActionContext.Random"/> object has an unconsumed state.</para>
-        /// <para>
-        /// The returned enumeration has the following properties:
-        /// <list type="bullet">
-        /// <item><description>
-        ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
-        ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a
-        ///     "superset" of <paramref name="previousState"/>'s
-        ///     <see cref="IAccount.Delta"/> (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// <item><description>
-        ///     Each <see cref="ActionEvaluation"/> in the enumerated result
-        ///     has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a "superset"
-        ///     of the previous one, if any (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// </list>
-        /// </para>
-        /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,

@@ -41,6 +41,7 @@ namespace Libplanet.Action.State
     public interface IAccount : IAccountState
     {
         /// <summary>
+        /// This is no longer used and should always return an empty <see cref="IAccountDelta"/>.
         /// The <see cref="IAccountDelta"/> representing the delta part of
         /// this <see cref="IAccount"/>.
         /// </summary>
