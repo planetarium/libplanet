@@ -187,26 +187,6 @@ namespace Libplanet.Action.State
         public IAccount SetValidator(Validator validator) =>
             UpdateValidatorSet(GetValidatorSet().Update(validator));
 
-        /// <summary>
-        /// Creates a null account while inheriting <paramref name="account"/>s
-        /// total updated fungibles.
-        /// </summary>
-        /// <param name="account">The previous <see cref="IAccount"/> to use.</param>
-        /// <returns>A null account that is of the same type as <paramref name="account"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown if given <paramref name="account"/>
-        /// is not <see cref="Account"/>.
-        /// </exception>
-        /// <remarks>
-        /// This inherits <paramref name="account"/>'s
-        /// <see cref="IAccount.TotalUpdatedFungibleAssets"/>.
-        /// </remarks>
-        internal static IAccount Flush(IAccount account) =>
-            account is Account impl
-                ? new Account(impl, impl.TotalUpdatedFungibles)
-                : throw new ArgumentException(
-                    $"Unknown type for {nameof(account)}: {account.GetType()}");
-
         [Pure]
         private Account UpdateState(
             Address address,
