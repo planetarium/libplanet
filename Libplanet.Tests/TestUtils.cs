@@ -606,6 +606,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     timestamp: timestamp ?? DateTimeOffset.MinValue),
             };
 
+            var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                     _ => policy.BlockAction,
                     stateStore: stateStore,
@@ -643,6 +644,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 stateStore,
                 genesisBlock,
                 renderers: renderers ?? new[] { validator = new ValidatingActionRenderer() },
+                blockChainStates: blockChainStates,
                 actionEvaluator: actionEvaluator
             );
 #pragma warning restore S1121

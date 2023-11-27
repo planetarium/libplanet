@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -16,7 +15,6 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -33,7 +31,7 @@ namespace Libplanet.Blockchain
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
     /// and pass it to the
-    /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IActionEvaluator, IEnumerable{IRenderer})"/>
+    /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
     /// constructor.
     /// </para>
     /// </summary>
@@ -50,6 +48,7 @@ namespace Libplanet.Blockchain
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
         private readonly ILogger _logger;
+        private readonly IBlockChainStates _blockChainStates;
 
         /// <summary>
         /// All <see cref="Block"/>s in the <see cref="BlockChain"/>
@@ -79,6 +78,8 @@ namespace Libplanet.Blockchain
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates"/> implementation for
+        /// state lookup.</param>
         /// <param name="actionEvaluator">The <see cref="ActionEvaluator" /> implementation to
         /// calculate next states when append new blocks.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
@@ -100,6 +101,7 @@ namespace Libplanet.Blockchain
             IStore store,
             IStateStore stateStore,
             Block genesisBlock,
+            IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
             IEnumerable<IRenderer> renderers = null)
 #pragma warning disable SA1118  // The parameter spans multiple lines
@@ -113,6 +115,7 @@ namespace Libplanet.Blockchain
                         $"Given {nameof(store)} does not have canonical chain id set.",
                         nameof(store)),
                 genesisBlock,
+                blockChainStates,
                 actionEvaluator,
                 renderers)
         {
@@ -125,6 +128,7 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block genesisBlock,
+            IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
             IEnumerable<IRenderer> renderers)
         {
@@ -147,6 +151,8 @@ namespace Libplanet.Blockchain
             StagePolicy = stagePolicy;
             Store = store;
             StateStore = stateStore;
+
+            _blockChainStates = blockChainStates;
 
             _blocks = new BlockSet(store);
             Renderers = renderers is IEnumerable<IRenderer> r
@@ -197,7 +203,7 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain"/> object is instantiated; use <c>renderers</c> option of
-        /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IActionEvaluator, IEnumerable{IRenderer})"/>
+        /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
         /// constructor instead.
         /// </remarks>
 #pragma warning restore MEN002
@@ -344,7 +350,8 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Block genesisBlock,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers = null)
+            IEnumerable<IRenderer> renderers = null,
+            IBlockChainStates blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -404,6 +411,8 @@ namespace Libplanet.Blockchain
 
             store.SetCanonicalChainId(id);
 
+            blockChainStates ??= new BlockChainStates(store, stateStore);
+
             return new BlockChain(
                 policy,
                 stagePolicy,
@@ -411,6 +420,7 @@ namespace Libplanet.Blockchain
                 stateStore,
                 id,
                 genesisBlock,
+                blockChainStates,
                 actionEvaluator,
                 renderers);
         }
@@ -471,72 +481,6 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
-        /// Returns the state trie associated with <see cref="HashDigest{SHA256}"/>
-        /// <paramref name="hash"/>.
-        /// </summary>
-        /// <param name="hash">The <see cref="HashDigest{SHA256}"/> to look up in
-        /// the internally held <see cref="IStore"/>.</param>
-        /// <returns>An <see cref="ITrie"/> representing the state root associated with
-        /// <see cref="HashDigest{SHA256}"/> <paramref name="hash"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown when the <see cref="ITrie"/> found in
-        /// <see cref="IStateStore"/> with given <paramref name="hash"/> is not recorded.
-        /// </exception>
-        /// <remarks>
-        /// An <see cref="ITrie"/> returned by this method is read-only.
-        /// </remarks>
-        public ITrie GetTrie(HashDigest<SHA256>? hash)
-        {
-            ITrie trie = StateStore.GetStateRoot(hash);
-            return trie.Recorded
-                ? trie
-                : throw new ArgumentException(
-                    $"Could not find state root {hash} in {nameof(IStateStore)}.",
-                    nameof(hash));
-        }
-
-        /// <summary>
-        /// Returns the state root associated with <see cref="BlockHash"/>
-        /// <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> to look up in
-        /// the internally held <see cref="IStore"/>.</param>
-        /// <returns>An <see cref="ITrie"/> representing the state root associated with
-        /// <paramref name="offset"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown for one of the following reasons.
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <paramref name="offset"/> is not <see langword="null"/> and
-        ///         <paramref name="offset"/> cannot be found in <see cref="IStore"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If <paramref name="offset"/> is not <see langword="null"/> and
-        ///         the state root hash associated with <paramref name="offset"/>
-        ///         cannot be found in <see cref="IStateStore"/>.
-        ///     </description></item>
-        /// </list>
-        /// </exception>
-        /// <remarks>
-        /// An <see cref="ITrie"/> returned by this method is read-only.
-        /// </remarks>
-        public ITrie GetTrie(BlockHash? offset)
-        {
-            if (!(offset is { } hash))
-            {
-                return StateStore.GetStateRoot(null);
-            }
-            else if (Store.GetStateRootHash(hash) is { } stateRootHash)
-            {
-                return GetTrie(stateRootHash);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Could not find block hash {hash} in {nameof(IStore)}.",
-                    nameof(offset));
             }
         }
 
@@ -803,6 +747,7 @@ namespace Libplanet.Blockchain
                     StateStore,
                     forkedId,
                     Genesis,
+                    _blockChainStates,
                     ActionEvaluator,
                     renderers);
                 Store.ForkBlockIndexes(Id, forkedId, point);
