@@ -58,7 +58,6 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="preEvaluationHashBytes">The previous evaluation hash turned into bytes.
         /// </param>
-        /// <param name="hashedSignature">The hashed signature.</param>
         /// <param name="signature">The signature.</param>
         /// <param name="actionOffset">The offset of the action.</param>
         /// <returns>An integer of the random seed.
@@ -66,13 +65,21 @@ namespace Libplanet.Action
         [Pure]
         public static int GenerateRandomSeed(
             byte[] preEvaluationHashBytes,
-            byte[] hashedSignature,
             byte[] signature,
             int actionOffset)
         {
-            return (preEvaluationHashBytes.Length > 0
-                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
-                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
+            using (var sha1 = SHA1.Create())
+            {
+                return (preEvaluationHashBytes.Length > 0
+                        ? BitConverter.ToInt32(preEvaluationHashBytes, 0)
+                        : throw new ArgumentException(
+                            $"Given {nameof(preEvaluationHashBytes)} cannot be empty",
+                            nameof(preEvaluationHashBytes)))
+                    ^ (signature.Any()
+                        ? BitConverter.ToInt32(sha1.ComputeHash(signature), 0)
+                        : 0)
+                    - actionOffset;
+            }
         }
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
@@ -187,15 +194,9 @@ namespace Libplanet.Action
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
-            byte[] hashedSignature;
-            using (var hasher = SHA1.Create())
-            {
-                hashedSignature = hasher.ComputeHash(signature);
-            }
-
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
-            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
+            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
+            int seed = GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
 
             IAccount state = previousState;
             foreach (IAction action in actions)
