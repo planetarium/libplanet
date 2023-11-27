@@ -1238,12 +1238,10 @@ namespace Libplanet.Tests.Action
                 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
 
-            int seed =
-                ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    signature,
-                    0);
+            int seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
             Assert.Equal(353767086, seed);
+            seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 1);
+            Assert.Equal(353767087, seed);
         }
 
         [Fact]
@@ -1268,16 +1266,19 @@ namespace Libplanet.Tests.Action
                     .ToImmutableArray()).ToArray();
 
             byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
-            int initialRandomSeed =
-                ActionEvaluator.GenerateRandomSeed(
+            int[] randomSeeds = Enumerable
+                .Range(0, txA.Actions.Count)
+                .Select(offset => ActionEvaluator.GenerateRandomSeed(
                     preEvaluationHashBytes,
                     txA.Signature,
-                    0);
+                    offset))
+                .ToArray();
+
             for (int i = 0; i < evalsA.Length; i++)
             {
                 IActionEvaluation eval = evalsA[i];
                 IActionContext context = eval.InputContext;
-                Assert.Equal(initialRandomSeed + i, context.RandomSeed);
+                Assert.Equal(randomSeeds[i], context.RandomSeed);
             }
         }
 

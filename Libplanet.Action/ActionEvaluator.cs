@@ -70,15 +70,18 @@ namespace Libplanet.Action
         {
             using (var sha1 = SHA1.Create())
             {
-                return (preEvaluationHashBytes.Length > 0
+                unchecked
+                {
+                    return ((preEvaluationHashBytes.Length > 0
                         ? BitConverter.ToInt32(preEvaluationHashBytes, 0)
                         : throw new ArgumentException(
                             $"Given {nameof(preEvaluationHashBytes)} cannot be empty",
                             nameof(preEvaluationHashBytes)))
                     ^ (signature.Any()
                         ? BitConverter.ToInt32(sha1.ComputeHash(signature), 0)
-                        : 0)
-                    - actionOffset;
+                        : 0))
+                    + actionOffset;
+                }
             }
         }
 
