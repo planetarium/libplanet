@@ -56,12 +56,16 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a random seed.
         /// </summary>
-        /// <param name="preEvaluationHashBytes">The previous evaluation hash turned into bytes.
+        /// <param name="preEvaluationHashBytes">The pre-evaluation hash as bytes.
         /// </param>
-        /// <param name="signature">The signature.</param>
-        /// <param name="actionOffset">The offset of the action.</param>
+        /// <param name="signature">The signature of the <see cref="Transaction"/> the target
+        /// <see cref="IAction"/> belongs to.  Must be empty if the target <see cref="IAction"/>
+        /// is a block action.</param>
+        /// <param name="actionOffset">The offset of the target <see cref="IAction"/>.</param>
         /// <returns>An integer of the random seed.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when
+        /// <paramref name="preEvaluationHashBytes"/> is empty.</exception>
         [Pure]
         public static int GenerateRandomSeed(
             byte[] preEvaluationHashBytes,
