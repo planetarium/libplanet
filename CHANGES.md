@@ -11,6 +11,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `BlockChainStates` class.  [[#3462]]
+ -  Bumped `BlockMetadata.CurrentProtocolVersion` to 5.  [[#3524]]
  -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
     instead of `IAccount`.  [[#3462]]
  -  (Libplanet.Action) `IActionEvaluator.OutputState` became `IWorld`.
@@ -76,6 +77,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockMetadaLegacyStateVersion` constant.  [[#3524]]
  -  (Libplanet.Action) Added `IWorld` interface and its implementation.
     [[#3462]]
      -  Added `World` class.
@@ -117,6 +119,7 @@ To be released.
 ### CLI tools
 
 [#3462]: https://github.com/planetarium/libplanet/pull/3462
+[#3524]: https://github.com/planetarium/libplanet/pull/3524
 
 
 Version 3.7.0
