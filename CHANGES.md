@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Removed `hashedSignature` of type `byte[]` parameter
+    from `ActionEvaluator.GenerateRandomSeed()`.  [[#3523]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3523]: https://github.com/planetarium/libplanet/pull/3523
 
 
 Version 3.8.0

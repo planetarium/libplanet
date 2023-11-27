@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -1221,6 +1220,68 @@ namespace Libplanet.Tests.Action
                 evaluations.Single().Exception?.InnerException?.GetType());
         }
 
+        [Fact]
+        public void GenerateRandomSeed()
+        {
+            byte[] preEvaluationHashBytes =
+            {
+                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+            };
+            byte[] signature =
+            {
+                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
+                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
+                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
+                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
+                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
+                0x7d, 0x37, 0x67, 0xe1, 0xe9,
+            };
+
+            int seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
+            Assert.Equal(353767086, seed);
+            seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 1);
+            Assert.Equal(353767087, seed);
+        }
+
+        [Fact]
+        public void CheckRandomSeedInAction()
+        {
+            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
+
+            // txA: ((5 + 1) * 2) + 3 = 15
+            (Transaction txA, var deltaA) = fx.Sign(
+                0,
+                Arithmetic.Add(1),
+                Arithmetic.Mul(2),
+                Arithmetic.Add(3));
+
+            Block blockA = fx.Propose();
+            ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
+                blockHeader: blockA,
+                tx: txA,
+                previousState: fx.CreateAccount(0, blockA.PreviousHash),
+                actions: txA.Actions
+                    .Select(action => (IAction)ToAction<Arithmetic>(action))
+                    .ToImmutableArray()).ToArray();
+
+            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
+            int[] randomSeeds = Enumerable
+                .Range(0, txA.Actions.Count)
+                .Select(offset => ActionEvaluator.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    txA.Signature,
+                    offset))
+                .ToArray();
+
+            for (int i = 0; i < evalsA.Length; i++)
+            {
+                IActionEvaluation eval = evalsA[i];
+                IActionContext context = eval.InputContext;
+                Assert.Equal(randomSeeds[i], context.RandomSeed);
+            }
+        }
+
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1265,77 +1326,6 @@ namespace Libplanet.Tests.Action
             };
 
             return (addresses, txs);
-        }
-
-        [Fact]
-        private void GenerateRandomSeed()
-        {
-            byte[] preEvaluationHashBytes =
-            {
-                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-            };
-            byte[] signature =
-            {
-                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
-                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
-                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
-                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
-                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
-                0x7d, 0x37, 0x67, 0xe1, 0xe9,
-            };
-            byte[] hashedSignature;
-            SHA1 hasher = SHA1.Create();
-            hashedSignature = hasher.ComputeHash(signature);
-
-            int seed =
-                ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    hashedSignature,
-                    signature,
-                    0);
-            Assert.Equal(353767086, seed);
-        }
-
-        [Fact]
-        private void CheckRandomSeedInAction()
-        {
-            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
-
-            // txA: ((5 + 1) * 2) + 3 = 15
-            (Transaction txA, var deltaA) = fx.Sign(
-                0,
-                Arithmetic.Add(1),
-                Arithmetic.Mul(2),
-                Arithmetic.Add(3));
-
-            Block blockA = fx.Propose();
-            ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockHeader: blockA,
-                tx: txA,
-                previousState: fx.CreateAccount(0, blockA.PreviousHash),
-                actions: txA.Actions
-                    .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
-            byte[] hashedSignature;
-            using (var hasher = SHA1.Create())
-            {
-                hashedSignature = hasher.ComputeHash(txA.Signature);
-            }
-
-            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
-            int initialRandomSeed =
-                ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    hashedSignature,
-                    txA.Signature,
-                    0);
-            for (int i = 0; i < evalsA.Length; i++)
-            {
-                IActionEvaluation eval = evalsA[i];
-                IActionContext context = eval.InputContext;
-                Assert.Equal(initialRandomSeed + i, context.RandomSeed);
-            }
         }
 
         private sealed class EvaluateTestAction : IAction
