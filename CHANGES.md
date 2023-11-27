@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.8.1
 -------------
 
-To be released.
+Released on November 27, 2023.
 
  -  (Libplanet.Net) Fixed a bug where `GossipConsensusMessageCommunicator`
     does not clear `_peerCatchupRounds` on `OnStartHeight()`.  [[#3519]]
