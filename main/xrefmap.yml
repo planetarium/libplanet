@@ -29780,6 +29780,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.LastCommit
   nameWithType: BlockMetadata.LastCommit
+- uid: Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
+  name: LegacyStateVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_LegacyStateVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
+  nameWithType: BlockMetadata.LegacyStateVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Common.Nonce)
   name: MakeCandidateData(Nonce)
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_MakeCandidateData_Libplanet_Common_Nonce_
