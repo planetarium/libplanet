@@ -131,20 +131,21 @@ namespace Libplanet.Tests.Tx
 
             Assert.False(invoice1.Equals(null));
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
+                // NOTE: Non-null cases for MaxGasPrice and GasLimit are flipped as existing
+                // mock object has respective values set to null.
                 var invoice = new TxInvoice(
-                   i == 0 ? (BlockHash?)null : genesisHash,
-                   i == 1 ? (IImmutableSet<Address>)AddressSet.Empty : updatedAddresses,
-                   i == 2 ? DateTimeOffset.MinValue : timestamp,
-                   i == 3 ? TxActionList.Empty : actions,
-                   i == 4 ? (FungibleAssetValue?)null : FungibleAssetValue.FromRawValue(
-                       Currency.Uncapped(
-                           "FOO",
-                           18,
-                           new PrivateKey().Address),
-                       100),
-                   i == 5 ? (long?)null : 10);
+                    i == 0 ? (BlockHash?)null : genesisHash,
+                    i == 1 ? (IImmutableSet<Address>)AddressSet.Empty : updatedAddresses,
+                    i == 2 ? DateTimeOffset.MinValue : timestamp,
+                    i == 3 ? TxActionList.Empty : actions,
+                    i == 4
+                        ? FungibleAssetValue.FromRawValue(
+                            Currency.Uncapped("FOO", 18, new PrivateKey().Address),
+                            100)
+                        : (FungibleAssetValue?)null,
+                    i == 4 ? 10 : (long?)null);
                 Assert.False(invoice1.Equals(invoice));
                 Assert.False(invoice1.Equals((object)invoice));
                 Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());

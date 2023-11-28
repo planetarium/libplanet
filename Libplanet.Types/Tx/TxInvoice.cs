@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -35,13 +34,14 @@ namespace Libplanet.Types.Tx
             TxActionList actions,
             FungibleAssetValue? maxGasPrice,
             long? gasLimit)
+            : this(
+                genesisHash,
+                ImmutableHashSet<Address>.Empty,
+                timestamp,
+                actions,
+                maxGasPrice,
+                gasLimit)
         {
-            GenesisHash = genesisHash;
-            UpdatedAddresses = ImmutableHashSet<Address>.Empty;
-            Timestamp = timestamp;
-            Actions = actions ?? throw new ArgumentNullException(nameof(actions));
-            MaxGasPrice = maxGasPrice;
-            GasLimit = gasLimit;
         }
 
         /// <summary>
@@ -97,6 +97,9 @@ namespace Libplanet.Types.Tx
         /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
         /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <see langword="null"/>-ness of
+        /// <paramref name="maxGasPrice"/> and <paramref name="gasLimit"/> are not the same.
+        /// </exception>
         internal TxInvoice(
             BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
@@ -108,6 +111,13 @@ namespace Libplanet.Types.Tx
             if (updatedAddresses is null)
             {
                 throw new ArgumentNullException(nameof(updatedAddresses));
+            }
+            else if (maxGasPrice is null ^ gasLimit is null)
+            {
+                throw new ArgumentException(
+                    $"Either {nameof(maxGasPrice)} (null: {maxGasPrice is null}) and " +
+                    $"{nameof(gasLimit)} (null: {gasLimit is null}) must be both null " +
+                    $"or both non-null.");
             }
 
             GenesisHash = genesisHash;
