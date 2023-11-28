@@ -115,7 +115,8 @@ namespace Libplanet.Types.Tx
             {
                 throw new ArgumentNullException(nameof(updatedAddresses));
             }
-            else if (maxGasPrice is null ^ gasLimit is null)
+
+            if (maxGasPrice is null ^ gasLimit is null)
             {
                 throw new ArgumentException(
                     $"Either {nameof(maxGasPrice)} (null: {maxGasPrice is null}) and " +
