@@ -77,7 +77,7 @@ To be released.
 
 ### Added APIs
 
- -  Added `BlockMetadaLegacyStateVersion` constant.  [[#3524]]
+ -  Added `BlockMetadata.LegacyStateVersion` constant.  [[#3524]]
  -  (Libplanet.Action) Added `IWorld` interface and its implementation.
     [[#3462]]
      -  Added `World` class.

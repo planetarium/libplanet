@@ -783,17 +783,6 @@ namespace Libplanet.Tests.Blockchain
                 actionEvaluator,
                 renderers: new[] { new LoggedActionRenderer(renderer, Log.Logger) });
             Assert.True(blockChain.GetWorldState().Legacy);
-            var emptyBlockContent = new BlockContent(
-                new BlockMetadata(
-                    protocolVersion: BlockMetadata.LegacyStateVersion,
-                    index: 0L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    miner: fx.Proposer.ToAddress(),
-                    publicKey: fx.Proposer.PublicKey,
-                    previousHash: null,
-                    txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs);
             var emptyBlock = blockChain.ProposeBlock(
                 fx.Proposer,
                 ImmutableList<Transaction>.Empty,
