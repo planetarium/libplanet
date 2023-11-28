@@ -28,6 +28,9 @@ namespace Libplanet.Types.Tx
         /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
         /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <see langword="null"/>-ness of
+        /// <paramref name="maxGasPrice"/> and <paramref name="gasLimit"/> are not the same.
+        /// </exception>
         public TxInvoice(
             BlockHash? genesisHash,
             DateTimeOffset timestamp,
