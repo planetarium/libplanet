@@ -6,12 +6,20 @@ Version 3.9.0
 
 To be released.
 
+Due to changes in [#3529], a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+[Libplanet 2.0.0] and onwards prior to this release that have included
+`Transaction`s that aren't compatible with the updated specification in [#3529].
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
 
  -  (Libplanet.Action) Removed `hashedSignature` of type `byte[]` parameter
     from `ActionEvaluator.GenerateRandomSeed()`.  [[#3523]]
+ -  Changed `TxInvoice` to no longer allow having the null-ness of
+    `MaxGasPrice` and `GasLimit` to be different, i.e. either both should be
+    null or both should not be null at the same time.  [[#3529]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +36,8 @@ To be released.
 ### CLI tools
 
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
+[#3529]: https://github.com/planetarium/libplanet/pull/3529
+[Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
 
 
 Version 3.8.1
