@@ -20,12 +20,21 @@ be compatible with this version,  specifically, those that ran with
  -  Changed `TxInvoice` to no longer allow having the null-ness of
     `MaxGasPrice` and `GasLimit` to be different, i.e. either both should be
     null or both should not be null at the same time.  [[#3529]]
+ -  (Libplanet.Action) Changed `IActionContext` to inherit `ITxContext`.
+    The following properties of `IActionContext` have moved to `ITxContext`:
+    `Signer`, `TxId`, `Miner`, `BlockIndex`, and `BlockProtocolVersion`.
+    [[#3530]]
+ -  (Libplanet.Action) Changed `IAccount.Mint()`, `IAccount.Burn()`, and
+    `IAccount.Transfer()` to accept `ITxContext` instead of `IActionContext`
+    as its parameter.  [[#3530]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Action) Added `ITxContext` interface.  [[#3530]]
 
 ### Behavioral changes
 
@@ -37,6 +46,7 @@ be compatible with this version,  specifically, those that ran with
 
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
 [#3529]: https://github.com/planetarium/libplanet/pull/3529
+[#3530]: https://github.com/planetarium/libplanet/pull/3530
 [Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
 
 
