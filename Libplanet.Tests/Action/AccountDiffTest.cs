@@ -143,11 +143,12 @@ namespace Libplanet.Tests.Action
 
         public IActionContext CreateActionContext(Address signer, ITrie trie) =>
             new ActionContext(
-                signer,
-                null,
-                signer,
-                0,
-                Block.CurrentProtocolVersion,
+                new TxContext(
+                    signer,
+                    null,
+                    signer,
+                    0,
+                    Block.CurrentProtocolVersion),
                 new Account(new AccountState(trie)),
                 0,
                 0);

@@ -189,11 +189,12 @@ namespace Libplanet.Action
                 long actionGasLimit)
             {
                 return new ActionContext(
-                    signer: tx?.Signer ?? blockHeader.Miner,
-                    txid: tx?.Id ?? null,
-                    miner: blockHeader.Miner,
-                    blockIndex: blockHeader.Index,
-                    blockProtocolVersion: blockHeader.ProtocolVersion,
+                    new TxContext(
+                        signer: tx?.Signer ?? blockHeader.Miner,
+                        txId: tx?.Id ?? null,
+                        miner: blockHeader.Miner,
+                        blockIndex: blockHeader.Index,
+                        blockProtocolVersion: blockHeader.ProtocolVersion),
                     previousState: prevState,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit);
@@ -243,11 +244,12 @@ namespace Libplanet.Action
             IActionContext CreateActionContext(IAccount newPrevState)
             {
                 return new ActionContext(
-                    signer: inputContext.Signer,
-                    txid: inputContext.TxId,
-                    miner: inputContext.Miner,
-                    blockIndex: inputContext.BlockIndex,
-                    blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    new TxContext(
+                        signer: inputContext.Signer,
+                        txId: inputContext.TxId,
+                        miner: inputContext.Miner,
+                        blockIndex: inputContext.BlockIndex,
+                        blockProtocolVersion: inputContext.BlockProtocolVersion),
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit());

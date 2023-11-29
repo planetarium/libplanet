@@ -7,14 +7,17 @@ namespace Libplanet.Action
     internal class TxContext : ITxContext
     {
         public TxContext(
-            IPreEvaluationBlockHeader blockHeader,
-            ITransaction? transaction)
+            Address signer,
+            TxId? txId,
+            Address miner,
+            long blockIndex,
+            int blockProtocolVersion)
         {
-            Signer = transaction?.Signer ?? blockHeader.Miner;
-            TxId = transaction?.Id;
-            Miner = blockHeader.Miner;
-            BlockIndex = blockHeader.Index;
-            BlockProtocolVersion = blockHeader.ProtocolVersion;
+            Signer = signer;
+            TxId = txId;
+            Miner = miner;
+            BlockIndex = blockIndex;
+            BlockProtocolVersion = blockProtocolVersion;
         }
 
         /// <inheritdoc cref="IActionContext.Signer"/>

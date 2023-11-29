@@ -20,11 +20,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         private static ICommittedActionContext _actionContext =
             new CommittedActionContext(new ActionContext(
-                default,
-                default,
-                default,
-                Block.CurrentProtocolVersion,
-                default,
+                new TxContext(
+                    default,
+                    default,
+                    default,
+                    default,
+                    Block.CurrentProtocolVersion),
                 _account,
                 default,
                 0));
