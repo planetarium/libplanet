@@ -78,8 +78,8 @@ namespace Libplanet.Action.State
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
-        /// executing this method.</param>
+        /// <param name="context">The <see cref="ITxContext"/> of the <see cref="IAction"/>
+        /// executing this method to validate the authority.</param>
         /// <param name="recipient">The address who receives the minted asset.</param>
         /// <param name="value">The asset value to mint.</param>
         /// <returns>A new <see cref="IAccount"/> instance that the given <paramref
@@ -101,8 +101,8 @@ namespace Libplanet.Action.State
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
         /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
-        /// executing this method.</param>
+        /// <param name="context">The <see cref="ITxContext"/> of the <see cref="IAction"/>
+        /// executing this method to determine its behavior for backward compatibility.</param>
         /// <param name="sender">The address who sends the fungible asset to
         /// the <paramref name="recipient"/>.</param>
         /// <param name="recipient">The address who receives the fungible asset from
@@ -120,7 +120,7 @@ namespace Libplanet.Action.State
         /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
         /// <remarks>
         /// The behavior is different depending on <paramref name="context"/>'s
-        /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
+        /// <see cref="ITxContext.BlockProtocolVersion"/>.  There is a bug for version 0
         /// where this may not act as intended.  Such behavior is left intact for backward
         /// compatibility.
         /// </remarks>
@@ -137,8 +137,8 @@ namespace Libplanet.Action.State
         /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
         /// <paramref name="owner"/>'s balance.
         /// </summary>
-        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
-        /// executing this method.</param>
+        /// <param name="context">The <see cref="ITxContext"/> of the <see cref="IAction"/>
+        /// executing this method to validate the authority.</param>
         /// <param name="owner">The address who owns the fungible asset to burn.</param>
         /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
         /// <returns>A new <see cref="IAccount"/> instance that the given <paramref

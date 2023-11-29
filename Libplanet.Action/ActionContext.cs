@@ -6,6 +6,9 @@ using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
+    /// <summary>
+    /// Implements <see cref="IActionContext"/>.
+    /// </summary>
     internal class ActionContext : IActionContext
     {
         public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
