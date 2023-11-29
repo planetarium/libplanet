@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-            Block block2 = _blockChain.EvaluateAndSign(
+            Assert.Throws<ApplicationException>(() => _blockChain.EvaluateAndSign(
                 new BlockContent(
                     new BlockMetadata(
                         protocolVersion: protocolVersion - 1,
@@ -64,10 +64,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: null)).Propose(),
-                _fx.Proposer);
-
-            Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
+                _fx.Proposer));
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
             {
                 Block block3 = _blockChain.EvaluateAndSign(
