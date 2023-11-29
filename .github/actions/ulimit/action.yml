@@ -1,9 +1,0 @@
-name: ulimit
-inputs:
-  "n":
-    required: false
-runs:
-  using: composite
-  steps:
-  - run: echo 'ulimit -n ${{ inputs.n }}' >> $BASH_ENV
-    shell: bash
