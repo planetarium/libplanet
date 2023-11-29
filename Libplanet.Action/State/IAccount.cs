@@ -95,7 +95,7 @@ namespace Libplanet.Action.State
         /// <see cref="Currency.MaximumSupply"/>.</exception>
         [Pure]
         IAccount MintAsset(
-            IActionContext context, Address recipient, FungibleAssetValue value);
+            ITxContext context, Address recipient, FungibleAssetValue value);
 
         /// <summary>
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
@@ -126,7 +126,7 @@ namespace Libplanet.Action.State
         /// </remarks>
         [Pure]
         IAccount TransferAsset(
-            IActionContext context,
+            ITxContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,
@@ -152,7 +152,7 @@ namespace Libplanet.Action.State
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
         IAccount BurnAsset(
-            IActionContext context, Address owner, FungibleAssetValue value);
+            ITxContext context, Address owner, FungibleAssetValue value);
 
         /// <summary>
         /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.

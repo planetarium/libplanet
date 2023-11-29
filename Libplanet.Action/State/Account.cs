@@ -112,7 +112,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IAccount MintAsset(
-            IActionContext context, Address recipient, FungibleAssetValue value)
+            ITxContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -161,7 +161,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IAccount TransferAsset(
-            IActionContext context,
+            ITxContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value,
@@ -172,7 +172,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IAccount BurnAsset(
-            IActionContext context, Address owner, FungibleAssetValue value)
+            ITxContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
 
