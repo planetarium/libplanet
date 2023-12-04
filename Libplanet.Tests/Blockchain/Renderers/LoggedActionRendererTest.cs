@@ -66,12 +66,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             LogEvent firstLog = null;
             ICommittedActionContext actionContext =
                 new CommittedActionContext(new ActionContext(
-                    new TxContext(
-                        default,
-                        default,
-                        default,
-                        123,
-                        Block.CurrentProtocolVersion),
+                    default,
+                    default,
+                    default,
+                    Block.CurrentProtocolVersion,
+                    123,
                     _account,
                     default,
                     0));

@@ -22,12 +22,11 @@ namespace Libplanet.Tests.Action
         public override IActionContext CreateContext(
             IAccount delta, Address signer) =>
             new ActionContext(
-                new TxContext(
-                    signer,
-                    null,
-                    signer,
-                    0,
-                    ProtocolVersion),
+                signer,
+                null,
+                signer,
+                0,
+                ProtocolVersion,
                 delta,
                 0,
                 0);

@@ -10,17 +10,23 @@ namespace Libplanet.Action
     {
         public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
 
-        private readonly ITxContext _txContext;
-
         private readonly long _gasLimit;
 
         public ActionContext(
-            ITxContext txContext,
+            Address signer,
+            TxId? txid,
+            Address miner,
+            long blockIndex,
+            int blockProtocolVersion,
             IAccount previousState,
             int randomSeed,
             long gasLimit)
         {
-            _txContext = txContext;
+            Signer = signer;
+            TxId = txid;
+            Miner = miner;
+            BlockIndex = blockIndex;
+            BlockProtocolVersion = blockProtocolVersion;
             PreviousState = previousState;
             RandomSeed = randomSeed;
             _gasLimit = gasLimit;
@@ -29,19 +35,19 @@ namespace Libplanet.Action
         }
 
         /// <inheritdoc cref="IActionContext.Signer"/>
-        public Address Signer => _txContext.Signer;
+        public Address Signer { get; }
 
         /// <inheritdoc cref="IActionContext.TxId"/>
-        public TxId? TxId => _txContext.TxId;
+        public TxId? TxId { get; }
 
         /// <inheritdoc cref="IActionContext.Miner"/>
-        public Address Miner => _txContext.Miner;
+        public Address Miner { get; }
 
         /// <inheritdoc cref="IActionContext.BlockIndex"/>
-        public long BlockIndex => _txContext.BlockIndex;
+        public long BlockIndex { get; }
 
         /// <inheritdoc cref="IActionContext.BlockProtocolVersion"/>
-        public int BlockProtocolVersion => _txContext.BlockProtocolVersion;
+        public int BlockProtocolVersion { get; }
 
         /// <inheritdoc cref="IActionContext.PreviousState"/>
         public IAccount PreviousState { get; }

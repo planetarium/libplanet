@@ -32,12 +32,11 @@ namespace Libplanet.Action.Tests
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
-                    new TxContext(
-                        address,
-                        txid,
-                        address,
-                        1,
-                        Block.CurrentProtocolVersion),
+                    address,
+                    txid,
+                    address,
+                    1,
+                    Block.CurrentProtocolVersion,
                     new Account(MockAccountState.Empty),
                     123,
                     0),

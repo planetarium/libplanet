@@ -45,12 +45,11 @@ namespace Libplanet.Action.Tests.Sys
             var prevState = new Account(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
-                new TxContext(
-                    signer: signer,
-                    txId: random.NextTxId(),
-                    miner: random.NextAddress(),
-                    blockIndex: 0,
-                    blockProtocolVersion: Block.CurrentProtocolVersion),
+                signer: signer,
+                txid: random.NextTxId(),
+                miner: random.NextAddress(),
+                blockIndex: 0,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
                 gasLimit: 0);
@@ -73,12 +72,11 @@ namespace Libplanet.Action.Tests.Sys
             var prevState = new Account(MockAccountState.Empty);
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
-                new TxContext(
-                    signer: signer,
-                    txId: random.NextTxId(),
-                    miner: random.NextAddress(),
-                    blockIndex: 10,
-                    blockProtocolVersion: Block.CurrentProtocolVersion),
+                signer: signer,
+                txid: random.NextTxId(),
+                miner: random.NextAddress(),
+                blockIndex: 10,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
                 gasLimit: long.MaxValue);
