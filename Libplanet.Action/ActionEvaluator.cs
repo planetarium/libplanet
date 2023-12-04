@@ -148,8 +148,8 @@ namespace Libplanet.Action
         /// <param name="previousState">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
-        /// <param name="logger">An optional logger.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
+        /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
@@ -159,8 +159,8 @@ namespace Libplanet.Action
             ITransaction? tx,
             IAccount previousState,
             IImmutableList<IAction> actions,
-            ILogger? logger = null,
-            IStateStore? stateStore = null)
+            IStateStore stateStore,
+            ILogger? logger = null)
         {
             IActionContext CreateActionContext(
                 IAccount prevState,
@@ -193,8 +193,8 @@ namespace Libplanet.Action
                     tx,
                     context,
                     action,
-                    logger,
-                    stateStore);
+                    stateStore,
+                    logger);
 
                 yield return result.Evaluation;
 
@@ -213,10 +213,18 @@ namespace Libplanet.Action
             ITransaction? tx,
             IActionContext context,
             IAction action,
-            ILogger? logger = null,
-            IStateStore? stateStore = null)
+            IStateStore stateStore,
+            ILogger? logger = null)
         {
+            if (!context.PreviousState.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Given {nameof(context)} must have its previous state's " +
+                    $"{nameof(ITrie)} recorded.");
+            }
+
             IActionContext inputContext = context;
+
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
@@ -305,11 +313,18 @@ namespace Libplanet.Action
 
             state = feeCollector.Refund(state);
             state = feeCollector.Reward(state);
-            state = stateStore is { } s && state is Account a
+            state = state is Account a
                 ? new Account(
-                    new AccountState(s.Commit(a.Trie)),
+                    new AccountState(stateStore.Commit(a.Trie)),
                     a.TotalUpdatedFungibles)
-                : state;
+                : throw new InvalidOperationException(
+                    $"Internal {nameof(IAccount)} is not of valid type: {state.GetType()}");
+
+            if (!state.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
+            }
 
             return (
                 new ActionEvaluation(
@@ -426,8 +441,8 @@ namespace Libplanet.Action
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
-                logger: _logger,
-                stateStore: _stateStore);
+                stateStore: _stateStore,
+                logger: _logger);
         }
 
         /// <summary>
@@ -464,8 +479,8 @@ namespace Libplanet.Action
                 tx: null,
                 previousState: previousState,
                 actions: new[] { policyBlockAction }.ToImmutableList(),
-                logger: _logger,
-                stateStore: _stateStore).Single();
+                stateStore: _stateStore,
+                logger: _logger).Single();
         }
 
         internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)

@@ -677,7 +677,8 @@ namespace Libplanet.Tests.Action
                 previousState: fx.CreateAccount(0, blockA.PreviousHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             Assert.Equal(
@@ -723,7 +724,8 @@ namespace Libplanet.Tests.Action
                 previousState: fx.CreateAccount(0, blockB.PreviousHash),
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
             Assert.Equal(
@@ -1249,7 +1251,8 @@ namespace Libplanet.Tests.Action
                 previousState: fx.CreateAccount(0, blockA.PreviousHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
 
             byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
             int[] randomSeeds = Enumerable
