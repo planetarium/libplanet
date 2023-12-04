@@ -6,12 +6,9 @@ using Libplanet.Types.Tx;
 namespace Libplanet.Action
 {
     /// <summary>
-    /// Contextual data determined by a <see cref="Transaction"/> and
-    /// a <see cref="PreEvaluationBlockHeader"/>.
-    /// Passed to <see cref="IAction.Execute(IActionContext)"/> method as part of the
-    /// <see cref="IActionContext"/> argument.
+    /// Contextual data determined by a transaction and a block.
+    /// Passed to <see cref="IAction.Execute(IActionContext)"/> method.
     /// </summary>
-    /// <seealso cref="IActionContext"/>
     public interface ITxContext
     {
         /// <summary>

@@ -1,11 +1,9 @@
 using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
-    /// <summary>
-    /// Implements <see cref="ITxContext"/>.
-    /// </summary>
     internal class TxContext : ITxContext
     {
         public TxContext(

@@ -1,19 +1,12 @@
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
-using Libplanet.Types.Blocks;
-using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
     /// <summary>
-    /// <summary>
-    /// Contextual data determined by a <see cref="Transaction"/>,
-    /// a <see cref="PreEvaluationBlockHeader"/>, and <see cref="IAction"/>
-    /// (in particular, the <see cref="IAction"/>'s offset within the
-    /// <see cref="Transaction"/>).
+    /// Contextual data determined by a transaction and a block.
     /// Passed to <see cref="IAction.Execute(IActionContext)"/> method.
     /// </summary>
-    /// <seealso cref="ITxContext"/>
     public interface IActionContext : ITxContext
     {
         /// <summary>
