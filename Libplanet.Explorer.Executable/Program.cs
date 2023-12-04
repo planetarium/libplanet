@@ -216,6 +216,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     new DumbBlockPolicy(LoadBlockPolicy(options));
                 IStagePolicy stagePolicy =
                     new VolatileStagePolicy();
+                var blockChainStates = new BlockChainStates(store, stateStore);
                 var blockChain =
                     new BlockChain(
                         policy,
@@ -223,6 +224,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         store,
                         stateStore,
                         options.GetGenesisBlock(policy),
+                        blockChainStates,
                         new ActionEvaluator(
                             _ => policy.BlockAction,
                             stateStore,

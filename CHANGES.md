@@ -10,7 +10,6 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Removed `BlockChainStates` class.  [[#3462]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 5.  [[#3524]]
  -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
     instead of `IAccount`.  [[#3462]]
