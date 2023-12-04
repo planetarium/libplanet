@@ -174,7 +174,7 @@ public class StateQueryTest
         Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
-
+    
     [Fact]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
@@ -194,7 +194,7 @@ public class StateQueryTest
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
     }
-
+    
     [Fact]
     public async Task StatesBySrh()
     {
@@ -345,7 +345,7 @@ public class StateQueryTest
         Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
-
+    
 
     private class MockChainStates : IBlockChainStates
     {
@@ -366,7 +366,7 @@ public class StateQueryTest
         public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             GetAccountState(offset).GetValidatorSet();
 
-        public IAccountState GetAccountState(BlockHash? offset) =>
+        public IAccountState GetAccountState(BlockHash? offset) => 
             new MockAccount(offset, null);
 
         public IAccountState GetAccountState(HashDigest<SHA256>? hash) =>
@@ -400,18 +400,18 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
-        public IAccount MintAsset(ITxContext context, Address recipient, FungibleAssetValue value)
+        public IAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
         {
             throw new System.NotImplementedException();
         }
 
-        public IAccount TransferAsset(ITxContext context, Address sender, Address recipient,
+        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient,
             FungibleAssetValue value, bool allowNegativeBalance = false)
         {
             throw new System.NotImplementedException();
         }
 
-        public IAccount BurnAsset(ITxContext context, Address owner, FungibleAssetValue value)
+        public IAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
         {
             throw new System.NotImplementedException();
         }

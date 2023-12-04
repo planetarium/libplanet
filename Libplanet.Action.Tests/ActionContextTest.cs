@@ -31,12 +31,11 @@ namespace Libplanet.Action.Tests
             foreach (var (seed, expected) in testCases)
             {
                 var context = new ActionContext(
-                    new TxContext(
-                        signer: _address,
-                        txId: _txid,
-                        miner: _address,
-                        blockIndex: 1,
-                        blockProtocolVersion: Block.CurrentProtocolVersion),
+                    signer: _address,
+                    txid: _txid,
+                    miner: _address,
+                    blockIndex: 1,
+                    blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new Account(MockAccountState.Empty),
                     randomSeed: seed,
                     gasLimit: 0
@@ -50,35 +49,33 @@ namespace Libplanet.Action.Tests
         public void GuidShouldBeDeterministic()
         {
             var context1 = new ActionContext(
-                new TxContext(
-                    signer: _address,
-                    txId: _txid,
-                    miner: _address,
-                    blockIndex: 1,
-                    blockProtocolVersion: Block.CurrentProtocolVersion),
+                signer: _address,
+                txid: _txid,
+                miner: _address,
+                blockIndex: 1,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new Account(MockAccountState.Empty),
                 randomSeed: 0,
-                gasLimit: 0);
+                gasLimit: 0
+            );
 
             var context2 = new ActionContext(
-                new TxContext(
-                    signer: _address,
-                    txId: _txid,
-                    miner: _address,
-                    blockIndex: 1,
-                    blockProtocolVersion: Block.CurrentProtocolVersion),
+                signer: _address,
+                txid: _txid,
+                miner: _address,
+                blockIndex: 1,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new Account(MockAccountState.Empty),
                 randomSeed: 0,
                 gasLimit: 0
             );
 
             var context3 = new ActionContext(
-                new TxContext(
-                    signer: _address,
-                    txId: _txid,
-                    miner: _address,
-                    blockIndex: 1,
-                    blockProtocolVersion: Block.CurrentProtocolVersion),
+                signer: _address,
+                txid: _txid,
+                miner: _address,
+                blockIndex: 1,
+                blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new Account(MockAccountState.Empty),
                 randomSeed: 1,
                 gasLimit: 0
@@ -113,12 +110,11 @@ namespace Libplanet.Action.Tests
             for (var i = 0; i < 100; i++)
             {
                 var context = new ActionContext(
-                    new TxContext(
-                        signer: _address,
-                        txId: _txid,
-                        miner: _address,
-                        blockIndex: 1,
-                        blockProtocolVersion: Block.CurrentProtocolVersion),
+                    signer: _address,
+                    txid: _txid,
+                    miner: _address,
+                    blockIndex: 1,
+                    blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new Account(MockAccountState.Empty),
                     randomSeed: i,
                     gasLimit: 0

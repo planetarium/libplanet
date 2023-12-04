@@ -183,28 +183,36 @@ namespace Libplanet.Action
             IImmutableList<IAction> actions,
             ILogger? logger = null)
         {
-            ITxContext txContext = new TxContext(
-                signer: tx?.Signer ?? blockHeader.Miner,
-                txId: tx?.Id ?? null,
-                miner: blockHeader.Miner,
-                blockIndex: blockHeader.Index,
-                blockProtocolVersion: blockHeader.ProtocolVersion);
+            IActionContext CreateActionContext(
+                IAccount prevState,
+                int randomSeed,
+                long actionGasLimit)
+            {
+                return new ActionContext(
+                    signer: tx?.Signer ?? blockHeader.Miner,
+                    txid: tx?.Id ?? null,
+                    miner: blockHeader.Miner,
+                    blockIndex: blockHeader.Index,
+                    blockProtocolVersion: blockHeader.ProtocolVersion,
+                    previousState: prevState,
+                    randomSeed: randomSeed,
+                    gasLimit: actionGasLimit);
+            }
+
+            long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
             byte[] signature = tx?.Signature ?? Array.Empty<byte>();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
-            long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
             IAccount state = previousState;
             foreach (IAction action in actions)
             {
+                IActionContext context = CreateActionContext(state, seed, gasLimit);
                 (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
                     blockHeader,
                     tx,
-                    txContext,
-                    state,
-                    seed,
-                    gasLimit,
+                    context,
                     action,
                     logger);
 
@@ -220,27 +228,30 @@ namespace Libplanet.Action
             }
         }
 
-        // FIXME: Argument blockHeader is passed on purely for logging.
         internal static (ActionEvaluation Evaluation, long NextGasLimit) EvaluateAction(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
-            ITxContext txContext,
-            IAccount prevState,
-            int randomSeed,
-            long gasLimit,
+            IActionContext context,
             IAction action,
             ILogger? logger = null)
         {
-            IActionContext inputContext = new ActionContext(
-                txContext,
-                prevState,
-                randomSeed,
-                gasLimit);
-            IActionContext context = inputContext;
-
+            IActionContext inputContext = context;
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
+
+            IActionContext CreateActionContext(IAccount newPrevState)
+            {
+                return new ActionContext(
+                    signer: inputContext.Signer,
+                    txid: inputContext.TxId,
+                    miner: inputContext.Miner,
+                    blockIndex: inputContext.BlockIndex,
+                    blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    previousState: newPrevState,
+                    randomSeed: inputContext.RandomSeed,
+                    gasLimit: inputContext.GasLimit());
+            }
 
             try
             {
@@ -248,11 +259,7 @@ namespace Libplanet.Action
                 stopwatch.Start();
                 AccountMetrics.Initialize();
                 state = feeCollector.Mortgage(state);
-                context = new ActionContext(
-                    txContext: txContext,
-                    previousState: state,
-                    randomSeed: randomSeed,
-                    gasLimit: gasLimit);
+                context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
                 logger?
@@ -279,8 +286,8 @@ namespace Libplanet.Action
                     e,
                     message,
                     action,
-                    txContext.TxId,
-                    txContext.BlockIndex,
+                    tx?.Id,
+                    blockHeader.Index,
                     ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray));
                 throw;
             }
@@ -294,8 +301,8 @@ namespace Libplanet.Action
                     e,
                     message,
                     action,
-                    txContext.TxId,
-                    txContext.BlockIndex,
+                    tx?.Id,
+                    blockHeader.Index,
                     ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray));
                 var innerMessage =
                     $"The action {action} (block #{blockHeader.Index}, " +
@@ -308,8 +315,8 @@ namespace Libplanet.Action
                 exc = new UnexpectedlyTerminatedActionException(
                     innerMessage,
                     blockHeader.PreEvaluationHash,
-                    txContext.BlockIndex,
-                    txContext.TxId,
+                    blockHeader.Index,
+                    tx?.Id,
                     null,
                     action,
                     e);
