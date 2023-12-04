@@ -41,14 +41,6 @@ namespace Libplanet.Action.State
     public interface IAccount : IAccountState
     {
         /// <summary>
-        /// This is no longer used and should always return an empty <see cref="IAccountDelta"/>.
-        /// The <see cref="IAccountDelta"/> representing the delta part of
-        /// this <see cref="IAccount"/>.
-        /// </summary>
-        [Pure]
-        IAccountDelta Delta { get; }
-
-        /// <summary>
         /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
         /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
         /// since the previous <see cref="Block"/>'s output states.

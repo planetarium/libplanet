@@ -30,15 +30,11 @@ namespace Libplanet.Action.State
             IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
         {
             _baseState = baseState;
-            Delta = new AccountDelta();
             TotalUpdatedFungibles = totalUpdatedFungibles;
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
         public ITrie Trie => _baseState.Trie;
-
-        /// <inheritdoc/>
-        public IAccountDelta Delta { get; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
