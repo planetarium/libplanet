@@ -21,27 +21,23 @@ namespace Libplanet.Action.State
         private readonly IAccountState _baseState;
 
         public Account(IAccountState baseState)
-            : this(baseState, ImmutableDictionary<(Address, Currency), BigInteger>.Empty)
+            : this(baseState, ImmutableHashSet<(Address, Currency)>.Empty)
         {
         }
 
         public Account(
             IAccountState baseState,
-            IImmutableDictionary<(Address, Currency), BigInteger> totalUpdatedFungibles)
+            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
         {
             _baseState = baseState;
-            TotalUpdatedFungibles = totalUpdatedFungibles;
+            TotalUpdatedFungibleAssets = totalUpdatedFungibleAssets;
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
         public ITrie Trie => _baseState.Trie;
 
         /// <inheritdoc/>
-        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
-            TotalUpdatedFungibles.Keys.ToImmutableHashSet();
-
-        public IImmutableDictionary<(Address, Currency), BigInteger> TotalUpdatedFungibles
-            { get; }
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -190,7 +186,7 @@ namespace Libplanet.Action.State
             new Account(
                 new AccountState(
                     Trie.Set(ToStateKey(address), value)),
-                TotalUpdatedFungibles);
+                TotalUpdatedFungibleAssets);
 
         [Pure]
         private Account UpdateFungibleAssets(
@@ -203,18 +199,18 @@ namespace Libplanet.Action.State
                     Trie
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
                         .Set(ToTotalSupplyKey(currency), new Integer(sa))),
-                TotalUpdatedFungibles.SetItem((address, currency), amount))
+                TotalUpdatedFungibleAssets.Add((address, currency)))
             : new Account(
                 new AccountState(
                     Trie.Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
-                TotalUpdatedFungibles.SetItem((address, currency), amount));
+                TotalUpdatedFungibleAssets.Add((address, currency)));
 
         [Pure]
         private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
             new Account(
                 new AccountState(
                     Trie.Set(ValidatorSetKey, validatorSet.Bencoded)),
-                TotalUpdatedFungibles);
+                TotalUpdatedFungibleAssets);
 
         [Pure]
         private IAccount TransferAssetV0(
