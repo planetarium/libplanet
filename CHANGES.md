@@ -4,14 +4,12 @@ Libplanet changelog
 Version 3.9.0
 -------------
 
-To be released.
+Released on December 5, 2023.
 
 Due to changes in [#3529], a network ran with a prior version may not
 be compatible with this version,  specifically, those that ran with
 [Libplanet 2.0.0] and onwards prior to this release that have included
 `Transaction`s that aren't compatible with the updated specification in [#3529].
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -37,20 +35,6 @@ be compatible with this version,  specifically, those that ran with
     IImmutableDictionary<(Address, Currency), BigInteger>)` to
     `IAccount(IAccountState, IImmutableHashSet<(Address, Currency)>)`.
     [[#3537]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3520]: https://github.com/planetarium/libplanet/pull/3520
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
