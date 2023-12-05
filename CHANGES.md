@@ -31,6 +31,8 @@ be compatible with this version,  specifically, those that ran with
  -  Changed `TxInvoice` to no longer allow having the null-ness of
     `MaxGasPrice` and `GasLimit` to be different, i.e. either both should be
     null or both should not be null at the same time.  [[#3529]]
+ -  (Libplanet.Action) Removed `IAccountDelta` interface.  [[#3535]]
+ -  (Libplanet.Action) Removed `IAccount.Delta` interface property.  [[#3535]]
 
 ### Backward-incompatible network protocol changes
 
@@ -49,6 +51,7 @@ be compatible with this version,  specifically, those that ran with
 [#3520]: https://github.com/planetarium/libplanet/pull/3520
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
 [#3529]: https://github.com/planetarium/libplanet/pull/3529
+[#3535]: https://github.com/planetarium/libplanet/pull/3535
 [Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
 
 
