@@ -109,7 +109,7 @@ and <code>string</code>.
 <ul><li>
 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList&lt;T&gt;</a> where <code>T</code> is a primitive type.
 </li><li>
-<span class="xref">System.Collections.Immutable.ImmutableDictionary&lt;TKey, TValue&gt;</span> where
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2">ImmutableDictionary&lt;TKey,TValue&gt;</a> where
 <ul><li>
 <code>TKey</code> is one of
 <code>ImmutableArray&lt;byte></code>, <code>Address</code>,
@@ -125,10 +125,10 @@ and <code>string</code>.
     and <code>ImmutableList&lt;int?></code>are not allowed.
 </li><li>
     Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
-    result in an <span class="xref">System.Exception</span> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+    result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
 </li><li>
     Trying to assign <span class="xref">null</span> to any property or to a part of
-    a collection will result in an <span class="xref">System.Exception</span> when
+    a collection will result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when
 <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Dictionary)</a> is called.
 </li></ul>
 
