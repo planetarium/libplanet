@@ -148,39 +148,18 @@ namespace Libplanet.Action
         /// <param name="previousState">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
-        /// <remarks>
-        /// <para>Each <see cref="IActionContext.Random"/> object has an unconsumed state.</para>
-        /// <para>
-        /// The returned enumeration has the following properties:
-        /// <list type="bullet">
-        /// <item><description>
-        ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
-        ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a
-        ///     "superset" of <paramref name="previousState"/>'s
-        ///     <see cref="IAccount.Delta"/> (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// <item><description>
-        ///     Each <see cref="ActionEvaluation"/> in the enumerated result
-        ///     has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a "superset"
-        ///     of the previous one, if any (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// </list>
-        /// </para>
-        /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
             IAccount previousState,
             IImmutableList<IAction> actions,
+            IStateStore stateStore,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -214,6 +193,7 @@ namespace Libplanet.Action
                     tx,
                     context,
                     action,
+                    stateStore,
                     logger);
 
                 yield return result.Evaluation;
@@ -233,9 +213,18 @@ namespace Libplanet.Action
             ITransaction? tx,
             IActionContext context,
             IAction action,
+            IStateStore stateStore,
             ILogger? logger = null)
         {
+            if (!context.PreviousState.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Given {nameof(context)} must have its previous state's " +
+                    $"{nameof(ITrie)} recorded.");
+            }
+
             IActionContext inputContext = context;
+
             IAccount state = inputContext.PreviousState;
             Exception? exc = null;
             IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
@@ -324,6 +313,18 @@ namespace Libplanet.Action
 
             state = feeCollector.Refund(state);
             state = feeCollector.Reward(state);
+            state = state is Account a
+                ? new Account(
+                    new AccountState(stateStore.Commit(a.Trie)),
+                    a.TotalUpdatedFungibles)
+                : throw new InvalidOperationException(
+                    $"Internal {nameof(IAccount)} is not of valid type: {state.GetType()}");
+
+            if (!state.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
+            }
 
             return (
                 new ActionEvaluation(
@@ -394,7 +395,6 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = Account.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -441,6 +441,7 @@ namespace Libplanet.Action
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
+                stateStore: _stateStore,
                 logger: _logger);
         }
 
@@ -477,7 +478,9 @@ namespace Libplanet.Action
                 blockHeader: blockHeader,
                 tx: null,
                 previousState: previousState,
-                actions: new[] { policyBlockAction }.ToImmutableList()).Single();
+                actions: new[] { policyBlockAction }.ToImmutableList(),
+                stateStore: _stateStore,
+                logger: _logger).Single();
         }
 
         internal IAccount PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
@@ -500,14 +503,7 @@ namespace Libplanet.Action
             int setCount = 0;
             foreach (var evaluation in evaluations)
             {
-                ITrie nextTrie = trie;
-                foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
-                {
-                    nextTrie = nextTrie.Set(kv.Key, kv.Value);
-                    setCount++;
-                }
-
-                nextTrie = _stateStore.Commit(nextTrie);
+#pragma warning disable SA1118
                 var committedEvaluation = new CommittedActionEvaluation(
                     action: evaluation.Action,
                     inputContext: new CommittedActionContext(
@@ -516,14 +512,19 @@ namespace Libplanet.Action
                         miner: evaluation.InputContext.Miner,
                         blockIndex: evaluation.InputContext.BlockIndex,
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        previousState: trie.Hash,
+                        previousState: evaluation.InputContext.PreviousState.Trie.Recorded
+                            ? evaluation.InputContext.PreviousState.Trie.Hash
+                            : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
                         blockAction: evaluation.InputContext.BlockAction),
-                    outputState: nextTrie.Hash,
+                    outputState: evaluation.OutputState.Trie.Recorded
+                        ? evaluation.OutputState.Trie.Hash
+                        : throw new ArgumentException("Trie is not recorded"),
                     exception: evaluation.Exception);
                 committedEvaluations.Add(committedEvaluation);
+#pragma warning restore SA1118
 
-                trie = nextTrie;
+                trie = evaluation.OutputState.Trie;
             }
 
             _logger

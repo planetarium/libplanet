@@ -10,7 +10,6 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Sys;
-using Libplanet.Action.Tests;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -1709,9 +1708,6 @@ namespace Libplanet.Tests.Blockchain
             // Build a store with incomplete states
             Block b = chain.Genesis;
             IAccount previousState = actionEvaluator.PrepareInitialDelta(null);
-            ActionEvaluation[] evals =
-                actionEvaluator.EvaluateBlock(b, previousState).ToArray();
-            IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
                 .Select(_ => new PrivateKey().Address)
@@ -1736,7 +1732,10 @@ namespace Libplanet.Tests.Blockchain
                             lastCommit: CreateBlockCommit(b)),
                         GenesisProposer);
 
-                    dirty = actionEvaluator.EvaluateBlock(b, previousState).GetDirtyStates();
+                    var evals = actionEvaluator.EvaluateBlock(b, previousState);
+                    var dirty = evals.Last().OutputState.Trie
+                        .Diff(evals.First().InputContext.PreviousState.Trie)
+                        .ToList();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
                     BuildIndex(chain.Id, b);

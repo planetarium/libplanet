@@ -34,9 +34,8 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetBalance"/>
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
-            KeyBytes[] keys = new[] { ToFungibleAssetKey(address, currency) };
-            IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+            IValue? value = Trie.Get(ToFungibleAssetKey(address, currency));
+            return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
         }
@@ -49,9 +48,8 @@ namespace Libplanet.Action.State
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            KeyBytes[] keys = new[] { ToTotalSupplyKey(currency) };
-            IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-            return rawValues.Count > 0 && rawValues[0] is Bencodex.Types.Integer i
+            IValue? value = Trie.Get(ToTotalSupplyKey(currency));
+            return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
         }
@@ -59,9 +57,8 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
-            KeyBytes[] keys = new[] { ValidatorSetKey };
-            IReadOnlyList<IValue?> rawValues = Trie.Get(keys);
-            return rawValues.Count > 0 && rawValues[0] is List list
+            IValue? value = Trie.Get(ValidatorSetKey);
+            return value is List list
                 ? new ValidatorSet(list)
                 : new ValidatorSet();
         }

@@ -15,6 +15,17 @@ be compatible with this version,  specifically, those that ran with
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Removed unnecessary extension methods:  [[#3520]]
+     -  `IReadOnlyList<IActionEvaluation>.GetRawTotalDelta()`
+     -  `IReadOnlyList<IAccountDelta>.OrderedSum()`
+     -  `IAccountDelta.ToRawDelta()`
+     -  `IAccount.GetUpdatedStates()`
+     -  `IAccount.GetUpdatedBalances()`
+     -  `IAccount.GetUpdatedTotalSupplies()`
+ -  (Libplanet.Action) Changed `IAccount` to no longer track `IAccountDelta`.
+    [[#3520]]
+ -  (Libplanet.Action) Removed `IAccountDelta` as parameter for constructors
+    of `Account` class.  [[#3520]]
  -  (Libplanet.Action) Removed `hashedSignature` of type `byte[]` parameter
     from `ActionEvaluator.GenerateRandomSeed()`.  [[#3523]]
  -  Changed `TxInvoice` to no longer allow having the null-ness of
@@ -35,6 +46,7 @@ be compatible with this version,  specifically, those that ran with
 
 ### CLI tools
 
+[#3520]: https://github.com/planetarium/libplanet/pull/3520
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
 [#3529]: https://github.com/planetarium/libplanet/pull/3529
 [Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
