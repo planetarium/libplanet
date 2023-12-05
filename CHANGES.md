@@ -68,7 +68,12 @@ To be released.
  -  (Libplanet.Action) Type of `Initialize.States` property became
     `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>?`.
     (was `IImmutableDictionary<Address, IValue>?`)  [[#3462]]
-
+ -  (Libplanet.Action) New property `SystemAccounts` added to
+    `IActionContext` interface.  [[#3494]]
+ -  (Libplanet.Action) New property `SystemAccountsGetter` added to
+    `IBlockPolicy` interface.  [[#3494]]
+ -  (@planetarium/tx)  Remove the `T` generic argument of `SignedTx<T>`.
+    [[#3512]]
 
 ### Backward-incompatible network protocol changes
 
@@ -118,8 +123,9 @@ To be released.
 ### CLI tools
 
 [#3462]: https://github.com/planetarium/libplanet/pull/3462
+[#3494]: https://github.com/planetarium/libplanet/pull/3494
+[#3512]: https://github.com/planetarium/libplanet/pull/3512
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
-
 
 Version 3.7.0
 -------------
