@@ -33,6 +33,10 @@ be compatible with this version,  specifically, those that ran with
     null or both should not be null at the same time.  [[#3529]]
  -  (Libplanet.Action) Removed `IAccountDelta` interface.  [[#3535]]
  -  (Libplanet.Action) Removed `IAccount.Delta` interface property.  [[#3535]]
+ -  (Libplanet.Action) Changed constructor `IAccount(IAccountState,
+    IImmutableDictionary<(Address, Currency), BigInteger>)` to
+    `IAccount(IAccountState, IImmutableHashSet<(Address, Currency)>)`.
+    [[#3537]]
 
 ### Backward-incompatible network protocol changes
 
@@ -52,6 +56,7 @@ be compatible with this version,  specifically, those that ran with
 [#3523]: https://github.com/planetarium/libplanet/pull/3523
 [#3529]: https://github.com/planetarium/libplanet/pull/3529
 [#3535]: https://github.com/planetarium/libplanet/pull/3535
+[#3537]: https://github.com/planetarium/libplanet/pull/3537
 [Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
 
 

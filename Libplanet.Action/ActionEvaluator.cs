@@ -313,12 +313,9 @@ namespace Libplanet.Action
 
             state = feeCollector.Refund(state);
             state = feeCollector.Reward(state);
-            state = state is Account a
-                ? new Account(
-                    new AccountState(stateStore.Commit(a.Trie)),
-                    a.TotalUpdatedFungibles)
-                : throw new InvalidOperationException(
-                    $"Internal {nameof(IAccount)} is not of valid type: {state.GetType()}");
+            state = new Account(
+                new AccountState(stateStore.Commit(state.Trie)),
+                state.TotalUpdatedFungibleAssets);
 
             if (!state.Trie.Recorded)
             {
