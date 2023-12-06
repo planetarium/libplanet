@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
@@ -21,6 +22,12 @@ namespace Libplanet.Action.State
         {
             _trie = trie;
             _cache = new AccountStateCache();
+            if (trie.GetMetadata() is { } metadata && metadata.Type != TrieType.Account)
+            {
+                throw new ArgumentException(
+                    "Given trie is not an IAccount instance.",
+                    nameof(trie));
+            }
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
