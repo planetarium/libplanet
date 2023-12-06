@@ -82,7 +82,8 @@ namespace Libplanet.Action
         [Pure]
         public IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash)
+            HashDigest<SHA256>? baseStateRootHash,
+            out HashDigest<SHA256> stateRootHash)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -118,7 +119,11 @@ namespace Libplanet.Action
                     evaluations = evaluations.Add(EvaluatePolicyBlockAction(block, previousState));
                 }
 
-                return ToCommittedEvaluation(block, evaluations, baseStateRootHash);
+                var committed = ToCommittedEvaluation(block, evaluations, baseStateRootHash);
+                stateRootHash = committed.Count > 0
+                    ? committed.Last().OutputState
+                    : previousState.Trie.Hash;
+                return committed;
             }
             finally
             {

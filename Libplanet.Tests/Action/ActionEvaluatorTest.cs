@@ -100,13 +100,13 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null, out _);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccount(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null, out _);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
@@ -152,7 +152,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -194,7 +194,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(new PrivateKey());
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -252,7 +252,7 @@ namespace Libplanet.Tests.Action
                     previousState: previousState).ToList());
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(
-                    block, chain.Store.GetStateRootHash(block.PreviousHash)).ToList());
+                    block, chain.Store.GetStateRootHash(block.PreviousHash), out _).ToList());
         }
 
         [Fact]
@@ -1043,7 +1043,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1112,7 +1112,8 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetStateRootHash(block.PreviousHash));
+                chain.Store.GetStateRootHash(block.PreviousHash),
+                out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1184,7 +1185,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1246,7 +1247,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);

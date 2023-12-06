@@ -175,7 +175,7 @@ namespace Libplanet.Blockchain
                     HashDigest<SHA256>? baseStateRootHash =
                         Store.GetStateRootHash(block.PreviousHash);
                     IReadOnlyList<ICommittedActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, baseStateRootHash);
+                        ActionEvaluator.Evaluate(block, baseStateRootHash, out _);
 
                     RenderActions(
                         evaluations: evaluations,
