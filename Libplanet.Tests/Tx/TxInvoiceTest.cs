@@ -36,8 +36,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             Assert.Equal(genesisHash, invoice.GenesisHash);
             Assert.True(updatedAddresses.SetEquals(invoice.UpdatedAddresses));
             Assert.Equal(timestamp, invoice.Timestamp);
@@ -75,8 +76,9 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var copy = new TxInvoice(original);
             Assert.Equal(genesisHash, copy.GenesisHash);
             Assert.True(updatedAddresses.SetEquals(copy.UpdatedAddresses));
@@ -109,14 +111,16 @@ namespace Libplanet.Tests.Tx
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             var invoice2 = new TxInvoice(
                 genesisHash,
                 updatedAddresses,
                 timestamp,
-                actions
-            );
+                actions,
+                null,
+                null);
             Assert.True(invoice1.Equals(invoice2));
             Assert.True(invoice1.Equals((object)invoice2));
             Assert.Equal(invoice1.GetHashCode(), invoice2.GetHashCode());
@@ -127,20 +131,21 @@ namespace Libplanet.Tests.Tx
 
             Assert.False(invoice1.Equals(null));
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
+                // NOTE: Non-null cases for MaxGasPrice and GasLimit are flipped as existing
+                // mock object has respective values set to null.
                 var invoice = new TxInvoice(
-                   i == 0 ? (BlockHash?)null : genesisHash,
-                   i == 1 ? null : updatedAddresses,
-                   i == 2 ? (DateTimeOffset?)DateTimeOffset.MinValue : timestamp,
-                   i == 3 ? null : actions,
-                   i == 4 ? (FungibleAssetValue?)null : FungibleAssetValue.FromRawValue(
-                       Currency.Uncapped(
-                           "FOO",
-                           18,
-                           new PrivateKey().ToAddress()),
-                       100),
-                   i == 5 ? (long?)null : 10);
+                    i == 0 ? (BlockHash?)null : genesisHash,
+                    i == 1 ? (IImmutableSet<Address>)AddressSet.Empty : updatedAddresses,
+                    i == 2 ? DateTimeOffset.MinValue : timestamp,
+                    i == 3 ? TxActionList.Empty : actions,
+                    i == 4
+                        ? FungibleAssetValue.FromRawValue(
+                            Currency.Uncapped("FOO", 18, new PrivateKey().Address),
+                            100)
+                        : (FungibleAssetValue?)null,
+                    i == 4 ? 10 : (long?)null);
                 Assert.False(invoice1.Equals(invoice));
                 Assert.False(invoice1.Equals((object)invoice));
                 Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());
@@ -184,12 +189,10 @@ namespace Libplanet.Tests.Tx
                       ""actions"": [
                         {{
                           ""\uFEFFitem"": ""\uFEFFfoo"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
                         }},
                         {{
                           ""\uFEFFitem"": ""\uFEFFbar"",
-                          ""\uFEFFrecord_rehearsal"": false,
                           ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
                         }}
                       ],

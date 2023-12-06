@@ -50,7 +50,7 @@ public abstract class BlockChainIndexTest
                 0,
                 divergentBlock.Hash,
                 ChainFx.PrivateKeys
-                    .OrderBy(pk => pk.ToAddress().ToHex())
+                    .OrderBy(pk => pk.Address.ToHex())
                     .Select(pk => new VoteMetadata(
                         forkedChain.Tip.Index + 1,
                         0,
@@ -85,7 +85,7 @@ public abstract class BlockChainIndexTest
     {
         foreach (var pk in ChainFx.PrivateKeys)
         {
-            var address = pk.ToAddress();
+            var address = pk.Address;
             Assert.Equal(
                 ChainFx.Chain.GetNextTxNonce(address) - 1,
                 // ReSharper disable once MethodHasAsyncOverload
@@ -251,7 +251,7 @@ public abstract class BlockChainIndexTest
     {
         foreach (var pk in ChainFx.PrivateKeys)
         {
-            var address = pk.ToAddress();
+            var address = pk.Address;
             var inChain = ChainFx.MinedBlocks[address].ToArray();
             inChain = desc ? inChain.Reverse().ToArray() : inChain;
             int? fromHeight = fromHalfway ? inChain.Length / 4 : null;
@@ -305,7 +305,7 @@ public abstract class BlockChainIndexTest
     {
         foreach (var pk in ChainFx.PrivateKeys)
         {
-            var address = pk.ToAddress();
+            var address = pk.Address;
             var inChain = ChainFx.SignedTxs[address].ToArray();
             inChain = desc ? inChain.Reverse().ToArray() : inChain;
             int? fromNonce = fromHalfway ? inChain.Length / 4 : null;

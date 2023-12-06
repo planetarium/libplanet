@@ -461,7 +461,9 @@ public class StateQueryTest
 
         public bool Legacy => true;
 
-        public IWorldDelta Delta => throw new System.NotImplementedException();
+        public IImmutableDictionary<Address, IAccount> BlockDelta => throw new System.NotImplementedException();
+
+        public IImmutableDictionary<Address, IAccount> UncommittedDelta => throw new System.NotImplementedException();
 
         public IAccount GetAccount(Address address)
             => new MockAccount();
@@ -480,8 +482,6 @@ public class StateQueryTest
         }
 
         public ITrie Trie { get; }
-
-        public IAccountDelta Delta => throw new System.NotImplementedException();
 
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets => throw new System.NotImplementedException();
 

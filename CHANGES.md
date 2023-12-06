@@ -20,13 +20,6 @@ To be released.
     instead of `IAccount`.  [[#3462]]
  -  (Libplanet.Action) `IActionEvaluator.OutputState` became `IWorld`.
     (was `IAccount`)  [[#3462]]
- -  (Libplanet.Action) Added
-    `ActionEvaluationsExtensions.GetLegacyRawTotalDelta()` extension method.
-    [[#3462]]
- -  (Libplanet.Action) `ActionEvaluationsExtensions.GetRawTotalDelta()`
-    became to return
-    `IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>`.
-    [[#3462]]
  -  (Libplanet.Action) `IAction.Execute()` became to return `IWorld`.
     (was `IAccount`)  [[#3462]]
  -  (Libplanet.Action) `IActionContext.PreviousState` became `IWorld`.
@@ -36,8 +29,6 @@ To be released.
      -  `IFeeCollector.Mortgage()`
      -  `IFeeCollector.Refund()`
      -  `IFeeCollector.Reward()`
- -  (Libplanet.Action) Renamed `AccountState` class to `AccountBaseState`.
-    [[#3462]]
  -  (Libplanet.Action) `IBlockChainStates` interface has modified.  [[#3462]]
      -  Added `IBlockChainStates.GetWorldState()` method.
      -  Added `IBlockChainStates.GetAccountState(Address, BlockHash?)` method.
@@ -67,16 +58,6 @@ To be released.
         method.
      -  Removed `IBlockChainStates.GetTotalSupply(Currency, BlockHash?)` method.
      -  Removed `IBlockChainStates.GetValidatorSet(BlockHash?)` method.
- -  (Libplanet.Action) `Initialize.Initialize()` method became to accept
-    `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>`.
-    (was `IImmutableDictionary<Address, IValue>`)  [[#3462]]
- -  (Libplanet.Action) Type of `Initialize.States` property became
-    `IImmutableDictionary<Address, IImmutableDictionary<Address, IValue>>?`.
-    (was `IImmutableDictionary<Address, IValue>?`)  [[#3462]]
- -  (Libplanet.Action) New property `SystemAccounts` added to
-    `IActionContext` interface.  [[#3494]]
- -  (Libplanet.Action) New property `SystemAccountsGetter` added to
-    `IBlockPolicy` interface.  [[#3494]]
  -  (@planetarium/tx)  Remove the `T` generic argument of `SignedTx<T>`.
     [[#3512]]
  -  (Libplanet.Action)
@@ -96,15 +77,12 @@ To be released.
  -  (Libplanet.Action) Added `IWorld` interface and its implementation.
     [[#3462]]
      -  Added `World` class.
- -  (Libplanet.Action) Added `IWorldDelta` interface.  [[#3462]]
  -  (Libplanet.Action) Added `IWorldState` interface and its implementation.
     [[#3462]]
      -  Added `WorldBaseState` class.
  -  (Libplanet.Action) Added `ReservedAddresses` static class.  [[#3462]]
- -  (Libplanet.Action) Added `WorldDeltaExtensions` static class.  [[#3462]]
  -  (Libplanet.Action) Added `TrieMetadata` class.  [[#3540]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
- -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Modified some fields of `StateQuery` query.  [[#3462]]
      -  Added `StateQuery.worldState` field.
@@ -140,6 +118,125 @@ To be released.
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
 
+
+Version 3.9.0
+-------------
+
+Released on December 5, 2023.
+
+Due to changes in [#3529], a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+[Libplanet 2.0.0] and onwards prior to this release that have included
+`Transaction`s that aren't compatible with the updated specification in [#3529].
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Action) Removed unnecessary extension methods:  [[#3520]]
+     -  `IReadOnlyList<IActionEvaluation>.GetRawTotalDelta()`
+     -  `IReadOnlyList<IAccountDelta>.OrderedSum()`
+     -  `IAccountDelta.ToRawDelta()`
+     -  `IAccount.GetUpdatedStates()`
+     -  `IAccount.GetUpdatedBalances()`
+     -  `IAccount.GetUpdatedTotalSupplies()`
+ -  (Libplanet.Action) Changed `IAccount` to no longer track `IAccountDelta`.
+    [[#3520]]
+ -  (Libplanet.Action) Removed `IAccountDelta` as parameter for constructors
+    of `Account` class.  [[#3520]]
+ -  (Libplanet.Action) Removed `hashedSignature` of type `byte[]` parameter
+    from `ActionEvaluator.GenerateRandomSeed()`.  [[#3523]]
+ -  Changed `TxInvoice` to no longer allow having the null-ness of
+    `MaxGasPrice` and `GasLimit` to be different, i.e. either both should be
+    null or both should not be null at the same time.  [[#3529]]
+ -  (Libplanet.Action) Removed `IAccountDelta` interface.  [[#3535]]
+ -  (Libplanet.Action) Removed `IAccount.Delta` interface property.  [[#3535]]
+ -  (Libplanet.Action) Changed constructor `IAccount(IAccountState,
+    IImmutableDictionary<(Address, Currency), BigInteger>)` to
+    `IAccount(IAccountState, IImmutableHashSet<(Address, Currency)>)`.
+    [[#3537]]
+
+[#3520]: https://github.com/planetarium/libplanet/pull/3520
+[#3523]: https://github.com/planetarium/libplanet/pull/3523
+[#3529]: https://github.com/planetarium/libplanet/pull/3529
+[#3535]: https://github.com/planetarium/libplanet/pull/3535
+[#3537]: https://github.com/planetarium/libplanet/pull/3537
+[Libplanet 2.0.0]: https://www.nuget.org/packages/Libplanet/2.0.0
+
+
+Version 3.8.1
+-------------
+
+Released on November 27, 2023.
+
+ -  (Libplanet.Net) Fixed a bug where `GossipConsensusMessageCommunicator`
+    does not clear `_peerCatchupRounds` on `OnStartHeight()`.  [[#3519]]
+ -  (Libplanet.Net) `GossipConsensusMessageCommunicator` now filters
+    `ConsensusVoteMsg` which height is different from latest `Context`.
+    [[#3519]]
+ -  (Libplanet.Action) Fixed a bug where initialization of `AccountMetrics`
+    is absent.  [[#3521]]
+
+[#3519]: https://github.com/planetarium/libplanet/pull/3519
+[#3521]: https://github.com/planetarium/libplanet/pull/3521
+
+
+Version 3.8.0
+-------------
+
+Released on November 24, 2023.
+
+### Backward-incompatible API changes
+
+ -  Removed `updatedAddresses` parameter from `BlockChain.MakeTransaction()`
+    [[#3480]]
+ -  Removed `updatedAddresses` parameter from `Transaction.Create()`.  [[#3480]]
+ -  Removed `updatedAddresses` parameter from all `TxInvoice()`.  [[#3480]]
+ -  Removed `Rehearsal` property from `IActionContext` and
+    `ICommittedActionContext`.  [[#3485]]
+ -  (Libplanet.Crypto) Removed `ToAddress()` extension method for
+    `PrivateKey` and `PublicKey`.  [[#3486]]
+ -  (Libplanet.Crypto) Added `Address` property to `PrivateKey` and `PublicKey`.
+    [[#3486]]
+
+### Backward-incompatible storage format changes
+
+  -  (Libplanet.Store) Changed `Libplanet.RocksDBStore` to use
+     [`RocksDb`] instead of [`RocksDBSharp`].
+     *Note* Cannot read new version of `Libplanet.RocksDBStore`
+     storage from under `Libplanet.RocksDBStore` version 3.6.1.
+     [[#1848], [#3487]]
+
+### Added APIs
+
+ -  (Libplanet.RocksDBStore) Added `RocksDBInstanceType` enum.  [[#3488]]
+ -  (Libplanet.RocksDBStore) Changed `RocksDBStore` and `RocksDBKeyValueStore`
+    to accept `RocksDBInstanceType` type `instanceType` parameter instead of
+    `@readonly` parameter in their constructor.
+    [[#3488], [RocksDb Instance Types]]
+
+[#1848]: https://github.com/planetarium/libplanet/issues/1848
+[#3480]: https://github.com/planetarium/libplanet/pull/3480
+[#3485]: https://github.com/planetarium/libplanet/pull/3485
+[#3486]: https://github.com/planetarium/libplanet/pull/3486
+[#3487]: https://github.com/planetarium/libplanet/pull/3487
+[#3488]: https://github.com/planetarium/libplanet/pull/3488
+[`RocksDb`]: https://www.nuget.org/packages/RocksDB
+[`RocksDBSharp`]: https://www.nuget.org/packages/Planetarium.RocksDbSharp
+[RocksDb Instance Types]: https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances
+
+
+Version 3.7.1
+-------------
+
+Released on November 21, 2023.
+
+ -  Ported changes from [Libplanet 3.6.1] release.  [[#3500]]
+ -  Ported changes from [Libplanet 3.6.2] release.  [[#3509]]
+
+[#3500]: https://github.com/planetarium/libplanet/pull/3500
+[#3509]: https://github.com/planetarium/libplanet/pull/3509
+[Libplanet 3.6.1]: https://www.nuget.org/packages/Libplanet/3.6.1
+[Libplanet 3.6.2]: https://www.nuget.org/packages/Libplanet/3.6.2
+
 Version 3.7.0
 -------------
 
@@ -166,6 +263,31 @@ Released on October 27, 2023.
 [Bencodex 0.16.0]: https://www.nuget.org/packages/Bencodex/0.16.0
 [Bencodex.Json 0.11.0]: https://www.nuget.org/packages/Bencodex.json/0.11.0
 [Bencodex.Json 0.16.0]: https://www.nuget.org/packages/Bencodex.json/0.16.0
+
+
+Version 3.6.2
+-------------
+
+Released on November 21, 2023.
+
+ -  (Libplanet.Net) Changed default `ContextTimeoutOption` values for
+    more consistent and stable consensus.  [[#3506]]
+
+[#3506]: https://github.com/planetarium/libplanet/pull/3506
+
+
+Version 3.6.1
+-------------
+
+Released on November 20, 2023.
+
+ -  (Libplanet.Store) Added optional `cache` parameter of type `HashNodeCache`
+    to `MerkleTrie()` constructors.  [[#3495]]
+ -  (Libplanet.Store) Added `HashNodeCache` class.  [[#3495]]
+ -  (Libplanet.Store) Changed internal caching strategy of `TrieStateStore` for
+    read/write optimization.  [[#3495]]
+
+[#3495]: https://github.com/planetarium/libplanet/pull/3495
 
 
 Version 3.6.0

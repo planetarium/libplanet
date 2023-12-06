@@ -125,13 +125,13 @@ namespace Libplanet.Types.Tx
         public Bencodex.Types.Dictionary ToBencodex()
         {
             List updatedAddresses = new List(
-                UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray)));
+                UpdatedAddresses.Select<Address, IValue>(addr => addr.Bencoded));
             string timestamp = Timestamp
                 .ToUniversalTime()
                 .ToString(TimestampFormat, CultureInfo.InvariantCulture);
             Bencodex.Types.Dictionary dict = Dictionary.Empty
                 .Add(NonceKey, Nonce)
-                .Add(SignerKey, Signer.ByteArray)
+                .Add(SignerKey, Signer.Bencoded)
                 .Add(UpdatedAddressesKey, updatedAddresses)
                 .Add(PublicKeyKey, PublicKey.ToImmutableArray(compress: false))
                 .Add(TimestampKey, timestamp);

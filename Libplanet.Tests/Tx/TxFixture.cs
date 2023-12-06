@@ -80,16 +80,18 @@ namespace Libplanet.Tests.Tx
                     ZoneId = 10,
                 },
             };
-            TxWithActions = Transaction.Create(
-                0,
-                PrivateKey1,
-                genesisHash,
-                actions.ToPlainValues(),
-                updatedAddresses: ImmutableHashSet.Create(
-                    new Address("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc")
-                ),
-                timestamp: timestamp
-            );
+            TxWithActions = new Transaction(
+                new UnsignedTx(
+                    new TxInvoice(
+                        genesisHash: genesisHash,
+                        updatedAddresses: ImmutableHashSet.Create(
+                            new Address("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc")),
+                        timestamp: timestamp,
+                        actions: new TxActionList(actions.ToPlainValues()),
+                        maxGasPrice: null,
+                        gasLimit: null),
+                    new TxSigningMetadata(PrivateKey1.PublicKey, 0)),
+                PrivateKey1);
         }
 
         public PrivateKey PrivateKey1 { get; }
@@ -112,15 +114,15 @@ namespace Libplanet.Tests.Tx
 
         public PublicKey PublicKey5 => PrivateKey5.PublicKey;
 
-        public Address Address1 => PublicKey1.ToAddress();
+        public Address Address1 => PublicKey1.Address;
 
-        public Address Address2 => PublicKey2.ToAddress();
+        public Address Address2 => PublicKey2.Address;
 
-        public Address Address3 => PublicKey3.ToAddress();
+        public Address Address3 => PublicKey3.Address;
 
-        public Address Address4 => PublicKey4.ToAddress();
+        public Address Address4 => PublicKey4.Address;
 
-        public Address Address5 => PublicKey5.ToAddress();
+        public Address Address5 => PublicKey5.Address;
 
         public Transaction Tx { get; }
 

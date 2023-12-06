@@ -15,6 +15,7 @@ namespace Libplanet.Store
     public partial class TrieStateStore : IStateStore
     {
         private readonly ILogger _logger;
+        private readonly HashNodeCache _cache;
         private bool _disposed = false;
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace Libplanet.Store
         public TrieStateStore(IKeyValueStore stateKeyValueStore)
         {
             StateKeyValueStore = stateKeyValueStore;
+            _cache = new HashNodeCache();
             _logger = Log.ForContext<TrieStateStore>();
         }
 
@@ -122,7 +124,8 @@ namespace Libplanet.Store
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
             new MerkleTrie(
                 StateKeyValueStore,
-                stateRootHash is { } h2 ? new HashNode(h2) : null);
+                stateRootHash is { } h2 ? new HashNode(h2) : null,
+                _cache);
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()

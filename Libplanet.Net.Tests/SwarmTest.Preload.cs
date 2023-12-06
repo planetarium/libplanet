@@ -77,8 +77,8 @@ namespace Libplanet.Net.Tests
             BlockChain receiverChain = receiverSwarm.BlockChain;
 
             var key = new PrivateKey();
-            var address1 = key.ToAddress();
-            var address2 = new PrivateKey().ToAddress();
+            var address1 = key.Address;
+            var address2 = new PrivateKey().Address;
 
             var action = new DumbAction(
                 address1,
@@ -468,9 +468,7 @@ namespace Libplanet.Net.Tests
                     new[] { action }.ToPlainValues(),
                     null,
                     null,
-                    ImmutableHashSet<Address>.Empty,
-                    DateTimeOffset.UtcNow
-                );
+                    DateTimeOffset.UtcNow);
 
                 Block block = minerChain.ProposeBlock(
                     ChainPrivateKey,

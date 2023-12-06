@@ -78,9 +78,11 @@ namespace Libplanet.Tests.Blocks
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx1.Signer },
-                        timestamp: Block1Tx1.Timestamp
-                    ),
+                        updatedAddresses: new AddressSet(new[] { Block1Tx1.Signer }),
+                        timestamp: Block1Tx1.Timestamp,
+                        actions: TxActionList.Empty,
+                        maxGasPrice: null,
+                        gasLimit: null),
                     new TxSigningMetadata(Block1Tx1.PublicKey, nonce: 1L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
@@ -111,9 +113,11 @@ namespace Libplanet.Tests.Blocks
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx1.Signer },
-                        timestamp: Block1Tx1.Timestamp
-                    ),
+                        updatedAddresses: new AddressSet(new[] { Block1Tx1.Signer }),
+                        timestamp: Block1Tx1.Timestamp,
+                        actions: TxActionList.Empty,
+                        maxGasPrice: null,
+                        gasLimit: null),
                     new TxSigningMetadata(Block1Tx1.PublicKey, nonce: 3L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(

@@ -28,7 +28,7 @@ namespace Libplanet.Types.Assets
     /// Here is how US Dollar can be represented using <see cref="Currency"/>:
     /// <code>
     /// var USMint = new PrivateKey();
-    /// var USD = Currency.Uncapped(ticker: "USD", decimalPlaces: 2, minter: USMint.ToAddress());
+    /// var USD = Currency.Uncapped(ticker: "USD", decimalPlaces: 2, minter: USMint.Address);
     /// var twentyThreeBucks = 23 * USD;
     /// // Or alternatively: USD * 23;
     /// // Or explicitly: new FungibleAssetValue(USD, 23, 0)
@@ -688,7 +688,7 @@ namespace Libplanet.Types.Assets
         public IValue Serialize()
         {
             IValue minters = Minters is IImmutableSet<Address> m
-                ? new Bencodex.Types.List(m.Select<Address, IValue>(a => new Binary(a.ByteArray)))
+                ? new Bencodex.Types.List(m.Select<Address, IValue>(a => a.Bencoded))
                 : (IValue)Null.Value;
             var serialized = Bencodex.Types.Dictionary.Empty
                 .Add("ticker", Ticker)
@@ -727,7 +727,7 @@ namespace Libplanet.Types.Assets
         private IValue SerializeForHash()
         {
             IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => m.ByteArray))
+                ? new List(a.OrderBy(m => m).Select(m => m.Bencoded))
                 : (IValue)Null.Value;
 
             var serialized = Dictionary.Empty

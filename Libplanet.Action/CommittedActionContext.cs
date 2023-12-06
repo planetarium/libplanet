@@ -15,7 +15,6 @@ namespace Libplanet.Action
                 miner: context.Miner,
                 blockIndex: context.BlockIndex,
                 blockProtocolVersion: context.BlockProtocolVersion,
-                rehearsal: context.Rehearsal,
                 previousState: context.PreviousState.Trie.Hash,
                 randomSeed: context.RandomSeed,
                 blockAction: context.BlockAction)
@@ -28,7 +27,6 @@ namespace Libplanet.Action
             Address miner,
             long blockIndex,
             int blockProtocolVersion,
-            bool rehearsal,
             HashDigest<SHA256> previousState,
             int randomSeed,
             bool blockAction)
@@ -38,7 +36,6 @@ namespace Libplanet.Action
             Miner = miner;
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
-            Rehearsal = rehearsal;
             PreviousState = previousState;
             RandomSeed = randomSeed;
             BlockAction = blockAction;
@@ -63,10 +60,6 @@ namespace Libplanet.Action
         /// <inheritdoc cref="ICommittedActionContext.BlockProtocolVersion"/>
         [Pure]
         public int BlockProtocolVersion { get; }
-
-        /// <inheritdoc cref="ICommittedActionContext.Rehearsal"/>
-        [Pure]
-        public bool Rehearsal { get; }
 
         /// <inheritdoc cref="ICommittedActionContext.PreviousState"/>
         [Pure]

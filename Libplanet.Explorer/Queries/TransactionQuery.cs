@@ -147,7 +147,7 @@ namespace Libplanet.Explorer.Queries
                     var publicKey = new PublicKey(
                         ByteUtil.ParseHex(context.GetArgument<string>("publicKey"))
                     );
-                    Address signer = publicKey.ToAddress();
+                    Address signer = publicKey.Address;
                     long nonce = context.GetArgument<long?>("nonce") ??
                         chain.GetNextTxNonce(signer);
                     var sigMeta = new TxSigningMetadata(publicKey, nonce);

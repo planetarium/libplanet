@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -23,34 +22,29 @@ namespace Libplanet.Types.Tx
         /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.
         /// </summary>
         /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
-        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.</param>
         /// <param name="timestamp">The value for <see cref="Timestamp"/>.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.</param>
         /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
         /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
         /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <see langword="null"/>-ness of
+        /// <paramref name="maxGasPrice"/> and <paramref name="gasLimit"/> are not the same.
+        /// </exception>
         public TxInvoice(
             BlockHash? genesisHash,
-            IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             TxActionList actions,
             FungibleAssetValue? maxGasPrice,
             long? gasLimit)
+            : this(
+                genesisHash,
+                ImmutableHashSet<Address>.Empty,
+                timestamp,
+                actions,
+                maxGasPrice,
+                gasLimit)
         {
-            if (updatedAddresses is null)
-            {
-                throw new ArgumentNullException(nameof(updatedAddresses));
-            }
-
-            GenesisHash = genesisHash;
-            UpdatedAddresses = updatedAddresses is AddressSet set
-                ? set
-                : new AddressSet(updatedAddresses);
-            Timestamp = timestamp;
-            Actions = actions ?? throw new ArgumentNullException(nameof(actions));
-            MaxGasPrice = maxGasPrice;
-            GasLimit = gasLimit;
         }
 
         /// <summary>
@@ -58,8 +52,6 @@ namespace Libplanet.Types.Tx
         /// are some default values for some fields.
         /// </summary>
         /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
-        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.
-        /// Empty by default.</param>
         /// <param name="timestamp">The value for <see cref="Timestamp"/>.
         /// Time of creation by default.</param>
         /// <param name="actions">The value of <see cref="Actions"/>.
@@ -68,20 +60,16 @@ namespace Libplanet.Types.Tx
         /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
         public TxInvoice(
             BlockHash? genesisHash = null,
-            IEnumerable<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null,
             TxActionList? actions = null,
             FungibleAssetValue? maxGasPrice = null,
-            long? gasLimit = null
-        )
+            long? gasLimit = null)
             : this(
                 genesisHash,
-                updatedAddresses?.ToImmutableHashSet() ?? ImmutableHashSet<Address>.Empty,
                 timestamp ?? DateTimeOffset.UtcNow,
                 actions ?? TxActionList.Empty,
                 maxGasPrice,
-                gasLimit
-            )
+                gasLimit)
         {
         }
 
@@ -99,6 +87,51 @@ namespace Libplanet.Types.Tx
                   maxGasPrice: invoice.MaxGasPrice,
                   gasLimit: invoice.GasLimit)
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TxInvoice"/> instance by filling data for its fields.
+        /// </summary>
+        /// <param name="genesisHash">The value for <see cref="GenesisHash"/>.</param>
+        /// <param name="updatedAddresses">The value for <see cref="UpdatedAddresses"/>.</param>
+        /// <param name="timestamp">The value for <see cref="Timestamp"/>.</param>
+        /// <param name="actions">The value of <see cref="Actions"/>.</param>
+        /// <param name="maxGasPrice">The value of <see cref="MaxGasPrice"/>.</param>
+        /// <param name="gasLimit">The value of <see langword="Gas"/> limit.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="updatedAddresses"/>
+        /// or <paramref name="actions"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when <see langword="null"/>-ness of
+        /// <paramref name="maxGasPrice"/> and <paramref name="gasLimit"/> are not the same.
+        /// </exception>
+        internal TxInvoice(
+            BlockHash? genesisHash,
+            IImmutableSet<Address> updatedAddresses,
+            DateTimeOffset timestamp,
+            TxActionList actions,
+            FungibleAssetValue? maxGasPrice,
+            long? gasLimit)
+        {
+            if (updatedAddresses is null)
+            {
+                throw new ArgumentNullException(nameof(updatedAddresses));
+            }
+
+            if (maxGasPrice is null ^ gasLimit is null)
+            {
+                throw new ArgumentException(
+                    $"Either {nameof(maxGasPrice)} (null: {maxGasPrice is null}) and " +
+                    $"{nameof(gasLimit)} (null: {gasLimit is null}) must be both null " +
+                    $"or both non-null.");
+            }
+
+            GenesisHash = genesisHash;
+            UpdatedAddresses = updatedAddresses is AddressSet set
+                ? set
+                : new AddressSet(updatedAddresses);
+            Timestamp = timestamp;
+            Actions = actions ?? throw new ArgumentNullException(nameof(actions));
+            MaxGasPrice = maxGasPrice;
+            GasLimit = gasLimit;
         }
 
         /// <inheritdoc cref="ITxInvoice.GenesisHash" />

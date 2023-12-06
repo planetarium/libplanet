@@ -33,7 +33,6 @@ namespace Libplanet.Action.Tests.Common
         public DumbModernAction(
             Address targetAddress,
             string item,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false,
             Tuple<Address, Address, BigInteger> transfer = null)
@@ -41,7 +40,6 @@ namespace Libplanet.Action.Tests.Common
             Idempotent = idempotent;
             TargetAddress = targetAddress;
             Item = item;
-            RecordRehearsal = recordRehearsal;
             RecordRandom = recordRandom;
             Transfer = transfer;
         }
@@ -52,14 +50,12 @@ namespace Libplanet.Action.Tests.Common
             Address transferFrom,
             Address transferTo,
             BigInteger transferAmount,
-            bool recordRehearsal = false,
             bool recordRandom = false,
             bool idempotent = false
         )
             : this(
                 targetAddress,
                 item,
-                recordRehearsal,
                 recordRandom,
                 idempotent,
                 Tuple.Create(transferFrom, transferTo, transferAmount)
@@ -71,16 +67,9 @@ namespace Libplanet.Action.Tests.Common
             ExecuteRecords
         { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
-        public static AsyncLocal<ImmutableList<(Address, string)>>
-            RehearsalRecords
-        { get; } =
-                new AsyncLocal<ImmutableList<(Address, string)>>();
-
         public Address TargetAddress { get; private set; }
 
         public string Item { get; private set; }
-
-        public bool RecordRehearsal { get; private set; }
 
         public bool RecordRandom { get; private set; }
 
@@ -102,7 +91,6 @@ namespace Libplanet.Action.Tests.Common
                         {
                             ["item"] = (Text)Item,
                             ["target_address"] = new Binary(TargetAddress.ByteArray),
-                            ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                         });
                 }
 
@@ -138,17 +126,6 @@ namespace Libplanet.Action.Tests.Common
 
         public IWorld Execute(IActionContext context)
         {
-            if (RehearsalRecords.Value is null)
-            {
-                RehearsalRecords.Value = ImmutableList<(Address, string)>.Empty;
-            }
-
-            if (context.Rehearsal)
-            {
-                RehearsalRecords.Value =
-                    RehearsalRecords.Value.Add((TargetAddress, Item));
-            }
-
             IWorld world = context.PreviousState;
             if (Item is null)
             {
@@ -157,13 +134,10 @@ namespace Libplanet.Action.Tests.Common
 
             IAccount account = world.GetAccount(DumbModernAddress);
             string items = (Text?)account.GetState(TargetAddress);
-            string item = RecordRehearsal
-                ? $"{Item}:{context.Rehearsal}"
-                : Item;
 
             if (Idempotent)
             {
-                var splitItems = items is null ? new[] { item } : (items + "," + item).Split(',');
+                var splitItems = items is null ? new[] { Item } : (items + "," + Item).Split(',');
                 items = string.Join(
                     ",",
                     splitItems.OrderBy(x =>
@@ -177,7 +151,7 @@ namespace Libplanet.Action.Tests.Common
             }
             else
             {
-                items = items is null ? item : $"{items},{item}";
+                items = items is null ? Item : $"{items},{Item}";
             }
 
             if (RecordRandom)
@@ -188,7 +162,7 @@ namespace Libplanet.Action.Tests.Common
                 );
             }
 
-            if (Item.Equals("D") && !context.Rehearsal)
+            if (Item.Equals("D"))
             {
                 Item = Item.ToUpperInvariant();
             }
@@ -223,7 +197,6 @@ namespace Libplanet.Action.Tests.Common
             {
                 Action = this,
                 NextState = account,
-                Rehearsal = context.Rehearsal,
             });
 
             world = world.SetAccount(DumbModernAddress, account);
@@ -239,7 +212,6 @@ namespace Libplanet.Action.Tests.Common
         {
             Item = plainValue.GetValue<Text>("item");
             TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
-            RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
@@ -270,8 +242,7 @@ namespace Libplanet.Action.Tests.Common
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
                     TargetAddress.Equals(other.TargetAddress) &&
-                    string.Equals(Item, other.Item) &&
-                    RecordRehearsal == other.RecordRehearsal
+                    string.Equals(Item, other.Item)
                 )
             );
         }
@@ -291,7 +262,6 @@ namespace Libplanet.Action.Tests.Common
                 int hashCode = TargetAddress.GetHashCode();
                 hashCode = (hashCode * 397) ^
                     (Item != null ? Item.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RecordRehearsal.GetHashCode();
                 return hashCode;
             }
         }
@@ -310,7 +280,6 @@ namespace Libplanet.Action.Tests.Common
             return $"{nameof(DumbModernAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +
-                $"{nameof(RecordRehearsal)} = {(RecordRehearsal ? T : F)}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
                 $"{nameof(Idempotent)} = {(Idempotent ? T : F)}, " +
                 $"{nameof(Transfer)} = {transfer} " +

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -362,9 +361,7 @@ namespace Libplanet.Net.Tests.Consensus
                 nonce: 0,
                 privateKey: TestUtils.PrivateKeys[1],
                 genesisHash: blockChain.Genesis.Hash,
-                actions: new[] { action }.ToPlainValues(),
-                updatedAddresses: ImmutableHashSet.Create(DelayAction.TrivialUpdatedAddress)
-            );
+                actions: new[] { action }.ToPlainValues());
             blockChain.StageTransaction(tx);
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 
@@ -454,7 +451,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             var privateKeys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToArray();
             // Order keys as validator set's order to run test as intended.
-            privateKeys = privateKeys.OrderBy(key => key.ToAddress()).ToArray();
+            privateKeys = privateKeys.OrderBy(key => key.Address).ToArray();
             var proposer = privateKeys[1];
             var key1 = privateKeys[2];
             var key2 = privateKeys[3];

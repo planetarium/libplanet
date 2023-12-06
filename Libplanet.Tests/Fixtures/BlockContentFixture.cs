@@ -74,13 +74,14 @@ namespace Libplanet.Tests.Fixtures
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx0Key.ToAddress() },
+                        updatedAddresses: new AddressSet(new[] { Block1Tx0Key.Address }),
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                         actions: new TxActionList(new IAction[]
                         {
                             Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
-                        }.ToPlainValues())
-                    ),
+                        }.ToPlainValues()),
+                        maxGasPrice: null,
+                        gasLimit: null),
                     new TxSigningMetadata(Block1Tx0Key.PublicKey, nonce: 0L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
@@ -94,19 +95,18 @@ namespace Libplanet.Tests.Fixtures
                 new UnsignedTx(
                     new TxInvoice(
                         genesisHash: GenesisHash,
-                        updatedAddresses: new[] { Block1Tx1Key.ToAddress() },
+                        updatedAddresses: new AddressSet(new[] { Block1Tx1Key.Address }),
                         timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, default),
                         actions: new TxActionList(new IAction[]
                         {
                             Arithmetic.Add(30),
-                        }.ToPlainValues())
-                    ),
-                    new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)
-                ),
+                        }.ToPlainValues()),
+                        maxGasPrice: null,
+                        gasLimit: null),
+                    new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)),
                 signature: ByteUtil.ParseHexToImmutable(
                     "3045022100abe3caabf2a46a297f2e4496f2c46d7e2f723e75fc42025d19f3ed7fce382" +
-                    "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0"
-                )
+                    "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0")
             );
 
             var block1Transactions = new List<Transaction>() { Block1Tx0, Block1Tx1 }
@@ -129,7 +129,7 @@ namespace Libplanet.Tests.Fixtures
                     protocolVersion: 0,
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                    miner: GenesisKey.ToAddress(),
+                    miner: GenesisKey.Address,
                     publicKey: null,
                     previousHash: null,
                     txHash: null,
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Fixtures
                     protocolVersion: 1,
                     index: 1,
                     timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                    miner: Block1Key.ToAddress(),
+                    miner: Block1Key.Address,
                     publicKey: null,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),

@@ -74,6 +74,6 @@ namespace Libplanet.Action.State
                 : _stateStore.GetStateRoot(null);
 
         private IAccount CreateAccount(ITrie trie) =>
-            new Account(new AccountBaseState(trie));
+            new Account(new AccountState(trie));
     }
 }

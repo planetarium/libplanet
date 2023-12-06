@@ -278,19 +278,5 @@ namespace Libplanet.RocksDBStore.Tests
                 Directory.Delete(path, true);
             }
         }
-
-        private long ToInt64(byte[] value)
-        {
-            byte[] bytes = new byte[sizeof(long)];
-            value.CopyTo(bytes, 0);
-
-            // Use Big-endian to order index lexicographically.
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(bytes);
-            }
-
-            return BitConverter.ToInt64(bytes, 0);
-        }
     }
 }

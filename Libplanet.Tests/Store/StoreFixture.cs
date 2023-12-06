@@ -219,7 +219,6 @@ namespace Libplanet.Tests.Store
                 actions?.ToPlainValues() ?? Array.Empty<DumbAction>().ToPlainValues(),
                 null,
                 null,
-                updatedAddresses,
                 timestamp
             );
         }

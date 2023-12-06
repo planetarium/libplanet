@@ -118,7 +118,7 @@ namespace Libplanet.KeyStore
             var cipher = new Aes128Ctr(iv);
             ImmutableArray<byte> ciphertext = cipher.Encrypt(encKey, privateKey.ByteArray);
             ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
-            Address address = privateKey.ToAddress();
+            Address address = privateKey.Address;
             return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
         }
 
@@ -326,7 +326,7 @@ namespace Libplanet.KeyStore
                 unverifiedKey: plaintext.ToBuilder().ToArray(),
                 informedConsent: true
             );
-            Address actualAddress = key.ToAddress();
+            Address actualAddress = key.Address;
             if (!Address.Equals(actualAddress))
             {
                 throw new MismatchedAddressException(

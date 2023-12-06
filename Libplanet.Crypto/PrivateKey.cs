@@ -135,6 +135,12 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
+        /// The corresponding <see cref="Crypto.Address"/> derived from a <see cref="PrivateKey"/>.
+        /// This is the same as the one derived from <see cref="PublicKey"/>.
+        /// </summary>
+        public Address Address => new Address(PublicKey);
+
+        /// <summary>
         /// An encoded <see cref="byte"/> array representation.
         /// </summary>
         /// <remarks>

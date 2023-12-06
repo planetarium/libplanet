@@ -172,7 +172,7 @@ namespace Libplanet.Net.Tests.Consensus
                         protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: blockChain.Tip.Index + 1,
                         timestamp: blockChain.Tip.Timestamp.Add(TimeSpan.FromSeconds(1)),
-                        miner: key.PublicKey.ToAddress(),
+                        miner: key.Address,
                         publicKey: key.PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,

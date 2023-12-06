@@ -106,7 +106,7 @@ namespace Libplanet.Crypto
         /// cref="PublicKey"/>.
         /// <para>Note that there is an equivalent extension method
         /// <see cref="AddressExtensions.ToAddress(PublicKey)"/>, which enables
-        /// a code like <c>publicKey.ToAddress()</c> instead of
+        /// a code like <c>publicKey.Address</c> instead of
         /// <c>new Address(publicKey)</c>, for convenience.</para>
         /// </summary>
         /// <param name="publicKey">A <see cref="PublicKey"/> to derive

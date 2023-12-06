@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Blocks
                     null,
                     new[]
                     {
-                        new RandomAction(signer.ToAddress()),
+                        new RandomAction(signer.Address),
                     }.ToPlainValues())).ToImmutableArray();
             var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
             var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);

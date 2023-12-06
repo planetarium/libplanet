@@ -220,7 +220,7 @@ namespace Libplanet.Net.Consensus
         /// A copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.
         /// </returns>
         public List<Vote> List()
-            => _votes.Values.OrderBy(vote => vote.ValidatorPublicKey.ToAddress()).ToList();
+            => _votes.Values.OrderBy(vote => vote.ValidatorPublicKey.Address).ToList();
 
         /// <summary>
         /// Returns a copy of the list of <see cref="Vote"/>s stored by the <see cref="VoteSet"/>.

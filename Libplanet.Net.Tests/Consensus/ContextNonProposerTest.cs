@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -231,7 +230,7 @@ namespace Libplanet.Net.Tests.Consensus
                         protocolVersion: BlockMetadata.CurrentProtocolVersion,
                         index: blockChain.Tip.Index + 2,
                         timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                        miner: TestUtils.PrivateKeys[1].PublicKey.ToAddress(),
+                        miner: TestUtils.PrivateKeys[1].Address,
                         publicKey: TestUtils.PrivateKeys[1].PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
@@ -266,7 +265,7 @@ namespace Libplanet.Net.Tests.Consensus
             TxPolicyViolationException? IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = TestUtils.PrivateKeys[1].PublicKey.ToAddress();
+                var validAddress = TestUtils.PrivateKeys[1].Address;
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
@@ -367,7 +366,6 @@ namespace Libplanet.Net.Tests.Consensus
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(
                     blockChain.Genesis.Hash,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
                     new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 0));

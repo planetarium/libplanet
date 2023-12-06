@@ -9,7 +9,6 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
-using Libplanet.Action.Tests;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -27,6 +26,7 @@ using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Action.State.KeyConverters;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action
             const int repeatCount = 2;
             var signer = new PrivateKey();
             var timestamp = DateTimeOffset.UtcNow;
-            var txAddress = signer.ToAddress();
+            var txAddress = signer.Address;
             var txs = new[]
             {
                 Transaction.Create(
@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Action
                     protocolVersion: Block.CurrentProtocolVersion,
                     index: 0,
                     timestamp: timestamp,
-                    miner: GenesisProposer.PublicKey.ToAddress(),
+                    miner: GenesisProposer.Address,
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
@@ -125,14 +125,14 @@ namespace Libplanet.Tests.Action
         public void Evaluate()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             long blockIndex = 1;
 
             var action = new EvaluateTestAction()
             {
-                BlockIndexKey = new PrivateKey().ToAddress(),
-                MinerKey = new PrivateKey().ToAddress(),
-                SignerKey = new PrivateKey().ToAddress(),
+                BlockIndexKey = new PrivateKey().Address,
+                MinerKey = new PrivateKey().Address,
+                SignerKey = new PrivateKey().Address,
             };
 
             var store = new MemoryStore();
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 chain.GetWorldState()
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.MinerKey),
-                (Text)miner.ToAddress().ToHex());
+                (Text)miner.Address.ToHex());
             var state = chain.GetWorldState()
                 .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
@@ -175,9 +175,9 @@ namespace Libplanet.Tests.Action
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
 
-            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+            var action = new ThrowException { ThrowOnExecution = true };
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -210,11 +210,10 @@ namespace Libplanet.Tests.Action
         public void EvaluateWithCriticalException()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
 
             var action = new ThrowException
             {
-                ThrowOnRehearsal = false,
                 ThrowOnExecution = true,
                 Deterministic = false,
             };
@@ -264,7 +263,6 @@ namespace Libplanet.Tests.Action
                 return new DumbAction(
                     targetAddress: address,
                     item: identifier.ToString(),
-                    recordRehearsal: false,
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
@@ -288,32 +286,50 @@ namespace Libplanet.Tests.Action
 
             Transaction[] block1Txs =
             {
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey1,
-                    genesisHash: genesis.Hash,
-                    actions: new[]
-                    {
-                        MakeAction(addresses[0], 'A', addresses[1]),
-                        MakeAction(addresses[1], 'B', addresses[2]),
-                    }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey2,
-                    genesisHash: genesis.Hash,
-                    actions: new[]
-                    {
-                        MakeAction(addresses[2], 'C', addresses[3]),
-                    }.ToPlainValues(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: _txFx.PrivateKey3,
-                    genesisHash: genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[]
+                            {
+                                addresses[0],
+                                addresses[1],
+                            }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[0], 'A', addresses[1]),
+                                MakeAction(addresses[1], 'B', addresses[2]),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey1.PublicKey, 0)),
+                    _txFx.PrivateKey1),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: ImmutableHashSet<Address>.Empty,
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[2], 'C', addresses[3]),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey2.PublicKey, 0)),
+                    _txFx.PrivateKey2),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: ImmutableHashSet<Address>.Empty,
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(7),
+                            actions: TxActionList.Empty,
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey3.PublicKey, 0)),
+                    _txFx.PrivateKey3),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
                 Enumerable.Range(0, block1Txs.Length), (x, y) => (x, y)))
@@ -334,9 +350,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -346,7 +362,7 @@ namespace Libplanet.Tests.Action
                     block1Txs[expect.TxIdx].Actions[expect.ActionIdx],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
-                Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
+                Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
                 randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
@@ -364,70 +380,81 @@ namespace Libplanet.Tests.Action
             previousState = actionEvaluator.PrepareInitialDelta(null);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
-            IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
-                evals1.GetDirtyBalances();
-            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies1 =
-                evals1.GetDirtyTotalSupplies();
+            var dirty1 = evals1.Last().OutputState.Trie
+                .Diff(evals1.First().InputContext.PreviousState.Trie)
+                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
+            Assert.Equal((Text)"A", dirty1[ToStateKey(addresses[0])]);
+            Assert.Equal((Text)"B", dirty1[ToStateKey(addresses[1])]);
+            Assert.Equal((Text)"C", dirty1[ToStateKey(addresses[2])]);
             Assert.Equal(
-                new Dictionary<Address, IValue>
-                {
-                    [addresses[0]] = (Text)"A",
-                    [addresses[1]] = (Text)"B",
-                    [addresses[2]] = (Text)"C",
-                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
-                }.ToImmutableDictionary(),
-                dirty1);
+                (Integer)randomValue,
+                dirty1[ToStateKey(DumbAction.RandomRecordsAddress)]);
             Assert.Equal(
-                new Dictionary<(Address, Currency), FungibleAssetValue>
-                {
-                    [(addresses[0], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0),
-                    [(addresses[1], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency),
-                    [(addresses[2], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency),
-                    [(addresses[3], DumbAction.DumbCurrency)] =
-                        new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0),
-                }.ToImmutableDictionary(),
-                balances1);
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[1], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[2], DumbAction.DumbCurrency)]);
+            Assert.Equal(
+                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0).RawValue,
+                dirty1[ToFungibleAssetKey(addresses[3], DumbAction.DumbCurrency)]);
 
             Transaction[] block2Txs =
             {
                 // Note that these timestamps in themselves does not have any meanings but are
                 // only arbitrary.  These purpose to make their evaluation order in a block
                 // equal to the order we (the test) intend:
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey1,
-                    genesis.Hash,
-                    new[] { MakeAction(addresses[0], 'D') }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)),
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey2,
-                    genesis.Hash,
-                    new[] { MakeAction(addresses[3], 'E') }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
-                Transaction.Create(
-                    0,
-                    _txFx.PrivateKey3,
-                    genesis.Hash,
-                    new[]
-                    {
-                        new DumbAction(
-                            addresses[4],
-                            "RecordRehearsal",
-                            transferFrom: addresses[0],
-                            transferTo: addresses[4],
-                            transferAmount: 8,
-                            recordRehearsal: true,
-                            recordRandom: true),
-                    }.ToPlainValues(),
-                    updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(1),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[0], 'D'),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey1.PublicKey, 0)),
+                    _txFx.PrivateKey1),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[3] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                            actions: new TxActionList(new[]
+                            {
+                                MakeAction(addresses[3], 'E'),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey2.PublicKey, 0)),
+                    _txFx.PrivateKey2),
+                new Transaction(
+                    new UnsignedTx(
+                        new TxInvoice(
+                            genesisHash: genesis.Hash,
+                            updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            actions: new TxActionList(new[]
+                            {
+                                new DumbAction(
+                                    addresses[4],
+                                    "RecordRehearsal",
+                                    transferFrom: addresses[0],
+                                    transferTo: addresses[4],
+                                    transferAmount: 8,
+                                    recordRandom: true),
+                            }.ToPlainValues()),
+                            maxGasPrice: null,
+                            gasLimit: null),
+                        new TxSigningMetadata(_txFx.PrivateKey3.PublicKey, 0)),
+                    _txFx.PrivateKey3),
             };
             foreach ((var tx, var i) in block2Txs.Zip(
                 Enumerable.Range(0, block2Txs.Length), (x, y) => (x, y)))
@@ -453,9 +480,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -470,9 +497,8 @@ namespace Libplanet.Tests.Action
                     block2Txs[expect.TxIdx].Actions[expect.Item2],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
-                Assert.Equal(GenesisProposer.ToAddress(), eval.InputContext.Miner);
+                Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
-                Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
                 randomValue = eval.InputContext.GetRandom().Next();
                 Assert.Equal(
@@ -484,25 +510,20 @@ namespace Libplanet.Tests.Action
 
             previousState = evals1.Last().OutputState;
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
-            IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
-            IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
-                evals2.GetDirtyBalances();
-            Assert.Equal(
-                new Dictionary<Address, IValue>
-                {
-                    [addresses[0]] = (Text)"A,D",
-                    [addresses[3]] = (Text)"E",
-                    [addresses[4]] = (Text)"RecordRehearsal:False",
-                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
-                }.ToImmutableDictionary(),
-                dirty2);
+            var dirty2 = evals2.Last().OutputState.Trie
+                .Diff(evals2.First().InputContext.PreviousState.Trie)
+                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
+            Assert.Equal((Text)"A,D", dirty2[ToStateKey(addresses[0])]);
+            Assert.Equal((Text)"E", dirty2[ToStateKey(addresses[3])]);
+            Assert.Equal((Text)"RecordRehearsal", dirty2[ToStateKey(addresses[4])]);
+            Assert.Equal((Integer)randomValue, dirty2[ToStateKey(DumbAction.RandomRecordsAddress)]);
         }
 
         [Fact]
         public void EvaluateTx()
         {
             PrivateKey[] keys = { new PrivateKey(), new PrivateKey(), new PrivateKey() };
-            Address[] addresses = keys.Select(AddressExtensions.ToAddress).ToArray();
+            Address[] addresses = keys.Select(key => key.Address).ToArray();
             DumbAction[] actions =
             {
                 new DumbAction(
@@ -526,7 +547,7 @@ namespace Libplanet.Tests.Action
                     transferTo: addresses[0],
                     transferAmount: 10,
                     recordRandom: true),
-                new DumbAction(addresses[2], "R", true, recordRandom: true),
+                new DumbAction(addresses[2], "R", recordRandom: true),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
@@ -545,8 +566,6 @@ namespace Libplanet.Tests.Action
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
             var evaluations = actionEvaluator.EvaluateTx(
                 blockHeader: block,
@@ -559,7 +578,7 @@ namespace Libplanet.Tests.Action
                 new[] { "0", null, null },
                 new[] { "0", "1", null },
                 new[] { "0,2", "1", null },
-                new[] { "0,2", "1", "R:False" },
+                new[] { "0,2", "1", "R" },
             };
             BigInteger[][] expectedBalances =
             {
@@ -621,31 +640,18 @@ namespace Libplanet.Tests.Action
                         .GetBalance(a, currency).RawValue));
             }
 
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
-
-            DumbAction.RehearsalRecords.Value =
-                ImmutableList<(Address, string)>.Empty;
             previousState = actionEvaluator.PrepareInitialDelta(null);
             IWorld delta = actionEvaluator.EvaluateTx(
                 blockHeader: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
-            Assert.Equal(
-                evaluations[3].OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates(),
-                delta.GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates());
-
-            Assert.DoesNotContain(
-                (addresses[2], "R"),
-                DumbAction.RehearsalRecords.Value);
+            Assert.Empty(evaluations[3].OutputState.Trie.Diff(delta.Trie));
         }
 
         [Fact]
         public void EvaluateTxResultThrowingException()
         {
-            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+            var action = new ThrowException { ThrowOnExecution = true };
             var tx = Transaction.Create(
                 0,
                 _txFx.PrivateKey1,
@@ -653,7 +659,6 @@ namespace Libplanet.Tests.Action
                 new[] { action }.ToPlainValues(),
                 null,
                 null,
-                ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
@@ -677,7 +682,7 @@ namespace Libplanet.Tests.Action
                 tx: tx,
                 previousState: previousState).Last().OutputState;
 
-            Assert.Empty(nextState.GetAccount(ReservedAddresses.LegacyAccount).GetUpdatedStates());
+            Assert.Empty(nextState.Trie.Diff(previousState.Trie));
         }
 
         [Fact]
@@ -700,7 +705,8 @@ namespace Libplanet.Tests.Action
                 previousState: fx.CreateWorld(blockA.PreviousHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             Assert.Equal(
@@ -724,14 +730,14 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(txA.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(
-                    i > 0 ? new[] { txA.Signer } : new Address[0],
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
-                Assert.Equal(
                     (Integer)deltaA[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
                 Assert.Equal(
-                    new[] { txA.Signer },
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
+                    ToStateKey(txA.Signer),
+                    Assert.Single(
+                        outputState.GetAccount(ReservedAddresses.LegacyAccount).Trie.Diff(
+                            prevState.GetAccount(ReservedAddresses.LegacyAccount).Trie))
+                    .Path);
                 Assert.Equal(
                     (Integer)deltaA[i + 1].Value,
                     outputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
@@ -754,7 +760,8 @@ namespace Libplanet.Tests.Action
                 previousState: fx.CreateWorld(blockB.PreviousHash),
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
             Assert.Equal(
@@ -779,24 +786,25 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(txB.Signer, context.Signer);
                 Assert.False(context.BlockAction);
                 Assert.Equal(
-                    i > 0 ? new[] { txB.Signer } : new Address[0],
-                    prevState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
-                Assert.Equal(
                     (Integer)deltaB[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
-                Assert.Equal(
-                    new[] { txB.Signer },
-                    outputState.GetAccount(ReservedAddresses.LegacyAccount).Delta.UpdatedAddresses);
                 Assert.Equal(
                     (Integer)deltaB[i + 1].Value,
                     outputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
                 if (i == 1)
                 {
+                    Assert.Empty(outputState.Trie.Diff(prevState.Trie));
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
                     Assert.IsType<InvalidOperationException>(eval.Exception.InnerException);
                 }
                 else
                 {
+                    Assert.Equal(
+                        ToStateKey(txB.Signer),
+                        Assert.Single(
+                            outputState.GetAccount(ReservedAddresses.LegacyAccount).Trie.Diff(
+                                prevState.GetAccount(ReservedAddresses.LegacyAccount).Trie))
+                        .Path);
                     Assert.Null(eval.Exception);
                 }
             }
@@ -884,18 +892,23 @@ namespace Libplanet.Tests.Action
                         (signerNoncesPair, nonce) => (signerNoncesPair.signer, nonce))
                     .Select(signerNoncePair =>
                     {
-                        Address targetAddress = signerNoncePair.signer.ToAddress();
-                        return Transaction.Create(
-                            nonce: signerNoncePair.nonce,
-                            privateKey: signerNoncePair.signer,
-                            genesisHash: null,
-                            actions: new[]
-                            {
-                                new RandomAction(signerNoncePair.signer.ToAddress()),
-                            }.ToPlainValues(),
-                            updatedAddresses: ImmutableHashSet.Create(targetAddress),
-                            timestamp: epoch
-                        );
+                        Address targetAddress = signerNoncePair.signer.Address;
+                        return new Transaction(
+                            new UnsignedTx(
+                                new TxInvoice(
+                                    genesisHash: null,
+                                    updatedAddresses: ImmutableHashSet.Create(targetAddress),
+                                    timestamp: epoch,
+                                    actions: new TxActionList(new[]
+                                    {
+                                        new RandomAction(signerNoncePair.signer.Address),
+                                    }.ToPlainValues()),
+                                    maxGasPrice: null,
+                                    gasLimit: null),
+                                new TxSigningMetadata(
+                                    signerNoncePair.signer.PublicKey,
+                                    signerNoncePair.nonce)),
+                            signerNoncePair.signer);
                     }).ToImmutableArray();
 
             // Rearrange transactions so that transactions are not grouped by signers
@@ -913,7 +926,7 @@ namespace Libplanet.Tests.Action
 
             // Sanity check.
             Assert.True(originalAddresses.SequenceEqual(
-                signers.Select(signer => signer.ToAddress().ToString())));
+                signers.Select(signer => signer.Address.ToString())));
 
             var orderedTxs = ActionEvaluator.OrderTxsForEvaluation(
                 protocolVersion: protocolVersion,
@@ -931,7 +944,7 @@ namespace Libplanet.Tests.Action
             // Check nonces are ordered.
             foreach (var signer in signers)
             {
-                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.ToAddress());
+                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.Address);
                 Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
             }
 
@@ -952,7 +965,7 @@ namespace Libplanet.Tests.Action
                 genesisBlock: _storeFx.GenesisBlock,
                 privateKey: ChainPrivateKey);
             var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
-            var addresses = privateKeys.Select(privateKey => privateKey.ToAddress()).ToList();
+            var addresses = privateKeys.Select(privateKey => privateKey.Address).ToList();
 
             // Only addresses[0] and addresses[1] are able to mint
             var currency = Currency.Uncapped(
@@ -1000,7 +1013,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateActionAndCollectFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1058,14 +1071,14 @@ namespace Libplanet.Tests.Action
                 FungibleAssetValue.FromRawValue(foo, 1),
                 chain.GetWorldState(evaluations.Single().OutputState)
                     .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(miner.ToAddress(), foo));
+                    .GetBalance(miner.Address, foo));
         }
 
         [Fact]
         public void EvaluateThrowingExceedGasLimit()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1132,14 +1145,14 @@ namespace Libplanet.Tests.Action
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
                     .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(miner.ToAddress(), foo));
+                    .GetBalance(miner.Address, foo));
         }
 
         [Fact]
         public void EvaluateThrowingInsufficientBalanceForGasFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1201,7 +1214,7 @@ namespace Libplanet.Tests.Action
         public void EvaluateMinusGasFee()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             Currency foo = Currency.Uncapped(
                 "FOO",
                 18,
@@ -1259,6 +1272,69 @@ namespace Libplanet.Tests.Action
                 evaluations.Single().Exception?.InnerException?.GetType());
         }
 
+        [Fact]
+        public void GenerateRandomSeed()
+        {
+            byte[] preEvaluationHashBytes =
+            {
+                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+            };
+            byte[] signature =
+            {
+                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
+                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
+                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
+                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
+                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
+                0x7d, 0x37, 0x67, 0xe1, 0xe9,
+            };
+
+            int seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
+            Assert.Equal(353767086, seed);
+            seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 1);
+            Assert.Equal(353767087, seed);
+        }
+
+        [Fact]
+        public void CheckRandomSeedInAction()
+        {
+            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
+
+            // txA: ((5 + 1) * 2) + 3 = 15
+            (Transaction txA, var deltaA) = fx.Sign(
+                0,
+                Arithmetic.Add(1),
+                Arithmetic.Mul(2),
+                Arithmetic.Add(3));
+
+            Block blockA = fx.Propose();
+            ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
+                blockHeader: blockA,
+                tx: txA,
+                previousState: fx.CreateWorld(blockA.PreviousHash),
+                actions: txA.Actions
+                    .Select(action => (IAction)ToAction<Arithmetic>(action))
+                    .ToImmutableArray(),
+                stateStore: fx.StateStore).ToArray();
+
+            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
+            int[] randomSeeds = Enumerable
+                .Range(0, txA.Actions.Count)
+                .Select(offset => ActionEvaluator.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    txA.Signature,
+                    offset))
+                .ToArray();
+
+            for (int i = 0; i < evalsA.Length; i++)
+            {
+                IActionEvaluation eval = evalsA[i];
+                IActionContext context = eval.InputContext;
+                Assert.Equal(randomSeeds[i], context.RandomSeed);
+            }
+        }
+
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1303,77 +1379,6 @@ namespace Libplanet.Tests.Action
             };
 
             return (addresses, txs);
-        }
-
-        [Fact]
-        private void GenerateRandomSeed()
-        {
-            byte[] preEvaluationHashBytes =
-            {
-                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-            };
-            byte[] signature =
-            {
-                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
-                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
-                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
-                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
-                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
-                0x7d, 0x37, 0x67, 0xe1, 0xe9,
-            };
-            byte[] hashedSignature;
-            SHA1 hasher = SHA1.Create();
-            hashedSignature = hasher.ComputeHash(signature);
-
-            int seed =
-                ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    hashedSignature,
-                    signature,
-                    0);
-            Assert.Equal(353767086, seed);
-        }
-
-        [Fact]
-        private void CheckRandomSeedInAction()
-        {
-            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
-
-            // txA: ((5 + 1) * 2) + 3 = 15
-            (Transaction txA, var deltaA) = fx.Sign(
-                0,
-                Arithmetic.Add(1),
-                Arithmetic.Mul(2),
-                Arithmetic.Add(3));
-
-            Block blockA = fx.Propose();
-            ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockHeader: blockA,
-                tx: txA,
-                previousState: fx.CreateWorld(blockA.PreviousHash),
-                actions: txA.Actions
-                    .Select(action => (IAction)ToAction<Arithmetic>(action))
-                    .ToImmutableArray()).ToArray();
-            byte[] hashedSignature;
-            using (var hasher = SHA1.Create())
-            {
-                hashedSignature = hasher.ComputeHash(txA.Signature);
-            }
-
-            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
-            int initialRandomSeed =
-                ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    hashedSignature,
-                    txA.Signature,
-                    0);
-            for (int i = 0; i < evalsA.Length; i++)
-            {
-                IActionEvaluation eval = evalsA[i];
-                IActionContext context = eval.InputContext;
-                Assert.Equal(initialRandomSeed + i, context.RandomSeed);
-            }
         }
 
         [Fact]
@@ -1438,10 +1443,9 @@ namespace Libplanet.Tests.Action
             public Address BlockIndexKey { get; set; }
 
             public IValue PlainValue => new List(
-                (Binary)SignerKey.ByteArray,
-                (Binary)MinerKey.ByteArray,
-                (Binary)BlockIndexKey.ByteArray
-            );
+                SignerKey.Bencoded,
+                MinerKey.Bencoded,
+                BlockIndexKey.Bencoded);
 
             public void LoadPlainValue(IValue plainValue)
             {

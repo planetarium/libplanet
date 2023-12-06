@@ -122,19 +122,19 @@ public class TransactionQueryTest
 
         var key1 = new PrivateKey();
         // account nonce is 0 in the beginning
-        await AssertNextNonce(0, key1.ToAddress());
+        await AssertNextNonce(0, key1.Address);
 
         // staged txs increase next nonce
         Source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        await AssertNextNonce(1, key1.ToAddress());
+        await AssertNextNonce(1, key1.Address);
         Source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        await AssertNextNonce(2, key1.ToAddress());
+        await AssertNextNonce(2, key1.Address);
         var block = Source.BlockChain.ProposeBlock(new PrivateKey());
         Source.BlockChain.Append(block, Libplanet.Tests.TestUtils.CreateBlockCommit(block));
-        await AssertNextNonce(2, key1.ToAddress());
+        await AssertNextNonce(2, key1.Address);
 
         var key2 = new PrivateKey();
-        await AssertNextNonce(0, key2.ToAddress());
+        await AssertNextNonce(0, key2.Address);
 
         // staging txs of key2 does not increase nonce of key1
         Source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
@@ -142,18 +142,18 @@ public class TransactionQueryTest
             new PrivateKey(),
             Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         Source.BlockChain.Append(block, Libplanet.Tests.TestUtils.CreateBlockCommit(block));
-        await AssertNextNonce(1, key2.ToAddress());
-        await AssertNextNonce(2, key1.ToAddress());
+        await AssertNextNonce(1, key2.Address);
+        await AssertNextNonce(2, key1.Address);
 
         // unstaging txs decrease nonce
         Source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        await AssertNextNonce(3, key1.ToAddress());
+        await AssertNextNonce(3, key1.Address);
         Source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        await AssertNextNonce(4, key1.ToAddress());
+        await AssertNextNonce(4, key1.Address);
         Source.BlockChain.GetStagedTransactionIds()
             .Select(Source.BlockChain.GetTransaction)
             .Select(Source.BlockChain.UnstageTransaction)
             .ToImmutableList();
-        await AssertNextNonce(2, key1.ToAddress());
+        await AssertNextNonce(2, key1.Address);
     }
 }

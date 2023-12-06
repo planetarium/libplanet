@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 
@@ -35,11 +36,18 @@ namespace Libplanet.Action.State
     public interface IWorld : IWorldState
     {
         /// <summary>
-        /// The <see cref="IWorld"/> representing the delta part of
-        /// this <see cref="IWorld"/>.
+        /// A dictionary representing cumulative changed account states for each
+        /// <see cref="Address"/> between blocks.
         /// </summary>
         [Pure]
-        IWorldDelta Delta { get; }
+        IImmutableDictionary<Address, IAccount> BlockDelta { get; }
+
+        /// <summary>
+        /// A dictionary representing uncommitted changed account states for each
+        /// <see cref="Address"/>.
+        /// </summary>
+        [Pure]
+        IImmutableDictionary<Address, IAccount> UncommittedDelta { get; }
 
         /// <summary>
         /// Gets a new instance that the world state of the given

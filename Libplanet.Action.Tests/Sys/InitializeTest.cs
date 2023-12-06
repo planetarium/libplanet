@@ -53,8 +53,7 @@ namespace Libplanet.Action.Tests.Sys
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
-                gasLimit: 0,
-                rehearsal: false);
+                gasLimit: 0);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
@@ -85,8 +84,7 @@ namespace Libplanet.Action.Tests.Sys
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
-                gasLimit: long.MaxValue,
-                rehearsal: false);
+                gasLimit: long.MaxValue);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
