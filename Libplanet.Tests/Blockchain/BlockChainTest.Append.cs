@@ -738,7 +738,7 @@ namespace Libplanet.Tests.Blockchain
         public void MigrateStateWithoutAction()
         {
             var policy = new BlockPolicy(
-                blockAction: new MinerReward(1),
+                blockAction: null,
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var stagePolicy = new VolatileStagePolicy();
             var fx = GetStoreFixture(policy.BlockAction);
