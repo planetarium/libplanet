@@ -23,21 +23,7 @@ namespace Libplanet.Action.State
         {
             Trie = trie;
             _stateStore = stateStore;
-            Legacy = true;
-            if (trie.
-                    GetMetadata() is { } metadata)
-            {
-                if (metadata.Type != TrieType.World)
-                {
-                    throw new ArgumentException(
-                        "Given trie is not an IWorld instance.",
-                        nameof(trie));
-                }
-                else
-                {
-                    Legacy = false;
-                }
-            }
+            Legacy = trie.GetMetadata() is null;
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>

@@ -24,17 +24,13 @@ namespace Libplanet.Action.Tests.State
         public void Constructor()
         {
             ITrie trie = new MerkleTrie(_kvStore);
-            trie = trie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.Account));
+            trie = trie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             Assert.Throws<ArgumentException>(() => new WorldBaseState(trie, _stateStore));
             trie = new MerkleTrie(_kvStore);
             var legacyBaseState = new WorldBaseState(trie, _stateStore);
             Assert.True(legacyBaseState.Legacy);
             trie = new MerkleTrie(_kvStore);
-            trie = trie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.World));
+            trie = trie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             var modernBaseState = new WorldBaseState(trie, _stateStore);
             Assert.False(modernBaseState.Legacy);
         }
@@ -46,17 +42,15 @@ namespace Libplanet.Action.Tests.State
             var address = new Address(TestUtils.GetRandomBytes(20));
             ITrie accountTrie = new MerkleTrie(_kvStore);
             accountTrie = accountTrie.Set(ToStateKey(address), (Text)"foo");
-            accountTrie = accountTrie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.Account));
+            accountTrie =
+                accountTrie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             accountTrie = _stateStore.Commit(accountTrie);
             ITrie worldTrie = new MerkleTrie(_kvStore);
             worldTrie = worldTrie.Set(
                 ToStateKey(accountAddress),
                 (Binary)accountTrie.Hash.ByteArray);
-            worldTrie = worldTrie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.World));
+            worldTrie =
+                worldTrie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             worldTrie = _stateStore.Commit(worldTrie);
             var stateRoot = worldTrie.Hash;
             var world = new World(new WorldBaseState(
@@ -78,17 +72,13 @@ namespace Libplanet.Action.Tests.State
             var address = new Address(TestUtils.GetRandomBytes(20));
             ITrie accountTrie = new MerkleTrie(_kvStore);
             accountTrie = accountTrie.Set(ToStateKey(address), (Text)"foo");
-            accountTrie = accountTrie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.Account));
             accountTrie = _stateStore.Commit(accountTrie);
             ITrie worldTrie = new MerkleTrie(_kvStore);
             worldTrie = worldTrie.Set(
                 ToStateKey(accountAddress),
                 (Binary)accountTrie.Hash.ByteArray);
             worldTrie = worldTrie.SetMetadata(new TrieMetadata(
-                BlockMetadata.CurrentProtocolVersion,
-                TrieType.World));
+                BlockMetadata.CurrentProtocolVersion));
             worldTrie = _stateStore.Commit(worldTrie);
             var stateRoot = worldTrie.Hash;
             var world = new World(new WorldBaseState(

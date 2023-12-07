@@ -6,10 +6,9 @@ namespace Libplanet.Action.State
 {
     public class TrieMetadata
     {
-        public TrieMetadata(int version, TrieType type)
+        public TrieMetadata(int version)
         {
             Version = version;
-            Type = type;
         }
 
         public TrieMetadata(IValue value)
@@ -23,13 +22,10 @@ namespace Libplanet.Action.State
             }
 
             Version = ((Integer)list[0]).Value;
-            Type = (TrieType)(int)((Integer)list[1]).Value;
         }
 
         public BigInteger Version { get; }
 
-        public TrieType Type { get; }
-
-        public IValue Bencoded => new List((Integer)Version, (Integer)(int)Type);
+        public IValue Bencoded => new List((Integer)Version);
     }
 }
