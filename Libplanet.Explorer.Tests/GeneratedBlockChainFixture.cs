@@ -170,8 +170,7 @@ public class GeneratedBlockChainFixture
                 ? GetRandomActions().ToPlainValues()
                 : ImmutableHashSet<SimpleAction>.Empty.ToPlainValues(),
             null,
-            null,
-            GetRandomAddresses());
+            null);
     }
 
     private ImmutableArray<SimpleAction> GetRandomActions()
@@ -180,14 +179,6 @@ public class GeneratedBlockChainFixture
             .Range(0, Random.Next(10))
             .Select(_ => SimpleAction.GetAction(Random.Next()))
             .ToImmutableArray();
-    }
-
-    private IImmutableSet<Address> GetRandomAddresses()
-    {
-        return Enumerable
-            .Range(0, Random.Next(PrivateKeys.Length - 1) + 1)
-            .Select(_ => PrivateKeys[Random.Next(PrivateKeys.Length)].ToAddress())
-            .ToImmutableHashSet();
     }
 
     private void AddBlock(ImmutableArray<Transaction> transactions)
