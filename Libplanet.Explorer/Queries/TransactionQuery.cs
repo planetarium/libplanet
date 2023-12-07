@@ -278,6 +278,7 @@ namespace Libplanet.Explorer.Queries
         /// otherwise <see langword="null"/>.</returns>
         private static Block GetBlockContainingTx(IBlockChainContext context, TxId txId)
         {
+            // Try searching index first.
             if (context.Index is { } index)
             {
                 if (index.TryGetContainedBlockHashById(txId, out var blockHash))
@@ -285,15 +286,14 @@ namespace Libplanet.Explorer.Queries
                     return context.BlockChain[blockHash];
                 }
             }
-            else
+
+            // If not found in index, search IStore directly.
+            var blockHashCandidates = context.Store.IterateTxIdBlockHashIndex(txId);
+            foreach (var blockHashCandidate in blockHashCandidates)
             {
-                var blockHashCandidates = context.Store.IterateTxIdBlockHashIndex(txId);
-                foreach (var blockHashCandidate in blockHashCandidates)
+                if (context.BlockChain.ContainsBlock(blockHashCandidate))
                 {
-                    if (context.BlockChain.ContainsBlock(blockHashCandidate))
-                    {
-                        return context.BlockChain[blockHashCandidate];
-                    }
+                    return context.BlockChain[blockHashCandidate];
                 }
             }
 
