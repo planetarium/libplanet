@@ -30,10 +30,13 @@ public class TransactionQueryGeneratedTest
             ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>.Empty
                 .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
                     .Add(ImmutableArray<SimpleAction>.Empty
+                        .Add(new SimpleAction0())
                         .Add(new SimpleAction0())))     // Successful action transaction
                 .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
                     .Add(ImmutableArray<SimpleAction>.Empty
-                        .Add(new SimpleAction0Fail()))) // Failed action transaction
+                        .Add(new SimpleAction0())
+                        .Add(new SimpleAction0Fail())
+                        .Add(new SimpleAction0()))) // Failed action transaction
                 .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
                     .Add(ImmutableArray<SimpleAction>.Empty))); // Empty action transaction
         Source = new MockBlockChainContext(Fx.Chain);
@@ -62,18 +65,19 @@ public class TransactionQueryGeneratedTest
         Assert.Equal("SUCCESS", queryResult.TxStatus);
         Assert.Equal(successBlock.Index, queryResult.BlockIndex);
         Assert.Equal(successBlock.Hash.ToString(), queryResult.BlockHash);
-        Assert.Equal(new string?[] { null }, queryResult.ExceptionNames);
+        Assert.Equal(new string?[] { null , null }, queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(failTx.Id);
         Assert.Equal("FAILURE", queryResult.TxStatus);
         Assert.Equal(failBlock.Index, queryResult.BlockIndex);
         Assert.Equal(failBlock.Hash.ToString(), queryResult.BlockHash);
         Assert.Equal(
-            new string[] { "Libplanet.Action.State.CurrencyPermissionException" },
+            new string?[] { null, "Libplanet.Action.State.CurrencyPermissionException", null },
             queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(emptyTx.Id);
         Assert.Equal("INCLUDED", queryResult.TxStatus);
         Assert.Equal(emptyBlock.Index, queryResult.BlockIndex);
         Assert.Equal(emptyBlock.Hash.ToString(), queryResult.BlockHash);
+        Assert.Null(queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(new TxId());
         Assert.Equal("INVALID", queryResult.TxStatus);
         Assert.Null(queryResult.BlockIndex);
