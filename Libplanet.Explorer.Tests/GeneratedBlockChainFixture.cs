@@ -41,10 +41,11 @@ public class GeneratedBlockChainFixture
         int maxTxCount = 20,
         int privateKeyCount = 10,
         ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>?
-            txActionsForPrefixBlocks = null,
-        ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>?
             txActionsForSuffixBlocks = null)
     {
+        txActionsForSuffixBlocks ??=
+            ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>.Empty;
+
         var store = new MemoryStore();
         var stateStore = new TrieStateStore(new MemoryKeyValueStore());
 
@@ -101,23 +102,7 @@ public class GeneratedBlockChainFixture
             Chain.Genesis.Miner,
             ImmutableArray<Block>.Empty.Add(Chain.Genesis));
 
-        if (txActionsForPrefixBlocks is { } txActionsForPrefixBlocksVal)
-        {
-            foreach (var actionsForTransactions in txActionsForPrefixBlocksVal)
-            {
-                var pk = PrivateKeys[Random.Next(PrivateKeys.Length)];
-                AddBlock(
-                    actionsForTransactions.Select(actions =>
-                            Transaction.Create(
-                                Chain.GetNextTxNonce(pk.Address),
-                                pk,
-                                Chain.Genesis.Hash,
-                                actions.ToPlainValues()))
-                        .ToImmutableArray());
-            }
-        }
-
-        while (Chain.Count < blockCount + (txActionsForPrefixBlocks?.Length ?? 0) + 1)
+        while (Chain.Count < blockCount)
         {
             AddBlock(GetRandomTransactions());
         }
