@@ -87,22 +87,22 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
@@ -204,20 +204,20 @@ public IActionLoader ActionLoader { get; }</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/ActionEvaluator.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator_Evaluate_" data-uid="Libplanet.Action.ActionEvaluator.Evaluate*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, out HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"><p>The main entry point for evaluating a <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
+public IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash, out HashDigest&lt;SHA256&gt; stateRootHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -242,6 +242,12 @@ public IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBl
 <code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>Determined state root hash of the given <code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -262,7 +268,7 @@ public IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBl
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256____remarks">Remarks</h5>
+  <h5 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>
 This has a side-effect of writing data to internally held <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
 </p>
@@ -301,19 +307,19 @@ public static int GenerateRandomSeed(byte[] preEvaluationHashBytes, byte[] hashe
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">preEvaluationHashBytes</span></td>
         <td><p>The previous evaluation hash turned into bytes.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">hashedSignature</span></td>
         <td><p>The hashed signature.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">signature</span></td>
         <td><p>The signature.</p>
 </td>

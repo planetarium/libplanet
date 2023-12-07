@@ -158,15 +158,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluator.ActionLoader
   nameWithType: ActionEvaluator.ActionLoader
-- uid: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name: Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: ActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: ActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name: Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>, out HashDigest<SHA256>)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name.vb: Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)), ByRef HashDigest(Of SHA256))
+  fullName: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, out Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), ByRef Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: ActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>, out HashDigest<SHA256>)
+  nameWithType.vb: ActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)), ByRef HashDigest(Of SHA256))
 - uid: Libplanet.Action.ActionEvaluator.Evaluate*
   name: Evaluate
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_Evaluate_
@@ -910,15 +910,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionEvaluator.ActionLoader
   nameWithType: IActionEvaluator.ActionLoader
-- uid: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name: Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: IActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: IActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name: Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>, out HashDigest<SHA256>)
+  href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name.vb: Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)), ByRef HashDigest(Of SHA256))
+  fullName: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, out Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), ByRef Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: IActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable<HashDigest<SHA256>>, out HashDigest<SHA256>)
+  nameWithType.vb: IActionEvaluator.Evaluate(IPreEvaluationBlock, Nullable(Of HashDigest(Of SHA256)), ByRef HashDigest(Of SHA256))
 - uid: Libplanet.Action.IActionEvaluator.Evaluate*
   name: Evaluate
   href: api/Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_
@@ -2981,6 +2981,88 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.TotalSupplyNotTrackableException.WithDefaultMessage
   nameWithType: TotalSupplyNotTrackableException.WithDefaultMessage
+- uid: Libplanet.Action.State.TrieMetadata
+  name: TrieMetadata
+  href: api/Libplanet.Action.State.TrieMetadata.html
+  commentId: T:Libplanet.Action.State.TrieMetadata
+  fullName: Libplanet.Action.State.TrieMetadata
+  nameWithType: TrieMetadata
+- uid: Libplanet.Action.State.TrieMetadata.#ctor(Bencodex.Types.IValue)
+  name: TrieMetadata(IValue)
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(Bencodex.Types.IValue)
+  nameWithType: TrieMetadata.TrieMetadata(IValue)
+- uid: Libplanet.Action.State.TrieMetadata.#ctor(System.Int32,Libplanet.Action.State.TrieType)
+  name: TrieMetadata(Int32, TrieType)
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_System_Int32_Libplanet_Action_State_TrieType_
+  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(System.Int32,Libplanet.Action.State.TrieType)
+  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(System.Int32, Libplanet.Action.State.TrieType)
+  nameWithType: TrieMetadata.TrieMetadata(Int32, TrieType)
+- uid: Libplanet.Action.State.TrieMetadata.#ctor*
+  name: TrieMetadata
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_
+  commentId: Overload:Libplanet.Action.State.TrieMetadata.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata
+  nameWithType: TrieMetadata.TrieMetadata
+- uid: Libplanet.Action.State.TrieMetadata.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Bencoded
+  commentId: P:Libplanet.Action.State.TrieMetadata.Bencoded
+  fullName: Libplanet.Action.State.TrieMetadata.Bencoded
+  nameWithType: TrieMetadata.Bencoded
+- uid: Libplanet.Action.State.TrieMetadata.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Bencoded_
+  commentId: Overload:Libplanet.Action.State.TrieMetadata.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Action.State.TrieMetadata.Bencoded
+  nameWithType: TrieMetadata.Bencoded
+- uid: Libplanet.Action.State.TrieMetadata.Type
+  name: Type
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Type
+  commentId: P:Libplanet.Action.State.TrieMetadata.Type
+  fullName: Libplanet.Action.State.TrieMetadata.Type
+  nameWithType: TrieMetadata.Type
+- uid: Libplanet.Action.State.TrieMetadata.Type*
+  name: Type
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Type_
+  commentId: Overload:Libplanet.Action.State.TrieMetadata.Type
+  isSpec: "True"
+  fullName: Libplanet.Action.State.TrieMetadata.Type
+  nameWithType: TrieMetadata.Type
+- uid: Libplanet.Action.State.TrieMetadata.Version
+  name: Version
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Version
+  commentId: P:Libplanet.Action.State.TrieMetadata.Version
+  fullName: Libplanet.Action.State.TrieMetadata.Version
+  nameWithType: TrieMetadata.Version
+- uid: Libplanet.Action.State.TrieMetadata.Version*
+  name: Version
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Version_
+  commentId: Overload:Libplanet.Action.State.TrieMetadata.Version
+  isSpec: "True"
+  fullName: Libplanet.Action.State.TrieMetadata.Version
+  nameWithType: TrieMetadata.Version
+- uid: Libplanet.Action.State.TrieType
+  name: TrieType
+  href: api/Libplanet.Action.State.TrieType.html
+  commentId: T:Libplanet.Action.State.TrieType
+  fullName: Libplanet.Action.State.TrieType
+  nameWithType: TrieType
+- uid: Libplanet.Action.State.TrieType.Account
+  name: Account
+  href: api/Libplanet.Action.State.TrieType.html#Libplanet_Action_State_TrieType_Account
+  commentId: F:Libplanet.Action.State.TrieType.Account
+  fullName: Libplanet.Action.State.TrieType.Account
+  nameWithType: TrieType.Account
+- uid: Libplanet.Action.State.TrieType.World
+  name: World
+  href: api/Libplanet.Action.State.TrieType.html#Libplanet_Action_State_TrieType_World
+  commentId: F:Libplanet.Action.State.TrieType.World
+  fullName: Libplanet.Action.State.TrieType.World
+  nameWithType: TrieType.World
 - uid: Libplanet.Action.State.World
   name: World
   href: api/Libplanet.Action.State.World.html
@@ -3606,12 +3688,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.DetermineGenesisStateRootHash
   nameWithType: BlockChain.DetermineGenesisStateRootHash
-- uid: Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock)
-  name: EvaluateBlock(IPreEvaluationBlock)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_EvaluateBlock_Libplanet_Types_Blocks_IPreEvaluationBlock_
-  commentId: M:Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock)
-  fullName: Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock)
-  nameWithType: BlockChain.EvaluateBlock(IPreEvaluationBlock)
+- uid: Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name: EvaluateBlock(IPreEvaluationBlock, out HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_EvaluateBlock_Libplanet_Types_Blocks_IPreEvaluationBlock_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}@)
+  name.vb: EvaluateBlock(IPreEvaluationBlock, ByRef HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock, out Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.EvaluateBlock(Libplanet.Types.Blocks.IPreEvaluationBlock, ByRef Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: BlockChain.EvaluateBlock(IPreEvaluationBlock, out HashDigest<SHA256>)
+  nameWithType.vb: BlockChain.EvaluateBlock(IPreEvaluationBlock, ByRef HashDigest(Of SHA256))
 - uid: Libplanet.Blockchain.BlockChain.EvaluateBlock*
   name: EvaluateBlock
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_EvaluateBlock_
