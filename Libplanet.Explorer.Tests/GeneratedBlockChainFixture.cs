@@ -12,7 +12,6 @@ using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 
@@ -29,15 +28,8 @@ public class GeneratedBlockChainFixture
     public ImmutableDictionary<Address, ImmutableArray<Block>>
         MinedBlocks { get; private set; }
 
-    public ImmutableDictionary<
-            Address,
-            ImmutableArray<Transaction>>
+    public ImmutableDictionary<Address, ImmutableArray<Transaction>>
         SignedTxs { get; private set; }
-
-    public ImmutableDictionary<
-            Address,
-            ImmutableArray<Transaction>>
-        InvolvedTxs { get; private set; }
 
     public GeneratedBlockChainFixture(
         int seed,
@@ -61,14 +53,6 @@ public class GeneratedBlockChainFixture
                     pk.Address,
                     ImmutableArray<Block>.Empty));
         SignedTxs = PrivateKeys.Aggregate(
-            ImmutableDictionary<
-                Address,
-                ImmutableArray<Transaction>>.Empty,
-            (dict, pk) =>
-                dict.SetItem(
-                    pk.Address,
-                    ImmutableArray<Transaction>.Empty));
-        InvolvedTxs = PrivateKeys.Aggregate(
             ImmutableDictionary<
                 Address,
                 ImmutableArray<Transaction>>.Empty,
@@ -160,7 +144,9 @@ public class GeneratedBlockChainFixture
     }
 
     private ImmutableArray<Transaction> GetRandomTransactions(
-        int seed, int maxCount, bool giveMax = false)
+        int seed,
+        int maxCount,
+        bool giveMax = false)
     {
         var random = new System.Random(seed);
         var nonces = ImmutableDictionary<PrivateKey, long>.Empty;
@@ -183,8 +169,7 @@ public class GeneratedBlockChainFixture
             .ToImmutableArray();
     }
 
-    private Transaction
-        GetRandomTransaction(int seed, PrivateKey pk, long nonce)
+    private Transaction GetRandomTransaction(int seed, PrivateKey pk, long nonce)
     {
         var random = new System.Random(seed);
         var addr = pk.Address;
@@ -266,10 +251,5 @@ public class GeneratedBlockChainFixture
                         .Add(tx)
                         .OrderBy(tx => tx.Nonce)
                         .ToImmutableArray()));
-        InvolvedTxs = transactions.Aggregate(
-            InvolvedTxs,
-            (dict, tx) => tx.UpdatedAddresses.Aggregate(
-                dict,
-                (dict, addr) => dict.SetItem(addr, dict[addr].Add(tx))));
     }
 }
