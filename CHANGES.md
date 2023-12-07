@@ -102,6 +102,7 @@ To be released.
      -  Added `WorldBaseState` class.
  -  (Libplanet.Action) Added `ReservedAddresses` static class.  [[#3462]]
  -  (Libplanet.Action) Added `WorldDeltaExtensions` static class.  [[#3462]]
+ -  (Libplanet.Action) Added `TrieMetadata` class.  [[#3540]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
