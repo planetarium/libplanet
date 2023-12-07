@@ -671,7 +671,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransaction(txA1);
             Block block = _blockChain.ProposeBlock(miner);
             IReadOnlyList<ICommittedActionEvaluation> actionEvaluations =
-                _blockChain.EvaluateBlock(block);
+                _blockChain.EvaluateBlock(block, out _);
             Assert.Equal(0L, _blockChain.Tip.Index);
             _blockChain.Append(
                 block,
@@ -738,7 +738,7 @@ namespace Libplanet.Tests.Blockchain
         public void MigrateStateWithoutAction()
         {
             var policy = new BlockPolicy(
-                blockAction: new MinerReward(1),
+                blockAction: null,
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var stagePolicy = new VolatileStagePolicy();
             var fx = GetStoreFixture(policy.BlockAction);

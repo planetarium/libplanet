@@ -13,6 +13,7 @@ using Libplanet.Action.Tests;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -100,13 +101,13 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null, out _);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccount(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null, out _);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
@@ -152,7 +153,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -194,7 +195,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(new PrivateKey());
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -252,7 +253,7 @@ namespace Libplanet.Tests.Action
                     previousState: previousState).ToList());
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(
-                    block, chain.Store.GetStateRootHash(block.PreviousHash)).ToList());
+                    block, chain.Store.GetStateRootHash(block.PreviousHash), out _).ToList());
         }
 
         [Fact]
@@ -1043,7 +1044,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1112,7 +1113,8 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetStateRootHash(block.PreviousHash));
+                chain.Store.GetStateRootHash(block.PreviousHash),
+                out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1184,7 +1186,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1246,7 +1248,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1374,6 +1376,62 @@ namespace Libplanet.Tests.Action
             }
         }
 
+        [Fact]
+        private void MigrateStates()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            Log.Debug("Test Start.");
+            var chain = MakeBlockChain<ModernAction>(
+                policy: new BlockPolicy(),
+                store: store,
+                stateStore: stateStore,
+                protocolVersion: BlockMetadata.LegacyStateVersion);
+            Assert.True(chain.GetWorldState().Legacy);
+            var miner = new PrivateKey();
+            var preEval1 = TestUtils.ProposeNext(
+                chain.Tip,
+                miner: miner.PublicKey,
+                protocolVersion: BlockMetadata.LegacyStateVersion);
+            var block1 = chain.EvaluateAndSign(preEval1, miner);
+            var blockCommit = CreateBlockCommit(block1);
+            chain.Append(block1, blockCommit);
+            Log.Debug("Is World Legacy?");
+            Assert.True(chain.GetWorldState().Legacy);
+            var block2 = chain.ProposeBlock(miner, blockCommit);
+            blockCommit = CreateBlockCommit(block2);
+            chain.Append(block2, blockCommit);
+            Log.Debug("Is World Legacy?");
+            Assert.False(chain.GetWorldState().Legacy);
+
+            // Check if after migration, newly created accounts has metadata
+            var action = new ModernAction()
+            {
+                Memo = "foo",
+            };
+
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: miner,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action }.ToPlainValues());
+
+            chain.StageTransaction(tx);
+            var block3 = chain.ProposeBlock(miner, blockCommit);
+            chain.Append(block3, CreateBlockCommit(block3));
+            Assert.False(chain.GetWorldState().Legacy);
+            var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
+                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
+            Assert.NotNull(accountStateRoot);
+            var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
+            var metadata = accountTrie.GetMetadata();
+            Assert.NotNull(metadata);
+            Assert.Equal(TrieType.Account, metadata.Type);
+            Assert.Equal(
+                (Text)"foo",
+                accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
+        }
+
         private sealed class EvaluateTestAction : IAction
         {
             public Address SignerKey { get; set; }
@@ -1404,6 +1462,34 @@ namespace Libplanet.Tests.Action
                             .SetState(SignerKey, (Text)context.Signer.ToHex())
                             .SetState(MinerKey, (Text)context.Miner.ToHex())
                             .SetState(BlockIndexKey, (Integer)context.BlockIndex));
+        }
+
+        private sealed class ModernAction : IAction
+        {
+            public static readonly Address AccountAddress
+                = new Address("1230000000000000000000000000000000000000");
+
+            public static readonly Address Address
+                = new Address("1234000000000000000000000000000000000000");
+
+            public string Memo { get; set; }
+
+            public IValue PlainValue => new List((Text)Memo);
+
+            public void LoadPlainValue(IValue plainValue)
+            {
+                var asList = (List)plainValue;
+                Memo = ((Text)asList[0]).Value;
+            }
+
+            public IWorld Execute(IActionContext context)
+            {
+                return context.PreviousState
+                    .SetAccount(
+                        AccountAddress,
+                        context.PreviousState.GetAccount(AccountAddress)
+                            .SetState(Address, (Text)Memo));
+            }
         }
 
         private sealed class UseGasAction : IAction

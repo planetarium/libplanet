@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -22,19 +23,28 @@ namespace Libplanet.Action.State
         {
             Trie = trie;
             _stateStore = stateStore;
-            Legacy = Trie
-                .Get(new[]
+            Legacy = true;
+            if (trie.
+                    GetMetadata() is { } metadata)
+            {
+                if (metadata.Type != TrieType.World)
                 {
-                    ToStateKey(ReservedAddresses.LegacyAccount),
-                })
-                .Any(v => v == null);
+                    throw new ArgumentException(
+                        "Given trie is not an IWorld instance.",
+                        nameof(trie));
+                }
+                else
+                {
+                    Legacy = false;
+                }
+            }
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
         public ITrie Trie { get; }
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
-        public bool Legacy { get; }
+        public bool Legacy { get; private set; }
 
         /// <inheritdoc cref="IWorldState.GetAccount"/>
         public IAccount GetAccount(Address address) => GetAccounts(new[] { address }).First();

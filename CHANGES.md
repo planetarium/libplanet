@@ -11,6 +11,11 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 5.  [[#3524]]
+ -  Removed `BlockChain.EvaluateBlock(IPreEvaluationBlock)` method.
+    Instead, added
+    `BlockChain.EvaluateBlock(IPreEvaluationBlock, out HashDigest<SHA256>)`
+    method.
+    [[#3540]]
  -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
     instead of `IAccount`.  [[#3462]]
  -  (Libplanet.Action) `IActionEvaluator.OutputState` became `IWorld`.
@@ -74,6 +79,12 @@ To be released.
     `IBlockPolicy` interface.  [[#3494]]
  -  (@planetarium/tx)  Remove the `T` generic argument of `SignedTx<T>`.
     [[#3512]]
+ -  (Libplanet.Action)
+    Removed `ActionEvaluator.Evaluate(IPreEvaluationBlock)` method.
+    Instead, added
+    `ActionEvaluator.Evaluate(IPreEvaluationBlock, out HashDigest<SHA256>)`
+    method.
+    [[#3540]]
 
 ### Backward-incompatible network protocol changes
 
@@ -126,6 +137,7 @@ To be released.
 [#3494]: https://github.com/planetarium/libplanet/pull/3494
 [#3512]: https://github.com/planetarium/libplanet/pull/3512
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
+[#3540]: https://github.com/planetarium/libplanet/pull/3540
 
 Version 3.7.0
 -------------

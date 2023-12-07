@@ -82,7 +82,8 @@ namespace Libplanet.Action
         [Pure]
         public IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash)
+            HashDigest<SHA256>? baseStateRootHash,
+            out HashDigest<SHA256> stateRootHash)
         {
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
@@ -98,7 +99,8 @@ namespace Libplanet.Action
                 if (previousState.Legacy &&
                     block.ProtocolVersion > BlockMetadata.LegacyStateVersion)
                 {
-                    previousState = MigrateLegacyStates(previousState);
+                    previousState = MigrateLegacyStates(previousState, block.ProtocolVersion);
+                    baseStateRootHash = previousState.Trie.Hash;
                 }
                 else if (!previousState.Legacy &&
                          block.ProtocolVersion <= BlockMetadata.LegacyStateVersion)
@@ -118,7 +120,11 @@ namespace Libplanet.Action
                     evaluations = evaluations.Add(EvaluatePolicyBlockAction(block, previousState));
                 }
 
-                return ToCommittedEvaluation(block, evaluations, baseStateRootHash);
+                var committed = ToCommittedEvaluation(block, evaluations, baseStateRootHash);
+                stateRootHash = committed.Count > 0
+                    ? committed.Last().OutputState
+                    : previousState.Trie.Hash;
+                return committed;
             }
             finally
             {
@@ -609,9 +615,12 @@ namespace Libplanet.Action
 
             int setCount = 0;
 
+            var metadata =
+                new TrieMetadata(BlockMetadata.CurrentProtocolVersion, TrieType.Account).Bencoded;
             foreach (var kv in accountSubStateDelta)
             {
                 ITrie accountTrie = _stateStore.GetStateRoot(accountSubStateRoot[kv.Key]);
+                accountTrie = accountTrie.SetMetadata(metadata);
                 var accountDelta = kv.Value;
 
                 foreach (KeyValuePair<KeyBytes, IValue> pair in accountDelta)
@@ -657,14 +666,22 @@ namespace Libplanet.Action
             return result.ToImmutableDictionary();
         }
 
-        internal IWorld MigrateLegacyStates(IWorld prevWorld)
+        internal IWorld MigrateLegacyStates(IWorld prevWorld, int version)
         {
-            _logger.Debug("Migrating states...");
-            var trie = _stateStore.GetStateRoot(null).Set(
+            var legacyTrie = _stateStore.GetStateRoot(prevWorld.Trie.Hash);
+            legacyTrie = legacyTrie.SetMetadata(new TrieMetadata(
+                version,
+                TrieType.Account));
+            legacyTrie = _stateStore.Commit(legacyTrie);
+            var worldTrie = _stateStore.GetStateRoot(null).Set(
                 KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
-                new Binary(prevWorld.Trie.Hash.ByteArray));
-            trie = _stateStore.Commit(trie);
-            return new World(new WorldBaseState(trie, _stateStore));
+                new Binary(legacyTrie.Hash.ByteArray));
+            worldTrie = worldTrie.SetMetadata(new TrieMetadata(
+                version,
+                TrieType.World));
+            worldTrie = _stateStore.Commit(worldTrie);
+            var world = new World(new WorldBaseState(worldTrie, _stateStore));
+            return world;
         }
 
         [Pure]

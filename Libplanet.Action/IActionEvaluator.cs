@@ -23,6 +23,8 @@ namespace Libplanet.Action
         /// <param name="block">The block to evaluate.</param>
         /// <param name="baseStateRootHash">The base state to use when evaluating
         /// <paramref name="block"/>.</param>
+        /// <param name="stateRootHash">
+        /// Determined state root hash of the given <paramref name="block"/>.</param>
         /// <returns> The result of evaluating every <see cref="IAction"/> related to
         /// <paramref name="block"/> as an <see cref="IReadOnlyList{T}"/> of
         /// <see cref="ICommittedActionEvaluation"/>s.</returns>
@@ -40,6 +42,7 @@ namespace Libplanet.Action
         [Pure]
         IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash);
+            HashDigest<SHA256>? baseStateRootHash,
+            out HashDigest<SHA256> stateRootHash);
     }
 }
