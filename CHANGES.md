@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.9.1
 -------------
 
-To be released.
+Released on December 8, 2023.
 
  -  (Libplanet.Explorer) Added `INCLUDED` to `TxStatus` enum.  [[#3542]]
 
