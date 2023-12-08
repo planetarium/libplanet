@@ -40,7 +40,7 @@ namespace Libplanet.Explorer.GraphTypes
         /// <summary>
         /// The <see cref="Transaction"/> is found in the <see cref="BlockChain"/> but its
         /// execution result cannot be determined.  This can happen due to one of
-        /// the two following reaons:
+        /// the two following reasons:
         /// <list type="bullet">
         ///     <item><description>
         ///         The <see cref="Transaction"/> is an empty <see cref="Transaction"/>
