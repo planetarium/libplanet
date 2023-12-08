@@ -615,12 +615,9 @@ namespace Libplanet.Action
 
             int setCount = 0;
 
-            var metadata =
-                new TrieMetadata(BlockMetadata.CurrentProtocolVersion, TrieType.Account).Bencoded;
             foreach (var kv in accountSubStateDelta)
             {
                 ITrie accountTrie = _stateStore.GetStateRoot(accountSubStateRoot[kv.Key]);
-                accountTrie = accountTrie.SetMetadata(metadata);
                 var accountDelta = kv.Value;
 
                 foreach (KeyValuePair<KeyBytes, IValue> pair in accountDelta)
@@ -668,17 +665,10 @@ namespace Libplanet.Action
 
         internal IWorld MigrateLegacyStates(IWorld prevWorld, int version)
         {
-            var legacyTrie = _stateStore.GetStateRoot(prevWorld.Trie.Hash);
-            legacyTrie = legacyTrie.SetMetadata(new TrieMetadata(
-                version,
-                TrieType.Account));
-            legacyTrie = _stateStore.Commit(legacyTrie);
             var worldTrie = _stateStore.GetStateRoot(null).Set(
                 KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
-                new Binary(legacyTrie.Hash.ByteArray));
-            worldTrie = worldTrie.SetMetadata(new TrieMetadata(
-                version,
-                TrieType.World));
+                new Binary(prevWorld.Trie.Hash.ByteArray));
+            worldTrie = worldTrie.SetMetadata(new TrieMetadata(version));
             worldTrie = _stateStore.Commit(worldTrie);
             var world = new World(new WorldBaseState(worldTrie, _stateStore));
             return world;

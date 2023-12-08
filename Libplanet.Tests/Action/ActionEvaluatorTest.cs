@@ -1404,7 +1404,7 @@ namespace Libplanet.Tests.Action
             Log.Debug("Is World Legacy?");
             Assert.False(chain.GetWorldState().Legacy);
 
-            // Check if after migration, newly created accounts has metadata
+            // Check if after migration, accounts can be created correctly.
             var action = new ModernAction()
             {
                 Memo = "foo",
@@ -1424,9 +1424,6 @@ namespace Libplanet.Tests.Action
                 .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
             Assert.NotNull(accountStateRoot);
             var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
-            var metadata = accountTrie.GetMetadata();
-            Assert.NotNull(metadata);
-            Assert.Equal(TrieType.Account, metadata.Type);
             Assert.Equal(
                 (Text)"foo",
                 accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
