@@ -6,6 +6,10 @@ Version 3.9.1
 
 To be released.
 
+ -  (Libplanet.Explorer) Added `INCLUDED` to `TxStatus` enum.  [[#3542]]
+
+[#3542]: https://github.com/planetarium/libplanet/pull/3542
+
 
 Version 3.9.0
 -------------
