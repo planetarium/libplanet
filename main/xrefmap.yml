@@ -2993,12 +2993,12 @@ references:
   commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(Bencodex.Types.IValue)
   fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(Bencodex.Types.IValue)
   nameWithType: TrieMetadata.TrieMetadata(IValue)
-- uid: Libplanet.Action.State.TrieMetadata.#ctor(System.Int32,Libplanet.Action.State.TrieType)
-  name: TrieMetadata(Int32, TrieType)
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_System_Int32_Libplanet_Action_State_TrieType_
-  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(System.Int32,Libplanet.Action.State.TrieType)
-  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(System.Int32, Libplanet.Action.State.TrieType)
-  nameWithType: TrieMetadata.TrieMetadata(Int32, TrieType)
+- uid: Libplanet.Action.State.TrieMetadata.#ctor(System.Int32)
+  name: TrieMetadata(Int32)
+  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_System_Int32_
+  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(System.Int32)
+  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(System.Int32)
+  nameWithType: TrieMetadata.TrieMetadata(Int32)
 - uid: Libplanet.Action.State.TrieMetadata.#ctor*
   name: TrieMetadata
   href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_
@@ -3019,19 +3019,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.TrieMetadata.Bencoded
   nameWithType: TrieMetadata.Bencoded
-- uid: Libplanet.Action.State.TrieMetadata.Type
-  name: Type
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Type
-  commentId: P:Libplanet.Action.State.TrieMetadata.Type
-  fullName: Libplanet.Action.State.TrieMetadata.Type
-  nameWithType: TrieMetadata.Type
-- uid: Libplanet.Action.State.TrieMetadata.Type*
-  name: Type
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Type_
-  commentId: Overload:Libplanet.Action.State.TrieMetadata.Type
-  isSpec: "True"
-  fullName: Libplanet.Action.State.TrieMetadata.Type
-  nameWithType: TrieMetadata.Type
 - uid: Libplanet.Action.State.TrieMetadata.Version
   name: Version
   href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Version
@@ -3045,24 +3032,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.TrieMetadata.Version
   nameWithType: TrieMetadata.Version
-- uid: Libplanet.Action.State.TrieType
-  name: TrieType
-  href: api/Libplanet.Action.State.TrieType.html
-  commentId: T:Libplanet.Action.State.TrieType
-  fullName: Libplanet.Action.State.TrieType
-  nameWithType: TrieType
-- uid: Libplanet.Action.State.TrieType.Account
-  name: Account
-  href: api/Libplanet.Action.State.TrieType.html#Libplanet_Action_State_TrieType_Account
-  commentId: F:Libplanet.Action.State.TrieType.Account
-  fullName: Libplanet.Action.State.TrieType.Account
-  nameWithType: TrieType.Account
-- uid: Libplanet.Action.State.TrieType.World
-  name: World
-  href: api/Libplanet.Action.State.TrieType.html#Libplanet_Action_State_TrieType_World
-  commentId: F:Libplanet.Action.State.TrieType.World
-  fullName: Libplanet.Action.State.TrieType.World
-  nameWithType: TrieType.World
 - uid: Libplanet.Action.State.World
   name: World
   href: api/Libplanet.Action.State.World.html
