@@ -79,13 +79,6 @@
       <h4><a class="xref" href="Libplanet.Action.State.Account.html">Account</a></h4>
       <section><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.State.AccountBaseState.html">AccountBaseState</a></h4>
-      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> interface.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.State.AccountDelta.html">AccountDelta</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Action.State.AccountDeltaExtensions.html">AccountDeltaExtensions</a></h4>
-      <section></section>
       <h4><a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a></h4>
       <section><p>Represents a difference between two <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>s.
 This is a partial interpretation of a raw difference obtained by <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff(ITrie)</a>
@@ -118,8 +111,9 @@ from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountSt
 <span class="xref">Bencodex.Types.Integer</span>, for an <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>.
 </li></ul>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.State.AccountExtensions.html">AccountExtensions</a></h4>
-      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountState.html">AccountState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> interface.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
 to mint a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a>.</p>
@@ -149,32 +143,30 @@ legacy untracked currency with
       <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
 It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.State.WorldDeltaExtensions.html">WorldDeltaExtensions</a></h4>
+      <h4><a class="xref" href="Libplanet.Action.State.WorldDelta.html">WorldDelta</a></h4>
       <section></section>
     <h3 id="interfaces">Interfaces
 </h3>
       <h4><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></h4>
       <section><p>An interface to manipulate an account state with
-maintaining <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_Delta">Delta</a>.</p>
+maintaining <see cref="!:Delta"></see>.</p>
 <p>It is like a map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
 any state.</li></ul>
 </section>
-      <h4><a class="xref" href="Libplanet.Action.State.IAccountDelta.html">IAccountDelta</a></h4>
-      <section></section>
       <h4><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></h4>
       <section><p>An interface to fetch account states.</p>
 <p>It is like a readonly map which is virtually initialized such
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <span class="xref">null</span> instead, and</li></ul>
 </section>
       <h4><a class="xref" href="Libplanet.Action.State.IBlockChainStates.html">IBlockChainStates</a></h4>
@@ -188,7 +180,7 @@ maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_A
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> account cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -202,7 +194,7 @@ any account.</li></ul>
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to

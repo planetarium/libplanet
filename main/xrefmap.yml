@@ -174,15 +174,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluator.Evaluate
   nameWithType: ActionEvaluator.Evaluate
-- uid: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
-  name: GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_
-  commentId: M:Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
-  name.vb: GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
-  fullName: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[], System.Byte[], System.Byte[], System.Int32)
-  fullName.vb: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte(), System.Byte(), System.Byte(), System.Int32)
-  nameWithType: ActionEvaluator.GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
-  nameWithType.vb: ActionEvaluator.GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
+- uid: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Int32)
+  name: GenerateRandomSeed(Byte[], Byte[], Int32)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Int32_
+  commentId: M:Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Int32)
+  name.vb: GenerateRandomSeed(Byte(), Byte(), Int32)
+  fullName: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[], System.Byte[], System.Int32)
+  fullName.vb: Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte(), System.Byte(), System.Int32)
+  nameWithType: ActionEvaluator.GenerateRandomSeed(Byte[], Byte[], Int32)
+  nameWithType.vb: ActionEvaluator.GenerateRandomSeed(Byte(), Byte(), Int32)
 - uid: Libplanet.Action.ActionEvaluator.GenerateRandomSeed*
   name: GenerateRandomSeed
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator_GenerateRandomSeed_
@@ -262,15 +262,15 @@ references:
   commentId: M:Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Action.IActionContext)
   fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Action.IActionContext)
   nameWithType: CommittedActionContext.CommittedActionContext(IActionContext)
-- uid: Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int32,System.Boolean)
-  name: CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, Boolean, HashDigest<SHA256>, Int32, Boolean)
-  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_System_Boolean_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Int32_System_Boolean_
-  commentId: M:Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,System.Boolean,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int32,System.Boolean)
-  name.vb: CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, Boolean, HashDigest(Of SHA256), Int32, Boolean)
-  fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable<Libplanet.Types.Tx.TxId>, Libplanet.Crypto.Address, System.Int64, System.Int32, System.Boolean, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Int32, System.Boolean)
-  fullName.vb: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable(Of Libplanet.Types.Tx.TxId), Libplanet.Crypto.Address, System.Int64, System.Int32, System.Boolean, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Int32, System.Boolean)
-  nameWithType: CommittedActionContext.CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, Boolean, HashDigest<SHA256>, Int32, Boolean)
-  nameWithType.vb: CommittedActionContext.CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, Boolean, HashDigest(Of SHA256), Int32, Boolean)
+- uid: Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int32,System.Boolean)
+  name: CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, HashDigest<SHA256>, Int32, Boolean)
+  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Tx_TxId__Libplanet_Crypto_Address_System_Int64_System_Int32_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Int32_System_Boolean_
+  commentId: M:Libplanet.Action.CommittedActionContext.#ctor(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Tx.TxId},Libplanet.Crypto.Address,System.Int64,System.Int32,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int32,System.Boolean)
+  name.vb: CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, HashDigest(Of SHA256), Int32, Boolean)
+  fullName: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable<Libplanet.Types.Tx.TxId>, Libplanet.Crypto.Address, System.Int64, System.Int32, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Int32, System.Boolean)
+  fullName.vb: Libplanet.Action.CommittedActionContext.CommittedActionContext(Libplanet.Crypto.Address, System.Nullable(Of Libplanet.Types.Tx.TxId), Libplanet.Crypto.Address, System.Int64, System.Int32, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Int32, System.Boolean)
+  nameWithType: CommittedActionContext.CommittedActionContext(Address, Nullable<TxId>, Address, Int64, Int32, HashDigest<SHA256>, Int32, Boolean)
+  nameWithType.vb: CommittedActionContext.CommittedActionContext(Address, Nullable(Of TxId), Address, Int64, Int32, HashDigest(Of SHA256), Int32, Boolean)
 - uid: Libplanet.Action.CommittedActionContext.#ctor*
   name: CommittedActionContext
   href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext__ctor_
@@ -369,19 +369,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.CommittedActionContext.RandomSeed
   nameWithType: CommittedActionContext.RandomSeed
-- uid: Libplanet.Action.CommittedActionContext.Rehearsal
-  name: Rehearsal
-  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Rehearsal
-  commentId: P:Libplanet.Action.CommittedActionContext.Rehearsal
-  fullName: Libplanet.Action.CommittedActionContext.Rehearsal
-  nameWithType: CommittedActionContext.Rehearsal
-- uid: Libplanet.Action.CommittedActionContext.Rehearsal*
-  name: Rehearsal
-  href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Rehearsal_
-  commentId: Overload:Libplanet.Action.CommittedActionContext.Rehearsal
-  isSpec: "True"
-  fullName: Libplanet.Action.CommittedActionContext.Rehearsal
-  nameWithType: CommittedActionContext.Rehearsal
 - uid: Libplanet.Action.CommittedActionContext.Signer
   name: Signer
   href: api/Libplanet.Action.CommittedActionContext.html#Libplanet_Action_CommittedActionContext_Signer
@@ -781,19 +768,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.RandomSeed
   nameWithType: IActionContext.RandomSeed
-- uid: Libplanet.Action.IActionContext.Rehearsal
-  name: Rehearsal
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Rehearsal
-  commentId: P:Libplanet.Action.IActionContext.Rehearsal
-  fullName: Libplanet.Action.IActionContext.Rehearsal
-  nameWithType: IActionContext.Rehearsal
-- uid: Libplanet.Action.IActionContext.Rehearsal*
-  name: Rehearsal
-  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Rehearsal_
-  commentId: Overload:Libplanet.Action.IActionContext.Rehearsal
-  isSpec: "True"
-  fullName: Libplanet.Action.IActionContext.Rehearsal
-  nameWithType: IActionContext.Rehearsal
 - uid: Libplanet.Action.IActionContext.Signer
   name: Signer
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Signer
@@ -1042,19 +1016,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ICommittedActionContext.RandomSeed
   nameWithType: ICommittedActionContext.RandomSeed
-- uid: Libplanet.Action.ICommittedActionContext.Rehearsal
-  name: Rehearsal
-  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Rehearsal
-  commentId: P:Libplanet.Action.ICommittedActionContext.Rehearsal
-  fullName: Libplanet.Action.ICommittedActionContext.Rehearsal
-  nameWithType: ICommittedActionContext.Rehearsal
-- uid: Libplanet.Action.ICommittedActionContext.Rehearsal*
-  name: Rehearsal
-  href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Rehearsal_
-  commentId: Overload:Libplanet.Action.ICommittedActionContext.Rehearsal
-  isSpec: "True"
-  fullName: Libplanet.Action.ICommittedActionContext.Rehearsal
-  nameWithType: ICommittedActionContext.Rehearsal
 - uid: Libplanet.Action.ICommittedActionContext.Signer
   name: Signer
   href: api/Libplanet.Action.ICommittedActionContext.html#Libplanet_Action_ICommittedActionContext_Signer
@@ -1608,12 +1569,15 @@ references:
   commentId: T:Libplanet.Action.State.Account
   fullName: Libplanet.Action.State.Account
   nameWithType: Account
-- uid: Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountDelta)
-  name: Account(IAccountState, IAccountDelta)
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Action_State_IAccountState_Libplanet_Action_State_IAccountDelta_
-  commentId: M:Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,Libplanet.Action.State.IAccountDelta)
-  fullName: Libplanet.Action.State.Account.Account(Libplanet.Action.State.IAccountState, Libplanet.Action.State.IAccountDelta)
-  nameWithType: Account.Account(IAccountState, IAccountDelta)
+- uid: Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,System.Collections.Immutable.IImmutableSet{System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency}})
+  name: Account(IAccountState, IImmutableSet<(Address, Currency)>)
+  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Action_State_IAccountState_System_Collections_Immutable_IImmutableSet_System_ValueTuple_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency___
+  commentId: M:Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState,System.Collections.Immutable.IImmutableSet{System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency}})
+  name.vb: Account(IAccountState, IImmutableSet(Of (Address, Currency)(Of Address, Currency)))
+  fullName: Libplanet.Action.State.Account.Account(Libplanet.Action.State.IAccountState, System.Collections.Immutable.IImmutableSet<System.ValueTuple<Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency>>)
+  fullName.vb: Libplanet.Action.State.Account.Account(Libplanet.Action.State.IAccountState, System.Collections.Immutable.IImmutableSet(Of System.ValueTuple(Of Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)))
+  nameWithType: Account.Account(IAccountState, IImmutableSet<(Address, Currency)>)
+  nameWithType.vb: Account.Account(IAccountState, IImmutableSet(Of (Address, Currency)(Of Address, Currency)))
 - uid: Libplanet.Action.State.Account.#ctor(Libplanet.Action.State.IAccountState)
   name: Account(IAccountState)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account__ctor_Libplanet_Action_State_IAccountState_
@@ -1640,19 +1604,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.BurnAsset
   nameWithType: Account.BurnAsset
-- uid: Libplanet.Action.State.Account.Delta
-  name: Delta
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_Delta
-  commentId: P:Libplanet.Action.State.Account.Delta
-  fullName: Libplanet.Action.State.Account.Delta
-  nameWithType: Account.Delta
-- uid: Libplanet.Action.State.Account.Delta*
-  name: Delta
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_Delta_
-  commentId: Overload:Libplanet.Action.State.Account.Delta
-  isSpec: "True"
-  fullName: Libplanet.Action.State.Account.Delta
-  nameWithType: Account.Delta
 - uid: Libplanet.Action.State.Account.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
   name: GetBalance(Address, Currency)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
@@ -1773,19 +1724,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.TotalUpdatedFungibleAssets
   nameWithType: Account.TotalUpdatedFungibleAssets
-- uid: Libplanet.Action.State.Account.TotalUpdatedFungibles
-  name: TotalUpdatedFungibles
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_TotalUpdatedFungibles
-  commentId: P:Libplanet.Action.State.Account.TotalUpdatedFungibles
-  fullName: Libplanet.Action.State.Account.TotalUpdatedFungibles
-  nameWithType: Account.TotalUpdatedFungibles
-- uid: Libplanet.Action.State.Account.TotalUpdatedFungibles*
-  name: TotalUpdatedFungibles
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_TotalUpdatedFungibles_
-  commentId: Overload:Libplanet.Action.State.Account.TotalUpdatedFungibles
-  isSpec: "True"
-  fullName: Libplanet.Action.State.Account.TotalUpdatedFungibles
-  nameWithType: Account.TotalUpdatedFungibles
 - uid: Libplanet.Action.State.Account.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
   name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
@@ -1812,277 +1750,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.Trie
   nameWithType: Account.Trie
-- uid: Libplanet.Action.State.AccountBaseState
-  name: AccountBaseState
-  href: api/Libplanet.Action.State.AccountBaseState.html
-  commentId: T:Libplanet.Action.State.AccountBaseState
-  fullName: Libplanet.Action.State.AccountBaseState
-  nameWithType: AccountBaseState
-- uid: Libplanet.Action.State.AccountBaseState.#ctor(Libplanet.Store.Trie.ITrie)
-  name: AccountBaseState(ITrie)
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState__ctor_Libplanet_Store_Trie_ITrie_
-  commentId: M:Libplanet.Action.State.AccountBaseState.#ctor(Libplanet.Store.Trie.ITrie)
-  fullName: Libplanet.Action.State.AccountBaseState.AccountBaseState(Libplanet.Store.Trie.ITrie)
-  nameWithType: AccountBaseState.AccountBaseState(ITrie)
-- uid: Libplanet.Action.State.AccountBaseState.#ctor*
-  name: AccountBaseState
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState__ctor_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.AccountBaseState
-  nameWithType: AccountBaseState.AccountBaseState
-- uid: Libplanet.Action.State.AccountBaseState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.AccountBaseState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.AccountBaseState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
-  nameWithType: AccountBaseState.GetBalance(Address, Currency)
-- uid: Libplanet.Action.State.AccountBaseState.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetBalance_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.GetBalance
-  nameWithType: AccountBaseState.GetBalance
-- uid: Libplanet.Action.State.AccountBaseState.GetState(Libplanet.Crypto.Address)
-  name: GetState(Address)
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetState_Libplanet_Crypto_Address_
-  commentId: M:Libplanet.Action.State.AccountBaseState.GetState(Libplanet.Crypto.Address)
-  fullName: Libplanet.Action.State.AccountBaseState.GetState(Libplanet.Crypto.Address)
-  nameWithType: AccountBaseState.GetState(Address)
-- uid: Libplanet.Action.State.AccountBaseState.GetState*
-  name: GetState
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetState_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.GetState
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.GetState
-  nameWithType: AccountBaseState.GetState
-- uid: Libplanet.Action.State.AccountBaseState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
-  name: GetStates(IReadOnlyList<Address>)
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__
-  commentId: M:Libplanet.Action.State.AccountBaseState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
-  name.vb: GetStates(IReadOnlyList(Of Address))
-  fullName: Libplanet.Action.State.AccountBaseState.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Crypto.Address>)
-  fullName.vb: Libplanet.Action.State.AccountBaseState.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Crypto.Address))
-  nameWithType: AccountBaseState.GetStates(IReadOnlyList<Address>)
-  nameWithType.vb: AccountBaseState.GetStates(IReadOnlyList(Of Address))
-- uid: Libplanet.Action.State.AccountBaseState.GetStates*
-  name: GetStates
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetStates_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.GetStates
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.GetStates
-  nameWithType: AccountBaseState.GetStates
-- uid: Libplanet.Action.State.AccountBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetTotalSupply_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.AccountBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.AccountBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  nameWithType: AccountBaseState.GetTotalSupply(Currency)
-- uid: Libplanet.Action.State.AccountBaseState.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetTotalSupply_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.GetTotalSupply
-  nameWithType: AccountBaseState.GetTotalSupply
-- uid: Libplanet.Action.State.AccountBaseState.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetValidatorSet
-  commentId: M:Libplanet.Action.State.AccountBaseState.GetValidatorSet
-  fullName: Libplanet.Action.State.AccountBaseState.GetValidatorSet()
-  nameWithType: AccountBaseState.GetValidatorSet()
-- uid: Libplanet.Action.State.AccountBaseState.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.GetValidatorSet
-  nameWithType: AccountBaseState.GetValidatorSet
-- uid: Libplanet.Action.State.AccountBaseState.Trie
-  name: Trie
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_Trie
-  commentId: P:Libplanet.Action.State.AccountBaseState.Trie
-  fullName: Libplanet.Action.State.AccountBaseState.Trie
-  nameWithType: AccountBaseState.Trie
-- uid: Libplanet.Action.State.AccountBaseState.Trie*
-  name: Trie
-  href: api/Libplanet.Action.State.AccountBaseState.html#Libplanet_Action_State_AccountBaseState_Trie_
-  commentId: Overload:Libplanet.Action.State.AccountBaseState.Trie
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountBaseState.Trie
-  nameWithType: AccountBaseState.Trie
-- uid: Libplanet.Action.State.AccountDelta
-  name: AccountDelta
-  href: api/Libplanet.Action.State.AccountDelta.html
-  commentId: T:Libplanet.Action.State.AccountDelta
-  fullName: Libplanet.Action.State.AccountDelta
-  nameWithType: AccountDelta
-- uid: Libplanet.Action.State.AccountDelta.#ctor
-  name: AccountDelta()
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta__ctor
-  commentId: M:Libplanet.Action.State.AccountDelta.#ctor
-  fullName: Libplanet.Action.State.AccountDelta.AccountDelta()
-  nameWithType: AccountDelta.AccountDelta()
-- uid: Libplanet.Action.State.AccountDelta.#ctor*
-  name: AccountDelta
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta__ctor_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.AccountDelta
-  nameWithType: AccountDelta.AccountDelta
-- uid: Libplanet.Action.State.AccountDelta.Fungibles
-  name: Fungibles
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_Fungibles
-  commentId: P:Libplanet.Action.State.AccountDelta.Fungibles
-  fullName: Libplanet.Action.State.AccountDelta.Fungibles
-  nameWithType: AccountDelta.Fungibles
-- uid: Libplanet.Action.State.AccountDelta.Fungibles*
-  name: Fungibles
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_Fungibles_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.Fungibles
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.Fungibles
-  nameWithType: AccountDelta.Fungibles
-- uid: Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses
-  name: FungibleUpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_FungibleUpdatedAddresses
-  commentId: P:Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses
-  fullName: Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses
-  nameWithType: AccountDelta.FungibleUpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses*
-  name: FungibleUpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_FungibleUpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.FungibleUpdatedAddresses
-  nameWithType: AccountDelta.FungibleUpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.States
-  name: States
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_States
-  commentId: P:Libplanet.Action.State.AccountDelta.States
-  fullName: Libplanet.Action.State.AccountDelta.States
-  nameWithType: AccountDelta.States
-- uid: Libplanet.Action.State.AccountDelta.States*
-  name: States
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_States_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.States
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.States
-  nameWithType: AccountDelta.States
-- uid: Libplanet.Action.State.AccountDelta.StateUpdatedAddresses
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_StateUpdatedAddresses
-  commentId: P:Libplanet.Action.State.AccountDelta.StateUpdatedAddresses
-  fullName: Libplanet.Action.State.AccountDelta.StateUpdatedAddresses
-  nameWithType: AccountDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.StateUpdatedAddresses*
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_StateUpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.StateUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.StateUpdatedAddresses
-  nameWithType: AccountDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.TotalSupplies
-  name: TotalSupplies
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_TotalSupplies
-  commentId: P:Libplanet.Action.State.AccountDelta.TotalSupplies
-  fullName: Libplanet.Action.State.AccountDelta.TotalSupplies
-  nameWithType: AccountDelta.TotalSupplies
-- uid: Libplanet.Action.State.AccountDelta.TotalSupplies*
-  name: TotalSupplies
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_TotalSupplies_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.TotalSupplies
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.TotalSupplies
-  nameWithType: AccountDelta.TotalSupplies
-- uid: Libplanet.Action.State.AccountDelta.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedAddresses
-  commentId: P:Libplanet.Action.State.AccountDelta.UpdatedAddresses
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedAddresses
-  nameWithType: AccountDelta.UpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedAddresses
-  nameWithType: AccountDelta.UpdatedAddresses
-- uid: Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedFungibleAssets
-  commentId: P:Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets
-  nameWithType: AccountDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets*
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedFungibleAssets
-  nameWithType: AccountDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedTotalSupplyCurrencies
-  commentId: P:Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: AccountDelta.UpdatedTotalSupplyCurrencies
-- uid: Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies*
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_UpdatedTotalSupplyCurrencies_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: AccountDelta.UpdatedTotalSupplyCurrencies
-- uid: Libplanet.Action.State.AccountDelta.ValidatorSet
-  name: ValidatorSet
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_ValidatorSet
-  commentId: P:Libplanet.Action.State.AccountDelta.ValidatorSet
-  fullName: Libplanet.Action.State.AccountDelta.ValidatorSet
-  nameWithType: AccountDelta.ValidatorSet
-- uid: Libplanet.Action.State.AccountDelta.ValidatorSet*
-  name: ValidatorSet
-  href: api/Libplanet.Action.State.AccountDelta.html#Libplanet_Action_State_AccountDelta_ValidatorSet_
-  commentId: Overload:Libplanet.Action.State.AccountDelta.ValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDelta.ValidatorSet
-  nameWithType: AccountDelta.ValidatorSet
-- uid: Libplanet.Action.State.AccountDeltaExtensions
-  name: AccountDeltaExtensions
-  href: api/Libplanet.Action.State.AccountDeltaExtensions.html
-  commentId: T:Libplanet.Action.State.AccountDeltaExtensions
-  fullName: Libplanet.Action.State.AccountDeltaExtensions
-  nameWithType: AccountDeltaExtensions
-- uid: Libplanet.Action.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.Action.State.IAccountDelta})
-  name: OrderedSum(IReadOnlyList<IAccountDelta>)
-  href: api/Libplanet.Action.State.AccountDeltaExtensions.html#Libplanet_Action_State_AccountDeltaExtensions_OrderedSum_System_Collections_Generic_IReadOnlyList_Libplanet_Action_State_IAccountDelta__
-  commentId: M:Libplanet.Action.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.Action.State.IAccountDelta})
-  name.vb: OrderedSum(IReadOnlyList(Of IAccountDelta))
-  fullName: Libplanet.Action.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList<Libplanet.Action.State.IAccountDelta>)
-  fullName.vb: Libplanet.Action.State.AccountDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.State.IAccountDelta))
-  nameWithType: AccountDeltaExtensions.OrderedSum(IReadOnlyList<IAccountDelta>)
-  nameWithType.vb: AccountDeltaExtensions.OrderedSum(IReadOnlyList(Of IAccountDelta))
-- uid: Libplanet.Action.State.AccountDeltaExtensions.OrderedSum*
-  name: OrderedSum
-  href: api/Libplanet.Action.State.AccountDeltaExtensions.html#Libplanet_Action_State_AccountDeltaExtensions_OrderedSum_
-  commentId: Overload:Libplanet.Action.State.AccountDeltaExtensions.OrderedSum
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDeltaExtensions.OrderedSum
-  nameWithType: AccountDeltaExtensions.OrderedSum
-- uid: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta(Libplanet.Action.State.IAccountDelta)
-  name: ToRawDelta(IAccountDelta)
-  href: api/Libplanet.Action.State.AccountDeltaExtensions.html#Libplanet_Action_State_AccountDeltaExtensions_ToRawDelta_Libplanet_Action_State_IAccountDelta_
-  commentId: M:Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta(Libplanet.Action.State.IAccountDelta)
-  fullName: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta(Libplanet.Action.State.IAccountDelta)
-  nameWithType: AccountDeltaExtensions.ToRawDelta(IAccountDelta)
-- uid: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta*
-  name: ToRawDelta
-  href: api/Libplanet.Action.State.AccountDeltaExtensions.html#Libplanet_Action_State_AccountDeltaExtensions_ToRawDelta_
-  commentId: Overload:Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta
-  isSpec: "True"
-  fullName: Libplanet.Action.State.AccountDeltaExtensions.ToRawDelta
-  nameWithType: AccountDeltaExtensions.ToRawDelta
 - uid: Libplanet.Action.State.AccountDiff
   name: AccountDiff
   href: api/Libplanet.Action.State.AccountDiff.html
@@ -2160,25 +1827,106 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.AccountDiff.ValidatorSetDiff
   nameWithType: AccountDiff.ValidatorSetDiff
-- uid: Libplanet.Action.State.AccountExtensions
-  name: AccountExtensions
-  href: api/Libplanet.Action.State.AccountExtensions.html
-  commentId: T:Libplanet.Action.State.AccountExtensions
-  fullName: Libplanet.Action.State.AccountExtensions
-  nameWithType: AccountExtensions
-- uid: Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
-  name: GetUpdatedStates(IAccount)
-  href: api/Libplanet.Action.State.AccountExtensions.html#Libplanet_Action_State_AccountExtensions_GetUpdatedStates_Libplanet_Action_State_IAccount_
-  commentId: M:Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
-  fullName: Libplanet.Action.State.AccountExtensions.GetUpdatedStates(Libplanet.Action.State.IAccount)
-  nameWithType: AccountExtensions.GetUpdatedStates(IAccount)
-- uid: Libplanet.Action.State.AccountExtensions.GetUpdatedStates*
-  name: GetUpdatedStates
-  href: api/Libplanet.Action.State.AccountExtensions.html#Libplanet_Action_State_AccountExtensions_GetUpdatedStates_
-  commentId: Overload:Libplanet.Action.State.AccountExtensions.GetUpdatedStates
+- uid: Libplanet.Action.State.AccountState
+  name: AccountState
+  href: api/Libplanet.Action.State.AccountState.html
+  commentId: T:Libplanet.Action.State.AccountState
+  fullName: Libplanet.Action.State.AccountState
+  nameWithType: AccountState
+- uid: Libplanet.Action.State.AccountState.#ctor(Libplanet.Store.Trie.ITrie)
+  name: AccountState(ITrie)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState__ctor_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Action.State.AccountState.#ctor(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Action.State.AccountState.AccountState(Libplanet.Store.Trie.ITrie)
+  nameWithType: AccountState.AccountState(ITrie)
+- uid: Libplanet.Action.State.AccountState.#ctor*
+  name: AccountState
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState__ctor_
+  commentId: Overload:Libplanet.Action.State.AccountState.#ctor
   isSpec: "True"
-  fullName: Libplanet.Action.State.AccountExtensions.GetUpdatedStates
-  nameWithType: AccountExtensions.GetUpdatedStates
+  fullName: Libplanet.Action.State.AccountState.AccountState
+  nameWithType: AccountState.AccountState
+- uid: Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.AccountState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
+  nameWithType: AccountState.GetBalance(Address, Currency)
+- uid: Libplanet.Action.State.AccountState.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetBalance_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetBalance
+  nameWithType: AccountState.GetBalance
+- uid: Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  name: GetState(Address)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.AccountState.GetState(Libplanet.Crypto.Address)
+  nameWithType: AccountState.GetState(Address)
+- uid: Libplanet.Action.State.AccountState.GetState*
+  name: GetState
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetState_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetState
+  nameWithType: AccountState.GetState
+- uid: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__
+  commentId: M:Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList<Libplanet.Crypto.Address>)
+  fullName.vb: Libplanet.Action.State.AccountState.GetStates(System.Collections.Generic.IReadOnlyList(Of Libplanet.Crypto.Address))
+  nameWithType: AccountState.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: AccountState.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.Action.State.AccountState.GetStates*
+  name: GetStates
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetStates_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetStates
+  nameWithType: AccountState.GetStates
+- uid: Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetTotalSupply_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.AccountState.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  nameWithType: AccountState.GetTotalSupply(Currency)
+- uid: Libplanet.Action.State.AccountState.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetTotalSupply_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetTotalSupply
+  nameWithType: AccountState.GetTotalSupply
+- uid: Libplanet.Action.State.AccountState.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetValidatorSet
+  commentId: M:Libplanet.Action.State.AccountState.GetValidatorSet
+  fullName: Libplanet.Action.State.AccountState.GetValidatorSet()
+  nameWithType: AccountState.GetValidatorSet()
+- uid: Libplanet.Action.State.AccountState.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.AccountState.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.GetValidatorSet
+  nameWithType: AccountState.GetValidatorSet
+- uid: Libplanet.Action.State.AccountState.Trie
+  name: Trie
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_Trie
+  commentId: P:Libplanet.Action.State.AccountState.Trie
+  fullName: Libplanet.Action.State.AccountState.Trie
+  nameWithType: AccountState.Trie
+- uid: Libplanet.Action.State.AccountState.Trie*
+  name: Trie
+  href: api/Libplanet.Action.State.AccountState.html#Libplanet_Action_State_AccountState_Trie_
+  commentId: Overload:Libplanet.Action.State.AccountState.Trie
+  isSpec: "True"
+  fullName: Libplanet.Action.State.AccountState.Trie
+  nameWithType: AccountState.Trie
 - uid: Libplanet.Action.State.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.Action.State.CurrencyPermissionException.html
@@ -2243,19 +1991,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccount.BurnAsset
   nameWithType: IAccount.BurnAsset
-- uid: Libplanet.Action.State.IAccount.Delta
-  name: Delta
-  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_Delta
-  commentId: P:Libplanet.Action.State.IAccount.Delta
-  fullName: Libplanet.Action.State.IAccount.Delta
-  nameWithType: IAccount.Delta
-- uid: Libplanet.Action.State.IAccount.Delta*
-  name: Delta
-  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_Delta_
-  commentId: Overload:Libplanet.Action.State.IAccount.Delta
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccount.Delta
-  nameWithType: IAccount.Delta
 - uid: Libplanet.Action.State.IAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
   name: MintAsset(IActionContext, Address, FungibleAssetValue)
   href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
@@ -2321,129 +2056,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccount.TransferAsset
   nameWithType: IAccount.TransferAsset
-- uid: Libplanet.Action.State.IAccountDelta
-  name: IAccountDelta
-  href: api/Libplanet.Action.State.IAccountDelta.html
-  commentId: T:Libplanet.Action.State.IAccountDelta
-  fullName: Libplanet.Action.State.IAccountDelta
-  nameWithType: IAccountDelta
-- uid: Libplanet.Action.State.IAccountDelta.Fungibles
-  name: Fungibles
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_Fungibles
-  commentId: P:Libplanet.Action.State.IAccountDelta.Fungibles
-  fullName: Libplanet.Action.State.IAccountDelta.Fungibles
-  nameWithType: IAccountDelta.Fungibles
-- uid: Libplanet.Action.State.IAccountDelta.Fungibles*
-  name: Fungibles
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_Fungibles_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.Fungibles
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.Fungibles
-  nameWithType: IAccountDelta.Fungibles
-- uid: Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses
-  name: FungibleUpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_FungibleUpdatedAddresses
-  commentId: P:Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses
-  fullName: Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses
-  nameWithType: IAccountDelta.FungibleUpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses*
-  name: FungibleUpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_FungibleUpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.FungibleUpdatedAddresses
-  nameWithType: IAccountDelta.FungibleUpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.States
-  name: States
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_States
-  commentId: P:Libplanet.Action.State.IAccountDelta.States
-  fullName: Libplanet.Action.State.IAccountDelta.States
-  nameWithType: IAccountDelta.States
-- uid: Libplanet.Action.State.IAccountDelta.States*
-  name: States
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_States_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.States
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.States
-  nameWithType: IAccountDelta.States
-- uid: Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_StateUpdatedAddresses
-  commentId: P:Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses
-  fullName: Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses
-  nameWithType: IAccountDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses*
-  name: StateUpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_StateUpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.StateUpdatedAddresses
-  nameWithType: IAccountDelta.StateUpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.TotalSupplies
-  name: TotalSupplies
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_TotalSupplies
-  commentId: P:Libplanet.Action.State.IAccountDelta.TotalSupplies
-  fullName: Libplanet.Action.State.IAccountDelta.TotalSupplies
-  nameWithType: IAccountDelta.TotalSupplies
-- uid: Libplanet.Action.State.IAccountDelta.TotalSupplies*
-  name: TotalSupplies
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_TotalSupplies_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.TotalSupplies
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.TotalSupplies
-  nameWithType: IAccountDelta.TotalSupplies
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedAddresses
-  commentId: P:Libplanet.Action.State.IAccountDelta.UpdatedAddresses
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedAddresses
-  nameWithType: IAccountDelta.UpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.UpdatedAddresses
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedAddresses
-  nameWithType: IAccountDelta.UpdatedAddresses
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedFungibleAssets
-  commentId: P:Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets
-  nameWithType: IAccountDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets*
-  name: UpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedFungibleAssets
-  nameWithType: IAccountDelta.UpdatedFungibleAssets
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedTotalSupplyCurrencies
-  commentId: P:Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: IAccountDelta.UpdatedTotalSupplyCurrencies
-- uid: Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies*
-  name: UpdatedTotalSupplyCurrencies
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_UpdatedTotalSupplyCurrencies_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.UpdatedTotalSupplyCurrencies
-  nameWithType: IAccountDelta.UpdatedTotalSupplyCurrencies
-- uid: Libplanet.Action.State.IAccountDelta.ValidatorSet
-  name: ValidatorSet
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_ValidatorSet
-  commentId: P:Libplanet.Action.State.IAccountDelta.ValidatorSet
-  fullName: Libplanet.Action.State.IAccountDelta.ValidatorSet
-  nameWithType: IAccountDelta.ValidatorSet
-- uid: Libplanet.Action.State.IAccountDelta.ValidatorSet*
-  name: ValidatorSet
-  href: api/Libplanet.Action.State.IAccountDelta.html#Libplanet_Action_State_IAccountDelta_ValidatorSet_
-  commentId: Overload:Libplanet.Action.State.IAccountDelta.ValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountDelta.ValidatorSet
-  nameWithType: IAccountDelta.ValidatorSet
 - uid: Libplanet.Action.State.IAccountState
   name: IAccountState
   href: api/Libplanet.Action.State.IAccountState.html
@@ -2796,19 +2408,45 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldDelta.Accounts
   nameWithType: IWorldDelta.Accounts
-- uid: Libplanet.Action.State.IWorldDelta.UpdatedAddresses
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_UpdatedAddresses
-  commentId: P:Libplanet.Action.State.IWorldDelta.UpdatedAddresses
-  fullName: Libplanet.Action.State.IWorldDelta.UpdatedAddresses
-  nameWithType: IWorldDelta.UpdatedAddresses
-- uid: Libplanet.Action.State.IWorldDelta.UpdatedAddresses*
-  name: UpdatedAddresses
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_UpdatedAddresses_
-  commentId: Overload:Libplanet.Action.State.IWorldDelta.UpdatedAddresses
+- uid: Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  name: CommitAccount(Address)
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_CommitAccount_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  nameWithType: IWorldDelta.CommitAccount(Address)
+- uid: Libplanet.Action.State.IWorldDelta.CommitAccount*
+  name: CommitAccount
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_CommitAccount_
+  commentId: Overload:Libplanet.Action.State.IWorldDelta.CommitAccount
   isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldDelta.UpdatedAddresses
-  nameWithType: IWorldDelta.UpdatedAddresses
+  fullName: Libplanet.Action.State.IWorldDelta.CommitAccount
+  nameWithType: IWorldDelta.CommitAccount
+- uid: Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
+  name: SetAccount(Address, IAccount)
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address, Libplanet.Action.State.IAccount)
+  nameWithType: IWorldDelta.SetAccount(Address, IAccount)
+- uid: Libplanet.Action.State.IWorldDelta.SetAccount*
+  name: SetAccount
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_SetAccount_
+  commentId: Overload:Libplanet.Action.State.IWorldDelta.SetAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldDelta.SetAccount
+  nameWithType: IWorldDelta.SetAccount
+- uid: Libplanet.Action.State.IWorldDelta.Uncommitted
+  name: Uncommitted
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted
+  commentId: P:Libplanet.Action.State.IWorldDelta.Uncommitted
+  fullName: Libplanet.Action.State.IWorldDelta.Uncommitted
+  nameWithType: IWorldDelta.Uncommitted
+- uid: Libplanet.Action.State.IWorldDelta.Uncommitted*
+  name: Uncommitted
+  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted_
+  commentId: Overload:Libplanet.Action.State.IWorldDelta.Uncommitted
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldDelta.Uncommitted
+  nameWithType: IWorldDelta.Uncommitted
 - uid: Libplanet.Action.State.IWorldState
   name: IWorldState
   href: api/Libplanet.Action.State.IWorldState.html
@@ -3070,19 +2708,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.Delta
   nameWithType: World.Delta
-- uid: Libplanet.Action.State.World.Flush(Libplanet.Action.State.IWorld)
-  name: Flush(IWorld)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Flush_Libplanet_Action_State_IWorld_
-  commentId: M:Libplanet.Action.State.World.Flush(Libplanet.Action.State.IWorld)
-  fullName: Libplanet.Action.State.World.Flush(Libplanet.Action.State.IWorld)
-  nameWithType: World.Flush(IWorld)
-- uid: Libplanet.Action.State.World.Flush*
-  name: Flush
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Flush_
-  commentId: Overload:Libplanet.Action.State.World.Flush
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.Flush
-  nameWithType: World.Flush
 - uid: Libplanet.Action.State.World.GetAccount(Libplanet.Crypto.Address)
   name: GetAccount(Address)
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetAccount_Libplanet_Crypto_Address_
@@ -3209,57 +2834,77 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.Trie
   nameWithType: WorldBaseState.Trie
-- uid: Libplanet.Action.State.WorldDeltaExtensions
-  name: WorldDeltaExtensions
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html
-  commentId: T:Libplanet.Action.State.WorldDeltaExtensions
-  fullName: Libplanet.Action.State.WorldDeltaExtensions
-  nameWithType: WorldDeltaExtensions
-- uid: Libplanet.Action.State.WorldDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.Action.State.IWorldDelta})
-  name: OrderedSum(IReadOnlyList<IWorldDelta>)
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_OrderedSum_System_Collections_Generic_IReadOnlyList_Libplanet_Action_State_IWorldDelta__
-  commentId: M:Libplanet.Action.State.WorldDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList{Libplanet.Action.State.IWorldDelta})
-  name.vb: OrderedSum(IReadOnlyList(Of IWorldDelta))
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList<Libplanet.Action.State.IWorldDelta>)
-  fullName.vb: Libplanet.Action.State.WorldDeltaExtensions.OrderedSum(System.Collections.Generic.IReadOnlyList(Of Libplanet.Action.State.IWorldDelta))
-  nameWithType: WorldDeltaExtensions.OrderedSum(IReadOnlyList<IWorldDelta>)
-  nameWithType.vb: WorldDeltaExtensions.OrderedSum(IReadOnlyList(Of IWorldDelta))
-- uid: Libplanet.Action.State.WorldDeltaExtensions.OrderedSum*
-  name: OrderedSum
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_OrderedSum_
-  commentId: Overload:Libplanet.Action.State.WorldDeltaExtensions.OrderedSum
+- uid: Libplanet.Action.State.WorldDelta
+  name: WorldDelta
+  href: api/Libplanet.Action.State.WorldDelta.html
+  commentId: T:Libplanet.Action.State.WorldDelta
+  fullName: Libplanet.Action.State.WorldDelta
+  nameWithType: WorldDelta
+- uid: Libplanet.Action.State.WorldDelta.#ctor
+  name: WorldDelta()
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta__ctor
+  commentId: M:Libplanet.Action.State.WorldDelta.#ctor
+  fullName: Libplanet.Action.State.WorldDelta.WorldDelta()
+  nameWithType: WorldDelta.WorldDelta()
+- uid: Libplanet.Action.State.WorldDelta.#ctor*
+  name: WorldDelta
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta__ctor_
+  commentId: Overload:Libplanet.Action.State.WorldDelta.#ctor
   isSpec: "True"
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.OrderedSum
-  nameWithType: WorldDeltaExtensions.OrderedSum
-- uid: Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta(Libplanet.Action.State.IWorldDelta)
-  name: ToRawDelta(IWorldDelta)
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_ToRawDelta_Libplanet_Action_State_IWorldDelta_
-  commentId: M:Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta(Libplanet.Action.State.IWorldDelta)
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta(Libplanet.Action.State.IWorldDelta)
-  nameWithType: WorldDeltaExtensions.ToRawDelta(IWorldDelta)
-- uid: Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta*
-  name: ToRawDelta
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_ToRawDelta_
-  commentId: Overload:Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta
+  fullName: Libplanet.Action.State.WorldDelta.WorldDelta
+  nameWithType: WorldDelta.WorldDelta
+- uid: Libplanet.Action.State.WorldDelta.Accounts
+  name: Accounts
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Accounts
+  commentId: P:Libplanet.Action.State.WorldDelta.Accounts
+  fullName: Libplanet.Action.State.WorldDelta.Accounts
+  nameWithType: WorldDelta.Accounts
+- uid: Libplanet.Action.State.WorldDelta.Accounts*
+  name: Accounts
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Accounts_
+  commentId: Overload:Libplanet.Action.State.WorldDelta.Accounts
   isSpec: "True"
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.ToRawDelta
-  nameWithType: WorldDeltaExtensions.ToRawDelta
-- uid: Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys(System.Collections.Generic.IEnumerable{Libplanet.Action.State.IWorldDelta})
-  name: ToUpdatedStateKeys(IEnumerable<IWorldDelta>)
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_ToUpdatedStateKeys_System_Collections_Generic_IEnumerable_Libplanet_Action_State_IWorldDelta__
-  commentId: M:Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys(System.Collections.Generic.IEnumerable{Libplanet.Action.State.IWorldDelta})
-  name.vb: ToUpdatedStateKeys(IEnumerable(Of IWorldDelta))
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys(System.Collections.Generic.IEnumerable<Libplanet.Action.State.IWorldDelta>)
-  fullName.vb: Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys(System.Collections.Generic.IEnumerable(Of Libplanet.Action.State.IWorldDelta))
-  nameWithType: WorldDeltaExtensions.ToUpdatedStateKeys(IEnumerable<IWorldDelta>)
-  nameWithType.vb: WorldDeltaExtensions.ToUpdatedStateKeys(IEnumerable(Of IWorldDelta))
-- uid: Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys*
-  name: ToUpdatedStateKeys
-  href: api/Libplanet.Action.State.WorldDeltaExtensions.html#Libplanet_Action_State_WorldDeltaExtensions_ToUpdatedStateKeys_
-  commentId: Overload:Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys
+  fullName: Libplanet.Action.State.WorldDelta.Accounts
+  nameWithType: WorldDelta.Accounts
+- uid: Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  name: CommitAccount(Address)
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_CommitAccount_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
+  nameWithType: WorldDelta.CommitAccount(Address)
+- uid: Libplanet.Action.State.WorldDelta.CommitAccount*
+  name: CommitAccount
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_CommitAccount_
+  commentId: Overload:Libplanet.Action.State.WorldDelta.CommitAccount
   isSpec: "True"
-  fullName: Libplanet.Action.State.WorldDeltaExtensions.ToUpdatedStateKeys
-  nameWithType: WorldDeltaExtensions.ToUpdatedStateKeys
+  fullName: Libplanet.Action.State.WorldDelta.CommitAccount
+  nameWithType: WorldDelta.CommitAccount
+- uid: Libplanet.Action.State.WorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
+  name: SetAccount(Address, IAccount)
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
+  commentId: M:Libplanet.Action.State.WorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
+  fullName: Libplanet.Action.State.WorldDelta.SetAccount(Libplanet.Crypto.Address, Libplanet.Action.State.IAccount)
+  nameWithType: WorldDelta.SetAccount(Address, IAccount)
+- uid: Libplanet.Action.State.WorldDelta.SetAccount*
+  name: SetAccount
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_SetAccount_
+  commentId: Overload:Libplanet.Action.State.WorldDelta.SetAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.State.WorldDelta.SetAccount
+  nameWithType: WorldDelta.SetAccount
+- uid: Libplanet.Action.State.WorldDelta.Uncommitted
+  name: Uncommitted
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Uncommitted
+  commentId: P:Libplanet.Action.State.WorldDelta.Uncommitted
+  fullName: Libplanet.Action.State.WorldDelta.Uncommitted
+  nameWithType: WorldDelta.Uncommitted
+- uid: Libplanet.Action.State.WorldDelta.Uncommitted*
+  name: Uncommitted
+  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Uncommitted_
+  commentId: Overload:Libplanet.Action.State.WorldDelta.Uncommitted
+  isSpec: "True"
+  fullName: Libplanet.Action.State.WorldDelta.Uncommitted
+  nameWithType: WorldDelta.Uncommitted
 - uid: Libplanet.Action.Sys
   name: Libplanet.Action.Sys
   href: api/Libplanet.Action.Sys.html
@@ -3422,15 +3067,15 @@ references:
   commentId: T:Libplanet.Action.UnexpectedlyTerminatedActionException
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException
   nameWithType: UnexpectedlyTerminatedActionException
-- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.String,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Types.Tx.TxId},System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.Exception)
-  name: UnexpectedlyTerminatedActionException(String, Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, Exception)
-  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_String_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_System_Int64__System_Nullable_Libplanet_Types_Tx_TxId__System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_Exception_
-  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.String,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{System.Int64},System.Nullable{Libplanet.Types.Tx.TxId},System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.Exception)
-  name.vb: UnexpectedlyTerminatedActionException(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, Exception)
-  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.String, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<System.Int64>, System.Nullable<Libplanet.Types.Tx.TxId>, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Action.IAction, System.Exception)
-  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.String, System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of System.Int64), System.Nullable(Of Libplanet.Types.Tx.TxId), System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Action.IAction, System.Exception)
-  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(String, Nullable<HashDigest<SHA256>>, Nullable<Int64>, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, Exception)
-  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(String, Nullable(Of HashDigest(Of SHA256)), Nullable(Of Int64), Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, Exception)
+- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.String,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int64,System.Nullable{Libplanet.Types.Tx.TxId},System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.Exception)
+  name: UnexpectedlyTerminatedActionException(String, HashDigest<SHA256>, Int64, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, Exception)
+  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_System_String_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__System_Int64_System_Nullable_Libplanet_Types_Tx_TxId__System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Action_IAction_System_Exception_
+  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor(System.String,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},System.Int64,System.Nullable{Libplanet.Types.Tx.TxId},System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Action.IAction,System.Exception)
+  name.vb: UnexpectedlyTerminatedActionException(String, HashDigest(Of SHA256), Int64, Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, Exception)
+  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.String, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, System.Int64, System.Nullable<Libplanet.Types.Tx.TxId>, System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>, Libplanet.Action.IAction, System.Exception)
+  fullName.vb: Libplanet.Action.UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(System.String, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), System.Int64, System.Nullable(Of Libplanet.Types.Tx.TxId), System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)), Libplanet.Action.IAction, System.Exception)
+  nameWithType: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(String, HashDigest<SHA256>, Int64, Nullable<TxId>, Nullable<HashDigest<SHA256>>, IAction, Exception)
+  nameWithType.vb: UnexpectedlyTerminatedActionException.UnexpectedlyTerminatedActionException(String, HashDigest(Of SHA256), Int64, Nullable(Of TxId), Nullable(Of HashDigest(Of SHA256)), IAction, Exception)
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.#ctor*
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException__ctor_
@@ -4073,15 +3718,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.Item
   nameWithType: BlockChain.Item
-- uid: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset})
-  name: MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Collections.Immutable.IImmutableSet<Libplanet.Crypto.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Collections.Immutable.IImmutableSet(Of Libplanet.Crypto.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: BlockChain.MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain.MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset})
+  name: MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable_Libplanet_Action_IAction__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{Libplanet.Action.IAction},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset})
+  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<Libplanet.Action.IAction>, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Blockchain.BlockChain.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of Libplanet.Action.IAction), System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: BlockChain.MakeTransaction(PrivateKey, IEnumerable<IAction>, Nullable<FungibleAssetValue>, Nullable<Int64>, Nullable<DateTimeOffset>)
+  nameWithType.vb: BlockChain.MakeTransaction(PrivateKey, IEnumerable(Of IAction), Nullable(Of FungibleAssetValue), Nullable(Of Int64), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Blockchain.BlockChain.MakeTransaction*
   name: MakeTransaction
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_MakeTransaction_
@@ -6799,6 +6444,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.NameValueCollectionExtensions.GetBoolean
   nameWithType: NameValueCollectionExtensions.GetBoolean
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum*
+  name: GetEnum
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum_
+  commentId: Overload:Libplanet.Common.NameValueCollectionExtensions.GetEnum
+  isSpec: "True"
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum
+  nameWithType: NameValueCollectionExtensions.GetEnum
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String,``0)
+  name: GetEnum<T>(NameValueCollection, String, T)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String___0_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String,``0)
+  name.vb: GetEnum(Of T)(NameValueCollection, String, T)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(System.Collections.Specialized.NameValueCollection, System.String, T)
+  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(System.Collections.Specialized.NameValueCollection, System.String, T)
+  nameWithType: NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, String, T)
+  nameWithType.vb: NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, String, T)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String)
+  name: GetEnum<T>(NameValueCollection, String)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String)
+  name.vb: GetEnum(Of T)(NameValueCollection, String)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(System.Collections.Specialized.NameValueCollection, System.String)
+  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(System.Collections.Specialized.NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, String)
+  nameWithType.vb: NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, String)
 - uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
   name: GetInt32(NameValueCollection, String, Int32)
   href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_
@@ -8891,31 +8561,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.Address.ToString
   nameWithType: Address.ToString
-- uid: Libplanet.Crypto.AddressExtensions
-  name: AddressExtensions
-  href: api/Libplanet.Crypto.AddressExtensions.html
-  commentId: T:Libplanet.Crypto.AddressExtensions
-  fullName: Libplanet.Crypto.AddressExtensions
-  nameWithType: AddressExtensions
-- uid: Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
-  name: ToAddress(PrivateKey)
-  href: api/Libplanet.Crypto.AddressExtensions.html#Libplanet_Crypto_AddressExtensions_ToAddress_Libplanet_Crypto_PrivateKey_
-  commentId: M:Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
-  fullName: Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
-  nameWithType: AddressExtensions.ToAddress(PrivateKey)
-- uid: Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
-  name: ToAddress(PublicKey)
-  href: api/Libplanet.Crypto.AddressExtensions.html#Libplanet_Crypto_AddressExtensions_ToAddress_Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
-  fullName: Libplanet.Crypto.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
-  nameWithType: AddressExtensions.ToAddress(PublicKey)
-- uid: Libplanet.Crypto.AddressExtensions.ToAddress*
-  name: ToAddress
-  href: api/Libplanet.Crypto.AddressExtensions.html#Libplanet_Crypto_AddressExtensions_ToAddress_
-  commentId: Overload:Libplanet.Crypto.AddressExtensions.ToAddress
-  isSpec: "True"
-  fullName: Libplanet.Crypto.AddressExtensions.ToAddress
-  nameWithType: AddressExtensions.ToAddress
 - uid: Libplanet.Crypto.CryptoConfig
   name: CryptoConfig
   href: api/Libplanet.Crypto.CryptoConfig.html
@@ -9142,6 +8787,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.PrivateKey
   nameWithType: PrivateKey.PrivateKey
+- uid: Libplanet.Crypto.PrivateKey.Address
+  name: Address
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Address
+  commentId: P:Libplanet.Crypto.PrivateKey.Address
+  fullName: Libplanet.Crypto.PrivateKey.Address
+  nameWithType: PrivateKey.Address
+- uid: Libplanet.Crypto.PrivateKey.Address*
+  name: Address
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Address_
+  commentId: Overload:Libplanet.Crypto.PrivateKey.Address
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PrivateKey.Address
+  nameWithType: PrivateKey.Address
 - uid: Libplanet.Crypto.PrivateKey.ByteArray
   name: ByteArray
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray
@@ -9337,6 +8995,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.PublicKey
   nameWithType: PublicKey.PublicKey
+- uid: Libplanet.Crypto.PublicKey.Address
+  name: Address
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Address
+  commentId: P:Libplanet.Crypto.PublicKey.Address
+  fullName: Libplanet.Crypto.PublicKey.Address
+  nameWithType: PublicKey.Address
+- uid: Libplanet.Crypto.PublicKey.Address*
+  name: Address
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Address_
+  commentId: Overload:Libplanet.Crypto.PublicKey.Address
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.Address
+  nameWithType: PublicKey.Address
 - uid: Libplanet.Crypto.PublicKey.Encrypt(System.Byte[])
   name: Encrypt(Byte[])
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_System_Byte___
@@ -19730,18 +19401,42 @@ references:
   commentId: N:Libplanet.RocksDBStore
   fullName: Libplanet.RocksDBStore
   nameWithType: Libplanet.RocksDBStore
+- uid: Libplanet.RocksDBStore.RocksDBInstanceType
+  name: RocksDBInstanceType
+  href: api/Libplanet.RocksDBStore.RocksDBInstanceType.html
+  commentId: T:Libplanet.RocksDBStore.RocksDBInstanceType
+  fullName: Libplanet.RocksDBStore.RocksDBInstanceType
+  nameWithType: RocksDBInstanceType
+- uid: Libplanet.RocksDBStore.RocksDBInstanceType.Primary
+  name: Primary
+  href: api/Libplanet.RocksDBStore.RocksDBInstanceType.html#Libplanet_RocksDBStore_RocksDBInstanceType_Primary
+  commentId: F:Libplanet.RocksDBStore.RocksDBInstanceType.Primary
+  fullName: Libplanet.RocksDBStore.RocksDBInstanceType.Primary
+  nameWithType: RocksDBInstanceType.Primary
+- uid: Libplanet.RocksDBStore.RocksDBInstanceType.ReadOnly
+  name: ReadOnly
+  href: api/Libplanet.RocksDBStore.RocksDBInstanceType.html#Libplanet_RocksDBStore_RocksDBInstanceType_ReadOnly
+  commentId: F:Libplanet.RocksDBStore.RocksDBInstanceType.ReadOnly
+  fullName: Libplanet.RocksDBStore.RocksDBInstanceType.ReadOnly
+  nameWithType: RocksDBInstanceType.ReadOnly
+- uid: Libplanet.RocksDBStore.RocksDBInstanceType.Secondary
+  name: Secondary
+  href: api/Libplanet.RocksDBStore.RocksDBInstanceType.html#Libplanet_RocksDBStore_RocksDBInstanceType_Secondary
+  commentId: F:Libplanet.RocksDBStore.RocksDBInstanceType.Secondary
+  fullName: Libplanet.RocksDBStore.RocksDBInstanceType.Secondary
+  nameWithType: RocksDBInstanceType.Secondary
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore
   name: RocksDBKeyValueStore
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html
   commentId: T:Libplanet.RocksDBStore.RocksDBKeyValueStore
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,System.Boolean)
-  name: RocksDBKeyValueStore(String, Boolean)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_System_Boolean_
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,System.Boolean)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, System.Boolean)
-  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String, Boolean)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType)
+  name: RocksDBKeyValueStore(String, RocksDBInstanceType)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, Libplanet.RocksDBStore.RocksDBInstanceType)
+  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String, RocksDBInstanceType)
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor*
   name: RocksDBKeyValueStore
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_
@@ -19857,21 +19552,47 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set
   nameWithType: RocksDBKeyValueStore.Set
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary
+  name: TryCatchUpWithPrimary()
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_TryCatchUpWithPrimary
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary()
+  nameWithType: RocksDBKeyValueStore.TryCatchUpWithPrimary()
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary*
+  name: TryCatchUpWithPrimary
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_TryCatchUpWithPrimary_
+  commentId: Overload:Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary
+  isSpec: "True"
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary
+  nameWithType: RocksDBKeyValueStore.TryCatchUpWithPrimary
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Type
+  name: Type
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Type
+  commentId: P:Libplanet.RocksDBStore.RocksDBKeyValueStore.Type
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Type
+  nameWithType: RocksDBKeyValueStore.Type
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Type*
+  name: Type
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Type_
+  commentId: Overload:Libplanet.RocksDBStore.RocksDBKeyValueStore.Type
+  isSpec: "True"
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Type
+  nameWithType: RocksDBKeyValueStore.Type
 - uid: Libplanet.RocksDBStore.RocksDBStore
   name: RocksDBStore
   href: api/Libplanet.RocksDBStore.RocksDBStore.html
   commentId: T:Libplanet.RocksDBStore.RocksDBStore
   fullName: Libplanet.RocksDBStore.RocksDBStore
   nameWithType: RocksDBStore
-- uid: Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,System.Boolean)
-  name: RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, Boolean)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_System_Boolean_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,System.Boolean)
-  name.vb: RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, Boolean)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Int32, System.Int32, System.Int32, System.Boolean)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Int32, System.Int32, System.Int32, System.Boolean)
-  nameWithType: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, Boolean)
-  nameWithType.vb: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, Boolean)
+- uid: Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,Libplanet.RocksDBStore.RocksDBInstanceType)
+  name: RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, RocksDBInstanceType)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_Libplanet_RocksDBStore_RocksDBInstanceType_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,Libplanet.RocksDBStore.RocksDBInstanceType)
+  name.vb: RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, RocksDBInstanceType)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Nullable<System.UInt64>, System.Int32, System.Int32, System.Int32, Libplanet.RocksDBStore.RocksDBInstanceType)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore(System.String, System.Int32, System.Int32, System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Nullable(Of System.UInt64), System.Int32, System.Int32, System.Int32, Libplanet.RocksDBStore.RocksDBInstanceType)
+  nameWithType: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable<UInt64>, Nullable<UInt64>, Nullable<UInt64>, Int32, Int32, Int32, RocksDBInstanceType)
+  nameWithType.vb: RocksDBStore.RocksDBStore(String, Int32, Int32, Nullable(Of UInt64), Nullable(Of UInt64), Nullable(Of UInt64), Int32, Int32, Int32, RocksDBInstanceType)
 - uid: Libplanet.RocksDBStore.RocksDBStore.#ctor*
   name: RocksDBStore
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore__ctor_
@@ -22086,6 +21807,44 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.SetCanonicalChainId
   nameWithType: DefaultStore.SetCanonicalChainId
+- uid: Libplanet.Store.HashNodeCache
+  name: HashNodeCache
+  href: api/Libplanet.Store.HashNodeCache.html
+  commentId: T:Libplanet.Store.HashNodeCache
+  fullName: Libplanet.Store.HashNodeCache
+  nameWithType: HashNodeCache
+- uid: Libplanet.Store.HashNodeCache.AddOrUpdate(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Bencodex.Types.IValue)
+  name: AddOrUpdate(HashDigest<SHA256>, IValue)
+  href: api/Libplanet.Store.HashNodeCache.html#Libplanet_Store_HashNodeCache_AddOrUpdate_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Bencodex_Types_IValue_
+  commentId: M:Libplanet.Store.HashNodeCache.AddOrUpdate(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Bencodex.Types.IValue)
+  name.vb: AddOrUpdate(HashDigest(Of SHA256), IValue)
+  fullName: Libplanet.Store.HashNodeCache.AddOrUpdate(Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, Bencodex.Types.IValue)
+  fullName.vb: Libplanet.Store.HashNodeCache.AddOrUpdate(Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), Bencodex.Types.IValue)
+  nameWithType: HashNodeCache.AddOrUpdate(HashDigest<SHA256>, IValue)
+  nameWithType.vb: HashNodeCache.AddOrUpdate(HashDigest(Of SHA256), IValue)
+- uid: Libplanet.Store.HashNodeCache.AddOrUpdate*
+  name: AddOrUpdate
+  href: api/Libplanet.Store.HashNodeCache.html#Libplanet_Store_HashNodeCache_AddOrUpdate_
+  commentId: Overload:Libplanet.Store.HashNodeCache.AddOrUpdate
+  isSpec: "True"
+  fullName: Libplanet.Store.HashNodeCache.AddOrUpdate
+  nameWithType: HashNodeCache.AddOrUpdate
+- uid: Libplanet.Store.HashNodeCache.TryGetValue(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Bencodex.Types.IValue@)
+  name: TryGetValue(HashDigest<SHA256>, out IValue)
+  href: api/Libplanet.Store.HashNodeCache.html#Libplanet_Store_HashNodeCache_TryGetValue_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Bencodex_Types_IValue__
+  commentId: M:Libplanet.Store.HashNodeCache.TryGetValue(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Bencodex.Types.IValue@)
+  name.vb: TryGetValue(HashDigest(Of SHA256), ByRef IValue)
+  fullName: Libplanet.Store.HashNodeCache.TryGetValue(Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, out Bencodex.Types.IValue)
+  fullName.vb: Libplanet.Store.HashNodeCache.TryGetValue(Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), ByRef Bencodex.Types.IValue)
+  nameWithType: HashNodeCache.TryGetValue(HashDigest<SHA256>, out IValue)
+  nameWithType.vb: HashNodeCache.TryGetValue(HashDigest(Of SHA256), ByRef IValue)
+- uid: Libplanet.Store.HashNodeCache.TryGetValue*
+  name: TryGetValue
+  href: api/Libplanet.Store.HashNodeCache.html#Libplanet_Store_HashNodeCache_TryGetValue_
+  commentId: Overload:Libplanet.Store.HashNodeCache.TryGetValue
+  isSpec: "True"
+  fullName: Libplanet.Store.HashNodeCache.TryGetValue
+  nameWithType: HashNodeCache.TryGetValue
 - uid: Libplanet.Store.IStateStore
   name: IStateStore
   href: api/Libplanet.Store.IStateStore.html
@@ -24200,21 +23959,21 @@ references:
   commentId: T:Libplanet.Store.Trie.MerkleTrie
   fullName: Libplanet.Store.Trie.MerkleTrie
   nameWithType: MerkleTrie
-- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
-  name: MerkleTrie(IKeyValueStore, HashDigest<SHA256>)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
-  name.vb: MerkleTrie(IKeyValueStore, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
-  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest<SHA256>)
-  nameWithType.vb: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest(Of SHA256))
-- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode)
-  name: MerkleTrie(IKeyValueStore, INode)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode)
-  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.Nodes.INode)
-  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, INode)
+- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Store.HashNodeCache)
+  name: MerkleTrie(IKeyValueStore, HashDigest<SHA256>, HashNodeCache)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Store_HashNodeCache_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Store.HashNodeCache)
+  name.vb: MerkleTrie(IKeyValueStore, HashDigest(Of SHA256), HashNodeCache)
+  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Store.HashNodeCache)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Store.HashNodeCache)
+  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest<SHA256>, HashNodeCache)
+  nameWithType.vb: MerkleTrie.MerkleTrie(IKeyValueStore, HashDigest(Of SHA256), HashNodeCache)
+- uid: Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,Libplanet.Store.HashNodeCache)
+  name: MerkleTrie(IKeyValueStore, INode, HashNodeCache)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_Libplanet_Store_Trie_IKeyValueStore_Libplanet_Store_Trie_Nodes_INode_Libplanet_Store_HashNodeCache_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.#ctor(Libplanet.Store.Trie.IKeyValueStore,Libplanet.Store.Trie.Nodes.INode,Libplanet.Store.HashNodeCache)
+  fullName: Libplanet.Store.Trie.MerkleTrie.MerkleTrie(Libplanet.Store.Trie.IKeyValueStore, Libplanet.Store.Trie.Nodes.INode, Libplanet.Store.HashNodeCache)
+  nameWithType: MerkleTrie.MerkleTrie(IKeyValueStore, INode, HashNodeCache)
 - uid: Libplanet.Store.Trie.MerkleTrie.#ctor*
   name: MerkleTrie
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie__ctor_
@@ -33243,15 +33002,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.Transaction.Actions
   nameWithType: Transaction.Actions
-- uid: Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Types.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Collections.Immutable.IImmutableSet<Libplanet.Crypto.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Types.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Collections.Immutable.IImmutableSet(Of Libplanet.Crypto.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset__
+  commentId: M:Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Types.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Bencodex.Types.IValue>, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>, System.Nullable<System.DateTimeOffset>)
+  fullName.vb: Libplanet.Types.Tx.Transaction.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Bencodex.Types.IValue), System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64), System.Nullable(Of System.DateTimeOffset))
+  nameWithType: Transaction.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<IValue>, Nullable<FungibleAssetValue>, Nullable<Int64>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction.Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of IValue), Nullable(Of FungibleAssetValue), Nullable(Of Int64), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Types.Tx.Transaction.Create*
   name: Create
   href: api/Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Create_
@@ -34079,24 +33838,24 @@ references:
   commentId: M:Libplanet.Types.Tx.TxInvoice.#ctor(Libplanet.Types.Tx.ITxInvoice)
   fullName: Libplanet.Types.Tx.TxInvoice.TxInvoice(Libplanet.Types.Tx.ITxInvoice)
   nameWithType: TxInvoice.TxInvoice(ITxInvoice)
-- uid: Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
-  name: TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
-  href: api/Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__System_Nullable_System_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__
-  commentId: M:Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address},System.Nullable{System.DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
-  name.vb: TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
-  fullName: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.Collections.Generic.IEnumerable<Libplanet.Crypto.Address>, System.Nullable<System.DateTimeOffset>, Libplanet.Types.Tx.TxActionList, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
-  fullName.vb: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.Collections.Generic.IEnumerable(Of Libplanet.Crypto.Address), System.Nullable(Of System.DateTimeOffset), Libplanet.Types.Tx.TxActionList, System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
-  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IEnumerable<Address>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
-  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IEnumerable(Of Address), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
-- uid: Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
-  name: TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
-  href: api/Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__
-  commentId: M:Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
-  name.vb: TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
-  fullName: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.Collections.Immutable.IImmutableSet<Libplanet.Crypto.Address>, System.DateTimeOffset, Libplanet.Types.Tx.TxActionList, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
-  fullName.vb: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.Collections.Immutable.IImmutableSet(Of Libplanet.Crypto.Address), System.DateTimeOffset, Libplanet.Types.Tx.TxActionList, System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
-  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
-  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), IImmutableSet(Of Address), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+- uid: Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name: TxInvoice(Nullable<BlockHash>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  href: api/Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__
+  commentId: M:Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name.vb: TxInvoice(Nullable(Of BlockHash), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+  fullName: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.DateTimeOffset, Libplanet.Types.Tx.TxActionList, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
+  fullName.vb: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.DateTimeOffset, Libplanet.Types.Tx.TxActionList, System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, DateTimeOffset, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), DateTimeOffset, TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+- uid: Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Nullable{System.DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name: TxInvoice(Nullable<BlockHash>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  href: api/Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_System_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__
+  commentId: M:Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Nullable{System.DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})
+  name.vb: TxInvoice(Nullable(Of BlockHash), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
+  fullName: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable<Libplanet.Types.Blocks.BlockHash>, System.Nullable<System.DateTimeOffset>, Libplanet.Types.Tx.TxActionList, System.Nullable<Libplanet.Types.Assets.FungibleAssetValue>, System.Nullable<System.Int64>)
+  fullName.vb: Libplanet.Types.Tx.TxInvoice.TxInvoice(System.Nullable(Of Libplanet.Types.Blocks.BlockHash), System.Nullable(Of System.DateTimeOffset), Libplanet.Types.Tx.TxActionList, System.Nullable(Of Libplanet.Types.Assets.FungibleAssetValue), System.Nullable(Of System.Int64))
+  nameWithType: TxInvoice.TxInvoice(Nullable<BlockHash>, Nullable<DateTimeOffset>, TxActionList, Nullable<FungibleAssetValue>, Nullable<Int64>)
+  nameWithType.vb: TxInvoice.TxInvoice(Nullable(Of BlockHash), Nullable(Of DateTimeOffset), TxActionList, Nullable(Of FungibleAssetValue), Nullable(Of Int64))
 - uid: Libplanet.Types.Tx.TxInvoice.#ctor*
   name: TxInvoice
   href: api/Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice__ctor_
