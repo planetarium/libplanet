@@ -117,7 +117,8 @@ namespace Libplanet.Net
                     consensusReactorOption.ConsensusPeers,
                     consensusReactorOption.SeedPeers,
                     consensusReactorOption.TargetBlockInterval,
-                    consensusReactorOption.ContextTimeoutOptions);
+                    consensusReactorOption.ContextTimeoutOptions,
+                    consensusReactorOption.TxPriorityComparer);
             }
         }
 

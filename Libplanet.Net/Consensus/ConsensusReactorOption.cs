@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Net.Consensus
 {
@@ -45,5 +48,11 @@ namespace Libplanet.Net.Consensus
         /// A timeout second and multiplier value for used in <see cref="Context"/>.
         /// </summary>
         public ContextTimeoutOption ContextTimeoutOptions { get; set; }
+
+        /// <summary>
+        /// An optional comparer for give certain transactions to priority to belong to the block.
+        /// </summary>
+        /// <seealso cref="BlockChain.GatherTransactionsToPropose(long,IComparer{Transaction})"/>
+        public IComparer<Transaction>? TxPriorityComparer { get; set; }
     }
 }

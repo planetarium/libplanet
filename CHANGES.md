@@ -104,6 +104,12 @@ To be released.
         for `StateQuery.validators` field.
      -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
         for `StateQuery.validators` field.
+ -  (Libplanet.Net) Added `txPriority` parameter to `ConsensusContext`
+    constructor.  [[#3546]]
+ -  (Libplanet.Net) Added `txPriority` parameter to `Context` constructor.
+    [[#3546]]
+ -  (Libplanet.Net) Added `TxPriority` property to `ConsensusReactorOption`
+    class.  [[#3546]]
 
 ### Behavioral changes
 
@@ -118,6 +124,7 @@ To be released.
 [#3512]: https://github.com/planetarium/libplanet/pull/3512
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
+[#3546]: https://github.com/planetarium/libplanet/pull/3546
 
 
 Version 3.9.0

@@ -7,6 +7,8 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
+using Libplanet.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -26,9 +28,11 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context> _contexts;
+        private readonly IComparer<Transaction>? _txPriority;
 
         private CancellationTokenSource? _newHeightCts;
 
+#pragma warning disable MEN002
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext"/> class.
         /// </summary>
@@ -44,18 +48,25 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  It will be passed as
+        /// <see cref="Context(IConsensusMessageCommunicator,BlockChain,long,PrivateKey,ValidatorSet,ContextTimeoutOption,IComparer{Transaction})"/>
+        /// 's parameter.</param>
+#pragma warning restore MEN002
         public ConsensusContext(
             IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
-            ContextTimeoutOption contextTimeoutOption)
+            ContextTimeoutOption contextTimeoutOption,
+            IComparer<Transaction>? txPriority = null)
         {
             _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
             Height = -1;
             _newHeightDelay = newHeightDelay;
+            _txPriority = txPriority;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -439,7 +450,8 @@ namespace Libplanet.Net.Consensus
                 height,
                 _privateKey,
                 _blockChain.GetValidatorSet(_blockChain[Height - 1].Hash),
-                contextTimeoutOptions: _contextTimeoutOption);
+                contextTimeoutOptions: _contextTimeoutOption,
+                txPriority: _txPriority);
             AttachEventHandlers(context);
             return context;
         }
