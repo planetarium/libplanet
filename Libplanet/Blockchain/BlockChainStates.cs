@@ -40,7 +40,7 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
         public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash)
-            => new AccountBaseState(GetTrie(stateRootHash));
+            => new AccountState(GetTrie(stateRootHash));
 
         /// <inheritdoc cref="IBlockChainStates.GetState(Address, Address, BlockHash?)"/>
         public IValue? GetState(Address address, Address accountAddress, BlockHash? offset)

@@ -13,9 +13,6 @@ namespace Libplanet.Tests.Action
 {
     public class AccountV0Test : AccountTest
     {
-        private readonly Address _accountAddress
-            = new Address("2000000000000000000000000000000000000000");
-
         public AccountV0Test(ITestOutputHelper output)
             : base(output)
         {

@@ -35,9 +35,7 @@ namespace Libplanet.Tests.Blockchain
                     Array.Empty<DumbAction>().ToPlainValues(),
                     null,
                     null,
-                    null,
-                    ts ?? DateTimeOffset.UtcNow
-                );
+                    ts ?? DateTimeOffset.UtcNow);
 
             PrivateKey a = new PrivateKey();
             PrivateKey b = new PrivateKey();
@@ -46,7 +44,7 @@ namespace Libplanet.Tests.Blockchain
             PrivateKey e = new PrivateKey();
             List<Address> signers = new List<Address>()
             {
-                a.ToAddress(), b.ToAddress(), c.ToAddress(), d.ToAddress(), e.ToAddress(),
+                a.Address, b.Address, c.Address, d.Address, e.Address,
             };
 
             // A normal case and corner cases:
@@ -85,13 +83,13 @@ namespace Libplanet.Tests.Blockchain
 
             // A is prioritized over B, C, D, E:
             IComparer<Transaction> priority = Comparer<Transaction>.Create(
-                (tx1, tx2) => tx1.Signer.Equals(a.ToAddress()) ? -1 : 1
+                (tx1, tx2) => tx1.Signer.Equals(a.Address) ? -1 : 1
             );
             stagedTransactions = _blockChain.ListStagedTransactions(priority);
 
             foreach (var tx in stagedTransactions.Take(3))
             {
-                Assert.True(tx.Signer.Equals(a.ToAddress()));
+                Assert.True(tx.Signer.Equals(a.Address));
             }
 
             // List is ordered by nonce.

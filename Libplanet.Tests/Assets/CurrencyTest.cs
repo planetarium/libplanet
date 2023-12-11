@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Assets
         [Fact]
         public void AllowsToMint()
         {
-            Address addressC = new PrivateKey().ToAddress();
+            Address addressC = new PrivateKey().Address;
             Currency currency = Currency.Uncapped("FOO", 0, AddressA);
             Assert.True(currency.AllowsToMint(AddressA));
             Assert.False(currency.AllowsToMint(AddressB));

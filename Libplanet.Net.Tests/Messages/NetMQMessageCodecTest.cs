@@ -110,7 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                 case MessageContent.MessageType.Tx:
                     return new Libplanet.Net.Messages.TxMsg(transaction.Serialize());
                 case MessageContent.MessageType.FindNeighbors:
-                    return new FindNeighborsMsg(privateKey.ToAddress());
+                    return new FindNeighborsMsg(privateKey.Address);
                 case MessageContent.MessageType.Neighbors:
                     return new NeighborsMsg(new[] { boundPeer });
                 case MessageContent.MessageType.BlockHeaderMessage:

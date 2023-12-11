@@ -193,8 +193,8 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx1Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.ToAddress(), "foo", pk.ToAddress(), addresses[1], 10),
-                    new DumbAction(addresses[0], "bar", pk.ToAddress(), addresses[2], 20),
+                    new DumbAction(pk.Address, "foo", pk.Address, addresses[1], 10),
+                    new DumbAction(addresses[0], "bar", pk.Address, addresses[2], 20),
                 },
                 nonce: 0,
                 privateKey: pk
@@ -204,7 +204,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     // As it tries to transfer a negative value, it throws
                     // ArgumentOutOfRangeException:
-                    new DumbAction(pk.ToAddress(), "foo", addresses[0], addresses[1], -5),
+                    new DumbAction(pk.Address, "foo", addresses[0], addresses[1], -5),
                 },
                 nonce: 1,
                 privateKey: pk
@@ -212,7 +212,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx3Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.ToAddress(), "foo", pk.ToAddress(), addresses[1], 5),
+                    new DumbAction(pk.Address, "foo", pk.Address, addresses[1], 5),
                 },
                 nonce: 2,
                 privateKey: pk
@@ -234,22 +234,22 @@ namespace Libplanet.Tests.Blockchain
             var accountDiff1 = AccountDiff.Create(inputAccount1, outputAccount1);
 
             Assert.Equal(
-                (new Address[] { addresses[0], pk.ToAddress() }).ToImmutableHashSet(),
+                (new Address[] { addresses[0], pk.Address }).ToImmutableHashSet(),
                 accountDiff1.StateDiffs.Select(kv => kv.Key).ToImmutableHashSet());
             Assert.Equal(
-                (new Address[] { addresses[1], addresses[2], pk.ToAddress() })
+                (new Address[] { addresses[1], addresses[2], pk.Address })
                     .ToImmutableHashSet(),
                 accountDiff1.FungibleAssetValueDiffs.Select(kv => kv.Key.Item1)
                     .ToImmutableHashSet());
             Assert.Equal(
                 new Text("foo"),
-                outputAccount1.GetState(pk.ToAddress()));
+                outputAccount1.GetState(pk.Address));
             Assert.Equal(
                 new Text("foo,bar"),
                 outputAccount1.GetState(addresses[0]));
             Assert.Equal(
                 DumbAction.DumbCurrency * -30,
-                outputAccount1.GetBalance(pk.ToAddress(), DumbAction.DumbCurrency));
+                outputAccount1.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 10,
                 outputAccount1.GetBalance(addresses[1], DumbAction.DumbCurrency));
@@ -274,7 +274,7 @@ namespace Libplanet.Tests.Blockchain
                     .GetAccount(ReservedAddresses.LegacyAccount);
             Assert.Equal(
                 DumbAction.DumbCurrency * -35,
-                outputAccount3.GetBalance(pk.ToAddress(), DumbAction.DumbCurrency));
+                outputAccount3.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 15,
                 outputAccount3.GetBalance(addresses[1], DumbAction.DumbCurrency));
@@ -421,8 +421,8 @@ namespace Libplanet.Tests.Blockchain
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
+                var validAddress = validKey.Address;
+                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.Address)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -656,7 +656,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.ToAddress(), "foo", dummy.ToAddress(), dummy.ToAddress(), 10),
+                            dummy.Address, "foo", dummy.Address, dummy.Address, 10),
                     }.ToPlainValues()),
                 txA1 = Transaction.Create(
                     1,
@@ -665,7 +665,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.ToAddress(), "bar", dummy.ToAddress(), dummy.ToAddress(), 20),
+                            dummy.Address, "bar", dummy.Address, dummy.Address, 20),
                     }.ToPlainValues());
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
@@ -690,7 +690,6 @@ namespace Libplanet.Tests.Blockchain
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(
                     _blockChain.Genesis.Hash,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
                     new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(txSigner.PublicKey, 1));
@@ -702,17 +701,13 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 0,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
                 invalidTx,
                 Transaction.Create(
                     nonce: 2,
                     privateKey: txSigner,
                     genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues(),
-                    updatedAddresses: ImmutableHashSet<Address>.Empty
-                ),
+                    actions: Array.Empty<DumbAction>().ToPlainValues()),
             }.OrderBy(tx => tx.Id);
 
             var metadata = new BlockMetadata(
@@ -767,7 +762,7 @@ namespace Libplanet.Tests.Blockchain
                     protocolVersion: BlockMetadata.LegacyStateVersion,
                     index: 0L,
                     timestamp: DateTimeOffset.UtcNow,
-                    miner: fx.Proposer.ToAddress(),
+                    miner: fx.Proposer.Address,
                     publicKey: fx.Proposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),

@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Blockchain
             Func<long, long> getMaxTransactionsBytes = _blockChain.Policy.GetMaxTransactionsBytes;
             Assert.Equal(1, _blockChain.Count);
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()}",
+                (Text)$"{GenesisProposer.Address}",
                 _blockChain.GetWorldState().GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(default));
 
@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 block.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block.Index));
             AssertBencodexEqual(
-                (Text)$"{GenesisProposer.ToAddress()},{proposerA.ToAddress()}",
+                (Text)$"{GenesisProposer.Address},{proposerA.Address}",
                 _blockChain.GetWorldState().GetAccount(
                     ReservedAddresses.LegacyAccount).GetState(default)
             );
@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blockchain
                 anotherBlock.MarshalBlock().EncodingLength <=
                     getMaxTransactionsBytes(anotherBlock.Index));
             Text expected = new Text(
-                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
+                $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
                 _blockChain.GetWorldState().GetAccount(
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(
                 block3.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block3.Index));
             expected = new Text(
-                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
+                $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
                 _blockChain.GetWorldState().GetAccount(
@@ -113,9 +113,9 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.True(
                 block4.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block4.Index));
-            Assert.Equal(3, block4.Transactions.Count());
+            Assert.Equal(4, block4.Transactions.Count());
             expected = new Text(
-                $"{GenesisProposer.ToAddress()},{proposerA.ToAddress()},{proposerB.ToAddress()}");
+                $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
                 _blockChain.GetWorldState().GetAccount(
@@ -144,7 +144,7 @@ namespace Libplanet.Tests.Blockchain
                             null,
                             actions: new[]
                             {
-                                new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
+                                new DumbAction(new PrivateKey().Address, "foo"),
                             }.ToPlainValues()),
                     }.ToImmutableList());
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
@@ -181,7 +181,7 @@ namespace Libplanet.Tests.Blockchain
                         _blockChain.Genesis.Hash,
                         new[]
                         {
-                            new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo"),
+                            new DumbAction(new PrivateKey().Address, "foo"),
                         }.ToPlainValues()),
                 }.ToImmutableList();
 
@@ -200,11 +200,11 @@ namespace Libplanet.Tests.Blockchain
             var keyC = new PrivateKey();
             var keyD = new PrivateKey();
             var keyE = new PrivateKey();
-            var addrA = keyA.ToAddress();
-            var addrB = keyB.ToAddress();
-            var addrC = keyC.ToAddress();
-            var addrD = keyD.ToAddress();
-            var addrE = keyE.ToAddress();
+            var addrA = keyA.Address;
+            var addrB = keyB.Address;
+            var addrC = keyC.Address;
+            var addrD = keyD.Address;
+            var addrE = keyE.Address;
 
             var txs = new[]
             {
@@ -348,8 +348,8 @@ namespace Libplanet.Tests.Blockchain
             TxPolicyViolationException IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
-                var validAddress = validKey.PublicKey.ToAddress();
-                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.ToAddress())
+                var validAddress = validKey.Address;
+                return tx.Signer.Equals(validAddress) || tx.Signer.Equals(_fx.Proposer.Address)
                     ? null
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
@@ -459,10 +459,10 @@ namespace Libplanet.Tests.Blockchain
         public void ProposeBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
-            var address1 = privateKey1.ToAddress();
+            var address1 = privateKey1.Address;
 
             var privateKey2 = new PrivateKey();
-            var address2 = privateKey2.ToAddress();
+            var address2 = privateKey2.Address;
 
             var blockAction = new DumbAction(address1, "foo");
             var policy = new BlockPolicy(blockAction);
@@ -515,9 +515,9 @@ namespace Libplanet.Tests.Blockchain
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
             var keyC = new PrivateKey();
-            Address a = keyA.ToAddress(); // Rank 0
-            Address b = keyB.ToAddress(); // Rank 1
-            Address c = keyC.ToAddress(); // Rank 2
+            Address a = keyA.Address; // Rank 0
+            Address b = keyB.Address; // Rank 1
+            Address c = keyC.Address; // Rank 2
             int Rank(Address address) => address.Equals(a) ? 0 : address.Equals(b) ? 1 : 2;
             Transaction[] txsA = Enumerable.Range(0, 50)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
@@ -570,7 +570,7 @@ namespace Libplanet.Tests.Blockchain
         public void IgnoreLowerNonceTxsAndPropose()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             var txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
@@ -629,9 +629,9 @@ namespace Libplanet.Tests.Blockchain
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
             var keyC = new PrivateKey();
-            Address a = keyA.ToAddress();
-            Address b = keyB.ToAddress();
-            Address c = keyC.ToAddress();
+            Address a = keyA.Address;
+            Address b = keyB.Address;
+            Address c = keyC.Address;
             _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
             _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
             _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
@@ -687,7 +687,6 @@ namespace Libplanet.Tests.Blockchain
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(
                     _blockChain.Genesis.Hash,
-                    ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow,
                     new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
                 new TxSigningMetadata(keyB.PublicKey, 1));

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
@@ -19,7 +17,9 @@ namespace Libplanet.Action.State
         {
         }
 
-        public World(IWorldState baseState, IWorldDelta delta)
+        public World(
+            IWorldState baseState,
+            IWorldDelta delta)
         {
             _baseState = baseState;
             Delta = delta;
@@ -27,8 +27,7 @@ namespace Libplanet.Action.State
         }
 
         /// <inheritdoc/>
-        [Pure]
-        public IWorldDelta Delta { get; private set; }
+        public IWorldDelta Delta { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -37,28 +36,6 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public bool Legacy { get; private set; }
-
-        /// <summary>
-        /// Creates a null worlds from given <see cref="IWorld"/>.
-        /// </summary>
-        /// <param name="world">The previous <see cref="IWorld"/> to use.</param>
-        /// <returns>A null world that is of the same type as <paramref name="world"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown if given <paramref name="world"/>
-        /// is not <see cref="World"/>.
-        /// </exception>
-        public static IWorld Flush(IWorld world)
-        {
-            foreach (KeyValuePair<Address, IAccount> kv in world.Delta.Accounts)
-            {
-                world = world.SetAccount(kv.Key, Account.Flush(kv.Value));
-            }
-
-            return world is World impl
-                ? new World(impl) { Legacy = impl.Legacy }
-                : throw new ArgumentException(
-                    $"Unknown type for {nameof(world)}: {world.GetType()}");
-        }
 
         /// <inheritdoc/>
         [Pure]
@@ -74,13 +51,14 @@ namespace Libplanet.Action.State
         public IWorld SetAccount(Address address, IAccount account)
         {
             if (!address.Equals(ReservedAddresses.LegacyAccount)
-                && account.Delta.UpdatedFungibleAssets.Count > 0)
+                && account.TotalUpdatedFungibleAssets.Count > 0)
             {
                 return this;
             }
 
-            return new World(this, new WorldDelta(Delta.Accounts.SetItem(address, account)))
-            { Legacy = Legacy && address.Equals(ReservedAddresses.LegacyAccount) };
+            return new World(
+                this,
+                Delta.SetAccount(address, account));
         }
     }
 }

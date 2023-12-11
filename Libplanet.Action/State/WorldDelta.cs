@@ -1,24 +1,56 @@
 using System.Collections.Immutable;
+using System.Linq;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.State
 {
-    internal class WorldDelta : IWorldDelta
+    public class WorldDelta : IWorldDelta
     {
-        internal WorldDelta()
+        private IImmutableDictionary<Address, AccountItem> _accounts;
+
+        public WorldDelta()
         {
-            Accounts = ImmutableDictionary<Address, IAccount>.Empty;
+            _accounts = ImmutableDictionary<Address, AccountItem>.Empty;
         }
 
-        internal WorldDelta(IImmutableDictionary<Address, IAccount> accounts)
+        private WorldDelta(IImmutableDictionary<Address, AccountItem> accounts)
         {
-            Accounts = accounts;
+            _accounts = accounts;
         }
-
-        /// <inheritdoc cref="IWorldDelta.UpdatedAddresses"/>
-        public IImmutableSet<Address> UpdatedAddresses => Accounts.Keys.ToImmutableHashSet();
 
         /// <inheritdoc cref="IWorldDelta.Accounts"/>
-        public IImmutableDictionary<Address, IAccount> Accounts { get; }
+        public IImmutableDictionary<Address, IAccount> Accounts
+            => _accounts
+                .ToImmutableDictionary(item => item.Key, item => item.Value.Account);
+
+        /// <inheritdoc cref="IWorldDelta.Uncommitted"/>
+        public IImmutableDictionary<Address, IAccount> Uncommitted
+            => _accounts
+                .Where(item => !item.Value.Committed)
+                .ToImmutableDictionary(item => item.Key, item => item.Value.Account);
+
+        /// <inheritdoc cref="IWorldDelta.SetAccount"/>
+        public IWorldDelta SetAccount(Address address, IAccount account)
+            => new WorldDelta(_accounts.SetItem(address, new AccountItem(account, false)));
+
+        /// <inheritdoc cref="IWorldDelta.CommitAccount"/>
+        public IWorldDelta CommitAccount(Address address)
+            => _accounts.TryGetValue(address, out AccountItem accountItem)
+                ? new WorldDelta(
+                    _accounts.SetItem(address, new AccountItem(accountItem.Account, true)))
+                : this;
+
+        internal struct AccountItem
+        {
+            public AccountItem(IAccount account, bool committed)
+            {
+                Account = account;
+                Committed = committed;
+            }
+
+            public IAccount Account { get; }
+
+            public bool Committed { get; set; }
+        }
     }
 }

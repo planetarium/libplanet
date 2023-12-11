@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Store.Trie
 
             var addresses = Enumerable
                 .Range(0, addressCount)
-                .Select(_ => new PrivateKey().ToAddress())
+                .Select(_ => new PrivateKey().Address)
                 .ToImmutableArray();
             var states = new Dictionary<Address, IValue>();
 
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Store.Trie
             var states = new IValue[addressCount];
             for (int i = 0; i < addressCount; ++i)
             {
-                addresses[i] = new PrivateKey().ToAddress();
+                addresses[i] = new PrivateKey().Address;
                 states[i] = (Binary)TestUtils.GetRandomBytes(128);
 
                 trieA = trieA.Set(new KeyBytes(addresses[i].ByteArray), states[i]);

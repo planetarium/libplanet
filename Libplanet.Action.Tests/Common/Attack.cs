@@ -13,7 +13,7 @@ namespace Libplanet.Action.Tests.Common
             .Add("values", Dictionary.Empty
                 .Add("weapon", Weapon)
                 .Add("target", Target)
-                .Add("target_address", TargetAddress.ByteArray));
+                .Add("target_address", TargetAddress.Bencoded));
 
         public string Weapon { get; set; }
 

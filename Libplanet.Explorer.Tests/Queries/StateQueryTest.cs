@@ -481,8 +481,6 @@ public class StateQueryTest
 
         public ITrie Trie { get; }
 
-        public IAccountDelta Delta => throw new System.NotImplementedException();
-
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets => throw new System.NotImplementedException();
 
         public IValue GetState(Address address) => GetStates(new[] { address }).First();

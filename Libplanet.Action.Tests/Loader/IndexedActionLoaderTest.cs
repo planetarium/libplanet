@@ -39,15 +39,15 @@ namespace Libplanet.Action.Tests.Loader
             var loader1 = new SingleActionLoader(typeof(DumbAction));
             var loader2 = new SingleActionLoader(typeof(Attack));
             var loader3 = new SingleActionLoader(typeof(RandomAction));
-            var action1 = new DumbAction(new PrivateKey().PublicKey.ToAddress(), "foo");
+            var action1 = new DumbAction(new PrivateKey().Address, "foo");
             var action2 = new Attack();
             action2.LoadPlainValue(Dictionary.Empty
                 .Add("type_id", "attack")
                 .Add("values", Dictionary.Empty
                     .Add("weapon", "sword")
                     .Add("target", "dummy")
-                    .Add("target_address", new PrivateKey().PublicKey.ToAddress().ByteArray)));
-            var action3 = new RandomAction(new PrivateKey().PublicKey.ToAddress());
+                    .Add("target_address", new PrivateKey().Address.Bencoded)));
+            var action3 = new RandomAction(new PrivateKey().Address);
 
             var loader = new IndexedActionLoader(
                 new List<(long, IActionLoader)>

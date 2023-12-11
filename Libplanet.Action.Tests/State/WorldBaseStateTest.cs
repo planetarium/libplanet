@@ -24,9 +24,6 @@ namespace Libplanet.Action.Tests.State
         public void Constructor()
         {
             ITrie trie = new MerkleTrie(_kvStore);
-            trie = trie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
-            Assert.Throws<ArgumentException>(() => new WorldBaseState(trie, _stateStore));
-            trie = new MerkleTrie(_kvStore);
             var legacyBaseState = new WorldBaseState(trie, _stateStore);
             Assert.True(legacyBaseState.Legacy);
             trie = new MerkleTrie(_kvStore);

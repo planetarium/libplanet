@@ -21,15 +21,13 @@ namespace Libplanet.Action
             int blockProtocolVersion,
             IWorld previousState,
             int randomSeed,
-            long gasLimit,
-            bool rehearsal = false)
+            long gasLimit)
         {
             Signer = signer;
             TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
-            Rehearsal = rehearsal;
             PreviousState = previousState;
             RandomSeed = randomSeed;
             _gasLimit = gasLimit;
@@ -51,9 +49,6 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.BlockProtocolVersion"/>
         public int BlockProtocolVersion { get; }
-
-        /// <inheritdoc cref="IActionContext.Rehearsal"/>
-        public bool Rehearsal { get; }
 
         /// <inheritdoc cref="IActionContext.PreviousState"/>
         public IWorld PreviousState { get; }

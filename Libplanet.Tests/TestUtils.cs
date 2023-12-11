@@ -438,7 +438,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     index: 0,
                     timestamp: timestamp ??
                         new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                    miner: (proposer ?? GenesisProposer.PublicKey).ToAddress(),
+                    miner: (proposer ?? GenesisProposer.PublicKey).Address,
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
@@ -494,7 +494,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     index: previousBlock.Index + 1,
                     timestamp: previousBlock.Timestamp.Add(
                         blockInterval ?? TimeSpan.FromSeconds(15)),
-                    miner: miner?.ToAddress() ?? previousBlock.Miner,
+                    miner: miner?.Address ?? previousBlock.Miner,
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
@@ -759,7 +759,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 {
                     (Text)"item",
                     (Text)"target_address",
-                    (Text)"record_rehearsal",
                     (Text)"record_random",
                     (Text)"idempotent",
                     (Text)"transfer_from",

@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Protocols
             _runningEvent = new TaskCompletionSource<object>();
             _privateKey = privateKey;
             _blockBroadcast = blockBroadcast;
-            var loggerId = _privateKey.ToAddress().ToHex();
+            var loggerId = _privateKey.Address.ToHex();
             _logger = Log.ForContext<TestTransport>()
                 .ForContext("Address", loggerId);
 
@@ -57,7 +57,7 @@ namespace Libplanet.Net.Tests.Protocols
             ReceivedMessages = new ConcurrentBag<Message>();
             MessageReceived = new AsyncAutoResetEvent();
             _transports = transports;
-            _transports[privateKey.ToAddress()] = this;
+            _transports[privateKey.Address] = this;
             _networkDelay = networkDelay ?? TimeSpan.Zero;
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
@@ -72,7 +72,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public AsyncAutoResetEvent MessageReceived { get; }
 
-        public Address Address => _privateKey.ToAddress();
+        public Address Address => _privateKey.Address;
 
         public BoundPeer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
@@ -359,7 +359,7 @@ namespace Libplanet.Net.Tests.Protocols
             var bytes = new byte[10];
             _random.NextBytes(bytes);
             var sendTime = DateTimeOffset.UtcNow;
-            var identity = _privateKey.ToAddress().ByteArray.Concat(bytes).ToArray();
+            var identity = _privateKey.Address.ByteArray.Concat(bytes).ToArray();
             _logger.Debug("Adding request of {Content} of {Identity}", content, identity);
             await _requests.AddAsync(
                 new Request

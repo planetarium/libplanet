@@ -75,14 +75,20 @@ namespace Libplanet.RocksDBStore
         /// Creates a new <see cref="RocksDBKeyValueStore"/>.
         /// </summary>
         /// <param name="path">The path of the storage file will be saved.</param>
-        /// <param name="readonly">If it is true, it will open rocksdb in read-only mode.</param>
-        public RocksDBKeyValueStore(string path, bool @readonly = false)
+        /// <param name="type">Determines the instance type of the internal <see cref="RocksDb"/>
+        /// instances.  <see cref="RocksDBInstanceType.Primary"/> by default.</param>
+        public RocksDBKeyValueStore(
+            string path,
+            RocksDBInstanceType type = RocksDBInstanceType.Primary)
         {
             var options = new DbOptions()
                 .SetCreateIfMissing();
 
-            _keyValueDb = RocksDBUtils.OpenRocksDb(options, path, @readonly: @readonly);
+            _keyValueDb = RocksDBUtils.OpenRocksDb(options, path, type: type);
+            Type = type;
         }
+
+        public RocksDBInstanceType Type { get; }
 
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
@@ -144,6 +150,11 @@ namespace Libplanet.RocksDBStore
             {
                 yield return new KeyBytes(it.Key());
             }
+        }
+
+        public void TryCatchUpWithPrimary()
+        {
+            _keyValueDb.TryCatchUpWithPrimary();
         }
     }
 }

@@ -19,10 +19,21 @@ namespace Libplanet.Types.Tx
     public interface ITxInvoice : IEquatable<ITxInvoice>
     {
         /// <summary>
-        /// An approximated list of addresses whose states would be affected by actions in this
-        /// transaction.  However, it could be wrong.
+        /// <para>
+        /// A deprecated property which was used as an approximated list of addresses whose states
+        /// would be affected by actions in this transaction.
+        /// </para>
+        /// <para>
+        /// This is no longer officially supported in the sense that a <see cref="Transaction"/>
+        /// cannot be created with a non-empty set of <see cref="Address"/>es through normal means
+        /// (i.e. using intended APIs).
+        /// </para>
+        /// <para>
+        /// It is still possible to create a <see cref="Transaction"/> through other means,
+        /// such as creating a payload directly by assigning appropriate values and signing
+        /// an "unsigned transaction".  This is not recommended.
+        /// </para>
         /// </summary>
-        // See also https://github.com/planetarium/libplanet/issues/368
         IImmutableSet<Address> UpdatedAddresses { get; }
 
         /// <summary>

@@ -72,7 +72,7 @@ namespace Libplanet.Types.Consensus
         /// An <see cref="Address"/> of the validator operator's <see cref="PublicKey"/>.
         /// </summary>
         [JsonIgnore]
-        public Address OperatorAddress => PublicKey.ToAddress();
+        public Address OperatorAddress => PublicKey.Address;
 
         /// <inheritdoc/>
         [JsonIgnore]

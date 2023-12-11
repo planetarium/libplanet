@@ -233,8 +233,6 @@ namespace Libplanet.Types.Tx
         /// <param name="maxGasPrice"> The maximum gas price this transaction can pay fee.</param>
         /// <param name="gasLimit"> The maximum amount of gas this transaction can consume.
         /// </param>
-        /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <see langword="null"/> (which is default) is passed this will
@@ -251,7 +249,6 @@ namespace Libplanet.Types.Tx
             IEnumerable<IValue> actions,
             FungibleAssetValue? maxGasPrice = null,
             long? gasLimit = null,
-            IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null) =>
             Create(
                 nonce,
@@ -260,9 +257,7 @@ namespace Libplanet.Types.Tx
                 new TxActionList(actions),
                 maxGasPrice,
                 gasLimit,
-                updatedAddresses,
-                timestamp
-            );
+                timestamp);
 
         /// <summary>
         /// Encodes this <see cref="Transaction"/> into a <see cref="byte"/> array.
@@ -311,7 +306,6 @@ namespace Libplanet.Types.Tx
             TxActionList actions,
             FungibleAssetValue? maxGasPrice = null,
             long? gasLimit = null,
-            IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
             if (privateKey is null)
@@ -321,7 +315,6 @@ namespace Libplanet.Types.Tx
 
             var draftInvoice = new TxInvoice(
                 genesisHash,
-                updatedAddresses ?? ImmutableHashSet<Address>.Empty,
                 timestamp ?? DateTimeOffset.UtcNow,
                 actions,
                 maxGasPrice,

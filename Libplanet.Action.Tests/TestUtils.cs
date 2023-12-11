@@ -62,15 +62,9 @@ namespace Libplanet.Action.Tests
                 throw new XunitException("Accounts should be of type Account");
             }
 
-            if (!ea.TotalUpdatedFungibleAssets.SequenceEqual(aa.TotalUpdatedFungibleAssets) ||
-                !DictionaryEquals(ea.TotalUpdatedFungibles, aa.TotalUpdatedFungibles))
+            if (!ea.Trie.Hash.Equals(aa.Trie.Hash))
             {
                 Assert.Equal(expected, actual);
-            }
-
-            if (!DictionaryEquals(ea.Delta.ToRawDelta(), aa.Delta.ToRawDelta()))
-            {
-                Assert.Equal(ea.Delta, aa.Delta);
             }
         }
 

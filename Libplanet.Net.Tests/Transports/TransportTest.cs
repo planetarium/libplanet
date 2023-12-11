@@ -135,7 +135,7 @@ namespace Libplanet.Net.Tests.Transports
             try
             {
                 var peer = transport.AsPeer;
-                Assert.Equal(privateKey.ToAddress(), peer.Address);
+                Assert.Equal(privateKey.Address, peer.Address);
                 Assert.Equal(host, peer.EndPoint.Host);
             }
             finally
@@ -353,7 +353,7 @@ namespace Libplanet.Net.Tests.Transports
         [SkippableFact(Timeout = Timeout)]
         public async Task BroadcastMessage()
         {
-            var address = new PrivateKey().ToAddress();
+            var address = new PrivateKey().Address;
             ITransport transportA = null;
             ITransport transportB = await CreateTransportAsync(
                 privateKey: GeneratePrivateKeyOfBucketIndex(address, 0));

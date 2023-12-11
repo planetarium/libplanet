@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Fixtures
             IEnumerable<IRenderer> renderers = null)
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
-            Addresses = PrivateKeys.Select(AddressExtensions.ToAddress).ToImmutableArray();
+            Addresses = PrivateKeys.Select(key => key.Address).ToImmutableArray();
             Actions = initialStates
                 .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
                 .Where(pair => !(pair.State is null))
@@ -57,16 +57,12 @@ namespace Libplanet.Tests.Fixtures
                 .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
                 .Select(pair => new { Action = Arithmetic.Add(pair.State), pair.Key })
                 .Select(pair =>
-                    Transaction.Create(
-                        0,
-                        pair.Key,
-                        null,
-                        new[] { pair.Action }.ToPlainValues(),
-                        null,
-                        null,
-                        ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
-                    )
-                )
+                    new Transaction(
+                        new UnsignedTx(
+                            new TxInvoice(
+                                actions: new TxActionList(new[] { pair.Action.PlainValue })),
+                            new TxSigningMetadata(pair.Key.PublicKey, 0)),
+                        pair.Key))
                 .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
@@ -107,7 +103,7 @@ namespace Libplanet.Tests.Fixtures
 
         public TxWithContext Sign(PrivateKey signer, params Arithmetic[] actions)
         {
-            Address signerAddress = signer.ToAddress();
+            Address signerAddress = signer.Address;
             KeyBytes rawStateKey = KeyConverters.ToStateKey(signerAddress);
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =

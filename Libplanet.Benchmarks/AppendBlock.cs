@@ -56,7 +56,7 @@ namespace Libplanet.Benchmarks
         public void PrepareAppendMakeOneTransactionWithActions()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
+            var address = privateKey.Address;
             var actions = new[]
             {
                 new DumbAction(address, "foo"),
@@ -74,7 +74,7 @@ namespace Libplanet.Benchmarks
             for (var i = 0; i < 10; i++)
             {
                 var privateKey = new PrivateKey();
-                var address = privateKey.ToAddress();
+                var address = privateKey.Address;
                 var actions = new[]
                 {
                     new DumbAction(address, "foo"),

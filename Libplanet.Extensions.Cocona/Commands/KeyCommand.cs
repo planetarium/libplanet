@@ -185,7 +185,7 @@ public class KeyCommand
     {
         var key = new PrivateKey();
         string priv = ByteUtil.Hex(key.ByteArray);
-        string addr = key.ToAddress().ToString();
+        string addr = key.Address.ToString();
         string pub = ByteUtil.Hex(key.PublicKey.Format(compress: true));
 
         if (!noAddress && publicKey)
@@ -281,7 +281,7 @@ public class KeyCommand
         PublicKey pubKey = publicKey
             ? PublicKey.FromHex(key)
             : ValidateRawHex(key).PublicKey;
-        string addr = pubKey.ToAddress().ToString();
+        string addr = pubKey.Address.ToString();
         string pub = ByteUtil.Hex(pubKey.Format(compress: true));
         Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
     }

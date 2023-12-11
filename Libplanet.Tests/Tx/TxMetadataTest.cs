@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Tx
             var meta = new TxMetadata(_key1.PublicKey);
             DateTimeOffset after = DateTimeOffset.UtcNow;
             Assert.Equal(0L, meta.Nonce);
-            AssertBytesEqual(_key1.ToAddress(), meta.Signer);
+            AssertBytesEqual(_key1.Address, meta.Signer);
             Assert.Empty(meta.UpdatedAddresses);
             Assert.InRange(meta.Timestamp, before, after);
             Assert.Equal(_key1.PublicKey, meta.PublicKey);
@@ -78,8 +78,8 @@ namespace Libplanet.Tests.Tx
                 Nonce = 0L,
                 UpdatedAddresses = new[]
                 {
-                    _key1.ToAddress(),
-                    _key2.ToAddress(),
+                    _key1.Address,
+                    _key2.Address,
                 }.ToImmutableHashSet(),
                 Timestamp = new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
                 GenesisHash = BlockHash.FromString(
@@ -99,13 +99,13 @@ namespace Libplanet.Tests.Tx
         {
             Bencodex.Types.Dictionary dict1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
-                .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key1.Address.Bencoded)
                 .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false));
             var meta1 = new TxMetadata(dict1);
             Assert.Equal(123L, meta1.Nonce);
-            AssertBytesEqual(_key1.ToAddress(), meta1.Signer);
+            AssertBytesEqual(_key1.Address, meta1.Signer);
             Assert.Empty(meta1.UpdatedAddresses);
             Assert.Equal(
                 new DateTimeOffset(2022, 5, 23, 10, 2, 0, default),
@@ -115,12 +115,12 @@ namespace Libplanet.Tests.Tx
 
             Bencodex.Types.Dictionary dict2 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 0L)
-                .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key2.Address.Bencoded)
                 .Add(
                     new byte[] { 0x75 },
                     Bencodex.Types.List.Empty
-                        .Add(_key1.ToAddress().ToByteArray())
-                        .Add(_key2.ToAddress().ToByteArray()))
+                        .Add(_key1.Address.Bencoded)
+                        .Add(_key2.Address.Bencoded))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
                 .Add(
@@ -129,9 +129,9 @@ namespace Libplanet.Tests.Tx
                         "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"));
             var meta2 = new TxMetadata(dict2);
             Assert.Equal(0L, meta2.Nonce);
-            AssertBytesEqual(_key2.ToAddress(), meta2.Signer);
+            AssertBytesEqual(_key2.Address, meta2.Signer);
             Assert.Equal(
-                new[] { _key1.ToAddress(), _key2.ToAddress() }.ToImmutableHashSet(),
+                new[] { _key1.Address, _key2.Address }.ToImmutableHashSet(),
                 meta2.UpdatedAddresses);
             Assert.Equal(
                 new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
@@ -155,7 +155,7 @@ namespace Libplanet.Tests.Tx
             };
             Bencodex.Types.Dictionary expected1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
-                .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key1.Address.Bencoded)
                 .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false));
@@ -168,8 +168,8 @@ namespace Libplanet.Tests.Tx
                 Nonce = 0L,
                 UpdatedAddresses = new[]
                 {
-                    _key1.ToAddress(),
-                    _key2.ToAddress(),
+                    _key1.Address,
+                    _key2.Address,
                 }.ToImmutableHashSet(),
                 Timestamp = new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
                 GenesisHash = BlockHash.FromString(
@@ -177,12 +177,12 @@ namespace Libplanet.Tests.Tx
             };
             Bencodex.Types.Dictionary expected2 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 0L)
-                .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
+                .Add(new byte[] { 0x73 }, _key2.Address.Bencoded)
                 .Add(
                     new byte[] { 0x75 },
                     Bencodex.Types.List.Empty
-                        .Add(_key1.ToAddress().ToByteArray())
-                        .Add(_key2.ToAddress().ToByteArray()))
+                        .Add(_key1.Address.Bencoded)
+                        .Add(_key2.Address.Bencoded))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
                 .Add(
@@ -200,7 +200,7 @@ namespace Libplanet.Tests.Tx
 
             public long Nonce { get; set; } = 0L;
 
-            public Address Signer => PublicKey.ToAddress();
+            public Address Signer => PublicKey.Address;
 
             public IImmutableSet<Address> UpdatedAddresses { get; set; } =
                 ImmutableHashSet<Address>.Empty;

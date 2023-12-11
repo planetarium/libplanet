@@ -10,11 +10,13 @@ using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action
 {
@@ -59,23 +61,37 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a random seed.
         /// </summary>
-        /// <param name="preEvaluationHashBytes">The previous evaluation hash turned into bytes.
+        /// <param name="preEvaluationHashBytes">The pre-evaluation hash as bytes.
         /// </param>
-        /// <param name="hashedSignature">The hashed signature.</param>
-        /// <param name="signature">The signature.</param>
-        /// <param name="actionOffset">The offset of the action.</param>
+        /// <param name="signature">The signature of the <see cref="Transaction"/> the target
+        /// <see cref="IAction"/> belongs to.  Must be empty if the target <see cref="IAction"/>
+        /// is a block action.</param>
+        /// <param name="actionOffset">The offset of the target <see cref="IAction"/>.</param>
         /// <returns>An integer of the random seed.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when
+        /// <paramref name="preEvaluationHashBytes"/> is empty.</exception>
         [Pure]
         public static int GenerateRandomSeed(
             byte[] preEvaluationHashBytes,
-            byte[] hashedSignature,
             byte[] signature,
             int actionOffset)
         {
-            return (preEvaluationHashBytes.Length > 0
-                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
-                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
+            using (var sha1 = SHA1.Create())
+            {
+                unchecked
+                {
+                    return ((preEvaluationHashBytes.Length > 0
+                        ? BitConverter.ToInt32(preEvaluationHashBytes, 0)
+                        : throw new ArgumentException(
+                            $"Given {nameof(preEvaluationHashBytes)} cannot be empty",
+                            nameof(preEvaluationHashBytes)))
+                    ^ (signature.Any()
+                        ? BitConverter.ToInt32(sha1.ComputeHash(signature), 0)
+                        : 0))
+                    + actionOffset;
+                }
+            }
         }
 
         /// <inheritdoc cref="IActionEvaluator.Evaluate"/>
@@ -154,39 +170,18 @@ namespace Libplanet.Action
         /// <param name="previousState">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
-        /// <remarks>
-        /// <para>Each <see cref="IActionContext.Random"/> object has an unconsumed state.</para>
-        /// <para>
-        /// The returned enumeration has the following properties:
-        /// <list type="bullet">
-        /// <item><description>
-        ///     The first <see cref="ActionEvaluation"/> in the enumerated result,
-        ///     if any, has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a
-        ///     "superset" of <paramref name="previousState"/>'s
-        ///     <see cref="IAccount.Delta"/> (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// <item><description>
-        ///     Each <see cref="ActionEvaluation"/> in the enumerated result
-        ///     has <see cref="ActionEvaluation.OutputState"/> with
-        ///     <see cref="IAccount.Delta"/> that is a "superset"
-        ///     of the previous one, if any (possibly except for
-        ///     <see cref="IAccountDelta.ValidatorSet"/>).
-        /// </description></item>
-        /// </list>
-        /// </para>
-        /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
             IPreEvaluationBlockHeader blockHeader,
             ITransaction? tx,
             IWorld previousState,
             IImmutableList<IAction> actions,
+            IStateStore stateStore,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -207,15 +202,9 @@ namespace Libplanet.Action
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
-            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
-            byte[] hashedSignature;
-            using (var hasher = SHA1.Create())
-            {
-                hashedSignature = hasher.ComputeHash(signature);
-            }
-
             byte[] preEvaluationHashBytes = blockHeader.PreEvaluationHash.ToByteArray();
-            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
+            byte[] signature = tx?.Signature ?? Array.Empty<byte>();
+            int seed = GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
 
             IWorld state = previousState;
             foreach (IAction action in actions)
@@ -226,6 +215,7 @@ namespace Libplanet.Action
                     tx,
                     context,
                     action,
+                    stateStore,
                     logger);
 
                 yield return result.Evaluation;
@@ -245,8 +235,16 @@ namespace Libplanet.Action
             ITransaction? tx,
             IActionContext context,
             IAction action,
+            IStateStore stateStore,
             ILogger? logger = null)
         {
+            if (!context.PreviousState.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Given {nameof(context)} must have its previous state's " +
+                    $"{nameof(ITrie)} recorded.");
+            }
+
             IActionContext inputContext = context;
             IWorld state = inputContext.PreviousState;
             Exception? exc = null;
@@ -337,6 +335,21 @@ namespace Libplanet.Action
             state = feeCollector.Refund(state);
             state = feeCollector.Reward(state);
 
+            if (state.Legacy)
+            {
+                state = CommitLegacyWorld(state, stateStore);
+            }
+            else
+            {
+                state = CommitWorld(state, stateStore);
+            }
+
+            if (!state.Trie.Recorded)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
+            }
+
             return (
                 new ActionEvaluation(
                     action: action,
@@ -406,7 +419,6 @@ namespace Libplanet.Action
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                delta = World.Flush(delta);
 
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     blockHeader: block,
@@ -453,6 +465,7 @@ namespace Libplanet.Action
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
+                stateStore: _stateStore,
                 logger: _logger);
         }
 
@@ -489,7 +502,9 @@ namespace Libplanet.Action
                 blockHeader: blockHeader,
                 tx: null,
                 previousState: previousState,
-                actions: new[] { policyBlockAction }.ToImmutableList()).Single();
+                actions: new[] { policyBlockAction }.ToImmutableList(),
+                stateStore: _stateStore,
+                logger: _logger).Single();
         }
 
         internal IWorld PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
@@ -507,32 +522,12 @@ namespace Libplanet.Action
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            ITrie worldTrie = _stateStore.GetStateRoot(baseStateRootHash);
-
-            IWorldState nextWorld;
-            ITrie nextWorldTrie;
-
+            ITrie trie = _stateStore.GetStateRoot(baseStateRootHash);
             var committedEvaluations = new List<CommittedActionEvaluation>();
 
-            int setCount = 0;
-            int subCount;
             foreach (var evaluation in evaluations)
             {
-                nextWorld = evaluation.OutputState;
-                StateCommitter committer;
-
-                if (nextWorld.Legacy)
-                {
-                    committer = CommitLegacyState;
-                }
-                else
-                {
-                    committer = CommitModernState;
-                }
-
-                (nextWorldTrie, subCount) = committer(worldTrie, evaluation);
-                setCount += subCount;
-
+#pragma warning disable SA1118
                 var committedEvaluation = new CommittedActionEvaluation(
                     action: evaluation.Action,
                     inputContext: new CommittedActionContext(
@@ -541,137 +536,61 @@ namespace Libplanet.Action
                         miner: evaluation.InputContext.Miner,
                         blockIndex: evaluation.InputContext.BlockIndex,
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        rehearsal: evaluation.InputContext.Rehearsal,
-                        previousState: worldTrie.Hash,
+                        previousState: evaluation.InputContext.PreviousState.Trie.Recorded
+                            ? evaluation.InputContext.PreviousState.Trie.Hash
+                            : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
                         blockAction: evaluation.InputContext.BlockAction),
-                    outputState: nextWorldTrie.Hash,
+                    outputState: evaluation.OutputState.Trie.Recorded
+                        ? evaluation.OutputState.Trie.Hash
+                        : throw new ArgumentException("Trie is not recorded"),
                     exception: evaluation.Exception);
                 committedEvaluations.Add(committedEvaluation);
+#pragma warning restore SA1118
 
-                worldTrie = nextWorldTrie;
+                trie = evaluation.OutputState.Trie;
             }
-
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "StateUpdateDuration")
-                .Information(
-                    "Took {DurationMs} ms to update the states with {Count} key changes " +
-                    "and resulting in state root hash {StateRootHash} for " +
-                    "block #{BlockIndex} pre-evaluation hash {PreEvaluationHash}",
-                    stopwatch.ElapsedMilliseconds,
-                    setCount,
-                    worldTrie.Hash,
-                    block.Index,
-                    block.PreEvaluationHash);
 
             return committedEvaluations;
-        }
-
-        internal (ITrie, int) CommitLegacyState(
-            ITrie worldTrie, IActionEvaluation evaluation)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var totalDelta = evaluation.OutputState.GetAccount(
-                ReservedAddresses.LegacyAccount).Delta.ToRawDelta();
-
-            int setCount = 0;
-
-            foreach (var kv in totalDelta)
-            {
-                worldTrie = worldTrie.Set(kv.Key, kv.Value);
-                setCount++;
-            }
-
-            worldTrie = _stateStore.Commit(worldTrie);
-
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "CommitDuration")
-                .Information(
-                    "Took {DurationMs} ms to commit the trie with {KeyCount} key changes " +
-                    "and resulting in state root hash {StateRootHash} ",
-                    stopwatch.ElapsedMilliseconds,
-                    setCount,
-                    worldTrie.Hash);
-
-            return (worldTrie, setCount);
-        }
-
-        internal (ITrie, int) CommitModernState(
-            ITrie worldTrie, IActionEvaluation evaluation)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-
-            stopwatch.Start();
-
-            IImmutableDictionary<KeyBytes, IImmutableDictionary<KeyBytes, IValue>>
-                accountSubStateDelta = evaluation.OutputState.Delta.ToRawDelta();
-
-            IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
-                accountSubStateRoot = GetAccountSubStateRootHashes(worldTrie, evaluation);
-
-            int setCount = 0;
-
-            foreach (var kv in accountSubStateDelta)
-            {
-                ITrie accountTrie = _stateStore.GetStateRoot(accountSubStateRoot[kv.Key]);
-                var accountDelta = kv.Value;
-
-                foreach (KeyValuePair<KeyBytes, IValue> pair in accountDelta)
-                {
-                    accountTrie = accountTrie.Set(pair.Key, pair.Value);
-                    setCount++;
-                }
-
-                accountTrie = _stateStore.Commit(accountTrie);
-                worldTrie = worldTrie.Set(kv.Key, new Binary(accountTrie.Hash.ByteArray));
-            }
-
-            worldTrie = _stateStore.Commit(worldTrie);
-
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "CommitDuration")
-                .Information(
-                    "Took {DurationMs} ms to commit the trie with {KeyCount} key changes " +
-                    "and resulting in state root hash {StateRootHash} ",
-                    stopwatch.ElapsedMilliseconds,
-                    setCount,
-                    worldTrie);
-
-            return (worldTrie, setCount);
-        }
-
-        internal IImmutableDictionary<KeyBytes, HashDigest<SHA256>?>
-            GetAccountSubStateRootHashes(
-                ITrie worldTrie, IActionEvaluation evaluation)
-        {
-            var result = new Dictionary<KeyBytes, HashDigest<SHA256>?>();
-            foreach (var updatedAddress in evaluation.OutputState.Delta.UpdatedAddresses)
-            {
-                var key = KeyConverters.ToStateKey(updatedAddress);
-                HashDigest<SHA256>? hash = worldTrie.Get(key) is { } value
-                    ? new HashDigest<SHA256>(value)
-                    : (HashDigest<SHA256>?)null;
-
-                result.Add(key, hash);
-            }
-
-            return result.ToImmutableDictionary();
         }
 
         internal IWorld MigrateLegacyStates(IWorld prevWorld, int version)
         {
             var worldTrie = _stateStore.GetStateRoot(null).Set(
-                KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                ToStateKey(ReservedAddresses.LegacyAccount),
                 new Binary(prevWorld.Trie.Hash.ByteArray));
             worldTrie = worldTrie.SetMetadata(new TrieMetadata(version));
             worldTrie = _stateStore.Commit(worldTrie);
-            var world = new World(new WorldBaseState(worldTrie, _stateStore));
+            var world = new World(
+                new WorldBaseState(worldTrie, _stateStore),
+                prevWorld.Delta);
             return world;
+        }
+
+        private static IWorld CommitLegacyWorld(IWorld prevWorld, IStateStore stateStore)
+        {
+            return new World(
+                new WorldBaseState(
+                    stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
+                    stateStore),
+                prevWorld.Delta.CommitAccount(ReservedAddresses.LegacyAccount));
+        }
+
+        private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
+        {
+            var worldTrie = prevWorld.Trie;
+            var worldDelta = prevWorld.Delta;
+            foreach (var account in prevWorld.Delta.Uncommitted)
+            {
+                var accountTrie = stateStore.Commit(account.Value.Trie);
+                worldTrie = worldTrie.Set(
+                    ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
+                worldDelta = worldDelta.CommitAccount(account.Key);
+            }
+
+            return new World(
+                new WorldBaseState(stateStore.Commit(worldTrie), stateStore),
+                worldDelta);
         }
 
         [Pure]
