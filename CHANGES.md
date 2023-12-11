@@ -77,6 +77,7 @@ To be released.
  -  (Libplanet.Action) Added `IWorld` interface and its implementation.
     [[#3462]]
      -  Added `World` class.
+ -  (Libplanet.Action) Added `IWorldDelta` interface.  [[#3462]]
  -  (Libplanet.Action) Added `IWorldState` interface and its implementation.
     [[#3462]]
      -  Added `WorldBaseState` class.

@@ -36,18 +36,11 @@ namespace Libplanet.Action.State
     public interface IWorld : IWorldState
     {
         /// <summary>
-        /// A dictionary representing cumulative changed account states for each
-        /// <see cref="Address"/> between blocks.
+        /// The <see cref="IWorld"/> representing the delta part of
+        /// this <see cref="IWorld"/>.
         /// </summary>
         [Pure]
-        IImmutableDictionary<Address, IAccount> BlockDelta { get; }
-
-        /// <summary>
-        /// A dictionary representing uncommitted changed account states for each
-        /// <see cref="Address"/>.
-        /// </summary>
-        [Pure]
-        IImmutableDictionary<Address, IAccount> UncommittedDelta { get; }
+        IWorldDelta Delta { get; }
 
         /// <summary>
         /// Gets a new instance that the world state of the given

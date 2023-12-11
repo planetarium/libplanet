@@ -461,9 +461,7 @@ public class StateQueryTest
 
         public bool Legacy => true;
 
-        public IImmutableDictionary<Address, IAccount> BlockDelta => throw new System.NotImplementedException();
-
-        public IImmutableDictionary<Address, IAccount> UncommittedDelta => throw new System.NotImplementedException();
+        public IWorldDelta Delta => throw new System.NotImplementedException();
 
         public IAccount GetAccount(Address address)
             => new MockAccount();

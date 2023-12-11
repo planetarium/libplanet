@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
@@ -14,34 +13,21 @@ namespace Libplanet.Action.State
         private readonly IWorldState _baseState;
 
         public World(IWorldState baseState)
-            : this(baseState, ImmutableDictionary<Address, IAccount>.Empty)
+            : this(baseState, new WorldDelta())
         {
         }
 
         public World(
             IWorldState baseState,
-            IImmutableDictionary<Address, IAccount> uncommittedDelta)
-            : this(
-                  baseState,
-                  uncommittedDelta,
-                  ImmutableDictionary<Address, IAccount>.Empty)
-        {
-        }
-
-        public World(
-            IWorldState baseState,
-            IImmutableDictionary<Address, IAccount> uncommittedDelta,
-            IImmutableDictionary<Address, IAccount> blockDelta)
+            IWorldDelta delta)
         {
             _baseState = baseState;
-            UncommittedDelta = uncommittedDelta;
-            BlockDelta = blockDelta;
+            Delta = delta;
             Legacy = baseState.Legacy;
         }
 
-        public IImmutableDictionary<Address, IAccount> BlockDelta { get; }
-
-        public IImmutableDictionary<Address, IAccount> UncommittedDelta { get; }
+        /// <inheritdoc/>
+        public IWorldDelta Delta { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -55,7 +41,7 @@ namespace Libplanet.Action.State
         [Pure]
         public IAccount GetAccount(Address address)
         {
-            return BlockDelta.TryGetValue(address, out IAccount? account)
+            return Delta.Accounts.TryGetValue(address, out IAccount? account)
                 ? account
                 : _baseState.GetAccount(address);
         }
@@ -72,8 +58,7 @@ namespace Libplanet.Action.State
 
             return new World(
                 this,
-                UncommittedDelta.SetItem(address, account),
-                BlockDelta.SetItem(address, account));
+                Delta.SetAccount(address, account));
         }
     }
 }

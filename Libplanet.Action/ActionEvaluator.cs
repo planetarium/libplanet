@@ -563,8 +563,7 @@ namespace Libplanet.Action
             worldTrie = _stateStore.Commit(worldTrie);
             var world = new World(
                 new WorldBaseState(worldTrie, _stateStore),
-                ImmutableDictionary<Address, IAccount>.Empty,
-                prevWorld.BlockDelta);
+                prevWorld.Delta);
             return world;
         }
 
@@ -574,24 +573,24 @@ namespace Libplanet.Action
                 new WorldBaseState(
                     stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
                     stateStore),
-                ImmutableDictionary<Address, IAccount>.Empty,
-                prevWorld.BlockDelta);
+                prevWorld.Delta.CommitAccount(ReservedAddresses.LegacyAccount));
         }
 
-        private static IWorld CommitWorld(IWorld world, IStateStore stateStore)
+        private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
         {
-            var worldTrie = world.Trie;
-            foreach (var account in world.UncommittedDelta)
+            var worldTrie = prevWorld.Trie;
+            var worldDelta = prevWorld.Delta;
+            foreach (var account in prevWorld.Delta.Uncommitted)
             {
                 var accountTrie = stateStore.Commit(account.Value.Trie);
                 worldTrie = worldTrie.Set(
                     ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
+                worldDelta = worldDelta.CommitAccount(account.Key);
             }
 
             return new World(
                 new WorldBaseState(stateStore.Commit(worldTrie), stateStore),
-                ImmutableDictionary<Address, IAccount>.Empty,
-                world.BlockDelta);
+                worldDelta);
         }
 
         [Pure]
