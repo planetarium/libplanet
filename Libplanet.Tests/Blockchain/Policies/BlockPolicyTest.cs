@@ -155,11 +155,12 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var policy = new BlockPolicy(
                 blockAction: new MinerReward(1),
                 getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore, actionLoader);
 
             _ = chain.MakeTransaction(privateKey, new DumbAction[] { });
             Assert.Single(chain.ListStagedTransactions());
@@ -178,10 +179,11 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var policy = new BlockPolicy(
                 getMaxTransactionsPerBlock: _ => policyLimit);
             var privateKey = new PrivateKey();
-            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore, actionLoader);
 
             _ = Enumerable
                     .Range(0, generatedTxCount)
@@ -202,11 +204,12 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var policy = new BlockPolicy(
                 getMaxTransactionsPerSignerPerBlock: _ => policyLimit);
             var privateKeys = Enumerable.Range(0, keyCount).Select(_ => new PrivateKey()).ToList();
             var minerKey = privateKeys.First();
-            var chain = TestUtils.MakeBlockChain<DumbAction>(policy, store, stateStore);
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore, actionLoader);
 
             privateKeys.ForEach(
                 key => _ = Enumerable

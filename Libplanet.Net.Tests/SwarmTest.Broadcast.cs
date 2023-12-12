@@ -94,7 +94,8 @@ namespace Libplanet.Net.Tests
             var miner = new PrivateKey();
             var policy = new NullBlockPolicy();
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var minerChain = MakeBlockChain<DumbAction>(policy, fx.Store, fx.StateStore);
+            var minerChain = MakeBlockChain(
+                policy, fx.Store, fx.StateStore, new SingleActionLoader(typeof(DumbAction)));
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block block = minerChain.ProposeBlock(
@@ -183,10 +184,11 @@ namespace Libplanet.Net.Tests
             BlockChain receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy policy = receiverChain.Policy;
-            BlockChain seedChain = MakeBlockChain<DumbAction>(
+            BlockChain seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 seedStateStore,
+                new SingleActionLoader(typeof(DumbAction)),
                 privateKey: receiverKey);
             var seedMiner = new PrivateKey();
             Swarm seedSwarm =
@@ -700,7 +702,8 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy(new MinerReward(1));
             var fx1 = new MemoryStoreFixture();
-            var blockChain = MakeBlockChain<DumbAction>(policy, fx1.Store, fx1.StateStore);
+            var blockChain = MakeBlockChain(
+                policy, fx1.Store, fx1.StateStore, new SingleActionLoader(typeof(DumbAction)));
             var privateKey = new PrivateKey();
             var minerSwarm =
                 await CreateSwarm(blockChain, privateKey).ConfigureAwait(false);
@@ -709,10 +712,11 @@ namespace Libplanet.Net.Tests
             var loggedRenderer = new LoggedActionRenderer(
                 receiverRenderer,
                 _logger);
-            var receiverChain = MakeBlockChain<DumbAction>(
+            var receiverChain = MakeBlockChain(
                 policy,
                 fx2.Store,
                 fx2.StateStore,
+                new SingleActionLoader(typeof(DumbAction)),
                 renderers: new[] { loggedRenderer });
             Swarm receiverSwarm =
                 await CreateSwarm(receiverChain).ConfigureAwait(false);

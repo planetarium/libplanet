@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -47,6 +48,9 @@ namespace Libplanet.Net.Tests
             blockAction: new MinerReward(1),
             getMaxTransactionsBytes: _ => 50 * 1024);
 
+        public static readonly IActionLoader ActionLoader = new SingleActionLoader(
+            typeof(DumbAction));
+
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
             "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
             ".X8y4JpPIyccPYWGrsCXWA95sBfextucz3lOyAiBUoY5t8aYNPT0lwYwC0MSkK3HT7T" +
@@ -84,12 +88,14 @@ namespace Libplanet.Net.Tests
         public static BlockChain CreateDummyBlockChain(
             MemoryStoreFixture fx,
             IBlockPolicy? policy = null,
+            IActionLoader? actionLoader = null,
             Block? genesisBlock = null)
         {
-            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain<DumbAction>(
+            var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy ?? Policy,
                 fx.Store,
                 new TrieStateStore(new MemoryKeyValueStore()),
+                actionLoader ?? ActionLoader,
                 genesisBlock: genesisBlock);
 
             return blockChain;
@@ -222,12 +228,13 @@ namespace Libplanet.Net.Tests
             CreateDummyConsensusContext(
                 TimeSpan newHeightDelay,
                 IBlockPolicy? policy = null,
+                IActionLoader? actionLoader = null,
                 PrivateKey? privateKey = null,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockChain = CreateDummyBlockChain(fx, policy);
+            var blockChain = CreateDummyBlockChain(fx, policy, actionLoader);
             ConsensusContext? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];
@@ -253,6 +260,7 @@ namespace Libplanet.Net.Tests
             CreateDummyContext(
                 long height = 1,
                 IBlockPolicy? policy = null,
+                IActionLoader? actionLoader = null,
                 PrivateKey? privateKey = null,
                 ContextTimeoutOption? contextTimeoutOptions = null,
                 ValidatorSet? validatorSet = null)
@@ -270,6 +278,7 @@ namespace Libplanet.Net.Tests
             var (blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 policy,
+                actionLoader,
                 PrivateKeys[1]);
 
             context = new Context(

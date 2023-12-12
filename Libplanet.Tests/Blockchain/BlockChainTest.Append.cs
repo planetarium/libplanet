@@ -283,10 +283,11 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void AppendModern()
         {
-            _blockChain = TestUtils.MakeBlockChain<DumbModernAction>(
+            _blockChain = TestUtils.MakeBlockChain(
                 new NullBlockPolicy(),
                 new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()));
+                new TrieStateStore(new MemoryKeyValueStore()),
+                new SingleActionLoader(typeof(DumbModernAction)));
             var genesis = _blockChain.Genesis;
             var address1 = new Address(TestUtils.GetRandomBytes(20));
             var address2 = new Address(TestUtils.GetRandomBytes(20));
@@ -390,10 +391,11 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(ThrowException));
             var renderer = new RecordingActionRenderer();
             BlockChain blockChain =
-                TestUtils.MakeBlockChain<ThrowException>(
-                    policy, store, stateStore, renderers: new[] { renderer });
+                TestUtils.MakeBlockChain(
+                    policy, store, stateStore, actionLoader, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
             var action = new ThrowException { ThrowOnExecution = true };

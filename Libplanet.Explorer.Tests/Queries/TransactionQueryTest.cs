@@ -15,12 +15,12 @@ using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Explorer.Queries;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
+using Libplanet.Action.Loader;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -32,10 +32,11 @@ public class TransactionQueryTest
 
     public TransactionQueryTest()
     {
-        Chain = Libplanet.Tests.TestUtils.MakeBlockChain<NullAction>(
+        Chain = Libplanet.Tests.TestUtils.MakeBlockChain(
             new BlockPolicy(),
             new MemoryStore(),
             new TrieStateStore(new MemoryKeyValueStore()),
+            new SingleActionLoader(typeof(NullAction)),
             privateKey: new PrivateKey(),
             timestamp: DateTimeOffset.UtcNow
         );

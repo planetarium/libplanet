@@ -44,6 +44,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
+                TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
             blockChain.TipChanged += (_, __) => tipChanged.Set();
             consensusContext.MessagePublished += (_, eventArgs) =>
@@ -119,6 +120,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
+                TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
 
             consensusContext.StateChanged += (_, eventArgs) =>
@@ -247,6 +249,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
+                TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
 
             consensusContext.MessageConsumed += (_, eventArgs) =>
@@ -287,6 +290,7 @@ namespace Libplanet.Net.Tests.Consensus
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
+                TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
