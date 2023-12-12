@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using GraphQL.Types;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -24,14 +25,14 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.BlockHash
             );
 
-            Field<HashDigestSHA256Type>(
+            Field<HashDigestType<SHA256>>(
                 nameof(TxResult.InputState),
                 description: "The input state's root hash " +
                 "which the target transaction executed.",
                 resolve: context => context.Source.InputState
             );
 
-            Field<HashDigestSHA256Type>(
+            Field<HashDigestType<SHA256>>(
                 nameof(TxResult.OutputState),
                 description: "The output state's root hash " +
                 "which the target transaction executed.",
