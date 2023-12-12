@@ -223,25 +223,27 @@ namespace Libplanet.Explorer.Queries
                     var blockChain = _context.BlockChain;
                     var store = _context.Store;
                     var index = _context.Index;
-                    var txId = new TxId(
-                        ByteUtil.ParseHex(context.GetArgument<string>("txId"))
-                    );
-                    BlockHash? txExecutedBlockHash = null;
-                    if (
-                        index is not null
-                        && index.TryGetContainedBlockHashById(txId, out var hash))
-                    {
-                        txExecutedBlockHash = hash;
-                    }
-                    else if (
-                        index is null
-                        && store.GetFirstTxIdBlockHashIndex(txId)
-                            is { } txExecutedBlockHashFromStore)
-                    {
-                        txExecutedBlockHash = txExecutedBlockHashFromStore;
-                    }
+                    var txId = new TxId(ByteUtil.ParseHex(context.GetArgument<string>("txId")));
 
-                    if (txExecutedBlockHash is not { } txExecutedBlockHashValue)
+                    if (GetBlockContainingTx(_context, txId) is { } block)
+                    {
+                        return _context.BlockChain.GetTxExecution(block.Hash, txId) is { } execution
+                            ? new TxResult(
+                                execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
+                                block.Index,
+                                block.Hash.ToString(),
+                                execution.InputState,
+                                execution.OutputState,
+                                execution.ExceptionNames)
+                            : new TxResult(
+                                TxStatus.INCLUDED,
+                                block.Index,
+                                block.Hash.ToString(),
+                                null,
+                                null,
+                                null);
+                    }
+                    else
                     {
                         return blockChain.GetStagedTransactionIds().Contains(txId)
                             ? new TxResult(
@@ -259,37 +261,43 @@ namespace Libplanet.Explorer.Queries
                                 null,
                                 null);
                     }
-
-                    try
-                    {
-                        var execution = blockChain.GetTxExecution(
-                            txExecutedBlockHashValue,
-                            txId
-                        );
-                        var txExecutedBlock = blockChain[txExecutedBlockHashValue];
-
-                        return new TxResult(
-                            execution.Fail ? TxStatus.FAILURE : TxStatus.SUCCESS,
-                            txExecutedBlock.Index,
-                            txExecutedBlock.Hash.ToString(),
-                            execution.InputState,
-                            execution.OutputState,
-                            execution.ExceptionNames);
-                    }
-                    catch (Exception)
-                    {
-                        return new TxResult(
-                            TxStatus.INVALID,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null);
-                    }
                 }
             );
 
             Name = "TransactionQuery";
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Block"/> from the context <see cref="BlockChain"/> containing
+        /// given <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="IBlockChainContext"/> to use as context.</param>
+        /// <param name="txId">The target <see cref="TxId"/> that a <see cref="Block"/>
+        /// must contain.</param>
+        /// <returns>The <see cref="Block"/> containing <paramref name="txId"/> if found,
+        /// otherwise <see langword="null"/>.</returns>
+        private static Block GetBlockContainingTx(IBlockChainContext context, TxId txId)
+        {
+            // Try searching index first.
+            if (context.Index is { } index)
+            {
+                if (index.TryGetContainedBlockHashById(txId, out var blockHash))
+                {
+                    return context.BlockChain[blockHash];
+                }
+            }
+
+            // If not found in index, search IStore directly.
+            var blockHashCandidates = context.Store.IterateTxIdBlockHashIndex(txId);
+            foreach (var blockHashCandidate in blockHashCandidates)
+            {
+                if (context.BlockChain.ContainsBlock(blockHashCandidate))
+                {
+                    return context.BlockChain[blockHashCandidate];
+                }
+            }
+
+            return null;
         }
     }
 }

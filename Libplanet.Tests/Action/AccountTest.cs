@@ -161,9 +161,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
             Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
 
-            var diff = a.Trie
-                .Diff(_initContext.PreviousState.Trie)
-                .ToDictionary(triple => triple.Path, triple => triple.SourceValue);
             var accountDiff = AccountDiff.Create(
                 _initContext.PreviousState.GetAccount(_accountAddress).Trie,
                 a.Trie);
