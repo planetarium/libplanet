@@ -21,7 +21,7 @@ public class StateQuery
             "worldState",
             arguments: new QueryArguments(
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveWorldState
         );
@@ -30,8 +30,8 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
             resolve: ResolveAccountState
         );
@@ -41,8 +41,8 @@ public class StateQuery
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
                 new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
             resolve: ResolveState
         );
@@ -53,8 +53,8 @@ public class StateQuery
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
             resolve: ResolveBalance
         );
@@ -64,8 +64,8 @@ public class StateQuery
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
             resolve: ResolveTotalSupply
         );
@@ -74,8 +74,8 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestSHA256Type> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
             resolve: ResolveValidatorSet
         );
