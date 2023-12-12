@@ -84,6 +84,7 @@ namespace Libplanet.Net.Consensus
         private readonly BlockChain _blockChain;
         private readonly Codec _codec;
         private readonly ValidatorSet _validatorSet;
+        private readonly IComparer<Transaction>? _txPriority;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly HeightVoteSet _heightVoteSet;
@@ -128,13 +129,18 @@ namespace Libplanet.Net.Consensus
         /// given <paramref name="height"/>.</param>
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  It will be passed as
+        /// <see cref="BlockChain.GatherTransactionsToPropose(long,IComparer{Transaction})"/>'s
+        /// parameter.</param>
         public Context(
             IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
             PrivateKey privateKey,
             ValidatorSet validators,
-            ContextTimeoutOption contextTimeoutOptions)
+            ContextTimeoutOption contextTimeoutOptions,
+            IComparer<Transaction>? txPriority = null)
             : this(
                 consensusMessageCommunicator,
                 blockChain,
@@ -144,7 +150,8 @@ namespace Libplanet.Net.Consensus
                 ConsensusStep.Default,
                 -1,
                 128,
-                contextTimeoutOptions)
+                contextTimeoutOptions,
+                txPriority)
         {
         }
 
@@ -157,7 +164,8 @@ namespace Libplanet.Net.Consensus
             ConsensusStep consensusStep,
             int round = -1,
             int cacheSize = 128,
-            ContextTimeoutOption? contextTimeoutOptions = null)
+            ContextTimeoutOption? contextTimeoutOptions = null,
+            IComparer<Transaction>? txPriority = null)
         {
             if (height < 1)
             {
@@ -191,6 +199,7 @@ namespace Libplanet.Net.Consensus
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
             _validatorSet = validators;
+            _txPriority = txPriority;
             _cancellationTokenSource = new CancellationTokenSource();
             _blockValidationCache =
                 new LRUCache<BlockHash, (bool, IReadOnlyList<ICommittedActionEvaluation>)>(
@@ -418,7 +427,7 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
+                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit, _txPriority);
                 _blockChain.Store.PutBlock(block);
                 return block;
             }

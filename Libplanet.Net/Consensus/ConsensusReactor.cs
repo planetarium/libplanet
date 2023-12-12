@@ -10,6 +10,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
+using Libplanet.Types.Tx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -25,6 +26,7 @@ namespace Libplanet.Net.Consensus
         private readonly BlockChain _blockChain;
         private readonly ILogger _logger;
 
+#pragma warning disable MEN002
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusReactor"/> class.
         /// </summary>
@@ -45,6 +47,11 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  It will be passed as
+        /// <see cref="Consensus.ConsensusContext(IConsensusMessageCommunicator,BlockChain,PrivateKey,TimeSpan,ContextTimeoutOption,IComparer{Transaction})"/>
+        /// 's parameter.</param>
+#pragma warning restore MEN002
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain blockChain,
@@ -52,7 +59,8 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay,
-            ContextTimeoutOption contextTimeoutOption)
+            ContextTimeoutOption contextTimeoutOption,
+            IComparer<Transaction>? txPriority = null)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
             seedPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -71,7 +79,8 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                contextTimeoutOption);
+                contextTimeoutOption,
+                txPriority);
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
