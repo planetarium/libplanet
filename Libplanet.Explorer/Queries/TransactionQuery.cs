@@ -111,13 +111,10 @@ namespace Libplanet.Explorer.Queries
             Field<TransactionType>(
                 "transaction",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "id" }
+                    new QueryArgument<NonNullGraphType<TxIdType>> { Name = "id" }
                 ),
                 resolve: context =>
-                {
-                    var id = TxId.FromHex(context.GetArgument<string>("id"));
-                    return ExplorerQuery.GetTransaction(id);
-                }
+                    ExplorerQuery.GetTransaction(context.GetArgument<TxId>("id"))
             );
 
             Field<NonNullGraphType<ByteStringType>>(
@@ -212,7 +209,7 @@ namespace Libplanet.Explorer.Queries
             Field<NonNullGraphType<TxResultType>>(
                 name: "transactionResult",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>>
+                    new QueryArgument<NonNullGraphType<TxIdType>>
                     {
                         Name = "txId",
                         Description = "transaction id.",
@@ -223,7 +220,7 @@ namespace Libplanet.Explorer.Queries
                     var blockChain = _context.BlockChain;
                     var store = _context.Store;
                     var index = _context.Index;
-                    var txId = new TxId(ByteUtil.ParseHex(context.GetArgument<string>("txId")));
+                    var txId = context.GetArgument<TxId>("txId");
 
                     if (GetBlockContainingTx(_context, txId) is { } block)
                     {
