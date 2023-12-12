@@ -1,14 +1,15 @@
 using GraphQL.Language.AST;
 using GraphQL.Types;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class AddressType : StringGraphType
+    public class TxIdType : StringGraphType
     {
-        public AddressType()
+        public TxIdType()
         {
-            Name = "address";
+            Name = "txId";
         }
 
         public override object? ParseLiteral(IValue value)
@@ -35,8 +36,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             if (value is string str)
             {
-                // NOTE: 0x-prefixed *and* 0x-non-prefixed version should both be allowed.
-                return new Address(str);
+                return new TxId(ByteUtil.ParseHex(str));
             }
 
             return ThrowValueConversionError(value);
@@ -49,10 +49,9 @@ namespace Libplanet.Explorer.GraphTypes
                 return null;
             }
 
-            if (value is Address address)
+            if (value is TxId txId)
             {
-                // NOTE: 0x-prefixed format is preferred as output.
-                return address.ToString();
+                return ByteUtil.Hex(txId.ByteArray);
             }
 
             return ThrowSerializationError(value);

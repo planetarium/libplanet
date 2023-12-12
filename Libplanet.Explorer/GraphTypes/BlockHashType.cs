@@ -1,14 +1,15 @@
 using GraphQL.Language.AST;
 using GraphQL.Types;
-using Libplanet.Crypto;
+using Libplanet.Common;
+using Libplanet.Types.Blocks;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class AddressType : StringGraphType
+    public class BlockHashType : StringGraphType
     {
-        public AddressType()
+        public BlockHashType()
         {
-            Name = "address";
+            Name = "blockHash";
         }
 
         public override object? ParseLiteral(IValue value)
@@ -35,8 +36,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             if (value is string str)
             {
-                // NOTE: 0x-prefixed *and* 0x-non-prefixed version should both be allowed.
-                return new Address(str);
+                return new BlockHash(ByteUtil.ParseHex(str));
             }
 
             return ThrowValueConversionError(value);
@@ -49,10 +49,9 @@ namespace Libplanet.Explorer.GraphTypes
                 return null;
             }
 
-            if (value is Address address)
+            if (value is BlockHash blockHash)
             {
-                // NOTE: 0x-prefixed format is preferred as output.
-                return address.ToString();
+                return ByteUtil.Hex(blockHash.ByteArray);
             }
 
             return ThrowSerializationError(value);

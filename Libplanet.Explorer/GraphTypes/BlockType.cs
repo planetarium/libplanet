@@ -9,10 +9,10 @@ public class BlockType : ObjectGraphType<Block>
     public BlockType(IBlockChainContext context)
     {
         // We need multiple row of description for clearer, not confusing explanation of field.
-        Field<NonNullGraphType<IdGraphType>>(
+        Field<NonNullGraphType<BlockHashType>>(
             "Hash",
             description: "A block's hash.",
-            resolve: ctx => ctx.Source.Hash.ToString()
+            resolve: ctx => ctx.Source.Hash
         );
         Field<NonNullGraphType<LongGraphType>>(
             name: "Index",

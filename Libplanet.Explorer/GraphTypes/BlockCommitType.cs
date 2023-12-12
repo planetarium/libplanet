@@ -19,10 +19,10 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The round of the block commit.",
                 resolve: x => x.Source.Round
             );
-            Field<NonNullGraphType<IdGraphType>>(
+            Field<NonNullGraphType<BlockHashType>>(
                 name: "BlockHash",
                 description: "The hash of the block which contains block commit.",
-                resolve: ctx => ctx.Source.BlockHash.ToString()
+                resolve: ctx => ctx.Source.BlockHash
             );
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<VoteType>>>>(
                 name: "Votes",
