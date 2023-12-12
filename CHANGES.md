@@ -120,6 +120,16 @@ To be released.
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
 
 
+Version 3.9.1
+-------------
+
+Released on December 8, 2023.
+
+ -  (Libplanet.Explorer) Added `INCLUDED` to `TxStatus` enum.  [[#3542]]
+
+[#3542]: https://github.com/planetarium/libplanet/pull/3542
+
+
 Version 3.9.0
 -------------
 

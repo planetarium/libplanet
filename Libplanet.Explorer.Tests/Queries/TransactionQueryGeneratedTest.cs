@@ -27,18 +27,18 @@ public class TransactionQueryGeneratedTest
         Fx = new GeneratedBlockChainFixture(
             new System.Random().Next(),
             txActionsForSuffixBlocks:
-            ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>
-                .Empty
-                .Add(ImmutableArray<ImmutableArray<SimpleAction>>
-                    .Empty
-                    .Add(ImmutableArray<SimpleAction>
-                        .Empty
-                        .Add(new SimpleAction0())))
-                .Add(ImmutableArray<ImmutableArray<SimpleAction>>
-                    .Empty
-                    .Add(ImmutableArray<SimpleAction>
-                        .Empty
-                        .Add(new SimpleAction0Fail()))));
+            ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>.Empty
+                .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
+                    .Add(ImmutableArray<SimpleAction>.Empty
+                        .Add(new SimpleAction0())
+                        .Add(new SimpleAction0())))     // Successful action transaction
+                .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
+                    .Add(ImmutableArray<SimpleAction>.Empty
+                        .Add(new SimpleAction0())
+                        .Add(new SimpleAction0Fail())
+                        .Add(new SimpleAction0()))) // Failed action transaction
+                .Add(ImmutableArray<ImmutableArray<SimpleAction>>.Empty
+                    .Add(ImmutableArray<SimpleAction>.Empty))); // Empty action transaction
         Source = new MockBlockChainContext(Fx.Chain);
         var _ = new ExplorerQuery(Source);
         QueryGraph = new TransactionQuery(Source);
@@ -47,11 +47,12 @@ public class TransactionQueryGeneratedTest
     [Fact]
     public async Task TransactionResult()
     {
-        var failBlock = Fx.Chain.Tip;
-        var failTx = failBlock.Transactions.First();
-        var successBlock =
-            Fx.Chain.Store.GetBlock(failBlock.PreviousHash!.Value);
-        var successTx = successBlock.Transactions.First();
+        var emptyBlock = Fx.Chain.Tip;
+        var emptyTx = emptyBlock.Transactions[0];
+        var failBlock = Fx.Chain.Store.GetBlock(emptyBlock.PreviousHash!.Value);
+        var failTx = failBlock.Transactions[0];
+        var successBlock = Fx.Chain.Store.GetBlock(failBlock.PreviousHash!.Value);
+        var successTx = successBlock.Transactions[0];
         var pk = Fx.PrivateKeys[0];
         var stagingTx = Transaction.Create(
             Fx.Chain.GetNextTxNonce(pk.Address),
@@ -64,14 +65,19 @@ public class TransactionQueryGeneratedTest
         Assert.Equal("SUCCESS", queryResult.TxStatus);
         Assert.Equal(successBlock.Index, queryResult.BlockIndex);
         Assert.Equal(successBlock.Hash.ToString(), queryResult.BlockHash);
-        Assert.Equal(new string?[] { null }, queryResult.ExceptionNames);
+        Assert.Equal(new string?[] { null , null }, queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(failTx.Id);
         Assert.Equal("FAILURE", queryResult.TxStatus);
         Assert.Equal(failBlock.Index, queryResult.BlockIndex);
         Assert.Equal(failBlock.Hash.ToString(), queryResult.BlockHash);
         Assert.Equal(
-            new string[] { "Libplanet.Action.State.CurrencyPermissionException" },
+            new string?[] { null, "Libplanet.Action.State.CurrencyPermissionException", null },
             queryResult.ExceptionNames);
+        queryResult = await ExecuteTransactionResultQueryAsync(emptyTx.Id);
+        Assert.Equal("INCLUDED", queryResult.TxStatus);
+        Assert.Equal(emptyBlock.Index, queryResult.BlockIndex);
+        Assert.Equal(emptyBlock.Hash.ToString(), queryResult.BlockHash);
+        Assert.Null(queryResult.ExceptionNames);
         queryResult = await ExecuteTransactionResultQueryAsync(new TxId());
         Assert.Equal("INVALID", queryResult.TxStatus);
         Assert.Null(queryResult.BlockIndex);
