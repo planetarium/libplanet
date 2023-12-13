@@ -248,7 +248,9 @@ public class StateQueryTest
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
@@ -268,7 +270,9 @@ public class StateQueryTest
                  accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.Null(result.Errors);
