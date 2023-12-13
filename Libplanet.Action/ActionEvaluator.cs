@@ -487,6 +487,9 @@ namespace Libplanet.Action
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            _logger.Debug("Start commit the state root hash {StateRootHash} of block #{BlockIndex}",
+                block.PreEvaluationHash,
+                block.Index);
             ITrie trie = _stateStore.GetStateRoot(baseStateRootHash);
             var committedEvaluations = new List<CommittedActionEvaluation>();
 
@@ -494,13 +497,22 @@ namespace Libplanet.Action
             foreach (var evaluation in evaluations)
             {
                 ITrie nextTrie = trie;
+                _logger.Debug("Set delta of {Action} to the state root hash {StateRootHash}",
+                    evaluation.Action,
+                    trie.Hash);
                 foreach (var kv in evaluation.OutputState.Delta.ToRawDelta())
                 {
                     nextTrie = nextTrie.Set(kv.Key, kv.Value);
                     setCount++;
                 }
 
+                _logger.Debug("Committing the state root hash {StateRootHash} of block #{BlockIndex}",
+                    nextTrie.Hash,
+                    block.Index);
                 nextTrie = _stateStore.Commit(nextTrie);
+                _logger.Debug("Committed the state root hash {StateRootHash} of block #{BlockIndex}",
+                    nextTrie.Hash,
+                    block.Index);
                 var committedEvaluation = new CommittedActionEvaluation(
                     action: evaluation.Action,
                     inputContext: new CommittedActionContext(
