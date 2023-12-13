@@ -254,6 +254,7 @@ namespace Libplanet.Action
                 context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
+                logger?.Information("Executed {Action}", action);
                 logger?
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "ActionExecutionTime")
