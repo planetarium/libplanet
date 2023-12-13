@@ -30,6 +30,7 @@ namespace Libplanet.Explorer.Queries
                 "nodeState",
                 resolve: context => chainContext
             );
+            Field<HelperQuery>("helperQuery");
 
             Name = "ExplorerQuery";
         }
