@@ -37,7 +37,9 @@ public class StateQueryTest
                  addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.Null(result.Errors);
@@ -46,7 +48,15 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object[] states =
             Assert.IsAssignableFrom<object[]>(resultDict["states"]);
-        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
+        Assert.Equal(2, states.Length);
+        Assert.Equal(
+            new Dictionary<string, object>()
+            {
+                { "hex", "6e" },
+            },
+            Assert.IsAssignableFrom<IDictionary<string, object>>(states[0])
+        );
+        Assert.Null(states[1]);
     }
 
     [Fact]
@@ -189,7 +199,9 @@ public class StateQueryTest
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
@@ -208,7 +220,9 @@ public class StateQueryTest
                  addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.Null(result.Errors);
@@ -217,7 +231,15 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object[] states =
             Assert.IsAssignableFrom<object[]>(resultDict["states"]);
-        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
+        Assert.Equal(2, states.Length);
+        Assert.Equal(
+            new Dictionary<string, object>()
+            {
+                { "hex", "6e" },
+            },
+            Assert.IsAssignableFrom<IDictionary<string, object>>(states[0])
+        );
+        Assert.Null(states[1]);
     }
 
     [Fact]
