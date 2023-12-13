@@ -254,7 +254,7 @@ namespace Libplanet.Action
                 context = CreateActionContext(state);
                 feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
-                logger?.Information("Executed {Action}", action);
+                logger?.Information("Executed {Action}", nameof(action));
                 logger?
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "ActionExecutionTime")
@@ -262,7 +262,7 @@ namespace Libplanet.Action
                         "Action {Action} took {DurationMs} ms to execute, " +
                         "GetState called {GetStateCount} times " +
                         "and took {GetStateDurationMs} ms",
-                        action,
+                        nameof(action),
                         stopwatch.ElapsedMilliseconds,
                         AccountMetrics.GetStateCount.Value,
                         AccountMetrics.GetStateTimer.Value?.ElapsedMilliseconds);
