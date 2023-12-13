@@ -1,51 +1,54 @@
 using System;
+using System.IO;
+using System.Text;
+using System.Text.Json;
 using Bencodex;
-using GraphQL.Language.AST;
+using Bencodex.Types;
 using GraphQL.Types;
 using Libplanet.Common;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class BencodexValueType : StringGraphType
+    public class BencodexValueType : ObjectGraphType<IValue>
     {
-        private static readonly Codec _codec = new();
+        private static Codec _codec = new Codec();
 
         public BencodexValueType()
         {
             Name = "BencodexValue";
-        }
 
-        public override object? Serialize(object? value)
-        {
-            if (value is Bencodex.Types.IValue iv)
-            {
-                return _codec.Encode(iv);
-            }
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "hex",
+                description:
+                    "A hexadecimal representation of the bencodex value encoded as byte array.",
+                resolve: context => ByteUtil.Hex(_codec.Encode(context.Source))
+            );
 
-            return value;
-        }
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "base64",
+                description:
+                    "A base64 representation of the bencodex value encoded to byte array.",
+                resolve: context => Convert.ToBase64String(_codec.Encode(context.Source))
+            );
 
-        public override object? ParseValue(object? value)
-        {
-            return value switch
-            {
-                null => null,
-                string hex => _codec.Decode(ByteUtil.ParseHex(hex)),
-                _ => throw new ArgumentException(
-                    $"Expected a hexadecimal string but {value}",
-                    nameof(value)
-                ),
-            };
-        }
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "inspection",
+                description: "A human readable representation of the bencodex value.",
+                resolve: context => context.Source.Inspect()
+            );
 
-        public override object? ParseLiteral(IValue? value)
-        {
-            if (value is StringValue)
-            {
-                return ParseValue(value.Value);
-            }
-
-            return null;
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "json",
+                description: "A JSON representation of the bencodex value",
+                resolve: context =>
+                {
+                    var converter = new Bencodex.Json.BencodexJsonConverter();
+                    var buffer = new MemoryStream();
+                    var writer = new Utf8JsonWriter(buffer);
+                    converter.Write(writer, context.Source, new JsonSerializerOptions());
+                    return Encoding.UTF8.GetString(buffer.ToArray());
+                }
+            );
         }
     }
 }
