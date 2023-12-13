@@ -122,7 +122,7 @@ namespace Libplanet.Action
             }
             catch (Exception e)
             {
-                Log.Error("Encountered a critical excpetion: {Exception}", e);
+                _logger.Error("Encountered a critical excpetion: {Exception}", e);
                 throw;
             }
             finally
@@ -232,7 +232,7 @@ namespace Libplanet.Action
             }
             catch (Exception e)
             {
-                Log.Error("Encountered a critical excpetion: {Exception}", e);
+                logger?.Error("Encountered a critical excpetion: {Exception}", e);
                 throw;
             }
 
@@ -334,7 +334,7 @@ namespace Libplanet.Action
             }
             catch (Exception e)
             {
-                Log.Error("Encountered a critical excpetion: {Exception}", e);
+                logger?.Error("Encountered a critical excpetion: {Exception}", e);
                 throw;
             }
 
@@ -347,7 +347,7 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Encountered a critical excpetion: {Exception}", e);
+                    logger?.Error("Encountered a critical excpetion: {Exception}", e);
                     throw;
                 }
             }
@@ -555,7 +555,7 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Encountered a critical excpetion: {Exception}", e);
+                    _logger.Error("Encountered a critical excpetion: {Exception}", e);
                     throw;
                 }
 #pragma warning restore SA1118
