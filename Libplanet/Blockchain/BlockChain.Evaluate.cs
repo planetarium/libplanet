@@ -116,7 +116,7 @@ namespace Libplanet.Blockchain
                     ? evaluations.Last().OutputState
                     : GetAccountState(block.PreviousHash).Trie.Hash;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error(e, "Failed to evaluate block #{BlockIndex}", block.Index);
                 throw;
