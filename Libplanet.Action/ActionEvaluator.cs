@@ -221,11 +221,19 @@ namespace Libplanet.Action
             IStateStore stateStore,
             ILogger? logger = null)
         {
-            if (!context.PreviousState.Trie.Recorded)
+            try
             {
-                throw new InvalidOperationException(
-                    $"Given {nameof(context)} must have its previous state's " +
-                    $"{nameof(ITrie)} {context.PreviousState.Trie.Hash} recorded.");
+                if (!context.PreviousState.Trie.Recorded)
+                {
+                    throw new InvalidOperationException(
+                        $"Given {nameof(context)} must have its previous state's " +
+                        $"{nameof(ITrie)} {context.PreviousState.Trie.Hash} recorded.");
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Encountered a critical excpetion: {Exception}", e);
+                throw;
             }
 
             IActionContext inputContext = context;
