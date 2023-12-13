@@ -120,6 +120,11 @@ namespace Libplanet.Action
 
                 return ToCommittedEvaluation(block, evaluations, baseStateRootHash);
             }
+            catch (Exception e)
+            {
+                Log.Debug("Encountered a critical excpetion: {Exception}", e);
+                throw;
+            }
             finally
             {
                 _logger
@@ -220,7 +225,7 @@ namespace Libplanet.Action
             {
                 throw new InvalidOperationException(
                     $"Given {nameof(context)} must have its previous state's " +
-                    $"{nameof(ITrie)} recorded.");
+                    $"{nameof(ITrie)} {context.PreviousState.Trie.Hash} recorded.");
             }
 
             IActionContext inputContext = context;
@@ -319,8 +324,16 @@ namespace Libplanet.Action
 
             if (!state.Trie.Recorded)
             {
-                throw new InvalidOperationException(
-                    $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
+                try
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)} as {state.Trie}.");
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("Encountered a critical excpetion: {Exception}", e);
+                    throw;
+                }
             }
 
             return (
@@ -501,24 +514,34 @@ namespace Libplanet.Action
             foreach (var evaluation in evaluations)
             {
 #pragma warning disable SA1118
-                var committedEvaluation = new CommittedActionEvaluation(
-                    action: evaluation.Action,
-                    inputContext: new CommittedActionContext(
-                        signer: evaluation.InputContext.Signer,
-                        txId: evaluation.InputContext.TxId,
-                        miner: evaluation.InputContext.Miner,
-                        blockIndex: evaluation.InputContext.BlockIndex,
-                        blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        previousState: evaluation.InputContext.PreviousState.Trie.Recorded
-                            ? evaluation.InputContext.PreviousState.Trie.Hash
-                            : throw new ArgumentException("Trie is not recorded"),
-                        randomSeed: evaluation.InputContext.RandomSeed,
-                        blockAction: evaluation.InputContext.BlockAction),
-                    outputState: evaluation.OutputState.Trie.Recorded
-                        ? evaluation.OutputState.Trie.Hash
-                        : throw new ArgumentException("Trie is not recorded"),
-                    exception: evaluation.Exception);
-                committedEvaluations.Add(committedEvaluation);
+                try
+                {
+                    var committedEvaluation = new CommittedActionEvaluation(
+                        action: evaluation.Action,
+                        inputContext: new CommittedActionContext(
+                            signer: evaluation.InputContext.Signer,
+                            txId: evaluation.InputContext.TxId,
+                            miner: evaluation.InputContext.Miner,
+                            blockIndex: evaluation.InputContext.BlockIndex,
+                            blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
+                            previousState: evaluation.InputContext.PreviousState.Trie.Recorded
+                                ? evaluation.InputContext.PreviousState.Trie.Hash
+                                : throw new ArgumentException(
+                                    $"Trie {trie.Hash} is not recorded"),
+                            randomSeed: evaluation.InputContext.RandomSeed,
+                            blockAction: evaluation.InputContext.BlockAction),
+                        outputState: evaluation.OutputState.Trie.Recorded
+                            ? evaluation.OutputState.Trie.Hash
+                            : throw new ArgumentException(
+                                $"Trie {trie.Hash} is not recorded"),
+                        exception: evaluation.Exception);
+                    committedEvaluations.Add(committedEvaluation);
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("Encountered a critical excpetion: {Exception}", e);
+                    throw;
+                }
 #pragma warning restore SA1118
 
                 trie = evaluation.OutputState.Trie;
