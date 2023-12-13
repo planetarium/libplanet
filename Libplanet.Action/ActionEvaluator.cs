@@ -324,11 +324,19 @@ namespace Libplanet.Action
                     e);
             }
 
-            state = feeCollector.Refund(state);
-            state = feeCollector.Reward(state);
-            state = new Account(
-                new AccountState(stateStore.Commit(state.Trie)),
-                state.TotalUpdatedFungibleAssets);
+            try
+            {
+                state = feeCollector.Refund(state);
+                state = feeCollector.Reward(state);
+                state = new Account(
+                    new AccountState(stateStore.Commit(state.Trie)),
+                    state.TotalUpdatedFungibleAssets);
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Encountered a critical excpetion: {Exception}", e);
+                throw;
+            }
 
             if (!state.Trie.Recorded)
             {
