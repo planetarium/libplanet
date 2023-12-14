@@ -133,8 +133,13 @@ To be released.
  -  (Libplanet.Explorer) Added `BlockHashType` and `TxIdType`.  [[#3559]]
  -  (Libplanet.Explorer) Changed `HashDigestSHA256Type` to `HashDigestType<T>`.
     [[#3559]]
+ -  (Libplanet.Explorer) Changed `BencodexValueType` to inherit
+    `ObjectGraphType<IValue>` instead of `StringGraphType`.  Instead of
+    simply being a hexadecimal representation of `byte[]` encoded `IValue`,
+    now one can choose its representation format.  [[#3551]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3549
+[#3551]: https://github.com/planetarium/libplanet/pull/3551
 
 
 Version 3.9.2
