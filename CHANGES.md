@@ -137,9 +137,12 @@ To be released.
     `ObjectGraphType<IValue>` instead of `StringGraphType`.  Instead of
     simply being a hexadecimal representation of `byte[]` encoded `IValue`,
     now one can choose its representation format.  [[#3560]]
+ -  (Libplanet.Explorer) Added `HelperQuery`, a collection of utility like
+    queries.  [[#3561]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
+[#3561]: https://github.com/planetarium/libplanet/pull/3561
 
 
 Version 3.9.2
