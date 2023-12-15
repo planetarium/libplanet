@@ -77,12 +77,16 @@ namespace Libplanet.RocksDBStore
         /// <param name="path">The path of the storage file will be saved.</param>
         /// <param name="type">Determines the instance type of the internal <see cref="RocksDb"/>
         /// instances.  <see cref="RocksDBInstanceType.Primary"/> by default.</param>
+        /// <param name="options">The <see cref="DbOptions"/> for <see cref="RocksDb"/>.</param>
         public RocksDBKeyValueStore(
             string path,
-            RocksDBInstanceType type = RocksDBInstanceType.Primary)
+            RocksDBInstanceType type = RocksDBInstanceType.Primary,
+            DbOptions? options = null)
         {
-            var options = new DbOptions()
-                .SetCreateIfMissing();
+            options ??= new DbOptions()
+                .SetCreateIfMissing()
+                .SetSoftPendingCompactionBytesLimit(1000000000000)
+                .SetHardPendingCompactionBytesLimit(1038176821042);
 
             _keyValueDb = RocksDBUtils.OpenRocksDb(options, path, type: type);
             Type = type;
