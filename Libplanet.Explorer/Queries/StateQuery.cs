@@ -23,7 +23,7 @@ public class StateQuery
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
                     { Name = "addresses" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveStates
         );
@@ -33,7 +33,7 @@ public class StateQuery
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveBalance
         );
@@ -42,7 +42,7 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
         );
@@ -50,7 +50,7 @@ public class StateQuery
             "validators",
             arguments: new QueryArguments(
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
         );
