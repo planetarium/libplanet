@@ -120,6 +120,18 @@ namespace Libplanet.Action
 
                 return ToCommittedEvaluation(block, evaluations, baseStateRootHash);
             }
+            catch (Exception e)
+            {
+                const string errorMessage =
+                    "Failed to evaluate block #{BlockIndex} pre-evaluation hash " +
+                    "pre-evaluation has {PreEvaluationHash}";
+                _logger.Error(
+                    e,
+                    errorMessage,
+                    block.Index,
+                    ByteUtil.Hex(block.PreEvaluationHash.ByteArray));
+                throw;
+            }
             finally
             {
                 _logger
