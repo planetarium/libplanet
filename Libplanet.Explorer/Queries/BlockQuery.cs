@@ -46,13 +46,13 @@ namespace Libplanet.Explorer.Queries
             Field<BlockType>(
                 "block",
                 arguments: new QueryArguments(
-                    new QueryArgument<BlockHashType> { Name = "hash" },
-                    new QueryArgument<LongGraphType> { Name = "index" }
+                    new QueryArgument<IdGraphType> { Name = "hash" },
+                    new QueryArgument<IdGraphType> { Name = "index" }
                 ),
                 resolve: context =>
                 {
-                    BlockHash? hash = context.GetArgument<BlockHash?>("hash");
-                    long? index = context.GetArgument<long?>("index");
+                    string hash = context.GetArgument<string>("hash");
+                    long? index = context.GetArgument<long?>("index", null);
 
                     if (!(hash is null ^ index is null))
                     {
@@ -61,14 +61,14 @@ namespace Libplanet.Explorer.Queries
                             "give only one at a time.");
                     }
 
-                    if (hash is { } nonNullHash)
+                    if (hash is string hashNotNull)
                     {
-                        return ExplorerQuery.GetBlockByHash(nonNullHash);
+                        return ExplorerQuery.GetBlockByHash(BlockHash.FromString(hashNotNull));
                     }
 
-                    if (index is { } nonNullIndex)
+                    if (index is long indexNotNull)
                     {
-                        return ExplorerQuery.GetBlockByIndex(nonNullIndex);
+                        return ExplorerQuery.GetBlockByIndex(indexNotNull);
                     }
 
                     throw new GraphQL.ExecutionError("Unexpected block query");

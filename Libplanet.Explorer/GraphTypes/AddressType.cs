@@ -1,3 +1,5 @@
+#nullable disable
+using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
 using Libplanet.Crypto;
@@ -8,54 +10,41 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public AddressType()
         {
-            Name = "address";
+            Name = "Address";
         }
 
-        public override object? ParseLiteral(IValue value)
+        public override object Serialize(object value)
         {
-            if (value is StringValue stringValue)
+            if (value is Address addr)
             {
-                return ParseValue(stringValue.Value);
+                return addr.ToString();
             }
 
-            if (value is NullValue)
-            {
-                return null;
-            }
-
-            return ThrowLiteralConversionError(value);
+            return value;
         }
 
-        public override object? ParseValue(object? value)
+        public override object ParseValue(object value)
         {
-            if (value is null)
+            switch (value)
             {
-                return null;
+                case null:
+                    return null;
+                case string hex:
+                    return new Address(hex);
+                default:
+                    throw new ArgumentException(
+                        $"Expected a hexadecimal string but {value}", nameof(value));
             }
-
-            if (value is string str)
-            {
-                // NOTE: 0x-prefixed *and* 0x-non-prefixed version should both be allowed.
-                return new Address(str);
-            }
-
-            return ThrowValueConversionError(value);
         }
 
-        public override object? Serialize(object? value)
+        public override object ParseLiteral(IValue value)
         {
-            if (value is null)
+            if (value is StringValue)
             {
-                return null;
+                return ParseValue(value.Value);
             }
 
-            if (value is Address address)
-            {
-                // NOTE: 0x-prefixed format is preferred as output.
-                return address.ToString();
-            }
-
-            return ThrowSerializationError(value);
+            return null;
         }
     }
 }
