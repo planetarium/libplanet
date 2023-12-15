@@ -2,7 +2,6 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action.State;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
@@ -11,8 +10,7 @@ using Libplanet.Types.Blocks;
 
 namespace Libplanet.Explorer.Queries;
 
-public class StateQuery
-    : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy Policy)>
+public class StateQuery : ObjectGraphType<IBlockChainStates>
 {
     public StateQuery()
     {
@@ -56,8 +54,7 @@ public class StateQuery
         );
     }
 
-    private static object ResolveStates(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    private static object ResolveStates(IResolveFieldContext<IBlockChainStates> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
@@ -76,20 +73,19 @@ public class StateQuery
                 );
             case (blockhash: not null, _):
             {
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetBlockHash)
                     .GetStates(addresses);
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetStateRootHash)
                     .GetStates(addresses);
         }
     }
 
-    private static object ResolveBalance(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    private static object ResolveBalance(IResolveFieldContext<IBlockChainStates> context)
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
@@ -109,20 +105,19 @@ public class StateQuery
                 );
             case (blockhash: not null, _):
             {
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetBlockHash)
                     .GetBalance(owner, currency);
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetStateRootHash)
                     .GetBalance(owner, currency);
         }
     }
 
-    private static object? ResolveTotalSupply(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    private static object? ResolveTotalSupply(IResolveFieldContext<IBlockChainStates> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
@@ -149,18 +144,17 @@ public class StateQuery
                     "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetBlockHash)
                     .GetTotalSupply(currency);
             case (_, srh: not null):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetStateRootHash)
                     .GetTotalSupply(currency);
         }
     }
 
-    private static object? ResolveValidatorSet(
-        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
+    private static object? ResolveValidatorSet(IResolveFieldContext<IBlockChainStates> context)
     {
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
@@ -177,11 +171,11 @@ public class StateQuery
                     "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetBlockHash)
                     .GetValidatorSet().Validators;
             case (_, srh: not null):
-                return context.Source.ChainStates
+                return context.Source
                     .GetAccountState(offsetStateRootHash)
                     .GetValidatorSet().Validators;
         }
