@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Types.Blocks;
@@ -45,11 +44,11 @@ public class BlockType : ObjectGraphType<Block>
             }
         );
         Field(x => x.Timestamp);
-        Field<NonNullGraphType<HashDigestType<SHA256>>>(
+        Field<NonNullGraphType<ByteStringType>>(
             name: "StateRootHash",
             description: "The hash of the resulting states after evaluating transactions " +
                          "and a block action (if exists)",
-            resolve: ctx => ctx.Source.StateRootHash);
+            resolve: ctx => ctx.Source.StateRootHash.ToByteArray());
         Field<ByteStringType>(
             name: "Signature",
             description: "The digital signature of the whole block content (except for hash, " +
@@ -80,10 +79,10 @@ public class BlockType : ObjectGraphType<Block>
             deprecationReason: "Block does not have Nonce field in PBFT.",
             resolve: _ => new byte[] { }
         );
-        Field<NonNullGraphType<HashDigestType<SHA256>>>(
+        Field<NonNullGraphType<ByteStringType>>(
             name: "PreEvaluationHash",
             description: "The hash of PreEvaluationBlock.",
-            resolve: ctx => ctx.Source.PreEvaluationHash);
+            resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
 
         Name = "Block";
     }
