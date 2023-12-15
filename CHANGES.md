@@ -125,6 +125,12 @@ To be released.
 [#3583]: https://github.com/planetarium/libplanet/pull/3583
 
 
+Version 3.9.3
+-------------
+
+To be released.
+
+
 Version 3.9.2
 -------------
 
