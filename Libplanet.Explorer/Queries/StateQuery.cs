@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
@@ -22,8 +23,8 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
                     { Name = "addresses" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveStates
         );
@@ -32,8 +33,8 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveBalance
         );
@@ -41,16 +42,16 @@ public class StateQuery
             "totalSupply",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
         );
         Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
             "validators",
             arguments: new QueryArguments(
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
         );
@@ -60,7 +61,7 @@ public class StateQuery
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        string? offsetBlockHash = context.GetArgument<string?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -76,15 +77,28 @@ public class StateQuery
                 );
             case (blockhash: not null, _):
             {
-                return context.Source.ChainStates
-                    .GetAccountState(offsetBlockHash)
-                    .GetStates(addresses);
+                BlockHash offset;
+                try
+                {
+                    offset = BlockHash.FromString(offsetBlockHash);
+                }
+                catch (Exception e)
+                {
+                    throw new ExecutionError(
+                        "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                        e
+                    );
+                }
+
+                return context.Source.ChainStates.GetAccountState(
+                    offset
+                ).GetStates(addresses);
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetStateRootHash)
-                    .GetStates(addresses);
+                return context.Source.ChainStates.GetAccountState(
+                    offsetStateRootHash
+                ).GetStates(addresses);
         }
     }
 
@@ -93,7 +107,7 @@ public class StateQuery
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        string? offsetBlockHash = context.GetArgument<string?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -109,15 +123,28 @@ public class StateQuery
                 );
             case (blockhash: not null, _):
             {
-                return context.Source.ChainStates
-                    .GetAccountState(offsetBlockHash)
-                    .GetBalance(owner, currency);
+                BlockHash offset;
+                try
+                {
+                    offset = BlockHash.FromString(offsetBlockHash);
+                }
+                catch (Exception e)
+                {
+                    throw new ExecutionError(
+                        "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                        e
+                    );
+                }
+
+                return context.Source.ChainStates.GetAccountState(
+                    offset
+                ).GetBalance(owner, currency);
             }
 
             case (_, srh: not null):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetStateRootHash)
-                    .GetBalance(owner, currency);
+                return context.Source.ChainStates.GetAccountState(
+                    offsetStateRootHash
+                ).GetBalance(owner, currency);
         }
     }
 
@@ -125,7 +152,7 @@ public class StateQuery
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        string? offsetBlockHash = context.GetArgument<string?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -149,20 +176,36 @@ public class StateQuery
                     "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetBlockHash)
-                    .GetTotalSupply(currency);
+            {
+                BlockHash offset;
+                try
+                {
+                    offset = BlockHash.FromString(offsetBlockHash);
+                }
+                catch (Exception e)
+                {
+                    throw new ExecutionError(
+                        "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                        e
+                    );
+                }
+
+                return context.Source.ChainStates.GetAccountState(
+                    offset
+                ).GetTotalSupply(currency);
+            }
+
             case (_, srh: not null):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetStateRootHash)
-                    .GetTotalSupply(currency);
+                return context.Source.ChainStates.GetAccountState(
+                    offsetStateRootHash
+                ).GetTotalSupply(currency);
         }
     }
 
     private static object? ResolveValidatorSet(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        string? offsetBlockHash = context.GetArgument<string?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -177,13 +220,29 @@ public class StateQuery
                     "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetBlockHash)
-                    .GetValidatorSet().Validators;
+            {
+                BlockHash offset;
+                try
+                {
+                    offset = BlockHash.FromString(offsetBlockHash);
+                }
+                catch (Exception e)
+                {
+                    throw new ExecutionError(
+                        "offsetBlockHash must consist of hexadecimal digits.\n" + e.Message,
+                        e
+                    );
+                }
+
+                return context.Source.ChainStates.GetAccountState(
+                    offset
+                ).GetValidatorSet().Validators;
+            }
+
             case (_, srh: not null):
-                return context.Source.ChainStates
-                    .GetAccountState(offsetStateRootHash)
-                    .GetValidatorSet().Validators;
+                return context.Source.ChainStates.GetAccountState(
+                    offsetStateRootHash
+                ).GetValidatorSet().Validators;
         }
     }
 }
