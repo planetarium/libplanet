@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
@@ -17,6 +18,68 @@ public class StateQuery
     public StateQuery()
     {
         Name = "StateQuery";
+        Field<NonNullGraphType<AccountStateType>>(
+            name: "account",
+            description:
+                "Gets the account state associated with given block hash or state root hash. " +
+                "Exactly one of the arguments must be specified.",
+            arguments: new QueryArguments(
+                new QueryArgument<BlockHashType>
+                {
+                    Name = "blockHash",
+                    Description = "A block hash to use as a pointer.",
+                },
+                new QueryArgument<HashDigestType<SHA256>>
+                {
+                    Name = "stateRootHash",
+                    Description = "A state root hash to use as a pointer.",
+                }
+            ),
+            resolve: context => (
+                context.GetArgument<BlockHash?>("blockHash"),
+                context.GetArgument<HashDigest<SHA256>?>("stateRootHash")) switch
+                {
+                    ({ } blockHash, null) => context.Source.GetAccountState(blockHash),
+                    (null, { } stateRootHash) => context.Source.GetAccountState(stateRootHash),
+                    _ => throw new ExecutionError(
+                        "Exactly one of blockHash and stateRootHash must be specified."),
+                }
+        );
+
+        Field<NonNullGraphType<AccountStateType>>(
+            name: "accounts",
+            description:
+                "Gets the account states associated with given block hashes " +
+                "or state root hashes. Exactly one of the arguments must be specified.",
+            arguments: new QueryArguments(
+                new QueryArgument<ListGraphType<NonNullGraphType<BlockHashType>>>
+                {
+                    Name = "blockHashes",
+                    Description = "A list of block hashes to use as pointers.",
+                },
+                new QueryArgument<ListGraphType<NonNullGraphType<HashDigestType<SHA256>>>>
+                {
+                    Name = "stateRootHashes",
+                    Description = "A list of state root hashes to use as pointers.",
+                }
+            ),
+            resolve: context => (
+                context.GetArgument<BlockHash[]?>("blockHashes"),
+                context.GetArgument<HashDigest<SHA256>[]?>("stateRootHashes")) switch
+                {
+                    ({ } blockHashes, null) =>
+                        blockHashes
+                            .Select(blockHash => context.Source.GetAccountState(blockHash))
+                            .ToArray(),
+                    (null, { } stateRootHashes) =>
+                        stateRootHashes
+                            .Select(stateRootHash => context.Source.GetAccountState(stateRootHash))
+                            .ToArray(),
+                    _ => throw new ExecutionError(
+                        "Exactly one of blockHashes and stateRootHashes must be specified."),
+                }
+        );
+
         Field<NonNullGraphType<WorldStateType>>(
             "worldState",
             arguments: new QueryArguments(
