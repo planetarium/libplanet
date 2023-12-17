@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Types.Blocks;
@@ -9,10 +10,10 @@ public class BlockType : ObjectGraphType<Block>
     public BlockType(IBlockChainContext context)
     {
         // We need multiple row of description for clearer, not confusing explanation of field.
-        Field<NonNullGraphType<IdGraphType>>(
+        Field<NonNullGraphType<BlockHashType>>(
             "Hash",
             description: "A block's hash.",
-            resolve: ctx => ctx.Source.Hash.ToString()
+            resolve: ctx => ctx.Source.Hash
         );
         Field<NonNullGraphType<LongGraphType>>(
             name: "Index",
@@ -44,11 +45,11 @@ public class BlockType : ObjectGraphType<Block>
             }
         );
         Field(x => x.Timestamp);
-        Field<NonNullGraphType<ByteStringType>>(
+        Field<NonNullGraphType<HashDigestType<SHA256>>>(
             name: "StateRootHash",
             description: "The hash of the resulting states after evaluating transactions " +
                          "and a block action (if exists)",
-            resolve: ctx => ctx.Source.StateRootHash.ToByteArray());
+            resolve: ctx => ctx.Source.StateRootHash);
         Field<ByteStringType>(
             name: "Signature",
             description: "The digital signature of the whole block content (except for hash, " +
@@ -79,10 +80,10 @@ public class BlockType : ObjectGraphType<Block>
             deprecationReason: "Block does not have Nonce field in PBFT.",
             resolve: _ => new byte[] { }
         );
-        Field<NonNullGraphType<ByteStringType>>(
+        Field<NonNullGraphType<HashDigestType<SHA256>>>(
             name: "PreEvaluationHash",
             description: "The hash of PreEvaluationBlock.",
-            resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
+            resolve: ctx => ctx.Source.PreEvaluationHash);
 
         Name = "Block";
     }

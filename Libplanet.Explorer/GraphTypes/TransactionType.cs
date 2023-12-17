@@ -11,10 +11,11 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType(IBlockChainContext context)
         {
-            Field<NonNullGraphType<IdGraphType>>(
+            Field<NonNullGraphType<TxIdType>>(
                 name: "Id",
                 description: "A unique identifier derived from this transaction content.",
-                resolve: ctx => ctx.Source.Id.ToString());
+                resolve: ctx => ctx.Source.Id
+            );
             Field<NonNullGraphType<LongGraphType>>(
                 name: "Nonce",
                 description: "The number of previous transactions committed by the signer of " +

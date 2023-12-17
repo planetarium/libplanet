@@ -1,14 +1,16 @@
+using System.Security.Cryptography;
 using GraphQL.Language.AST;
 using GraphQL.Types;
-using Libplanet.Crypto;
+using Libplanet.Common;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class AddressType : StringGraphType
+    public class HashDigestType<T> : StringGraphType
+        where T : HashAlgorithm
     {
-        public AddressType()
+        public HashDigestType()
         {
-            Name = "address";
+            Name = $"HashDigest{typeof(T).Name}";
         }
 
         public override object? ParseLiteral(IValue value)
@@ -35,8 +37,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             if (value is string str)
             {
-                // NOTE: 0x-prefixed *and* 0x-non-prefixed version should both be allowed.
-                return new Address(str);
+                return new HashDigest<T>(ByteUtil.ParseHex(str));
             }
 
             return ThrowValueConversionError(value);
@@ -49,10 +50,9 @@ namespace Libplanet.Explorer.GraphTypes
                 return null;
             }
 
-            if (value is Address address)
+            if (value is HashDigest<T> hashDigest)
             {
-                // NOTE: 0x-prefixed format is preferred as output.
-                return address.ToString();
+                return ByteUtil.Hex(hashDigest.ByteArray);
             }
 
             return ThrowSerializationError(value);

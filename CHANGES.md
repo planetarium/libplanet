@@ -6,6 +6,12 @@ Version 3.9.3
 
 To be released.
 
+ -  (Libplanet.Explorer) Added `BlockHashType` and `TxIdType`.  [[#3559]]
+ -  (Libplanet.Explorer) Changed `HashDigestSHA256Type` to `HashDigestType<T>`.
+    [[#3559]]
+
+[#3559]: https://github.com/planetarium/libplanet/pull/3549
+
 
 Version 3.9.2
 -------------
