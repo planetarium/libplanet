@@ -27,10 +27,7 @@ public class StateQueryTest
     [Fact]
     public async Task States()
     {
-        var currency = Currency.Uncapped("ABC", 2, minters: null);
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             states(
@@ -62,10 +59,7 @@ public class StateQueryTest
     [Fact]
     public async Task Balance()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             balance(
@@ -107,8 +101,7 @@ public class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy());
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
@@ -159,10 +152,7 @@ public class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
@@ -188,9 +178,7 @@ public class StateQueryTest
     [Fact]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             states(
@@ -211,9 +199,7 @@ public class StateQueryTest
     public async Task StatesBySrh()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             states(
@@ -245,10 +231,7 @@ public class StateQueryTest
     [Fact]
     public async Task BalanceBySrh()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             balance(
@@ -290,8 +273,7 @@ public class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy());
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
@@ -342,10 +324,7 @@ public class StateQueryTest
     [Fact]
     public async Task ValidatorsBySrh()
     {
-         (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(),
-            new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
