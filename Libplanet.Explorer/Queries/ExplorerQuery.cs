@@ -121,12 +121,6 @@ namespace Libplanet.Explorer.Queries
                         .IterateSignerReferences(
                             (Address)signer, desc, (int)offset, limit ?? int.MaxValue);
                 }
-                else if (!(involved is null))
-                {
-                    txIds = richStore
-                        .IterateUpdatedAddressReferences(
-                            (Address)involved, desc, (int)offset, limit ?? int.MaxValue);
-                }
                 else
                 {
                     txIds = richStore

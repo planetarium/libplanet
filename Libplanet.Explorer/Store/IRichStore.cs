@@ -24,16 +24,5 @@ namespace Libplanet.Explorer.Store
             bool desc,
             int offset = 0,
             int limit = int.MaxValue);
-
-        void StoreUpdatedAddressReferences(
-            TxId txId,
-            long txNonce,
-            Address updatedAddress);
-
-        IEnumerable<TxId> IterateUpdatedAddressReferences(
-            Address updatedAddress,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue);
     }
 }
