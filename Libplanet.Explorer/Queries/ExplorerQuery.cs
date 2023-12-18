@@ -97,7 +97,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static IEnumerable<Transaction> ListTransactions(
-            Address? signer, Address? involved, bool desc, long offset, int? limit)
+            Address? signer, bool desc, long offset, int? limit)
         {
             Block tip = Chain.Tip;
             long tipIndex = tip.Index;
@@ -143,7 +143,7 @@ namespace Libplanet.Explorer.Queries
             {
                 foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
                 {
-                    if (IsValidTransaction(tx, signer, involved))
+                    if (IsValidTransaction(tx, signer))
                     {
                         yield return tx;
                         limit--;
@@ -159,7 +159,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static IEnumerable<Transaction> ListStagedTransactions(
-            Address? signer, Address? involved, bool desc, int offset, int? limit)
+            Address? signer, bool desc, int offset, int? limit)
         {
             if (offset < 0)
             {
@@ -169,7 +169,7 @@ namespace Libplanet.Explorer.Queries
             }
 
             var stagedTxs = Chain.StagePolicy.Iterate(Chain)
-                .Where(tx => IsValidTransaction(tx, signer, involved))
+                .Where(tx => IsValidTransaction(tx, signer))
                 .Skip(offset);
 
             stagedTxs = desc ? stagedTxs.OrderByDescending(tx => tx.Timestamp)
@@ -202,17 +202,11 @@ namespace Libplanet.Explorer.Queries
 
         private static bool IsValidTransaction(
             Transaction tx,
-            Address? signer,
-            Address? involved)
+            Address? signer)
         {
             if (signer is { } signerVal)
             {
                 return tx.Signer.Equals(signerVal);
-            }
-
-            if (involved is { } involvedVal)
-            {
-                return tx.UpdatedAddresses.Contains(involvedVal);
             }
 
             return true;
