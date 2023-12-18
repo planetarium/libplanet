@@ -19,7 +19,6 @@ namespace Libplanet.Explorer.Store
     {
         private const string TxRefCollectionName = "block_ref";
         private const string SignerRefCollectionName = "signer_ref";
-        private const string UpdatedAddressRefCollectionName = "updated_address_ref";
 
         private readonly MemoryStream _memoryStream;
         private readonly LiteDatabase _db;
@@ -298,10 +297,6 @@ namespace Libplanet.Explorer.Store
         {
             _store.PutTransaction(tx);
             StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
-            foreach (var updatedAddress in tx.UpdatedAddresses)
-            {
-                StoreUpdatedAddressReferences(tx.Id, tx.Nonce, updatedAddress);
-            }
         }
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash, long blockIndex)
@@ -364,36 +359,6 @@ namespace Libplanet.Explorer.Store
             return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
 
-        public void StoreUpdatedAddressReferences(
-            TxId txId,
-            long txNonce,
-            Address updatedAddress)
-        {
-            var collection = UpdatedAddressRefCollection();
-            collection.Upsert(new AddressRefDoc
-            {
-                Address = updatedAddress, TxNonce = txNonce, TxId = txId,
-            });
-            collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
-            collection.EnsureIndex(nameof(AddressRefDoc.TxNonce));
-        }
-
-        public IEnumerable<TxId> IterateUpdatedAddressReferences(
-            Address updatedAddress,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue)
-        {
-            var collection = UpdatedAddressRefCollection();
-            var order = desc ? Query.Descending : Query.Ascending;
-            var addressString = updatedAddress.ToHex().ToLowerInvariant();
-            var query = Query.And(
-                Query.All(nameof(AddressRefDoc.TxNonce), order),
-                Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
-            );
-            return collection.Find(query, offset, limit).Select(doc => doc.TxId);
-        }
-
         public void Dispose()
         {
             if (!_disposed)
@@ -410,8 +375,5 @@ namespace Libplanet.Explorer.Store
 
         private LiteCollection<AddressRefDoc> SignerRefCollection() =>
             _db.GetCollection<AddressRefDoc>(SignerRefCollectionName);
-
-        private LiteCollection<AddressRefDoc> UpdatedAddressRefCollection() =>
-            _db.GetCollection<AddressRefDoc>(UpdatedAddressRefCollectionName);
     }
 }
