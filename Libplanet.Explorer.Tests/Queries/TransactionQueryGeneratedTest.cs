@@ -112,100 +112,88 @@ public class TransactionQueryGeneratedTest
         Address? involvedAddress)
     {
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, false, null, null);
+            blocksToTest, signer, false, null, null);
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, true, null, null);
+            blocksToTest, signer, true, null, null);
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, false, blocksToTest.Length / 4, null);
+            blocksToTest, signer, false, blocksToTest.Length / 4, null);
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             false,
             blocksToTest.Length / 4 - blocksToTest.Length,
             null);
         Assert.Equal<IEnumerable<(string Id, string? BlockHash)>>(
             await ExecuteTransactionsQueryAsync(
-                signer, involvedAddress, false, blocksToTest.Length / 4, null),
+                signer, false, blocksToTest.Length / 4, null),
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 false,
                 blocksToTest.Length / 4 - blocksToTest.Length,
                 null));
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, true, blocksToTest.Length / 4, null);
+            blocksToTest, signer, true, blocksToTest.Length / 4, null);
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             true,
             blocksToTest.Length / 4 - blocksToTest.Length,
             null);
         Assert.Equal<IEnumerable<(string Id, string? BlockHash)>>(
             await ExecuteTransactionsQueryAsync(
-                signer, involvedAddress, true, blocksToTest.Length / 4, null),
+                signer, true, blocksToTest.Length / 4, null),
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 true,
                 blocksToTest.Length / 4 - blocksToTest.Length,
                 null));
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, false, null, blocksToTest.Length / 4);
+            blocksToTest, signer, false, null, blocksToTest.Length / 4);
         await AssertAgainstTransactionsQuery(
-            blocksToTest, signer, involvedAddress, true, null, blocksToTest.Length / 4);
+            blocksToTest, signer, true, null, blocksToTest.Length / 4);
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             false,
             blocksToTest.Length / 3,
             blocksToTest.Length / 4);
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             false,
             blocksToTest.Length / 3 - blocksToTest.Length,
             blocksToTest.Length / 4);
         Assert.Equal<IEnumerable<(string Id, string? BlockHash)>>(
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 false,
                 blocksToTest.Length / 3,
                 blocksToTest.Length / 4),
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 false,
                 blocksToTest.Length / 3 - blocksToTest.Length,
                 blocksToTest.Length / 4));
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             true,
             blocksToTest.Length / 3,
             blocksToTest.Length / 4);
         await AssertAgainstTransactionsQuery(
             blocksToTest,
             signer,
-            involvedAddress,
             true,
             blocksToTest.Length / 3 - blocksToTest.Length,
             blocksToTest.Length / 4);
         Assert.Equal<IEnumerable<(string Id, string? BlockHash)>>(
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 true,
                 blocksToTest.Length / 3,
                 blocksToTest.Length / 4),
             await ExecuteTransactionsQueryAsync(
                 signer,
-                involvedAddress,
                 true,
                 blocksToTest.Length / 3 - blocksToTest.Length,
                 blocksToTest.Length / 4));
@@ -214,7 +202,6 @@ public class TransactionQueryGeneratedTest
     private async Task AssertAgainstTransactionsQuery(
         IReadOnlyList<Block> blocksToTest,
         Address? signer,
-        Address? involvedAddress,
         bool desc,
         int? offset,
         int? limit)
@@ -237,10 +224,6 @@ public class TransactionQueryGeneratedTest
         {
             txs = txs.Where(tx => tx.Signer.Equals(signerVal));
         }
-        else if (involvedAddress is { } involvedAddressVal)
-        {
-            txs = txs.Where(tx => tx.UpdatedAddresses.Contains(involvedAddressVal));
-        }
 
         if (limit is { } limitVal)
         {
@@ -249,7 +232,7 @@ public class TransactionQueryGeneratedTest
 
         var expected = txs.ToImmutableArray();
         var actual =
-            await ExecuteTransactionsQueryAsync(signer, involvedAddress, desc, offset, limit);
+            await ExecuteTransactionsQueryAsync(signer, desc, offset, limit);
 
         foreach (var i in Enumerable.Range(0, actual.Length))
         {
@@ -269,7 +252,6 @@ public class TransactionQueryGeneratedTest
     private async Task<ImmutableArray<(string Id, string? BlockHash)>>
         ExecuteTransactionsQueryAsync(
             Address? signer,
-            Address? involvedAddress,
             bool desc,
             int? offset,
             int? limit)
@@ -278,7 +260,6 @@ public class TransactionQueryGeneratedTest
         {{
             transactions(
                 {(signer is { } signerVal ? @$"signer: ""{signerVal}""" : "")}
-                {(involvedAddress is { } invVal ? @$"involvedAddress: ""{invVal}""" : "")}
                 desc: {(desc ? "true" : "false")}
                 offset: {offset?.ToString(CultureInfo.InvariantCulture) ?? "0"}
                 {(limit is { } limitVal ? $"limit: {limitVal}" : "")}
