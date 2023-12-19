@@ -126,26 +126,6 @@ consecutive blocks.")]
                 Description = "An app protocol version token.")]
             string appProtocolVersionToken = null,
             [Option(
-                "mysql-server",
-                Description = "A hostname of MySQL server.")]
-            string mysqlServer = null,
-            [Option(
-                "mysql-port",
-                Description = "A port of MySQL server.")]
-            uint? mysqlPort = null,
-            [Option(
-                "mysql-username",
-                Description = "The name of MySQL user.")]
-            string mysqlUsername = null,
-            [Option(
-                "mysql-password",
-                Description = "The password of MySQL user.")]
-            string mysqlPassword = null,
-            [Option(
-                "mysql-database",
-                Description = "The name of MySQL database to use.")]
-            string mysqlDatabase = null,
-            [Option(
                 "max-transactions-per-block",
                 Description = @"The number of maximum transactions able to be included
 in a block.")]
@@ -182,11 +162,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 blockIntervalMilliseconds,
                 difficultyBoundDivisor,
                 appProtocolVersionToken,
-                mysqlServer,
-                mysqlPort,
-                mysqlUsername,
-                mysqlPassword,
-                mysqlDatabase,
                 maxTransactionsPerBlock,
                 maxTransactionsBytes,
                 maxGenesisTransactionsBytes,

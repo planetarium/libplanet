@@ -22,11 +22,6 @@ namespace Libplanet.Explorer.Executable
             int blockIntervalMilliseconds,
             int difficultyBoundDivisor,
             string appProtocolVersionToken,
-            string mysqlServer,
-            uint? mysqlPort,
-            string mysqlUsername,
-            string mysqlPassword,
-            string mysqlDatabase,
             int maxTransactionsPerBlock,
             int maxTransactionsBytes,
             int maxGenesisTransactionsBytes,
@@ -43,11 +38,6 @@ namespace Libplanet.Explorer.Executable
             BlockIntervalMilliseconds = blockIntervalMilliseconds;
             DifficultyBoundDivisor = difficultyBoundDivisor;
             AppProtocolVersionToken = appProtocolVersionToken;
-            MySQLServer = mysqlServer;
-            MySQLPort = mysqlPort;
-            MySQLUsername = mysqlUsername;
-            MySQLPassword = mysqlPassword;
-            MySQLDatabase = mysqlDatabase;
             MaxTransactionsPerBlock = maxTransactionsPerBlock;
             MaxTransactionsBytes = maxTransactionsBytes;
             MaxGenesisTransactionsBytes = maxGenesisTransactionsBytes;
@@ -69,16 +59,6 @@ namespace Libplanet.Explorer.Executable
         public int DifficultyBoundDivisor { get; set; }
 
         public string AppProtocolVersionToken { get; set; }
-
-        public string MySQLServer { get; set; }
-
-        public uint? MySQLPort { get; set; }
-
-        public string MySQLUsername { get; set; }
-
-        public string MySQLPassword { get; set; }
-
-        public string MySQLDatabase { get; set; }
 
         public int MaxTransactionsPerBlock { get; set; }
 
