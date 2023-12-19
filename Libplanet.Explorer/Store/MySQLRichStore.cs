@@ -20,7 +20,6 @@ namespace Libplanet.Explorer.Store
     {
         private const string TxRefDbName = "block_ref";
         private const string SignerRefDbName = "signer_ref";
-        private const string UpdatedAddressRefDbName = "updated_address_ref";
 
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
@@ -259,14 +258,6 @@ namespace Libplanet.Explorer.Store
         {
             _store.PutTransaction(tx);
             StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
-            InsertMany(
-                "updated_address_references",
-                new[] { "updated_address", "tx_id", "tx_nonce" },
-                tx.UpdatedAddresses.Select(
-                    addr => new object[]
-                    {
-                        addr.ToByteArray(), tx.Id.ToByteArray(), tx.Nonce,
-                    }));
         }
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash,  long txNonce)
@@ -317,37 +308,6 @@ namespace Libplanet.Explorer.Store
         {
             using QueryFactory db = OpenDB();
             var query = db.Query("signer_references").Where("signer", signer.ToByteArray())
-                .Offset(offset)
-                .Limit(limit)
-                .Select("tx_id");
-            query = desc ? query.OrderByDesc("tx_nonce") : query.OrderBy("tx_nonce");
-            return query.OrderBy("tx_nonce")
-                .Get<byte[]>()
-                .Select(bytes => new TxId(bytes));
-        }
-
-        public void StoreUpdatedAddressReferences(
-            TxId txId,
-            long txNonce,
-            Address updatedAddress)
-        {
-            Insert("updated_address_references", new Dictionary<string, object>
-            {
-                ["updated_address"] = updatedAddress.ToByteArray(),
-                ["tx_id"] = txId.ToByteArray(),
-                ["tx_nonce"] = txNonce,
-            });
-        }
-
-        public IEnumerable<TxId> IterateUpdatedAddressReferences(
-            Address updatedAddress,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue)
-        {
-            using QueryFactory db = OpenDB();
-            var query = db.Query("updated_address_references")
-                .Where("updated_address", updatedAddress.ToByteArray())
                 .Offset(offset)
                 .Limit(limit)
                 .Select("tx_id");

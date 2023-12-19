@@ -15,10 +15,15 @@ To be released.
     now one can choose its representation format.  [[#3560]]
  -  (Libplanet.Explorer) Added `HelperQuery`, a collection of utility like
     queries.  [[#3561]]
+ -  (Libplanet.Explorer) Removed `IRichStore.StoreUpdatedAddressReferences()`
+    and `IterateUpdatedAddressReferences()` interface methods.  [[#3562]]
+ -  (Libplanet.Explorer) Removed `involvedAddress` argument from all
+    `TransactionQuery` query methods.  [[#3562]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
 [#3561]: https://github.com/planetarium/libplanet/pull/3561
+[#3562]: https://github.com/planetarium/libplanet/pull/3562
 
 
 Version 3.9.2
