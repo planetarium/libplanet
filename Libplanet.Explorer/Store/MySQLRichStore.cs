@@ -257,7 +257,6 @@ namespace Libplanet.Explorer.Store
         public void PutTransaction(Transaction tx)
         {
             _store.PutTransaction(tx);
-            StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
         }
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash,  long txNonce)
@@ -288,33 +287,6 @@ namespace Libplanet.Explorer.Store
             return db.GetDictionary(query).Select(dict => (
                 new TxId((byte[])dict["tx_id"]),
                 new BlockHash((byte[])dict["block_hash"])));
-        }
-
-        public void StoreSignerReferences(TxId txId, long txNonce, Address signer)
-        {
-            Insert("signer_references", new Dictionary<string, object>
-            {
-                ["signer"] = signer.ToByteArray(),
-                ["tx_id"] = txId.ToByteArray(),
-                ["tx_nonce"] = txNonce,
-            });
-        }
-
-        public IEnumerable<TxId> IterateSignerReferences(
-            Address signer,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue)
-        {
-            using QueryFactory db = OpenDB();
-            var query = db.Query("signer_references").Where("signer", signer.ToByteArray())
-                .Offset(offset)
-                .Limit(limit)
-                .Select("tx_id");
-            query = desc ? query.OrderByDesc("tx_nonce") : query.OrderBy("tx_nonce");
-            return query.OrderBy("tx_nonce")
-                .Get<byte[]>()
-                .Select(bytes => new TxId(bytes));
         }
 
         public void Dispose()
