@@ -10,6 +10,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
@@ -21,11 +22,13 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
-    public class NetMQMessageCodecTest : IDisposable
+    public class NetMQMessageCodecTest
     {
-        public void Dispose()
+        private readonly NetMQConfigFixture _netMQConfigFixture;
+
+        public NetMQMessageCodecTest(NetMQConfigFixture netMQConfigFixture)
         {
-            NetMQConfig.Cleanup(false);
+            _netMQConfigFixture = netMQConfigFixture;
         }
 
         [Theory]

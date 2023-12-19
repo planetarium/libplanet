@@ -18,9 +18,8 @@ namespace Libplanet.Net.Tests.Transports
     [Collection("NetMQConfiguration")]
     public class NetMQTransportTest : TransportTest, IDisposable
     {
-        private bool _disposed;
-
-        public NetMQTransportTest(ITestOutputHelper testOutputHelper)
+        public NetMQTransportTest(
+            NetMQConfigFixture netMQConfigFixture, ITestOutputHelper testOutputHelper)
         {
             TransportConstructor = async (
                     privateKey,
@@ -32,6 +31,8 @@ namespace Libplanet.Net.Tests.Transports
                     appProtocolVersionOptions,
                     hostOptions,
                     messageTimestampBuffer);
+
+            _netMQConfigFixture = netMQConfigFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffff}[{ThreadId}] - {Message}";
@@ -46,7 +47,7 @@ namespace Libplanet.Net.Tests.Transports
 
         ~NetMQTransportTest()
         {
-            Dispose(false);
+            Dispose();
         }
 
         [Fact]
@@ -121,21 +122,7 @@ namespace Libplanet.Net.Tests.Transports
 
         public void Dispose()
         {
-            Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
-
-                _disposed = true;
-            }
         }
 
         private Task<NetMQTransport> CreateNetMQTransport(

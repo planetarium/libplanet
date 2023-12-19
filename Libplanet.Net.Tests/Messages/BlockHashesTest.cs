@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Types.Blocks;
 using NetMQ;
 using Xunit;
@@ -12,11 +13,13 @@ using Xunit;
 namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
-    public class BlockHashesTest : IDisposable
+    public class BlockHashesTest
     {
-        public void Dispose()
+        private readonly NetMQConfigFixture _netMQConfigFixture;
+
+        public BlockHashesTest(NetMQConfigFixture netMQConfigFixture)
         {
-            NetMQConfig.Cleanup(false);
+            _netMQConfigFixture = netMQConfigFixture;
         }
 
         [Fact]

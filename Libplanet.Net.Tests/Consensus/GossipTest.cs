@@ -7,9 +7,9 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Store;
-using NetMQ;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -18,13 +18,16 @@ using Xunit.Abstractions;
 namespace Libplanet.Net.Tests.Consensus
 {
     [Collection("NetMQConfiguration")]
-    public class GossipTest : IDisposable
+    public class GossipTest
     {
         private const int Timeout = 60 * 1000;
+        private readonly NetMQConfigFixture _netMQConfigFixture;
         private readonly ILogger _logger;
 
-        public GossipTest(ITestOutputHelper output)
+        public GossipTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
         {
+            _netMQConfigFixture = netMQConfigFixture;
+
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
             Log.Logger = new LoggerConfiguration()
@@ -32,13 +35,7 @@ namespace Libplanet.Net.Tests.Consensus
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<GossipTest>();
-
             _logger = Log.ForContext<GossipTest>();
-        }
-
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup();
         }
 
         [Fact(Timeout = Timeout)]

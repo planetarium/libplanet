@@ -21,6 +21,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -28,7 +29,6 @@ using Libplanet.Stun;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
-using NetMQ;
 using Nito.AsyncEx;
 using Nito.AsyncEx.Synchronous;
 using Serilog;
@@ -48,13 +48,17 @@ namespace Libplanet.Net.Tests
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
 
+        private readonly NetMQConfigFixture _netMQConfigFixture;
+
         private readonly ITestOutputHelper _output;
         private readonly ILogger _logger;
 
         private bool _disposed = false;
 
-        public SwarmTest(ITestOutputHelper output)
+        public SwarmTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
         {
+            _netMQConfigFixture = netMQConfigFixture;
+
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ}[@{SwarmId}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()
@@ -63,7 +67,6 @@ namespace Libplanet.Net.Tests
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<SwarmTest>();
-
             _logger = Log.ForContext<SwarmTest>();
             _output = output;
 
@@ -1935,7 +1938,6 @@ namespace Libplanet.Net.Tests
                     }
 
                     _logger.Debug("Finished to finalize {Resources} resources", _finalizers.Count);
-                    NetMQConfig.Cleanup(false);
                 }
 
                 _disposed = true;

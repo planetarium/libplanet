@@ -11,10 +11,10 @@ using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Net.Consensus;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
-using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -22,14 +22,17 @@ using Xunit.Abstractions;
 namespace Libplanet.Net.Tests.Consensus
 {
     [Collection("NetMQConfiguration")]
-    public class ConsensusReactorTest : IDisposable
+    public class ConsensusReactorTest
     {
         private const int PropagationDelay = 25_000;
         private const int Timeout = 60 * 1000;
-        private ILogger _logger;
+        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly ILogger _logger;
 
-        public ConsensusReactorTest(ITestOutputHelper output)
+        public ConsensusReactorTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
         {
+            _netMQConfigFixture = netMQConfigFixture;
+
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
             Log.Logger = new LoggerConfiguration()
@@ -37,7 +40,6 @@ namespace Libplanet.Net.Tests.Consensus
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<ConsensusReactorTest>();
-
             _logger = Log.ForContext<ConsensusReactorTest>();
         }
 
@@ -145,11 +147,6 @@ namespace Libplanet.Net.Tests.Consensus
                     consensusReactors[i].Dispose();
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            NetMQConfig.Cleanup(false);
         }
     }
 }

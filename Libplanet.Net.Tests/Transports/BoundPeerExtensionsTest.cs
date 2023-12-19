@@ -10,7 +10,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Store;
-using NetMQ;
 using Xunit;
 using Xunit.Sdk;
 using static Libplanet.Tests.TestUtils;
@@ -18,11 +17,13 @@ using static Libplanet.Tests.TestUtils;
 namespace Libplanet.Net.Tests.Transports
 {
     [Collection("NetMQConfiguration")]
-    public class BoundPeerExtensionsTest : IDisposable
+    public class BoundPeerExtensionsTest
     {
-        public void Dispose()
+        private readonly NetMQConfigFixture _netMQConfigFixture;
+
+        public BoundPeerExtensionsTest(NetMQConfigFixture netMQConfigFixture)
         {
-            NetMQConfig.Cleanup(false);
+            _netMQConfigFixture = netMQConfigFixture;
         }
 
         [Fact(Timeout = 60 * 1000)]
@@ -91,8 +92,6 @@ namespace Libplanet.Net.Tests.Transports
                     await swarm.StopAsync();
                 }
             }
-
-            NetMQConfig.Cleanup(false);
         }
 
         [Theory]

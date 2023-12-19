@@ -12,7 +12,6 @@ using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Sdk;
@@ -23,6 +22,8 @@ namespace Libplanet.Net.Tests.Transports
     public abstract class TransportTest
     {
         protected const int Timeout = 60 * 1000;
+
+        protected NetMQConfigFixture _netMQConfigFixture;
 
         protected ILogger Logger { get; set; }
 
@@ -67,10 +68,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transport.StopAsync(TimeSpan.FromMilliseconds(100));
                 transport.Dispose();
-                if (transport is NetMQTransport)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
             }
         }
 
