@@ -16,13 +16,5 @@ namespace Libplanet.Explorer.Store
             bool desc = false,
             int offset = 0,
             int limit = int.MaxValue);
-
-        void StoreSignerReferences(TxId txId, long txNonce, Address signer);
-
-        IEnumerable<TxId> IterateSignerReferences(
-            Address signer,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue);
     }
 }

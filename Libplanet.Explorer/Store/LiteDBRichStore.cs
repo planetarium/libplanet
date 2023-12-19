@@ -296,7 +296,6 @@ namespace Libplanet.Explorer.Store
         public void PutTransaction(Transaction tx)
         {
             _store.PutTransaction(tx);
-            StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
         }
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash, long blockIndex)
@@ -330,33 +329,6 @@ namespace Libplanet.Explorer.Store
             }
 
             return collection.Find(query, offset, limit).Select(doc => (doc.TxId, doc.BlockHash));
-        }
-
-        public void StoreSignerReferences(TxId txId, long txNonce, Address signer)
-        {
-            var collection = SignerRefCollection();
-            collection.Upsert(new AddressRefDoc
-            {
-                Address = signer, TxNonce = txNonce, TxId = txId,
-            });
-            collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
-            collection.EnsureIndex(nameof(AddressRefDoc.TxNonce));
-        }
-
-        public IEnumerable<TxId> IterateSignerReferences(
-            Address signer,
-            bool desc,
-            int offset = 0,
-            int limit = int.MaxValue)
-        {
-            var collection = SignerRefCollection();
-            var order = desc ? Query.Descending : Query.Ascending;
-            var addressString = signer.ToHex().ToLowerInvariant();
-            var query = Query.And(
-                Query.All(nameof(AddressRefDoc.TxNonce), order),
-                Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
-            );
-            return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
 
         public void Dispose()

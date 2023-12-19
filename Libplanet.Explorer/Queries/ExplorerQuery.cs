@@ -9,7 +9,6 @@ using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Explorer.Store;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -112,33 +111,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            if (Store is IRichStore richStore)
-            {
-                IEnumerable<TxId> txIds;
-                if (!(signer is null))
-                {
-                    txIds = richStore
-                        .IterateSignerReferences(
-                            (Address)signer, desc, (int)offset, limit ?? int.MaxValue);
-                }
-                else
-                {
-                    txIds = richStore
-                        .IterateTxReferences(null, desc, (int)offset, limit ?? int.MaxValue)
-                        .Select(r => r.Item1);
-                }
-
-                var txs = txIds.Select(txId => Chain.GetTransaction(txId));
-                foreach (var tx in txs)
-                {
-                    yield return tx;
-                }
-
-                yield break;
-            }
-
             Block block = Chain[desc ? tipIndex - offset : offset];
-
             while (!(block is null) && (limit is null || limit > 0))
             {
                 foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
