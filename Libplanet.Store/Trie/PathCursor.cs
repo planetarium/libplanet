@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
-using Libplanet.Common;
 
 namespace Libplanet.Store.Trie
 {

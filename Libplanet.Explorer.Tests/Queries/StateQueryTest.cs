@@ -8,7 +8,6 @@ using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
 using Libplanet.Action.State;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;

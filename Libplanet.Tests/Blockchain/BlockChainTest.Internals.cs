@@ -8,7 +8,6 @@ using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;

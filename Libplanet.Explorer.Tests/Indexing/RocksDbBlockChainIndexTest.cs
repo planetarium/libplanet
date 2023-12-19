@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Xunit;
 
 namespace Libplanet.Explorer.Tests.Indexing;

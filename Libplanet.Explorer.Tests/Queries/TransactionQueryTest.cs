@@ -15,7 +15,6 @@ using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Libplanet.Consensus;
 using Libplanet.Explorer.Queries;
 using Libplanet.Store;
 using Libplanet.Store.Trie;

@@ -1,7 +1,6 @@
 namespace Libplanet.Extensions.Cocona.Tests;
 
 using System;
-using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Xunit;
