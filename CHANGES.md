@@ -143,11 +143,16 @@ To be released.
     and `IterateUpdatedAddressReferences()` interface methods.  [[#3562]]
  -  (Libplanet.Explorer) Removed `involvedAddress` argument from all
     `TransactionQuery` query methods.  [[#3562]]
+ -  (Libplanet.Explorer) Removed `IRichStore` interface.  [[#3564]]
+ -  (Libplanet.Explorer) Removed parameters `mysql-server`, `mysql-port`,
+    `mysql-username`, `mysql-password`, and `mysql-database` from
+    `Libplanet.Explorer.Executable`.  [[#3564]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
 [#3561]: https://github.com/planetarium/libplanet/pull/3561
 [#3562]: https://github.com/planetarium/libplanet/pull/3562
+[#3564]: https://github.com/planetarium/libplanet/pull/3564
 
 
 Version 3.9.2
