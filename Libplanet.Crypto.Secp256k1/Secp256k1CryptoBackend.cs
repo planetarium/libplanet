@@ -1,12 +1,10 @@
 using Libplanet.Common;
-using Libplanet.Crypto;
 
 namespace Libplanet.Crypto.Secp256k1;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet;
 using Secp256k1Net;
 using Libplanet.Crypto;
 

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.CodeAnalysis;
 
 namespace Libplanet.Analyzers.Tests.Helpers

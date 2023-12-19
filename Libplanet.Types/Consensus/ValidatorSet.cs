@@ -7,7 +7,6 @@ using System.Numerics;
 using Bencodex;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Types.Consensus
 {

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Explorer.Queries;
 using Xunit;
 

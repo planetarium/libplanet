@@ -19,7 +19,6 @@ using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {

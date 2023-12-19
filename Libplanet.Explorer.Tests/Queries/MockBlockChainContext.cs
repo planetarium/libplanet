@@ -1,4 +1,3 @@
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
