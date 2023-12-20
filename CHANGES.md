@@ -130,6 +130,11 @@ Version 3.9.3
 
 To be released.
 
+Due to changes in [#3567], a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+[Libplanet 2.0.0] and onwards prior to this release that have included
+`Transaction`s that aren't compatible with the updated specification in [#3567].
+
  -  (Libplanet.Explorer) Added `BlockHashType` and `TxIdType`.  [[#3559]]
  -  (Libplanet.Explorer) Changed `HashDigestSHA256Type` to `HashDigestType<T>`.
     [[#3559]]
@@ -147,12 +152,15 @@ To be released.
  -  (Libplanet.Explorer) Removed parameters `mysql-server`, `mysql-port`,
     `mysql-username`, `mysql-password`, and `mysql-database` from
     `Libplanet.Explorer.Executable`.  [[#3564]]
+ -  Changed `TxInvoice` to no longer allow negative values for
+    `MaxGasPrice` and `GasLimit`.  [[#3567]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
 [#3561]: https://github.com/planetarium/libplanet/pull/3561
 [#3562]: https://github.com/planetarium/libplanet/pull/3562
 [#3564]: https://github.com/planetarium/libplanet/pull/3564
+[#3567]: https://github.com/planetarium/libplanet/pull/3567
 
 
 Version 3.9.2
