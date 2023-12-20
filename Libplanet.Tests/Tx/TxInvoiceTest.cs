@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Crypto;
@@ -17,6 +18,57 @@ namespace Libplanet.Tests.Tx
 
         public static readonly Address AddressB =
             new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
+
+        [Fact]
+        public void ConstructorGasConditions()
+        {
+            var random = new System.Random();
+            var genesisHash = random.NextBlockHash();
+            var timestamp = DateTimeOffset.UtcNow;
+            var actions = new TxActionList(Array.Empty<IValue>());
+
+            _ = new TxInvoice(
+                genesisHash: genesisHash,
+                timestamp: timestamp,
+                actions: actions,
+                maxGasPrice: null,
+                gasLimit: null);
+            _ = new TxInvoice(
+                genesisHash: genesisHash,
+                timestamp: timestamp,
+                actions: actions,
+                maxGasPrice: Currency.Uncapped("DUMB", 0, null) * 100,
+                gasLimit: 100);
+
+            Assert.Throws<ArgumentException>(() =>
+                new TxInvoice(
+                    genesisHash: genesisHash,
+                    timestamp: timestamp,
+                    actions: actions,
+                    maxGasPrice: Currency.Uncapped("DUMB", 0, null) * 100,
+                    gasLimit: null));
+            Assert.Throws<ArgumentException>(() =>
+                new TxInvoice(
+                    genesisHash: genesisHash,
+                    timestamp: timestamp,
+                    actions: actions,
+                    maxGasPrice: null,
+                    gasLimit: 100));
+            Assert.Throws<ArgumentException>(() =>
+                new TxInvoice(
+                    genesisHash: genesisHash,
+                    timestamp: timestamp,
+                    actions: actions,
+                    maxGasPrice: Currency.Uncapped("DUMB", 0, null) * -100,
+                    gasLimit: 100));
+            Assert.Throws<ArgumentException>(() =>
+                new TxInvoice(
+                    genesisHash: genesisHash,
+                    timestamp: timestamp,
+                    actions: actions,
+                    maxGasPrice: Currency.Uncapped("DUMB", 0, null) * 100,
+                    gasLimit: -100));
+        }
 
         [Fact]
         public void PlainConstructor()
