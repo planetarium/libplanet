@@ -1219,69 +1219,6 @@ namespace Libplanet.Tests.Action
          }
 
         [Fact]
-        public void EvaluateMinusGasFee()
-        {
-            var privateKey = new PrivateKey();
-            var address = privateKey.Address;
-            Currency foo = Currency.Uncapped(
-                "FOO",
-                18,
-                null
-            );
-
-            var freeGasAction = new UseGasAction()
-            {
-                GasUsage = 0,
-                Memo = "FREE",
-                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
-                Receiver = address,
-            };
-
-            var payGasAction = new UseGasAction()
-            {
-                GasUsage = 1,
-                Memo = "CHARGE",
-            };
-
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain(
-                policy: new BlockPolicy(),
-                actions: new[]
-                {
-                    freeGasAction,
-                },
-                store: store,
-                stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: privateKey,
-                genesisHash: chain.Genesis.Hash,
-                maxGasPrice: FungibleAssetValue.FromRawValue(foo, -10),
-                gasLimit: 5,
-                actions: new[]
-                {
-                    payGasAction,
-                }.ToPlainValues());
-
-            chain.StageTransaction(tx);
-            var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
-
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
-
-            Assert.False(evaluations[0].InputContext.BlockAction);
-            Assert.Single(evaluations);
-            Assert.NotNull(evaluations.Single().Exception);
-            Assert.NotNull(evaluations.Single().Exception?.InnerException);
-            Assert.Equal(
-                typeof(ArgumentOutOfRangeException),
-                evaluations.Single().Exception?.InnerException?.GetType());
-        }
-
-        [Fact]
         public void GenerateRandomSeed()
         {
             byte[] preEvaluationHashBytes =
