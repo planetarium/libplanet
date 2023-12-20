@@ -116,12 +116,25 @@ namespace Libplanet.Types.Tx
                 throw new ArgumentNullException(nameof(updatedAddresses));
             }
 
-            if (maxGasPrice is null ^ gasLimit is null)
+            switch (maxGasPrice, gasLimit)
             {
-                throw new ArgumentException(
-                    $"Either {nameof(maxGasPrice)} (null: {maxGasPrice is null}) and " +
-                    $"{nameof(gasLimit)} (null: {gasLimit is null}) must be both null " +
-                    $"or both non-null.");
+                case (null, null):
+                    break;
+                case (null, { }):
+                case ({ }, null):
+                    throw new ArgumentException(
+                        $"Either {nameof(maxGasPrice)} (null: {maxGasPrice is null}) and " +
+                        $"{nameof(gasLimit)} (null: {gasLimit is null}) must be both null " +
+                        $"or both non-null.");
+                case ({ } mgp, { } gl):
+                    if (mgp.Sign < 0 || gl < 0)
+                    {
+                        throw new ArgumentException(
+                            $"Both {nameof(maxGasPrice)} ({mgp}) and {nameof(gasLimit)} ({gl}) " +
+                            $"must be non-negative.");
+                    }
+
+                    break;
             }
 
             GenesisHash = genesisHash;
