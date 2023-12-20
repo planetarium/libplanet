@@ -87,7 +87,11 @@ namespace Libplanet.Net
 
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer>(BlockChain, GetTxsAsync, BroadcastTxs);
-            RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
+            RoutingTable = new RoutingTable(
+                Address,
+                Options.TableSize,
+                Options.BucketSize,
+                Options.StaticPeers);
 
             // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
             // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
@@ -1432,9 +1436,19 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    await PeerDiscovery.RebuildConnectionAsync(
-                        Kademlia.MaxDepth,
-                        cancellationToken);
+                    if (RoutingTable.SeedPeers.Any())
+                    {
+                        await PeerDiscovery.RebuildConnectionAsync(
+                            RoutingTable.SeedPeers,
+                            1,
+                            cancellationToken);
+                    }
+                    else
+                    {
+                        await PeerDiscovery.RebuildConnectionAsync(
+                            Kademlia.MaxDepth,
+                            cancellationToken);
+                    }
                 }
                 catch (OperationCanceledException e)
                 {
