@@ -42,22 +42,22 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public partial class SwarmTest : IDisposable
     {
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
 
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
 
         private readonly ITestOutputHelper _output;
         private readonly ILogger _logger;
 
         private bool _disposed = false;
 
-        public SwarmTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
+        public SwarmTest(NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ}[@{SwarmId}][{ThreadId}] - {Message}";

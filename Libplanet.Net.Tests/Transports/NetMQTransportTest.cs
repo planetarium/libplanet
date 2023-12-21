@@ -15,11 +15,11 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Transports
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class NetMQTransportTest : TransportTest, IDisposable
     {
         public NetMQTransportTest(
-            NetMQConfigFixture netMQConfigFixture, ITestOutputHelper testOutputHelper)
+            NetMQTransportFixture netMQTransportFixture, ITestOutputHelper testOutputHelper)
         {
             TransportConstructor = async (
                     privateKey,
@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests.Transports
                     hostOptions,
                     messageTimestampBuffer);
 
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffff}[{ThreadId}] - {Message}";

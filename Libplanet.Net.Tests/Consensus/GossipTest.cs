@@ -17,16 +17,16 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class GossipTest
     {
         private const int Timeout = 60 * 1000;
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
         private readonly ILogger _logger;
 
-        public GossipTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
+        public GossipTest(NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";

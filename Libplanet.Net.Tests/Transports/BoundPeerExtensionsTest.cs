@@ -16,14 +16,14 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Transports
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class BoundPeerExtensionsTest
     {
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
 
-        public BoundPeerExtensionsTest(NetMQConfigFixture netMQConfigFixture)
+        public BoundPeerExtensionsTest(NetMQTransportFixture netMQTransportFixture)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
         }
 
         [Fact(Timeout = 60 * 1000)]

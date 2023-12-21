@@ -23,7 +23,7 @@ namespace Libplanet.Net.Tests.Transports
     {
         protected const int Timeout = 60 * 1000;
 
-        protected NetMQConfigFixture _netMQConfigFixture;
+        protected NetMQTransportFixture _netMQTransportFixture;
 
         protected ILogger Logger { get; set; }
 

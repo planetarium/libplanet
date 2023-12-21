@@ -18,16 +18,16 @@ using static Libplanet.Net.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Protocols
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class ProtocolTest
     {
         private const int Timeout = 60 * 1000;
         private readonly Dictionary<Address, TestTransport> _transports;
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
 
-        public ProtocolTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
+        public ProtocolTest(NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss}[@{Address}][{ThreadId}] - {Message}";

@@ -21,17 +21,18 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class ConsensusReactorTest
     {
         private const int PropagationDelay = 25_000;
         private const int Timeout = 60 * 1000;
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
         private readonly ILogger _logger;
 
-        public ConsensusReactorTest(NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
+        public ConsensusReactorTest(
+            NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";

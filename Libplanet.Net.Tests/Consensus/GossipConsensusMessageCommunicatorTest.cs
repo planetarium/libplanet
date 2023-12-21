@@ -19,17 +19,17 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class GossipConsensusMessageCommunicatorTest
     {
         private const int Timeout = 60 * 1000;
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
         private readonly ILogger _logger;
 
         public GossipConsensusMessageCommunicatorTest(
-            NetMQConfigFixture netMQConfigFixture, ITestOutputHelper output)
+            NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
             Log.Logger = new LoggerConfiguration()

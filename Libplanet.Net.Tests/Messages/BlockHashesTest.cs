@@ -12,14 +12,14 @@ using Xunit;
 
 namespace Libplanet.Net.Tests.Messages
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class BlockHashesTest
     {
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
 
-        public BlockHashesTest(NetMQConfigFixture netMQConfigFixture)
+        public BlockHashesTest(NetMQTransportFixture netMQTransportFixture)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
         }
 
         [Fact]

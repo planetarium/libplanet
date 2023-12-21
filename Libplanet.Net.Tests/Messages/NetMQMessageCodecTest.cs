@@ -21,14 +21,14 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Messages
 {
-    [Collection("NetMQConfiguration")]
+    [Collection("NetMQTransportCollection")]
     public class NetMQMessageCodecTest
     {
-        private readonly NetMQConfigFixture _netMQConfigFixture;
+        private readonly NetMQTransportFixture _netMQTransportFixture;
 
-        public NetMQMessageCodecTest(NetMQConfigFixture netMQConfigFixture)
+        public NetMQMessageCodecTest(NetMQTransportFixture netMQTransportFixture)
         {
-            _netMQConfigFixture = netMQConfigFixture;
+            _netMQTransportFixture = netMQTransportFixture;
         }
 
         [Theory]

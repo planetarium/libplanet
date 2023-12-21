@@ -3,9 +3,9 @@ using NetMQ;
 
 namespace Libplanet.Net.Tests.Transports
 {
-    public class NetMQConfigFixture : IDisposable
+    public class NetMQTransportFixture : IDisposable
     {
-        public NetMQConfigFixture()
+        public NetMQTransportFixture()
         {
         }
 
