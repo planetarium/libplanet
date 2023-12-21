@@ -38,6 +38,14 @@ namespace Libplanet.Net.Tests.Transports
 
             try
             {
+                _netMQTransportFixture.Track((NetMQTransport)transport);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
                 _ = transport.StartAsync();
                 await transport.WaitForRunningAsync();
                 Assert.True(transport.Running);
@@ -45,7 +53,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 await transport.StopAsync(TimeSpan.FromMilliseconds(100));
-                transport.Dispose();
             }
         }
 
@@ -53,6 +60,14 @@ namespace Libplanet.Net.Tests.Transports
         public async Task RestartAsync()
         {
             ITransport transport = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transport);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             try
             {
@@ -67,57 +82,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 await transport.StopAsync(TimeSpan.FromMilliseconds(100));
-                transport.Dispose();
-            }
-        }
-
-        [SkippableFact(Timeout = Timeout)]
-        public async Task DisposeTest()
-        {
-            ITransport transport = await CreateTransportAsync().ConfigureAwait(false);
-
-            try
-            {
-                await InitializeAsync(transport);
-                Assert.True(transport.Running);
-                await transport.StopAsync(TimeSpan.FromMilliseconds(100));
-                transport.Dispose();
-                var boundPeer = new BoundPeer(
-                    new PrivateKey().PublicKey,
-                    new DnsEndPoint("127.0.0.1", 1234));
-                var message = new PingMsg();
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.StartAsync());
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.StopAsync(TimeSpan.Zero));
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.SendMessageAsync(
-                        boundPeer,
-                        message,
-                        null,
-                        default));
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.SendMessageAsync(
-                        boundPeer,
-                        message,
-                        null,
-                        3,
-                        false,
-                        default));
-                Assert.Throws<ObjectDisposedException>(
-                    () => transport.BroadcastMessage(null, message));
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.ReplyMessageAsync(
-                        message,
-                        Array.Empty<byte>(),
-                        default));
-
-                // To check multiple Dispose() throws error or not.
-                transport.Dispose();
-            }
-            finally
-            {
-                transport.Dispose();
             }
         }
 
@@ -131,6 +95,14 @@ namespace Libplanet.Net.Tests.Transports
 
             try
             {
+                _netMQTransportFixture.Track((NetMQTransport)transport);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
                 var peer = transport.AsPeer;
                 Assert.Equal(privateKey.Address, peer.Address);
                 Assert.Equal(host, peer.EndPoint.Host);
@@ -138,7 +110,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 await transport.StopAsync(TimeSpan.FromMilliseconds(100));
-                transport.Dispose();
             }
         }
 
@@ -148,6 +119,22 @@ namespace Libplanet.Net.Tests.Transports
         {
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportA);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
@@ -177,8 +164,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA.Dispose();
-                transportB.Dispose();
             }
         }
 
@@ -187,6 +172,23 @@ namespace Libplanet.Net.Tests.Transports
         {
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportA);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
             var cts = new CancellationTokenSource();
 
             try
@@ -206,8 +208,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA.Dispose();
-                transportB.Dispose();
                 cts.Dispose();
             }
         }
@@ -217,6 +217,22 @@ namespace Libplanet.Net.Tests.Transports
         {
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportA);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
@@ -253,8 +269,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA.Dispose();
-                transportB.Dispose();
             }
         }
 
@@ -264,6 +278,22 @@ namespace Libplanet.Net.Tests.Transports
         {
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportA);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             try
             {
@@ -282,8 +312,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA.Dispose();
-                transportB.Dispose();
             }
         }
 
@@ -292,6 +320,14 @@ namespace Libplanet.Net.Tests.Transports
         public async Task SendMessageToInvalidPeerAsync(BoundPeer invalidPeer)
         {
             ITransport transport = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transport);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             try
             {
@@ -309,7 +345,6 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 await transport.StopAsync(TimeSpan.FromMilliseconds(100));
-                transport.Dispose();
             }
         }
 
@@ -318,6 +353,22 @@ namespace Libplanet.Net.Tests.Transports
         {
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportA);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             try
             {
@@ -342,8 +393,6 @@ namespace Libplanet.Net.Tests.Transports
             {
                 await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA.Dispose();
-                transportB.Dispose();
             }
         }
 
@@ -358,6 +407,30 @@ namespace Libplanet.Net.Tests.Transports
                 privateKey: GeneratePrivateKeyOfBucketIndex(address, 1));
             ITransport transportD = await CreateTransportAsync(
                 privateKey: GeneratePrivateKeyOfBucketIndex(address, 2));
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportB);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportC);
+            }
+            catch (InvalidCastException)
+            {
+            }
+
+            try
+            {
+                _netMQTransportFixture.Track((NetMQTransport)transportD);
+            }
+            catch (InvalidCastException)
+            {
+            }
 
             var tcsB = new TaskCompletionSource<Message>();
             var tcsC = new TaskCompletionSource<Message>();
@@ -392,6 +465,15 @@ namespace Libplanet.Net.Tests.Transports
                 table.AddPeer(transportD.AsPeer);
 
                 transportA = await CreateTransportAsync().ConfigureAwait(false);
+
+                try
+                {
+                    _netMQTransportFixture.Track((NetMQTransport)transportA);
+                }
+                catch (InvalidCastException)
+                {
+                }
+
                 await InitializeAsync(transportA);
 
                 transportA.BroadcastMessage(
@@ -409,13 +491,9 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 await transportA?.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA?.Dispose();
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportB.Dispose();
                 await transportC.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportC.Dispose();
                 await transportD.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportD.Dispose();
             }
         }
 

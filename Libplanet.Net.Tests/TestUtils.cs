@@ -15,6 +15,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Tests.Transports;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -294,6 +295,7 @@ namespace Libplanet.Net.Tests
 
         public static ConsensusReactor CreateDummyConsensusReactor(
             BlockChain blockChain,
+            NetMQTransportFixture netMQTransportFixture,
             PrivateKey? key = null,
             string host = "127.0.0.1",
             int consensusPort = 5101,
@@ -311,6 +313,7 @@ namespace Libplanet.Net.Tests
                 key,
                 apvOption,
                 hostOption).ConfigureAwait(false).GetAwaiter().GetResult();
+            netMQTransportFixture.Track(consensusTransport);
 
             return new ConsensusReactor(
                 consensusTransport,

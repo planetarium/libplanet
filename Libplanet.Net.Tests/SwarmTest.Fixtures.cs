@@ -155,7 +155,8 @@ namespace Libplanet.Net.Tests
                 appProtocolVersionOptions,
                 hostOptions,
                 options.MessageTimestampBuffer);
-            ITransport consensusTransport = null;
+            _netMQTransportFixture.Track(transport);
+            NetMQTransport consensusTransport = null;
             if (consensusReactorOption is { } option)
             {
                 var consensusHostOptions = new HostOptions(
@@ -167,6 +168,7 @@ namespace Libplanet.Net.Tests
                     appProtocolVersionOptions,
                     consensusHostOptions,
                     options.MessageTimestampBuffer);
+                _netMQTransportFixture.Track(consensusTransport);
             }
 
             var swarm = new Swarm(
@@ -181,7 +183,6 @@ namespace Libplanet.Net.Tests
                 try
                 {
                     await StopAsync(swarm);
-                    swarm.Dispose();
                 }
                 catch (ObjectDisposedException)
                 {

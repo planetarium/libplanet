@@ -78,6 +78,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 consensusReactors[i] = TestUtils.CreateDummyConsensusReactor(
                     blockChain: blockChains[i],
+                    _netMQTransportFixture,
                     key: TestUtils.PrivateKeys[i],
                     consensusPort: 6000 + i,
                     validatorPeers: validatorPeers,
@@ -145,7 +146,6 @@ namespace Libplanet.Net.Tests.Consensus
                 for (int i = 0; i < 4; ++i)
                 {
                     await consensusReactors[i].StopAsync(cancellationTokenSource.Token);
-                    consensusReactors[i].Dispose();
                 }
             }
         }

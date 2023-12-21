@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Protocols;
-using Libplanet.Net.Tests.Transports;
 using Libplanet.Net.Transports;
 using Serilog;
 using Xunit;
@@ -18,17 +17,13 @@ using static Libplanet.Net.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Protocols
 {
-    [Collection("NetMQTransportCollection")]
     public class ProtocolTest
     {
         private const int Timeout = 60 * 1000;
         private readonly Dictionary<Address, TestTransport> _transports;
-        private readonly NetMQTransportFixture _netMQTransportFixture;
 
-        public ProtocolTest(NetMQTransportFixture netMQTransportFixture, ITestOutputHelper output)
+        public ProtocolTest(ITestOutputHelper output)
         {
-            _netMQTransportFixture = netMQTransportFixture;
-
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss}[@{Address}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()

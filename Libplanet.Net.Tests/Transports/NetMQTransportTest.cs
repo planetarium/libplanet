@@ -64,6 +64,7 @@ namespace Libplanet.Net.Tests.Transports
                     new AppProtocolVersionOptions(),
                     new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { }, 0)
                 ).ConfigureAwait(false);
+                _netMQTransportFixture.Track(transport);
                 transport.ProcessMessageHandler.Register(
                     async m =>
                     {

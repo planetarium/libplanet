@@ -1004,12 +1004,14 @@ namespace Libplanet.Net.Tests
             var apv = new AppProtocolVersionOptions();
             Swarm receiver =
                 await CreateSwarm(appProtocolVersionOptions: apv).ConfigureAwait(false);
-            ITransport mockTransport = await NetMQTransport.Create(
+            var mockTransport = await NetMQTransport.Create(
                 new PrivateKey(),
                 apv,
                 new HostOptions(
                     IPAddress.Loopback.ToString(),
                     Array.Empty<IceServer>()));
+            _netMQTransportFixture.Track(mockTransport);
+
             int requestCount = 0;
 
             async Task MessageHandler(Message message)
@@ -1088,7 +1090,6 @@ namespace Libplanet.Net.Tests
             {
                 CleaningSwarm(receiver);
                 await mockTransport.StopAsync(TimeSpan.FromMilliseconds(10));
-                mockTransport.Dispose();
             }
         }
     }

@@ -86,8 +86,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
             }
         }
 
@@ -141,8 +139,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
             }
         }
 
@@ -206,8 +202,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await gossip1.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await gossip2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip1.Dispose();
-                gossip2.Dispose();
             }
         }
 
@@ -257,8 +251,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await transport2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                gossip.Dispose();
-                transport2.Dispose();
             }
         }
 
@@ -296,8 +288,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await seed.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                seed.Dispose();
-                gossip.Dispose();
             }
         }
 
@@ -351,9 +341,6 @@ namespace Libplanet.Net.Tests.Consensus
                 await receiver.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await sender1.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await sender2.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                receiver.Dispose();
-                sender1.Dispose();
-                sender2.Dispose();
             }
         }
 
@@ -390,10 +377,13 @@ namespace Libplanet.Net.Tests.Consensus
                 hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>());
             }
 
-            return NetMQTransport.Create(
+            var transport = NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
                 apvOptions,
                 hostOptions).ConfigureAwait(false).GetAwaiter().GetResult();
+            _netMQTransportFixture.Track(transport);
+
+            return transport;
         }
     }
 }

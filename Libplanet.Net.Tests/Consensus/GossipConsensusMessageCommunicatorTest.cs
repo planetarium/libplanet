@@ -101,8 +101,6 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 await communicator1.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await communicator2.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                communicator1.Gossip.Dispose();
-                communicator2.Gossip.Dispose();
             }
         }
 
@@ -254,9 +252,6 @@ namespace Libplanet.Net.Tests.Consensus
                 await communicator1.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await communicator2.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 await communicator3.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                communicator1.Gossip.Dispose();
-                communicator2.Gossip.Dispose();
-                communicator3.Gossip.Dispose();
             }
         }
 
@@ -276,10 +271,13 @@ namespace Libplanet.Net.Tests.Consensus
                 hostOptions = new HostOptions("127.0.0.1", Array.Empty<IceServer>());
             }
 
-            return NetMQTransport.Create(
+            var transport = NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
                 apvOptions,
                 hostOptions).ConfigureAwait(false).GetAwaiter().GetResult();
+            _netMQTransportFixture.Track(transport);
+
+            return transport;
         }
 
         private GossipConsensusMessageCommunicator CreateGossipConesnsusMessageCommunicator(

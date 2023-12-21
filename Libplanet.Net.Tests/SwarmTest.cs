@@ -349,7 +349,6 @@ namespace Libplanet.Net.Tests
 
             _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
             CleaningSwarm(swarmA);
-            swarmA.Dispose();
             await Task.Delay(100);
             await swarm.PeerDiscovery.RefreshTableAsync(
                 TimeSpan.Zero,
@@ -450,7 +449,7 @@ namespace Libplanet.Net.Tests
                 await collectedTwoMessages[0].WaitAsync();
 
                 // Dispose swarm[3] to simulate shutdown during bootstrap.
-                swarms[3].Dispose();
+                await swarms[3].StopAsync();
 
                 // Bring swarm[2] online.
                 _ = swarms[2].StartAsync();
@@ -694,6 +693,7 @@ namespace Libplanet.Net.Tests
                 key,
                 apvOptions,
                 hostOptions);
+            _netMQTransportFixture.Track(transport);
 
             // TODO: Check Consensus Parameters.
             Assert.Throws<ArgumentNullException>(() =>
@@ -1821,6 +1821,7 @@ namespace Libplanet.Net.Tests
                 key,
                 apvOptions,
                 new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+            _netMQTransportFixture.Track(transport);
 
             try
             {
@@ -1882,6 +1883,7 @@ namespace Libplanet.Net.Tests
                 key,
                 apvOptions,
                 new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+            _netMQTransportFixture.Track(transport);
 
             try
             {
@@ -1968,7 +1970,6 @@ namespace Libplanet.Net.Tests
         private void CleaningSwarm(Swarm swarm)
         {
             swarm.StopAsync(TimeSpan.FromMilliseconds(10)).WaitAndUnwrapException();
-            swarm.Dispose();
         }
 
         private Task BootstrapAsync(

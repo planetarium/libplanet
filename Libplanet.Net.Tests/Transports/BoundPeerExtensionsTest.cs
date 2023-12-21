@@ -50,6 +50,7 @@ namespace Libplanet.Net.Tests.Transports
                 swarmKey,
                 apvOptions,
                 hostOptions);
+            _netMQTransportFixture.Track(transport);
             using (var swarm = new Swarm(
                 blockchain,
                 swarmKey,
