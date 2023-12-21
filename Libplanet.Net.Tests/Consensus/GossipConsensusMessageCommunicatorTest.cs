@@ -53,8 +53,8 @@ namespace Libplanet.Net.Tests.Consensus
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                7001,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 7002)) });
             var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
                 {
@@ -65,8 +65,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                7002,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 7001)) });
 
             try
             {
@@ -114,15 +114,15 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var key3 = new PrivateKey();
-            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001));
-            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002));
-            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 6003));
+            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 7003));
+            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 7004));
+            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 7005));
             var receivedTwoHigherPreVotes = new AsyncAutoResetEvent();
             var receivedPreCommitFrom3 = new AsyncAutoResetEvent();
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key1,
-                6001,
+                7003,
                 new[] { peer2 });
             var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
@@ -161,12 +161,12 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
+                7004,
                 new[] { peer1, peer3 });
             var communicator3 = CreateGossipConesnsusMessageCommunicator(
                 content => { },
                 key3,
-                6003,
+                7005,
                 new[] { peer2 });
 
             async Task CheckDeniedAsync()

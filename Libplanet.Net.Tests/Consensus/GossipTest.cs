@@ -109,8 +109,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                6003,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6004)) });
             var gossip2 = CreateGossip(
                 content =>
                 {
@@ -121,8 +121,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                6004,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6003)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -160,8 +160,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key1,
-                6001,
-                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002)) });
+                6005,
+                new[] { new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6006)) });
             var gossip2 = CreateGossip(
                 content =>
                 {
@@ -176,8 +176,8 @@ namespace Libplanet.Net.Tests.Consensus
                     }
                 },
                 key2,
-                6002,
-                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001)) });
+                6006,
+                new[] { new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6005)) });
             try
             {
                 _ = gossip1.StartAsync(default);
@@ -212,7 +212,7 @@ namespace Libplanet.Net.Tests.Consensus
             var key2 = new PrivateKey();
             var received = false;
             var receivedEvent = new AsyncAutoResetEvent();
-            var transport1 = CreateTransport(key1, 6001);
+            var transport1 = CreateTransport(key1, 6007);
 
             async Task HandleMessage(Message message)
             {
@@ -229,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                 _ => { },
                 _ => { },
                 _ => { });
-            var transport2 = CreateTransport(key2, 6002);
+            var transport2 = CreateTransport(key2, 6008);
             try
             {
                 _ = gossip.StartAsync(default);
