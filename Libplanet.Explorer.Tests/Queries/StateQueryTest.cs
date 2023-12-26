@@ -156,6 +156,40 @@ public class StateQueryTest
     }
 
     [Fact]
+    public async Task AccountByBlockHashThenValidatorSet()
+    {
+        IBlockChainStates source = new MockChainStates();
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
+        {
+            account (blockHash: ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"") {
+                validatorSet {
+                    hex
+                }
+            }
+        }
+        ", source: source);
+
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        IDictionary<string, object> account =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["account"]);
+
+        IDictionary<string, object> totalSupply =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(account["validatorSet"]);
+        Assert.Equal(
+            ByteUtil.Hex(_codec.Encode(new ValidatorSet(new List<Validator>
+                {
+                    new(
+                        PublicKey.FromHex(
+                            "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                        new BigInteger(1)),
+                }).Bencoded)),
+            Assert.IsAssignableFrom<string>(totalSupply["hex"]));
+    }
+
+    [Fact]
     public async Task AccountByStateRootHashThenStateAndStates()
     {
         IBlockChainStates source = new MockChainStates();
@@ -809,11 +843,33 @@ public class StateQueryTest
 
         public ITrie Set(in KeyBytes key, IValue value) => throw new NotSupportedException();
 
-        public IValue Get(KeyBytes key) => _stateRootHash is { }
-            ? key.Length == (HashDigest<SHA1>.Size * 2 + 2) // Length for total supply key
-                ? new Integer(10000)
-                : new Integer(123)
-            : null;
+        public IValue Get(KeyBytes key)
+        {
+            if (_stateRootHash is { })
+            {
+                if (key.Length == 3) // Length for validator set key
+                {
+                    return new ValidatorSet(new List<Validator>
+                    {
+                        new(
+                            PublicKey.FromHex(
+                                "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                            new BigInteger(1)),
+                    }).Bencoded;
+                }
+
+                if (key.Length == (HashDigest<SHA1>.Size * 2 + 2)) // Length for total supply key
+                {
+                    return new Integer(10000);
+                }
+
+                return new Integer(123); // Assume we are looking for balance.
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public IReadOnlyList<IValue> Get(IReadOnlyList<KeyBytes> keys) =>
             throw new NotSupportedException();
