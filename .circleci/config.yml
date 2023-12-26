@@ -245,7 +245,7 @@ commands:
               --dcDisableDefaultFilters
               --dcReportType=DetailedXML
               --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
-            no_output_timeout: 180s
+            no_output_timeout: 300s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
@@ -266,7 +266,7 @@ commands:
               -c Release
               -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
               --filter "$(cat .test-filter.txt)"
-            no_output_timeout: 180s
+            no_output_timeout: 300s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
