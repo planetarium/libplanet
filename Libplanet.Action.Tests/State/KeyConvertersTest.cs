@@ -25,7 +25,7 @@ namespace Libplanet.Action.State.Tests
             Assert.Equal(
                 new KeyBytes(
                     $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}"),
-                KeyConverters.ToFungibleAssetKey(address, currency));
+                KeyConverters.ToFungibleAssetKey(address, currency.Hash));
 
             Assert.Equal(
                 new KeyBytes($"__{ByteUtil.Hex(currency.Hash.ByteArray)}"),

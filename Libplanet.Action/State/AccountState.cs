@@ -34,7 +34,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetBalance"/>
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
-            IValue? value = Trie.Get(ToFungibleAssetKey(address, currency));
+            IValue? value = Trie.Get(ToFungibleAssetKey(address, currency.Hash));
             return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;

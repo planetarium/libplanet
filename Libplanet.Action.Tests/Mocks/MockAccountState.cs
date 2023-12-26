@@ -69,7 +69,7 @@ namespace Libplanet.Action.Tests.Mocks
             addresses.Select(GetState).ToList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            Trie.Get(KeyConverters.ToFungibleAssetKey(address, currency)) is Integer rawValue
+            Trie.Get(KeyConverters.ToFungibleAssetKey(address, currency.Hash)) is Integer rawValue
                 ? FungibleAssetValue.FromRawValue(currency, rawValue)
                 : currency * 0;
 
@@ -108,7 +108,7 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState SetBalance(
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             new MockAccountState(Trie.Set(
-                KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency),
+                KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency.Hash),
                 new Integer(rawAmount)));
 
         public MockAccountState AddBalance(Address address, FungibleAssetValue amount) =>
@@ -122,7 +122,7 @@ namespace Libplanet.Action.Tests.Mocks
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             SetBalance(
                 pair,
-                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency)) is
+                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency.Hash)) is
                     Integer amount ? amount : 0) + rawAmount);
 
         public MockAccountState SubtractBalance(
@@ -137,7 +137,7 @@ namespace Libplanet.Action.Tests.Mocks
             (Address Address, Currency Currency) pair, BigInteger rawAmount) =>
             SetBalance(
                 pair,
-                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency)) is
+                (Trie.Get(KeyConverters.ToFungibleAssetKey(pair.Address, pair.Currency.Hash)) is
                     Integer amount ? amount : 0) - rawAmount);
 
         public MockAccountState TransferBalance(

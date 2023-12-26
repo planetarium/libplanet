@@ -2,7 +2,6 @@ using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
@@ -48,11 +47,11 @@ namespace Libplanet.Action.State
             return new KeyBytes(buffer);
         }
 
-        // $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}"
-        internal static KeyBytes ToFungibleAssetKey(Address address, Currency currency)
+        // $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currencyHash.ByteArray)}"
+        internal static KeyBytes ToFungibleAssetKey(Address address, HashDigest<SHA1> currencyHash)
         {
             var addressBytes = address.ByteArray;
-            var currencyBytes = currency.Hash.ByteArray;
+            var currencyBytes = currencyHash.ByteArray;
             byte[] buffer = new byte[addressBytes.Length * 2 + currencyBytes.Length * 2 + 2];
 
             buffer[0] = _underScore;

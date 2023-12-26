@@ -378,16 +378,16 @@ namespace Libplanet.Tests.Action
                 dirty1[ToStateKey(DumbAction.RandomRecordsAddress)]);
             Assert.Equal(
                 (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency)]);
+                dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency.Hash)]);
             Assert.Equal(
                 (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[1], DumbAction.DumbCurrency)]);
+                dirty1[ToFungibleAssetKey(addresses[1], DumbAction.DumbCurrency.Hash)]);
             Assert.Equal(
                 (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[2], DumbAction.DumbCurrency)]);
+                dirty1[ToFungibleAssetKey(addresses[2], DumbAction.DumbCurrency.Hash)]);
             Assert.Equal(
                 (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[3], DumbAction.DumbCurrency)]);
+                dirty1[ToFungibleAssetKey(addresses[3], DumbAction.DumbCurrency.Hash)]);
 
             Transaction[] block2Txs =
             {
