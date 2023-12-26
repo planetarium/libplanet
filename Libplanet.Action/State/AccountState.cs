@@ -48,7 +48,7 @@ namespace Libplanet.Action.State
                 throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            IValue? value = Trie.Get(ToTotalSupplyKey(currency));
+            IValue? value = Trie.Get(ToTotalSupplyKey(currency.Hash));
             return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;

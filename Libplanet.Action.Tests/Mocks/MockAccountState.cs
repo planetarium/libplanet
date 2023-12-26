@@ -84,7 +84,7 @@ namespace Libplanet.Action.Tests.Mocks
                 throw new TotalSupplyNotTrackableException(msg, currency);
             }
 
-            return Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is Integer rawValue
+            return Trie.Get(KeyConverters.ToTotalSupplyKey(currency.Hash)) is Integer rawValue
                 ? FungibleAssetValue.FromRawValue(currency, rawValue)
                 : currency * 0;
         }
@@ -156,7 +156,8 @@ namespace Libplanet.Action.Tests.Mocks
                 ? !(currency.MaximumSupply is FungibleAssetValue maximumSupply) ||
                     rawAmount <= maximumSupply.RawValue
                     ? new MockAccountState(
-                        Trie.Set(KeyConverters.ToTotalSupplyKey(currency), new Integer(rawAmount)))
+                        Trie.Set(
+                            KeyConverters.ToTotalSupplyKey(currency.Hash), new Integer(rawAmount)))
                     : throw new ArgumentException(
                         $"Given {currency}'s total supply is capped at {maximumSupply.RawValue} " +
                         $"and cannot be set to {rawAmount}.")
@@ -169,7 +170,7 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState AddTotalSupply(Currency currency, BigInteger rawAmount) =>
             SetTotalSupply(
                 currency,
-                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is
+                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency.Hash)) is
                     Integer amount ? amount : 0) + rawAmount);
 
         public MockAccountState SubtractTotalSupply(FungibleAssetValue amount) =>
@@ -178,7 +179,7 @@ namespace Libplanet.Action.Tests.Mocks
         public MockAccountState SubtractTotalSupply(Currency currency, BigInteger rawAmount) =>
             SetTotalSupply(
                 currency,
-                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency)) is
+                (Trie.Get(KeyConverters.ToTotalSupplyKey(currency.Hash)) is
                     Integer amount ? amount : 0) - rawAmount);
 
         public MockAccountState SetValidator(Validator validator) =>

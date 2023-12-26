@@ -29,7 +29,7 @@ namespace Libplanet.Action.State.Tests
 
             Assert.Equal(
                 new KeyBytes($"__{ByteUtil.Hex(currency.Hash.ByteArray)}"),
-                KeyConverters.ToTotalSupplyKey(currency));
+                KeyConverters.ToTotalSupplyKey(currency.Hash));
 
             Assert.Equal(
                 new KeyBytes("___"),

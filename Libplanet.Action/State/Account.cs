@@ -198,7 +198,7 @@ namespace Libplanet.Action.State
                 new AccountState(
                     Trie
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))),
+                        .Set(ToTotalSupplyKey(currency.Hash), new Integer(sa))),
                 TotalUpdatedFungibleAssets.Add((address, currency)))
             : new Account(
                 new AccountState(
