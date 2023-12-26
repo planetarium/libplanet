@@ -34,6 +34,11 @@ namespace Libplanet.Store.Trie.Nodes
             return new FullNode(Children.SetItem(index, childNode));
         }
 
+        public FullNode RemoveChild(int index)
+        {
+            return new FullNode(Children.SetItem(index, null));
+        }
+
         /// <inheritdoc cref="IEquatable{T}.Equals"/>
         public bool Equals(FullNode? other)
         {

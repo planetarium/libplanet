@@ -54,6 +54,8 @@ namespace Libplanet.Store.Trie
         /// <seealso cref="IStateStore.Commit"/>
         ITrie Set(in KeyBytes key, IValue value);
 
+        ITrie SetNull(in KeyBytes key);
+
         /// <summary>
         /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.
         /// </summary>
