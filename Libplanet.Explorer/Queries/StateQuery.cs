@@ -44,7 +44,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 }
         );
 
-        Field<NonNullGraphType<AccountStateType>>(
+        Field<NonNullGraphType<ListGraphType<NonNullGraphType<AccountStateType>>>>(
             name: "accounts",
             description:
                 "Gets the account states associated with given block hashes " +
