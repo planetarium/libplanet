@@ -11,6 +11,9 @@ namespace Libplanet.Explorer.GraphTypes
 {
     public class AccountStateType : ObjectGraphType<IAccountState>
     {
+        internal static readonly KeyBytes ValidatorSetKey =
+            new KeyBytes(new byte[] { _underScore, _underScore, _underScore });
+
         private const byte _underScore = 95;  // '_'
 
         private static readonly byte[] _conversionTable =
@@ -37,10 +40,12 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Name = "AccountState";
             Description =
-                "Represents raw account state.  This is meant to represent a raw storage state " +
+                "Represents a raw account state.  This is meant to represent a raw storage state " +
                 "void of any application layer context and/or logic.  In particular, " +
-                "this does not deal with currency directly, which requires additional " +
-                "information on currency such as its ticker and possible minters, etc.";
+                "this does not deal with currency or fungible asset value directly, " +
+                "which requires additional information on currency such as its ticker " +
+                "and possible minters, etc. while interpreting the data retrieved " +
+                "with the provided contextual information. The same is true for validator sets.";
 
             Field<NonNullGraphType<HashDigestType<SHA256>>>(
                 name: "stateRootHash",
@@ -141,7 +146,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field<BencodexValueType>(
                 name: "validatorSet",
                 description: "The validator set.",
-                resolve: context => context.Source.GetValidatorSet().Bencoded
+                resolve: context => context.Source.Trie.Get(ValidatorSetKey)
             );
         }
 
