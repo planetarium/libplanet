@@ -156,6 +156,9 @@ be compatible with this version,  specifically, those that ran with
     `MaxGasPrice` and `GasLimit`.  [[#3567]]
  -  (Libplanet.Store) Changed `ShortNode` to no longer inherit `BaseNode`.
     `ShortNode.Value` is no longer nullable.  [[#3572]]
+ -  (Libplanet.Store) Removed `FullNode()` and added `FullNode.Empty`.
+    [[#3573]]
+ -  (Libplanet.Store) Slightly optimized `ITrie` performance.  [[#3573]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
@@ -164,6 +167,7 @@ be compatible with this version,  specifically, those that ran with
 [#3564]: https://github.com/planetarium/libplanet/pull/3564
 [#3567]: https://github.com/planetarium/libplanet/pull/3567
 [#3572]: https://github.com/planetarium/libplanet/pull/3572
+[#3573]: https://github.com/planetarium/libplanet/pull/3573
 
 
 Version 3.9.2
