@@ -10,6 +10,9 @@ namespace Libplanet.Store.Trie.Nodes
         // Children 0x10 + Value 0x1
         public const byte ChildrenCount = 0x11;
 
+        public static readonly FullNode Empty =
+            new FullNode(new INode?[ChildrenCount].ToImmutableArray());
+
         public FullNode(ImmutableArray<INode?> children)
             : base(children[ChildrenCount - 1])
         {
@@ -20,11 +23,6 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             Children = children;
-        }
-
-        public FullNode()
-            : this(new INode?[ChildrenCount].ToImmutableArray())
-        {
         }
 
         public ImmutableArray<INode?> Children { get; }
