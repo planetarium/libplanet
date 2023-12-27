@@ -339,7 +339,7 @@ namespace Libplanet.Store.Trie
         {
             if (cursor.RemainingAnyNibbles)
             {
-                return new FullNode()
+                return FullNode.Empty
                     .SetChild(FullNode.ChildrenCount - 1, valueNode)
                     .SetChild(cursor.NextNibble, InsertToNullNode(cursor.Next(1), value));
             }
@@ -370,7 +370,7 @@ namespace Libplanet.Store.Trie
             }
             else
             {
-                FullNode fullNode = new FullNode();
+                FullNode fullNode = FullNode.Empty;
                 byte newChildIndex = shortNode.Key[commonNibbles.Length];
                 Nibbles newShortNodeKey = shortNode.Key.Skip(commonNibbles.Length + 1);
 
