@@ -28,10 +28,10 @@ namespace Libplanet.Store.Trie.Nodes
 
             return other is { } node &&
                 Key.Equals(node.Key) &&
-                ((Value is null && node.Value is null) ||
-                (Value is { } value && value.Equals(node.Value)));
+                Value.Equals(node.Value);
         }
 
+        /// <inheritdoc cref="object.Equals"/>
         public override bool Equals(object? obj) =>
             obj is ShortNode other && Equals(other);
 
@@ -39,13 +39,12 @@ namespace Libplanet.Store.Trie.Nodes
         {
             unchecked
             {
-                return (Key.GetHashCode() * 397) ^
-                    (Value?.GetHashCode() ?? Null.Value.GetHashCode());
+                return (Key.GetHashCode() * 397) ^ Value.GetHashCode();
             }
         }
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
         public IValue ToBencodex() =>
-            new List(new Binary(Key.ByteArray), Value?.ToBencodex() ?? Null.Value);
+            new List(new Binary(Key.ByteArray), Value.ToBencodex());
     }
 }
