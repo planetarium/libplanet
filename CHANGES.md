@@ -30,6 +30,8 @@ be compatible with this version,  specifically, those that ran with
     `Libplanet.Explorer.Executable`.  [[#3564]]
  -  Changed `TxInvoice` to no longer allow negative values for
     `MaxGasPrice` and `GasLimit`.  [[#3567]]
+ -  (Libplanet.Store) Changed `ShortNode` to no longer inherit `BaseNode`.
+    `ShortNode.Value` is no longer nullable.  [[#3572]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
@@ -37,6 +39,7 @@ be compatible with this version,  specifically, those that ran with
 [#3562]: https://github.com/planetarium/libplanet/pull/3562
 [#3564]: https://github.com/planetarium/libplanet/pull/3564
 [#3567]: https://github.com/planetarium/libplanet/pull/3567
+[#3572]: https://github.com/planetarium/libplanet/pull/3572
 
 
 Version 3.9.2
