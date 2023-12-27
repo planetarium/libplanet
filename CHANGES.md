@@ -35,6 +35,9 @@ be compatible with this version,  specifically, those that ran with
  -  (Libplanet.Store) Removed `FullNode()` and added `FullNode.Empty`.
     [[#3573]]
  -  (Libplanet.Store) Slightly optimized `ITrie` performance.  [[#3573]]
+ -  (Libplanet.Store) Changed `FullNode` to no longer inherit `BaseNode`.
+    [[#3574]]
+ -  (Libplanet.Store) Removed `BaseNode`.  [[#3574]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
@@ -44,6 +47,7 @@ be compatible with this version,  specifically, those that ran with
 [#3567]: https://github.com/planetarium/libplanet/pull/3567
 [#3572]: https://github.com/planetarium/libplanet/pull/3572
 [#3573]: https://github.com/planetarium/libplanet/pull/3573
+[#3574]: https://github.com/planetarium/libplanet/pull/3574
 
 
 Version 3.9.2
