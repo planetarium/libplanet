@@ -79,7 +79,6 @@ namespace Libplanet.Store.Trie
 
             if (commonNibbles.Length == shortNode.Key.Length)
             {
-                // FIXME: This assumes short node's value is not null.
                 return new ShortNode(
                     shortNode.Key,
                     Insert(shortNode.Value, nextCursor, value, false));
@@ -90,7 +89,6 @@ namespace Libplanet.Store.Trie
                 byte newChildIndex = shortNode.Key[commonNibbles.Length];
                 Nibbles newShortNodeKey = shortNode.Key.Skip(commonNibbles.Length + 1);
 
-                // FIXME: Deal with null; this assumes short node's value is not null
                 // Handles modified short node.
                 fullNode = newShortNodeKey.Length > 0
                     ? fullNode.SetChild(
