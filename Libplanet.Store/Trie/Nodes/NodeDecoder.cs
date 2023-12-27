@@ -123,9 +123,11 @@ namespace Libplanet.Store.Trie.Nodes
         private static ShortNode DecodeShort(List list)
         {
             // FIXME: This assumes encoded binary is a valid sequence of nibbles.
+            INode value = Decode(list[1], ShortValueNodeType) ??
+                throw new NullReferenceException(
+                    $"Failed to decode a {nameof(ShortNode)} from given {nameof(list)}: {list}");
             return new ShortNode(
-                new Nibbles(((Binary)list[0]).ByteArray),
-                Decode(list[1], ShortValueNodeType));
+                new Nibbles(((Binary)list[0]).ByteArray), value);
         }
 
         // The length is already checked.

@@ -3,18 +3,20 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    public sealed class ShortNode : BaseNode, IEquatable<ShortNode>
+    public sealed class ShortNode : INode, IEquatable<ShortNode>
     {
-        public ShortNode(in Nibbles nibbles, INode? value)
-            : base(value)
+        public ShortNode(in Nibbles nibbles, INode value)
         {
             Key = nibbles.Length > 0
                 ? nibbles
                 : throw new ArgumentException(
                     $"Given {nameof(nibbles)} cannot be empty", nameof(nibbles));
+            Value = value;
         }
 
         public Nibbles Key { get; }
+
+        public INode Value { get; }
 
         /// <inheritdoc cref="IEquatable{T}.Equals"/>
         public bool Equals(ShortNode? other)
@@ -43,7 +45,7 @@ namespace Libplanet.Store.Trie.Nodes
         }
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
-        public override IValue ToBencodex() =>
+        public IValue ToBencodex() =>
             new List(new Binary(Key.ByteArray), Value?.ToBencodex() ?? Null.Value);
     }
 }
