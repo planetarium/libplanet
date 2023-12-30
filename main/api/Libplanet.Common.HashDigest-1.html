@@ -279,7 +279,7 @@ a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;<
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1.length#system-collections-immutable-immutablearray-1-length">Length</a> is not
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <span class="xref">System.Collections.Immutable.ImmutableArray`1.Length</span> is not
 the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> the hash algorithm
 (i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>) requires.</p>
 </td>
@@ -304,7 +304,7 @@ the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplan
 a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of every digest.</p>
 <p>This varies depending upon what <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> is
 used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a> <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> is <code>20</code>,
-and if <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a> it is <code>32</code>.</p>
+and if <span class="xref">System.Security.Cryptography.SHA256</span> it is <code>32</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -724,7 +724,7 @@ public static HashDigest&lt;T&gt; FromString(string hexDigest)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hexDigest</span></td>
         <td><p>A hexadecimal representation of
 a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
@@ -932,7 +932,7 @@ public override readonly string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A hexadecimal representation of a digest.</p>
 </td>
       </tr>
