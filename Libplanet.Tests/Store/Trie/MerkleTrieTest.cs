@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -117,14 +118,14 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Null(trie.Get(new KeyBytes(0xaa, 0xbb)));
             Assert.Null(trie.Get(new KeyBytes(0x12, 0x34)));
 
-            trie = trie.Set(new KeyBytes(0xbe, 0xef), new Boolean(true));
+            trie = trie.Set(new KeyBytes(0xbe, 0xef), new Bencodex.Types.Boolean(true));
             trie = commit ? stateStore.Commit(trie) : trie;
             AssertBytesEqual(
                 FromString("4458796f4092b5ebfc1ffb3989e72edee228501e438080a12dea45591dc66d58"),
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             Assert.Null(trie.Get(new KeyBytes(0x11, 0x22)));
@@ -138,7 +139,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -152,7 +153,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -174,7 +175,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -190,7 +191,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(List.Empty, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -215,7 +216,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(complexList, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -245,7 +246,7 @@ namespace Libplanet.Tests.Store.Trie
                 trie.Hash
             );
             AssertBencodexEqual(
-                new Boolean(true),
+                new Bencodex.Types.Boolean(true),
                 trie.Get(new KeyBytes(0xbe, 0xef))
             );
             AssertBencodexEqual(complexList, trie.Get(new KeyBytes(0x11, 0x22)));
@@ -344,6 +345,137 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(value00, trie.Get(key00));
             Assert.Equal(value0000, trie.Get(key0000));
             Assert.Equal(value0010, trie.Get(key0010));
+        }
+
+        [Fact]
+        public void RemoveValue()
+        {
+            IKeyValueStore keyValueStore = new MemoryKeyValueStore();
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
+            HashDigest<SHA256> nullTrieHash = trie.Hash;
+
+            KeyBytes key = new KeyBytes(Array.Empty<byte>());
+            IValue value = new Text(string.Empty);
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            IValue value00 = new Text("00");
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+            IValue value0000 = new Text("0000");
+
+            // Add value at root and remove from root.
+            // Also checks "null hash" is never recorded.
+            trie = trie.Set(key, value);
+            trie = stateStore.Commit(trie);
+            Assert.NotEqual(nullTrieHash, trie.Hash);
+            trie = trie.SetNull(key);
+            trie = stateStore.Commit(trie);
+            Assert.Null(trie.Root);
+            Assert.Equal(nullTrieHash, trie.Hash);
+            Assert.Empty(trie.IterateValues());
+            Assert.Throws<KeyNotFoundException>(
+                () => keyValueStore.Get(new KeyBytes(nullTrieHash.ByteArray)));
+
+            // Add single value to make short node and remove it.
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key00, value00);
+            trie = stateStore.Commit(trie);
+            Assert.NotEqual(nullTrieHash, trie.Hash);
+            trie = trie.SetNull(key00);
+            trie = stateStore.Commit(trie);
+            Assert.Null(trie.Root);
+            Assert.Equal(nullTrieHash, trie.Hash);
+            Assert.Empty(trie.IterateNodes());
+            Assert.Empty(trie.IterateValues());
+
+            // Add two values to make full node + short node
+            // and remove "middle value" to get a single short node.
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key0000, value0000);
+            trie = stateStore.Commit(trie);
+            int expectedNodeCount = trie.IterateNodes().Count();
+            int expectedValueCount = trie.IterateValues().Count();
+            HashDigest<SHA256> expectedHash = trie.Hash;
+
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key00, value00);
+            trie = trie.Set(key0000, value0000);
+            trie = stateStore.Commit(trie);
+            trie = trie.SetNull(key00);
+            trie = stateStore.Commit(trie);
+            Assert.Equal(value0000, trie.Get(key0000));
+            Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
+            Assert.Equal(expectedValueCount, trie.IterateValues().Count());
+            Assert.Equal(expectedHash, trie.Hash);
+
+            // Add two values to make full node + short node
+            // and remove "longer value" to get a single short node.
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key00, value00);
+            trie = stateStore.Commit(trie);
+            expectedNodeCount = trie.IterateNodes().Count();
+            expectedValueCount = trie.IterateValues().Count();
+            expectedHash = trie.Hash;
+
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key00, value00);
+            trie = trie.Set(key0000, value0000);
+            trie = stateStore.Commit(trie);
+            trie = trie.SetNull(key0000);
+            trie = stateStore.Commit(trie);
+            Assert.Equal(value00, Assert.Single(trie.IterateValues()).Value);
+            Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
+            Assert.Equal(expectedValueCount, trie.IterateValues().Count());
+            Assert.Equal(expectedHash, trie.Hash);
+
+            // Add two values to make full node + short node
+            // and remove both to get a null node.
+            trie = stateStore.GetStateRoot(null);
+            trie = trie.Set(key00, value00);
+            trie = trie.Set(key0000, value0000);
+            trie = stateStore.Commit(trie);
+            trie = trie.SetNull(key00);
+            trie = trie.SetNull(key0000);
+            trie = stateStore.Commit(trie);
+            Assert.Null(trie.Root);
+            Assert.Equal(nullTrieHash, trie.Hash);
+            Assert.Empty(trie.IterateNodes());
+            Assert.Empty(trie.IterateValues());
+
+            // Add randomized kvs and remove kvs in order.
+            // The way the test is set up, identical kv pairs shouldn't matter.
+            List<(KeyBytes Key, Text Value)> kvs = Enumerable
+                .Range(0, 100)
+                .Select(_ => TestUtils.GetRandomBytes(10))
+                .Select(bytes => (new KeyBytes(bytes), new Text(ByteUtil.Hex(bytes))))
+                .ToList();
+            Stack<(HashDigest<SHA256>, int, int)> expected =
+                new Stack<(HashDigest<SHA256>, int, int)>();
+            trie = stateStore.GetStateRoot(null);
+            expected.Push((nullTrieHash, 0, 0));
+
+            foreach (var kv in kvs)
+            {
+                trie = trie.Set(kv.Key, kv.Value);
+                trie = stateStore.Commit(trie);
+                expected.Push(
+                    (trie.Hash, trie.IterateNodes().Count(), trie.IterateValues().Count()));
+            }
+
+            expected.Pop();
+            kvs.Reverse();
+            foreach (var kv in kvs)
+            {
+                trie = trie.SetNull(kv.Key);
+                trie = stateStore.Commit(trie);
+                var tuple = expected.Pop();
+
+                Assert.Equal(tuple.Item3, trie.IterateValues().Count());
+                Assert.Equal(tuple.Item2, trie.IterateNodes().Count());
+                Assert.Equal(tuple.Item1, trie.Hash);
+            }
+
+            Assert.Empty(expected);
+            Assert.Null(trie.Root);
         }
     }
 }

@@ -132,6 +132,7 @@ namespace Libplanet.Store.Trie
                 //   - If the child is either a value node or a full node, return a short node
                 //     with the nibble as its key.
                 (INode child, int index) = childrenWithIndices.Single();
+                child = child is HashNode hn ? UnhashNode(hn) : child;
                 return index == FullNode.ChildrenCount - 1
                     ? child
                     : child is ShortNode sn
