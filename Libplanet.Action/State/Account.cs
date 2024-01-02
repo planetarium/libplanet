@@ -52,6 +52,8 @@ namespace Libplanet.Action.State
         [Pure]
         public IAccount SetState(Address address, IValue state) => UpdateState(address, state);
 
+        public IAccount RemoveState(Address address) => UpdateState(address, null);
+
         /// <inheritdoc/>
         [Pure]
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
@@ -182,11 +184,15 @@ namespace Libplanet.Action.State
         [Pure]
         private Account UpdateState(
             Address address,
-            IValue value) =>
-            new Account(
-                new AccountState(
-                    Trie.Set(ToStateKey(address), value)),
-                TotalUpdatedFungibleAssets);
+            IValue? value) => value is { } v
+                ? new Account(
+                    new AccountState(
+                        Trie.Set(ToStateKey(address), v)),
+                    TotalUpdatedFungibleAssets)
+                : new Account(
+                    new AccountState(
+                        Trie.Remove(ToStateKey(address))),
+                    TotalUpdatedFungibleAssets);
 
         [Pure]
         private Account UpdateFungibleAssets(
