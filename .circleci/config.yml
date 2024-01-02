@@ -462,7 +462,7 @@ jobs:
     parallelism: 1
     steps:
     - linux_netcore_test_base:
-        code_coverage: false
+        code_coverage: true
 
   linux-netcore-test-ar-SA:
     docker:
@@ -499,7 +499,9 @@ jobs:
       name: win/server-2022
       size: xlarge
     parallelism: 1
-    steps: [netcore_test_base]
+    steps: 
+    - netcore_test_base:
+        code_coverage: false
 
   linux-unity-test:
     docker:
