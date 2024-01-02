@@ -79,7 +79,7 @@ namespace Libplanet.Store.Trie
 
         private IKeyValueStore KeyValueStore { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="ITrie.Set"/>
         public ITrie Set(in KeyBytes key, IValue value)
         {
             if (value is null)
@@ -93,6 +93,13 @@ namespace Libplanet.Store.Trie
                 new ValueNode(value),
                 true);
 
+            return new MerkleTrie(KeyValueStore, newRootNode, _cache);
+        }
+
+        /// <inheritdoc cref="ITrie.Remove"/>
+        public ITrie Remove(in KeyBytes key)
+        {
+            INode? newRootNode = RemoveFromRoot(new PathCursor(key));
             return new MerkleTrie(KeyValueStore, newRootNode, _cache);
         }
 
@@ -123,6 +130,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
+        /// <inheritdoc cref="ITrie.IterateNodes"/>
         public IEnumerable<(Nibbles Path, INode Node)> IterateNodes()
         {
             if (Root is null)
