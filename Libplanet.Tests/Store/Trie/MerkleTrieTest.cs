@@ -443,9 +443,10 @@ namespace Libplanet.Tests.Store.Trie
 
             // Add randomized kvs and remove kvs in order.
             // The way the test is set up, identical kv pairs shouldn't matter.
+            Random random = new Random();
             List<(KeyBytes Key, Text Value)> kvs = Enumerable
                 .Range(0, 100)
-                .Select(_ => TestUtils.GetRandomBytes(10))
+                .Select(_ => TestUtils.GetRandomBytes(random.Next(2, 10)))
                 .Select(bytes => (new KeyBytes(bytes), new Text(ByteUtil.Hex(bytes))))
                 .ToList();
             Stack<(HashDigest<SHA256>, int, int)> expected =
