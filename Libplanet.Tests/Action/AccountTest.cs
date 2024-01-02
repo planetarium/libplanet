@@ -147,6 +147,23 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void RemoveState()
+        {
+            IAccount a = _initAccount.SetState(_addr[0], (Text)"A");
+            a = a.SetState(_addr[1], (Text)"B");
+            Assert.Equal((Text)"A", a.GetState(_addr[0]));
+            Assert.Equal((Text)"B", a.GetState(_addr[1]));
+
+            a = a.RemoveState(_addr[0]);
+            Assert.Null(a.GetState(_addr[0]));
+            Assert.Equal((Text)"B", a.GetState(_addr[1]));
+
+            a = a.RemoveState(_addr[1]);
+            Assert.Null(a.GetState(_addr[0]));
+            Assert.Null(a.GetState(_addr[1]));
+        }
+
+        [Fact]
         public virtual void FungibleAssets()
         {
             IAccount a = _initAccount.TransferAsset(
