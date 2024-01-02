@@ -30,6 +30,9 @@ be compatible with this version,  specifically, those that ran with
     `Libplanet.Explorer.Executable`.  [[#3564]]
  -  Changed `TxInvoice` to no longer allow negative values for
     `MaxGasPrice` and `GasLimit`.  [[#3567]]
+ -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3570]]
+ -  (Libplanet.Explorer) Added `account` and `accounts` query to `StateQuery`.
+    [[#3570]]
  -  (Libplanet.Store) Changed `ShortNode` to no longer inherit `BaseNode`.
     `ShortNode.Value` is no longer nullable.  [[#3572]]
  -  (Libplanet.Store) Removed `FullNode()` and added `FullNode.Empty`.
@@ -53,6 +56,7 @@ be compatible with this version,  specifically, those that ran with
 [#3562]: https://github.com/planetarium/libplanet/pull/3562
 [#3564]: https://github.com/planetarium/libplanet/pull/3564
 [#3567]: https://github.com/planetarium/libplanet/pull/3567
+[#3570]: https://github.com/planetarium/libplanet/pull/3570
 [#3572]: https://github.com/planetarium/libplanet/pull/3572
 [#3573]: https://github.com/planetarium/libplanet/pull/3573
 [#3574]: https://github.com/planetarium/libplanet/pull/3574
