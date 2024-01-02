@@ -52,6 +52,8 @@ namespace Libplanet.Action.State
         [Pure]
         public IAccount SetState(Address address, IValue state) => UpdateState(address, state);
 
+        /// <inheritdoc/>
+        [Pure]
         public IAccount RemoveState(Address address) => UpdateState(address, null);
 
         /// <inheritdoc/>
