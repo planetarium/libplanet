@@ -459,8 +459,8 @@ jobs:
       TRANSPORT_TYPE: netmq
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    parallelism: 4
-    steps:     
+    parallelism: 1
+    steps:
     - linux_netcore_test_base:
         code_coverage: false
 
@@ -469,7 +469,7 @@ jobs:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    parallelism: 4
+    parallelism: 1
     steps:
     - linux_netcore_test_base:
         locale: ar_SA.UTF-8
@@ -480,7 +480,7 @@ jobs:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    parallelism: 4
+    parallelism: 1
     steps:
     - linux_netcore_test_base:
         locale: fr_FR.UTF-8
@@ -490,7 +490,7 @@ jobs:
     macos:
       xcode: 14.3.1
     resource_class: macos.m1.medium.gen1
-    parallelism: 4
+    parallelism: 1
     steps:
     - macos_netcore_test_base: { code_coverage: false }
 
@@ -498,7 +498,7 @@ jobs:
     executor:
       name: win/server-2022
       size: xlarge
-    parallelism: 6
+    parallelism: 1
     steps: [netcore_test_base]
 
   linux-unity-test:
@@ -508,7 +508,7 @@ jobs:
       XUNIT_UNITY_RUNNER: 0.5.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    parallelism: 4
+    parallelism: 1
     steps:
     - run:
         name: Install xsltproc
@@ -520,7 +520,7 @@ jobs:
       xcode: 11.3.0
     environment:
       XUNIT_UNITY_RUNNER: 0.5.0
-    parallelism: 3
+    parallelism: 1
     steps:
     - ulimit: { n: 10240 }
     - unity_test_base:
@@ -532,7 +532,7 @@ jobs:
       size: xlarge
     environment:
       XUNIT_UNITY_RUNNER: 0.5.0
-    parallelism: 4
+    parallelism: 1
     steps:
     - run:
         name: Install bzip2 & xsltproc
