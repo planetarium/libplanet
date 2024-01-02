@@ -93,9 +93,7 @@ public class StateQueryTest
                  accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
-                hex
-            }
+            )
         }
         ", source: source);
         Assert.Null(result.Errors);
@@ -104,13 +102,7 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object state =
             Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(
-            new Dictionary<string, object>()
-            {
-                { "hex", "6e" },
-            },
-            Assert.IsAssignableFrom<IDictionary<string, object>>(state)
-        );
+        Assert.Equal(new byte[] { 110, }, state);
     }
 
     [Fact]
@@ -255,9 +247,7 @@ public class StateQueryTest
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            ) {
-                hex
-            }
+            )
         }
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
@@ -277,9 +267,7 @@ public class StateQueryTest
                  accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            ) {
-                hex
-            }
+            )
         }
         ", source: source);
         Assert.Null(result.Errors);
@@ -288,13 +276,7 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object state =
             Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(
-            new Dictionary<string, object>()
-            {
-                { "hex", "6e" },
-            },
-            Assert.IsAssignableFrom<IDictionary<string, object>>(state)
-        );
+        Assert.Equal(new byte[] { 110, }, state);
     }
 
     [Fact]

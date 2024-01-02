@@ -35,7 +35,7 @@ public class StateQuery
             ),
             resolve: ResolveAccountState
         );
-        Field<BencodexValueType>(
+        Field<LegacyBencodexValueType>(
             "state",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
