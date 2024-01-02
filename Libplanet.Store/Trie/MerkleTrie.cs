@@ -96,8 +96,8 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRootNode, _cache);
         }
 
-        /// <inheritdoc cref="ITrie.SetNull"/>
-        public ITrie SetNull(in KeyBytes key)
+        /// <inheritdoc cref="ITrie.Remove"/>
+        public ITrie Remove(in KeyBytes key)
         {
             INode? newRootNode = RemoveFromRoot(new PathCursor(key));
             return new MerkleTrie(KeyValueStore, newRootNode, _cache);

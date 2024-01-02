@@ -68,7 +68,7 @@ namespace Libplanet.Store.Trie
         /// storage when <see cref="IStateStore.Commit"/> is called.
         /// </remarks>
         /// <seealso cref="IStateStore.Commit"/>
-        ITrie SetNull(in KeyBytes key);
+        ITrie Remove(in KeyBytes key);
 
         /// <summary>
         /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.

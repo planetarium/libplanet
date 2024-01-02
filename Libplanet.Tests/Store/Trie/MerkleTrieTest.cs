@@ -367,7 +367,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key, value);
             trie = stateStore.Commit(trie);
             Assert.NotEqual(nullTrieHash, trie.Hash);
-            trie = trie.SetNull(key);
+            trie = trie.Remove(key);
             trie = stateStore.Commit(trie);
             Assert.Null(trie.Root);
             Assert.Equal(nullTrieHash, trie.Hash);
@@ -380,7 +380,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key00, value00);
             trie = stateStore.Commit(trie);
             Assert.NotEqual(nullTrieHash, trie.Hash);
-            trie = trie.SetNull(key00);
+            trie = trie.Remove(key00);
             trie = stateStore.Commit(trie);
             Assert.Null(trie.Root);
             Assert.Equal(nullTrieHash, trie.Hash);
@@ -400,7 +400,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key00, value00);
             trie = trie.Set(key0000, value0000);
             trie = stateStore.Commit(trie);
-            trie = trie.SetNull(key00);
+            trie = trie.Remove(key00);
             trie = stateStore.Commit(trie);
             Assert.Equal(value0000, trie.Get(key0000));
             Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
@@ -420,7 +420,7 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key00, value00);
             trie = trie.Set(key0000, value0000);
             trie = stateStore.Commit(trie);
-            trie = trie.SetNull(key0000);
+            trie = trie.Remove(key0000);
             trie = stateStore.Commit(trie);
             Assert.Equal(value00, Assert.Single(trie.IterateValues()).Value);
             Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
@@ -433,8 +433,8 @@ namespace Libplanet.Tests.Store.Trie
             trie = trie.Set(key00, value00);
             trie = trie.Set(key0000, value0000);
             trie = stateStore.Commit(trie);
-            trie = trie.SetNull(key00);
-            trie = trie.SetNull(key0000);
+            trie = trie.Remove(key00);
+            trie = trie.Remove(key0000);
             trie = stateStore.Commit(trie);
             Assert.Null(trie.Root);
             Assert.Equal(nullTrieHash, trie.Hash);
@@ -466,7 +466,7 @@ namespace Libplanet.Tests.Store.Trie
             kvs.Reverse();
             foreach (var kv in kvs)
             {
-                trie = trie.SetNull(kv.Key);
+                trie = trie.Remove(kv.Key);
                 trie = stateStore.Commit(trie);
                 var tuple = expected.Pop();
 

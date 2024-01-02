@@ -162,7 +162,7 @@ be compatible with this version,  specifically, those that ran with
  -  (Libplanet.Store) Changed `FullNode` to no longer inherit `BaseNode`.
     [[#3574]]
  -  (Libplanet.Store) Removed `BaseNode`.  [[#3574]]
- -  (Libplanet.Store) Added `ITrie.SetNull()` interface method.  [[#3576]]
+ -  (Libplanet.Store) Added `ITrie.Remove()` interface method.  [[#3576]]
  -  (Libplanet.Store) Added `FullNode.RemoveChild()` method.  [[#3576]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
