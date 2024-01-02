@@ -528,6 +528,11 @@ public class StateQueryTest
             throw new System.NotImplementedException();
         }
 
+        public IAccount RemoveState(Address address)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
         {
             throw new System.NotImplementedException();

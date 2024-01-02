@@ -67,6 +67,8 @@ namespace Libplanet.Action.State
         [Pure]
         IAccount SetState(Address address, IValue state);
 
+        IAccount RemoveState(Address address);
+
         /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
