@@ -68,6 +68,23 @@ namespace Libplanet.Action.State
         IAccount SetState(Address address, IValue state);
 
         /// <summary>
+        /// Gets a new instance that the account state of the given
+        /// <paramref name="address"/> is removed.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> referring
+        /// the account to remove its state.</param>
+        /// <returns>A new <see cref="IAccount"/> instance that
+        /// the account state of the given <paramref name="address"/>
+        /// is removed.</returns>
+        /// <remarks>
+        /// This method method does not manipulate the instance,
+        /// but returns a new <see cref="IAccount"/> instance
+        /// with updated states instead.
+        /// </remarks>
+        [Pure]
+        IAccount RemoveState(Address address);
+
+        /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
         /// </summary>
