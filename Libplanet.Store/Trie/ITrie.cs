@@ -64,8 +64,10 @@ namespace Libplanet.Store.Trie
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
         /// <remarks>
         /// This <em>should not</em> actually remove anything from storage.
-        /// Value at the marked path given by <paramref name="key"/> is actually removed from
-        /// storage when <see cref="IStateStore.Commit"/> is called.
+        /// The removal of the value at the marked path given by <paramref name="key"/> is actually
+        /// recorded to storage when <see cref="IStateStore.Commit"/> is called.
+        /// Regardless, there is actually no removal of any value from storage even when
+        /// <see cref="IStateStore.Commit"/> is called.
         /// </remarks>
         /// <seealso cref="IStateStore.Commit"/>
         ITrie Remove(in KeyBytes key);
