@@ -429,10 +429,13 @@ namespace Libplanet.Tests.Store.Trie
 
             // Add two values to make full node + short node
             // and remove both to get a null node.
+            // Also checks that once stored values are not actually removed from the
+            // underlying key value store.
             trie = stateStore.GetStateRoot(null);
             trie = trie.Set(key00, value00);
             trie = trie.Set(key0000, value0000);
             trie = stateStore.Commit(trie);
+            HashDigest<SHA256> hash = trie.Hash; // A reference to an earlier point in time.
             trie = trie.Remove(key00);
             trie = trie.Remove(key0000);
             trie = stateStore.Commit(trie);
@@ -440,6 +443,9 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Equal(nullTrieHash, trie.Hash);
             Assert.Empty(trie.IterateNodes());
             Assert.Empty(trie.IterateValues());
+            trie = stateStore.GetStateRoot(hash);
+            Assert.Equal(value00, trie.Get(key00)); // Nothing is actually removed from storage.
+            Assert.Equal(value0000, trie.Get(key0000));
 
             // Add randomized kvs and remove kvs in order.
             // The way the test is set up, identical kv pairs shouldn't matter.
