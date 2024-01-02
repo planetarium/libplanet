@@ -50,7 +50,7 @@ namespace Libplanet.Store.Trie
             // - common prefix length == short node's key length: remove directly from short node's
             //   value
             // - common prefix length < short node's key length: do nothing since it is
-            //   trying to remove value from a non-existant path
+            //   trying to remove value from a non-existent path
             Nibbles commonNibbles = cursor.GetCommonStartingNibbles(shortNode.Key);
             PathCursor nextCursor = cursor.Next(commonNibbles.Length);
 
