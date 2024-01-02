@@ -489,7 +489,7 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 14.3.1
-    resource_class: xlarge
+    resource_class: macos.m1.large.gen1
     parallelism: 1
     steps:
     - macos_netcore_test_base: { code_coverage: false }
