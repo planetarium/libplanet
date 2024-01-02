@@ -733,6 +733,8 @@ public class StateQueryTest
 
         public ITrie Set(in KeyBytes key, IValue value) => throw new NotSupportedException();
 
+        public ITrie Remove(in KeyBytes key) => throw new NotSupportedException();
+
         public IValue Get(KeyBytes key)
         {
             if (_stateRootHash is { })
