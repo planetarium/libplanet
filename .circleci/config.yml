@@ -245,7 +245,7 @@ commands:
               --dcDisableDefaultFilters
               --dcReportType=DetailedXML
               --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
-            no_output_timeout: 180s
+            no_output_timeout: 300s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
@@ -266,7 +266,7 @@ commands:
               -c Release
               -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
               --filter "$(cat .test-filter.txt)"
-            no_output_timeout: 180s
+            no_output_timeout: 300s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
@@ -489,7 +489,7 @@ jobs:
   macos-netcore-test:
     macos:
       xcode: 14.3.1
-    resource_class: macos.m1.medium.gen1
+    resource_class: xlarge
     parallelism: 1
     steps:
     - macos_netcore_test_base: { code_coverage: false }
