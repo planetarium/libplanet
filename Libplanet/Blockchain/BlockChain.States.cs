@@ -27,9 +27,9 @@ namespace Libplanet.Blockchain
         /// <returns>The current world state.</returns>
         public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(Address, BlockHash?)"/>
-        public IAccountState GetAccountState(Address address, BlockHash? offset)
-            => _blockChainStates.GetAccountState(address, offset);
+        /// <inheritdoc cref="IBlockChainStates.GetAccountState(BlockHash?, Address)"/>
+        public IAccountState GetAccountState(BlockHash? offset, Address address)
+            => _blockChainStates.GetAccountState(offset, address);
 
         /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
         public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash)
@@ -42,95 +42,95 @@ namespace Libplanet.Blockchain
         /// <param name="address">An <see cref="Address"/> to get the account states of.</param>
         /// <returns>The current account state of given <paramref name="address"/>.</returns>
         public IAccountState GetAccountState(Address address)
-            => GetAccountState(address, Tip.Hash);
+            => GetAccountState(Tip.Hash, address);
 
-        /// <inheritdoc cref="IBlockChainStates.GetState(Address, Address, BlockHash?)"/>
-        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
-            => _blockChainStates.GetState(address, accountAddress, offset);
+        /// <inheritdoc cref="IBlockChainStates.GetState(BlockHash?, Address, Address)"/>
+        public IValue GetState(BlockHash? offset, Address accountAddress, Address address)
+            => _blockChainStates.GetState(offset, accountAddress, address);
 
-        /// <inheritdoc cref="IBlockChainStates.GetState(Address, HashDigest{SHA256}?)"/>
-        public IValue GetState(Address address, HashDigest<SHA256>? stateRootHash)
-            => _blockChainStates.GetState(address, stateRootHash);
+        /// <inheritdoc cref="IBlockChainStates.GetState(HashDigest{SHA256}?, Address)"/>
+        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address)
+            => _blockChainStates.GetState(stateRootHash, address);
 
         /// <summary>
         /// Gets the current state of given <paramref name="address"/> and
         /// <paramref name="accountAddress"/> in the <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="address">An <see cref="Address"/> to get the states of.</param>
         /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
+        /// <param name="address">An <see cref="Address"/> to get the states of.</param>
         /// <returns>The current state of given <paramref name="address"/> and
         /// <paramref name="accountAddress"/>.  This can be <see langword="null"/>
         /// if <paramref name="address"/> or <paramref name="accountAddress"/> has no value.
         /// </returns>
-        public IValue GetState(Address address, Address accountAddress)
-            => GetState(address, accountAddress, Tip.Hash);
+        public IValue GetState(Address accountAddress, Address address)
+            => GetState(Tip.Hash, accountAddress, address);
 
         /// <inheritdoc cref=
-        /// "IBlockChainStates.GetBalance(Address, Currency, Address, BlockHash?)"/>
+        /// "IBlockChainStates.GetBalance(BlockHash?, Address, Address, Currency)"/>
         public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
+            BlockHash? offset,
             Address accountAddress,
-            BlockHash? offset)
-            => _blockChainStates.GetBalance(address, currency, accountAddress, offset);
+            Address address,
+            Currency currency)
+            => _blockChainStates.GetBalance(offset, accountAddress, address, currency);
 
         /// <inheritdoc cref=
-        /// "IBlockChainStates.GetBalance(Address, Currency, HashDigest{SHA256}?)"/>
+        /// "IBlockChainStates.GetBalance(HashDigest{SHA256}?, Address, Currency)"/>
         public FungibleAssetValue GetBalance(
+            HashDigest<SHA256>? stateRootHash,
             Address address,
-            Currency currency,
-            HashDigest<SHA256>? stateRootHash)
-            => _blockChainStates.GetBalance(address, currency, stateRootHash);
+            Currency currency)
+            => _blockChainStates.GetBalance(stateRootHash, address, currency);
 
         /// <summary>
         /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
         /// in the <see cref="BlockChain"/>.
         /// </summary>
+        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <returns>The <paramref name="address"/>'s current balance.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
         /// <paramref name="accountAddress"/> cannot be created.
         /// </exception>
         public FungibleAssetValue GetBalance(
-            Address address,
-            Currency currency,
-            Address accountAddress)
-            => GetBalance(address, currency, accountAddress, Tip.Hash);
-
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(Currency, Address, BlockHash?)"/>
-        public FungibleAssetValue GetTotalSupply(
-            Currency currency,
             Address accountAddress,
-            BlockHash? offset)
-            => _blockChainStates.GetTotalSupply(currency, accountAddress, offset);
+            Address address,
+            Currency currency)
+            => GetBalance(Tip.Hash, accountAddress, address, currency);
 
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(Currency, HashDigest{SHA256}?)"/>
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(BlockHash?, Address, Currency)"/>
         public FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            HashDigest<SHA256>? stateRootHash)
-            => _blockChainStates.GetTotalSupply(currency, stateRootHash);
+            BlockHash? offset,
+            Address accountAddress,
+            Currency currency)
+            => _blockChainStates.GetTotalSupply(offset, accountAddress, currency);
+
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(HashDigest{SHA256}?, Currency)"/>
+        public FungibleAssetValue GetTotalSupply(
+            HashDigest<SHA256>? stateRootHash,
+            Currency currency)
+            => _blockChainStates.GetTotalSupply(stateRootHash, currency);
 
         /// <summary>
         /// Gets the current total supply of a <paramref name="currency"/> in the
         /// <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="currency">The currency type to query.</param>
         /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
+        /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <see cref="BlockChain.Tip"/> and <paramref name="accountAddress"/>
         /// in <see cref="FungibleAssetValue"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
         /// <paramref name="accountAddress"/> cannot be created.
         /// </exception>
-        public FungibleAssetValue GetTotalSupply(Currency currency, Address accountAddress)
-            => GetTotalSupply(currency, accountAddress, Tip.Hash);
+        public FungibleAssetValue GetTotalSupply(Address accountAddress, Currency currency)
+            => GetTotalSupply(Tip.Hash, accountAddress, currency);
 
-        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(Address, BlockHash?)" />
-        public ValidatorSet GetValidatorSet(Address accountAddress, BlockHash? offset)
-            => _blockChainStates.GetValidatorSet(accountAddress, offset);
+        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(BlockHash?, Address)" />
+        public ValidatorSet GetValidatorSet(BlockHash? offset, Address accountAddress)
+            => _blockChainStates.GetValidatorSet(offset, accountAddress);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(HashDigest{SHA256}?)" />
         public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash)
@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="accountAddress"/> cannot be created.
         /// </exception>
         public ValidatorSet GetValidatorSet(Address accountAddress)
-            => GetValidatorSet(accountAddress, Tip.Hash);
+            => GetValidatorSet(Tip.Hash, accountAddress);
 
         /// <summary>
         /// Returns the validator set in the
@@ -164,7 +164,7 @@ namespace Libplanet.Blockchain
         /// cannot be created.
         /// </exception>
         public ValidatorSet GetValidatorSet(BlockHash? offset)
-            => GetValidatorSet(ReservedAddresses.LegacyAccount, offset);
+            => GetValidatorSet(offset, ReservedAddresses.LegacyAccount);
 
         /// <summary>
         /// Returns the current validator set in the <see cref="BlockChain"/>.

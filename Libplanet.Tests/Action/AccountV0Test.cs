@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
-                chain.GetBalance(_addr[0], DumbAction.DumbCurrency, ReservedAddresses.LegacyAccount)
+                chain.GetBalance(ReservedAddresses.LegacyAccount, _addr[0], DumbAction.DumbCurrency)
             );
 
             return chain;
