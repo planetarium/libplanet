@@ -42,6 +42,10 @@ be compatible with this version,  specifically, those that ran with
  -  (Libplanet.Store) Added `FullNode.RemoveChild()` method.  [[#3576]]
  -  (Libplanet.Action) Added `IAccount.RemoveState()` interface method.
     [[#3577]]
+ -  (Libplanet.Explorer) Added `LegacyBencodexValueType` class that is
+    a copy of an old `BencodexValueType` with its name changed
+    for backwards compatibility.  Changed old `states` query
+    to use `LegacyBencodexValueType` instead of `BencodexValueType`.  [[#3579]]
 
 [#3559]: https://github.com/planetarium/libplanet/pull/3559
 [#3560]: https://github.com/planetarium/libplanet/pull/3560
@@ -54,6 +58,7 @@ be compatible with this version,  specifically, those that ran with
 [#3574]: https://github.com/planetarium/libplanet/pull/3574
 [#3576]: https://github.com/planetarium/libplanet/pull/3576
 [#3577]: https://github.com/planetarium/libplanet/pull/3577
+[#3579]: https://github.com/planetarium/libplanet/pull/3579
 
 
 Version 3.9.2

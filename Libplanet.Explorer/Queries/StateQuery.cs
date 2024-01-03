@@ -15,7 +15,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     public StateQuery()
     {
         Name = "StateQuery";
-        Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
+        Field<NonNullGraphType<ListGraphType<LegacyBencodexValueType>>>(
             "states",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
