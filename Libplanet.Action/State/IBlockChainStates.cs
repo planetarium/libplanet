@@ -60,10 +60,10 @@ namespace Libplanet.Action.State
         /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
         /// at <paramref name="offset"/>.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
-        /// to be returned.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
         /// for which to create an <see cref="IAccountState"/>.</param>
+        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
+        /// to be returned.</param>
         /// <returns>
         /// The <see cref="IAccountState"/> at <paramref name="offset"/>.
         /// </returns>
@@ -80,7 +80,7 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(Address address, BlockHash? offset);
+        IAccountState GetAccountState(BlockHash? offset, Address address);
 
         /// <summary>
         /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
@@ -97,11 +97,11 @@ namespace Libplanet.Action.State
         /// <summary>
         /// Gets a state associated to specified <paramref name="address"/>.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> of the state to query.</param>
-        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
-        /// the state from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the state from.</param>
+        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
+        /// the state from.</param>
+        /// <param name="address">The <see cref="Address"/> of the state to query.</param>
         /// <returns>The state associated to specified <paramref name="address"/>.
         /// An absent state is represented as <see langword="null"/>.
         /// </returns>
@@ -117,50 +117,49 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        IValue? GetState(Address address, Address accountAddress, BlockHash? offset);
+        IValue? GetState(BlockHash? offset, Address accountAddress, Address address);
 
         /// <summary>
         /// Gets a state associated to specified <paramref name="address"/>.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> of the state to query.</param>
         /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> of the root hash
         /// for which to create an <see cref="IAccountState"/>.</param>
+        /// <param name="address">The <see cref="Address"/> of the state to query.</param>
         /// <returns>The state associated to specified <paramref name="address"/>.
         /// An absent state is represented as <see langword="null"/>.
         /// </returns>
-        IValue? GetState(Address address, HashDigest<SHA256>? stateRootHash);
+        IValue? GetState(HashDigest<SHA256>? stateRootHash, Address address);
 
         /// <summary>
         /// Gets <paramref name="address"/>'s balance for given <paramref name="currency"/> in the
         /// <see cref="BlockChain"/> at <paramref name="offset"/>.
         /// </summary>
-        /// <param name="address">The owner <see cref="Address"/> to query.</param>
-        /// <param name="currency">The currency type to query.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
+        /// <param name="address">The owner <see cref="Address"/> to query.</param>
+        /// <param name="currency">The currency type to query.</param>
         /// <returns>The <paramref name="address"/>'s balance for <paramref name="currency"/>
-        /// at <paramref name="offset"/> and <paramref name="accountAddress"/>.
+        /// at <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
         FungibleAssetValue GetBalance(
+            BlockHash? offset,
             Address address,
-            Currency currency,
-            Address accountAddress,
-            BlockHash? offset);
+            Currency currency);
 
         /// <summary>
         /// Gets <paramref name="address"/>'s balance for given <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> at <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> at <paramref name="stateRootHash"/>.
         /// </summary>
-        /// <param name="address">The owner <see cref="Address"/> to query.</param>
-        /// <param name="currency">The currency type to query.</param>
         /// <param name="stateRootHash">The state root hash of the <see cref="ITrie"/> to fetch
         /// the balance from.</param>
+        /// <param name="address">The owner <see cref="Address"/> to query.</param>
+        /// <param name="currency">The currency type to query.</param>
         /// <returns>The <paramref name="address"/>'s balance for <paramref name="currency"/>
         /// at <paramref name="stateRootHash"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/> for <paramref name="currency"/>.
@@ -168,41 +167,40 @@ namespace Libplanet.Action.State
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="stateRootHash"/> cannot be created.</exception>
         FungibleAssetValue GetBalance(
+            HashDigest<SHA256>? stateRootHash,
             Address address,
-            Currency currency,
-            HashDigest<SHA256>? stateRootHash);
+            Currency currency);
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
         /// <see cref="BlockChain"/> at <paramref name="offset"/>, and if not found, returns 0.
         /// </summary>
-        /// <param name="currency">The currency type to query.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
+        /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/>
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
         /// in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
         FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            Address accountAddress,
-            BlockHash? offset);
+            BlockHash? offset,
+            Currency currency);
 
         /// <summary>
-        /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> at <paramref name="offset"/>, and if not found, returns 0.
+        /// Gets the total supply of a <paramref name="currency"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="stateRootHash"/>, and if not found, returns 0.
         /// </summary>
-        /// <param name="currency">The currency type to query.</param>
         /// <param name="stateRootHash">The state root hash of the <see cref="ITrie"/> to fetch
         /// the total supply from.</param>
+        /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <paramref name="stateRootHash"/> in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
@@ -213,25 +211,23 @@ namespace Libplanet.Action.State
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
         FungibleAssetValue GetTotalSupply(
-            Currency currency,
-            HashDigest<SHA256>? stateRootHash);
+            HashDigest<SHA256>? stateRootHash,
+            Currency currency);
 
         /// <summary>
         /// Returns the validator set in the
         /// <see cref="BlockChain"/> at <paramref name="offset"/>.
         /// </summary>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/>.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
-        ValidatorSet GetValidatorSet(
-            Address accountAddress,
-            BlockHash? offset);
+        ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
         /// Returns the validator set in the
@@ -244,7 +240,6 @@ namespace Libplanet.Action.State
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
         /// <paramref name="stateRootHash"/> cannot be created.</exception>
-        ValidatorSet GetValidatorSet(
-            HashDigest<SHA256>? stateRootHash);
+        ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash);
     }
 }

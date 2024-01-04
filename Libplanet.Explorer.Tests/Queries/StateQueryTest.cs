@@ -422,32 +422,32 @@ public class StateQueryTest
         public IAccountState GetAccountState(HashDigest<SHA256>? hash)
             => new MockAccount();
 
-        public IAccountState GetAccountState(Address address, BlockHash? blockHash)
+        public IAccountState GetAccountState(BlockHash? blockHash, Address address)
             => new MockAccount();
 
-        public IValue GetState(Address address, HashDigest<SHA256>? hash)
+        public IValue GetState(HashDigest<SHA256>? hash, Address address)
             => new MockAccount().GetState(address);
 
-        public IValue GetState(Address address, Address accountAddress, BlockHash? offset)
+        public IValue GetState(BlockHash? offset, Address accountAddress, Address address)
             => new MockAccount().GetState(address);
 
         public FungibleAssetValue GetBalance(
-            Address address, Currency currency, HashDigest<SHA256>? hash) =>
+            HashDigest<SHA256>? hash, Address address, Currency currency) =>
             new MockAccount().GetBalance(address, currency);
 
         public FungibleAssetValue GetBalance(
-            Address address, Currency currency, Address accountAddress, BlockHash? offset) =>
+            BlockHash? offset, Address address, Currency currency) =>
             new MockAccount().GetBalance(address, currency);
 
-        public FungibleAssetValue GetTotalSupply(Currency currency, HashDigest<SHA256>? hash) =>
+        public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? hash, Currency currency) =>
             new MockAccount().GetTotalSupply(currency);
 
-        public FungibleAssetValue GetTotalSupply(Currency currency, Address accountAddress, BlockHash? offset) =>
+        public FungibleAssetValue GetTotalSupply(BlockHash? offset, Currency currency) =>
             new MockAccount().GetTotalSupply(currency);
         public ValidatorSet GetValidatorSet(HashDigest<SHA256>? hash) =>
             new MockAccount().GetValidatorSet();
 
-        public ValidatorSet GetValidatorSet(Address accountAddress, BlockHash? offset) =>
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             new MockAccount().GetValidatorSet();
     }
 
