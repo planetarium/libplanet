@@ -18,76 +18,16 @@ public class StateQuery
     public StateQuery()
     {
         Name = "StateQuery";
-        Field<NonNullGraphType<AccountStateType>>(
-            name: "account",
-            description:
-                "Gets the account state associated with given block hash or state root hash. " +
-                "Exactly one of the arguments must be specified.",
-            arguments: new QueryArguments(
-                new QueryArgument<BlockHashType>
-                {
-                    Name = "blockHash",
-                    Description = "A block hash to use as a pointer.",
-                },
-                new QueryArgument<HashDigestType<SHA256>>
-                {
-                    Name = "stateRootHash",
-                    Description = "A state root hash to use as a pointer.",
-                }
-            ),
-            resolve: context => (
-                context.GetArgument<BlockHash?>("blockHash"),
-                context.GetArgument<HashDigest<SHA256>?>("stateRootHash")) switch
-                {
-                    ({ } blockHash, null) => context.Source.GetAccountState(blockHash),
-                    (null, { } stateRootHash) => context.Source.GetAccountState(stateRootHash),
-                    _ => throw new ExecutionError(
-                        "Exactly one of blockHash and stateRootHash must be specified."),
-                }
-        );
-
-        Field<NonNullGraphType<ListGraphType<NonNullGraphType<AccountStateType>>>>(
-            name: "accounts",
-            description:
-                "Gets the account states associated with given block hashes " +
-                "or state root hashes. Exactly one of the arguments must be specified.",
-            arguments: new QueryArguments(
-                new QueryArgument<ListGraphType<NonNullGraphType<BlockHashType>>>
-                {
-                    Name = "blockHashes",
-                    Description = "A list of block hashes to use as pointers.",
-                },
-                new QueryArgument<ListGraphType<NonNullGraphType<HashDigestType<SHA256>>>>
-                {
-                    Name = "stateRootHashes",
-                    Description = "A list of state root hashes to use as pointers.",
-                }
-            ),
-            resolve: context => (
-                context.GetArgument<BlockHash[]?>("blockHashes"),
-                context.GetArgument<HashDigest<SHA256>[]?>("stateRootHashes")) switch
-                {
-                    ({ } blockHashes, null) =>
-                        blockHashes
-                            .Select(blockHash => context.Source.GetAccountState(blockHash))
-                            .ToArray(),
-                    (null, { } stateRootHashes) =>
-                        stateRootHashes
-                            .Select(stateRootHash => context.Source.GetAccountState(stateRootHash))
-                            .ToArray(),
-                    _ => throw new ExecutionError(
-                        "Exactly one of blockHashes and stateRootHashes must be specified."),
-                }
-        );
 
         Field<NonNullGraphType<WorldStateType>>(
             "worldState",
             arguments: new QueryArguments(
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<BlockHashType> { Name = "blockHash" },
+                new QueryArgument<HashDigestType<SHA256>> { Name = "stateRootHash" }
             ),
             resolve: ResolveWorldState
         );
+
         Field<NonNullGraphType<AccountStateType>>(
             "accountState",
             arguments: new QueryArguments(
@@ -98,6 +38,7 @@ public class StateQuery
             ),
             resolve: ResolveAccountState
         );
+
         Field<LegacyBencodexValueType>(
             "state",
             arguments: new QueryArguments(
@@ -109,6 +50,7 @@ public class StateQuery
             ),
             resolve: ResolveState
         );
+
         Field<NonNullGraphType<FungibleAssetValueType>>(
             "balance",
             arguments: new QueryArguments(
@@ -121,6 +63,7 @@ public class StateQuery
             ),
             resolve: ResolveBalance
         );
+
         Field<FungibleAssetValueType>(
             "totalSupply",
             arguments: new QueryArguments(
@@ -132,6 +75,7 @@ public class StateQuery
             ),
             resolve: ResolveTotalSupply
         );
+
         Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
             "validators",
             arguments: new QueryArguments(
@@ -147,27 +91,27 @@ public class StateQuery
     private static object ResolveWorldState(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
-        HashDigest<SHA256>? offsetStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
+        BlockHash? blockHash = context.GetArgument<BlockHash?>("blockHash");
+        HashDigest<SHA256>? stateRootHash =
+            context.GetArgument<HashDigest<SHA256>?>("stateRootHash");
 
-        switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
+        switch (blockhash: blockHash, srh: stateRootHash)
         {
             case (blockhash: not null, srh: not null):
                 throw new ExecutionError(
-                    "offsetBlockHash and offsetStateRootHash cannot be specified at the same time."
+                    "blockHash and stateRootHash cannot be specified at the same time."
                 );
             case (blockhash: null, srh: null):
                 throw new ExecutionError(
-                    "Either offsetBlockHash or offsetStateRootHash must be specified."
+                    "Either blockHash or stateRootHash must be specified."
                 );
             case (blockhash: not null, _):
                 {
-                    return context.Source.ChainStates.GetWorldState(offsetBlockHash);
+                    return context.Source.ChainStates.GetWorldState(blockHash);
                 }
 
             case (_, srh: not null):
-                return context.Source.ChainStates.GetWorldState(offsetStateRootHash);
+                return context.Source.ChainStates.GetWorldState(stateRootHash);
         }
     }
 
