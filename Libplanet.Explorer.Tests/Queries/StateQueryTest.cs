@@ -93,7 +93,9 @@ public class StateQueryTest
                  accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            )
+            ) {
+                hex
+            }
         }
         ", source: source);
         Assert.Null(result.Errors);
@@ -102,7 +104,13 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object state =
             Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(new byte[] { 110, }, state);
+        Assert.Equal(
+            new Dictionary<string, object>()
+            {
+                { "hex", "6e" },
+            },
+            Assert.IsAssignableFrom<IDictionary<string, object>>(state)
+        );
     }
 
     [Fact]
@@ -281,7 +289,13 @@ public class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object state =
             Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(new byte[] { 110, }, state);
+        Assert.Equal(
+            new Dictionary<string, object>()
+            {
+                { "hex", "6e" },
+            },
+            Assert.IsAssignableFrom<IDictionary<string, object>>(state)
+        );
     }
 
     [Fact]
