@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action.State;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
@@ -10,7 +11,8 @@ using Libplanet.Types.Blocks;
 
 namespace Libplanet.Explorer.Queries;
 
-public class StateQuery : ObjectGraphType<IBlockChainStates>
+public class StateQuery
+    : ObjectGraphType<(IBlockChainStates ChainStates, IBlockPolicy Policy)>
 {
     public StateQuery()
     {
@@ -231,7 +233,8 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         }
     }
 
-    private static object ResolveBalance(IResolveFieldContext<IBlockChainStates> context)
+    private static object ResolveBalance(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
@@ -297,7 +300,8 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         }
     }
 
-    private static object? ResolveTotalSupply(IResolveFieldContext<IBlockChainStates> context)
+    private static object? ResolveTotalSupply(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
         Address? accountAddress = context.GetArgument<Address?>("accountAddress");
@@ -371,7 +375,8 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         }
     }
 
-    private static object? ResolveValidatorSet(IResolveFieldContext<IBlockChainStates> context)
+    private static object? ResolveValidatorSet(
+        IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Address? accountAddress = context.GetArgument<Address?>("accountAddress");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
