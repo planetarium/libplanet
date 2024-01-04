@@ -125,6 +125,17 @@ To be released.
 [#3583]: https://github.com/planetarium/libplanet/pull/3583
 
 
+Version 3.9.2
+-------------
+
+Released on December 15, 2023.
+
+ -  (Libplanet.RocksDBStore) Added `DBOptions` type parameter to
+    `RocksDBKeyValueStore()`.  [[#3553]]
+
+[#3553]: https://github.com/planetarium/libplanet/pull/3553
+
+
 Version 3.9.1
 -------------
 
