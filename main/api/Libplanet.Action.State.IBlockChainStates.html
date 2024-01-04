@@ -86,92 +86,6 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetAccountState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetAccountState(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L83">View Source</a>
-  </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetAccountState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetAccountState*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetAccountState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetAccountState(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetAccountState(Address, Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> in the <see cref="!:BlockChain"></see>
-at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAccountState GetAccountState(Address address, BlockHash? offset)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>
-to be returned.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to create
-for which to create an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
-        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">offset</code> is not
-<span class="xref">null</span> and one of the following is true.</p>
-<ul><li>
-        Corresponding <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is not found in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.
-</li><li>
-    Corresponding <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is found but its state root is not found
-    in the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
-</li></ul>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Action_State_IBlockChainStates_GetAccountState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -228,20 +142,20 @@ for which to create an <a class="xref" href="Libplanet.Action.State.IAccountStat
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%2CLibplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L150">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L83">View Source</a>
   </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetBalance_" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency,Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetBalance(Address, Currency, Address, Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for given <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
-<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetAccountState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetAccountState*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IBlockChainStates.GetAccountState(System.Nullable{Libplanet.Types.Blocks.BlockHash},Libplanet.Crypto.Address)">GetAccountState(Nullable&lt;BlockHash&gt;, Address)</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> in the <see cref="!:BlockChain"></see>
+at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(Address address, Currency currency, Address accountAddress, BlockHash? offset)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccountState GetAccountState(BlockHash? offset, Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -254,28 +168,17 @@ for which to create an <a class="xref" href="Libplanet.Action.State.IAccountStat
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The owner <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency type to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">accountAddress</span></td>
-        <td><p>The account <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query from.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">offset</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
-the states from.</p>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to create
+for which to create an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>
+to be returned.</p>
 </td>
       </tr>
     </tbody>
@@ -290,11 +193,8 @@ the states from.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for <code data-dev-comment-type="paramref" class="paramref">currency</code>
-at <code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code>.
-If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>
-for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+        <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -310,28 +210,38 @@ for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
-<code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code> cannot be created.</p>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">offset</code> is not
+<span class="xref">null</span> and one of the following is true.</p>
+<ul><li>
+        Corresponding <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is not found in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.
+</li><li>
+    Corresponding <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is found but its state root is not found
+    in the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
+</li></ul>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_State_IBlockChainStates_GetAccountState_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetBalance_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetBalance(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L170">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L169">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IBlockChainStates_GetBalance_" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetBalance(Address, Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetBalance_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)">GetBalance(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Address, Currency)</h4>
   <div class="markdown level1 summary"><p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for given <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
-<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(Address address, Currency currency, HashDigest&lt;SHA256&gt;? stateRootHash)</code></pre>
+    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(HashDigest&lt;SHA256&gt;? stateRootHash, Address address, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -344,6 +254,13 @@ for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>The state root hash of the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> to fetch
+the balance from.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
         <td><p>The owner <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query.</p>
@@ -353,13 +270,6 @@ for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
         <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
         <td><span class="parametername">currency</span></td>
         <td><p>The currency type to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><span class="parametername">stateRootHash</span></td>
-        <td><p>The state root hash of the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> to fetch
-the balance from.</p>
 </td>
       </tr>
     </tbody>
@@ -401,19 +311,20 @@ If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetV
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetState_Libplanet_Crypto_Address_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetState(Libplanet.Crypto.Address%2CLibplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetBalance_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetBalance(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L150">View Source</a>
   </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetState_Libplanet_Crypto_Address_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetState(Libplanet.Crypto.Address,Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetState(Address, Address, Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets a state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetBalance_" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetBalance_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.IBlockChainStates.GetBalance(System.Nullable{Libplanet.Types.Blocks.BlockHash},Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)">GetBalance(Nullable&lt;BlockHash&gt;, Address, Currency)</h4>
+  <div class="markdown level1 summary"><p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for given <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
+<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IValue GetState(Address address, Address accountAddress, BlockHash? offset)</code></pre>
+    <pre><code class="lang-csharp hljs">FungibleAssetValue GetBalance(BlockHash? offset, Address address, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -426,9 +337,152 @@ If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetV
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
+the states from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The owner <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance for <code data-dev-comment-type="paramref" class="paramref">currency</code>
+at <code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>.
+If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>
+for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
+<code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>
+cannot be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetState(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L131">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Crypto.Address)">GetState(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Address)</h4>
+  <div class="markdown level1 summary"><p>Gets a state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IValue GetState(HashDigest&lt;SHA256&gt;? stateRootHash, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the root hash
+for which to create an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
         <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of the state to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><p>The state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.
+An absent state is represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetState_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetState(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CLibplanet.Crypto.Address%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L120">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetState_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Crypto_Address_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState(System.Nullable{Libplanet.Types.Blocks.BlockHash},Libplanet.Crypto.Address,Libplanet.Crypto.Address)">GetState(Nullable&lt;BlockHash&gt;, Address, Address)</h4>
+  <div class="markdown level1 summary"><p>Gets a state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IValue GetState(BlockHash? offset, Address accountAddress, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
+the state from.</p>
 </td>
       </tr>
       <tr>
@@ -439,10 +493,9 @@ the state from.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
-the state from.</p>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of the state to query.</p>
 </td>
       </tr>
     </tbody>
@@ -489,78 +542,20 @@ An absent state is represented as <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetState(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetTotalSupply_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetTotalSupply(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L131">View Source</a>
-  </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetState_" data-uid="Libplanet.Action.State.IBlockChainStates.GetState*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetState_Libplanet_Crypto_Address_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.State.IBlockChainStates.GetState(Libplanet.Crypto.Address,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetState(Address, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets a state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IValue GetState(Address address, HashDigest&lt;SHA256&gt;? stateRootHash)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of the state to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><span class="parametername">stateRootHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the root hash
-for which to create an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td><p>The state associated to specified <code data-dev-comment-type="paramref" class="paramref">address</code>.
-An absent state is represented as <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency%2CLibplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L194">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L213">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency,Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetTotalSupply(Currency, Address, Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
-<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>, and if not found, returns 0.</p>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Types.Assets.Currency)">GetTotalSupply(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Currency)</h4>
+  <div class="markdown level1 summary"><p>Gets the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code> in the <see cref="!:BlockChain"></see>
+at <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>, and if not found, returns 0.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetTotalSupply(Currency currency, Address accountAddress, BlockHash? offset)</code></pre>
+    <pre><code class="lang-csharp hljs">FungibleAssetValue GetTotalSupply(HashDigest&lt;SHA256&gt;? stateRootHash, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -572,109 +567,17 @@ An absent state is represented as <span class="xref">null</span>.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency type to query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">accountAddress</span></td>
-        <td><p>The account <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query from.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
-the states from.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The total supply value of <code data-dev-comment-type="paramref" class="paramref">currency</code> at
-<code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code>
-in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>.
-If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>
-for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
-<code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code> cannot be created.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
-        <td><p>Thrown when
-given <code data-dev-comment-type="paramref" class="paramref">currency</code>'s <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a>
-is <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L215">View Source</a>
-  </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_Libplanet_Types_Assets_Currency_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply(Libplanet.Types.Assets.Currency,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetTotalSupply(Currency, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
-<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>, and if not found, returns 0.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">FungibleAssetValue GetTotalSupply(Currency currency, HashDigest&lt;SHA256&gt;? stateRootHash)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency type to query.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The state root hash of the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> to fetch
 the total supply from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
 </td>
       </tr>
     </tbody>
@@ -724,20 +627,20 @@ is <span class="xref">false</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetValidatorSet_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetValidatorSet(Libplanet.Crypto.Address%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetTotalSupply_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetTotalSupply(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L232">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L193">View Source</a>
   </span>
-  <a id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet*"></a>
-  <h4 id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_Libplanet_Crypto_Address_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet(Libplanet.Crypto.Address,System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetValidatorSet(Address, Nullable&lt;BlockHash&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns the validator set in the
-<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetTotalSupply_System_Nullable_Libplanet_Types_Blocks_BlockHash__Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.IBlockChainStates.GetTotalSupply(System.Nullable{Libplanet.Types.Blocks.BlockHash},Libplanet.Types.Assets.Currency)">GetTotalSupply(Nullable&lt;BlockHash&gt;, Currency)</h4>
+  <div class="markdown level1 summary"><p>Gets the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code> in the
+<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>, and if not found, returns 0.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ValidatorSet GetValidatorSet(Address accountAddress, BlockHash? offset)</code></pre>
+    <pre><code class="lang-csharp hljs">FungibleAssetValue GetTotalSupply(BlockHash? offset, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -750,16 +653,16 @@ is <span class="xref">false</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">accountAddress</span></td>
-        <td><p>The account <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to query from.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">offset</span></td>
         <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
 the states from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
 </td>
       </tr>
     </tbody>
@@ -774,9 +677,12 @@ the states from.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
-        <td><p>The validator set of type <a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a> at
-<code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code>.</p>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The total supply value of <code data-dev-comment-type="paramref" class="paramref">currency</code> at
+<code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>
+in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>.
+If absent, returns 0 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>
+for <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -793,7 +699,15 @@ the states from.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
-<code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">accountAddress</code> cannot be created.</p>
+<code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>
+cannot be created.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
+        <td><p>Thrown when
+given <code data-dev-comment-type="paramref" class="paramref">currency</code>'s <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a>
+is <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -803,7 +717,7 @@ the states from.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetValidatorSet(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L247">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L243">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet*"></a>
   <h4 id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetValidatorSet(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
@@ -864,6 +778,77 @@ the validator set from.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
 <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code> cannot be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IBlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IBlockChainStates.GetValidatorSet(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IBlockChainStates.cs/#L230">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet*"></a>
+  <h4 id="Libplanet_Action_State_IBlockChainStates_GetValidatorSet_System_Nullable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Action.State.IBlockChainStates.GetValidatorSet(System.Nullable{Libplanet.Types.Blocks.BlockHash})">GetValidatorSet(Nullable&lt;BlockHash&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the validator set in the
+<see cref="!:BlockChain"></see> at <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ValidatorSet GetValidatorSet(BlockHash? offset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> to fetch
+the states from.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
+        <td><p>The validator set of type <a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a> at
+<code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> at
+<code data-dev-comment-type="paramref" class="paramref">offset</code> and <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>
+cannot be created.</p>
 </td>
       </tr>
     </tbody>

@@ -72,6 +72,12 @@ Instead, added
 <code>BlockChain.EvaluateBlock(IPreEvaluationBlock, out HashDigest&lt;SHA256&gt;)</code>
 method.
 [<a href="https://github.com/planetarium/libplanet/pull/3540">#3540</a>]</li>
+<li>Removed <code>BlockChain.GetBalance(Address, Currency, Address)</code> method.
+Instead, added <code>BlockChain.GetBalance(Address, Currency)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]</li>
+<li>Removed <code>BlockChain.GetTotalSupply(Currency, Address)</code> method.
+Instead, added <code>BlockChain.GetTotalSupply(Currency)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]</li>
 <li>(Libplanet.Action) Changed <code>ActionEvaluator</code> to accept <code>IWorld</code>
 instead of <code>IAccount</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
 <li>(Libplanet.Action) <code>IActionEvaluator.OutputState</code> became <code>IWorld</code>.
@@ -88,25 +94,23 @@ became to accept and return <code>IWorld</code>. (was <code>IAccount</code>)  [<
 <li><code>IFeeCollector.Reward()</code></li>
 </ul>
 </li>
-<li>(Libplanet.Action) <code>IBlockChainStates</code> interface has modified.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
+<li>(Libplanet.Action) <code>IBlockChainStates</code> interface has modified.
+[<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>, <a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]
 <ul>
 <li>Added <code>IBlockChainStates.GetWorldState()</code> method.</li>
 <li>Added <code>IBlockChainStates.GetAccountState(Address, BlockHash?)</code> method.</li>
-<li>Added <code>IBlockChainStates.GetState(Address, Address, BlockHash?)</code> method.</li>
-<li>Added <code>IBlockChainStates.GetState(Address, HashDigest&lt;SHA256&gt;?)</code> method.</li>
-<li>Added
-<code>IBlockChainStates.GetBalance(Address, Currency, Address, BlockHash?)</code>
+<li>Added <code>IBlockChainStates.GetState(BlockHash?, Address, Address)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetState(HashDigest&lt;SHA256&gt;?, Address)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetBalance(BlockHash?, Address, Currency)</code>
 method.</li>
 <li>Added
-<code>IBlockChainStates.GetBalance(Address, Currency, HashDigest&lt;SHA256&gt;?)</code>
+<code>IBlockChainStates.GetBalance(HashDigest&lt;SHA256&gt;?, Address, Currency)</code>
 method.</li>
+<li>Added <code>IBlockChainStates.GetTotalSupply(BlockHash?, Currency)</code> method.</li>
 <li>Added
-<code>IBlockChainStates.GetTotalSupply(Currency, Address, BlockHash?)</code>
+<code>IBlockChainStates.GetTotalSupply(HashDigest&lt;SHA256&gt;?, Currency)</code>
 method.</li>
-<li>Added
-<code>IBlockChainStates.GetTotalSupply(Currency, HashDigest&lt;SHA256&gt;?)</code>
-method.</li>
-<li>Added <code>IBlockChainStates.GetValidatorSet(Address, BlockHash?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetValidatorSet(BlockHash?)</code> method.</li>
 <li>Added <code>IBlockChainStates.GetValidatorSet(HashDigest&lt;SHA256&gt;?)</code> method.</li>
 <li>Removed <code>IBlockChainStates.GetAccountState(BlockHash?)</code> method.</li>
 <li>Removed <code>IBlockChainStates.GetState(Address, BlockHash?)</code> method.</li>
