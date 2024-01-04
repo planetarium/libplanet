@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -15,7 +15,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private long _height;
         private int _round;
-        private Dictionary<BoundPeer, HashSet<int>> _peerCatchupRounds;
+        private ConcurrentDictionary<BoundPeer, ImmutableHashSet<int>> _peerCatchupRounds;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GossipConsensusMessageCommunicator"/>
@@ -44,7 +44,8 @@ namespace Libplanet.Net.Consensus
                 processMessage);
             _height = 0;
             _round = 0;
-            _peerCatchupRounds = new Dictionary<BoundPeer, HashSet<int>>();
+            _peerCatchupRounds
+                = new ConcurrentDictionary<BoundPeer, ImmutableHashSet<int>>();
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -141,18 +142,12 @@ namespace Libplanet.Net.Consensus
             if (voteMsg.Height == _height &&
                 voteMsg.Round > _round)
             {
-                if (!_peerCatchupRounds.ContainsKey(peer))
-                {
-                    _peerCatchupRounds[peer] = new HashSet<int>();
-                }
+                _peerCatchupRounds.AddOrUpdate(
+                    peer,
+                    ImmutableHashSet.Create<int>(voteMsg.Round),
+                    (peer, set) => set.Add(voteMsg.Round));
 
-                HashSet<int> rounds = _peerCatchupRounds[peer];
-                if (rounds.Count < 2)
-                {
-                    rounds.Add(voteMsg.Round);
-                    _peerCatchupRounds[peer] = rounds;
-                }
-                else
+                if (_peerCatchupRounds.TryGetValue(peer, out var set) && set.Count > 2)
                 {
                     Gossip.DenyPeer(peer);
                     throw new InvalidConsensusMessageException(
