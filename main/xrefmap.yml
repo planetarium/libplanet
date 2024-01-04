@@ -19416,12 +19416,15 @@ references:
   commentId: T:Libplanet.RocksDBStore.RocksDBKeyValueStore
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType)
-  name: RocksDBKeyValueStore(String, RocksDBInstanceType)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType)
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, Libplanet.RocksDBStore.RocksDBInstanceType)
-  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String, RocksDBInstanceType)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType,System.Nullable{DbOptions})
+  name: RocksDBKeyValueStore(String, RocksDBInstanceType, Nullable<DbOptions>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_System_Nullable_DbOptions__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType,System.Nullable{DbOptions})
+  name.vb: RocksDBKeyValueStore(String, RocksDBInstanceType, Nullable(Of DbOptions))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, Libplanet.RocksDBStore.RocksDBInstanceType, System.Nullable<DbOptions>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore(System.String, Libplanet.RocksDBStore.RocksDBInstanceType, System.Nullable(Of DbOptions))
+  nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore(String, RocksDBInstanceType, Nullable<DbOptions>)
+  nameWithType.vb: RocksDBKeyValueStore.RocksDBKeyValueStore(String, RocksDBInstanceType, Nullable(Of DbOptions))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor*
   name: RocksDBKeyValueStore
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_

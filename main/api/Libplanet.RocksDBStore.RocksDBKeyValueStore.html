@@ -121,10 +121,10 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.RocksDBStore.html">Libplanet.RocksDBStore</a></h6>
@@ -137,19 +137,19 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.%23ctor(System.String%2CLibplanet.RocksDBStore.RocksDBInstanceType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_System_Nullable_DbOptions__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.%23ctor(System.String%2CLibplanet.RocksDBStore.RocksDBInstanceType%2CSystem.Nullable%7BDbOptions%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L80">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor*"></a>
-  <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType)">RocksDBKeyValueStore(String, RocksDBInstanceType)</h4>
+  <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore__ctor_System_String_Libplanet_RocksDBStore_RocksDBInstanceType_System_Nullable_DbOptions__" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.#ctor(System.String,Libplanet.RocksDBStore.RocksDBInstanceType,System.Nullable{DbOptions})">RocksDBKeyValueStore(String, RocksDBInstanceType, Nullable&lt;DbOptions&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RocksDBKeyValueStore(string path, RocksDBInstanceType type = RocksDBInstanceType.Primary)</code></pre>
+    <pre><code class="lang-csharp hljs">public RocksDBKeyValueStore(string path, RocksDBInstanceType type = RocksDBInstanceType.Primary, DbOptions? options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,6 +174,12 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 instances.  <a class="xref" href="Libplanet.RocksDBStore.RocksDBInstanceType.html#Libplanet_RocksDBStore_RocksDBInstanceType_Primary">Primary</a> by default.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">DbOptions</span>&gt;</td>
+        <td><span class="parametername">options</span></td>
+        <td><p>The <see cref="!:DbOptions"></see> for <see cref="!:RocksDb"></see>.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -183,7 +189,7 @@ instances.  <a class="xref" href="Libplanet.RocksDBStore.RocksDBInstanceType.htm
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Type.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Type%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L91">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Type_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Type*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Type" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Type">Type</h4>
@@ -234,7 +240,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L121">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)">Delete(in KeyBytes)</h4>
@@ -268,7 +274,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L123">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L127">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})">Delete(IEnumerable&lt;KeyBytes&gt;)</h4>
@@ -303,7 +309,7 @@ Non-existent keys are ignored.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L132">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L136">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Dispose_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Dispose" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose">Dispose()</h4>
@@ -337,7 +343,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L142">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L146">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)">Exists(in KeyBytes)</h4>
@@ -376,7 +382,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p><span class="xref">true</span> if the key exists; otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
@@ -387,7 +393,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L94">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Get*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)">Get(in KeyBytes)</h4>
@@ -426,7 +432,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><p>The value associated with the specified key.</p>
 </td>
       </tr>
@@ -453,7 +459,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_ListKeys.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L146">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L150">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_ListKeys_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_ListKeys" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys">ListKeys()</h4>
@@ -485,7 +491,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes%40%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L98">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])">Set(in KeyBytes, Byte[])</h4>
@@ -513,7 +519,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">value</span></td>
         <td><p>The value to set.</p>
 </td>
@@ -525,7 +531,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary%7BLibplanet.Store.Trie.KeyBytes%2CSystem.Byte%5B%5D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})">Set(IDictionary&lt;KeyBytes, Byte[]&gt;)</h4>
@@ -547,7 +553,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">System.Byte</span>[]&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
         <td><span class="parametername">values</span></td>
         <td><p>A values to set.</p>
 </td>
@@ -559,7 +565,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBKeyValueStore_TryCatchUpWithPrimary.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L155">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBKeyValueStore.cs/#L159">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBKeyValueStore_TryCatchUpWithPrimary_" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBKeyValueStore_TryCatchUpWithPrimary" data-uid="Libplanet.RocksDBStore.RocksDBKeyValueStore.TryCatchUpWithPrimary">TryCatchUpWithPrimary()</h4>
