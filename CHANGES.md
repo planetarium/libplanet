@@ -17,10 +17,10 @@ To be released.
     method.
     [[#3540]]
  -  Removed `BlockChain.GetBalance(Address, Currency, Address)` method.
-    Instead, added `BlockChain.GetBalance(Address, Address, Currency)` method.
+    Instead, added `BlockChain.GetBalance(Address, Currency)` method.
     [[#3583]]
  -  Removed `BlockChain.GetTotalSupply(Currency, Address)` method.
-    Instead, added `BlockChain.GetTotalSupply(Address, Currency)` method.
+    Instead, added `BlockChain.GetTotalSupply(Currency)` method.
     [[#3583]]
  -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
     instead of `IAccount`.  [[#3462]]
@@ -41,19 +41,16 @@ To be released.
      -  Added `IBlockChainStates.GetAccountState(Address, BlockHash?)` method.
      -  Added `IBlockChainStates.GetState(BlockHash?, Address, Address)` method.
      -  Added `IBlockChainStates.GetState(HashDigest<SHA256>?, Address)` method.
-     -  Added
-        `IBlockChainStates.GetBalance(BlockHash?, Address, Address, Currency)`
+     -  Added `IBlockChainStates.GetBalance(BlockHash?, Address, Currency)`
         method.
      -  Added
         `IBlockChainStates.GetBalance(HashDigest<SHA256>?, Address, Currency)`
         method.
-     -  Added
-        `IBlockChainStates.GetTotalSupply(BlockHash?, Address, Currency)`
-        method.
+     -  Added `IBlockChainStates.GetTotalSupply(BlockHash?, Currency)` method.
      -  Added
         `IBlockChainStates.GetTotalSupply(HashDigest<SHA256>?, Currency)`
         method.
-     -  Added `IBlockChainStates.GetValidatorSet(BlockHash?, Address)` method.
+     -  Added `IBlockChainStates.GetValidatorSet(BlockHash?)` method.
      -  Added `IBlockChainStates.GetValidatorSet(HashDigest<SHA256>?)` method.
      -  Removed `IBlockChainStates.GetAccountState(BlockHash?)` method.
      -  Removed `IBlockChainStates.GetState(Address, BlockHash?)` method.
