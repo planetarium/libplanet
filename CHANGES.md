@@ -4,10 +4,10 @@ Libplanet changelog
 Version 3.9.3
 -------------
 
-To be released.
+Released on January 4, 2024.
 
 Due to changes in [#3567], a network ran with a prior version may not
-be compatible with this version,  specifically, those that ran with
+be compatible with this version, specifically, those that ran with
 [Libplanet 2.0.0] and onwards prior to this release that have included
 `Transaction`s that aren't compatible with the updated specification in [#3567].
 
