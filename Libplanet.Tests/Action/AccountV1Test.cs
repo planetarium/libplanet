@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain.GetBalance(ReservedAddresses.LegacyAccount, _addr[0], DumbAction.DumbCurrency)
+                chain.GetBalance(_addr[0], DumbAction.DumbCurrency)
             );
 
             return chain;

@@ -136,26 +136,25 @@ namespace Libplanet.Action.State
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>The <paramref name="address"/>'s balance for <paramref name="currency"/>
-        /// at <paramref name="offset"/> and <paramref name="accountAddress"/>.
+        /// at <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
         FungibleAssetValue GetBalance(
             BlockHash? offset,
-            Address accountAddress,
             Address address,
             Currency currency);
 
         /// <summary>
         /// Gets <paramref name="address"/>'s balance for given <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> at <paramref name="offset"/>.
+        /// <see cref="BlockChain"/> at <paramref name="stateRootHash"/>.
         /// </summary>
         /// <param name="stateRootHash">The state root hash of the <see cref="ITrie"/> to fetch
         /// the balance from.</param>
@@ -178,27 +177,26 @@ namespace Libplanet.Action.State
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/>
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
         /// in <see cref="FungibleAssetValue"/>.
         /// If absent, returns 0 <see cref="FungibleAssetValue"/>
         /// for <paramref name="currency"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when
         /// given <paramref name="currency"/>'s <see cref="Currency.TotalSupplyTrackable"/>
         /// is <see langword="false"/>.</exception>
         FungibleAssetValue GetTotalSupply(
             BlockHash? offset,
-            Address accountAddress,
             Currency currency);
 
         /// <summary>
-        /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain"/> at <paramref name="offset"/>, and if not found, returns 0.
+        /// Gets the total supply of a <paramref name="currency"/> in the <see cref="BlockChain"/>
+        /// at <paramref name="stateRootHash"/>, and if not found, returns 0.
         /// </summary>
         /// <param name="stateRootHash">The state root hash of the <see cref="ITrie"/> to fetch
         /// the total supply from.</param>
@@ -222,14 +220,14 @@ namespace Libplanet.Action.State
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
         /// the states from.</param>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/>.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <paramref name="accountAddress"/> cannot be created.
+        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
+        /// cannot be created.
         /// </exception>
-        ValidatorSet GetValidatorSet(BlockHash? offset, Address accountAddress);
+        ValidatorSet GetValidatorSet(BlockHash? offset);
 
         /// <summary>
         /// Returns the validator set in the

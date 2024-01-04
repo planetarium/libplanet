@@ -66,13 +66,12 @@ namespace Libplanet.Blockchain
             => GetState(Tip.Hash, accountAddress, address);
 
         /// <inheritdoc cref=
-        /// "IBlockChainStates.GetBalance(BlockHash?, Address, Address, Currency)"/>
+        /// "IBlockChainStates.GetBalance(BlockHash?, Address, Currency)"/>
         public FungibleAssetValue GetBalance(
             BlockHash? offset,
-            Address accountAddress,
             Address address,
             Currency currency)
-            => _blockChainStates.GetBalance(offset, accountAddress, address, currency);
+            => _blockChainStates.GetBalance(offset, address, currency);
 
         /// <inheritdoc cref=
         /// "IBlockChainStates.GetBalance(HashDigest{SHA256}?, Address, Currency)"/>
@@ -86,26 +85,23 @@ namespace Libplanet.Blockchain
         /// Queries <paramref name="address"/>'s current balance of the <paramref name="currency"/>
         /// in the <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="address">The owner <see cref="Address"/> to query.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>The <paramref name="address"/>'s current balance.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
-        /// <paramref name="accountAddress"/> cannot be created.
+        /// <see cref="ReservedAddresses.LegacyAccount"/> cannot be created.
         /// </exception>
         public FungibleAssetValue GetBalance(
-            Address accountAddress,
             Address address,
             Currency currency)
-            => GetBalance(Tip.Hash, accountAddress, address, currency);
+            => GetBalance(Tip.Hash, address, currency);
 
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(BlockHash?, Address, Currency)"/>
+        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(BlockHash?, Currency)"/>
         public FungibleAssetValue GetTotalSupply(
             BlockHash? offset,
-            Address accountAddress,
             Currency currency)
-            => _blockChainStates.GetTotalSupply(offset, accountAddress, currency);
+            => _blockChainStates.GetTotalSupply(offset, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(HashDigest{SHA256}?, Currency)"/>
         public FungibleAssetValue GetTotalSupply(
@@ -117,54 +113,22 @@ namespace Libplanet.Blockchain
         /// Gets the current total supply of a <paramref name="currency"/> in the
         /// <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply value of <paramref name="currency"/> at
-        /// <see cref="BlockChain.Tip"/> and <paramref name="accountAddress"/>
-        /// in <see cref="FungibleAssetValue"/>.</returns>
+        /// <see cref="BlockChain.Tip"/> in <see cref="FungibleAssetValue"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
-        /// <paramref name="accountAddress"/> cannot be created.
+        /// <see cref="ReservedAddresses.LegacyAccount"/> cannot be created.
         /// </exception>
-        public FungibleAssetValue GetTotalSupply(Address accountAddress, Currency currency)
-            => GetTotalSupply(Tip.Hash, accountAddress, currency);
+        public FungibleAssetValue GetTotalSupply(Currency currency)
+            => GetTotalSupply(Tip.Hash, currency);
 
-        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(BlockHash?, Address)" />
-        public ValidatorSet GetValidatorSet(BlockHash? offset, Address accountAddress)
-            => _blockChainStates.GetValidatorSet(offset, accountAddress);
+        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(BlockHash?)" />
+        public ValidatorSet GetValidatorSet(BlockHash? offset)
+            => _blockChainStates.GetValidatorSet(offset);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(HashDigest{SHA256}?)" />
         public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash)
             => _blockChainStates.GetValidatorSet(stateRootHash);
-
-        /// <summary>
-        /// Returns the current validator set in the <see cref="BlockChain"/>.
-        /// </summary>
-        /// <param name="accountAddress">The account <see cref="Address"/> to query from.</param>
-        /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <see cref="BlockChain.Tip"/> and <paramref name="accountAddress"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> of
-        /// <paramref name="accountAddress"/> cannot be created.
-        /// </exception>
-        public ValidatorSet GetValidatorSet(Address accountAddress)
-            => GetValidatorSet(Tip.Hash, accountAddress);
-
-        /// <summary>
-        /// Returns the validator set in the
-        /// <see cref="BlockChain"/> at <paramref name="offset"/> and
-        /// <see cref="ReservedAddresses.LegacyAccount"/>.
-        /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
-        /// the states from.</param>
-        /// <returns>The validator set of type <see cref="ValidatorSet"/> at
-        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <see cref="IAccount"/> at
-        /// <paramref name="offset"/> and <see cref="ReservedAddresses.LegacyAccount"/>
-        /// cannot be created.
-        /// </exception>
-        public ValidatorSet GetValidatorSet(BlockHash? offset)
-            => GetValidatorSet(offset, ReservedAddresses.LegacyAccount);
 
         /// <summary>
         /// Returns the current validator set in the <see cref="BlockChain"/>.
@@ -176,6 +140,6 @@ namespace Libplanet.Blockchain
         /// <see cref="ReservedAddresses.LegacyAccount"/> cannot be created.
         /// </exception>
         public ValidatorSet GetValidatorSet()
-            => GetValidatorSet(ReservedAddresses.LegacyAccount);
+            => GetValidatorSet(Tip.Hash);
     }
 }

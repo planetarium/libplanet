@@ -436,18 +436,18 @@ public class StateQueryTest
             new MockAccount().GetBalance(address, currency);
 
         public FungibleAssetValue GetBalance(
-            BlockHash? offset, Address accountAddress, Address address, Currency currency) =>
+            BlockHash? offset, Address address, Currency currency) =>
             new MockAccount().GetBalance(address, currency);
 
         public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? hash, Currency currency) =>
             new MockAccount().GetTotalSupply(currency);
 
-        public FungibleAssetValue GetTotalSupply(BlockHash? offset, Address accountAddress, Currency currency) =>
+        public FungibleAssetValue GetTotalSupply(BlockHash? offset, Currency currency) =>
             new MockAccount().GetTotalSupply(currency);
         public ValidatorSet GetValidatorSet(HashDigest<SHA256>? hash) =>
             new MockAccount().GetValidatorSet();
 
-        public ValidatorSet GetValidatorSet(BlockHash? offset, Address accountAddress) =>
+        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
             new MockAccount().GetValidatorSet();
     }
 
