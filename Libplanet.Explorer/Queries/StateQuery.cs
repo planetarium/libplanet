@@ -29,7 +29,7 @@ public class StateQuery
             "accountState",
             arguments: new QueryArguments(
                 new QueryArgument<AddressType> { Name = "accountAddress" },
-                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
@@ -40,7 +40,7 @@ public class StateQuery
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
                 new QueryArgument<AddressType> { Name = "accountAddress" },
-                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
+                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
             ),
