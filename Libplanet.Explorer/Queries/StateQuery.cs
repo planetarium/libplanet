@@ -39,50 +39,44 @@ public class StateQuery
             resolve: ResolveAccountState
         );
 
-        Field<LegacyBencodexValueType>(
-            "state",
+        Field<NonNullGraphType<ListGraphType<LegacyBencodexValueType>>>(
+            "states",
+            description: "Retrieves states from the legacy account.",
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<AddressType>> { Name = "address" },
-                new QueryArgument<AddressType> { Name = "accountAddress" },
+                new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
+                    { Name = "addresses" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
-            resolve: ResolveState
+            resolve: ResolveStates
         );
-
         Field<NonNullGraphType<FungibleAssetValueType>>(
             "balance",
+            description: "Retrieves balance from the legacy account.",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveBalance
         );
-
         Field<FungibleAssetValueType>(
             "totalSupply",
+            description: "Retrieves total supply from the legacy account.",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
         );
-
         Field<ListGraphType<NonNullGraphType<ValidatorType>>>(
             "validators",
+            description: "Retrieves validator set from the legacy account.",
             arguments: new QueryArguments(
-                new QueryArgument<AddressType> { Name = "accountAddress" },
                 new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
+                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
         );
@@ -174,69 +168,37 @@ public class StateQuery
         }
     }
 
-    private static object? ResolveState(
+    private static object? ResolveStates(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
-        Address address = context.GetArgument<Address>("address");
-        Address? accountAddress = context.GetArgument<Address?>("accountAddress");
+        Address[] addresses = context.GetArgument<Address[]>("addresses");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
-        HashDigest<SHA256>? accountStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("accountStateRootHash");
 
-        if (accountStateRootHash is { } accountSrh)
+        switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
         {
-            if (accountAddress is not null
-                || offsetBlockHash is not null
-                || offsetStateRootHash is not null)
-            {
+            case (blockhash: not null, srh: not null):
                 throw new ExecutionError(
-                    "Neither accountAddress, offsetBlockHash nor offsetStateRootHash " +
-                    "cannot be specified with the accountStateRootHash."
+                    "offsetBlockHash and offsetStateRootHash cannot be specified at the same time."
                 );
+            case (blockhash: null, srh: null):
+                throw new ExecutionError(
+                    "Either offsetBlockHash or offsetStateRootHash must be specified."
+                );
+            case (blockhash: not null, _):
+            {
+                return context.Source.ChainStates
+                    .GetWorldState(offsetBlockHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetStates(addresses);
             }
 
-            return context.Source.ChainStates
-                .GetAccountState(accountSrh)
-                .GetState(address);
-        }
-        else
-        {
-            if (accountAddress is { } accountAddr)
-            {
-                switch (blockhash: offsetBlockHash, offsetSrh: offsetStateRootHash)
-                {
-                    case (blockhash: not null, offsetSrh: not null):
-                        throw new ExecutionError(
-                            "offsetBlockHash and offsetStateRootHash " +
-                            "cannot be specified at the same time."
-                        );
-                    case (blockhash: null, offsetSrh: null):
-                        throw new ExecutionError(
-                            "Either offsetBlockHash or offsetStateRootHash must be specified."
-                        );
-                    case (blockhash: not null, _):
-                        {
-                            return context.Source.ChainStates
-                                .GetWorldState(offsetBlockHash)
-                                .GetAccount(accountAddr)
-                                .GetState(address);
-                        }
-
-                    case (_, offsetSrh: not null):
-                        return context.Source.ChainStates
-                            .GetWorldState(offsetStateRootHash)
-                            .GetAccount(accountAddr)
-                            .GetState(address);
-                }
-            }
-            else
-            {
-                throw new ExecutionError(
-                    "accountAddress have to be specified with offset."
-                );
-            }
+            case (_, srh: not null):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetStates(addresses);
         }
     }
 
@@ -245,65 +207,33 @@ public class StateQuery
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
-        Address? accountAddress = context.GetArgument<Address?>("accountAddress");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
-        HashDigest<SHA256>? accountStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("accountStateRootHash");
 
-        if (accountStateRootHash is { } accountSrh)
+        switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
         {
-            if (accountAddress is not null
-                || offsetBlockHash is not null
-                || offsetStateRootHash is not null)
-            {
+            case (blockhash: not null, srh: not null):
                 throw new ExecutionError(
-                    "Neither accountAddress, offsetBlockHash nor offsetStateRootHash " +
-                    "cannot be specified with the accountStateRootHash."
+                    "offsetBlockHash and offsetStateRootHash cannot be specified at the same time."
                 );
+            case (blockhash: null, srh: null):
+                throw new ExecutionError(
+                    "Either offsetBlockHash or offsetStateRootHash must be specified."
+                );
+            case (blockhash: not null, _):
+            {
+                return context.Source.ChainStates
+                    .GetWorldState(offsetBlockHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetBalance(owner, currency);
             }
 
-            return context.Source.ChainStates
-                .GetAccountState(accountSrh)
-                .GetBalance(owner, currency);
-        }
-        else
-        {
-            if (accountAddress is { } accountAddr)
-            {
-                switch (blockhash: offsetBlockHash, offsetSrh: offsetStateRootHash)
-                {
-                    case (blockhash: not null, offsetSrh: not null):
-                        throw new ExecutionError(
-                            "offsetBlockHash and offsetStateRootHash " +
-                            "cannot be specified at the same time."
-                        );
-                    case (blockhash: null, offsetSrh: null):
-                        throw new ExecutionError(
-                            "Either offsetBlockHash or offsetStateRootHash must be specified."
-                        );
-                    case (blockhash: not null, _):
-                        {
-                            return context.Source.ChainStates
-                                .GetWorldState(offsetBlockHash)
-                                .GetAccount(accountAddr)
-                                .GetBalance(owner, currency);
-                        }
-
-                    case (_, offsetSrh: not null):
-                        return context.Source.ChainStates
-                            .GetWorldState(offsetStateRootHash)
-                            .GetAccount(accountAddr)
-                            .GetBalance(owner, currency);
-                }
-            }
-            else
-            {
-                throw new ExecutionError(
-                    "accountAddress have to be specified with offset."
-                );
-            }
+            case (_, srh: not null):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetBalance(owner, currency);
         }
     }
 
@@ -311,12 +241,9 @@ public class StateQuery
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
-        Address? accountAddress = context.GetArgument<Address?>("accountAddress");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
-        HashDigest<SHA256>? accountStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("accountStateRootHash");
 
         if (!currency.TotalSupplyTrackable)
         {
@@ -327,123 +254,56 @@ public class StateQuery
             throw new ExecutionError(msg);
         }
 
-        if (accountStateRootHash is { } accountSrh)
+        switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
         {
-            if (accountAddress is not null
-                || offsetBlockHash is not null
-                || offsetStateRootHash is not null)
-            {
+            case (blockhash: not null, srh: not null):
                 throw new ExecutionError(
-                    "Neither accountAddress, offsetBlockHash nor offsetStateRootHash " +
-                    "cannot be specified with the accountStateRootHash."
+                    "offsetBlockHash and offsetStateRootHash cannot be specified at the same time."
                 );
-            }
-
-            return context.Source.ChainStates
-                .GetAccountState(accountSrh)
-                .GetTotalSupply(currency);
-        }
-        else
-        {
-            if (accountAddress is { } accountAddr)
-            {
-                switch (blockhash: offsetBlockHash, offsetSrh: offsetStateRootHash)
-                {
-                    case (blockhash: not null, offsetSrh: not null):
-                        throw new ExecutionError(
-                            "offsetBlockHash and offsetStateRootHash " +
-                            "cannot be specified at the same time."
-                        );
-                    case (blockhash: null, offsetSrh: null):
-                        throw new ExecutionError(
-                            "Either offsetBlockHash or offsetStateRootHash must be specified."
-                        );
-                    case (blockhash: not null, _):
-                        {
-                            return context.Source.ChainStates
-                                .GetWorldState(offsetBlockHash)
-                                .GetAccount(accountAddr)
-                                .GetTotalSupply(currency);
-                        }
-
-                    case (_, offsetSrh: not null):
-                        return context.Source.ChainStates
-                            .GetWorldState(offsetStateRootHash)
-                            .GetAccount(accountAddr)
-                            .GetTotalSupply(currency);
-                }
-            }
-            else
-            {
+            case (blockhash: null, srh: null):
                 throw new ExecutionError(
-                    "accountAddress have to be specified with offset."
+                    "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
-            }
+            case (blockhash: not null, _):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetBlockHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetTotalSupply(currency);
+            case (_, srh: not null):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetTotalSupply(currency);
         }
     }
 
     private static object? ResolveValidatorSet(
         IResolveFieldContext<(IBlockChainStates ChainStates, IBlockPolicy Policy)> context)
     {
-        Address? accountAddress = context.GetArgument<Address?>("accountAddress");
         BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
-        HashDigest<SHA256>? accountStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("accountStateRootHash");
 
-        if (accountStateRootHash is { } accountSrh)
+        switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
         {
-            if (accountAddress is not null
-                || offsetBlockHash is not null
-                || offsetStateRootHash is not null)
-            {
+            case (blockhash: not null, srh: not null):
                 throw new ExecutionError(
-                    "Neither accountAddress, offsetBlockHash nor offsetStateRootHash " +
-                    "cannot be specified with the accountStateRootHash."
+                    "offsetBlockHash and offsetStateRootHash cannot be specified at the same time."
                 );
-            }
-
-            return context.Source.ChainStates
-                .GetAccountState(accountSrh)
-                .GetValidatorSet().Validators;
-        }
-        else
-        {
-            if (accountAddress is { } accountAddr)
-            {
-                switch (blockhash: offsetBlockHash, offsetSrh: offsetStateRootHash)
-                {
-                    case (blockhash: not null, offsetSrh: not null):
-                        throw new ExecutionError(
-                            "offsetBlockHash and offsetStateRootHash " +
-                            "cannot be specified at the same time."
-                        );
-                    case (blockhash: null, offsetSrh: null):
-                        throw new ExecutionError(
-                            "Either offsetBlockHash or offsetStateRootHash must be specified."
-                        );
-                    case (blockhash: not null, _):
-                        {
-                            return context.Source.ChainStates
-                                .GetWorldState(offsetBlockHash)
-                                .GetAccount(accountAddr)
-                                .GetValidatorSet().Validators;
-                        }
-
-                    case (_, offsetSrh: not null):
-                        return context.Source.ChainStates
-                            .GetWorldState(offsetStateRootHash)
-                            .GetAccount(accountAddr)
-                            .GetValidatorSet().Validators;
-                }
-            }
-            else
-            {
+            case (blockhash: null, srh: null):
                 throw new ExecutionError(
-                    "accountAddress have to be specified with offset."
+                    "Either offsetBlockHash or offsetStateRootHash must be specified."
                 );
-            }
+            case (blockhash: not null, _):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetBlockHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet().Validators;
+            case (_, srh: not null):
+                return context.Source.ChainStates
+                    .GetWorldState(offsetStateRootHash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet().Validators;
         }
     }
 }
