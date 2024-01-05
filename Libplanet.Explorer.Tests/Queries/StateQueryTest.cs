@@ -14,18 +14,13 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using Libplanet.Explorer.Queries;
-using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
-using Libplanet.Common;
-using System.Security.Cryptography;
 using System;
 
 namespace Libplanet.Explorer.Tests.Queries;
@@ -701,90 +696,122 @@ public class StateQueryTest
 
     private class MockChainStates : IBlockChainStates
     {
-        public IWorldState GetWorldState(HashDigest<SHA256>? hash)
-            => new MockWorld();
+        public static readonly BlockHash BlockHash =
+            new BlockHash(
+                ByteUtil.ParseHex(
+                    "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"));
 
-        public IWorldState GetWorldState(BlockHash? offset)
-            => new MockWorld();
+        public static readonly HashDigest<SHA256> StateRootHash =
+            new HashDigest<SHA256>(
+                ByteUtil.ParseHex(
+                    "c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64"));
 
-        public IAccountState GetAccountState(HashDigest<SHA256>? hash)
-            => new MockAccount();
+        public static HashDigest<SHA256>? ToStateRootHash(BlockHash? blockHash) =>
+            BlockHash.Equals(blockHash)
+                ? StateRootHash
+                : null;
 
-        public IAccountState GetAccountState(BlockHash? blockHash, Address address)
-            => new MockAccount();
+        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
+            new MockWorld(stateRootHash);
 
-        public IValue GetState(HashDigest<SHA256>? hash, Address address)
-            => new MockAccount().GetState(address);
+        public IWorldState GetWorldState(BlockHash? blockHash) =>
+            new MockWorld(ToStateRootHash(blockHash));
 
-        public IValue GetState(BlockHash? offset, Address accountAddress, Address address)
-            => new MockAccount().GetState(address);
+        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash) =>
+            new MockAccount(stateRootHash);
+
+        public IAccountState GetAccountState(BlockHash? blockHash, Address address) =>
+            GetWorldState(blockHash).GetAccount(address);
+
+        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
+            new MockAccount(stateRootHash).GetState(address);
+
+        public IValue GetState(BlockHash? offset, Address accountAddress, Address address) =>
+            GetWorldState(offset).GetAccount(accountAddress).GetState(address);
 
         public FungibleAssetValue GetBalance(
-            HashDigest<SHA256>? hash, Address address, Currency currency) =>
-            new MockAccount().GetBalance(address, currency);
+            HashDigest<SHA256>? stateRootHash, Address address, Currency currency) =>
+            new MockAccount(stateRootHash).GetBalance(address, currency);
 
         public FungibleAssetValue GetBalance(
-            BlockHash? offset, Address address, Currency currency) =>
-            new MockAccount().GetBalance(address, currency);
+            BlockHash? blockHash, Address address, Currency currency) =>
+            new MockAccount(ToStateRootHash(blockHash)).GetBalance(address, currency);
 
-        public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? hash, Currency currency) =>
-            new MockAccount().GetTotalSupply(currency);
+        public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? stateRootHash, Currency currency) =>
+            new MockAccount(stateRootHash).GetTotalSupply(currency);
 
-        public FungibleAssetValue GetTotalSupply(BlockHash? offset, Currency currency) =>
-            new MockAccount().GetTotalSupply(currency);
-        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? hash) =>
-            new MockAccount().GetValidatorSet();
+        public FungibleAssetValue GetTotalSupply(BlockHash? blockHash, Currency currency) =>
+            new MockAccount(ToStateRootHash(blockHash)).GetTotalSupply(currency);
 
-        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            new MockAccount().GetValidatorSet();
+        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash) =>
+            new MockAccount(stateRootHash).GetValidatorSet();
+
+        public ValidatorSet GetValidatorSet(BlockHash? blockHash) =>
+            new MockAccount(ToStateRootHash(blockHash)).GetValidatorSet();
     }
 
+    // Behaves like a non-empty world only if state root hash is non-null.
     private class MockWorld : IWorld
     {
-        public MockWorld()
+        private readonly HashDigest<SHA256>? _stateRootHash;
+
+        public MockWorld(HashDigest<SHA256>? stateRootHash)
         {
-            Trie = new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null);
+            _stateRootHash = stateRootHash;
         }
-        public ITrie Trie { get; }
+
+        public ITrie Trie => throw new NotImplementedException();
 
         public bool Legacy => true;
 
         public IWorldDelta Delta => throw new System.NotImplementedException();
 
-        public IAccount GetAccount(Address address)
-            => new MockAccount();
+        // Only returns a non-empty account if state root hash is not null and
+        // address is legacy account address
+        public IAccount GetAccount(Address address) =>
+            _stateRootHash is { } && ReservedAddresses.LegacyAccount.Equals(address)
+                ? new MockAccount(_stateRootHash)
+                : new MockAccount(null);
 
-        public IWorld SetAccount(Address address, IAccount account)
-        {
+        public IWorld SetAccount(Address address, IAccount account) =>
             throw new System.NotImplementedException();
-        }
     }
 
+    // Behaves like a non-empty account only if state root hash is non-null.
     private class MockAccount : IAccount
     {
-        public MockAccount()
+        public static readonly Address Address =
+            new Address("0x5003712B63baAB98094aD678EA2B24BcE445D076");
+
+        private readonly HashDigest<SHA256>? _stateRootHash;
+
+        public MockAccount(HashDigest<SHA256>? stateRootHash)
         {
-            Trie = new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null);
+            _stateRootHash = stateRootHash;
         }
 
-        public ITrie Trie => new MockTrie(StateRootHash);
+        public ITrie Trie => new MockTrie(_stateRootHash);
 
-        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets => throw new System.NotImplementedException();
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
+            throw new System.NotImplementedException();
 
-        public IValue GetState(Address address) => GetStates(new[] { address }).First();
+        public IValue GetState(Address address) =>
+            _stateRootHash is { } && Address.Equals(address)
+                ? (IValue)Null.Value
+                : null;
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
-            addresses.Select(address => address.ToString() switch
-            {
-                "0x5003712B63baAB98094aD678EA2B24BcE445D076" => (IValue)Null.Value,
-                _ => null,
-            }).ToImmutableList();
+            addresses.Select(address => GetState(address)).ToList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            currency * 123;
+            _stateRootHash is { } && Address.Equals(address)
+                ? currency * 123
+                : currency * 0;
 
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            currency * 10000;
+            _stateRootHash is { }
+                ? currency * 10000
+                : currency * 0;
 
         public ValidatorSet GetValidatorSet() =>
             new ValidatorSet(new List<Validator>
@@ -795,35 +822,31 @@ public class StateQueryTest
                     new BigInteger(1)),
             });
 
-        public IAccount SetState(Address address, IValue state)
-        {
+        public IAccount SetState(Address address, IValue state) =>
             throw new System.NotImplementedException();
-        }
 
-        public IAccount RemoveState(Address address)
-        {
+        public IAccount RemoveState(Address address) =>
             throw new System.NotImplementedException();
-        }
 
-        public IAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IAccount MintAsset(
+            IActionContext context,
+            Address recipient,
+            FungibleAssetValue value) => throw new System.NotImplementedException();
 
-        public IAccount TransferAsset(IActionContext context, Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IAccount TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false) => throw new System.NotImplementedException();
 
-        public IAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IAccount BurnAsset(
+            IActionContext context,
+            Address owner,
+            FungibleAssetValue value) => throw new System.NotImplementedException();
 
-        public IAccount SetValidator(Validator validator)
-        {
+        public IAccount SetValidator(Validator validator) =>
             throw new System.NotImplementedException();
-        }
     }
 
     private class MockTrie : ITrie
