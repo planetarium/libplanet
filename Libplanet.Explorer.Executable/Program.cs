@@ -18,7 +18,6 @@ using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Schemas;
-using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
@@ -127,26 +126,6 @@ consecutive blocks.")]
                 Description = "An app protocol version token.")]
             string appProtocolVersionToken = null,
             [Option(
-                "mysql-server",
-                Description = "A hostname of MySQL server.")]
-            string mysqlServer = null,
-            [Option(
-                "mysql-port",
-                Description = "A port of MySQL server.")]
-            uint? mysqlPort = null,
-            [Option(
-                "mysql-username",
-                Description = "The name of MySQL user.")]
-            string mysqlUsername = null,
-            [Option(
-                "mysql-password",
-                Description = "The password of MySQL user.")]
-            string mysqlPassword = null,
-            [Option(
-                "mysql-database",
-                Description = "The name of MySQL database to use.")]
-            string mysqlDatabase = null,
-            [Option(
                 "max-transactions-per-block",
                 Description = @"The number of maximum transactions able to be included
 in a block.")]
@@ -183,11 +162,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 blockIntervalMilliseconds,
                 difficultyBoundDivisor,
                 appProtocolVersionToken,
-                mysqlServer,
-                mysqlPort,
-                mysqlUsername,
-                mysqlPassword,
-                mysqlDatabase,
                 maxTransactionsPerBlock,
                 maxTransactionsBytes,
                 maxGenesisTransactionsBytes,
@@ -209,7 +183,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             try
             {
-                IRichStore store = LoadStore(options);
+                IStore store = LoadStore(options);
                 IStateStore stateStore = new NoOpStateStore();
 
                 IBlockPolicy policy =
@@ -334,28 +308,25 @@ If omitted (default) explorer only the local blockchain store.")]
             }
         }
 
-        private static IRichStore LoadStore(Options options)
+        private static IStore LoadStore(Options options)
         {
             // FIXME: This method basically does the same thing to Libplanet.Extensions.Cocona's
             // Utils.LoadStoreFromUri() method.
             // The duplicate code should be extract to a shared common method.
             // https://github.com/planetarium/libplanet/issues/1573
             bool readOnlyMode = options.Seeds is null;
-            IStore innerStore;
             switch (options.StoreType)
             {
                 case "rocksdb":
-                    innerStore = new RocksDBStore.RocksDBStore(
+                    return new RocksDBStore.RocksDBStore(
                       options.StorePath,
                       maxTotalWalSize: 16 * 1024 * 1024,
                       keepLogFileNum: 1);
-                    break;
                 case "default":
-                    innerStore = new DefaultStore(
+                    return new DefaultStore(
                         options.StorePath,
                         flush: false,
                         readOnly: readOnlyMode);
-                    break;
                 default:
                     // FIXME: give available store type as argument hint without code duplication.
                     var availableStoreTypes = new[] { "rocksdb", "default" };
@@ -364,34 +335,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         "--" + longOptionName,
                         options.StoreType,
                         availableStoreTypes);
-            }
-
-            bool useMySQL = !string.IsNullOrEmpty(options.MySQLDatabase) &&
-                            !string.IsNullOrEmpty(options.MySQLPassword) &&
-                            !string.IsNullOrEmpty(options.MySQLServer) &&
-                            !string.IsNullOrEmpty(options.MySQLUsername) &&
-                            !(options.MySQLPort is null);
-            if (useMySQL)
-            {
-                var mySqlOptions = new MySQLRichStoreOptions(
-                    options.MySQLDatabase,
-                    options.MySQLServer,
-                    options.MySQLPort.Value,
-                    options.MySQLUsername,
-                    options.MySQLPassword);
-                return new MySQLRichStore(
-                    innerStore,
-                    mySqlOptions
-                );
-            }
-            else
-            {
-                return new LiteDBRichStore(
-                    innerStore,
-                    path: options.StorePath,
-                    flush: false,
-                    readOnly: readOnlyMode
-                );
             }
         }
 

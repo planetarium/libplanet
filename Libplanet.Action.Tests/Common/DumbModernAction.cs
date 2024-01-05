@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Globalization;
 using System.Numerics;
 using Bencodex.Types;
@@ -62,10 +61,6 @@ namespace Libplanet.Action.Tests.Common
             )
         {
         }
-
-        public static AsyncLocal<ImmutableList<ExecuteRecord>>
-            ExecuteRecords
-        { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
 
         public Address TargetAddress { get; private set; }
 
@@ -187,17 +182,6 @@ namespace Libplanet.Action.Tests.Common
                     (current, validator) =>
                         current.SetValidator(new Validator(validator, BigInteger.One)));
             }
-
-            if (ExecuteRecords.Value is null)
-            {
-                ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
-            }
-
-            ExecuteRecords.Value = ExecuteRecords.Value.Add(new ExecuteRecord()
-            {
-                Action = this,
-                NextState = account,
-            });
 
             world = world.SetAccount(DumbModernAddress, account);
             return world;

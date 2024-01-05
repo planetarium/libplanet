@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             IValue shortNodeEncoded = new ShortNode(
                 Nibbles.FromHex("b4"),
                 new ValueNode(new Text("bar"))).ToBencodex();
-            IValue fullNodeEncoded = new FullNode()
+            IValue fullNodeEncoded = FullNode.Empty
                 .SetChild(4, new ValueNode(new Text("4")))
                 .SetChild(10, new ValueNode(new Text("c")))
                 .ToBencodex();

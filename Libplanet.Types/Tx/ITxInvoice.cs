@@ -54,18 +54,39 @@ namespace Libplanet.Types.Tx
         TxActionList Actions { get; }
 
         /// <summary>
-        /// The maximum amount of <see cref="FungibleAssetValue"/> that the transaction author is
-        /// willing to pay for the transaction.
-        /// This can be <see langword="null"/> if align the handling of that transaction
-        /// with the <see cref="IFeeCollector"/>.
+        /// <para>
+        /// The maximum amount of <see cref="FungibleAssetValue"/> that the
+        /// <see cref="Transaction"/>'s author is willing to pay per gas
+        /// for the <see cref="Transaction"/>.
+        /// </para>
+        /// <para>
+        /// If <see langword="null"/>, gas processing is entirely bypassed.
+        /// The parity of <see langword="null"/>-ness is always the same as
+        /// that of <see cref="GasLimit"/>.
+        /// </para>
+        /// <para>
+        /// If not <see langword="null"/>, this value cannot be negative.
+        /// </para>
         /// </summary>
+        /// <seealso cref="IFeeCollector"/>
+        /// <seealso cref="GasLimit"/>
         FungibleAssetValue? MaxGasPrice { get; }
 
         /// <summary>
-        /// The limit of the total amount of gas that the transaction will use.
-        /// This can be <see langword="null"/> if align the handling of that transaction
-        /// with the <see cref="IFeeCollector"/>.
+        /// <para>
+        /// The limit on the total amount of gas that the <see cref="Transaction"/> can use.
+        /// </para>
+        /// <para>
+        /// If <see langword="null"/>, gas processing is entirely bypassed.
+        /// The parity of <see langword="null"/>-ness is always the same as
+        /// that of <see cref="MaxGasPrice"/>.
+        /// </para>
+        /// <para>
+        /// If not <see langword="null"/>, this value cannot be negative.
+        /// </para>
         /// </summary>
+        /// <seealso cref="IFeeCollector"/>
+        /// <seealso cref="GasLimit"/>
         long? GasLimit { get; }
     }
 }

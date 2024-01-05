@@ -1,7 +1,6 @@
-#nullable disable
-using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -10,41 +9,54 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public PublicKeyType()
         {
-            Name = "PublicKey";
+            Name = "publicKey";
         }
 
-        public override object Serialize(object value)
+        public override object? ParseLiteral(IValue value)
         {
-            if (value is PublicKey pubKey)
+            if (value is StringValue stringValue)
             {
-                return pubKey.ToHex(true);
+                return ParseValue(stringValue.Value);
             }
 
-            return value;
+            if (value is NullValue)
+            {
+                return null;
+            }
+
+            return ThrowLiteralConversionError(value);
         }
 
-        public override object ParseValue(object value)
+        public override object? ParseValue(object? value)
         {
-            switch (value)
+            if (value is null)
             {
-                case null:
-                    return null;
-                case string hex:
-                    return PublicKey.FromHex(hex);
-                default:
-                    throw new ArgumentException(
-                        $"Expected a hexadecimal string but {value}", nameof(value));
+                return null;
             }
+
+            if (value is string str)
+            {
+                // NOTE: Compressed and uncompressed should both be allowed.
+                return new PublicKey(ByteUtil.ParseHex(str));
+            }
+
+            return ThrowValueConversionError(value);
         }
 
-        public override object ParseLiteral(IValue value)
+        public override object? Serialize(object? value)
         {
-            if (value is StringValue)
+            if (value is null)
             {
-                return ParseValue(value.Value);
+                return null;
             }
 
-            return null;
+            if (value is PublicKey publicKey)
+            {
+                // NOTE: Compressed format is preferred as output.
+                return publicKey.ToString();
+            }
+
+            return ThrowSerializationError(value);
         }
     }
 }

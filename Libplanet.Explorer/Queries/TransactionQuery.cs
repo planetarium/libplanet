@@ -36,11 +36,6 @@ namespace Libplanet.Explorer.Queries
                         Name = "signer",
                         DefaultValue = null,
                     },
-                    new QueryArgument<AddressType>
-                    {
-                        Name = "involvedAddress",
-                        DefaultValue = null,
-                    },
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "desc",
@@ -56,12 +51,11 @@ namespace Libplanet.Explorer.Queries
                 resolve: context =>
                 {
                     var signer = context.GetArgument<Address?>("signer");
-                    var involved = context.GetArgument<Address?>("involvedAddress");
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit");
 
-                    return ExplorerQuery.ListTransactions(signer, involved, desc, offset, limit);
+                    return ExplorerQuery.ListTransactions(signer, desc, offset, limit);
                 }
             );
 
@@ -73,11 +67,6 @@ namespace Libplanet.Explorer.Queries
                         Name = "signer",
                         DefaultValue = null,
                     },
-                    new QueryArgument<AddressType>
-                    {
-                        Name = "involvedAddress",
-                        DefaultValue = null,
-                    },
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "desc",
@@ -93,14 +82,12 @@ namespace Libplanet.Explorer.Queries
                 resolve: context =>
                 {
                     var signer = context.GetArgument<Address?>("signer");
-                    var involved = context.GetArgument<Address?>("involvedAddress");
                     bool desc = context.GetArgument<bool>("desc");
                     int offset = context.GetArgument<int>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
                     return ExplorerQuery.ListStagedTransactions(
                         signer,
-                        involved,
                         desc,
                         offset,
                         limit
@@ -111,13 +98,10 @@ namespace Libplanet.Explorer.Queries
             Field<TransactionType>(
                 "transaction",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "id" }
+                    new QueryArgument<NonNullGraphType<TxIdType>> { Name = "id" }
                 ),
                 resolve: context =>
-                {
-                    var id = TxId.FromHex(context.GetArgument<string>("id"));
-                    return ExplorerQuery.GetTransaction(id);
-                }
+                    ExplorerQuery.GetTransaction(context.GetArgument<TxId>("id"))
             );
 
             Field<NonNullGraphType<ByteStringType>>(
@@ -212,7 +196,7 @@ namespace Libplanet.Explorer.Queries
             Field<NonNullGraphType<TxResultType>>(
                 name: "transactionResult",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>>
+                    new QueryArgument<NonNullGraphType<TxIdType>>
                     {
                         Name = "txId",
                         Description = "transaction id.",
@@ -223,7 +207,7 @@ namespace Libplanet.Explorer.Queries
                     var blockChain = _context.BlockChain;
                     var store = _context.Store;
                     var index = _context.Index;
-                    var txId = new TxId(ByteUtil.ParseHex(context.GetArgument<string>("txId")));
+                    var txId = context.GetArgument<TxId>("txId");
 
                     if (GetBlockContainingTx(_context, txId) is { } block)
                     {

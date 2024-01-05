@@ -40,8 +40,8 @@ namespace Libplanet.Store.Trie
         bool Recorded { get; }
 
         /// <summary>
-        /// Stores the <paramref name="value"/> to the
-        /// node corresponding to given <paramref name="key"/> <em>in memory</em>.
+        /// Stores the <paramref name="value"/> at the path corresponding to
+        /// given <paramref name="key"/> <em>in memory</em>.
         /// </summary>
         /// <param name="key">The unique key to associate with the <paramref name="value"/>.</param>
         /// <param name="value">The value to store.</param>
@@ -50,9 +50,27 @@ namespace Libplanet.Store.Trie
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
         /// <remarks>
         /// This <em>should not</em> actually write anything to storage.
+        /// Stored <paramref name="value"/> is actually written to storage when
+        /// <see cref="IStateStore.Commit"/> is called.
         /// </remarks>
         /// <seealso cref="IStateStore.Commit"/>
         ITrie Set(in KeyBytes key, IValue value);
+
+        /// <summary>
+        /// Removes the value at the path corresponding to given <paramref name="key"/>
+        /// <em>in memory</em>.
+        /// </summary>
+        /// <param name="key">The unique key to associate with the <paramref name="value"/>.</param>
+        /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
+        /// <remarks>
+        /// This <em>should not</em> actually remove anything from storage.
+        /// The removal of the value at the marked path given by <paramref name="key"/> is actually
+        /// recorded to storage when <see cref="IStateStore.Commit"/> is called.
+        /// Regardless, there is actually no removal of any value from storage even when
+        /// <see cref="IStateStore.Commit"/> is called.
+        /// </remarks>
+        /// <seealso cref="IStateStore.Commit"/>
+        ITrie Remove(in KeyBytes key);
 
         /// <summary>
         /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.

@@ -5,13 +5,15 @@ using Bencodex.Types;
 
 namespace Libplanet.Store.Trie.Nodes
 {
-    public sealed class FullNode : BaseNode, IEquatable<FullNode>
+    public sealed class FullNode : INode, IEquatable<FullNode>
     {
-        // Children 0x10 + Value 0x1
+        // Children 0x10 + Value 0x01
         public const byte ChildrenCount = 0x11;
 
+        public static readonly FullNode Empty =
+            new FullNode(new INode?[ChildrenCount].ToImmutableArray());
+
         public FullNode(ImmutableArray<INode?> children)
-            : base(children[ChildrenCount - 1])
         {
             if (children.Length != ChildrenCount)
             {
@@ -20,18 +22,21 @@ namespace Libplanet.Store.Trie.Nodes
             }
 
             Children = children;
-        }
-
-        public FullNode()
-            : this(new INode?[ChildrenCount].ToImmutableArray())
-        {
+            Value = children[ChildrenCount - 1];
         }
 
         public ImmutableArray<INode?> Children { get; }
 
+        public INode? Value { get; }
+
         public FullNode SetChild(int index, INode childNode)
         {
             return new FullNode(Children.SetItem(index, childNode));
+        }
+
+        public FullNode RemoveChild(int index)
+        {
+            return new FullNode(Children.SetItem(index, null));
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals"/>
@@ -50,13 +55,10 @@ namespace Libplanet.Store.Trie.Nodes
         public override bool Equals(object? obj) =>
             obj is FullNode other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            return Children.GetHashCode();
-        }
+        public override int GetHashCode() => Children.GetHashCode();
 
         /// <inheritdoc cref="INode.ToBencodex()"/>
-        public override IValue ToBencodex() =>
+        public IValue ToBencodex() =>
             new List(Children.Select(child => child?.ToBencodex() ?? Null.Value));
     }
 }

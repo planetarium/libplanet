@@ -9,7 +9,6 @@ using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
-using Libplanet.Explorer.Store;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -23,13 +22,12 @@ namespace Libplanet.Explorer.Queries
             ChainContext = chainContext;
             Field<BlockQuery>("blockQuery", resolve: context => new { });
             Field<TransactionQuery>("transactionQuery", resolve: context => new { });
-            Field<StateQuery>("stateQuery", resolve: context => (
-                (IBlockChainStates)chainContext.BlockChain,
-                chainContext.BlockChain.Policy));
+            Field<StateQuery>("stateQuery", resolve: context => chainContext.BlockChain);
             Field<NonNullGraphType<NodeStateType>>(
                 "nodeState",
                 resolve: context => chainContext
             );
+            Field<HelperQuery>("helperQuery", resolve: context => new { });
 
             Name = "ExplorerQuery";
         }
@@ -98,7 +96,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static IEnumerable<Transaction> ListTransactions(
-            Address? signer, Address? involved, bool desc, long offset, int? limit)
+            Address? signer, bool desc, long offset, int? limit)
         {
             Block tip = Chain.Tip;
             long tipIndex = tip.Index;
@@ -113,44 +111,12 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            if (Store is IRichStore richStore)
-            {
-                IEnumerable<TxId> txIds;
-                if (!(signer is null))
-                {
-                    txIds = richStore
-                        .IterateSignerReferences(
-                            (Address)signer, desc, (int)offset, limit ?? int.MaxValue);
-                }
-                else if (!(involved is null))
-                {
-                    txIds = richStore
-                        .IterateUpdatedAddressReferences(
-                            (Address)involved, desc, (int)offset, limit ?? int.MaxValue);
-                }
-                else
-                {
-                    txIds = richStore
-                        .IterateTxReferences(null, desc, (int)offset, limit ?? int.MaxValue)
-                        .Select(r => r.Item1);
-                }
-
-                var txs = txIds.Select(txId => Chain.GetTransaction(txId));
-                foreach (var tx in txs)
-                {
-                    yield return tx;
-                }
-
-                yield break;
-            }
-
             Block block = Chain[desc ? tipIndex - offset : offset];
-
             while (!(block is null) && (limit is null || limit > 0))
             {
                 foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
                 {
-                    if (IsValidTransaction(tx, signer, involved))
+                    if (IsValidTransaction(tx, signer))
                     {
                         yield return tx;
                         limit--;
@@ -166,7 +132,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static IEnumerable<Transaction> ListStagedTransactions(
-            Address? signer, Address? involved, bool desc, int offset, int? limit)
+            Address? signer, bool desc, int offset, int? limit)
         {
             if (offset < 0)
             {
@@ -176,7 +142,7 @@ namespace Libplanet.Explorer.Queries
             }
 
             var stagedTxs = Chain.StagePolicy.Iterate(Chain)
-                .Where(tx => IsValidTransaction(tx, signer, involved))
+                .Where(tx => IsValidTransaction(tx, signer))
                 .Skip(offset);
 
             stagedTxs = desc ? stagedTxs.OrderByDescending(tx => tx.Timestamp)
@@ -209,17 +175,11 @@ namespace Libplanet.Explorer.Queries
 
         private static bool IsValidTransaction(
             Transaction tx,
-            Address? signer,
-            Address? involved)
+            Address? signer)
         {
             if (signer is { } signerVal)
             {
                 return tx.Signer.Equals(signerVal);
-            }
-
-            if (involved is { } involvedVal)
-            {
-                return tx.UpdatedAddresses.Contains(involvedVal);
             }
 
             return true;

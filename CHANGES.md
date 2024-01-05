@@ -89,25 +89,9 @@ To be released.
  -  (Libplanet.Action) Added `TrieMetadata` class.  [[#3540]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
- -  (Libplanet.Explorer) Modified some fields of `StateQuery` query.  [[#3462]]
-     -  Added `StateQuery.worldState` field.
-     -  Added `StateQuery.accountState` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.states` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.states` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.balance` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.balance` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.totalSupply` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.totalSupply` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.validators` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.validators` field.
+ -  (Libplanet.Explorer) Added `StateQuery.world` field.  [[#3462]]
+ -  (Libplanet.Explorer) Changed `account` and `accounts` query in
+    `StateQuery` to be compatible with `stateQuery.world`.  [[#3589]]
 
 ### Behavioral changes
 
@@ -123,6 +107,71 @@ To be released.
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
 [#3583]: https://github.com/planetarium/libplanet/pull/3583
+[#3589]: https://github.com/planetarium/libplanet/pull/3589
+
+
+Version 3.9.3
+-------------
+
+To be released.
+
+Due to changes in [#3567], a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+[Libplanet 2.0.0] and onwards prior to this release that have included
+`Transaction`s that aren't compatible with the updated specification in [#3567].
+
+ -  (Libplanet.Explorer) Added `BlockHashType` and `TxIdType`.  [[#3559]]
+ -  (Libplanet.Explorer) Changed `HashDigestSHA256Type` to `HashDigestType<T>`.
+    [[#3559]]
+ -  (Libplanet.Explorer) Changed `BencodexValueType` to inherit
+    `ObjectGraphType<IValue>` instead of `StringGraphType`.  Instead of
+    simply being a hexadecimal representation of `byte[]` encoded `IValue`,
+    now one can choose its representation format.  [[#3560]]
+ -  (Libplanet.Explorer) Added `HelperQuery`, a collection of utility like
+    queries.  [[#3561]]
+ -  (Libplanet.Explorer) Removed `IRichStore.StoreUpdatedAddressReferences()`
+    and `IterateUpdatedAddressReferences()` interface methods.  [[#3562]]
+ -  (Libplanet.Explorer) Removed `involvedAddress` argument from all
+    `TransactionQuery` query methods.  [[#3562]]
+ -  (Libplanet.Explorer) Removed `IRichStore` interface.  [[#3564]]
+ -  (Libplanet.Explorer) Removed parameters `mysql-server`, `mysql-port`,
+    `mysql-username`, `mysql-password`, and `mysql-database` from
+    `Libplanet.Explorer.Executable`.  [[#3564]]
+ -  Changed `TxInvoice` to no longer allow negative values for
+    `MaxGasPrice` and `GasLimit`.  [[#3567]]
+ -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3570]]
+ -  (Libplanet.Explorer) Added `account` and `accounts` query to `StateQuery`.
+    [[#3570]]
+ -  (Libplanet.Store) Changed `ShortNode` to no longer inherit `BaseNode`.
+    `ShortNode.Value` is no longer nullable.  [[#3572]]
+ -  (Libplanet.Store) Removed `FullNode()` and added `FullNode.Empty`.
+    [[#3573]]
+ -  (Libplanet.Store) Slightly optimized `ITrie` performance.  [[#3573]]
+ -  (Libplanet.Store) Changed `FullNode` to no longer inherit `BaseNode`.
+    [[#3574]]
+ -  (Libplanet.Store) Removed `BaseNode`.  [[#3574]]
+ -  (Libplanet.Store) Added `ITrie.Remove()` interface method.  [[#3576]]
+ -  (Libplanet.Store) Added `FullNode.RemoveChild()` method.  [[#3576]]
+ -  (Libplanet.Action) Added `IAccount.RemoveState()` interface method.
+    [[#3577]]
+ -  (Libplanet.Explorer) Added `LegacyBencodexValueType` class that is
+    a copy of an old `BencodexValueType` with its name changed
+    for backwards compatibility.  Changed old `states` query
+    to use `LegacyBencodexValueType` instead of `BencodexValueType`.  [[#3579]]
+
+[#3559]: https://github.com/planetarium/libplanet/pull/3559
+[#3560]: https://github.com/planetarium/libplanet/pull/3560
+[#3561]: https://github.com/planetarium/libplanet/pull/3561
+[#3562]: https://github.com/planetarium/libplanet/pull/3562
+[#3564]: https://github.com/planetarium/libplanet/pull/3564
+[#3567]: https://github.com/planetarium/libplanet/pull/3567
+[#3570]: https://github.com/planetarium/libplanet/pull/3570
+[#3572]: https://github.com/planetarium/libplanet/pull/3572
+[#3573]: https://github.com/planetarium/libplanet/pull/3573
+[#3574]: https://github.com/planetarium/libplanet/pull/3574
+[#3576]: https://github.com/planetarium/libplanet/pull/3576
+[#3577]: https://github.com/planetarium/libplanet/pull/3577
+[#3579]: https://github.com/planetarium/libplanet/pull/3579
 
 
 Version 3.9.2
