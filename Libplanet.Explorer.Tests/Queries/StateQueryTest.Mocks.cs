@@ -8,6 +8,7 @@ using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -85,7 +86,7 @@ public partial class StateQueryTest
             _stateRootHash = stateRootHash;
         }
 
-        public ITrie Trie => throw new NotImplementedException();
+        public ITrie Trie => new MockTrie(_stateRootHash);
 
         public bool Legacy => true;
 
@@ -185,7 +186,9 @@ public partial class StateQueryTest
 
         public INode Root => throw new NotSupportedException();
 
-        public HashDigest<SHA256> Hash => throw new NotSupportedException();
+        public HashDigest<SHA256> Hash => _stateRootHash is { } stateRootHash
+            ? stateRootHash
+            : new TrieStateStore(new MemoryKeyValueStore()).GetStateRoot(null).Hash;
 
         public bool Recorded => throw new NotSupportedException();
 

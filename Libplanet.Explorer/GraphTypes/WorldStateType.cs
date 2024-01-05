@@ -14,13 +14,13 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "WorldState";
 
             Field<NonNullGraphType<HashDigestType<SHA256>>>(
-                name: "StateRootHash",
+                name: "stateRootHash",
                 description: "The state root hash of the world state.",
                 resolve: context => context.Source.Trie.Hash
             );
 
             Field<NonNullGraphType<BooleanGraphType>>(
-                name: "Legacy",
+                name: "legacy",
                 description: "The legacy flag of the world state.",
                 resolve: context => context.Source.Legacy
             );
