@@ -56,7 +56,8 @@ namespace Libplanet.Blockchain
             BlockHash? offset,
             Address address,
             Currency currency)
-            => GetAccountState(offset, ReservedAddresses.LegacyAccount)
+            => GetWorldState(offset)
+                .GetAccount(ReservedAddresses.LegacyAccount)
                 .GetBalance(address, currency);
 
         /// <inheritdoc cref=
@@ -64,28 +65,32 @@ namespace Libplanet.Blockchain
         public FungibleAssetValue GetBalance(
             HashDigest<SHA256>? stateRootHash,
             Address address,
-            Currency currency)
-            => GetAccountState(stateRootHash).GetBalance(address, currency);
+            Currency currency) => GetWorldState(stateRootHash)
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetBalance(address, currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(BlockHash?, Currency)"/>
         public FungibleAssetValue GetTotalSupply(
             BlockHash? offset,
-            Currency currency)
-            => GetAccountState(offset, ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+            Currency currency) => GetWorldState(offset)
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(HashDigest{SHA256}?, Currency)"/>
         public FungibleAssetValue GetTotalSupply(
             HashDigest<SHA256>? stateRootHash,
-            Currency currency)
-            => GetAccountState(stateRootHash).GetTotalSupply(currency);
+            Currency currency) => GetWorldState(stateRootHash)
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetTotalSupply(currency);
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(BlockHash?)"/>
-        public ValidatorSet GetValidatorSet(BlockHash? offset)
-            => GetAccountState(offset, ReservedAddresses.LegacyAccount).GetValidatorSet();
+        public ValidatorSet GetValidatorSet(BlockHash? offset) => GetWorldState(offset)
+            .GetAccount(ReservedAddresses.LegacyAccount)
+            .GetValidatorSet();
 
         /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(HashDigest{SHA256}?)"/>
-        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash)
-            => GetAccountState(stateRootHash).GetValidatorSet();
+        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash) =>
+            GetAccountState(stateRootHash).GetValidatorSet();
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
