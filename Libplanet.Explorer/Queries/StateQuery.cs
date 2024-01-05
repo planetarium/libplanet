@@ -17,23 +17,12 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Name = "StateQuery";
 
         Field<NonNullGraphType<WorldStateType>>(
-            "worldState",
+            "world",
             arguments: new QueryArguments(
                 new QueryArgument<BlockHashType> { Name = "blockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "stateRootHash" }
             ),
             resolve: ResolveWorldState
-        );
-
-        Field<NonNullGraphType<AccountStateType>>(
-            "accountState",
-            arguments: new QueryArguments(
-                new QueryArgument<AddressType> { Name = "accountAddress" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "accountStateRootHash" }
-            ),
-            resolve: ResolveAccountState
         );
 
         Field<NonNullGraphType<ListGraphType<LegacyBencodexValueType>>>(
@@ -96,70 +85,9 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                     "Either blockHash or stateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                {
-                    return context.Source.GetWorldState(blockHash);
-                }
-
+                return context.Source.GetWorldState(blockHash);
             case (_, srh: not null):
                 return context.Source.GetWorldState(stateRootHash);
-        }
-    }
-
-    private static object ResolveAccountState(IResolveFieldContext<IBlockChainStates> context)
-    {
-        Address? accountAddress = context.GetArgument<Address?>("accountAddress");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
-        HashDigest<SHA256>? offsetStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
-        HashDigest<SHA256>? accountStateRootHash = context
-            .GetArgument<HashDigest<SHA256>?>("accountStateRootHash");
-
-        if (accountStateRootHash is { } accountSrh)
-        {
-            if (accountAddress is not null
-                || offsetBlockHash is not null
-                || offsetStateRootHash is not null)
-            {
-                throw new ExecutionError(
-                    "Neither accountAddress, offsetBlockHash nor offsetStateRootHash " +
-                    "cannot be specified with the accountStateRootHash."
-                );
-            }
-
-            return context.Source.GetAccountState(accountSrh);
-        }
-        else
-        {
-            if (accountAddress is { } accountAddr)
-            {
-                switch (blockhash: offsetBlockHash, offsetSrh: offsetStateRootHash)
-                {
-                    case (blockhash: not null, offsetSrh: not null):
-                        throw new ExecutionError(
-                            "offsetBlockHash and offsetStateRootHash " +
-                            "cannot be specified at the same time."
-                        );
-                    case (blockhash: null, offsetSrh: null):
-                        throw new ExecutionError(
-                            "Either offsetBlockHash or offsetStateRootHash must be specified."
-                        );
-                    case (blockhash: not null, _):
-                        {
-                            return context.Source
-                                .GetWorldState(offsetBlockHash).GetAccount(accountAddr);
-                        }
-
-                    case (_, offsetSrh: not null):
-                        return context.Source
-                            .GetWorldState(offsetStateRootHash).GetAccount(accountAddr);
-                }
-            }
-            else
-            {
-                throw new ExecutionError(
-                    "accountAddress have to be specified with offset."
-                );
-            }
         }
     }
 
