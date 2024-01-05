@@ -155,33 +155,60 @@ method.
 <li>(Libplanet.Action) Added <code>TrieMetadata</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3540">#3540</a>]</li>
 <li>(Libplanet.Explorer) Added <code>AccountStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
 <li>(Libplanet.Explorer) Added <code>WorldStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
-<li>(Libplanet.Explorer) Modified some fields of <code>StateQuery</code> query.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]
-<ul>
-<li>Added <code>StateQuery.worldState</code> field.</li>
-<li>Added <code>StateQuery.accountState</code> field.</li>
-<li>Added <code>accountAddress</code> of type <code>Address</code> argument
-for <code>StateQuery.states</code> field.</li>
-<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
-for <code>StateQuery.states</code> field.</li>
-<li>Added <code>accountAddress</code> of type <code>Address</code> argument
-for <code>StateQuery.balance</code> field.</li>
-<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
-for <code>StateQuery.balance</code> field.</li>
-<li>Added <code>accountAddress</code> of type <code>Address</code> argument
-for <code>StateQuery.totalSupply</code> field.</li>
-<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
-for <code>StateQuery.totalSupply</code> field.</li>
-<li>Added <code>accountAddress</code> of type <code>Address</code> argument
-for <code>StateQuery.validators</code> field.</li>
-<li>Added <code>accountStateRootHash</code> of type <code>HashDigest&lt;SHA256&gt;?</code> argument
-for <code>StateQuery.validators</code> field.</li>
-</ul>
-</li>
+<li>(Libplanet.Explorer) Added <code>StateQuery.world</code> field.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>account</code> and <code>accounts</code> query in
+<code>StateQuery</code> to be compatible with <code>stateQuery.world</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3589">#3589</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-393">Version 3.9.3</h2>
+<p>To be released.</p>
+<p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>, a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+<a href="https://www.nuget.org/packages/Libplanet/2.0.0">Libplanet 2.0.0</a> and onwards prior to this release that have included
+<code>Transaction</code>s that aren't compatible with the updated specification in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>.</p>
+<ul>
+<li>(Libplanet.Explorer) Added <code>BlockHashType</code> and <code>TxIdType</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3559">#3559</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>HashDigestSHA256Type</code> to <code>HashDigestType&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3559">#3559</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>BencodexValueType</code> to inherit
+<code>ObjectGraphType&lt;IValue&gt;</code> instead of <code>StringGraphType</code>.  Instead of
+simply being a hexadecimal representation of <code>byte[]</code> encoded <code>IValue</code>,
+now one can choose its representation format.  [<a href="https://github.com/planetarium/libplanet/pull/3560">#3560</a>]</li>
+<li>(Libplanet.Explorer) Added <code>HelperQuery</code>, a collection of utility like
+queries.  [<a href="https://github.com/planetarium/libplanet/pull/3561">#3561</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>IRichStore.StoreUpdatedAddressReferences()</code>
+and <code>IterateUpdatedAddressReferences()</code> interface methods.  [<a href="https://github.com/planetarium/libplanet/pull/3562">#3562</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>involvedAddress</code> argument from all
+<code>TransactionQuery</code> query methods.  [<a href="https://github.com/planetarium/libplanet/pull/3562">#3562</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>IRichStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3564">#3564</a>]</li>
+<li>(Libplanet.Explorer) Removed parameters <code>mysql-server</code>, <code>mysql-port</code>,
+<code>mysql-username</code>, <code>mysql-password</code>, and <code>mysql-database</code> from
+<code>Libplanet.Explorer.Executable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3564">#3564</a>]</li>
+<li>Changed <code>TxInvoice</code> to no longer allow negative values for
+<code>MaxGasPrice</code> and <code>GasLimit</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>]</li>
+<li>(Libplanet.Explorer) Added <code>AccountStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3570">#3570</a>]</li>
+<li>(Libplanet.Explorer) Added <code>account</code> and <code>accounts</code> query to <code>StateQuery</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3570">#3570</a>]</li>
+<li>(Libplanet.Store) Changed <code>ShortNode</code> to no longer inherit <code>BaseNode</code>.
+<code>ShortNode.Value</code> is no longer nullable.  [<a href="https://github.com/planetarium/libplanet/pull/3572">#3572</a>]</li>
+<li>(Libplanet.Store) Removed <code>FullNode()</code> and added <code>FullNode.Empty</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3573">#3573</a>]</li>
+<li>(Libplanet.Store) Slightly optimized <code>ITrie</code> performance.  [<a href="https://github.com/planetarium/libplanet/pull/3573">#3573</a>]</li>
+<li>(Libplanet.Store) Changed <code>FullNode</code> to no longer inherit <code>BaseNode</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3574">#3574</a>]</li>
+<li>(Libplanet.Store) Removed <code>BaseNode</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3574">#3574</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.Remove()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3576">#3576</a>]</li>
+<li>(Libplanet.Store) Added <code>FullNode.RemoveChild()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3576">#3576</a>]</li>
+<li>(Libplanet.Action) Added <code>IAccount.RemoveState()</code> interface method.
+[<a href="https://github.com/planetarium/libplanet/pull/3577">#3577</a>]</li>
+<li>(Libplanet.Explorer) Added <code>LegacyBencodexValueType</code> class that is
+a copy of an old <code>BencodexValueType</code> with its name changed
+for backwards compatibility.  Changed old <code>states</code> query
+to use <code>LegacyBencodexValueType</code> instead of <code>BencodexValueType</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3579">#3579</a>]</li>
+</ul>
 <h2 id="version-392">Version 3.9.2</h2>
 <p>Released on December 15, 2023.</p>
 <ul>

@@ -1685,6 +1685,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.MintAsset
   nameWithType: Account.MintAsset
+- uid: Libplanet.Action.State.Account.RemoveState(Libplanet.Crypto.Address)
+  name: RemoveState(Address)
+  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_RemoveState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.Account.RemoveState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.Account.RemoveState(Libplanet.Crypto.Address)
+  nameWithType: Account.RemoveState(Address)
+- uid: Libplanet.Action.State.Account.RemoveState*
+  name: RemoveState
+  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_RemoveState_
+  commentId: Overload:Libplanet.Action.State.Account.RemoveState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.Account.RemoveState
+  nameWithType: Account.RemoveState
 - uid: Libplanet.Action.State.Account.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
   name: SetState(Address, IValue)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_
@@ -2004,6 +2017,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccount.MintAsset
   nameWithType: IAccount.MintAsset
+- uid: Libplanet.Action.State.IAccount.RemoveState(Libplanet.Crypto.Address)
+  name: RemoveState(Address)
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.IAccount.RemoveState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.IAccount.RemoveState(Libplanet.Crypto.Address)
+  nameWithType: IAccount.RemoveState(Address)
+- uid: Libplanet.Action.State.IAccount.RemoveState*
+  name: RemoveState
+  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_
+  commentId: Overload:Libplanet.Action.State.IAccount.RemoveState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IAccount.RemoveState
+  nameWithType: IAccount.RemoveState
 - uid: Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)
   name: SetState(Address, IValue)
   href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_
@@ -23596,6 +23622,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Recorded
   nameWithType: ITrie.Recorded
+- uid: Libplanet.Store.Trie.ITrie.Remove(Libplanet.Store.Trie.KeyBytes@)
+  name: Remove(in KeyBytes)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Remove_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.ITrie.Remove(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Remove(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.ITrie.Remove(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.ITrie.Remove(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: ITrie.Remove(in KeyBytes)
+  nameWithType.vb: ITrie.Remove(ByRef KeyBytes)
+- uid: Libplanet.Store.Trie.ITrie.Remove*
+  name: Remove
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Remove_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.Remove
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.Remove
+  nameWithType: ITrie.Remove
 - uid: Libplanet.Store.Trie.ITrie.Root
   name: Root
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root
@@ -24075,6 +24117,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Recorded
   nameWithType: MerkleTrie.Recorded
+- uid: Libplanet.Store.Trie.MerkleTrie.Remove(Libplanet.Store.Trie.KeyBytes@)
+  name: Remove(in KeyBytes)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Remove_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Remove(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Remove(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.MerkleTrie.Remove(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.Remove(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MerkleTrie.Remove(in KeyBytes)
+  nameWithType.vb: MerkleTrie.Remove(ByRef KeyBytes)
+- uid: Libplanet.Store.Trie.MerkleTrie.Remove*
+  name: Remove
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Remove_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Remove
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.Remove
+  nameWithType: MerkleTrie.Remove
 - uid: Libplanet.Store.Trie.MerkleTrie.Root
   name: Root
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Root
@@ -24328,63 +24386,12 @@ references:
   commentId: N:Libplanet.Store.Trie.Nodes
   fullName: Libplanet.Store.Trie.Nodes
   nameWithType: Libplanet.Store.Trie.Nodes
-- uid: Libplanet.Store.Trie.Nodes.BaseNode
-  name: BaseNode
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html
-  commentId: T:Libplanet.Store.Trie.Nodes.BaseNode
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode
-  nameWithType: BaseNode
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.#ctor(Libplanet.Store.Trie.Nodes.INode)
-  name: BaseNode(INode)
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode__ctor_Libplanet_Store_Trie_Nodes_INode_
-  commentId: M:Libplanet.Store.Trie.Nodes.BaseNode.#ctor(Libplanet.Store.Trie.Nodes.INode)
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.BaseNode(Libplanet.Store.Trie.Nodes.INode)
-  nameWithType: BaseNode.BaseNode(INode)
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.#ctor*
-  name: BaseNode
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode__ctor_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.BaseNode
-  nameWithType: BaseNode.BaseNode
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_ToBencodex
-  commentId: M:Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex()
-  nameWithType: BaseNode.ToBencodex()
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_ToBencodex_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.ToBencodex
-  nameWithType: BaseNode.ToBencodex
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.Value
-  name: Value
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_Value
-  commentId: P:Libplanet.Store.Trie.Nodes.BaseNode.Value
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.Value
-  nameWithType: BaseNode.Value
-- uid: Libplanet.Store.Trie.Nodes.BaseNode.Value*
-  name: Value
-  href: api/Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_Value_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.BaseNode.Value
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nodes.BaseNode.Value
-  nameWithType: BaseNode.Value
 - uid: Libplanet.Store.Trie.Nodes.FullNode
   name: FullNode
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html
   commentId: T:Libplanet.Store.Trie.Nodes.FullNode
   fullName: Libplanet.Store.Trie.Nodes.FullNode
   nameWithType: FullNode
-- uid: Libplanet.Store.Trie.Nodes.FullNode.#ctor
-  name: FullNode()
-  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode__ctor
-  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.#ctor
-  fullName: Libplanet.Store.Trie.Nodes.FullNode.FullNode()
-  nameWithType: FullNode.FullNode()
 - uid: Libplanet.Store.Trie.Nodes.FullNode.#ctor(System.Collections.Immutable.ImmutableArray{Libplanet.Store.Trie.Nodes.INode})
   name: FullNode(ImmutableArray<INode>)
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode__ctor_System_Collections_Immutable_ImmutableArray_Libplanet_Store_Trie_Nodes_INode__
@@ -24420,6 +24427,12 @@ references:
   commentId: F:Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
   fullName: Libplanet.Store.Trie.Nodes.FullNode.ChildrenCount
   nameWithType: FullNode.ChildrenCount
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Empty
+  name: Empty
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Empty
+  commentId: F:Libplanet.Store.Trie.Nodes.FullNode.Empty
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Empty
+  nameWithType: FullNode.Empty
 - uid: Libplanet.Store.Trie.Nodes.FullNode.Equals(Libplanet.Store.Trie.Nodes.FullNode)
   name: Equals(FullNode)
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Equals_Libplanet_Store_Trie_Nodes_FullNode_
@@ -24452,6 +24465,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.FullNode.GetHashCode
   nameWithType: FullNode.GetHashCode
+- uid: Libplanet.Store.Trie.Nodes.FullNode.RemoveChild(System.Int32)
+  name: RemoveChild(Int32)
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_RemoveChild_System_Int32_
+  commentId: M:Libplanet.Store.Trie.Nodes.FullNode.RemoveChild(System.Int32)
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.RemoveChild(System.Int32)
+  nameWithType: FullNode.RemoveChild(Int32)
+- uid: Libplanet.Store.Trie.Nodes.FullNode.RemoveChild*
+  name: RemoveChild
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_RemoveChild_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.RemoveChild
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.RemoveChild
+  nameWithType: FullNode.RemoveChild
 - uid: Libplanet.Store.Trie.Nodes.FullNode.SetChild(System.Int32,Libplanet.Store.Trie.Nodes.INode)
   name: SetChild(Int32, INode)
   href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_SetChild_System_Int32_Libplanet_Store_Trie_Nodes_INode_
@@ -24478,6 +24504,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.FullNode.ToBencodex
   nameWithType: FullNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Value
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Value
+  commentId: P:Libplanet.Store.Trie.Nodes.FullNode.Value
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Value
+  nameWithType: FullNode.Value
+- uid: Libplanet.Store.Trie.Nodes.FullNode.Value*
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.FullNode.html#Libplanet_Store_Trie_Nodes_FullNode_Value_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.FullNode.Value
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.FullNode.Value
+  nameWithType: FullNode.Value
 - uid: Libplanet.Store.Trie.Nodes.HashNode
   name: HashNode
   href: api/Libplanet.Store.Trie.Nodes.HashNode.html
@@ -24781,6 +24820,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex
   nameWithType: ShortNode.ToBencodex
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Value
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Value
+  commentId: P:Libplanet.Store.Trie.Nodes.ShortNode.Value
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Value
+  nameWithType: ShortNode.Value
+- uid: Libplanet.Store.Trie.Nodes.ShortNode.Value*
+  name: Value
+  href: api/Libplanet.Store.Trie.Nodes.ShortNode.html#Libplanet_Store_Trie_Nodes_ShortNode_Value_
+  commentId: Overload:Libplanet.Store.Trie.Nodes.ShortNode.Value
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.Nodes.ShortNode.Value
+  nameWithType: ShortNode.Value
 - uid: Libplanet.Store.Trie.Nodes.ValueNode
   name: ValueNode
   href: api/Libplanet.Store.Trie.Nodes.ValueNode.html

@@ -77,19 +77,15 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Libplanet.Store.Trie.Nodes.BaseNode.html">BaseNode</a></div>
-    <div class="level2"><span class="xref">ShortNode</span></div>
+    <div class="level1"><span class="xref">ShortNode</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_Value">BaseNode.Value</a>
-    </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
@@ -110,7 +106,7 @@
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_Trie_Nodes_ShortNode_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ShortNode : BaseNode, INode, IEquatable&lt;ShortNode&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ShortNode : INode, IEquatable&lt;ShortNode&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -158,7 +154,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_Key.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.Key%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L17">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L20">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_ShortNode_Key_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Key*"></a>
   <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_Key" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Key">Key</h4>
@@ -183,6 +179,41 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_Value.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.Value%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L29">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_Nodes_ShortNode_Value_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Value*"></a>
+  <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_Value" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Value">Value</h4>
+  <div class="markdown level1 summary"><p>Represents an <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> at the end of a <a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>.
+It can be a <a class="xref" href="Libplanet.Store.Trie.Nodes.ValueNode.html">ValueNode</a>, a <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>,
+or a <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a> of either a <a class="xref" href="Libplanet.Store.Trie.Nodes.ValueNode.html">ValueNode</a>
+or a <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>.  That is, this can be neither a <a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>
+nor a <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a> of a <a class="xref" href="Libplanet.Store.Trie.Nodes.ShortNode.html">ShortNode</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INode Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -190,7 +221,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_Equals_Libplanet_Store_Trie_Nodes_ShortNode_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.Equals(Libplanet.Store.Trie.Nodes.ShortNode)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L20">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L32">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_ShortNode_Equals_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Equals*"></a>
   <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_Equals_Libplanet_Store_Trie_Nodes_ShortNode_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Equals(Libplanet.Store.Trie.Nodes.ShortNode)">Equals(ShortNode)</h4>
@@ -237,7 +268,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_ShortNode_Equals_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Equals*"></a>
   <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_Equals_System_Object_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.Equals(System.Object)">Equals(Object)</h4>
@@ -280,13 +311,13 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_ShortNode_GetHashCode_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode*"></a>
   <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_GetHashCode" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.GetHashCode">GetHashCode()</h4>
@@ -306,19 +337,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/Trie/Nodes/ShortNode.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex_" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex*"></a>
   <h4 id="Libplanet_Store_Trie_Nodes_ShortNode_ToBencodex" data-uid="Libplanet.Store.Trie.Nodes.ShortNode.ToBencodex">ToBencodex()</h4>
@@ -326,7 +357,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IValue ToBencodex()</code></pre>
+    <pre><code class="lang-csharp hljs">public IValue ToBencodex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -343,14 +374,12 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Libplanet.Store.Trie.Nodes.BaseNode.html#Libplanet_Store_Trie_Nodes_BaseNode_ToBencodex">BaseNode.ToBencodex()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
 </article>
           </div>
