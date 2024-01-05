@@ -89,25 +89,9 @@ To be released.
  -  (Libplanet.Action) Added `TrieMetadata` class.  [[#3540]]
  -  (Libplanet.Explorer) Added `AccountStateType` class.  [[#3462]]
  -  (Libplanet.Explorer) Added `WorldStateType` class.  [[#3462]]
- -  (Libplanet.Explorer) Modified some fields of `StateQuery` query.  [[#3462]]
-     -  Added `StateQuery.worldState` field.
-     -  Added `StateQuery.accountState` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.states` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.states` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.balance` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.balance` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.totalSupply` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.totalSupply` field.
-     -  Added `accountAddress` of type `Address` argument
-        for `StateQuery.validators` field.
-     -  Added `accountStateRootHash` of type `HashDigest<SHA256>?` argument
-        for `StateQuery.validators` field.
+ -  (Libplanet.Explorer) Added `StateQuery.world` field.  [[#3462]]
+ -  (Libplanet.Explorer) Changed `account` and `accounts` query in
+    `StateQuery` to be compatible with `stateQuery.world`.  [[#3589]]
 
 ### Behavioral changes
 
@@ -123,6 +107,7 @@ To be released.
 [#3524]: https://github.com/planetarium/libplanet/pull/3524
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
 [#3583]: https://github.com/planetarium/libplanet/pull/3583
+[#3589]: https://github.com/planetarium/libplanet/pull/3589
 
 
 Version 3.9.3
