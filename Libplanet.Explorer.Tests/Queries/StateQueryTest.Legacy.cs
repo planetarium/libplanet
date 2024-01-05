@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action.State;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Explorer.Queries;
 using Libplanet.Types.Assets;
 using Xunit;
@@ -15,16 +14,13 @@ namespace Libplanet.Explorer.Tests.Queries;
 public partial class StateQueryTest
 {
     [Fact]
-    public async Task State()
+    public async Task States()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
-            state(
-                 address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 accountAddress: ""0x40837BFebC1b192600023a431400557EA5FDE51a""
+            states(
+                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             )
@@ -34,23 +30,21 @@ public partial class StateQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object state =
-            Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(new byte[] { 110, }, state);
+        object[] states =
+            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
+        Assert.Equal(2, states.Length);
+        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
     }
 
     [Fact]
     public async Task Balance()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -83,17 +77,15 @@ public partial class StateQueryTest
     [Fact]
     public async Task TotalSupply()
     {
-        var currency = Currency.Uncapped("ABC", 2, minters: null);
+         var currency = Currency.Uncapped("ABC", 2, minters: null);
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
-        var legacyToken = Currency.Legacy("LEG", 0, null);
+         var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        (IBlockChainStates, IBlockPolicy) source = (
-           new MockChainStates(), new BlockPolicy());
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -140,14 +132,10 @@ public partial class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-           new MockChainStates(),
-           new BlockPolicy()
-       );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -170,9 +158,7 @@ public partial class StateQueryTest
     [Fact]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             states(
@@ -188,17 +174,14 @@ public partial class StateQueryTest
     }
 
     [Fact]
-    public async Task StateBySrh()
+    public async Task StatesBySrh()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
-            state(
-                 address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
+            states(
+                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             )
@@ -208,23 +191,20 @@ public partial class StateQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object state =
-            Assert.IsAssignableFrom<object>(resultDict["state"]);
-        Assert.Equal(new byte[] { 110, }, state);
+        object[] states =
+            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
+        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
     }
 
     [Fact]
     public async Task BalanceBySrh()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             balance(
                  owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
@@ -261,14 +241,11 @@ public partial class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             totalSupply(
                  currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
@@ -301,7 +278,6 @@ public partial class StateQueryTest
         {
             totalSupply(
                  currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetBlockHash:
                      ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
             ) {
@@ -316,13 +292,10 @@ public partial class StateQueryTest
     [Fact]
     public async Task ValidatorsBySrh()
     {
-        (IBlockChainStates, IBlockPolicy) source = (
-            new MockChainStates(), new BlockPolicy()
-        );
+        IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             validators(
-                 accountAddress: ""0x1000000000000000000000000000000000000000"",
                  offsetStateRootHash:
                      ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
             ) {
