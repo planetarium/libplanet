@@ -27,43 +27,24 @@ namespace Libplanet.Blockchain
         /// <returns>The current world state.</returns>
         public IWorldState GetWorldState() => GetWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(BlockHash?, Address)"/>
-        public IAccountState GetAccountState(BlockHash? offset, Address address)
-            => _blockChainStates.GetAccountState(offset, address);
-
-        /// <inheritdoc cref="IBlockChainStates.GetAccountState(HashDigest{SHA256}?)"/>
-        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash)
-            => _blockChainStates.GetAccountState(stateRootHash);
-
-        /// <summary>
-        /// Gets the current account state of given <paramref name="address"/> in the
-        /// <see cref="BlockChain"/>.
-        /// </summary>
-        /// <param name="address">An <see cref="Address"/> to get the account states of.</param>
-        /// <returns>The current account state of given <paramref name="address"/>.</returns>
-        public IAccountState GetAccountState(Address address)
-            => GetAccountState(Tip.Hash, address);
-
-        /// <inheritdoc cref="IBlockChainStates.GetState(BlockHash?, Address, Address)"/>
-        public IValue GetState(BlockHash? offset, Address accountAddress, Address address)
-            => _blockChainStates.GetState(offset, accountAddress, address);
+        /// <inheritdoc cref="IBlockChainStates.GetState(BlockHash?, Address)"/>
+        public IValue GetState(BlockHash? offset, Address address) =>
+            _blockChainStates.GetState(offset, address);
 
         /// <inheritdoc cref="IBlockChainStates.GetState(HashDigest{SHA256}?, Address)"/>
-        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address)
-            => _blockChainStates.GetState(stateRootHash, address);
+        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
+            _blockChainStates.GetState(stateRootHash, address);
 
         /// <summary>
-        /// Gets the current state of given <paramref name="address"/> and
-        /// <paramref name="accountAddress"/> in the <see cref="BlockChain"/>.
+        /// Gets the current state of given <paramref name="address"/>
+        /// in the <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="accountAddress">An <see cref="Address"/> to get the states from.</param>
         /// <param name="address">An <see cref="Address"/> to get the states of.</param>
-        /// <returns>The current state of given <paramref name="address"/> and
-        /// <paramref name="accountAddress"/>.  This can be <see langword="null"/>
-        /// if <paramref name="address"/> or <paramref name="accountAddress"/> has no value.
+        /// <returns>The current state of given <paramref name="address"/>.
+        /// This can be <see langword="null"/> if <paramref name="address"/> has no value.
         /// </returns>
-        public IValue GetState(Address accountAddress, Address address)
-            => GetState(Tip.Hash, accountAddress, address);
+        public IValue GetState(Address address)
+            => GetState(Tip.Hash, address);
 
         /// <inheritdoc cref=
         /// "IBlockChainStates.GetBalance(BlockHash?, Address, Currency)"/>

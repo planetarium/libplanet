@@ -43,17 +43,11 @@ public partial class StateQueryTest
         public IWorldState GetWorldState(BlockHash? blockHash) =>
             new MockWorld(ToStateRootHash(blockHash));
 
-        public IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash) =>
-            new MockAccount(stateRootHash);
-
-        public IAccountState GetAccountState(BlockHash? blockHash, Address address) =>
-            GetWorldState(blockHash).GetAccount(address);
-
         public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
             new MockAccount(stateRootHash).GetState(address);
 
-        public IValue GetState(BlockHash? offset, Address accountAddress, Address address) =>
-            GetWorldState(offset).GetAccount(accountAddress).GetState(address);
+        public IValue GetState(BlockHash? blockHash, Address address) =>
+            new MockAccount(ToStateRootHash(blockHash)).GetState(address);
 
         public FungibleAssetValue GetBalance(
             HashDigest<SHA256>? stateRootHash, Address address, Currency currency) =>

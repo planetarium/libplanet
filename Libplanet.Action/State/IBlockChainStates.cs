@@ -57,49 +57,9 @@ namespace Libplanet.Action.State
         IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
 
         /// <summary>
-        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
-        /// at <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        /// for which to create an <see cref="IAccountState"/>.</param>
-        /// <param name="address">The <see cref="Address"/> of <see cref="IAccountState"/>
-        /// to be returned.</param>
-        /// <returns>
-        /// The <see cref="IAccountState"/> at <paramref name="offset"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
-        /// <see langword="null"/> and one of the following is true.
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         Corresponding <see cref="Block"/> is found but its state root is not found
-        ///         in the <see cref="IStateStore"/>.
-        ///     </description></item>
-        /// </list>
-        /// </exception>
-        /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(BlockHash? offset, Address address);
-
-        /// <summary>
-        /// Returns the <see cref="IAccountState"/> in the <see cref="BlockChain"/>
-        /// of root hash <paramref name="stateRootHash"/>.
-        /// </summary>
-        /// <param name="stateRootHash">The <see cref="HashDigest{SHA256}"/> of the root hash
-        /// for which to create an <see cref="IAccountState"/>.</param>
-        /// <returns>
-        /// The <see cref="IAccountState"/> of state root hash <paramref name="stateRootHash"/>.
-        /// </returns>
-        /// <seealso cref="IAccountState"/>
-        IAccountState GetAccountState(HashDigest<SHA256>? stateRootHash);
-
-        /// <summary>
         /// Gets a state associated to specified <paramref name="address"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to fetch
-        /// the state from.</param>
-        /// <param name="accountAddress">The <see cref="Address"/> of the account to fetch
         /// the state from.</param>
         /// <param name="address">The <see cref="Address"/> of the state to query.</param>
         /// <returns>The state associated to specified <paramref name="address"/>.
@@ -117,7 +77,7 @@ namespace Libplanet.Action.State
         ///     </description></item>
         /// </list>
         /// </exception>
-        IValue? GetState(BlockHash? offset, Address accountAddress, Address address);
+        IValue? GetState(BlockHash? offset, Address address);
 
         /// <summary>
         /// Gets a state associated to specified <paramref name="address"/>.
