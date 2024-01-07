@@ -38,8 +38,7 @@ To be released.
  -  (Libplanet.Action) `IBlockChainStates` interface has modified.
     [[#3462], [#3583]]
      -  Added `IBlockChainStates.GetWorldState()` method.
-     -  Added `IBlockChainStates.GetAccountState(Address, BlockHash?)` method.
-     -  Added `IBlockChainStates.GetState(BlockHash?, Address, Address)` method.
+     -  Added `IBlockChainStates.GetState(BlockHash?, Address)` method.
      -  Added `IBlockChainStates.GetState(HashDigest<SHA256>?, Address)` method.
      -  Added `IBlockChainStates.GetBalance(BlockHash?, Address, Currency)`
         method.
