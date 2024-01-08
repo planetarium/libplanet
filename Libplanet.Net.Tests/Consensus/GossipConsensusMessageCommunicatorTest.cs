@@ -118,17 +118,10 @@ namespace Libplanet.Net.Tests.Consensus
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var key3 = new PrivateKey();
-            var peer1 = new BoundPeer(key1.PublicKey, new DnsEndPoint("127.0.0.1", 6001));
-            var peer2 = new BoundPeer(key2.PublicKey, new DnsEndPoint("127.0.0.1", 6002));
-            var peer3 = new BoundPeer(key3.PublicKey, new DnsEndPoint("127.0.0.1", 6003));
             var receivedTwoHigherPreVotes = new AsyncAutoResetEvent();
             var receivedPreCommitFrom3 = new AsyncAutoResetEvent();
+
             var communicator1 = CreateGossipConesnsusMessageCommunicator(
-                content => { },
-                key1,
-                6001,
-                new[] { peer2 });
-            var communicator2 = CreateGossipConesnsusMessageCommunicator(
                 content =>
                 {
                     if (content is ConsensusPreVoteMsg preVote)
@@ -137,6 +130,8 @@ namespace Libplanet.Net.Tests.Consensus
                         {
                             // If received message of higher round, counts.
                             nHigherPreVoteReceived++;
+                            _logger.Debug($"PreVote round({preVote.Round}) > 2 received, " +
+                                $" total: {nHigherPreVoteReceived}");
                         }
                         else
                         {
@@ -164,21 +159,18 @@ namespace Libplanet.Net.Tests.Consensus
                         }
                     }
                 },
-                key2,
-                6002,
-                new[] { peer1, peer3 });
-            var communicator3 = CreateGossipConesnsusMessageCommunicator(
-                content => { },
-                key3,
-                6003,
-                new[] { peer2 });
+                key1,
+                6001);
+
+            var transport2 = CreateTransport(key2, 6002);
+            var transport3 = CreateTransport(key3, 6003);
 
             async Task CheckDeniedAsync()
             {
                 bool isPeer1Denied = false;
                 while (!isPeer1Denied)
                 {
-                    isPeer1Denied = communicator2!.Gossip.DeniedPeers.Contains(peer1);
+                    isPeer1Denied = communicator1.Gossip.DeniedPeers.Contains(transport2.AsPeer);
                     await Task.Delay(200);
                 }
             }
@@ -186,34 +178,34 @@ namespace Libplanet.Net.Tests.Consensus
             try
             {
                 _ = communicator1.Gossip.StartAsync(default);
-                _ = communicator2.Gossip.StartAsync(default);
-                _ = communicator3.Gossip.StartAsync(default);
+                _ = transport2.StartAsync();
+                _ = transport3.StartAsync();
                 await communicator1.Gossip.WaitForRunningAsync();
-                await communicator2.Gossip.WaitForRunningAsync();
-                await communicator3.Gossip.WaitForRunningAsync();
 
                 communicator1.OnStartHeight(1);
-                communicator2.OnStartHeight(1);
-                communicator3.OnStartHeight(1);
-                communicator1.OnStartRound(4);
-                communicator2.OnStartRound(2);
-                communicator3.OnStartRound(2);
+                communicator1.OnStartRound(2);
+
+                var peer1 = new BoundPeer[] { communicator1.Gossip.AsPeer };
 
                 // This message will be accepted, since its round is valid.
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreVote)));
 
                 // Higher round messages. These will trigger spam filter,
                 // and only two will be received.
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 3, fx.Hash1, VoteFlag.PreVote)));
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 4, fx.Hash1, VoteFlag.PreVote)));
                 // Higher round message. This will trigger spam filter, if encounter three times.
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 5, fx.Hash1, VoteFlag.PreVote)));
 
@@ -223,19 +215,22 @@ namespace Libplanet.Net.Tests.Consensus
 
                 // These messages will be rejected, since spam filter logic has been activated
                 // to communicator1, and gossip denies messages from it.
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreVoteMsg(
                         TestUtils.CreateVote(new PrivateKey(), 1, 1, fx.Hash1, VoteFlag.PreVote)));
-                communicator1.Gossip.AddMessage(
+                transport2.BroadcastMessage(
+                    peer1,
                     new ConsensusPreCommitMsg(
-                        TestUtils.CreateVote(
-                            new PrivateKey(), 1, 1, fx.Hash1, VoteFlag.PreCommit)));
+                        TestUtils.CreateVote(new PrivateKey(), 1, 1, fx.Hash1, VoteFlag.PreCommit))
+                    );
 
                 // Since communicator3 wasn't denied, this message will be received without block.
-                communicator3.Gossip.AddMessage(
+                transport3.BroadcastMessage(
+                    peer1,
                     new ConsensusPreCommitMsg(
-                        TestUtils.CreateVote(
-                            new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreCommit)));
+                        TestUtils.CreateVote(new PrivateKey(), 1, 2, fx.Hash1, VoteFlag.PreCommit))
+                    );
 
                 // Wait for message from communicator1's precommit encounter,
                 // but this message will be rejected by spam filter logic.
@@ -254,11 +249,11 @@ namespace Libplanet.Net.Tests.Consensus
             finally
             {
                 await communicator1.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await communicator2.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
-                await communicator3.Gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await transport2.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await transport3.StopAsync(TimeSpan.FromMilliseconds(100), default);
                 communicator1.Gossip.Dispose();
-                communicator2.Gossip.Dispose();
-                communicator3.Gossip.Dispose();
+                transport2.Dispose();
+                transport3.Dispose();
             }
         }
 
