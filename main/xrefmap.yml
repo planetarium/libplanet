@@ -2693,22 +2693,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.GetAccount
   nameWithType: WorldBaseState.GetAccount
-- uid: Libplanet.Action.State.WorldBaseState.GetAccounts(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
-  name: GetAccounts(IReadOnlyList<Address>)
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetAccounts_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__
-  commentId: M:Libplanet.Action.State.WorldBaseState.GetAccounts(System.Collections.Generic.IReadOnlyList{Libplanet.Crypto.Address})
-  name.vb: GetAccounts(IReadOnlyList(Of Address))
-  fullName: Libplanet.Action.State.WorldBaseState.GetAccounts(System.Collections.Generic.IReadOnlyList<Libplanet.Crypto.Address>)
-  fullName.vb: Libplanet.Action.State.WorldBaseState.GetAccounts(System.Collections.Generic.IReadOnlyList(Of Libplanet.Crypto.Address))
-  nameWithType: WorldBaseState.GetAccounts(IReadOnlyList<Address>)
-  nameWithType.vb: WorldBaseState.GetAccounts(IReadOnlyList(Of Address))
-- uid: Libplanet.Action.State.WorldBaseState.GetAccounts*
-  name: GetAccounts
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetAccounts_
-  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetAccounts
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldBaseState.GetAccounts
-  nameWithType: WorldBaseState.GetAccounts
 - uid: Libplanet.Action.State.WorldBaseState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Legacy
