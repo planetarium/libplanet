@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
+using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -136,7 +137,9 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            var validators = GetValidatorSet(block.PreviousHash ?? Genesis.Hash);
+            var validators = GetWorldState(block.PreviousHash ?? Genesis.Hash)
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 throw new InvalidBlockCommitException(

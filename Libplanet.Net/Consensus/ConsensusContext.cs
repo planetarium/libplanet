@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -438,7 +439,10 @@ namespace Libplanet.Net.Consensus
                 _blockChain,
                 height,
                 _privateKey,
-                _blockChain.GetValidatorSet(_blockChain[Height - 1].Hash),
+                _blockChain
+                    .GetWorldState(_blockChain[Height - 1].Hash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet(),
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);
             return context;

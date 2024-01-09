@@ -92,7 +92,10 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidatorSet()
         {
-            var validatorSet = _blockChain.GetValidatorSet();
+            var validatorSet = _blockChain
+                .GetWorldState()
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetValidatorSet();
             _logger.Debug(
                 "GenesisBlock is {Hash}, Transactions: {Txs}",
                 _blockChain.Genesis,
@@ -1955,7 +1958,10 @@ namespace Libplanet.Tests.Blockchain
                     transactions: txs),
                 actionEvaluator);
 
-            var validator = blockChain.GetValidatorSet()[0];
+            var validator = blockChain
+                .GetWorldState()
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
             Assert.Equal(BigInteger.One, validator.Power);
             Assert.Equal(
@@ -2208,13 +2214,19 @@ namespace Libplanet.Tests.Blockchain
                                 VoteFlag.PreCommit).Sign(pk)).ToImmutableArray())));
 
             Assert.Equal(
-                blockChain.GetValidatorSet(blockChain[0].Hash),
+                blockChain
+                    .GetWorldState(blockChain[0].Hash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet(),
                 new ValidatorSet(
                     ValidatorPrivateKeys.Select(
                         pk => new Validator(pk.PublicKey, BigInteger.One)).ToList()));
 
             Assert.Equal(
-                blockChain.GetValidatorSet(blockChain[1].Hash),
+                blockChain
+                    .GetWorldState(blockChain[1].Hash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet(),
                 new ValidatorSet(
                     newValidators.Select(
                         pk => new Validator(pk.PublicKey, BigInteger.One)).ToList()));
