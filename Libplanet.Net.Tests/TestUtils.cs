@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -286,7 +287,10 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                validatorSet ?? blockChain.GetValidatorSet(blockChain[height - 1].Hash),
+                validatorSet ?? blockChain
+                    .GetWorldState(blockChain[height - 1].Hash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);

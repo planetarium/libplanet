@@ -6,6 +6,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
+using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Consensus;
@@ -319,7 +320,10 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain,
                 1L,
                 TestUtils.PrivateKeys[0],
-                blockChain.GetValidatorSet(blockChain[0L].Hash),
+                blockChain
+                    .GetWorldState(blockChain[0L].Hash)
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
             consensusContext.Contexts.Add(1L, context);

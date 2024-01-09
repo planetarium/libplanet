@@ -1,14 +1,10 @@
 using System;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Blockchain
 {
@@ -33,63 +29,6 @@ namespace Libplanet.Blockchain
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
-
-        /// <inheritdoc cref="IBlockChainStates.GetState(BlockHash?, Address)"/>
-        public IValue? GetState(BlockHash? offset, Address address) =>
-            GetWorldState(offset)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetState(address);
-
-        /// <inheritdoc cref="IBlockChainStates.GetState(HashDigest{SHA256}?, Address)"/>
-        public IValue? GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
-            GetWorldState(stateRootHash)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetState(address);
-
-        /// <inheritdoc cref=
-        /// "IBlockChainStates.GetBalance(BlockHash?, Address, Currency)"/>
-        public FungibleAssetValue GetBalance(
-            BlockHash? offset,
-            Address address,
-            Currency currency)
-            => GetWorldState(offset)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetBalance(address, currency);
-
-        /// <inheritdoc cref=
-        /// "IBlockChainStates.GetBalance(HashDigest{SHA256}?, Address, Currency)"/>
-        public FungibleAssetValue GetBalance(
-            HashDigest<SHA256>? stateRootHash,
-            Address address,
-            Currency currency) => GetWorldState(stateRootHash)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetBalance(address, currency);
-
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(BlockHash?, Currency)"/>
-        public FungibleAssetValue GetTotalSupply(
-            BlockHash? offset,
-            Currency currency) => GetWorldState(offset)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetTotalSupply(currency);
-
-        /// <inheritdoc cref="IBlockChainStates.GetTotalSupply(HashDigest{SHA256}?, Currency)"/>
-        public FungibleAssetValue GetTotalSupply(
-            HashDigest<SHA256>? stateRootHash,
-            Currency currency) => GetWorldState(stateRootHash)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetTotalSupply(currency);
-
-        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(BlockHash?)"/>
-        public ValidatorSet GetValidatorSet(BlockHash? offset) =>
-            GetWorldState(offset)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetValidatorSet();
-
-        /// <inheritdoc cref="IBlockChainStates.GetValidatorSet(HashDigest{SHA256}?)"/>
-        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash) =>
-            GetWorldState(stateRootHash)
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetValidatorSet();
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
