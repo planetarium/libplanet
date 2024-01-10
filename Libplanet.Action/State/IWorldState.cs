@@ -44,10 +44,21 @@ namespace Libplanet.Action.State
         /// </summary>
         /// <param name="address">The <see cref="Address"/> referring
         /// the world to get its state.</param>
-        /// <returns>The <see cref="Account"/> of the given <paramref name="address"/>.
+        /// <returns>The <see cref="IAccount"/> of the given <paramref name="address"/>.
         /// If it has never been set to any state it returns <see langword="null"/>
         /// instead.</returns>
         [Pure]
         IAccount GetAccount(Address address);
+
+        /// <summary>
+        /// Gets the <see cref="IAccountState"/> of the given <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> referring
+        /// the world to get its state.</param>
+        /// <returns>The <see cref="IAccountState"/> of the given <paramref name="address"/>.
+        /// If it has never been set to any state it returns <see langword="null"/>
+        /// instead.</returns>
+        [Pure]
+        IAccountState GetAccountState(Address address);
     }
 }

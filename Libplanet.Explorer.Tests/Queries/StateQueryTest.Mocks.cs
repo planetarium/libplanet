@@ -93,6 +93,11 @@ public partial class StateQueryTest
                 ? new MockAccount(_stateRootHash)
                 : new MockAccount(null);
 
+        public IAccountState GetAccountState(Address address) =>
+            _stateRootHash is { } && ReservedAddresses.LegacyAccount.Equals(address)
+                ? new MockAccount(_stateRootHash)
+                : new MockAccount(null);
+
         public IWorld SetAccount(Address address, IAccount account) =>
             throw new System.NotImplementedException();
     }

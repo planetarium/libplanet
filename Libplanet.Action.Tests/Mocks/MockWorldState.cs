@@ -45,6 +45,15 @@ namespace Libplanet.Action.Tests.Mocks
                         ? new HashDigest<SHA256>(stateRootNotNull)
                         : null));
 
+        public IAccountState GetAccountState(Address address)
+            => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
+                ? new MockAccountState(_stateStore, Trie.Hash)
+                : new MockAccountState(
+                    _stateStore,
+                    Trie.Get(ToStateKey(address)) is { } stateRootNotNull
+                        ? new HashDigest<SHA256>(stateRootNotNull)
+                        : null);
+
         public IWorldState SetAccountState(Address address, IAccount account)
             => Legacy && address.Equals(ReservedAddresses.LegacyAccount)
             ? new MockWorldState(_stateStore, account.Trie.Hash)

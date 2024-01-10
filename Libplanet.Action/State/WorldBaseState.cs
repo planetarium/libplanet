@@ -30,20 +30,22 @@ namespace Libplanet.Action.State
         public bool Legacy { get; private set; }
 
         /// <inheritdoc cref="IWorldState.GetAccount"/>
-        public IAccount GetAccount(Address address)
+        public IAccount GetAccount(Address address) => new Account(GetAccountState(address));
+
+        public IAccountState GetAccountState(Address address)
         {
             if (Legacy)
             {
                 return address.Equals(ReservedAddresses.LegacyAccount)
-                    ? new Account(new AccountState(Trie))
-                    : new Account(new AccountState(_stateStore.GetStateRoot(null)));
+                    ? new AccountState(Trie)
+                    : new AccountState(_stateStore.GetStateRoot(null));
             }
             else
             {
                 return Trie.Get(ToStateKey(address)) is Binary accountStateRootHash
-                    ? new Account(new AccountState(_stateStore.GetStateRoot(
-                        new HashDigest<SHA256>(accountStateRootHash.ByteArray))))
-                    : new Account(new AccountState(_stateStore.GetStateRoot(null)));
+                    ? new AccountState(_stateStore.GetStateRoot(
+                        new HashDigest<SHA256>(accountStateRootHash.ByteArray)))
+                    : new AccountState(_stateStore.GetStateRoot(null));
             }
         }
     }

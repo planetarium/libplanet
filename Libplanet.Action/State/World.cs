@@ -46,6 +46,9 @@ namespace Libplanet.Action.State
                 : _baseState.GetAccount(address);
         }
 
+        [Pure]
+        public IAccountState GetAccountState(Address address) => GetAccount(address);
+
         /// <inheritdoc/>
         [Pure]
         public IWorld SetAccount(Address address, IAccount account)
