@@ -2277,6 +2277,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorld.Delta
   nameWithType: IWorld.Delta
+- uid: Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)
+  name: GetAccount(Address)
+  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)
+  nameWithType: IWorld.GetAccount(Address)
+- uid: Libplanet.Action.State.IWorld.GetAccount*
+  name: GetAccount
+  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_GetAccount_
+  commentId: Overload:Libplanet.Action.State.IWorld.GetAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorld.GetAccount
+  nameWithType: IWorld.GetAccount
 - uid: Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
   name: SetAccount(Address, IAccount)
   href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
@@ -2354,19 +2367,19 @@ references:
   commentId: T:Libplanet.Action.State.IWorldState
   fullName: Libplanet.Action.State.IWorldState
   nameWithType: IWorldState
-- uid: Libplanet.Action.State.IWorldState.GetAccount(Libplanet.Crypto.Address)
-  name: GetAccount(Address)
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccount_Libplanet_Crypto_Address_
-  commentId: M:Libplanet.Action.State.IWorldState.GetAccount(Libplanet.Crypto.Address)
-  fullName: Libplanet.Action.State.IWorldState.GetAccount(Libplanet.Crypto.Address)
-  nameWithType: IWorldState.GetAccount(Address)
-- uid: Libplanet.Action.State.IWorldState.GetAccount*
-  name: GetAccount
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccount_
-  commentId: Overload:Libplanet.Action.State.IWorldState.GetAccount
+- uid: Libplanet.Action.State.IWorldState.GetAccountState(Libplanet.Crypto.Address)
+  name: GetAccountState(Address)
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccountState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.IWorldState.GetAccountState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.IWorldState.GetAccountState(Libplanet.Crypto.Address)
+  nameWithType: IWorldState.GetAccountState(Address)
+- uid: Libplanet.Action.State.IWorldState.GetAccountState*
+  name: GetAccountState
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccountState_
+  commentId: Overload:Libplanet.Action.State.IWorldState.GetAccountState
   isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldState.GetAccount
-  nameWithType: IWorldState.GetAccount
+  fullName: Libplanet.Action.State.IWorldState.GetAccountState
+  nameWithType: IWorldState.GetAccountState
 - uid: Libplanet.Action.State.IWorldState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Legacy
@@ -2622,6 +2635,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.GetAccount
   nameWithType: World.GetAccount
+- uid: Libplanet.Action.State.World.GetAccountState(Libplanet.Crypto.Address)
+  name: GetAccountState(Address)
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetAccountState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.World.GetAccountState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.World.GetAccountState(Libplanet.Crypto.Address)
+  nameWithType: World.GetAccountState(Address)
+- uid: Libplanet.Action.State.World.GetAccountState*
+  name: GetAccountState
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetAccountState_
+  commentId: Overload:Libplanet.Action.State.World.GetAccountState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.World.GetAccountState
+  nameWithType: World.GetAccountState
 - uid: Libplanet.Action.State.World.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Legacy
@@ -2693,6 +2719,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.GetAccount
   nameWithType: WorldBaseState.GetAccount
+- uid: Libplanet.Action.State.WorldBaseState.GetAccountState(Libplanet.Crypto.Address)
+  name: GetAccountState(Address)
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetAccountState_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.WorldBaseState.GetAccountState(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.WorldBaseState.GetAccountState(Libplanet.Crypto.Address)
+  nameWithType: WorldBaseState.GetAccountState(Address)
+- uid: Libplanet.Action.State.WorldBaseState.GetAccountState*
+  name: GetAccountState
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetAccountState_
+  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetAccountState
+  isSpec: "True"
+  fullName: Libplanet.Action.State.WorldBaseState.GetAccountState
+  nameWithType: WorldBaseState.GetAccountState
 - uid: Libplanet.Action.State.WorldBaseState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Legacy

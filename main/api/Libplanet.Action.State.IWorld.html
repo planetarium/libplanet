@@ -94,7 +94,7 @@ any account.</li></ul>
       <a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Legacy">IWorldState.Legacy</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccount_Libplanet_Crypto_Address_">IWorldState.GetAccount(Address)</a>
+      <a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetAccountState_Libplanet_Crypto_Address_">IWorldState.GetAccountState(Address)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
@@ -115,7 +115,7 @@ method does not manipulate the instance, but returns a new
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_Delta.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.Delta%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorld_Delta_" data-uid="Libplanet.Action.State.IWorld.Delta*"></a>
   <h4 id="Libplanet_Action_State_IWorld_Delta" data-uid="Libplanet.Action.State.IWorld.Delta">Delta</h4>
@@ -152,10 +152,69 @@ method does not manipulate the instance, but returns a new
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L52">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_IWorld_GetAccount_" data-uid="Libplanet.Action.State.IWorld.GetAccount*"></a>
+  <h4 id="Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)">GetAccount(Address)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+IAccount GetAccount(Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> referring
+the world to get its state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.
+If it has never been set to any state it returns <span class="xref">null</span>
+instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This interface is immutable.  <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_">SetAccount(Address, IAccount)</a>
+method does not manipulate the instance, but returns a new
+<a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance with updated states.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccount)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L60">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorld_SetAccount_" data-uid="Libplanet.Action.State.IWorld.SetAccount*"></a>
   <h4 id="Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)">SetAccount(Address, IAccount)</h4>
@@ -227,7 +286,7 @@ with updated world instead.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L36" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L35" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
