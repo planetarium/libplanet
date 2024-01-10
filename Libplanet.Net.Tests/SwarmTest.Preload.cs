@@ -107,8 +107,10 @@ namespace Libplanet.Net.Tests
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
                 await receiverSwarm.PreloadAsync();
-                var state = receiverChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(address1);
+                var state = receiverChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(address1);
 
                 Assert.Equal((Text)"foo,bar,baz", state);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
@@ -750,8 +752,10 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(blockArray[0], receiverChain.Tip);
                 Assert.Equal(
                     (Text)string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
-                    receiverChain.GetWorldState().GetAccount(
-                        ReservedAddresses.LegacyAccount).GetState(address)
+                    receiverChain
+                        .GetWorldState()
+                        .GetAccountState(ReservedAddresses.LegacyAccount)
+                        .GetState(address)
                 );
             }
             else
@@ -764,8 +768,10 @@ namespace Libplanet.Net.Tests
                             string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
                         )
                     ),
-                    receiverChain.GetWorldState().GetAccount(
-                        ReservedAddresses.LegacyAccount).GetState(address)
+                    receiverChain
+                        .GetWorldState()
+                        .GetAccountState(ReservedAddresses.LegacyAccount)
+                        .GetState(address)
                 );
             }
 

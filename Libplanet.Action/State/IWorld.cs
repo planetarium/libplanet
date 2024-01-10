@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 
@@ -41,6 +40,17 @@ namespace Libplanet.Action.State
         /// </summary>
         [Pure]
         IWorldDelta Delta { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IAccount"/> of the given <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> referring
+        /// the world to get its state.</param>
+        /// <returns>The <see cref="IAccount"/> of the given <paramref name="address"/>.
+        /// If it has never been set to any state it returns <see langword="null"/>
+        /// instead.</returns>
+        [Pure]
+        IAccount GetAccount(Address address);
 
         /// <summary>
         /// Gets a new instance that the world state of the given

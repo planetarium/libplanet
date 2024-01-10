@@ -160,15 +160,21 @@ namespace Libplanet.Tests.Action
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
-                chain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.SignerKey),
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(action.SignerKey),
                 (Text)address.ToHex());
             Assert.Equal(
-                chain.GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.MinerKey),
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(action.MinerKey),
                 (Text)miner.Address.ToHex());
-            var state = chain.GetWorldState()
-                .GetAccount(ReservedAddresses.LegacyAccount).GetState(action.BlockIndexKey);
+            var state = chain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(action.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
         }
 
@@ -1070,13 +1076,15 @@ namespace Libplanet.Tests.Action
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 9),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                chain
+                    .GetWorldState(evaluations.Single().OutputState)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 1),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                chain
+                    .GetWorldState(evaluations.Single().OutputState)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 
@@ -1146,12 +1154,12 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 

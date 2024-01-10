@@ -289,7 +289,7 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 validatorSet ?? blockChain
                     .GetWorldState(blockChain[height - 1].Hash)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 

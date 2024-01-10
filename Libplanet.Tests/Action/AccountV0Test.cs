@@ -80,7 +80,7 @@ namespace Libplanet.Tests.Action
                 DumbAction.DumbCurrency * 6,
                 chain
                     .GetWorldState()
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(_addr[0], DumbAction.DumbCurrency)
             );
 

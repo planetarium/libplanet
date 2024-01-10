@@ -37,7 +37,7 @@ namespace Libplanet.Explorer.GraphTypes
                     }
                 ),
                 resolve: context =>
-                    context.Source.GetAccount(context.GetArgument<Address>("address"))
+                    context.Source.GetAccountState(context.GetArgument<Address>("address"))
             );
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<AccountStateType>>>>(
@@ -54,7 +54,7 @@ namespace Libplanet.Explorer.GraphTypes
                 ),
                 resolve: context => context
                     .GetArgument<Address[]>("addresses")
-                    .Select(address => context.Source.GetAccount(address))
+                    .Select(address => context.Source.GetAccountState(address))
                     .ToArray()
             );
         }

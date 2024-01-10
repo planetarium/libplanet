@@ -29,8 +29,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, _blockChain.Count);
             AssertBencodexEqual(
                 (Text)$"{GenesisProposer.Address}",
-                _blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(default));
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(default));
 
             var proposerA = new PrivateKey();
             Block block = _blockChain.ProposeBlock(proposerA);
@@ -41,8 +43,10 @@ namespace Libplanet.Tests.Blockchain
                 block.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block.Index));
             AssertBencodexEqual(
                 (Text)$"{GenesisProposer.Address},{proposerA.Address}",
-                _blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(default)
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(default)
             );
 
             var proposerB = new PrivateKey();
@@ -59,8 +63,10 @@ namespace Libplanet.Tests.Blockchain
                 $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
-                _blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(default)
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(default)
             );
 
             Block block3 = _blockChain.ProposeBlock(
@@ -74,8 +80,10 @@ namespace Libplanet.Tests.Blockchain
                 $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
-                _blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(default)
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(default)
             );
 
             // Tests if ProposeBlock() method automatically fits the number of transactions
@@ -118,8 +126,10 @@ namespace Libplanet.Tests.Blockchain
                 $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(
                 expected,
-                _blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(default)
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(default)
             );
         }
 
@@ -276,16 +286,26 @@ namespace Libplanet.Tests.Blockchain
 
             StageTransactions(txs);
 
-            Assert.Null(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrA));
-            Assert.Null(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrB));
-            Assert.Null(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrC));
-            Assert.Null(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrD));
-            Assert.Null(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrE));
+            Assert.Null(_blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(addrA));
+            Assert.Null(_blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(addrB));
+            Assert.Null(_blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(addrC));
+            Assert.Null(_blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(addrD));
+            Assert.Null(_blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(addrE));
 
             foreach (Transaction tx in txs)
             {
@@ -306,22 +326,42 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains(txs[2].Id, txIds);
             Assert.Contains(txs[3].Id, txIds);
 
-            Assert.Equal(new Integer(1), _blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrA));
-            Assert.Equal(new Text("1b"), _blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrB));
-            Assert.Equal(new Text("2a"), _blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrC));
-            Assert.IsType<Text>(_blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrD));
+            Assert.Equal(
+                new Integer(1),
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrA));
+            Assert.Equal(
+                new Text("1b"),
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrB));
+            Assert.Equal(
+                new Text("2a"),
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrC));
+            Assert.IsType<Text>(
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrD));
             Assert.Equal(
                 new HashSet<string> { "2b", "5a" },
-                ((string)(Text)_blockChain.GetWorldState().GetAccount(
-                    ReservedAddresses.LegacyAccount).GetState(addrD)).Split(new[] { ',' })
-                    .ToHashSet()
+                ((string)(Text)_blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrD)).Split(new[] { ',' }).ToHashSet()
             );
-            Assert.Equal(new Text("5b"), _blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(addrE));
+            Assert.Equal(
+                new Text("5b"),
+                _blockChain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(addrE));
 
             foreach (Transaction tx in new[] { txs[0], txs[1], txs[4] })
             {
@@ -484,10 +524,14 @@ namespace Libplanet.Tests.Blockchain
             var block = blockChain.ProposeBlock(privateKey1, CreateBlockCommit(_blockChain.Tip));
             blockChain.Append(block, CreateBlockCommit(block));
 
-            var state1 = blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(address1);
-            var state2 = blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(address2);
+            var state1 = blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(address1);
+            var state2 = blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(address2);
 
             Assert.Equal(0, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
@@ -498,10 +542,14 @@ namespace Libplanet.Tests.Blockchain
             block = blockChain.ProposeBlock(privateKey1, CreateBlockCommit(_blockChain.Tip));
             blockChain.Append(block, CreateBlockCommit(block));
 
-            state1 = blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(address1);
-            state2 = blockChain.GetWorldState().GetAccount(
-                ReservedAddresses.LegacyAccount).GetState(address2);
+            state1 = blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(address1);
+            state2 = blockChain
+                .GetWorldState()
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .GetState(address2);
 
             Assert.Equal(1, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));

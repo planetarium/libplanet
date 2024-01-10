@@ -441,7 +441,7 @@ namespace Libplanet.Net.Consensus
                 _privateKey,
                 _blockChain
                     .GetWorldState(_blockChain[Height - 1].Hash)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet(),
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);

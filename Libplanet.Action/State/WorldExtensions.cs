@@ -1,15 +1,11 @@
-using System.Collections.Immutable;
-using Bencodex.Types;
-using Libplanet.Crypto;
-
 namespace Libplanet.Action.State
 {
     internal static class WorldExtensions
     {
-        internal static IAccount GetFungibleAssetsAccount(this IWorldState world) =>
+        internal static IAccount GetFungibleAssetsAccount(this IWorld world) =>
             world.GetAccount(ReservedAddresses.LegacyAccount);
 
-        internal static IAccount GetValidatorSetAccount(this IWorldState world) =>
+        internal static IAccount GetValidatorSetAccount(this IWorld world) =>
             world.GetAccount(ReservedAddresses.LegacyAccount);
 
         internal static IWorld SetFungibleAssetsAccount(
