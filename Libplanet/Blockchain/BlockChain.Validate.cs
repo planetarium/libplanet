@@ -138,7 +138,7 @@ namespace Libplanet.Blockchain
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
             var validators = GetWorldState(block.PreviousHash ?? Genesis.Hash)
-                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {

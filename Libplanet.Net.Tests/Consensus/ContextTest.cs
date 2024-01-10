@@ -322,7 +322,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[0],
                 blockChain
                     .GetWorldState(blockChain[0L].Hash)
-                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 

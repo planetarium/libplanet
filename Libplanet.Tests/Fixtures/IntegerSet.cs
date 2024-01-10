@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Fixtures
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
                 Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
-            BigInteger prevState = Chain.GetWorldState().GetAccount(
+            BigInteger prevState = Chain.GetWorldState().GetAccountState(
                 ReservedAddresses.LegacyAccount).GetState(signerAddress) is Bencodex.Types.Integer i
                     ? i.Value
                     : 0;

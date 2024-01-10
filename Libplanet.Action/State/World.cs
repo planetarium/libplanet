@@ -33,18 +33,22 @@ namespace Libplanet.Action.State
         [Pure]
         public ITrie Trie => _baseState.Trie;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IWorldState.Legacy/>
         [Pure]
         public bool Legacy { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IWorld.GetAccount"/>
         [Pure]
         public IAccount GetAccount(Address address)
         {
             return Delta.Accounts.TryGetValue(address, out IAccount? account)
                 ? account
-                : _baseState.GetAccount(address);
+                : new Account(_baseState.GetAccountState(address));
         }
+
+        /// <inheritdoc cref="IWorld.GetAccountState"/>
+        [Pure]
+        public IAccountState GetAccountState(Address address) => GetAccount(address);
 
         /// <inheritdoc/>
         [Pure]
