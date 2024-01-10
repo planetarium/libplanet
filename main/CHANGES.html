@@ -73,10 +73,8 @@ Instead, added
 method.
 [<a href="https://github.com/planetarium/libplanet/pull/3540">#3540</a>]</li>
 <li>Removed <code>BlockChain.GetBalance(Address, Currency, Address)</code> method.
-Instead, added <code>BlockChain.GetBalance(Address, Currency)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]</li>
 <li>Removed <code>BlockChain.GetTotalSupply(Currency, Address)</code> method.
-Instead, added <code>BlockChain.GetTotalSupply(Currency)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]</li>
 <li>(Libplanet.Action) Changed <code>ActionEvaluator</code> to accept <code>IWorld</code>
 instead of <code>IAccount</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>]</li>
@@ -94,23 +92,11 @@ became to accept and return <code>IWorld</code>. (was <code>IAccount</code>)  [<
 <li><code>IFeeCollector.Reward()</code></li>
 </ul>
 </li>
-<li>(Libplanet.Action) <code>IBlockChainStates</code> interface has modified.
+<li>(Libplanet.Action) <code>IBlockChainStates</code> interface has been overhauled.
 [<a href="https://github.com/planetarium/libplanet/pull/3462">#3462</a>, <a href="https://github.com/planetarium/libplanet/pull/3583">#3583</a>]
 <ul>
-<li>Added <code>IBlockChainStates.GetWorldState()</code> method.</li>
-<li>Added <code>IBlockChainStates.GetState(BlockHash?, Address)</code> method.</li>
-<li>Added <code>IBlockChainStates.GetState(HashDigest&lt;SHA256&gt;?, Address)</code> method.</li>
-<li>Added <code>IBlockChainStates.GetBalance(BlockHash?, Address, Currency)</code>
-method.</li>
-<li>Added
-<code>IBlockChainStates.GetBalance(HashDigest&lt;SHA256&gt;?, Address, Currency)</code>
-method.</li>
-<li>Added <code>IBlockChainStates.GetTotalSupply(BlockHash?, Currency)</code> method.</li>
-<li>Added
-<code>IBlockChainStates.GetTotalSupply(HashDigest&lt;SHA256&gt;?, Currency)</code>
-method.</li>
-<li>Added <code>IBlockChainStates.GetValidatorSet(BlockHash?)</code> method.</li>
-<li>Added <code>IBlockChainStates.GetValidatorSet(HashDigest&lt;SHA256&gt;?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetWorldState(BlockHash?)</code> method.</li>
+<li>Added <code>IBlockChainStates.GetWorldState(HashDigest&lt;SHA256&gt;?)</code> method.</li>
 <li>Removed <code>IBlockChainStates.GetAccountState(BlockHash?)</code> method.</li>
 <li>Removed <code>IBlockChainStates.GetState(Address, BlockHash?)</code> method.</li>
 <li>Removed
