@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BlockHashType()
         {
-            Name = "blockHash";
+            Name = "BlockHash";
         }
 
         public override object? ParseLiteral(IValue value)

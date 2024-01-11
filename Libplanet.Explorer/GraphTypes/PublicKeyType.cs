@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public PublicKeyType()
         {
-            Name = "publicKey";
+            Name = "PublicKey";
         }
 
         public override object? ParseLiteral(IValue value)
