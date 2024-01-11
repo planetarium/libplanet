@@ -4,7 +4,7 @@ Libplanet changelog
 Version 3.9.4
 -------------
 
-To be released.
+Released on January 11, 2024.
 
  -  (Libplanet.Explorer) Rolled back some changes to the API to be
     more compatible with pre-3.9.3 API.  [[#3600]]
