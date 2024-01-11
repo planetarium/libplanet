@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TxIdType()
         {
-            Name = "txId";
+            Name = "TxId";
         }
 
         public override object? ParseLiteral(IValue value)

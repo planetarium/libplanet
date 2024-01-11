@@ -78,7 +78,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 }
         );
 
-        Field<NonNullGraphType<ListGraphType<LegacyBencodexValueType>>>(
+        Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
             "states",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>

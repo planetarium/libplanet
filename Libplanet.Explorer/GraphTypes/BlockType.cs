@@ -9,6 +9,8 @@ public class BlockType : ObjectGraphType<Block>
 {
     public BlockType(IBlockChainContext context)
     {
+        Name = "Block";
+
         // We need multiple row of description for clearer, not confusing explanation of field.
         Field<NonNullGraphType<BlockHashType>>(
             "Hash",
@@ -84,7 +86,5 @@ public class BlockType : ObjectGraphType<Block>
             name: "PreEvaluationHash",
             description: "The hash of PreEvaluationBlock.",
             resolve: ctx => ctx.Source.PreEvaluationHash);
-
-        Name = "Block";
     }
 }

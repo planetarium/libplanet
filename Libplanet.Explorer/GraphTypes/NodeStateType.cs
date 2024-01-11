@@ -10,6 +10,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public NodeStateType()
         {
+            Name = "NodeState";
+
             Field<NonNullGraphType<BooleanGraphType>>(
                 "preloaded",
                 resolve: context => context.Source.Preloaded
@@ -22,8 +24,6 @@ namespace Libplanet.Explorer.GraphTypes
                 "validators",
                 resolve: context => context.Source.Swarm?.Validators ?? new List<BoundPeer>()
             );
-
-            Name = "NodeState";
         }
     }
 }

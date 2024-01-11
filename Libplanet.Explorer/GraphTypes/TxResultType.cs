@@ -7,6 +7,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TxResultType()
         {
+            Name = "TxResult";
+
             Field<NonNullGraphType<TxStatusType>>(
                 nameof(TxResult.TxStatus),
                 description: "The transaction status.",
