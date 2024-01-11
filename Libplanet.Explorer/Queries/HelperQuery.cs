@@ -30,7 +30,7 @@ namespace Libplanet.Explorer.Queries
                 resolve: context => context.GetArgument<Currency>("currency").Hash
             );
 
-            Field<NonNullGraphType<BencodexValueType>>(
+            Field<NonNullGraphType<IValueType>>(
                 name: "bencodexValue",
                 description: "Decodes hex encoded bencodex value",
                 arguments: new QueryArguments(
