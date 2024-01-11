@@ -6,6 +6,17 @@ Version 3.9.4
 
 To be released.
 
+ -  (Libplanet.Explorer) Rolled back some changes to the API to be
+    more compatible with pre-3.9.3 API.  [[#3600]]
+     -  Changed the name `BencodexValueType` to `IValueType`.
+     -  Changed the name `LegacyBencodexValueType` to `BencodexValueType`.
+     -  Changed `AddressType.Name` from `address` to `Address`.
+     -  Changed `BlockHashType.Name` from `blockHash` to `BlockHash`.
+     -  Changed `PublicKeyType.Name` from `publicKey` to `PublicKey`.
+     -  Changed `TxIdType.Name` from `txId` to `TxId`.
+
+[#3600]: https://github.com/planetarium/libplanet/pull/3600
+
 
 Version 3.9.3
 -------------

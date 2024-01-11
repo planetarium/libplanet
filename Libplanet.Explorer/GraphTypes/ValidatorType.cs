@@ -9,6 +9,7 @@ public class ValidatorType : ObjectGraphType<Validator>
     {
         Name = "Validator";
         Description = "A data type holds validator's public key and its voting power.";
+
         Field<NonNullGraphType<PublicKeyType>>(
             "publicKey",
             "The public key of the validator.",
