@@ -53,7 +53,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.Trie.Hash
             );
 
-            Field<BencodexValueType>(
+            Field<IValueType>(
                 name: "state",
                 description: "The state at given address.",
                 arguments: new QueryArguments(
@@ -67,7 +67,7 @@ namespace Libplanet.Explorer.GraphTypes
                     context.Source.GetState(context.GetArgument<Address>("address"))
             );
 
-            Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
+            Field<NonNullGraphType<ListGraphType<IValueType>>>(
                 name: "states",
                 description: "The states at given addresses.",
                 arguments: new QueryArguments(
@@ -84,7 +84,7 @@ namespace Libplanet.Explorer.GraphTypes
                         .ToArray()
             );
 
-            Field<BencodexValueType>(
+            Field<IValueType>(
                 name: "balance",
                 description: "Balance at given address and currency hash pair.",
                 arguments: new QueryArguments(
@@ -105,7 +105,7 @@ namespace Libplanet.Explorer.GraphTypes
                         context.GetArgument<HashDigest<SHA1>>("currencyHash")))
             );
 
-            Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
+            Field<NonNullGraphType<ListGraphType<IValueType>>>(
                 name: "balances",
                 description: "Balances at given addresses and currency hash pair.",
                 arguments: new QueryArguments(
@@ -128,7 +128,7 @@ namespace Libplanet.Explorer.GraphTypes
                                 address, context.GetArgument<HashDigest<SHA1>>("currencyHash"))))
             );
 
-            Field<BencodexValueType>(
+            Field<IValueType>(
                 name: "totalSupply",
                 description: "Total supply in circulation, if recorded, for given currency hash.",
                 arguments: new QueryArguments(
@@ -143,7 +143,7 @@ namespace Libplanet.Explorer.GraphTypes
                         context.GetArgument<HashDigest<SHA1>>("currencyHash")))
             );
 
-            Field<BencodexValueType>(
+            Field<IValueType>(
                 name: "validatorSet",
                 description: "The validator set.",
                 resolve: context => context.Source.Trie.Get(ValidatorSetKey)

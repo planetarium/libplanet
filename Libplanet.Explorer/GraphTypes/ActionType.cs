@@ -15,6 +15,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public ActionType()
         {
+            Name = "Action";
+
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Raw",
                 description: "Raw Action data ('hex' or 'base64' encoding available.)",
@@ -65,8 +67,6 @@ namespace Libplanet.Explorer.GraphTypes
                     return Encoding.UTF8.GetString(buffer.ToArray());
                 }
             );
-
-            Name = "Action";
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public AddressType()
         {
-            Name = "address";
+            Name = "Address";
         }
 
         public override object? ParseLiteral(IValue value)

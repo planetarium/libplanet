@@ -11,6 +11,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType(IBlockChainContext context)
         {
+            Name = "Transaction";
+
             Field<NonNullGraphType<TxIdType>>(
                 name: "Id",
                 description: "A unique identifier derived from this transaction content.",
@@ -80,8 +82,6 @@ namespace Libplanet.Explorer.GraphTypes
                     ctx.Errors.Add(new ExecutionError(exceptionMessage));
                     return null;
                 });
-
-            Name = "Transaction";
         }
     }
 }

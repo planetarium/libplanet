@@ -25,7 +25,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             resolve: ResolveWorldState
         );
 
-        Field<NonNullGraphType<ListGraphType<LegacyBencodexValueType>>>(
+        Field<NonNullGraphType<ListGraphType<BencodexValueType>>>(
             "states",
             description: "Retrieves states from the legacy account.",
             arguments: new QueryArguments(

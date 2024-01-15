@@ -8,6 +8,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BoundPeerType()
         {
+            Name = "BoundPeer";
+
             // We need multiple row of description for clearer, not confusing explanation of field.
             Field<NonNullGraphType<PublicKeyType>>(
                 "publicKey",
@@ -24,8 +26,6 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The address of the miner.",
                 resolve: ctx => ctx.Source.PublicIPAddress?.ToString()
             );
-
-            Name = "BoundPeer";
         }
     }
 }
