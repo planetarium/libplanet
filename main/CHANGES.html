@@ -148,6 +148,21 @@ method.
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-394">Version 3.9.4</h2>
+<p>Released on January 11, 2024.</p>
+<ul>
+<li>(Libplanet.Explorer) Rolled back some changes to the API to be
+more compatible with pre-3.9.3 API.  [<a href="https://github.com/planetarium/libplanet/pull/3600">#3600</a>]
+<ul>
+<li>Changed the name <code>BencodexValueType</code> to <code>IValueType</code>.</li>
+<li>Changed the name <code>LegacyBencodexValueType</code> to <code>BencodexValueType</code>.</li>
+<li>Changed <code>AddressType.Name</code> from <code>address</code> to <code>Address</code>.</li>
+<li>Changed <code>BlockHashType.Name</code> from <code>blockHash</code> to <code>BlockHash</code>.</li>
+<li>Changed <code>PublicKeyType.Name</code> from <code>publicKey</code> to <code>PublicKey</code>.</li>
+<li>Changed <code>TxIdType.Name</code> from <code>txId</code> to <code>TxId</code>.</li>
+</ul>
+</li>
+</ul>
 <h2 id="version-393">Version 3.9.3</h2>
 <p>To be released.</p>
 <p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>, a network ran with a prior version may not
