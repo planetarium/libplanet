@@ -573,9 +573,7 @@ namespace Libplanet.Action
                 new Binary(prevWorld.Trie.Hash.ByteArray));
             worldTrie = worldTrie.SetMetadata(new TrieMetadata(version));
             worldTrie = _stateStore.Commit(worldTrie);
-            var world = new World(
-                new WorldBaseState(worldTrie, _stateStore),
-                prevWorld.Delta);
+            var world = new World(new WorldBaseState(worldTrie, _stateStore));
             return world;
         }
 

@@ -61,7 +61,7 @@ namespace Libplanet.Action.State
             }
 
             return new World(
-                this,
+                _baseState,
                 Delta.SetAccount(address, account));
         }
     }
