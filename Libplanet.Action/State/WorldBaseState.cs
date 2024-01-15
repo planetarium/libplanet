@@ -29,9 +29,6 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; private set; }
 
-        /// <inheritdoc cref="IWorldState.GetAccount"/>
-        public IAccount GetAccount(Address address) => new Account(GetAccountState(address));
-
         public IAccountState GetAccountState(Address address)
         {
             if (Legacy)
