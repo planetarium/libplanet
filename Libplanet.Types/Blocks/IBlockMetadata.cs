@@ -12,8 +12,39 @@ namespace Libplanet.Types.Blocks
     public interface IBlockMetadata
     {
         /// <summary>
-        /// The protocol version number.
+        /// The protocol version number.  For the latest protocol version, see
+        /// <see cref="BlockMetadata.CurrentProtocolVersion"/>.  We have the following
+        /// version info:
+        /// <list type="bullet">
+        /// <item><description>
+        /// 0: The initial block protocol version number.  This is not actually recorded in
+        /// storage.  That is, the lack of block protocol version in a stored block means it
+        /// is of version 0.
+        /// </description></item>
+        /// <item><description>
+        /// 1: Introduced to be stored with the block data.  Validation for
+        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> was added.
+        /// </description></item>
+        /// <item><description>
+        /// 2: Updated to include <see cref="IBlockHeader.Signature"/> to blocks.  As a result,
+        /// the miner's identity is provided as a <see cref="Crypto.PublicKey"/>
+        /// instead of a <see cref="Address"/>.  Additionally, total difficulty was added.
+        /// </description></item>
+        /// <item><description>
+        /// 3: Updated to fix an issue with the internal execution ordering
+        /// of <see cref="Tx.Transaction"/>s in blocks.
+        /// </description></item>
+        /// <item><description>
+        /// 4: Updated to introduce a PBFT scheme.  <see cref="LastCommit"/> was added and
+        /// total difficulty was removed.
+        /// </description></item>
+        /// <item><description>
+        /// 5: Updated to introduce a world model.  No structural changes were made to blocks.
+        /// This is used as a marker indicating when the data model should be migrated.
+        /// </description></item>
+        /// </list>
         /// </summary>
+        /// <seealso cref="BlockMetadata.CurrentProtocolVersion"/>
         int ProtocolVersion { get; }
 
         /// <summary>
