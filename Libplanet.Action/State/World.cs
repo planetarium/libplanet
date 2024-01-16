@@ -23,7 +23,6 @@ namespace Libplanet.Action.State
         {
             _baseState = baseState;
             Delta = delta;
-            Legacy = baseState.Legacy;
         }
 
         /// <inheritdoc/>
@@ -35,7 +34,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc cref="IWorldState.Legacy/>
         [Pure]
-        public bool Legacy { get; private set; }
+        public bool Legacy => _baseState.Legacy;
 
         /// <inheritdoc cref="IWorld.GetAccount"/>
         [Pure]

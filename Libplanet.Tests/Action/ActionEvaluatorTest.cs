@@ -105,13 +105,13 @@ namespace Libplanet.Tests.Action
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
-                            .GetAccount(ReservedAddresses.LegacyAccount)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null, out _);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
-                            .GetAccount(ReservedAddresses.LegacyAccount)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
             }
 
