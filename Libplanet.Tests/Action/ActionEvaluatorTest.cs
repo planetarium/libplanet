@@ -101,13 +101,13 @@ namespace Libplanet.Tests.Action
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null, out _);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null, out _);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(new PrivateKey());
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash), out _);
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -261,7 +261,7 @@ namespace Libplanet.Tests.Action
                     previousState: previousState).ToList());
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(
-                    block, chain.Store.GetStateRootHash(block.PreviousHash), out _).ToList());
+                    block, chain.Store.GetStateRootHash(block.PreviousHash)).ToList());
         }
 
         [Fact]
@@ -1069,7 +1069,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
+                block, chain.Store.GetStateRootHash(block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1141,8 +1141,7 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetStateRootHash(block.PreviousHash),
-                out _);
+                chain.Store.GetStateRootHash(block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1215,7 +1214,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash), out _);
+                block, chain.Store.GetStateRootHash(block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1289,6 +1288,62 @@ namespace Libplanet.Tests.Action
             }
         }
 
+        [Fact]
+        public void MigrateStates()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            Log.Debug("Test Start.");
+            var chain = MakeBlockChain(
+                policy: new BlockPolicy(),
+                store: store,
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(ModernAction)),
+                protocolVersion: BlockMetadata.LegacyStateVersion);
+            Assert.True(chain.GetWorldState().Legacy);
+            var miner = new PrivateKey();
+            var preEval1 = TestUtils.ProposeNext(
+                chain.Tip,
+                miner: miner.PublicKey,
+                protocolVersion: BlockMetadata.LegacyStateVersion);
+            var block1 = chain.EvaluateAndSign(preEval1, miner);
+            var blockCommit = CreateBlockCommit(block1);
+            chain.Append(block1, blockCommit);
+            Log.Debug("Is World Legacy?");
+            Assert.True(chain.GetWorldState().Legacy);
+
+            // A block that doesn't touch any state does not migrate its state.
+            var block2 = chain.ProposeBlock(miner, blockCommit);
+            blockCommit = CreateBlockCommit(block2);
+            chain.Append(block2, blockCommit);
+            Log.Debug("Is World Legacy?");
+            Assert.True(chain.GetWorldState().Legacy);
+
+            // Check if after migration, accounts can be created correctly.
+            var action = new ModernAction()
+            {
+                Memo = "foo",
+            };
+
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: miner,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action }.ToPlainValues());
+
+            chain.StageTransaction(tx);
+            var block3 = chain.ProposeBlock(miner, blockCommit);
+            chain.Append(block3, CreateBlockCommit(block3));
+            Assert.False(chain.GetWorldState().Legacy);
+            var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
+                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
+            Assert.NotNull(accountStateRoot);
+            var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
+            Assert.Equal(
+                (Text)"foo",
+                accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
+        }
+
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
             DateTimeOffset epoch = default)
@@ -1333,60 +1388,6 @@ namespace Libplanet.Tests.Action
             };
 
             return (addresses, txs);
-        }
-
-        [Fact]
-        private void MigrateStates()
-        {
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Log.Debug("Test Start.");
-            var chain = MakeBlockChain(
-                policy: new BlockPolicy(),
-                store: store,
-                stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(ModernAction)),
-                protocolVersion: BlockMetadata.LegacyStateVersion);
-            Assert.True(chain.GetWorldState().Legacy);
-            var miner = new PrivateKey();
-            var preEval1 = TestUtils.ProposeNext(
-                chain.Tip,
-                miner: miner.PublicKey,
-                protocolVersion: BlockMetadata.LegacyStateVersion);
-            var block1 = chain.EvaluateAndSign(preEval1, miner);
-            var blockCommit = CreateBlockCommit(block1);
-            chain.Append(block1, blockCommit);
-            Log.Debug("Is World Legacy?");
-            Assert.True(chain.GetWorldState().Legacy);
-            var block2 = chain.ProposeBlock(miner, blockCommit);
-            blockCommit = CreateBlockCommit(block2);
-            chain.Append(block2, blockCommit);
-            Log.Debug("Is World Legacy?");
-            Assert.False(chain.GetWorldState().Legacy);
-
-            // Check if after migration, accounts can be created correctly.
-            var action = new ModernAction()
-            {
-                Memo = "foo",
-            };
-
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: miner,
-                genesisHash: chain.Genesis.Hash,
-                actions: new[] { action }.ToPlainValues());
-
-            chain.StageTransaction(tx);
-            var block3 = chain.ProposeBlock(miner, blockCommit);
-            chain.Append(block3, CreateBlockCommit(block3));
-            Assert.False(chain.GetWorldState().Legacy);
-            var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
-                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
-            Assert.NotNull(accountStateRoot);
-            var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
-            Assert.Equal(
-                (Text)"foo",
-                accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
         }
 
         private sealed class EvaluateTestAction : IAction
