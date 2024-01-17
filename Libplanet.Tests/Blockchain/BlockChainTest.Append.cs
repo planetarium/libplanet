@@ -697,7 +697,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransaction(txA1);
             Block block = _blockChain.ProposeBlock(miner);
             IReadOnlyList<ICommittedActionEvaluation> actionEvaluations =
-                _blockChain.EvaluateBlock(block, out _);
+                _blockChain.EvaluateBlock(block);
             Assert.Equal(0L, _blockChain.Tip.Index);
             _blockChain.Append(
                 block,
@@ -756,7 +756,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void MigrateStateWithoutAction()
+        public void DoesNotMigrateStateWithoutAction()
         {
             var policy = new BlockPolicy(
                 blockAction: null,
@@ -811,7 +811,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableList<Transaction>.Empty,
                 TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(emptyBlock, TestUtils.CreateBlockCommit(emptyBlock));
-            Assert.False(blockChain.GetWorldState().Legacy);
+            Assert.True(blockChain.GetWorldState().Legacy);
         }
     }
 }

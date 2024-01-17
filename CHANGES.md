@@ -11,18 +11,13 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 5.  [[#3524]]
- -  Removed `BlockChain.EvaluateBlock(IPreEvaluationBlock)` method.
-    Instead, added
-    `BlockChain.EvaluateBlock(IPreEvaluationBlock, out HashDigest<SHA256>)`
-    method.
-    [[#3540]]
  -  Removed `BlockChain.GetBalance(Address, Currency, Address)` method.
     [[#3583]]
  -  Removed `BlockChain.GetTotalSupply(Currency, Address)` method.
     [[#3583]]
  -  (Libplanet.Action) Changed `ActionEvaluator` to accept `IWorld`
     instead of `IAccount`.  [[#3462]]
- -  (Libplanet.Action) `IActionEvaluator.OutputState` became `IWorld`.
+ -  (Libplanet.Action) `IActionEvaluation.OutputState` became `IWorld`.
     (was `IAccount`)  [[#3462]]
  -  (Libplanet.Action) `IAction.Execute()` became to return `IWorld`.
     (was `IAccount`)  [[#3462]]
@@ -49,12 +44,6 @@ To be released.
      -  Removed `IBlockChainStates.GetValidatorSet(BlockHash?)` method.
  -  (@planetarium/tx)  Remove the `T` generic argument of `SignedTx<T>`.
     [[#3512]]
- -  (Libplanet.Action)
-    Removed `ActionEvaluator.Evaluate(IPreEvaluationBlock)` method.
-    Instead, added
-    `ActionEvaluator.Evaluate(IPreEvaluationBlock, out HashDigest<SHA256>)`
-    method.
-    [[#3540]]
 
 ### Backward-incompatible network protocol changes
 
