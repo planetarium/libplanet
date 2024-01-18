@@ -6,6 +6,9 @@ Version 3.9.5
 
 To be released.
 
+ -  (Libplanet.Store) Changed `IStateStore.Commit()` to return an `ITrie`
+    with either its `Root` as `null` or a `HashNode`.  [[#3610]]
+
 
 Version 3.9.4
 -------------
