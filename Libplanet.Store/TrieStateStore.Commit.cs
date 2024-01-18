@@ -36,9 +36,10 @@ namespace Libplanet.Store
                 {
                     IValue bencoded = newRoot.ToBencodex();
                     byte[] serialized = _codec.Encode(bencoded);
-                    byte[] hash = SHA256.Create().ComputeHash(serialized);
+                    HashDigest<SHA256> hashDigest = HashDigest<SHA256>.DeriveFrom(serialized);
 
-                    writeBatch.Add(new KeyBytes(hash), serialized);
+                    writeBatch.Add(new KeyBytes(hashDigest.ByteArray), serialized);
+                    newRoot = new HashNode(hashDigest);
                 }
 
                 writeBatch.Flush();
