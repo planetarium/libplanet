@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.0
 -------------
 
-Released on January 18, 2024.
+To be released.
 
 ### Deprecated APIs
 
@@ -86,6 +86,8 @@ Released on January 18, 2024.
 
 Version 3.9.5
 -------------
+
+Released on January 18, 2024.
 
  -  (Libplanet.Store) Changed `IStateStore.Commit()` to return an `ITrie`
     with either its `Root` as `null` or a `HashNode`.  [[#3610]]
