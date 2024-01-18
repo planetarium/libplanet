@@ -179,12 +179,6 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
-        {
-            return IterateNodes().Where(pair => pair.Node is HashNode)
-                .Select(pair => ((HashNode)pair.Node).HashDigest);
-        }
-
         /// <summary>
         /// Iterates over <see cref="KeyBytes"/> and <see cref="byte[]"/> pairs stored
         /// necessary to fully represent this <see cref="ITrie"/>.

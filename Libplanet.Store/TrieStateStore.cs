@@ -41,7 +41,7 @@ namespace Libplanet.Store
             // values too.  https://github.com/planetarium/libplanet/issues/1653
             var stopwatch = new Stopwatch();
             _logger.Verbose("Started {MethodName}()", nameof(PruneStates));
-            var survivalNodes = new HashSet<HashDigest<SHA256>>();
+            var survivalNodes = new HashSet<KeyBytes>();
             foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
@@ -49,9 +49,9 @@ namespace Libplanet.Store
                     new HashNode(stateRootHash));
                 _logger.Debug("Started to iterate hash nodes");
                 stopwatch.Start();
-                foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
+                foreach ((KeyBytes key, byte[] _) in stateTrie.IterateKeyValuePairs())
                 {
-                    survivalNodes.Add(nodeHash);
+                    survivalNodes.Add(key);
                 }
 
                 _logger.Debug(
@@ -71,13 +71,13 @@ namespace Libplanet.Store
                 // FIXME: Bencodex fingerprints also should be tracked.
                 //        https://github.com/planetarium/libplanet/issues/1653
                 if (stateKey.Length != HashDigest<SHA256>.Size ||
-                    survivalNodes.Contains(new HashDigest<SHA256>(stateKey.ByteArray)))
+                    survivalNodes.Contains(stateKey))
                 {
                     continue;
                 }
 
                 StateKeyValueStore.Delete(stateKey);
-                ++deleteCount;
+                deleteCount++;
             }
 
             _logger.Debug(
