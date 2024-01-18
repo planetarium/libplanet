@@ -131,11 +131,12 @@ namespace Libplanet.Tests.Store
             trie = stateStore.Commit(trie);
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
+            // NOTE: Avoid possible collision of KeyBytes, just in case.
             _stateKeyValueStore.Set(
-                new KeyBytes("alpha"),
+                new KeyBytes(GetRandomBytes(30)),
                 ByteUtil.ParseHex("00"));
             _stateKeyValueStore.Set(
-                new KeyBytes("beta"),
+                new KeyBytes(GetRandomBytes(40)),
                 ByteUtil.ParseHex("00"));
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
