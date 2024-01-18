@@ -114,7 +114,7 @@ namespace Libplanet.Store
                         $"Failed to find a state root for given state root hash {stateRootHash}.");
                 }
 
-                foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
+                foreach (var (key, value) in stateTrie.IterateKeyValuePairs())
                 {
                     targetKeyValueStore.Set(key, value);
                     count++;
