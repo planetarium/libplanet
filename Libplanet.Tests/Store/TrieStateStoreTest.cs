@@ -81,21 +81,21 @@ namespace Libplanet.Tests.Store
                 ))
                 .ToList();
 
-            ITrie trie = stateStore.GetStateRoot(null);
+            ITrie firstTrie = stateStore.GetStateRoot(null);
             foreach (var kv in kvs)
             {
-                trie = trie.Set(kv.Item1, kv.Item2);
+                firstTrie = firstTrie.Set(kv.Item1, kv.Item2);
             }
 
-            trie = stateStore.Commit(trie);
-            HashDigest<SHA256> firstHash = trie.Hash;
+            firstTrie = stateStore.Commit(firstTrie);
+            HashDigest<SHA256> firstHash = firstTrie.Hash;
             int firstStateCount = _stateKeyValueStore.ListKeys().Count();
 
-            trie = trie.Set(
+            ITrie secondTrie = firstTrie.Set(
                 new KeyBytes(GetRandomBytes(35)),
                 (IValue)new Binary(GetRandomBytes(20)));
-            trie = stateStore.Commit(trie);
-            HashDigest<SHA256> secondHash = trie.Hash;
+            secondTrie = stateStore.Commit(secondTrie);
+            HashDigest<SHA256> secondHash = secondTrie.Hash;
             int secondStateCount = _stateKeyValueStore.ListKeys().Count();
 
             Assert.True(secondStateCount > firstStateCount);
@@ -117,6 +117,19 @@ namespace Libplanet.Tests.Store
             stateStore.PruneStates(
                 ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(firstHash));
             Assert.Equal(firstStateCount, _stateKeyValueStore.ListKeys().Count());
+            Assert.Equal(
+                firstTrie.IterateNodes().Count(),
+                stateStore.GetStateRoot(firstHash).IterateNodes().Count());
+            Assert.Equal(
+                firstTrie.IterateValues().Count(),
+                stateStore.GetStateRoot(firstHash).IterateValues().Count());
+
+            // To clear node cache.
+            stateStore = new TrieStateStore(_stateKeyValueStore);
+            Assert.Throws<KeyNotFoundException>(
+                () => stateStore.GetStateRoot(secondHash).IterateNodes().ToList());
+            Assert.Throws<KeyNotFoundException>(
+                () => stateStore.GetStateRoot(secondHash).IterateValues().ToList());
         }
 
         [Fact]
