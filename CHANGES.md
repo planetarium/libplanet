@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.0
 -------------
 
-To be released.
+Released on January 18, 2024.
 
 ### Deprecated APIs
 
@@ -95,6 +95,7 @@ Version 3.9.5
 [#3610]: https://github.com/planetarium/libplanet/pull/3610
 [#3613]: https://github.com/planetarium/libplanet/issues/3613
 [#3614]: https://github.com/planetarium/libplanet/pull/3614
+
 
 Version 3.9.4
 -------------
