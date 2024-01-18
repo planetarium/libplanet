@@ -61,7 +61,7 @@ namespace Libplanet.Store.Trie
                                     }
 
                                 case ShortNode shortNode:
-                                    queue.Enqueue((shortNode.Value!, path.AddRange(shortNode.Key)));
+                                    queue.Enqueue((shortNode.Value, path.AddRange(shortNode.Key)));
                                     continue;
 
                                 case FullNode fullNode:
@@ -104,7 +104,7 @@ namespace Libplanet.Store.Trie
                             continue;
 
                         case ShortNode shortNode:
-                            queue.Enqueue((shortNode.Value!, path.AddRange(shortNode.Key)));
+                            queue.Enqueue((shortNode.Value, path.AddRange(shortNode.Key)));
                             continue;
 
                         case FullNode fullNode:
