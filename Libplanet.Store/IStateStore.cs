@@ -22,7 +22,8 @@ namespace Libplanet.Store
         ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
 
         /// <summary>
-        /// Prunes the states no more used from the state store.
+        /// Prunes all states that aren't reachable
+        /// from <paramref name="survivingStateRootHashes"/>.
         /// </summary>
         /// <param name="survivingStateRootHashes">The state root hashes <em>not</em> to prune.
         /// These state root hashes are guaranteed to survive after pruning.</param>
