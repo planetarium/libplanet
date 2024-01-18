@@ -81,6 +81,12 @@ Released on January 22, 2024.
 [#3626]: https://github.com/planetarium/libplanet/pull/3626
 
 
+Version 3.9.6
+-------------
+
+To be released.
+
+
 Version 3.9.5
 -------------
 
