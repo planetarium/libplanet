@@ -67,47 +67,6 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void PruneStates()
-        {
-            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
-                .Add(
-                    new KeyBytes("bar"),
-                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
-                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
-                .Add(
-                    new KeyBytes("zzz"),
-                    Bencodex.Types.Dictionary.Empty
-                        .Add("binary", GetRandomBytes(4096))
-                        .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
-
-            var stateStore = new TrieStateStore(_stateKeyValueStore);
-            ITrie first = stateStore.Commit(
-                values.Aggregate(
-                    stateStore.GetStateRoot(null),
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
-
-            int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            ImmutableDictionary<KeyBytes, IValue> nextState =
-                values.SetItem(new KeyBytes("foo"), (Binary)GetRandomBytes(4096));
-            ITrie second = stateStore.Commit(
-                nextState.Aggregate(
-                    first,
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
-
-            // foo = 0x666f6f
-            // updated branch node (0x6, aka root) + updated branch node (0x66) +
-            // updated short node + new value nodes
-            Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
-
-            stateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(second.Hash));
-
-            // It will stay at the same count of nodes.
-            Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
-        }
-
-        [Fact]
         public void CopyStates()
         {
             var stateStore = new TrieStateStore(_stateKeyValueStore);

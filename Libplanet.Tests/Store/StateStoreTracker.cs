@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Store;
@@ -20,12 +19,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(GetStateRoot), stateRootHash);
             return _stateStore.GetStateRoot(stateRootHash);
-        }
-
-        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
-        {
-            Log(nameof(PruneStates), survivingStateRootHashes);
-            _stateStore.PruneStates(survivingStateRootHashes);
         }
 
         public ITrie Commit(ITrie trie)

@@ -33,61 +33,6 @@ namespace Libplanet.Store
 
         public IKeyValueStore StateKeyValueStore { get; }
 
-        /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
-        public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
-        {
-            // TODO: As MerkleTrie now have two levels of Merkle trees (one for accounts and one for
-            // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
-            // values too.  https://github.com/planetarium/libplanet/issues/1653
-            var stopwatch = new Stopwatch();
-            _logger.Verbose("Started {MethodName}()", nameof(PruneStates));
-            var survivalNodes = new HashSet<HashDigest<SHA256>>();
-            foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
-            {
-                var stateTrie = new MerkleTrie(
-                    StateKeyValueStore,
-                    new HashNode(stateRootHash));
-                _logger.Debug("Started to iterate hash nodes");
-                stopwatch.Start();
-                foreach (HashDigest<SHA256> nodeHash in stateTrie.IterateHashNodes())
-                {
-                    survivalNodes.Add(nodeHash);
-                }
-
-                _logger.Debug(
-                    "Finished to iterate hash nodes (elapsed: {ElapsedMilliseconds} ms)",
-                    stopwatch.ElapsedMilliseconds);
-                stopwatch.Stop();
-            }
-
-            _logger.Debug("{Count} hash nodes will survive", survivalNodes.Count);
-
-            // Clean up nodes.
-            long deleteCount = 0;
-            _logger.Debug("Started to clean up states...");
-            stopwatch.Restart();
-            foreach (var stateKey in StateKeyValueStore.ListKeys())
-            {
-                // FIXME: Bencodex fingerprints also should be tracked.
-                //        https://github.com/planetarium/libplanet/issues/1653
-                if (stateKey.Length != HashDigest<SHA256>.Size ||
-                    survivalNodes.Contains(new HashDigest<SHA256>(stateKey.ByteArray)))
-                {
-                    continue;
-                }
-
-                StateKeyValueStore.Delete(stateKey);
-                ++deleteCount;
-            }
-
-            _logger.Debug(
-                "Finished to clean up {DeleteCount} state hashes " +
-                "(elapsed: {ElapsedMilliseconds} ms)",
-                deleteCount,
-                stopwatch.ElapsedMilliseconds);
-            stopwatch.Stop();
-        }
-
         /// <summary>
         /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
         /// to <paramref name="targetStateStore"/>.
