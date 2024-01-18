@@ -84,6 +84,13 @@ To be released.
 [#3589]: https://github.com/planetarium/libplanet/pull/3589
 
 
+Version 3.9.5
+-------------
+
+ -  (Libplanet.Store) Changed `IStateStore.Commit()` to return an `ITrie`
+    with either its `Root` as `null` or a `HashNode`.  [[#3610]]
+
+
 Version 3.9.4
 -------------
 
