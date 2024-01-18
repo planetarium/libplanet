@@ -185,69 +185,39 @@ namespace Libplanet.Store.Trie
                 .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
-        internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateNodeKeyValuePairs()
+        /// <summary>
+        /// Iterates over <see cref="KeyBytes"/> and <see cref="byte[]"/> pairs stored
+        /// necessary to fully represent this <see cref="ITrie"/>.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable"/> of all <see cref="KeyBytes"/> and
+        /// <see cref="byte[]"/> pairs stored necessary to fully represent
+        /// this <see cref="ITrie"/>.</returns>
+        /// <exception cref="NullReferenceException">Thrown when a <see cref="HashNode"/>
+        /// is encountered that can't be decoded into an <see cref="INode"/>.</exception>
+        internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateKeyValuePairs()
         {
             if (Root is null)
             {
                 yield break;
             }
 
-            var queue =
-                new Queue<(KeyBytes Key, byte[] Value, ImmutableArray<byte> Path)>();
-            switch (Root)
-            {
-                case ValueNode valueNode:
-                    var value = _codec.Encode(valueNode.ToBencodex());
-                    var key = new KeyBytes(HashDigest<SHA256>.DeriveFrom(value).ByteArray);
-                    yield return (key, value);
-                    yield break;
-
-                case HashNode hashNode:
-                    key = new KeyBytes(hashNode.HashDigest.ToByteArray());
-                    queue.Enqueue((key, KeyValueStore.Get(key), ImmutableArray<byte>.Empty));
-                    break;
-
-                case FullNode _:
-                case ShortNode _:
-                    value = _codec.Encode(Root.ToBencodex());
-                    key = new KeyBytes(HashDigest<SHA256>.DeriveFrom(value).ByteArray);
-                    queue.Enqueue((key, value, ImmutableArray<byte>.Empty));
-                    break;
-            }
-
-            bool GuessValueNodeByPath(in ImmutableArray<byte> path)
-            {
-                if (path.Length < 2)
-                {
-                    return false;
-                }
-
-                bool isStartedWithUnderbar = (path[0] << 4) + path[1] == '_';
-
-                bool isStatePath = !isStartedWithUnderbar &&
-                                   path.Length == Address.Size * 2 * 2;
-                return isStatePath;
-            }
+            var queue = new Queue<INode>();
+            queue.Enqueue(Root);
 
             while (queue.Count > 0)
             {
-                (KeyBytes key, byte[] value, ImmutableArray<byte> path) =
-                    queue.Dequeue();
-
-                // It assumes every length of value nodes is same with Address' hexadecimal
-                // string's hexadecimal string's size.
-                bool isValueNode = GuessValueNodeByPath(path);
-
-                yield return (key, value);
-
-                if (isValueNode)
+                INode node = queue.Dequeue();
+                if (node is HashNode dequeuedHashNode)
                 {
-                    continue;
-                }
-
-                var node = NodeDecoder.Decode(_codec.Decode(value), NodeDecoder.AnyNodeType);
-                if (isValueNode)
-                {
+                    var storedKey = new KeyBytes(dequeuedHashNode.HashDigest.ByteArray);
+                    var storedValue = KeyValueStore.Get(storedKey);
+                    var intermediateEncoding = _codec.Decode(storedValue);
+                    queue.Enqueue(
+                        NodeDecoder.Decode(
+                            intermediateEncoding,
+                            NodeDecoder.HashEmbeddedNodeType) ??
+                            throw new NullReferenceException());
+                    yield return (storedKey, storedValue);
                     continue;
                 }
 
@@ -257,33 +227,23 @@ namespace Libplanet.Store.Trie
                         foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
                         {
                             INode? child = fullNode.Children[index];
-                            if (child is HashNode hashNode)
+                            if (child is HashNode childHashNode)
                             {
-                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
-                                value = KeyValueStore.Get(key);
-                                queue.Enqueue((key, value, path.Add((byte)index)));
+                                queue.Enqueue(childHashNode);
                             }
                         }
 
-                        switch (fullNode.Value)
+                        if (fullNode.Value is HashNode fullNodeValueHashNode)
                         {
-                            case HashNode hashNode:
-                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
-                                value = KeyValueStore.Get(key);
-                                queue.Enqueue((key, value, path));
-                                break;
+                            queue.Enqueue(fullNodeValueHashNode);
                         }
 
                         break;
 
                     case ShortNode shortNode:
-                        switch (shortNode.Value)
+                        if (shortNode.Value is HashNode shortNodeValueHashNode)
                         {
-                            case HashNode hashNode:
-                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
-                                value = KeyValueStore.Get(key);
-                                queue.Enqueue((key, value, path.AddRange(shortNode.Key.ByteArray)));
-                                break;
+                            queue.Enqueue(shortNodeValueHashNode);
                         }
 
                         break;
@@ -291,7 +251,7 @@ namespace Libplanet.Store.Trie
                     case ValueNode _:
                         break;
 
-                    default:
+                    case HashNode _:
                         throw new InvalidOperationException();
                 }
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -93,29 +94,38 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="stateRootHashes">The state root hashes of states to copy.</param>
         /// <param name="targetStateStore">The target state store to copy state root hashes.</param>
+        /// <exception cref="ArgumentException">Thrown when a state root cannot be found for
+        /// any of given <paramref name="stateRootHashes"/>.</exception>
         public void CopyStates(
             IImmutableSet<HashDigest<SHA256>> stateRootHashes, TrieStateStore targetStateStore)
         {
             IKeyValueStore targetKeyValueStore = targetStateStore.StateKeyValueStore;
             var stopwatch = new Stopwatch();
+            long count = 0;
             _logger.Verbose("Started {MethodName}()", nameof(CopyStates));
             stopwatch.Start();
 
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
             {
-                var stateTrie = new MerkleTrie(
-                    StateKeyValueStore,
-                    new HashNode(stateRootHash));
+                var stateTrie = (MerkleTrie)GetStateRoot(stateRootHash);
+                if (!stateTrie.Recorded)
+                {
+                    throw new ArgumentException(
+                        $"Failed to find a state root for given state root hash {stateRootHash}.");
+                }
 
-                foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
+                foreach (var (key, value) in stateTrie.IterateKeyValuePairs())
                 {
                     targetKeyValueStore.Set(key, value);
+                    count++;
                 }
             }
 
             stopwatch.Stop();
             _logger.Debug(
-                "Finished to copy all states {ElapsedMilliseconds} ms",
+                "Finished copying all states with {Count} key value pairs " +
+                "in {ElapsedMilliseconds} ms",
+                count,
                 stopwatch.ElapsedMilliseconds);
             _logger.Verbose("Finished {MethodName}()", nameof(CopyStates));
         }
