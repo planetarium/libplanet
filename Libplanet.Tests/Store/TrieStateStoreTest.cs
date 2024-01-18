@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
@@ -108,27 +110,25 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void CopyStates()
         {
-            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
-                .Add(
-                    new KeyBytes("bar"),
-                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
-                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
-                .Add(
-                    new KeyBytes("zzz"),
-                    Bencodex.Types.Dictionary.Empty
-                        .Add("binary", GetRandomBytes(4096))
-                        .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
-
             var stateStore = new TrieStateStore(_stateKeyValueStore);
-
             IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
             var targetStateStore = new TrieStateStore(targetStateKeyValueStore);
-            ITrie trie = stateStore.Commit(
-                values.Aggregate(
-                    stateStore.GetStateRoot(null),
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
+            Random random = new Random();
+            List<(KeyBytes, IValue)> kvs = Enumerable.Range(0, 1_000)
+                .Select(_ =>
+                (
+                    new KeyBytes(GetRandomBytes(random.Next(20))),
+                    (IValue)new Binary(GetRandomBytes(20))
+                ))
+                .ToList();
+
+            ITrie trie = stateStore.GetStateRoot(null);
+            foreach (var kv in kvs)
+            {
+                trie = trie.Set(kv.Item1, kv.Item2);
+            }
+
+            trie = stateStore.Commit(trie);
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             _stateKeyValueStore.Set(
@@ -149,6 +149,12 @@ namespace Libplanet.Tests.Store
             // FIXME: Bencodex fingerprints also should be tracked.
             //        https://github.com/planetarium/libplanet/issues/1653
             Assert.Equal(prevStatesCount, targetStateKeyValueStore.ListKeys().Count());
+            Assert.Equal(
+                trie.IterateNodes().Count(),
+                targetStateStore.GetStateRoot(trie.Hash).IterateNodes().Count());
+            Assert.Equal(
+                trie.IterateValues().Count(),
+                targetStateStore.GetStateRoot(trie.Hash).IterateValues().Count());
         }
 
         [Fact]
