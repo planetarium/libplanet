@@ -70,8 +70,7 @@ namespace Libplanet.Store
             {
                 // FIXME: Bencodex fingerprints also should be tracked.
                 //        https://github.com/planetarium/libplanet/issues/1653
-                if (stateKey.Length != HashDigest<SHA256>.Size ||
-                    survivalNodes.Contains(stateKey))
+                if (survivalNodes.Contains(stateKey))
                 {
                     continue;
                 }
