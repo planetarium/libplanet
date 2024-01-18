@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,10 +32,12 @@ namespace Libplanet.Stun
         private readonly AsyncProducerConsumerQueue<ConnectionAttempt> _connectionAttempts;
         private readonly ILogger _logger;
 
-        private TcpClient _control;
-        private Task _processMessage;
+        private TcpClient? _control;
+        private Task _processMessage = Task.CompletedTask;
         private CancellationTokenSource _turnTaskCts;
-        private List<Task> _turnTasks;
+        private List<Task> _turnTasks = new List<Task>();
+        private IPAddress? _publicAddress;
+        private DnsEndPoint? _endPoint;
 
         internal TurnClient(
             string host,
@@ -64,13 +65,15 @@ namespace Libplanet.Stun
 
         public string Password { get; }
 
-        public string Realm { get; private set; }
+        public string Realm { get; private set; } = string.Empty;
 
-        public byte[] Nonce { get; private set; }
+        public byte[] Nonce { get; private set; } = System.Array.Empty<byte>();
 
-        public IPAddress PublicAddress { get; private set; }
+        public IPAddress PublicAddress => _publicAddress ??
+            throw new InvalidOperationException($"{nameof(TurnClient)} has not been initialized.");
 
-        public DnsEndPoint EndPoint { get; private set; }
+        public DnsEndPoint EndPoint => _endPoint ??
+            throw new InvalidOperationException($"{nameof(TurnClient)} has not been initialized.");
 
         public bool BehindNAT { get; private set; }
 
@@ -124,10 +127,10 @@ namespace Libplanet.Stun
             _processMessage = ProcessMessage(_turnTaskCts.Token);
 
             BehindNAT = await IsBehindNAT(cancellationToken);
-            PublicAddress = (await GetMappedAddressAsync(cancellationToken)).Address;
+            _publicAddress = (await GetMappedAddressAsync(cancellationToken)).Address;
 
             IPEndPoint ep = await AllocateRequestAsync(TurnAllocationLifetime, cancellationToken);
-            EndPoint = new DnsEndPoint(ep.Address.ToString(), ep.Port);
+            _endPoint = new DnsEndPoint(ep.Address.ToString(), ep.Port);
         }
 
         public async Task StartAsync(int listenPort, CancellationToken cancellationToken)
@@ -181,6 +184,12 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TurnClient)} has not been initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             StunMessage response;
             int retry = 0;
@@ -214,6 +223,12 @@ namespace Libplanet.Stun
             IPEndPoint peerAddress,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TurnClient)} has not been initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -269,6 +284,12 @@ namespace Libplanet.Stun
         public async Task<IPEndPoint> GetMappedAddressAsync(
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TurnClient)} has not been initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request, cancellationToken);
@@ -291,6 +312,12 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TurnClient)} has not been initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -317,6 +344,12 @@ namespace Libplanet.Stun
         public async Task<bool> IsBehindNAT(
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(TurnClient)} has not been initialized.");
+            }
+
             IPEndPoint mapped = await GetMappedAddressAsync(cancellationToken);
             return !_control.Client.LocalEndPoint.Equals(mapped);
         }
@@ -437,7 +470,7 @@ namespace Libplanet.Stun
 
         private async Task ProcessMessage(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested && _control.Connected)
+            while (!cancellationToken.IsCancellationRequested && _control!.Connected)
             {
                 try
                 {
@@ -452,7 +485,7 @@ namespace Libplanet.Stun
                     }
                     else if (_responses.TryGetValue(
                         message.TransactionId,
-                        out TaskCompletionSource<StunMessage> tcs))
+                        out var tcs))
                     {
                         // tcs may be already canceled.
                         tcs.TrySetResult(message);
@@ -472,7 +505,7 @@ namespace Libplanet.Stun
                 }
             }
 
-            _logger.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control.Connected}");
+            _logger.Debug($"{nameof(ProcessMessage)} is ended. Connected: {_control!.Connected}");
         }
 
         private async Task<StunMessage> ReceiveMessageAsync(
@@ -514,7 +547,7 @@ namespace Libplanet.Stun
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>
         {
-            public bool Equals(byte[] x, byte[] y)
+            public bool Equals(byte[]? x, byte[]? y)
             {
                 if (x == null || y == null)
                 {

@@ -1,5 +1,3 @@
-#nullable disable
-
 namespace Libplanet.Stun.Attributes
 {
     public class Fingerprint : Attribute

@@ -1,4 +1,3 @@
-#nullable disable
 using System.Net;
 
 namespace Libplanet.Stun.Attributes

@@ -1,4 +1,3 @@
-#nullable disable
 using Libplanet.Stun.Attributes;
 
 namespace Libplanet.Stun.Messages
@@ -13,8 +12,8 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                ErrorCode attr = GetAttribute<ErrorCode>();
-                return attr.Code;
+                ErrorCode? attr = GetAttribute<ErrorCode>();
+                return attr?.Code ?? 0;
             }
         }
 
@@ -22,8 +21,8 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                ErrorCode attr = GetAttribute<ErrorCode>();
-                return attr?.Reason;
+                ErrorCode? attr = GetAttribute<ErrorCode>();
+                return attr?.Reason ?? string.Empty;
             }
         }
 
@@ -31,8 +30,8 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                Attributes.Nonce attr = GetAttribute<Attributes.Nonce>();
-                return attr?.Value;
+                Nonce? attr = GetAttribute<Nonce>();
+                return attr?.Value ?? System.Array.Empty<byte>();
             }
         }
 
@@ -40,8 +39,8 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                Realm attr = GetAttribute<Realm>();
-                return attr?.Value;
+                Realm? attr = GetAttribute<Realm>();
+                return attr?.Value ?? string.Empty;
             }
         }
     }

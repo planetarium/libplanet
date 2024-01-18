@@ -1,4 +1,3 @@
-#nullable disable
 using Libplanet.Stun.Attributes;
 
 namespace Libplanet.Stun.Messages
@@ -14,7 +13,7 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                return GetAttribute<ConnectionId>()?.Value;
+                return GetAttribute<ConnectionId>()!.Value;
             }
         }
     }

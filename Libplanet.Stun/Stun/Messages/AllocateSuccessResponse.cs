@@ -1,4 +1,3 @@
-#nullable disable
 using System.Net;
 using Libplanet.Stun.Attributes;
 
@@ -14,7 +13,7 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                return GetAttribute<XorRelayedAddress>()?.EndPoint;
+                return GetAttribute<XorRelayedAddress>()!.EndPoint;
             }
         }
     }

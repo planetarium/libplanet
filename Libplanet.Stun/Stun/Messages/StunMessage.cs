@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -76,7 +75,7 @@ namespace Libplanet.Stun.Messages
         /// <summary>
         /// A list of <see cref="Attribute"/> of STUN packet.
         /// </summary>
-        protected IEnumerable<Attribute> Attributes { get; set; }
+        protected IEnumerable<Attribute> Attributes { get; set; } = System.Array.Empty<Attribute>();
 
         /// <summary>
         /// Parses <see cref="StunMessage"/> from <paramref name="stream"/>.
@@ -112,8 +111,7 @@ namespace Libplanet.Stun.Messages
                 transactionId
             );
 
-            StunMessage rv = null;
-            rv = @class switch
+            StunMessage rv = @class switch
             {
                 MessageClass.SuccessResponse => method switch
                 {
@@ -123,27 +121,22 @@ namespace Libplanet.Stun.Messages
                     MessageMethod.Binding => new BindingSuccessResponse(),
                     MessageMethod.CreatePermission => new CreatePermissionSuccessResponse(),
                     MessageMethod.Refresh => new RefreshSuccessResponse(),
-                    _ => rv,
+                    _ => throw new TurnClientException("Parsed result is null."),
                 },
                 MessageClass.ErrorResponse => method switch
                 {
                     MessageMethod.Allocate => new AllocateErrorResponse(),
                     MessageMethod.CreatePermission => new CreatePermissionErrorResponse(),
                     MessageMethod.Refresh => new RefreshErrorResponse(),
-                    _ => rv,
+                    _ => throw new TurnClientException("Parsed result is null."),
                 },
                 MessageClass.Indication => method switch
                 {
                     MessageMethod.ConnectionAttempt => new ConnectionAttempt(),
-                    _ => rv,
+                    _ => throw new TurnClientException("Parsed result is null."),
                 },
-                _ => rv,
+                _ => throw new TurnClientException("Parsed result is null."),
             };
-
-            if (rv is null)
-            {
-                throw new TurnClientException("Parsed result is null.");
-            }
 
             rv.TransactionId = transactionId;
             rv.Attributes = attributes;
@@ -154,9 +147,9 @@ namespace Libplanet.Stun.Messages
         public byte[] Encode(IStunContext ctx)
         {
             bool useMessageIntegrity =
-                !string.IsNullOrEmpty(ctx?.Username) &&
-                !string.IsNullOrEmpty(ctx?.Password) &&
-                !string.IsNullOrEmpty(ctx?.Realm);
+                ctx.Username != string.Empty &&
+                ctx.Password != string.Empty &&
+                ctx.Realm != string.Empty;
 
             var c = (ushort)Class;
             var m = (ushort)Method;
@@ -170,17 +163,17 @@ namespace Libplanet.Stun.Messages
             using var ms = new MemoryStream();
             List<Attribute> attrs = Attributes.ToList();
 
-            if (!string.IsNullOrEmpty(ctx?.Username))
+            if (ctx.Username != string.Empty)
             {
                 attrs.Add(new Username(ctx.Username));
             }
 
-            if (ctx?.Nonce != null)
+            if (ctx.Nonce.Length > 0)
             {
                 attrs.Add(new Attributes.Nonce(ctx.Nonce));
             }
 
-            if (!string.IsNullOrEmpty(ctx?.Realm))
+            if (ctx.Realm != string.Empty)
             {
                 attrs.Add(new Realm(ctx.Realm));
             }
@@ -221,9 +214,9 @@ namespace Libplanet.Stun.Messages
 
                 MessageIntegrity mi =
                     MessageIntegrity.Calculate(
-                        ctx?.Username,
-                        ctx?.Password,
-                        ctx?.Realm,
+                        ctx.Username,
+                        ctx.Password,
+                        ctx.Realm,
                         toCalc);
                 ms.Write(mi.ToByteArray(), 0, MessageIntegrityBytes);
             }
@@ -237,9 +230,14 @@ namespace Libplanet.Stun.Messages
         }
 
         internal static IEnumerable<Attribute> ParseAttributes(
+            IEnumerable<byte> bytes)
+        {
+            return ParseAttributes(bytes, System.Array.Empty<byte>());
+        }
+
+        internal static IEnumerable<Attribute> ParseAttributes(
             IEnumerable<byte> bytes,
-            byte[] transactionId = null
-        )
+            byte[] transactionId)
         {
             while (bytes.Any())
             {
@@ -247,7 +245,7 @@ namespace Libplanet.Stun.Messages
                 ushort length = bytes.Skip(2).Take(2).ToUShort();
                 byte[] payload = bytes.Skip(4).Take(length).ToArray();
 
-                Attribute attr = type switch
+                Attribute? attr = type switch
                 {
                     Attribute.AttributeType.ErrorCode => ErrorCode.Parse(payload),
                     Attribute.AttributeType.Realm => Realm.Parse(payload),
@@ -298,7 +296,7 @@ namespace Libplanet.Stun.Messages
                 (type & 0x3e00) >> 2 | (type & 0x00e0) >> 1 | (type & 0x000f));
         }
 
-        protected T GetAttribute<T>()
+        protected T? GetAttribute<T>()
             where T : Attribute
         {
             foreach (Attribute attr in Attributes)
