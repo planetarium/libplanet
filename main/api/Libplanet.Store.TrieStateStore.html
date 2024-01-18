@@ -77,13 +77,13 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">TrieStateStore</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -100,7 +100,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
@@ -122,7 +122,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.%23ctor(Libplanet.Store.Trie.IKeyValueStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L27">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore__ctor_" data-uid="Libplanet.Store.TrieStateStore.#ctor*"></a>
   <h4 id="Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_" data-uid="Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore)">TrieStateStore(IKeyValueStore)</h4>
@@ -159,7 +159,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_StateKeyValueStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.StateKeyValueStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_StateKeyValueStore_" data-uid="Libplanet.Store.TrieStateStore.StateKeyValueStore*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_StateKeyValueStore" data-uid="Libplanet.Store.TrieStateStore.StateKeyValueStore">StateKeyValueStore</h4>
@@ -235,7 +235,9 @@ Returned <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> must b
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
-        <td><p>The committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+        <td><p>The committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.  The committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s
+<a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is guaranteed to be either <span class="xref">null</span>
+or a <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -254,7 +256,7 @@ Otherwise, this is not guaranteed to work properly.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Store.TrieStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L96">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L44">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_CopyStates_" data-uid="Libplanet.Store.TrieStateStore.CopyStates*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_" data-uid="Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Store.TrieStateStore)">CopyStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;, TrieStateStore)</h4>
@@ -277,7 +279,7 @@ to <code data-dev-comment-type="paramref" class="paramref">targetStateStore</cod
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td><span class="parametername">stateRootHashes</span></td>
         <td><p>The state root hashes of states to copy.</p>
 </td>
@@ -290,12 +292,29 @@ to <code data-dev-comment-type="paramref" class="paramref">targetStateStore</cod
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when a state root cannot be found for
+any of given <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L131">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_Dispose_" data-uid="Libplanet.Store.TrieStateStore.Dispose*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_Dispose" data-uid="Libplanet.Store.TrieStateStore.Dispose">Dispose()</h4>
@@ -311,7 +330,7 @@ to <code data-dev-comment-type="paramref" class="paramref">targetStateStore</cod
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L124">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_GetStateRoot_" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot*"></a>
   <h4 id="Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
@@ -358,47 +377,12 @@ If <span class="xref">null</span> is passed the empty state root trie is returne
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_PruneStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L36">View Source</a>
-  </span>
-  <a id="Libplanet_Store_TrieStateStore_PruneStates_" data-uid="Libplanet.Store.TrieStateStore.PruneStates*"></a>
-  <h4 id="Libplanet_Store_TrieStateStore_PruneStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Prunes the states no more used from the state store.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void PruneStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt; survivingStateRootHashes)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><span class="parametername">survivingStateRootHashes</span></td>
-        <td><p>The state root hashes <em>not</em> to prune.
-These state root hashes are guaranteed to survive after pruning.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">System.IDisposable</span>
   </div>
 </article>
           </div>
@@ -411,7 +395,7 @@ These state root hashes are guaranteed to survive after pruning.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/TrieStateStore.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -21496,22 +21496,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStateStore.GetStateRoot
   nameWithType: IStateStore.GetStateRoot
-- uid: Libplanet.Store.IStateStore.PruneStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name: PruneStates(IImmutableSet<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_PruneStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Store.IStateStore.PruneStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: PruneStates(IImmutableSet(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.IStateStore.PruneStates(System.Collections.Immutable.IImmutableSet<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Store.IStateStore.PruneStates(System.Collections.Immutable.IImmutableSet(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: IStateStore.PruneStates(IImmutableSet<HashDigest<SHA256>>)
-  nameWithType.vb: IStateStore.PruneStates(IImmutableSet(Of HashDigest(Of SHA256)))
-- uid: Libplanet.Store.IStateStore.PruneStates*
-  name: PruneStates
-  href: api/Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_PruneStates_
-  commentId: Overload:Libplanet.Store.IStateStore.PruneStates
-  isSpec: "True"
-  fullName: Libplanet.Store.IStateStore.PruneStates
-  nameWithType: IStateStore.PruneStates
 - uid: Libplanet.Store.IStore
   name: IStore
   href: api/Libplanet.Store.IStore.html
@@ -24812,22 +24796,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.GetStateRoot
   nameWithType: TrieStateStore.GetStateRoot
-- uid: Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name: PruneStates(IImmutableSet<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: PruneStates(IImmutableSet(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Store.TrieStateStore.PruneStates(System.Collections.Immutable.IImmutableSet(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: TrieStateStore.PruneStates(IImmutableSet<HashDigest<SHA256>>)
-  nameWithType.vb: TrieStateStore.PruneStates(IImmutableSet(Of HashDigest(Of SHA256)))
-- uid: Libplanet.Store.TrieStateStore.PruneStates*
-  name: PruneStates
-  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_PruneStates_
-  commentId: Overload:Libplanet.Store.TrieStateStore.PruneStates
-  isSpec: "True"
-  fullName: Libplanet.Store.TrieStateStore.PruneStates
-  nameWithType: TrieStateStore.PruneStates
 - uid: Libplanet.Store.TrieStateStore.StateKeyValueStore
   name: StateKeyValueStore
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_StateKeyValueStore
