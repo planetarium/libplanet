@@ -440,10 +440,6 @@ If omitted (default) explorer only the local blockchain store.")]
         {
             public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null;
 
-            public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
-            {
-            }
-
             public ITrie Commit(ITrie trie) => null;
 
             public void Dispose()

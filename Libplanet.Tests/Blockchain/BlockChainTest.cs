@@ -1660,13 +1660,9 @@ namespace Libplanet.Tests.Blockchain
         /// </summary>
         /// <param name="store">store.</param>
         /// <param name="stateStore">State Store.</param>
-        /// <param name="renderer">Renderer.</param>
         /// <returns>Tuple of addresses and chain.</returns>
         internal static (Address, Address[] Addresses, BlockChain Chain)
-            MakeIncompleteBlockStates(
-                IStore store,
-                IStateStore stateStore,
-                IRenderer renderer = null)
+            MakeIncompleteBlockStates(IStore store, IStateStore stateStore)
         {
             List<int> presentIndices = new List<int>() { 4, 7 };
             List<Block> presentBlocks = new List<Block>();
@@ -1689,7 +1685,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 genesisBlock,
-                renderers: renderer is null ? null : new[] { renderer },
+                renderers: null,
                 blockChainStates: chainStates,
                 actionEvaluator: actionEvaluator);
             var privateKey = new PrivateKey();
@@ -1747,11 +1743,22 @@ namespace Libplanet.Tests.Blockchain
                 }
             }
 
-            stateStore.PruneStates(
+            IStateStore incompleteStateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ((TrieStateStore)stateStore).CopyStates(
                 ImmutableHashSet<HashDigest<SHA256>>.Empty
                     .Add(presentBlocks[0].StateRootHash)
-                    .Add(presentBlocks[1].StateRootHash)
-            );
+                    .Add(presentBlocks[1].StateRootHash),
+                (TrieStateStore)incompleteStateStore);
+
+            chain = new BlockChain(
+                blockPolicy,
+                new VolatileStagePolicy(),
+                store,
+                incompleteStateStore,
+                genesisBlock,
+                renderers: null,
+                blockChainStates: chainStates,
+                actionEvaluator: actionEvaluator);
 
             return (signer, addresses, chain);
         }
