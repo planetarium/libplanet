@@ -27,6 +27,11 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="survivingStateRootHashes">The state root hashes <em>not</em> to prune.
         /// These state root hashes are guaranteed to survive after pruning.</param>
+        /// <remarks>
+        /// As <see cref="Bencodex"/> fingerprinting has been removed and is no longer supported,
+        /// any <see cref="IStateStore"/> with fingerprinted states stored may no longer work
+        /// as expected once pruned.
+        /// </remarks>
         void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes);
 
         /// <summary>

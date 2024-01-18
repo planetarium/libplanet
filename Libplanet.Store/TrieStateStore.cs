@@ -36,22 +36,17 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
         {
-            // TODO: As MerkleTrie now have two levels of Merkle trees (one for accounts and one for
-            // Bencodex values), it needs to be fixed so that it can prune offloaded Bencodex
-            // values too.  https://github.com/planetarium/libplanet/issues/1653
             var stopwatch = new Stopwatch();
             _logger.Verbose("Started {MethodName}()", nameof(PruneStates));
-            var survivalNodes = new HashSet<KeyBytes>();
+            var survivalKeys = new HashSet<KeyBytes>();
             foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
-                var stateTrie = new MerkleTrie(
-                    StateKeyValueStore,
-                    new HashNode(stateRootHash));
+                var trie = (MerkleTrie)GetStateRoot(stateRootHash);
                 _logger.Debug("Started to iterate hash nodes");
                 stopwatch.Start();
-                foreach ((KeyBytes key, byte[] _) in stateTrie.IterateKeyValuePairs())
+                foreach ((KeyBytes key, byte[] _) in trie.IterateKeyValuePairs())
                 {
-                    survivalNodes.Add(key);
+                    survivalKeys.Add(key);
                 }
 
                 _logger.Debug(
@@ -60,28 +55,24 @@ namespace Libplanet.Store
                 stopwatch.Stop();
             }
 
-            _logger.Debug("{Count} hash nodes will survive", survivalNodes.Count);
+            _logger.Debug("{Count} hash nodes will survive", survivalKeys.Count);
 
             // Clean up nodes.
             long deleteCount = 0;
             _logger.Debug("Started to clean up states...");
             stopwatch.Restart();
-            foreach (var stateKey in StateKeyValueStore.ListKeys())
+            foreach (var key in StateKeyValueStore.ListKeys())
             {
-                // FIXME: Bencodex fingerprints also should be tracked.
-                //        https://github.com/planetarium/libplanet/issues/1653
-                if (survivalNodes.Contains(stateKey))
+                if (!survivalKeys.Contains(key))
                 {
-                    continue;
+                    StateKeyValueStore.Delete(key);
+                    deleteCount++;
                 }
-
-                StateKeyValueStore.Delete(stateKey);
-                deleteCount++;
             }
 
             _logger.Debug(
-                "Finished to clean up {DeleteCount} state hashes " +
-                "(elapsed: {ElapsedMilliseconds} ms)",
+                "Finished cleaning up by removing {Count} key value pairs " +
+                "in {ElapsedMilliseconds} ms",
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
