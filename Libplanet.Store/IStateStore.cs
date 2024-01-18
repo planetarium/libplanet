@@ -35,7 +35,7 @@ namespace Libplanet.Store
         /// <see cref="ITrie.Hash"/>.
         /// </summary>
         /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
-        /// <returns>The committed <see cref="ITrie"/>.  The commited <see cref="ITrie"/>'s
+        /// <returns>The committed <see cref="ITrie"/>.  The committed <see cref="ITrie"/>'s
         /// <see cref="ITrie.Root"/> is guaranteed to be either <see langword="null"/>
         /// or a <see cref="HashNode"/>.</returns>
         /// <remarks>

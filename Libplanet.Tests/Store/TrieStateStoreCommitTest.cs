@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CommitedNonEmptyTrieRootIsHashNode()
+        public void CommittedNonEmptyTrieRootIsHashNode()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
