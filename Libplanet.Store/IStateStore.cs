@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store
 {
@@ -34,7 +35,9 @@ namespace Libplanet.Store
         /// <see cref="ITrie.Hash"/>.
         /// </summary>
         /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
-        /// <returns>The committed <see cref="ITrie"/>.</returns>
+        /// <returns>The committed <see cref="ITrie"/>.  The commited <see cref="ITrie"/>'s
+        /// <see cref="ITrie.Root"/> is guaranteed to be either <see langword="null"/>
+        /// or a <see cref="HashNode"/>.</returns>
         /// <remarks>
         /// Given <paramref name="trie"/> must have originated from the same instance
         /// (or with an instance with the same reference to an <see cref="IKeyValueStore"/>).
