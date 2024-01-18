@@ -185,7 +185,16 @@ namespace Libplanet.Store.Trie
                 .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
-        internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateNodeKeyValuePairs()
+        /// <summary>
+        /// Iterates over <see cref="KeyBytes"/> and <see cref="byte[]"/> pairs stored
+        /// necessary to fully represent this <see cref="ITrie"/>.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable"/> of all <see cref="KeyBytes"/> and
+        /// <see cref="byte[]"/> pairs stored necessary to fully represent
+        /// this <see cref="ITrie"/>.</returns>
+        /// <exception cref="NullReferenceException">Thrown when a <see cref="HashNode"/>
+        /// is encountered that can't be decoded into an <see cref="INode"/>.</exception>
+        internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateKeyValuePairs()
         {
             if (Root is null)
             {
