@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
@@ -65,77 +67,35 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void PruneStates()
-        {
-            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
-                .Add(
-                    new KeyBytes("bar"),
-                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
-                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
-                .Add(
-                    new KeyBytes("zzz"),
-                    Bencodex.Types.Dictionary.Empty
-                        .Add("binary", GetRandomBytes(4096))
-                        .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
-
-            var stateStore = new TrieStateStore(_stateKeyValueStore);
-            ITrie first = stateStore.Commit(
-                values.Aggregate(
-                    stateStore.GetStateRoot(null),
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
-
-            int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
-            ImmutableDictionary<KeyBytes, IValue> nextState =
-                values.SetItem(new KeyBytes("foo"), (Binary)GetRandomBytes(4096));
-            ITrie second = stateStore.Commit(
-                nextState.Aggregate(
-                    first,
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
-
-            // foo = 0x666f6f
-            // updated branch node (0x6, aka root) + updated branch node (0x66) +
-            // updated short node + new value nodes
-            Assert.Equal(prevStatesCount + 4, _stateKeyValueStore.ListKeys().Count());
-
-            stateStore.PruneStates(ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(second.Hash));
-
-            // It will stay at the same count of nodes.
-            Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
-        }
-
-        [Fact]
         public void CopyStates()
         {
-            var values = ImmutableDictionary<KeyBytes, IValue>.Empty
-                .Add(new KeyBytes("foo"), (Binary)GetRandomBytes(4096))
-                .Add(
-                    new KeyBytes("bar"),
-                    (Text)ByteUtil.Hex(GetRandomBytes(2048)))
-                .Add(new KeyBytes("baz"), (Bencodex.Types.Boolean)false)
-                .Add(new KeyBytes("qux"), Bencodex.Types.Dictionary.Empty)
-                .Add(
-                    new KeyBytes("zzz"),
-                    Bencodex.Types.Dictionary.Empty
-                        .Add("binary", GetRandomBytes(4096))
-                        .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
-
             var stateStore = new TrieStateStore(_stateKeyValueStore);
-
             IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
             var targetStateStore = new TrieStateStore(targetStateKeyValueStore);
-            ITrie trie = stateStore.Commit(
-                values.Aggregate(
-                    stateStore.GetStateRoot(null),
-                    (prev, kv) => prev.Set(kv.Key, kv.Value)));
+            Random random = new Random();
+            List<(KeyBytes, IValue)> kvs = Enumerable.Range(0, 1_000)
+                .Select(_ =>
+                (
+                    new KeyBytes(GetRandomBytes(random.Next(20))),
+                    (IValue)new Binary(GetRandomBytes(20))
+                ))
+                .ToList();
+
+            ITrie trie = stateStore.GetStateRoot(null);
+            foreach (var kv in kvs)
+            {
+                trie = trie.Set(kv.Item1, kv.Item2);
+            }
+
+            trie = stateStore.Commit(trie);
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
+            // NOTE: Avoid possible collision of KeyBytes, just in case.
             _stateKeyValueStore.Set(
-                new KeyBytes("alpha"),
+                new KeyBytes(GetRandomBytes(30)),
                 ByteUtil.ParseHex("00"));
             _stateKeyValueStore.Set(
-                new KeyBytes("beta"),
+                new KeyBytes(GetRandomBytes(40)),
                 ByteUtil.ParseHex("00"));
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
@@ -149,6 +109,12 @@ namespace Libplanet.Tests.Store
             // FIXME: Bencodex fingerprints also should be tracked.
             //        https://github.com/planetarium/libplanet/issues/1653
             Assert.Equal(prevStatesCount, targetStateKeyValueStore.ListKeys().Count());
+            Assert.Equal(
+                trie.IterateNodes().Count(),
+                targetStateStore.GetStateRoot(trie.Hash).IterateNodes().Count());
+            Assert.Equal(
+                trie.IterateValues().Count(),
+                targetStateStore.GetStateRoot(trie.Hash).IterateValues().Count());
         }
 
         [Fact]

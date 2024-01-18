@@ -84,6 +84,21 @@ To be released.
 [#3589]: https://github.com/planetarium/libplanet/pull/3589
 
 
+Version 3.9.5
+-------------
+
+Released on January 18, 2024.
+
+ -  (Libplanet.Store) Changed `IStateStore.Commit()` to return an `ITrie`
+    with either its `Root` as `null` or a `HashNode`.  [[#3610]]
+ -  (Libplanet.Store) Removed `IStateStore.PruneStates()` method.
+    [[#3613], [#3614]]
+
+[#3610]: https://github.com/planetarium/libplanet/pull/3610
+[#3613]: https://github.com/planetarium/libplanet/issues/3613
+[#3614]: https://github.com/planetarium/libplanet/pull/3614
+
+
 Version 3.9.4
 -------------
 

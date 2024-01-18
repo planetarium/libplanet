@@ -94,7 +94,7 @@ namespace Libplanet.Store.Trie
                     ? fullNode.SetChild(
                         newChildIndex,
                         new ShortNode(newShortNodeKey, shortNode.Value))
-                    : fullNode.SetChild(newChildIndex, shortNode.Value!);
+                    : fullNode.SetChild(newChildIndex, shortNode.Value);
 
                 // Handles value node.
                 // Assumes next cursor nibble (including non-remaining case)

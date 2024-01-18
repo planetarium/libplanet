@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store
 {
@@ -21,20 +22,15 @@ namespace Libplanet.Store
         ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
 
         /// <summary>
-        /// Prunes the states no more used from the state store.
-        /// </summary>
-        /// <param name="survivingStateRootHashes">The state root hashes <em>not</em> to prune.
-        /// These state root hashes are guaranteed to survive after pruning.</param>
-        void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes);
-
-        /// <summary>
         /// Commits given <paramref name="trie"/> to storage.
         /// Returned <see cref="ITrie"/> must be identical to the one obtained from
         /// <see cref="GetStateRoot"/> with resulting <see cref="ITrie"/>'s
         /// <see cref="ITrie.Hash"/>.
         /// </summary>
         /// <param name="trie">The <see cref="ITrie"/> to commit.</param>
-        /// <returns>The committed <see cref="ITrie"/>.</returns>
+        /// <returns>The committed <see cref="ITrie"/>.  The committed <see cref="ITrie"/>'s
+        /// <see cref="ITrie.Root"/> is guaranteed to be either <see langword="null"/>
+        /// or a <see cref="HashNode"/>.</returns>
         /// <remarks>
         /// Given <paramref name="trie"/> must have originated from the same instance
         /// (or with an instance with the same reference to an <see cref="IKeyValueStore"/>).
