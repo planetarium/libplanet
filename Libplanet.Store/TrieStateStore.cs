@@ -33,8 +33,17 @@ namespace Libplanet.Store
         public IKeyValueStore StateKeyValueStore { get; }
 
         /// <summary>
+        /// <para>
         /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
         /// to <paramref name="targetStateStore"/>.
+        /// </para>
+        /// <para>
+        /// Under the hood, this not only copies states directly associated
+        /// with <paramref name="stateRootHashes"/>, but also automatically copies states
+        /// that are not directly associated with <paramref name="stateRootHashes"/>
+        /// but associated with "subtries" with references stored in <see cref="ITrie"/>s
+        /// of <paramref name="stateRootHashes"/>.
+        /// </para>
         /// </summary>
         /// <param name="stateRootHashes">The state root hashes of states to copy.</param>
         /// <param name="targetStateStore">The target state store to copy state root hashes.</param>
