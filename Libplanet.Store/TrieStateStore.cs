@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -63,6 +62,34 @@ namespace Libplanet.Store
                 {
                     targetKeyValueStore.Set(key, value);
                     count++;
+                }
+
+                // FIXME: Probably not the right place to implement this.
+                // It'd be better to have it in Libplanet.Action.State.
+                if (stateTrie.Get(new KeyBytes(Array.Empty<byte>())) is { } metadata)
+                {
+                    foreach (var (path, hash) in stateTrie.IterateValues())
+                    {
+                        // Ignore metadata
+                        if (path.Length > 0)
+                        {
+                            HashDigest<SHA256> accountStateRootHash = new HashDigest<SHA256>(hash);
+                            MerkleTrie accountStateTrie =
+                                (MerkleTrie)GetStateRoot(accountStateRootHash);
+                            if (!accountStateTrie.Recorded)
+                            {
+                                throw new ArgumentException(
+                                    $"Failed to find a state root for given " +
+                                    $"state root hash {accountStateRootHash}.");
+                            }
+
+                            foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
+                            {
+                                targetKeyValueStore.Set(key, value);
+                                count++;
+                            }
+                        }
+                    }
                 }
             }
 
