@@ -4,7 +4,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Action.State;
 using Libplanet.Common;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -76,7 +78,7 @@ namespace Libplanet.Tests.Store
             List<(KeyBytes, IValue)> kvs = Enumerable.Range(0, 1_000)
                 .Select(_ =>
                 (
-                    new KeyBytes(GetRandomBytes(random.Next(20))),
+                    new KeyBytes(GetRandomBytes(random.Next(1, 20))),
                     (IValue)new Binary(GetRandomBytes(20))
                 ))
                 .ToList();
@@ -115,6 +117,80 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 trie.IterateValues().Count(),
                 targetStateStore.GetStateRoot(trie.Hash).IterateValues().Count());
+        }
+
+        [Fact]
+        public void CopyWorldStates()
+        {
+            var stateStore = new TrieStateStore(_stateKeyValueStore);
+            IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
+            var targetStateStore = new TrieStateStore(targetStateKeyValueStore);
+            Random random = new Random();
+            Dictionary<Address, List<(KeyBytes, IValue)>> data = Enumerable
+                .Range(0, 20)
+                .Select(_ => new Address(GetRandomBytes(Address.Size)))
+                .ToDictionary(
+                    address => address,
+                    _ => Enumerable
+                        .Range(0, 100)
+                        .Select(__ =>
+                        (
+                            new KeyBytes(GetRandomBytes(random.Next(20))),
+                            (IValue)new Binary(GetRandomBytes(20))
+                        ))
+                        .ToList());
+
+            ITrie worldTrie = stateStore.GetStateRoot(null);
+            worldTrie = worldTrie.SetMetadata(new TrieMetadata(5));
+
+            List<HashDigest<SHA256>> accountHashes = new List<HashDigest<SHA256>>();
+            foreach (var elem in data)
+            {
+                ITrie trie = stateStore.GetStateRoot(null);
+                foreach (var kv in elem.Value)
+                {
+                    trie = trie.Set(kv.Item1, kv.Item2);
+                }
+
+                trie = stateStore.Commit(trie);
+                worldTrie = worldTrie.Set(new KeyBytes(elem.Key.ByteArray), trie.Hash.Bencoded);
+                accountHashes.Add(trie.Hash);
+            }
+
+            worldTrie = stateStore.Commit(worldTrie);
+            int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
+
+            // NOTE: Avoid possible collision of KeyBytes, just in case.
+            _stateKeyValueStore.Set(
+                new KeyBytes(GetRandomBytes(30)),
+                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore.Set(
+                new KeyBytes(GetRandomBytes(40)),
+                ByteUtil.ParseHex("00"));
+
+            Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
+            Assert.Empty(targetStateKeyValueStore.ListKeys());
+
+            stateStore.CopyStates(
+                ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(worldTrie.Hash),
+                targetStateStore);
+
+            // It will stay at the same count of nodes.
+            // FIXME: Bencodex fingerprints also should be tracked.
+            //        https://github.com/planetarium/libplanet/issues/1653
+            Assert.Equal(prevStatesCount, targetStateKeyValueStore.ListKeys().Count());
+            Assert.Equal(
+                worldTrie.IterateNodes().Count(),
+                targetStateStore.GetStateRoot(worldTrie.Hash).IterateNodes().Count());
+            Assert.Equal(
+                worldTrie.IterateValues().Count(),
+                targetStateStore.GetStateRoot(worldTrie.Hash).IterateValues().Count());
+            Assert.Equal(
+                stateStore.GetStateRoot(accountHashes.First()).IterateNodes().Count(),
+                targetStateStore.GetStateRoot(accountHashes.First()).IterateNodes().Count());
+            Assert.Equal(
+                stateStore.GetStateRoot(accountHashes.First()).IterateValues().Count(),
+                targetStateStore.GetStateRoot(accountHashes.First()).IterateValues().Count());
         }
 
         [Fact]
