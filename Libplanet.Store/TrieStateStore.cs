@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -34,8 +33,17 @@ namespace Libplanet.Store
         public IKeyValueStore StateKeyValueStore { get; }
 
         /// <summary>
+        /// <para>
         /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
         /// to <paramref name="targetStateStore"/>.
+        /// </para>
+        /// <para>
+        /// Under the hood, this not only copies states directly associated
+        /// with <paramref name="stateRootHashes"/>, but also automatically copies states
+        /// that are not directly associated with <paramref name="stateRootHashes"/>
+        /// but associated with "subtries" with references stored in <see cref="ITrie"/>s
+        /// of <paramref name="stateRootHashes"/>.
+        /// </para>
         /// </summary>
         /// <param name="stateRootHashes">The state root hashes of states to copy.</param>
         /// <param name="targetStateStore">The target state store to copy state root hashes.</param>
@@ -63,6 +71,34 @@ namespace Libplanet.Store
                 {
                     targetKeyValueStore.Set(key, value);
                     count++;
+                }
+
+                // FIXME: Probably not the right place to implement this.
+                // It'd be better to have it in Libplanet.Action.State.
+                if (stateTrie.Get(new KeyBytes(Array.Empty<byte>())) is { } metadata)
+                {
+                    foreach (var (path, hash) in stateTrie.IterateValues())
+                    {
+                        // Ignore metadata
+                        if (path.Length > 0)
+                        {
+                            HashDigest<SHA256> accountStateRootHash = new HashDigest<SHA256>(hash);
+                            MerkleTrie accountStateTrie =
+                                (MerkleTrie)GetStateRoot(accountStateRootHash);
+                            if (!accountStateTrie.Recorded)
+                            {
+                                throw new ArgumentException(
+                                    $"Failed to find a state root for given " +
+                                    $"state root hash {accountStateRootHash}.");
+                            }
+
+                            foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
+                            {
+                                targetKeyValueStore.Set(key, value);
+                                count++;
+                            }
+                        }
+                    }
                 }
             }
 
