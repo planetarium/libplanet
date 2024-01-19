@@ -24697,28 +24697,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.PathCursor.RemainingNibblesStartWith
   nameWithType: PathCursor.RemainingNibblesStartWith
-- uid: Libplanet.Store.Trie.TrieExtensions
-  name: TrieExtensions
-  href: api/Libplanet.Store.Trie.TrieExtensions.html
-  commentId: T:Libplanet.Store.Trie.TrieExtensions
-  fullName: Libplanet.Store.Trie.TrieExtensions
-  nameWithType: TrieExtensions
-- uid: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Immutable.IImmutableDictionary{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue})
-  name: Set(ITrie, IImmutableDictionary<KeyBytes, IValue>)
-  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_Libplanet_Store_Trie_ITrie_System_Collections_Immutable_IImmutableDictionary_Libplanet_Store_Trie_KeyBytes_Bencodex_Types_IValue__
-  commentId: M:Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie,System.Collections.Immutable.IImmutableDictionary{Libplanet.Store.Trie.KeyBytes,Bencodex.Types.IValue})
-  name.vb: Set(ITrie, IImmutableDictionary(Of KeyBytes, IValue))
-  fullName: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Immutable.IImmutableDictionary<Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue>)
-  fullName.vb: Libplanet.Store.Trie.TrieExtensions.Set(Libplanet.Store.Trie.ITrie, System.Collections.Immutable.IImmutableDictionary(Of Libplanet.Store.Trie.KeyBytes, Bencodex.Types.IValue))
-  nameWithType: TrieExtensions.Set(ITrie, IImmutableDictionary<KeyBytes, IValue>)
-  nameWithType.vb: TrieExtensions.Set(ITrie, IImmutableDictionary(Of KeyBytes, IValue))
-- uid: Libplanet.Store.Trie.TrieExtensions.Set*
-  name: Set
-  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_Set_
-  commentId: Overload:Libplanet.Store.Trie.TrieExtensions.Set
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.TrieExtensions.Set
-  nameWithType: TrieExtensions.Set
 - uid: Libplanet.Store.TrieStateStore
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html
