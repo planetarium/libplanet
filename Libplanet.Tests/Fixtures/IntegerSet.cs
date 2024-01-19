@@ -131,8 +131,10 @@ namespace Libplanet.Tests.Fixtures
                         BigInteger nextState = a.Operator.ToFunc()(prev.Item1, a.Operand);
                         var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                             .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
-                        HashDigest<SHA256> nextRootHash =
-                            Chain.StateStore.Commit(prevTrie.Set(updatedRawStates)).Hash;
+                        HashDigest<SHA256> nextRootHash = Chain.StateStore.Commit(
+                            updatedRawStates.Aggregate(
+                                prevTrie,
+                                (trie, pair) => trie.Set(pair.Key, pair.Value))).Hash;
                         return (nextState, nextRootHash);
                     }
                 });
@@ -153,8 +155,10 @@ namespace Libplanet.Tests.Fixtures
                                 a.Operator.ToFunc()(delta[delta.Length - 1].Item1, a.Operand);
                             var updatedRawStates = ImmutableDictionary<KeyBytes, IValue>.Empty
                                 .Add(rawStateKey, (Bencodex.Types.Integer)nextState);
-                            HashDigest<SHA256> nextRootHash =
-                                Chain.StateStore.Commit(prevTrie.Set(updatedRawStates)).Hash;
+                            HashDigest<SHA256> nextRootHash = Chain.StateStore.Commit(
+                                updatedRawStates.Aggregate(
+                                    prevTrie,
+                                    (trie, pair) => trie.Set(pair.Key, pair.Value))).Hash;
                             return delta.Add((nextState, nextRootHash));
                         }
                     }
