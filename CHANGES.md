@@ -4,9 +4,7 @@ Libplanet changelog
 Version 4.0.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on January 22, 2024.
 
 ### Backward-incompatible API changes
 
@@ -46,10 +44,6 @@ To be released.
     [[#3512]]
  -  (Libplanet.Common) Removed `EnumerableExtensions` class.  [[#3625], [#3626]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockMetadata.LegacyStateVersion` constant.  [[#3524]]
@@ -67,14 +61,6 @@ To be released.
  -  (Libplanet.Explorer) Added `StateQuery.world` field.  [[#3462]]
  -  (Libplanet.Explorer) Changed `account` and `accounts` query in
     `StateQuery` to be compatible with `stateQuery.world`.  [[#3589]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3462]: https://github.com/planetarium/libplanet/pull/3462
 [#3494]: https://github.com/planetarium/libplanet/pull/3494
