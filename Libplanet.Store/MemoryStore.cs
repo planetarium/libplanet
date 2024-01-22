@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -78,11 +77,11 @@ namespace Libplanet.Store
             _canonicalChainId = chainId;
 
         long IStore.CountIndex(Guid chainId) =>
-            _indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> index) ? index.Count : 0;
+            _indices.TryGetValue(chainId, out var index) ? index.Count : 0;
 
         IEnumerable<BlockHash> IStore.IterateIndexes(Guid chainId, int offset, int? limit)
         {
-            if (_indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> list))
+            if (_indices.TryGetValue(chainId, out var list))
             {
                 IEnumerable<BlockHash> index = list.Skip(offset);
                 return limit is { } l ? index.Take(l) : index;
@@ -93,7 +92,7 @@ namespace Libplanet.Store
 
         BlockHash? IStore.IndexBlockHash(Guid chainId, long index)
         {
-            if (_indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> list))
+            if (_indices.TryGetValue(chainId, out var list))
             {
                 if (index < 0)
                 {
@@ -127,15 +126,15 @@ namespace Libplanet.Store
             BlockHash branchpoint
         )
         {
-            if (_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
+            if (_indices.TryGetValue(sourceChainId, out var source))
             {
                 int bpIndex = source.FindIndex(branchpoint.Equals);
                 _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
             }
         }
 
-        Transaction IStore.GetTransaction(TxId txid) =>
-            _txs.TryGetValue(txid, out object untyped) && untyped is Transaction tx
+        Transaction? IStore.GetTransaction(TxId txid) =>
+            _txs.TryGetValue(txid, out var untyped) && untyped is Transaction tx
                 ? tx
                 : null;
 
@@ -145,7 +144,7 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
 
-        Block IStore.GetBlock(BlockHash blockHash)
+        Block? IStore.GetBlock(BlockHash blockHash)
         {
             if (!_blocks.TryGetValue(blockHash, out BlockDigest digest))
             {
@@ -189,8 +188,8 @@ namespace Libplanet.Store
         void IStore.PutTxExecution(TxExecution txExecution) =>
             _txExecutions[(txExecution.BlockHash, txExecution.TxId)] = txExecution;
 
-        TxExecution IStore.GetTxExecution(BlockHash blockHash, TxId txid) =>
-            _txExecutions.TryGetValue((blockHash, txid), out TxExecution e) ? e : null;
+        TxExecution? IStore.GetTxExecution(BlockHash blockHash, TxId txid) =>
+            _txExecutions.TryGetValue((blockHash, txid), out var e) ? e : null;
 
         void IStore.PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
             _txBlockIndices.AddOrUpdate(
@@ -200,18 +199,18 @@ namespace Libplanet.Store
             );
 
         BlockHash? IStore.GetFirstTxIdBlockHashIndex(TxId txId) =>
-            _txBlockIndices.TryGetValue(txId, out ImmutableHashSet<BlockHash> set) && set.Any()
+            _txBlockIndices.TryGetValue(txId, out var set) && set.Any()
                 ? set.First()
                 : (BlockHash?)null;
 
         IEnumerable<BlockHash> IStore.IterateTxIdBlockHashIndex(TxId txId) =>
-            _txBlockIndices.TryGetValue(txId, out ImmutableHashSet<BlockHash> set)
+            _txBlockIndices.TryGetValue(txId, out var set)
                 ? set
                 : Enumerable.Empty<BlockHash>();
 
         void IStore.DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)
         {
-            while (_txBlockIndices.TryGetValue(txId, out ImmutableHashSet<BlockHash> set) &&
+            while (_txBlockIndices.TryGetValue(txId, out var set) &&
                    set.Contains(blockHash))
             {
                 var removed = set.Remove(blockHash);
@@ -220,12 +219,12 @@ namespace Libplanet.Store
         }
 
         IEnumerable<KeyValuePair<Address, long>> IStore.ListTxNonces(Guid chainId) =>
-            _txNonces.TryGetValue(chainId, out ConcurrentDictionary<Address, long> dict)
+            _txNonces.TryGetValue(chainId, out var dict)
                 ? dict
                 : Enumerable.Empty<KeyValuePair<Address, long>>();
 
         long IStore.GetTxNonce(Guid chainId, Address address) =>
-            _txNonces.TryGetValue(chainId, out ConcurrentDictionary<Address, long> dict) &&
+            _txNonces.TryGetValue(chainId, out var dict) &&
             dict.TryGetValue(address, out long nonce)
                 ? nonce
                 : 0;
@@ -245,7 +244,7 @@ namespace Libplanet.Store
 
         void IStore.ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
-            if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long> dict))
+            if (_txNonces.TryGetValue(sourceChainId, out var dict))
             {
                 _txNonces[destinationChainId] = new ConcurrentDictionary<Address, long>(dict);
             }
@@ -270,8 +269,8 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public BlockCommit GetChainBlockCommit(Guid chainId) =>
-            _chainCommits.TryGetValue(chainId, out BlockCommit commit)
+        public BlockCommit? GetChainBlockCommit(Guid chainId) =>
+            _chainCommits.TryGetValue(chainId, out var commit)
                 ? commit
                 : null;
 
@@ -279,7 +278,7 @@ namespace Libplanet.Store
         public void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit) =>
             _chainCommits[chainId] = blockCommit;
 
-        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+        public BlockCommit? GetBlockCommit(BlockHash blockHash) =>
             _blockCommits.TryGetValue(blockHash, out var commit)
                 ? commit
                 : null;

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -105,7 +104,7 @@ namespace Libplanet.Store
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
-        private readonly MemoryStream _memoryStream;
+        private readonly MemoryStream? _memoryStream;
 
         private readonly LiteDatabase _db;
 
@@ -321,7 +320,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override Transaction GetTransaction(TxId txid)
+        public override Transaction? GetTransaction(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
             {
@@ -501,7 +500,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
-        public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        public override TxExecution? GetTxExecution(BlockHash blockHash, TxId txid)
         {
             UPath path = TxExecutionPath(blockHash, txid);
             if (_txExecutions.FileExists(path))
@@ -632,7 +631,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override BlockCommit GetChainBlockCommit(Guid chainId)
+        public override BlockCommit? GetChainBlockCommit(Guid chainId)
         {
             LiteCollection<BsonDocument> collection = CommitCollection(chainId);
             var docId = new BsonValue("c");
@@ -653,7 +652,7 @@ namespace Libplanet.Store
                 new BsonDocument() { ["v"] = new BsonValue(Codec.Encode(blockCommit.Bencoded)) });
         }
 
-        public override BlockCommit GetBlockCommit(BlockHash blockHash)
+        public override BlockCommit? GetBlockCommit(BlockHash blockHash)
         {
             UPath path = BlockCommitPath(blockHash);
             if (!_blockCommits.FileExists(path))

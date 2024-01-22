@@ -100,7 +100,7 @@ namespace Libplanet.Store
                 }
             }
 
-            Block fetched = Store.GetBlock(key);
+            Block? fetched = Store.GetBlock(key);
             if (fetched is { })
             {
                 _cache.AddReplace(key, fetched);

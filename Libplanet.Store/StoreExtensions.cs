@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +35,7 @@ namespace Libplanet.Store
             {
                 foreach (BlockHash blockHash in from.IterateIndexes(chainId))
                 {
-                    Block block = from.GetBlock(blockHash);
+                    Block block = from.GetBlock(blockHash)!;
                     to.PutBlock(block);
                     to.AppendIndex(chainId, blockHash);
                 }

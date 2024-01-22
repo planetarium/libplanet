@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -46,7 +45,7 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        public abstract Transaction GetTransaction(TxId txid);
+        public abstract Transaction? GetTransaction(TxId txid);
 
         public abstract void PutTransaction(Transaction tx);
 
@@ -54,7 +53,7 @@ namespace Libplanet.Store
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <inheritdoc/>
-        public Block GetBlock(BlockHash blockHash)
+        public Block? GetBlock(BlockHash blockHash)
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
@@ -62,7 +61,7 @@ namespace Libplanet.Store
                 (Types.Tx.TxId TxId, Transaction Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new Types.Tx.TxId(bytes.ToArray()))
                     .OrderBy(txid => txid)
-                    .Select(txid => (txid, GetTransaction(txid)))
+                    .Select(txid => (txid, GetTransaction(txid)!))
                     .ToArray();
 
                 Types.Tx.TxId[] missingTxIds =
@@ -102,7 +101,7 @@ namespace Libplanet.Store
         public abstract void PutTxExecution(TxExecution txExecution);
 
         /// <inheritdoc/>
-        public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
+        public abstract TxExecution? GetTxExecution(BlockHash blockHash, TxId txid);
 
         /// <inheritdoc/>
         public abstract void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
@@ -158,13 +157,13 @@ namespace Libplanet.Store
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <inheritdoc/>
-        public abstract BlockCommit GetChainBlockCommit(Guid chainId);
+        public abstract BlockCommit? GetChainBlockCommit(Guid chainId);
 
         /// <inheritdoc/>
         public abstract void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit);
 
         /// <inheritdoc/>
-        public abstract BlockCommit GetBlockCommit(BlockHash blockHash);
+        public abstract BlockCommit? GetBlockCommit(BlockHash blockHash);
 
         /// <inheritdoc/>
         public abstract void PutBlockCommit(BlockCommit blockCommit);
@@ -180,7 +179,7 @@ namespace Libplanet.Store
             return txExecution.ToBencodex();
         }
 
-        protected static TxExecution DeserializeTxExecution(
+        protected static TxExecution? DeserializeTxExecution(
             BlockHash blockHash,
             TxId txid,
             IValue decoded,

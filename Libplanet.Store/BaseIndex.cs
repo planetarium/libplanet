@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +5,7 @@ using System.Collections.Generic;
 namespace Libplanet.Store
 {
     public abstract class BaseIndex<TKey, TVal> : IDictionary<TKey, TVal>
+        where TKey : notnull
     {
         protected BaseIndex(IStore store)
         {
@@ -93,7 +93,7 @@ namespace Libplanet.Store
             }
             catch (KeyNotFoundException)
             {
-                value = default(TVal);
+                value = default!;
                 return false;
             }
         }

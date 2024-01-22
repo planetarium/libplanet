@@ -299,7 +299,7 @@ public abstract class BlockChainIndexBase : IBlockChainIndex
 
             var blockDigest = store.GetBlockDigest(indexEnumerator.Current)!.Value;
             var txs = blockDigest.TxIds.Select(
-                txId => (ITransaction)store.GetTransaction(new TxId(txId))).ToArray();
+                txId => (ITransaction)store.GetTransaction(new TxId(txId))!).ToArray();
             try
             {
                 await IndexAsyncImpl(blockDigest, txs, addBlockContext, stoppingToken)
