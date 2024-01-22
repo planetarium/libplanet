@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using Bencodex.Types;
 
-namespace Libplanet.Action.State
+namespace Libplanet.Store.Trie
 {
     public class TrieMetadata
     {
