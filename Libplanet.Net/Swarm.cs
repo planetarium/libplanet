@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+#if NETSTANDARD2_0
 using Libplanet.Common;
+#endif
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -594,7 +596,7 @@ namespace Libplanet.Net
                 Block localTip = BlockChain.Tip;
                 IBlockExcerpt topmostTip = peersWithExcerpts
                     .Select(pair => pair.Item2)
-                    .Greatest(tip => tip.Index);
+                    .Aggregate((prev, next) => prev.Index > next.Index ? prev : next);
                 if (topmostTip.Index - (i > 0 ? tipDeltaThreshold : 0L) <= localTip.Index)
                 {
                     const string msg =

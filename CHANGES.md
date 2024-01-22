@@ -44,6 +44,7 @@ To be released.
      -  Removed `IBlockChainStates.GetValidatorSet(BlockHash?)` method.
  -  (@planetarium/tx)  Remove the `T` generic argument of `SignedTx<T>`.
     [[#3512]]
+ -  (Libplanet.Common) Removed `EnumerableExtensions` class.  [[#3625], [#3626]]
 
 ### Backward-incompatible network protocol changes
 
@@ -82,6 +83,8 @@ To be released.
 [#3540]: https://github.com/planetarium/libplanet/pull/3540
 [#3583]: https://github.com/planetarium/libplanet/pull/3583
 [#3589]: https://github.com/planetarium/libplanet/pull/3589
+[#3625]: https://github.com/planetarium/libplanet/issues/3625
+[#3626]: https://github.com/planetarium/libplanet/pull/3626
 
 
 Version 3.9.5
