@@ -1,4 +1,3 @@
-#nullable disable
 using System.Runtime.Serialization;
 
 namespace Libplanet.Common.Serialization
@@ -7,7 +6,7 @@ namespace Libplanet.Common.Serialization
     {
         public static T GetValue<T>(this SerializationInfo info, string name)
         {
-            return (T)info.GetValue(name, typeof(T));
+            return (T)info.GetValue(name, typeof(T))!;
         }
 
         public static bool TryGetValue<T>(
@@ -22,7 +21,7 @@ namespace Libplanet.Common.Serialization
             }
             catch (SerializationException)
             {
-                value = default;
+                value = default!;
                 return false;
             }
         }

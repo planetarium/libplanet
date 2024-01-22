@@ -46,9 +46,7 @@ namespace Libplanet.Common
                 while (Count > Size)
                 {
                     // Ensure we don't exceed the maximum size.
-#nullable disable
                     TryDequeue(out T _);
-#nullable restore
                 }
             }
         }
