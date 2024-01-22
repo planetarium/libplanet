@@ -1,26 +1,29 @@
 using System;
 using System.Numerics;
+using Bencodex;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
 {
-    public class TrieMetadata
+    public class TrieMetadata : IBencodable
     {
         public TrieMetadata(int version)
         {
             Version = version;
         }
 
-        public TrieMetadata(IValue value)
+        public TrieMetadata(IValue bencoded)
+            : this(bencoded is List list
+                ? list
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Binary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
         {
-            if (!(value is List list))
-            {
-                throw new ArgumentException(
-                    $"The given value is not a list: {value}",
-                    nameof(value)
-                );
-            }
+        }
 
+        private TrieMetadata(List list)
+        {
             Version = ((Integer)list[0]).Value;
         }
 
