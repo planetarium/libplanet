@@ -5545,28 +5545,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.ByteUtil.TimingSafelyCompare
   nameWithType: ByteUtil.TimingSafelyCompare
-- uid: Libplanet.Common.EnumerableExtensions
-  name: EnumerableExtensions
-  href: api/Libplanet.Common.EnumerableExtensions.html
-  commentId: T:Libplanet.Common.EnumerableExtensions
-  fullName: Libplanet.Common.EnumerableExtensions
-  nameWithType: EnumerableExtensions
-- uid: Libplanet.Common.EnumerableExtensions.Greatest*
-  name: Greatest
-  href: api/Libplanet.Common.EnumerableExtensions.html#Libplanet_Common_EnumerableExtensions_Greatest_
-  commentId: Overload:Libplanet.Common.EnumerableExtensions.Greatest
-  isSpec: "True"
-  fullName: Libplanet.Common.EnumerableExtensions.Greatest
-  nameWithType: EnumerableExtensions.Greatest
-- uid: Libplanet.Common.EnumerableExtensions.Greatest``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})
-  name: Greatest<TSource, TComparable>(IEnumerable<TSource>, Func<TSource, TComparable>)
-  href: api/Libplanet.Common.EnumerableExtensions.html#Libplanet_Common_EnumerableExtensions_Greatest__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__
-  commentId: M:Libplanet.Common.EnumerableExtensions.Greatest``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})
-  name.vb: Greatest(Of TSource, TComparable)(IEnumerable(Of TSource), Func(Of TSource, TComparable))
-  fullName: Libplanet.Common.EnumerableExtensions.Greatest<TSource, TComparable>(System.Collections.Generic.IEnumerable<TSource>, System.Func<TSource, TComparable>)
-  fullName.vb: Libplanet.Common.EnumerableExtensions.Greatest(Of TSource, TComparable)(System.Collections.Generic.IEnumerable(Of TSource), System.Func(Of TSource, TComparable))
-  nameWithType: EnumerableExtensions.Greatest<TSource, TComparable>(IEnumerable<TSource>, Func<TSource, TComparable>)
-  nameWithType.vb: EnumerableExtensions.Greatest(Of TSource, TComparable)(IEnumerable(Of TSource), Func(Of TSource, TComparable))
 - uid: Libplanet.Common.FixedSizedQueue`1
   name: FixedSizedQueue<T>
   href: api/Libplanet.Common.FixedSizedQueue-1.html
