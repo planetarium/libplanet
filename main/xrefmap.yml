@@ -2533,57 +2533,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.TotalSupplyNotTrackableException.WithDefaultMessage
   nameWithType: TotalSupplyNotTrackableException.WithDefaultMessage
-- uid: Libplanet.Action.State.TrieMetadata
-  name: TrieMetadata
-  href: api/Libplanet.Action.State.TrieMetadata.html
-  commentId: T:Libplanet.Action.State.TrieMetadata
-  fullName: Libplanet.Action.State.TrieMetadata
-  nameWithType: TrieMetadata
-- uid: Libplanet.Action.State.TrieMetadata.#ctor(Bencodex.Types.IValue)
-  name: TrieMetadata(IValue)
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_Bencodex_Types_IValue_
-  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(Bencodex.Types.IValue)
-  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(Bencodex.Types.IValue)
-  nameWithType: TrieMetadata.TrieMetadata(IValue)
-- uid: Libplanet.Action.State.TrieMetadata.#ctor(System.Int32)
-  name: TrieMetadata(Int32)
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_System_Int32_
-  commentId: M:Libplanet.Action.State.TrieMetadata.#ctor(System.Int32)
-  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata(System.Int32)
-  nameWithType: TrieMetadata.TrieMetadata(Int32)
-- uid: Libplanet.Action.State.TrieMetadata.#ctor*
-  name: TrieMetadata
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata__ctor_
-  commentId: Overload:Libplanet.Action.State.TrieMetadata.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.State.TrieMetadata.TrieMetadata
-  nameWithType: TrieMetadata.TrieMetadata
-- uid: Libplanet.Action.State.TrieMetadata.Bencoded
-  name: Bencoded
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Bencoded
-  commentId: P:Libplanet.Action.State.TrieMetadata.Bencoded
-  fullName: Libplanet.Action.State.TrieMetadata.Bencoded
-  nameWithType: TrieMetadata.Bencoded
-- uid: Libplanet.Action.State.TrieMetadata.Bencoded*
-  name: Bencoded
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Bencoded_
-  commentId: Overload:Libplanet.Action.State.TrieMetadata.Bencoded
-  isSpec: "True"
-  fullName: Libplanet.Action.State.TrieMetadata.Bencoded
-  nameWithType: TrieMetadata.Bencoded
-- uid: Libplanet.Action.State.TrieMetadata.Version
-  name: Version
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Version
-  commentId: P:Libplanet.Action.State.TrieMetadata.Version
-  fullName: Libplanet.Action.State.TrieMetadata.Version
-  nameWithType: TrieMetadata.Version
-- uid: Libplanet.Action.State.TrieMetadata.Version*
-  name: Version
-  href: api/Libplanet.Action.State.TrieMetadata.html#Libplanet_Action_State_TrieMetadata_Version_
-  commentId: Overload:Libplanet.Action.State.TrieMetadata.Version
-  isSpec: "True"
-  fullName: Libplanet.Action.State.TrieMetadata.Version
-  nameWithType: TrieMetadata.Version
 - uid: Libplanet.Action.State.World
   name: World
   href: api/Libplanet.Action.State.World.html
@@ -24697,6 +24646,101 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.PathCursor.RemainingNibblesStartWith
   nameWithType: PathCursor.RemainingNibblesStartWith
+- uid: Libplanet.Store.Trie.TrieExtensions
+  name: TrieExtensions
+  href: api/Libplanet.Store.Trie.TrieExtensions.html
+  commentId: T:Libplanet.Store.Trie.TrieExtensions
+  fullName: Libplanet.Store.Trie.TrieExtensions
+  nameWithType: TrieExtensions
+- uid: Libplanet.Store.Trie.TrieExtensions.GetMetadata(Libplanet.Store.Trie.ITrie)
+  name: GetMetadata(ITrie)
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_GetMetadata_Libplanet_Store_Trie_ITrie_
+  commentId: M:Libplanet.Store.Trie.TrieExtensions.GetMetadata(Libplanet.Store.Trie.ITrie)
+  fullName: Libplanet.Store.Trie.TrieExtensions.GetMetadata(Libplanet.Store.Trie.ITrie)
+  nameWithType: TrieExtensions.GetMetadata(ITrie)
+- uid: Libplanet.Store.Trie.TrieExtensions.GetMetadata*
+  name: GetMetadata
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_GetMetadata_
+  commentId: Overload:Libplanet.Store.Trie.TrieExtensions.GetMetadata
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieExtensions.GetMetadata
+  nameWithType: TrieExtensions.GetMetadata
+- uid: Libplanet.Store.Trie.TrieExtensions.MetadataKey
+  name: MetadataKey
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_MetadataKey
+  commentId: F:Libplanet.Store.Trie.TrieExtensions.MetadataKey
+  fullName: Libplanet.Store.Trie.TrieExtensions.MetadataKey
+  nameWithType: TrieExtensions.MetadataKey
+- uid: Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie,Bencodex.Types.IValue)
+  name: SetMetadata(ITrie, IValue)
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_SetMetadata_Libplanet_Store_Trie_ITrie_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie,Bencodex.Types.IValue)
+  fullName: Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie, Bencodex.Types.IValue)
+  nameWithType: TrieExtensions.SetMetadata(ITrie, IValue)
+- uid: Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie,Libplanet.Store.Trie.TrieMetadata)
+  name: SetMetadata(ITrie, TrieMetadata)
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_SetMetadata_Libplanet_Store_Trie_ITrie_Libplanet_Store_Trie_TrieMetadata_
+  commentId: M:Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie,Libplanet.Store.Trie.TrieMetadata)
+  fullName: Libplanet.Store.Trie.TrieExtensions.SetMetadata(Libplanet.Store.Trie.ITrie, Libplanet.Store.Trie.TrieMetadata)
+  nameWithType: TrieExtensions.SetMetadata(ITrie, TrieMetadata)
+- uid: Libplanet.Store.Trie.TrieExtensions.SetMetadata*
+  name: SetMetadata
+  href: api/Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_SetMetadata_
+  commentId: Overload:Libplanet.Store.Trie.TrieExtensions.SetMetadata
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieExtensions.SetMetadata
+  nameWithType: TrieExtensions.SetMetadata
+- uid: Libplanet.Store.Trie.TrieMetadata
+  name: TrieMetadata
+  href: api/Libplanet.Store.Trie.TrieMetadata.html
+  commentId: T:Libplanet.Store.Trie.TrieMetadata
+  fullName: Libplanet.Store.Trie.TrieMetadata
+  nameWithType: TrieMetadata
+- uid: Libplanet.Store.Trie.TrieMetadata.#ctor(Bencodex.Types.IValue)
+  name: TrieMetadata(IValue)
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata__ctor_Bencodex_Types_IValue_
+  commentId: M:Libplanet.Store.Trie.TrieMetadata.#ctor(Bencodex.Types.IValue)
+  fullName: Libplanet.Store.Trie.TrieMetadata.TrieMetadata(Bencodex.Types.IValue)
+  nameWithType: TrieMetadata.TrieMetadata(IValue)
+- uid: Libplanet.Store.Trie.TrieMetadata.#ctor(System.Int32)
+  name: TrieMetadata(Int32)
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata__ctor_System_Int32_
+  commentId: M:Libplanet.Store.Trie.TrieMetadata.#ctor(System.Int32)
+  fullName: Libplanet.Store.Trie.TrieMetadata.TrieMetadata(System.Int32)
+  nameWithType: TrieMetadata.TrieMetadata(Int32)
+- uid: Libplanet.Store.Trie.TrieMetadata.#ctor*
+  name: TrieMetadata
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata__ctor_
+  commentId: Overload:Libplanet.Store.Trie.TrieMetadata.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieMetadata.TrieMetadata
+  nameWithType: TrieMetadata.TrieMetadata
+- uid: Libplanet.Store.Trie.TrieMetadata.Bencoded
+  name: Bencoded
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Bencoded
+  commentId: P:Libplanet.Store.Trie.TrieMetadata.Bencoded
+  fullName: Libplanet.Store.Trie.TrieMetadata.Bencoded
+  nameWithType: TrieMetadata.Bencoded
+- uid: Libplanet.Store.Trie.TrieMetadata.Bencoded*
+  name: Bencoded
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Bencoded_
+  commentId: Overload:Libplanet.Store.Trie.TrieMetadata.Bencoded
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieMetadata.Bencoded
+  nameWithType: TrieMetadata.Bencoded
+- uid: Libplanet.Store.Trie.TrieMetadata.Version
+  name: Version
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Version
+  commentId: P:Libplanet.Store.Trie.TrieMetadata.Version
+  fullName: Libplanet.Store.Trie.TrieMetadata.Version
+  nameWithType: TrieMetadata.Version
+- uid: Libplanet.Store.Trie.TrieMetadata.Version*
+  name: Version
+  href: api/Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Version_
+  commentId: Overload:Libplanet.Store.Trie.TrieMetadata.Version
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.TrieMetadata.Version
+  nameWithType: TrieMetadata.Version
 - uid: Libplanet.Store.TrieStateStore
   name: TrieStateStore
   href: api/Libplanet.Store.TrieStateStore.html
