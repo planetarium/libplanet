@@ -1,15 +1,15 @@
+using System;
 using Bencodex.Types;
-using Libplanet.Store.Trie;
 
-namespace Libplanet.Action.State
+namespace Libplanet.Store.Trie
 {
-    internal static class TrieExtensions
+    public static class TrieExtensions
     {
-        public static readonly KeyBytes Key = new KeyBytes(new byte[] { });
+        public static readonly KeyBytes MetadataKey = new KeyBytes(Array.Empty<byte>());
 
         public static TrieMetadata? GetMetadata(this ITrie trie)
         {
-            if (trie.Get(Key) is { } value)
+            if (trie.Get(MetadataKey) is { } value)
             {
                 return new TrieMetadata(value);
             }
@@ -19,12 +19,12 @@ namespace Libplanet.Action.State
 
         public static ITrie SetMetadata(this ITrie trie, TrieMetadata metadata)
         {
-            return trie.Set(Key, metadata.Bencoded);
+            return trie.Set(MetadataKey, metadata.Bencoded);
         }
 
         public static ITrie SetMetadata(this ITrie trie, IValue encoded)
         {
-            return trie.Set(Key, encoded);
+            return trie.Set(MetadataKey, encoded);
         }
     }
 }
