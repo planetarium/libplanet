@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +16,11 @@ namespace Libplanet.Explorer.Queries
 {
     public class ExplorerQuery : ObjectGraphType
     {
+        private static IBlockChainContext? _chainContext;
+
         public ExplorerQuery(IBlockChainContext chainContext)
         {
-            ChainContext = chainContext;
+            _chainContext = chainContext;
             Field<BlockQuery>("blockQuery", resolve: context => new { });
             Field<TransactionQuery>("transactionQuery", resolve: context => new { });
             Field<StateQuery>("stateQuery", resolve: context => chainContext.BlockChain);
@@ -32,7 +33,7 @@ namespace Libplanet.Explorer.Queries
             Name = "ExplorerQuery";
         }
 
-        private static IBlockChainContext ChainContext { get; set; }
+        private static IBlockChainContext ChainContext => _chainContext!;
 
         private static BlockChain Chain => ChainContext.BlockChain;
 
@@ -111,7 +112,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            Block block = Chain[desc ? tipIndex - offset : offset];
+            Block? block = Chain[desc ? tipIndex - offset : offset];
             while (!(block is null) && (limit is null || limit > 0))
             {
                 foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
@@ -159,7 +160,7 @@ namespace Libplanet.Explorer.Queries
 
         internal static Transaction GetTransaction(TxId id) => Chain.GetTransaction(id);
 
-        private static Block GetNextBlock(Block block, bool desc)
+        private static Block? GetNextBlock(Block block, bool desc)
         {
             if (desc && block.PreviousHash is { } prev)
             {

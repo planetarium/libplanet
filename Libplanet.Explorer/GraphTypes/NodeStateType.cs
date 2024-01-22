@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using GraphQL.Types;
 using Libplanet.Explorer.Interfaces;

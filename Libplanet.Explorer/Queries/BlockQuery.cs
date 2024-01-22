@@ -1,4 +1,3 @@
-#nullable disable
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Crypto;
