@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -206,7 +205,7 @@ namespace Libplanet.KeyStore.Kdfs
                 );
             }
 
-            string saltString;
+            string? saltString;
             try
             {
                 saltString = saltElement.GetString();
@@ -219,7 +218,7 @@ namespace Libplanet.KeyStore.Kdfs
             byte[] salt;
             try
             {
-                salt = ByteUtil.ParseHex(saltString);
+                salt = ByteUtil.ParseHex(saltString!);
             }
             catch (ArgumentNullException)
             {

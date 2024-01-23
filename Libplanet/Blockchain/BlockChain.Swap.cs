@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,7 +56,7 @@ namespace Libplanet.Blockchain
             try
             {
                 // Finds the branch point.
-                Block branchpoint = FindTopCommon(this, other);
+                Block? branchpoint = FindTopCommon(this, other);
 
                 if (branchpoint is null)
                 {
@@ -96,7 +95,7 @@ namespace Libplanet.Blockchain
                     HashSet<TxId> txIdsToUnstage = GetTxIdsWithRange(other, fastForwardPath);
                     foreach (TxId txId in txIdsToStage)
                     {
-                        StagePolicy.Stage(this, Store.GetTransaction(txId));
+                        StagePolicy.Stage(this, Store.GetTransaction(txId)!);
                     }
 
                     Store.SetCanonicalChainId(other.Id);
@@ -171,7 +170,7 @@ namespace Libplanet.Blockchain
 
                 foreach (BlockHash hash in fastForwardPath)
                 {
-                    Block block = Store.GetBlock(hash);
+                    Block block = Store.GetBlock(hash)!;
                     HashDigest<SHA256>? baseStateRootHash =
                         Store.GetStateRootHash(block.PreviousHash);
                     IReadOnlyList<ICommittedActionEvaluation> evaluations =
@@ -331,7 +330,7 @@ namespace Libplanet.Blockchain
         /// and <paramref name="c2"/>. If there is no such <see cref="Block"/>,
         /// returns <see langword="null"/> instead.
         /// </returns>
-        private static Block FindTopCommon(BlockChain c1, BlockChain c2)
+        private static Block? FindTopCommon(BlockChain c1, BlockChain c2)
         {
             long shorterHeight = Math.Min(c1.Count, c2.Count) - 1;
             Block b1 = c1[shorterHeight], b2 = c2[shorterHeight];

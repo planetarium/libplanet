@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -61,7 +60,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Cached genesis block.
         /// </summary>
-        private Block _genesis;
+        private Block? _genesis;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain"/> class by loading
@@ -103,7 +102,7 @@ namespace Libplanet.Blockchain
             Block genesisBlock,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers = null)
+            IEnumerable<IRenderer>? renderers = null)
 #pragma warning disable SA1118  // The parameter spans multiple lines
             : this(
                 policy,
@@ -130,7 +129,7 @@ namespace Libplanet.Blockchain
             Block genesisBlock,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers)
+            IEnumerable<IRenderer>? renderers)
         {
             if (store is null)
             {
@@ -194,7 +193,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         // FIXME: This should be completely replaced by IRenderer.RenderBlock() or any other
         // alternatives.
-        internal event EventHandler<(Block OldTip, Block NewTip)> TipChanged;
+        internal event EventHandler<(Block OldTip, Block NewTip)>? TipChanged;
 
 #pragma warning disable MEN002
         /// <summary>
@@ -350,8 +349,8 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Block genesisBlock,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers = null,
-            IBlockChainStates blockChainStates = null)
+            IEnumerable<IRenderer>? renderers = null,
+            IBlockChainStates? blockChainStates = null)
 #pragma warning restore SA1611  // The documentation for parameters are missing.
         {
             if (store is null)
@@ -494,7 +493,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction.Id"/>.</param>
         /// <returns>The recorded <see cref="TxExecution"/>.  If the transaction has never been
         /// executed within the block, it returns <see langword="null"/> instead.</returns>
-        public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
+        public TxExecution? GetTxExecution(BlockHash blockHash, TxId txid) =>
             Store.GetTxExecution(blockHash, txid);
 
         /// <summary>
@@ -749,7 +748,7 @@ namespace Libplanet.Blockchain
                 Store.ForkBlockIndexes(Id, forkedId, point);
                 if (GetBlockCommit(point) is { } p)
                 {
-                    Store.PutChainBlockCommit(forkedId, GetBlockCommit(point));
+                    Store.PutChainBlockCommit(forkedId, GetBlockCommit(point)!);
                 }
 
                 Store.ForkTxNonces(Id, forked.Id);
@@ -840,7 +839,7 @@ namespace Libplanet.Blockchain
         /// <remarks>The <see cref="BlockChain.Genesis"/> block does not have
         /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
         /// </remarks>
-        public BlockCommit GetBlockCommit(long index)
+        public BlockCommit? GetBlockCommit(long index)
         {
             Block block = this[index];
 
@@ -867,15 +866,15 @@ namespace Libplanet.Blockchain
         /// <remarks>The <see cref="BlockChain.Genesis"/> block does not have
         /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
         /// </remarks>
-        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+        public BlockCommit? GetBlockCommit(BlockHash blockHash) =>
             GetBlockCommit(this[blockHash].Index);
 
 #pragma warning disable MEN003
         internal void Append(
             Block block,
-            BlockCommit blockCommit,
+            BlockCommit? blockCommit,
             bool render,
-            IReadOnlyList<ICommittedActionEvaluation> actionEvaluations = null
+            IReadOnlyList<ICommittedActionEvaluation>? actionEvaluations = null
         )
         {
             if (Count == 0)
@@ -1107,7 +1106,7 @@ namespace Libplanet.Blockchain
         /// by the same address, those with greater nonce never comes before those with
         /// lesser nonce.</returns>
         internal ImmutableList<Transaction> ListStagedTransactions(
-            IComparer<Transaction> txPriority = null
+            IComparer<Transaction>? txPriority = null
         )
         {
             IEnumerable<Transaction> unorderedTxs = StagePolicy.Iterate(this);
@@ -1126,7 +1125,7 @@ namespace Libplanet.Blockchain
             return txs.Select(tx =>
             {
                 LinkedList<Transaction> seat = seats[tx.Signer];
-                Transaction first = seat.First.Value;
+                Transaction first = seat.First!.Value;
                 seat.RemoveFirst();
                 return first;
             }).ToImmutableList();

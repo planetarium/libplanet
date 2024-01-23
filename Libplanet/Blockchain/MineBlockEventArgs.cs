@@ -1,4 +1,3 @@
-#nullable disable
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +84,7 @@ namespace Libplanet.Blockchain
 
         internal void ValidateBlockCommit(
             Block block,
-            BlockCommit blockCommit)
+            BlockCommit? blockCommit)
         {
             if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
             {
@@ -120,7 +119,7 @@ namespace Libplanet.Blockchain
                     $"Block #{block.Hash} BlockCommit is required except for the genesis block.");
             }
 
-            if (block.Index != blockCommit.Height)
+            if (block.Index != blockCommit!.Height)
             {
                 throw new InvalidBlockCommitException(
                     "BlockCommit has height value that is not same with block index. " +

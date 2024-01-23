@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -42,8 +41,8 @@ namespace Libplanet.Blockchain
         // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
             IActionEvaluator actionEvaluator,
-            PrivateKey privateKey = null,
-            ImmutableList<Transaction> transactions = null,
+            PrivateKey? privateKey = null,
+            ImmutableList<Transaction>? transactions = null,
             DateTimeOffset? timestamp = null)
         {
             privateKey ??= new PrivateKey();
@@ -87,8 +86,8 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain.Tip"/> is changed while proposing.</exception>
         public Block ProposeBlock(
             PrivateKey proposer,
-            BlockCommit lastCommit = null,
-            IComparer<Transaction> txPriority = null)
+            BlockCommit? lastCommit = null,
+            IComparer<Transaction>? txPriority = null)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
@@ -143,7 +142,7 @@ namespace Libplanet.Blockchain
         internal Block ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
-            BlockCommit lastCommit)
+            BlockCommit? lastCommit)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
@@ -201,7 +200,7 @@ namespace Libplanet.Blockchain
         /// can be satisfied.</exception>
         internal ImmutableList<Transaction> GatherTransactionsToPropose(
             long index,
-            IComparer<Transaction> txPriority = null) =>
+            IComparer<Transaction>? txPriority = null) =>
             GatherTransactionsToPropose(
                 Policy.GetMaxTransactionsBytes(index),
                 Policy.GetMaxTransactionsPerBlock(index),
@@ -233,7 +232,7 @@ namespace Libplanet.Blockchain
             int maxTransactions,
             int maxTransactionsPerSigner,
             int minTransactions,
-            IComparer<Transaction> txPriority = null)
+            IComparer<Transaction>? txPriority = null)
         {
             long index = Count;
             ImmutableList<Transaction> stagedTransactions = ListStagedTransactions(txPriority);

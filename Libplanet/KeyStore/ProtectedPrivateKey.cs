@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -184,7 +183,7 @@ namespace Libplanet.KeyStore
                     );
                 }
 
-                string str;
+                string? str;
                 try
                 {
                     str = fieldElement.GetString();

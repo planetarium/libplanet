@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -9,11 +8,11 @@ namespace Libplanet.Blockchain.Policies
 {
     public class NullBlockPolicy : IBlockPolicy
     {
-        private readonly BlockPolicyViolationException _exceptionToThrow;
+        private readonly BlockPolicyViolationException? _exceptionToThrow;
         private readonly long _difficulty;
 
         public NullBlockPolicy(
-            BlockPolicyViolationException exceptionToThrow = null,
+            BlockPolicyViolationException? exceptionToThrow = null,
             long difficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
@@ -22,16 +21,16 @@ namespace Libplanet.Blockchain.Policies
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
-        public IAction BlockAction => null;
+        public IAction? BlockAction => null;
 
         public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public virtual TxPolicyViolationException ValidateNextBlockTx(
+        public virtual TxPolicyViolationException? ValidateNextBlockTx(
             BlockChain blockChain, Transaction transaction) => null;
 
-        public virtual BlockPolicyViolationException ValidateNextBlock(
+        public virtual BlockPolicyViolationException? ValidateNextBlock(
             BlockChain blockChain,
             Block nextBlock
         )

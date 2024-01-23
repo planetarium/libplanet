@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -88,7 +87,7 @@ namespace Libplanet.KeyStore.Ciphers
                 );
             }
 
-            string ivString;
+            string? ivString;
             try
             {
                 ivString = ivElement.GetString();
