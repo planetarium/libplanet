@@ -1,4 +1,3 @@
-#nullable disable
 using Libplanet.Stun.Attributes;
 
 namespace Libplanet.Stun.Messages
@@ -9,6 +8,6 @@ namespace Libplanet.Stun.Messages
 
         public override MessageMethod Method => MessageMethod.Refresh;
 
-        public int Lifetime => GetAttribute<Lifetime>().Value;
+        public int Lifetime => GetAttribute<Lifetime>()!.Value;
     }
 }

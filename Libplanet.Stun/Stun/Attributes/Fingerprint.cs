@@ -1,5 +1,3 @@
-#nullable disable
-
 namespace Libplanet.Stun.Attributes
 {
     public class Fingerprint : Attribute
@@ -23,7 +21,7 @@ namespace Libplanet.Stun.Attributes
             return new Fingerprint(payload.ToUInt());
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return _checksum.ToBytes();
         }

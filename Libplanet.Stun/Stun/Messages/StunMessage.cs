@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -76,7 +75,7 @@ namespace Libplanet.Stun.Messages
         /// <summary>
         /// A list of <see cref="Attribute"/> of STUN packet.
         /// </summary>
-        protected IEnumerable<Attribute> Attributes { get; set; }
+        protected IEnumerable<Attribute>? Attributes { get; set; }
 
         /// <summary>
         /// Parses <see cref="StunMessage"/> from <paramref name="stream"/>.
@@ -112,7 +111,7 @@ namespace Libplanet.Stun.Messages
                 transactionId
             );
 
-            StunMessage rv = null;
+            StunMessage? rv = null;
             rv = @class switch
             {
                 MessageClass.SuccessResponse => method switch
@@ -172,7 +171,7 @@ namespace Libplanet.Stun.Messages
 
             if (!string.IsNullOrEmpty(ctx?.Username))
             {
-                attrs.Add(new Username(ctx.Username));
+                attrs.Add(new Username(ctx!.Username!));
             }
 
             if (ctx?.Nonce != null)
@@ -182,7 +181,7 @@ namespace Libplanet.Stun.Messages
 
             if (!string.IsNullOrEmpty(ctx?.Realm))
             {
-                attrs.Add(new Realm(ctx.Realm));
+                attrs.Add(new Realm(ctx!.Realm!));
             }
 
             byte[] encodedAttrs;
@@ -238,7 +237,7 @@ namespace Libplanet.Stun.Messages
 
         internal static IEnumerable<Attribute> ParseAttributes(
             IEnumerable<byte> bytes,
-            byte[] transactionId = null
+            byte[]? transactionId = null
         )
         {
             while (bytes.Any())
@@ -247,7 +246,7 @@ namespace Libplanet.Stun.Messages
                 ushort length = bytes.Skip(2).Take(2).ToUShort();
                 byte[] payload = bytes.Skip(4).Take(length).ToArray();
 
-                Attribute attr = type switch
+                Attribute? attr = type switch
                 {
                     Attribute.AttributeType.ErrorCode => ErrorCode.Parse(payload),
                     Attribute.AttributeType.Realm => Realm.Parse(payload),
@@ -298,9 +297,14 @@ namespace Libplanet.Stun.Messages
                 (type & 0x3e00) >> 2 | (type & 0x00e0) >> 1 | (type & 0x000f));
         }
 
-        protected T GetAttribute<T>()
+        protected T? GetAttribute<T>()
             where T : Attribute
         {
+            if (Attributes is null)
+            {
+                throw new System.InvalidOperationException($"There is no attribute in {this}.");
+            }
+
             foreach (Attribute attr in Attributes)
             {
                 if (attr is T asT)

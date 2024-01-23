@@ -1,5 +1,5 @@
-#nullable disable
 using Libplanet.Stun.Attributes;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace Libplanet.Stun.Messages
 {
@@ -14,7 +14,13 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                return GetAttribute<ConnectionId>()?.Value;
+                if (GetAttribute<ConnectionId>() is { } attribute)
+                {
+                    return attribute.Value;
+                }
+
+                throw new InvalidOperationException(
+                    $"There is no '{nameof(ConnectionId)}' attribute in '{this}'");
             }
         }
     }

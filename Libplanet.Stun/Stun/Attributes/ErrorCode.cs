@@ -1,4 +1,3 @@
-#nullable disable
 using System.IO;
 using System.Text;
 
@@ -28,7 +27,7 @@ namespace Libplanet.Stun.Attributes
             return new ErrorCode(@class * 100 + code, reason);
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             using var ms = new MemoryStream();
             ms.WriteByte(0x00);

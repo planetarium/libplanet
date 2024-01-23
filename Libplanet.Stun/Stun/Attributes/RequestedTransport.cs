@@ -1,5 +1,3 @@
-#nullable disable
-
 namespace Libplanet.Stun.Attributes
 {
     public class RequestedTransport : Attribute
@@ -20,7 +18,7 @@ namespace Libplanet.Stun.Attributes
 
         public override AttributeType Type => AttributeType.RequestedTransport;
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return new byte[] { (byte)_transportType, 0x00, 0x00, 0x00 };
         }

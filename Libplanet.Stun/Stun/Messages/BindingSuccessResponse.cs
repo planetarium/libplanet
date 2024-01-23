@@ -1,6 +1,6 @@
-#nullable disable
 using System.Net;
 using Libplanet.Stun.Attributes;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace Libplanet.Stun.Messages
 {
@@ -14,7 +14,13 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                return GetAttribute<XorMappedAddress>()?.EndPoint;
+                if (GetAttribute<XorMappedAddress>() is { } attribute)
+                {
+                    return attribute.EndPoint;
+                }
+
+                throw new InvalidOperationException(
+                    $"There is no '{nameof(XorMappedAddress)}' attribute in '{this}'");
             }
         }
     }

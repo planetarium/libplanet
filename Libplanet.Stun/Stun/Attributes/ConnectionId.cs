@@ -1,5 +1,3 @@
-#nullable disable
-
 namespace Libplanet.Stun.Attributes
 {
     public class ConnectionId : Attribute
@@ -13,7 +11,7 @@ namespace Libplanet.Stun.Attributes
 
         public byte[] Value { get; }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return Value;
         }

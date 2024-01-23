@@ -1,5 +1,3 @@
-#nullable disable
-
 namespace Libplanet.Stun.Attributes
 {
     public class Nonce : Attribute
@@ -18,7 +16,7 @@ namespace Libplanet.Stun.Attributes
             return new Nonce(value);
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return Value;
         }

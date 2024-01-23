@@ -1,4 +1,3 @@
-#nullable disable
 using System.Security.Cryptography;
 using System.Text;
 
@@ -16,9 +15,9 @@ namespace Libplanet.Stun.Attributes
         public byte[] Value { get; }
 
         public static MessageIntegrity Calculate(
-            string username,
-            string password,
-            string realm,
+            string? username,
+            string? password,
+            string? realm,
             byte[] msg)
         {
             byte[] key = Encoding.ASCII.GetBytes(
@@ -30,7 +29,7 @@ namespace Libplanet.Stun.Attributes
             return new MessageIntegrity(hmac.ComputeHash(msg));
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return Value;
         }

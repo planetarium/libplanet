@@ -1,4 +1,3 @@
-#nullable disable
 using System.Net;
 
 namespace Libplanet.Stun.Attributes
@@ -21,7 +20,7 @@ namespace Libplanet.Stun.Attributes
                 bytes.DecodeStunAddress(transactionId));
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return EndPoint.EncodeStunAddress(transactionId);
         }

@@ -1,4 +1,3 @@
-#nullable disable
 using System.IO;
 
 namespace Libplanet.Stun.Attributes
@@ -139,7 +138,7 @@ namespace Libplanet.Stun.Attributes
 
         public abstract AttributeType Type { get; }
 
-        public byte[] ToByteArray(byte[] transactionId = null)
+        public byte[] ToByteArray(byte[]? transactionId = null)
         {
             var payload = EncodePayload(transactionId);
             using var ms = new MemoryStream();
@@ -156,6 +155,6 @@ namespace Libplanet.Stun.Attributes
             return ms.ToArray();
         }
 
-        protected abstract byte[] EncodePayload(byte[] transactionId);
+        protected abstract byte[] EncodePayload(byte[]? transactionId);
     }
 }

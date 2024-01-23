@@ -1,4 +1,3 @@
-#nullable disable
 using System.Text;
 
 namespace Libplanet.Stun.Attributes
@@ -19,7 +18,7 @@ namespace Libplanet.Stun.Attributes
             return new Realm(Encoding.ASCII.GetString(payload));
         }
 
-        protected override byte[] EncodePayload(byte[] transactionId)
+        protected override byte[] EncodePayload(byte[]? transactionId)
         {
             return Encoding.ASCII.GetBytes(Value);
         }

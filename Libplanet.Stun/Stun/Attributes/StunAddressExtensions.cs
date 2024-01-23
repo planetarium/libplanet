@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.IO;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace Libplanet.Stun.Attributes
         }
 
         public static byte[] EncodeStunAddress(
-            this IPEndPoint endpoint, byte[] transactionId
+            this IPEndPoint endpoint, byte[]? transactionId
         )
         {
             uint cookie = StunMessage.MagicCookie.ToUInt();
@@ -93,7 +92,7 @@ namespace Libplanet.Stun.Attributes
         }
 
         public static IPEndPoint DecodeStunAddress(
-            this byte[] encoded, byte[] transactionId
+            this byte[] encoded, byte[]? transactionId
         )
         {
             uint cookie = StunMessage.MagicCookie.ToUInt();
@@ -110,7 +109,7 @@ namespace Libplanet.Stun.Attributes
                 ? (int)(portBytes.ToUShort() ^ (cookie >> 16))
                 : portBytes.ToUShort();
 
-            byte[] addrBytes = null;
+            byte[]? addrBytes = null;
             switch (family)
             {
                 case StunAf.IpV4:
@@ -132,7 +131,7 @@ namespace Libplanet.Stun.Attributes
                     {
                         addrBytes[index] ^= index < 4
                             ? StunMessage.MagicCookie[index]
-                            : transactionId[index - 4];
+                            : transactionId![index - 4];
                     }
 
                     break;

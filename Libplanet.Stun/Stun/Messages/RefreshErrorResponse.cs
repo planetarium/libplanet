@@ -1,4 +1,3 @@
-#nullable disable
 using Libplanet.Stun.Attributes;
 
 namespace Libplanet.Stun.Messages
@@ -13,7 +12,7 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                ErrorCode attr = GetAttribute<ErrorCode>();
+                ErrorCode attr = GetAttribute<ErrorCode>()!;
                 return attr.Code;
             }
         }
@@ -22,7 +21,7 @@ namespace Libplanet.Stun.Messages
         {
             get
             {
-                Nonce attr = GetAttribute<Nonce>();
+                Nonce attr = GetAttribute<Nonce>()!;
                 return attr.Value;
             }
         }

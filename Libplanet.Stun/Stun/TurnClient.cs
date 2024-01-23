@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,10 +32,12 @@ namespace Libplanet.Stun
         private readonly AsyncProducerConsumerQueue<ConnectionAttempt> _connectionAttempts;
         private readonly ILogger _logger;
 
-        private TcpClient _control;
-        private Task _processMessage;
+        private TcpClient? _control;
+        private Task? _processMessage;
         private CancellationTokenSource _turnTaskCts;
-        private List<Task> _turnTasks;
+        private List<Task>? _turnTasks;
+        private IPAddress? _publicAddress;
+        private DnsEndPoint? _endPoint;
 
         internal TurnClient(
             string host,
@@ -60,17 +61,27 @@ namespace Libplanet.Stun
             _logger = Log.ForContext<TurnClient>();
         }
 
-        public string Username { get; }
+        public string? Username { get; }
 
-        public string Password { get; }
+        public string? Password { get; }
 
-        public string Realm { get; private set; }
+        public string? Realm { get; private set; }
 
-        public byte[] Nonce { get; private set; }
+        public byte[]? Nonce { get; private set; }
 
-        public IPAddress PublicAddress { get; private set; }
+        public IPAddress PublicAddress
+        {
+            get => _publicAddress ??
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            private set => _publicAddress = value;
+        }
 
-        public DnsEndPoint EndPoint { get; private set; }
+        public DnsEndPoint EndPoint
+        {
+            get => _endPoint ??
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            private set => _endPoint = value;
+        }
 
         public bool BehindNAT { get; private set; }
 
@@ -138,6 +149,11 @@ namespace Libplanet.Stun
 
         public async Task ReconnectTurn(int listenPort, CancellationToken cancellationToken)
         {
+            if (_processMessage is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
@@ -149,7 +165,7 @@ namespace Libplanet.Stun
                         _turnTasks.Add(RefreshAllocate(_turnTaskCts.Token));
                     }
 
-                    _turnTasks.Add(_processMessage);
+                    _turnTasks!.Add(_processMessage);
 
                     await Task.WhenAny(_turnTasks);
                 }
@@ -181,6 +197,11 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             StunMessage response;
             int retry = 0;
@@ -214,6 +235,11 @@ namespace Libplanet.Stun
             IPEndPoint peerAddress,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -269,6 +295,11 @@ namespace Libplanet.Stun
         public async Task<IPEndPoint> GetMappedAddressAsync(
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request, cancellationToken);
@@ -291,6 +322,11 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -317,6 +353,11 @@ namespace Libplanet.Stun
         public async Task<bool> IsBehindNAT(
             CancellationToken cancellationToken = default)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             IPEndPoint mapped = await GetMappedAddressAsync(cancellationToken);
             return !_control.Client.LocalEndPoint.Equals(mapped);
         }
@@ -437,6 +478,11 @@ namespace Libplanet.Stun
 
         private async Task ProcessMessage(CancellationToken cancellationToken)
         {
+            if (_control is null)
+            {
+                throw new InvalidOperationException($"'{nameof(TurnClient)}' is not initialized.");
+            }
+
             while (!cancellationToken.IsCancellationRequested && _control.Connected)
             {
                 try
@@ -452,7 +498,7 @@ namespace Libplanet.Stun
                     }
                     else if (_responses.TryGetValue(
                         message.TransactionId,
-                        out TaskCompletionSource<StunMessage> tcs))
+                        out var tcs))
                     {
                         // tcs may be already canceled.
                         tcs.TrySetResult(message);
@@ -493,7 +539,7 @@ namespace Libplanet.Stun
             _control?.Dispose();
             _turnTaskCts.Cancel();
             _turnTaskCts.Dispose();
-            _turnTasks.Clear();
+            _turnTasks?.Clear();
             ClearResponses();
 
             foreach (TcpClient relays in _relayedClients)
@@ -514,7 +560,7 @@ namespace Libplanet.Stun
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>
         {
-            public bool Equals(byte[] x, byte[] y)
+            public bool Equals(byte[]? x, byte[]? y)
             {
                 if (x == null || y == null)
                 {
