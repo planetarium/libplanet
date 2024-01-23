@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -34,7 +33,7 @@ namespace Libplanet.Net
         /// Optional extra data about the version.  This can be used for any purpose
         /// by apps, such as a URL to download the software.
         /// </summary>
-        public readonly IValue Extra;
+        public readonly IValue? Extra;
 
         /// <summary>
         /// A signer who claims presence of a version.
@@ -54,7 +53,7 @@ namespace Libplanet.Net
         /// <param name="signer">Gets the <see cref="Signer"/>.</param>
         public AppProtocolVersion(
             int version,
-            IValue extra,
+            IValue? extra,
             ImmutableArray<byte> signature,
             Address signer
         )
@@ -121,7 +120,7 @@ namespace Libplanet.Net
         /// <returns>A signed version claim.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="signer"/> is
         /// <see langword="null"/>.</exception>
-        public static AppProtocolVersion Sign(PrivateKey signer, int version, IValue extra = null)
+        public static AppProtocolVersion Sign(PrivateKey signer, int version, IValue? extra = null)
         {
             if (signer is null)
             {
@@ -201,7 +200,7 @@ namespace Libplanet.Net
                 throw new FormatException("Failed to parse a signature", e);
             }
 
-            IValue extra = null;
+            IValue? extra = null;
             if (pos >= 0)
             {
                 pos++;
@@ -246,7 +245,7 @@ namespace Libplanet.Net
 
         /// <inheritdoc/>
         [Pure]
-        public override bool Equals(object obj) =>
+        public override bool Equals(object? obj) =>
             obj is AppProtocolVersion other && Equals(other);
 
         /// <inheritdoc/>
@@ -279,7 +278,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <returns>A deterministic message to sign.</returns>
         [Pure]
-        private static byte[] GetMessage(int version, IValue extra)
+        private static byte[] GetMessage(int version, IValue? extra)
         {
             byte[] msg = NetworkOrderBitsConverter.GetBytes(version);
             if (!(extra is null))

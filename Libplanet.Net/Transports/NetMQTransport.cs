@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -37,12 +36,12 @@ namespace Libplanet.Net.Transports
         private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
 
-        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
+        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
 
-        private RouterSocket _router;
-        private NetMQPoller _routerPoller;
-        private TurnClient _turnClient;
-        private DnsEndPoint _hostEndPoint;
+        private RouterSocket? _router;
+        private NetMQPoller? _routerPoller;
+        private TurnClient? _turnClient;
+        private DnsEndPoint? _hostEndPoint;
 
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -129,7 +128,9 @@ namespace Libplanet.Net.Transports
         /// <inheritdoc/>
         public BoundPeer AsPeer => _turnClient is TurnClient turnClient
             ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint, turnClient.PublicAddress)
-            : new BoundPeer(_privateKey.PublicKey, _hostEndPoint);
+            : new BoundPeer(
+                _privateKey.PublicKey,
+                _hostEndPoint ?? throw new InvalidOperationException());
 
         /// <inheritdoc/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
@@ -196,6 +197,12 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
+            if (_router is null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(NetMQTransport)} is not initialized.");
+            }
+
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
@@ -234,6 +241,11 @@ namespace Libplanet.Net.Transports
 
             if (Running)
             {
+                if (_replyQueue is null || _router is null || _routerPoller is null)
+                {
+                    throw new InvalidOperationException($"{nameof(NetMQTransport)} did not start.");
+                }
+
                 await Task.Delay(waitFor, cancellationToken);
 
                 _replyQueue.ReceiveReady -= DoReply;
@@ -461,7 +473,7 @@ namespace Libplanet.Net.Transports
             }
             catch (ChannelClosedException ce)
             {
-                throw WrapCommunicationFailException(ce.InnerException, peer, content, reqId);
+                throw WrapCommunicationFailException(ce.InnerException!, peer, content, reqId);
             }
             catch (Exception e)
             {
@@ -510,12 +522,17 @@ namespace Libplanet.Net.Transports
         /// <inheritdoc/>
         public async Task ReplyMessageAsync(
             MessageContent content,
-            byte[] identity,
+            byte[]? identity,
             CancellationToken cancellationToken)
         {
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(NetMQTransport));
+            }
+
+            if (_replyQueue is null)
+            {
+                throw new InvalidOperationException($"{nameof(NetMQTransport)} did not start.");
             }
 
             string reqId = !(identity is null) && identity.Length == 16
@@ -582,7 +599,7 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
+        private void ReceiveMessage(object? sender, NetMQSocketEventArgs e)
         {
             try
             {
@@ -700,7 +717,7 @@ namespace Libplanet.Net.Transports
         }
 
         private void DoReply(
-            object sender,
+            object? sender,
             NetMQQueueEventArgs<(AsyncManualResetEvent, NetMQMessage)> e
         )
         {
@@ -711,7 +728,7 @@ namespace Libplanet.Net.Transports
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
                     "{Message} as a reply to {Identity} sent", messageType, reqId);

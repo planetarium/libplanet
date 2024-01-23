@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -169,7 +168,7 @@ namespace Libplanet.Net.Transports
         /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
         Task ReplyMessageAsync(
             MessageContent content,
-            byte[] identity,
+            byte[]? identity,
             CancellationToken cancellationToken);
     }
 }
