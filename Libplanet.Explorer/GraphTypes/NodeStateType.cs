@@ -12,15 +12,15 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "NodeState";
 
             Field<NonNullGraphType<BooleanGraphType>>(
-                "preloaded",
+                name: "preloaded",
                 resolve: context => context.Source.Preloaded
             );
-            Field<ListGraphType<NonNullGraphType<BoundPeerType>>>(
-                "peers",
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BoundPeerType>>>>(
+                name: "peers",
                 resolve: context => context.Source.Swarm?.Peers ?? new List<BoundPeer>()
             );
-            Field<ListGraphType<NonNullGraphType<BoundPeerType>>>(
-                "validators",
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BoundPeerType>>>>(
+                name: "validators",
                 resolve: context => context.Source.Swarm?.Validators ?? new List<BoundPeer>()
             );
         }
