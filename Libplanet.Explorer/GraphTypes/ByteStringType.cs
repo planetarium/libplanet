@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
@@ -13,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "ByteString";
         }
 
-        public override object Serialize(object value)
+        public override object? Serialize(object? value)
         {
             return value switch
             {
@@ -23,7 +22,7 @@ namespace Libplanet.Explorer.GraphTypes
             };
         }
 
-        public override object ParseValue(object value)
+        public override object? ParseValue(object? value)
         {
             switch (value)
             {
@@ -36,7 +35,7 @@ namespace Libplanet.Explorer.GraphTypes
             }
         }
 
-        public override object ParseLiteral(IValue value)
+        public override object? ParseLiteral(IValue value)
         {
             return value switch
             {

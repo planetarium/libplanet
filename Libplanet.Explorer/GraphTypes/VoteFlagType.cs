@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
@@ -13,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "VoteFlag";
         }
 
-        public override object Serialize(object value)
+        public override object? Serialize(object? value)
         {
             if (value is VoteFlag flag)
             {
@@ -33,7 +32,7 @@ namespace Libplanet.Explorer.GraphTypes
             throw new ArgumentException($"Expected a voteflag, but {value}", nameof(value));
         }
 
-        public override object ParseValue(object value)
+        public override object? ParseValue(object? value)
         {
             if (value is string flag)
             {
@@ -58,7 +57,7 @@ namespace Libplanet.Explorer.GraphTypes
                 $"Expected a voteflag string but {value}", nameof(value));
         }
 
-        public override object ParseLiteral(IValue value)
+        public override object? ParseLiteral(IValue value)
         {
             if (value is StringValue)
             {

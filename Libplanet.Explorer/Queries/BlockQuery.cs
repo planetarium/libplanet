@@ -1,4 +1,3 @@
-#nullable disable
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Crypto;
@@ -14,23 +13,42 @@ namespace Libplanet.Explorer.Queries
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType>>>>(
                 "blocks",
                 arguments: new QueryArguments(
-                    new QueryArgument<BooleanGraphType>
+                    new QueryArgument<NonNullGraphType<BooleanGraphType>>
                     {
                         Name = "desc",
+                        Description = "Whether to query blocks in descending order or not.",
                         DefaultValue = false,
+                    },
+                    new QueryArgument<NonNullGraphType<IntGraphType>>
+                    {
+                        Name = "offset",
+                        Description = "The offset of the first queried block.",
+                        DefaultValue = 0,
                     },
                     new QueryArgument<IntGraphType>
                     {
-                        Name = "offset",
-                        DefaultValue = 0,
+                        Name = "limit",
+                        Description =
+                            "The maximum number of blocks to return.  This limits the " +
+                            "offset index range to query, not the result, i.e. excluded " +
+                            "blocks due to a block being empty or not matching the miner " +
+                            "(if specified in other arguments) are still counted.",
                     },
-                    new QueryArgument<IntGraphType> { Name = "limit" },
-                    new QueryArgument<BooleanGraphType>
+                    new QueryArgument<NonNullGraphType<BooleanGraphType>>
                     {
                         Name = "excludeEmptyTxs",
+                        Description =
+                            "Whether to include empty blocks with no transactions or not. " +
+                            "Default is set to false, i.e. to return empty blocks.",
                         DefaultValue = false,
                     },
-                    new QueryArgument<AddressType> { Name = "miner" }
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "miner",
+                        Description =
+                            "If not null, returns blocks only by mined by the address given. " +
+                            "Default is set to null.",
+                    }
                 ),
                 resolve: context =>
                 {

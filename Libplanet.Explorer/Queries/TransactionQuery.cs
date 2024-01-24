@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -260,7 +259,7 @@ namespace Libplanet.Explorer.Queries
         /// must contain.</param>
         /// <returns>The <see cref="Block"/> containing <paramref name="txId"/> if found,
         /// otherwise <see langword="null"/>.</returns>
-        private static Block GetBlockContainingTx(IBlockChainContext context, TxId txId)
+        private static Block? GetBlockContainingTx(IBlockChainContext context, TxId txId)
         {
             // Try searching index first.
             if (context.Index is { } index)
