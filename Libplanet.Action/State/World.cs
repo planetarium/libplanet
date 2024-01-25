@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
@@ -55,18 +56,20 @@ namespace Libplanet.Action.State
         {
             if (Legacy && !address.Equals(ReservedAddresses.LegacyAccount))
             {
-                return this;
+                throw new ArgumentException(
+                    $"Cannot set a non-legacy account ({address}) to a legacy {nameof(IWorld)}.",
+                    nameof(address));
             }
 
             if (!address.Equals(ReservedAddresses.LegacyAccount)
                 && account.TotalUpdatedFungibleAssets.Count > 0)
             {
-                return this;
+                throw new ArgumentException(
+                    $"Cannot set a non-legacy account ({address}) with an updated fungible assets.",
+                    nameof(address));
             }
 
-            return new World(
-                _baseState,
-                Delta.SetAccount(address, account));
+            return new World(_baseState, Delta.SetAccount(address, account));
         }
     }
 }
