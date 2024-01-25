@@ -106,13 +106,13 @@ namespace Libplanet.Tests.Action
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(txAddress)!);
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(txAddress)!);
             }
 
             for (int i = 1; i < generatedRandomNumbers.Count; ++i)
@@ -151,7 +151,7 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
             Block block = chain.ProposeBlock(miner);
-            chain.Append(block, CreateBlockCommit(block));
+            chain.Append(block, CreateBlockCommit(block)!);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Action
                 .GetWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(action.BlockIndexKey);
-            Assert.Equal((long)(Integer)state, blockIndex);
+            Assert.Equal((long)(Integer)state!, blockIndex);
         }
 
         [Fact]
@@ -201,7 +201,7 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             Block block = chain.ProposeBlock(new PrivateKey());
-            chain.Append(block, CreateBlockCommit(block));
+            chain.Append(block, CreateBlockCommit(block)!);
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Action
             Assert.IsType<UnexpectedlyTerminatedActionException>(
                 evaluations.Single().Exception);
             Assert.IsType<ThrowException.SomeException>(
-                evaluations.Single().Exception.InnerException);
+                evaluations.Single().Exception!.InnerException);
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace Libplanet.Tests.Action
             int randomValue = 0;
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
-            (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
+            (int TxIdx, int ActionIdx, string?[] UpdatedStates, Address Signer)[] expectations =
             {
                 (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
                 (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
@@ -377,7 +377,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(
                     (Integer)eval.OutputState
                         .GetAccount(ReservedAddresses.LegacyAccount)
-                        .GetState(DumbAction.RandomRecordsAddress),
+                        .GetState(DumbAction.RandomRecordsAddress)!,
                     (Integer)randomValue);
                 Assert.Equal(
                     expect.UpdatedStates,
@@ -496,7 +496,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
-                List<string> updatedStates = addresses
+                List<string?> updatedStates = addresses
                     .Select(eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
                     .Select(x => x is Text t ? t.Value : null)
                     .ToList();
@@ -582,7 +582,7 @@ namespace Libplanet.Tests.Action
                 previousState: previousState).ToImmutableArray();
 
             Assert.Equal(actions.Length, evaluations.Length);
-            string[][] expectedStates =
+            string?[][] expectedStates =
             {
                 new[] { "0", null, null },
                 new[] { "0", "1", null },
@@ -611,9 +611,9 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(
                     (Integer)eval.OutputState
                         .GetAccount(ReservedAddresses.LegacyAccount)
-                        .GetState(DumbAction.RandomRecordsAddress),
+                        .GetState(DumbAction.RandomRecordsAddress)!,
                     (Integer)eval.InputContext.GetRandom().Next());
-                IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
+                IActionEvaluation? prevEval = i > 0 ? evaluations[i - 1] : null;
                 Assert.Equal(
                     prevEval is null
                         ? initStates
@@ -804,7 +804,7 @@ namespace Libplanet.Tests.Action
                 {
                     Assert.Empty(outputState.Trie.Diff(prevState.Trie));
                     Assert.IsType<UnexpectedlyTerminatedActionException>(eval.Exception);
-                    Assert.IsType<InvalidOperationException>(eval.Exception.InnerException);
+                    Assert.IsType<InvalidOperationException>(eval.Exception!.InnerException);
                 }
                 else
                 {
@@ -841,7 +841,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)1,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(genesis.Miner));
+                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(genesis.Miner)!);
             Assert.True(evaluation.InputContext.BlockAction);
 
             previousState = evaluation.OutputState;
@@ -851,10 +851,10 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
+                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner)!);
             Assert.True(evaluation.InputContext.BlockAction);
 
-            chain.Append(block, CreateBlockCommit(block), render: true);
+            chain.Append(block, CreateBlockCommit(block)!, render: true);
             previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
@@ -865,7 +865,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
+                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner)!);
         }
 
         [Theory]
@@ -1307,14 +1307,14 @@ namespace Libplanet.Tests.Action
                 miner: miner.PublicKey,
                 protocolVersion: BlockMetadata.LegacyStateVersion);
             var block1 = chain.EvaluateAndSign(preEval1, miner);
-            var blockCommit = CreateBlockCommit(block1);
+            var blockCommit = CreateBlockCommit(block1)!;
             chain.Append(block1, blockCommit);
             Log.Debug("Is World Legacy?");
             Assert.True(chain.GetWorldState().Legacy);
 
             // A block that doesn't touch any state does not migrate its state.
             var block2 = chain.ProposeBlock(miner, blockCommit);
-            blockCommit = CreateBlockCommit(block2);
+            blockCommit = CreateBlockCommit(block2)!;
             chain.Append(block2, blockCommit);
             Log.Debug("Is World Legacy?");
             Assert.True(chain.GetWorldState().Legacy);
@@ -1333,10 +1333,10 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var block3 = chain.ProposeBlock(miner, blockCommit);
-            chain.Append(block3, CreateBlockCommit(block3));
+            chain.Append(block3, CreateBlockCommit(block3)!);
             Assert.False(chain.GetWorldState().Legacy);
             var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
-                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
+                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress))!;
             Assert.NotNull(accountStateRoot);
             var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
             Assert.Equal(
@@ -1345,7 +1345,7 @@ namespace Libplanet.Tests.Action
         }
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
-            PrivateKey privateKey = null,
+            PrivateKey? privateKey = null,
             DateTimeOffset epoch = default)
         {
             Address[] addresses =
@@ -1429,9 +1429,9 @@ namespace Libplanet.Tests.Action
             public static readonly Address Address
                 = new Address("1234000000000000000000000000000000000000");
 
-            public string Memo { get; set; }
+            public string? Memo { get; set; }
 
-            public IValue PlainValue => new List((Text)Memo);
+            public IValue PlainValue => new List((Text)Memo!);
 
             public void LoadPlainValue(IValue plainValue)
             {
@@ -1445,7 +1445,7 @@ namespace Libplanet.Tests.Action
                     .SetAccount(
                         AccountAddress,
                         context.PreviousState.GetAccount(AccountAddress)
-                            .SetState(Address, (Text)Memo));
+                            .SetState(Address, (Text)Memo!));
             }
         }
 
@@ -1453,7 +1453,7 @@ namespace Libplanet.Tests.Action
         {
             public long GasUsage { get; set; }
 
-            public string Memo { get; set; }
+            public string? Memo { get; set; }
 
             public FungibleAssetValue? MintValue { get; set; }
 
@@ -1461,7 +1461,7 @@ namespace Libplanet.Tests.Action
 
             public IValue PlainValue => new List(
                 (Integer)GasUsage,
-                (Text)Memo,
+                (Text)Memo!,
                 MintValue is null ? (IValue)default(Null) : MintValue.Value.Serialize(),
                 Receiver is null ? (IValue)default(Null) : (IValue)(Binary)Receiver.Value.ByteArray
                 );
@@ -1489,7 +1489,7 @@ namespace Libplanet.Tests.Action
                     .SetAccount(
                         ReservedAddresses.LegacyAccount,
                         context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
-                            .SetState(context.Signer, (Text)Memo));
+                            .SetState(context.Signer, (Text)Memo!));
                 if (!(Receiver is null) && !(MintValue is null))
                 {
                     state = state.SetAccount(

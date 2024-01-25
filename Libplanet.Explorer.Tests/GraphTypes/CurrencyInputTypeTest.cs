@@ -60,7 +60,7 @@ public class CurrencyInputTypeTest
                 }",
                 new Dictionary<string, object>
                 {
-                    ["currency"] = new Dictionary<string, object>
+                    ["currency"] = new Dictionary<string, object?>
                     {
                         ["ticker"] = "ABC",
                         ["decimalPlaces"] = (byte)5,
@@ -82,7 +82,7 @@ public class CurrencyInputTypeTest
                 }",
                 new Dictionary<string, object>
                 {
-                    ["currency"] = new Dictionary<string, object>
+                    ["currency"] = new Dictionary<string, object?>
                     {
                         ["ticker"] = "ABC",
                         ["decimalPlaces"] = (byte)5,

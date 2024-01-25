@@ -39,7 +39,7 @@ namespace Libplanet.Explorer.Queries
 
         private static IStore Store => ChainContext.Store;
 
-        private static IBlockChainIndex Index => ChainContext.Index;
+        private static IBlockChainIndex Index => ChainContext.Index!;
 
         internal static IEnumerable<Block> ListBlocks(
             bool desc,

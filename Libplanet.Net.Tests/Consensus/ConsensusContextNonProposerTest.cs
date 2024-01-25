@@ -162,9 +162,9 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
 
-            blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1]));
+            blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1])!);
             await proposalSent.WaitAsync();
 
             Assert.Equal(2, consensusContext.Height);
@@ -267,7 +267,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            var createdLastCommit = TestUtils.CreateBlockCommit(block);
+            var createdLastCommit = TestUtils.CreateBlockCommit(block)!;
             blockChain.Append(block, createdLastCommit);
 
             // Context for height #2 where node #2 is the proposer is automatically started

@@ -124,7 +124,7 @@ consecutive blocks.")]
                 "app-protocol-version",
                 new[] { 'V' },
                 Description = "An app protocol version token.")]
-            string appProtocolVersionToken = null,
+            string? appProtocolVersionToken = null,
             [Option(
                 "max-transactions-per-block",
                 Description = @"The number of maximum transactions able to be included
@@ -147,12 +147,14 @@ in the genesis block.")]
 seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
 E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
 If omitted (default) explorer only the local blockchain store.")]
-            string[] seedStrings = null,
+#pragma warning disable SA1011
+            string[]? seedStrings = null,
+#pragma warning restore SA1011
             [Option(
                 "ice-server",
                 new[] { 'I' },
                 Description = "URL to ICE server (TURN/STUN) to work around NAT.")]
-            string iceServerUrl = null
+            string? iceServerUrl = null
         )
         {
             Options options = new Options(
@@ -213,11 +215,11 @@ If omitted (default) explorer only the local blockchain store.")]
                     .UseUrls($"http://{options.Host}:{options.Port}/")
                     .Build();
 
-                Swarm swarm = null;
+                Swarm? swarm = null;
                 if (!(options.Seeds is null))
                 {
                     string aggregatedSeedStrings =
-                        options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1);
+                        options.SeedStrings!.Aggregate(string.Empty, (s, s1) => s + s1);
                     Console.Error.WriteLine(
                         $"Seeds are {aggregatedSeedStrings}");
 
@@ -294,7 +296,13 @@ If omitted (default) explorer only the local blockchain store.")]
                     }
                     catch (OperationCanceledException)
                     {
-                        await swarm?.StopAsync(waitFor: TimeSpan.FromSeconds(1))
+                        if (swarm is null)
+                        {
+                            throw new InvalidOperationException(
+                                $"'{nameof(swarm)}' cannot be null");
+                        }
+
+                        await swarm.StopAsync(waitFor: TimeSpan.FromSeconds(1))
                             .ContinueWith(_ => NetMQConfig.Cleanup(false));
                     }
                 }
@@ -349,7 +357,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
-        private static async Task StartSwarmAsync(Swarm swarm, CancellationToken cancellationToken)
+        private static async Task StartSwarmAsync(Swarm? swarm, CancellationToken cancellationToken)
         {
             if (swarm is null)
             {
@@ -384,7 +392,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 _impl = blockPolicy;
             }
 
-            public IAction BlockAction => _impl.BlockAction;
+            public IAction? BlockAction => _impl.BlockAction;
 
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
@@ -397,12 +405,12 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public long GetNextBlockDifficulty(BlockChain blocks) => 0;
 
-            public TxPolicyViolationException ValidateNextBlockTx(
+            public TxPolicyViolationException? ValidateNextBlockTx(
                 BlockChain blockChain,
                 Transaction transaction) =>
                 _impl.ValidateNextBlockTx(blockChain, transaction);
 
-            public BlockPolicyViolationException ValidateNextBlock(
+            public BlockPolicyViolationException? ValidateNextBlock(
                 BlockChain blockChain,
                 Block nextBlock
             ) => _impl.ValidateNextBlock(blockChain, nextBlock);
@@ -415,32 +423,32 @@ If omitted (default) explorer only the local blockchain store.")]
         {
             public bool Preloaded => PreloadedSingleton;
 
-            public BlockChain BlockChain => BlockChainSingleton;
+            public BlockChain BlockChain => BlockChainSingleton!;
 
-            public IStore Store => StoreSingleton;
+            public IStore Store => StoreSingleton!;
 
-            public Swarm Swarm => SwarmSingleton;
+            public Swarm Swarm => SwarmSingleton!;
 
             // XXX workaround for build; we decided to decommission Libplanet.Explorer.Executable
             // project, but it will be removed after we move the schema command. As this project
             // does not work as is, this change is barely enough to allow the build.
             // See also: https://github.com/planetarium/libplanet/discussions/2588
-            public IBlockChainIndex Index => null;
+            public IBlockChainIndex Index => null!;
 
             internal static bool PreloadedSingleton { get; set; }
 
-            internal static BlockChain BlockChainSingleton { get; set; }
+            internal static BlockChain? BlockChainSingleton { get; set; }
 
-            internal static IStore StoreSingleton { get; set; }
+            internal static IStore? StoreSingleton { get; set; }
 
-            internal static Swarm SwarmSingleton { get; set; }
+            internal static Swarm? SwarmSingleton { get; set; }
         }
 
         private class NoOpStateStore : IStateStore
         {
-            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null;
+            public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) => null!;
 
-            public ITrie Commit(ITrie trie) => null;
+            public ITrie Commit(ITrie trie) => null!;
 
             public void Dispose()
             {

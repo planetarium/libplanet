@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Tx
             var txId = random.NextTxId();
             var inputState = random.NextHashDigest<SHA256>();
             var outputState = random.NextHashDigest<SHA256>();
-            var exceptionNames = new List<string>() { exceptionName };
+            var exceptionNames = new List<string?>() { exceptionName };
             var execution = new TxExecution(
                 blockHash,
                 txId,
@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Tx
                 true,
                 random.NextHashDigest<SHA256>(),
                 random.NextHashDigest<SHA256>(),
-                new List<string>() { null, "SomeException", "AnotherException" });
+                new List<string?>() { null, "SomeException", "AnotherException" });
             var encoded = execution.ToBencodex();
             var decoded = new TxExecution(
                 execution.BlockHash,
@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Tx
             var txId = random.NextTxId();
             var inputState = random.NextHashDigest<SHA256>();
             var outputState = random.NextHashDigest<SHA256>();
-            var exceptions = new List<Exception>() { null, new ArgumentException("Message") };
+            var exceptions = new List<Exception?>() { null, new ArgumentException("Message") };
             var execution = new TxExecution(
                 blockHash,
                 txId,

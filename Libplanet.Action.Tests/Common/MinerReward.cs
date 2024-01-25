@@ -41,7 +41,7 @@ namespace Libplanet.Action.Tests.Common
             IWorld states = ctx.PreviousState;
             IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
 
-            string rewardRecord = (Text?)legacyAccount.GetState(RewardRecordAddress);
+            string? rewardRecord = (Text?)legacyAccount.GetState(RewardRecordAddress);
 
             rewardRecord = rewardRecord is null
                 ? ctx.Miner.ToString()
@@ -49,7 +49,7 @@ namespace Libplanet.Action.Tests.Common
 
             legacyAccount = legacyAccount.SetState(RewardRecordAddress, (Text)rewardRecord);
 
-            IValue tempQualifier1 = legacyAccount.GetState(ctx.Miner);
+            IValue? tempQualifier1 = legacyAccount.GetState(ctx.Miner);
             int previousReward = tempQualifier1 is Integer i ? (int)i.Value : 0;
             int reward = previousReward + Reward;
 

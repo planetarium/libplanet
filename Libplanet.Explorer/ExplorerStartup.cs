@@ -41,7 +41,7 @@ namespace Libplanet.Explorer
             services.AddSingleton<IStore>(
                 provider => provider.GetRequiredService<IBlockChainContext>().Store);
             services.AddSingleton<IBlockChainIndex>(
-                provider => provider.GetRequiredService<IBlockChainContext>().Index);
+                provider => provider.GetRequiredService<IBlockChainContext>().Index!);
 
             services.TryAddSingleton<ActionType>();
             services.TryAddSingleton<BlockType>();

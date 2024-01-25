@@ -58,7 +58,7 @@ namespace Libplanet.RocksDBStore.Tests
             uri = new Uri("rocksdb+" + uri);
             (IStore Store, IStateStore StateStore)? pair = StoreLoaderAttribute.LoadStore(uri);
             Assert.NotNull(pair);
-            IStore store = pair.Value.Store;
+            IStore store = pair!.Value.Store;
             Assert.IsAssignableFrom<RocksDBStore>(store);
             var stateStore = (TrieStateStore)pair.Value.StateStore;
             var kvStore = typeof(TrieStateStore)
@@ -121,7 +121,7 @@ namespace Libplanet.RocksDBStore.Tests
 
                 Enumerable.Range(0, 3).AsParallel().ForAll(i =>
                 {
-                    var bHash = store.IndexBlockHash(cid, i).Value;
+                    var bHash = store.IndexBlockHash(cid, i)!.Value;
                     var block = store.GetBlock(bHash);
                     Assert.NotNull(block);
                 });
@@ -197,7 +197,7 @@ namespace Libplanet.RocksDBStore.Tests
         {
             var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
             var store = new RocksDBStore(path);
-            RocksDb chainDb = null;
+            RocksDb? chainDb = null;
 
             int KeysWithChainId(RocksDb db, Guid cid)
             {

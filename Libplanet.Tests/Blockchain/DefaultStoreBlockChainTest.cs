@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Blockchain
         {
         }
 
-        protected override StoreFixture GetStoreFixture(IAction blockAction) =>
+        protected override StoreFixture GetStoreFixture(IAction? blockAction) =>
             new DefaultStoreFixture(blockAction: blockAction);
     }
 }

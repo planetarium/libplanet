@@ -5,6 +5,7 @@ using System.Linq;
 namespace Libplanet.Tests
 {
     public class ImmutableArrayEqualityComparer<T> : IEqualityComparer<ImmutableArray<T>>
+        where T : notnull
     {
         public bool Equals(ImmutableArray<T> x, ImmutableArray<T> y)
             => x.Length == y.Length && x.SequenceEqual(y);

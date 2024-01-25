@@ -34,7 +34,7 @@ namespace Libplanet.Action.Tests.Common
             string item,
             bool recordRandom = false,
             bool idempotent = false,
-            Tuple<Address, Address, BigInteger> transfer = null)
+            Tuple<Address, Address, BigInteger>? transfer = null)
         {
             Idempotent = idempotent;
             TargetAddress = targetAddress;
@@ -64,15 +64,15 @@ namespace Libplanet.Action.Tests.Common
 
         public Address TargetAddress { get; private set; }
 
-        public string Item { get; private set; }
+        public string? Item { get; private set; }
 
         public bool RecordRandom { get; private set; }
 
         public bool Idempotent { get; private set; }
 
-        public Tuple<Address, Address, BigInteger> Transfer { get; private set; }
+        public Tuple<Address, Address, BigInteger>? Transfer { get; private set; }
 
-        public IEnumerable<PublicKey> Validators { get; private set; }
+        public IEnumerable<PublicKey>? Validators { get; private set; }
 
         public IValue PlainValue
         {
@@ -128,7 +128,7 @@ namespace Libplanet.Action.Tests.Common
             }
 
             IAccount account = world.GetAccount(DumbModernAddress);
-            string items = (Text?)account.GetState(TargetAddress);
+            string? items = (Text?)account.GetState(TargetAddress);
 
             if (Idempotent)
             {
@@ -221,7 +221,7 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public bool Equals(DumbModernAction other)
+        public bool Equals(DumbModernAction? other)
         {
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
@@ -231,7 +231,7 @@ namespace Libplanet.Action.Tests.Common
             );
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return !(obj is null) && (
                 ReferenceEquals(this, obj) ||

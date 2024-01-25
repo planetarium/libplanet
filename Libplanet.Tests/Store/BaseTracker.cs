@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Store
 
         public void ClearLogs() => _logs.Clear();
 
-        protected void Log(string method, params object[] @params)
+        protected void Log(string method, params object?[] @params)
         {
             _logs.Add(StoreTrackLog.Create(method, @params));
         }

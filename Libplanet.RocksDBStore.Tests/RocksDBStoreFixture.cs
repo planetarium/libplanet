@@ -9,7 +9,7 @@ namespace Libplanet.RocksDBStore.Tests
 {
     public class RocksDBStoreFixture : StoreFixture
     {
-        public RocksDBStoreFixture(IAction blockAction = null)
+        public RocksDBStoreFixture(IAction? blockAction = null)
             : base(blockAction)
         {
             Path = System.IO.Path.Combine(
@@ -23,6 +23,16 @@ namespace Libplanet.RocksDBStore.Tests
             Store = store;
             StateStore = LoadTrieStateStore(Path);
         }
+
+        public override IStore Store { get; }
+
+        public override IStateStore StateStore { get; }
+
+        public override IKeyValueStore StateHashKeyValueStore =>
+            throw new InvalidOperationException();
+
+        public override IKeyValueStore StateKeyValueStore =>
+            throw new InvalidOperationException();
 
         public IStateStore LoadTrieStateStore(string path)
         {

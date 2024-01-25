@@ -140,7 +140,7 @@ namespace Libplanet.Tests
 
         private static readonly Random _random = new Random();
 
-        public static void AssertBytesEqual(byte[] expected, byte[] actual)
+        public static void AssertBytesEqual(byte[]? expected, byte[]? actual)
         {
             if (expected is null)
             {
@@ -149,6 +149,11 @@ namespace Libplanet.Tests
             }
 
             Assert.NotNull(actual);
+
+            if (actual is null)
+            {
+                throw new NotSupportedException("Code cannot reach here.");
+            }
 
             string msg;
             if (expected.LongLength < 1024 && actual.LongLength < 1024 &&
@@ -266,7 +271,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static void AssertBytesEqual(KeyBytes? expected, KeyBytes? actual) =>
             AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
-        public static void AssertBencodexEqual(IValue expected, IValue actual)
+        public static void AssertBencodexEqual(IValue expected, IValue? actual)
         {
             bool equal = (expected is null && actual is null) ||
                 (expected is Null && actual is Null) ||
@@ -295,7 +300,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             string diff = string.Join(
                 Environment.NewLine,
                 diffModel.Lines.Select(line =>
-                    (prefixes.TryGetValue(line.Type, out string prefix) ? prefix : " ") + line.Text
+                    (prefixes.TryGetValue(line.Type, out var prefix) ? prefix : " ") + line.Text
                 )
             );
             throw new XunitException(
@@ -372,15 +377,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return action;
         }
 
-        public static BlockCommit CreateBlockCommit(
+        public static BlockCommit? CreateBlockCommit(
             Block block,
             bool deterministicTimestamp = false) =>
                 block.Index > 0 &&
                 block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
-                    ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
-                    : null;
+                ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
+                : null;
 
-        public static BlockCommit CreateBlockCommit(
+        public static BlockCommit? CreateBlockCommit(
             BlockHash blockHash,
             long height,
             int round,
@@ -407,9 +412,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static PreEvaluationBlock ProposeGenesis(
-            PublicKey proposer = null,
-            IReadOnlyList<Transaction> transactions = null,
-            ValidatorSet validatorSet = null,
+            PublicKey? proposer = null,
+            IReadOnlyList<Transaction>? transactions = null,
+            ValidatorSet? validatorSet = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
@@ -449,14 +454,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block ProposeGenesisBlock(
             PrivateKey miner,
-            IReadOnlyList<Transaction> transactions = null,
+            IReadOnlyList<Transaction>? transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default
         )
         {
             PreEvaluationBlock preEval = ProposeGenesis(
-                miner?.PublicKey,
+                miner.PublicKey,
                 transactions,
                 null,
                 timestamp,
@@ -478,11 +483,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock ProposeNext(
             Block previousBlock,
-            IReadOnlyList<Transaction> transactions = null,
-            PublicKey miner = null,
+            IReadOnlyList<Transaction>? transactions = null,
+            PublicKey? miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
-            BlockCommit lastCommit = null)
+            BlockCommit? lastCommit = null)
         {
             var txs = transactions is null
                 ? new List<Transaction>()
@@ -508,11 +513,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Block ProposeNextBlock(
             Block previousBlock,
             PrivateKey miner,
-            IReadOnlyList<Transaction> txs = null,
+            IReadOnlyList<Transaction>? txs = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null)
+            BlockCommit? lastCommit = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -522,7 +527,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PreEvaluationBlock preEval = ProposeNext(
                 previousBlock,
                 txs,
-                miner?.PublicKey,
+                miner.PublicKey,
                 blockInterval,
                 protocolVersion,
                 lastCommit);
@@ -557,12 +562,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IStore store,
             IStateStore stateStore,
             IActionLoader actionLoader,
-            IEnumerable<IAction> actions = null,
-            ValidatorSet validatorSet = null,
-            PrivateKey privateKey = null,
+            IEnumerable<IAction>? actions = null,
+            ValidatorSet? validatorSet = null,
+            PrivateKey? privateKey = null,
             DateTimeOffset? timestamp = null,
-            IEnumerable<IRenderer> renderers = null,
-            Block genesisBlock = null,
+            IEnumerable<IRenderer>? renderers = null,
+            Block? genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
         {
@@ -587,12 +592,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IStore store,
             IStateStore stateStore,
             IActionLoader actionLoader,
-            IEnumerable<IAction> actions = null,
-            ValidatorSet validatorSet = null,
-            PrivateKey privateKey = null,
+            IEnumerable<IAction>? actions = null,
+            ValidatorSet? validatorSet = null,
+            PrivateKey? privateKey = null,
             DateTimeOffset? timestamp = null,
-            IEnumerable<IRenderer> renderers = null,
-            Block genesisBlock = null,
+            IEnumerable<IRenderer>? renderers = null,
+            Block? genesisBlock = null,
             int protocolVersion = Block.CurrentProtocolVersion
         )
         {
@@ -638,7 +643,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     : preEval.Sign(GenesisProposer, stateRootHash);
             }
 
-            ValidatingActionRenderer validator = null;
+            ValidatingActionRenderer? validator = null;
 #pragma warning disable S1121
             var chain = BlockChain.Create(
                 policy,
@@ -659,8 +664,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Expression<Func<bool>> condition,
             TimeSpan timeout,
             TimeSpan delay,
-            ITestOutputHelper output = null,
-            string conditionLabel = null
+            ITestOutputHelper? output = null,
+            string? conditionLabel = null
         )
         {
             Func<bool> conditionFunc = condition.Compile();
@@ -698,8 +703,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Expression<Func<bool>> condition,
             int timeoutMilliseconds,
             int delayMilliseconds = 100,
-            ITestOutputHelper output = null,
-            string conditionLabel = null
+            ITestOutputHelper? output = null,
+            string? conditionLabel = null
         ) =>
             AssertThatEventually(
                 condition,
@@ -741,8 +746,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ReadCommentHandling = JsonCommentHandling.Skip,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            JsonNode actual = JsonSerializer.SerializeToNode(obj, options);
-            JsonNode expected = JsonNode.Parse(expectedJson, null, new JsonDocumentOptions
+            JsonNode? actual = JsonSerializer.SerializeToNode(obj, options);
+            JsonNode? expected = JsonNode.Parse(expectedJson, null, new JsonDocumentOptions
             {
                 AllowTrailingCommas = true,
                 CommentHandling = JsonCommentHandling.Skip,

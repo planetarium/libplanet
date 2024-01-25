@@ -21,12 +21,12 @@ namespace Libplanet.Explorer.Executable
             int port,
             int blockIntervalMilliseconds,
             int difficultyBoundDivisor,
-            string appProtocolVersionToken,
+            string? appProtocolVersionToken,
             int maxTransactionsPerBlock,
             int maxTransactionsBytes,
             int maxGenesisTransactionsBytes,
-            IEnumerable<string> seedStrings,
-            string iceServerUrl,
+            IEnumerable<string>? seedStrings,
+            string? iceServerUrl,
             string storePath,
             string storeType,
             string genesisBlockPath
@@ -58,7 +58,7 @@ namespace Libplanet.Explorer.Executable
 
         public int DifficultyBoundDivisor { get; set; }
 
-        public string AppProtocolVersionToken { get; set; }
+        public string? AppProtocolVersionToken { get; set; }
 
         public int MaxTransactionsPerBlock { get; set; }
 
@@ -66,7 +66,7 @@ namespace Libplanet.Explorer.Executable
 
         public int MaxGenesisTransactionsBytes { get; set; }
 
-        public IEnumerable<string> SeedStrings
+        public IEnumerable<string>? SeedStrings
         {
             get
             {
@@ -93,15 +93,15 @@ namespace Libplanet.Explorer.Executable
             }
         }
 
-        public IEnumerable<BoundPeer> Seeds { get; set; }
+        public IEnumerable<BoundPeer>? Seeds { get; set; }
 
-        public string IceServerUrl
+        public string? IceServerUrl
         {
             get => IceServer is null ? null : IceServer.Url.ToString();
             set => IceServer = value is null ? null : new IceServer(value);
         }
 
-        public IceServer IceServer { get; set; }
+        public IceServer? IceServer { get; set; }
 
         public string StorePath { get; set; }
 

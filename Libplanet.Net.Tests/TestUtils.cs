@@ -120,10 +120,10 @@ namespace Libplanet.Net.Tests
                     validRound).Sign(privateKey));
         }
 
-        public static BlockCommit CreateBlockCommit(Block block) =>
+        public static BlockCommit? CreateBlockCommit(Block block) =>
             Libplanet.Tests.TestUtils.CreateBlockCommit(block);
 
-        public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round) =>
+        public static BlockCommit? CreateBlockCommit(BlockHash blockHash, long height, int round) =>
             Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);
 
         public static void HandleFourPeersPreCommitMessages(

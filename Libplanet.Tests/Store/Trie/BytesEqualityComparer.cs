@@ -5,7 +5,7 @@ namespace Libplanet.Tests.Store.Trie
 {
     internal class BytesEqualityComparer : IEqualityComparer<byte[]>
     {
-        public bool Equals(byte[] x, byte[] y) =>
+        public bool Equals(byte[]? x, byte[]? y) =>
             x is byte[] xb && y is byte[] yb &&
             xb.LongLength == yb.LongLength &&
             xb.SequenceEqual(yb);

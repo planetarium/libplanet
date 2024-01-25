@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Store
             uri = new Uri("default+" + uri);
             (IStore Store, IStateStore StateStore)? pair = StoreLoaderAttribute.LoadStore(uri);
             Assert.NotNull(pair);
-            IStore store = pair.Value.Store;
+            IStore store = pair!.Value.Store;
             Assert.IsAssignableFrom<DefaultStore>(store);
             var stateStore = (TrieStateStore)pair.Value.StateStore;
             Assert.IsAssignableFrom<DefaultKeyValueStore>(stateStore.StateKeyValueStore);

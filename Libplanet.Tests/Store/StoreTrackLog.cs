@@ -5,7 +5,7 @@ namespace Libplanet.Tests.Store
 {
     public sealed class StoreTrackLog : IEquatable<StoreTrackLog>
     {
-        private StoreTrackLog(string method, object[] @params)
+        private StoreTrackLog(string method, object?[] @params)
         {
             Method = method;
             Params = @params;
@@ -13,14 +13,14 @@ namespace Libplanet.Tests.Store
 
         public string Method { get; }
 
-        public object[] Params { get; }
+        public object?[] Params { get; }
 
-        public static StoreTrackLog Create(string method, params object[] @params)
+        public static StoreTrackLog Create(string method, params object?[] @params)
         {
             return new StoreTrackLog(method, @params);
         }
 
-        public bool Equals(StoreTrackLog trackLog)
+        public bool Equals(StoreTrackLog? trackLog)
         {
             return !(trackLog is null) && trackLog.Method == Method &&
                    trackLog.Params.SequenceEqual(Params);

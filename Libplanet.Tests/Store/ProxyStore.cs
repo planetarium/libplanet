@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Store
             Store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
         /// <inheritdoc cref="IStore.GetTransaction(TxId)"/>
-        public virtual Transaction GetTransaction(TxId txid) =>
+        public virtual Transaction? GetTransaction(TxId txid) =>
             Store.GetTransaction(txid);
 
         /// <inheritdoc cref="IStore.GetTransaction(TxId)"/>
@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Store
             Store.IterateBlockHashes();
 
         /// <inheritdoc cref="IStore.GetBlock{T}"/>
-        public virtual Block GetBlock(BlockHash blockHash) =>
+        public virtual Block? GetBlock(BlockHash blockHash) =>
             Store.GetBlock(blockHash);
 
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Store
             Store.PutTxExecution(txExecution);
 
         /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
-        public virtual TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
+        public virtual TxExecution? GetTxExecution(BlockHash blockHash, TxId txid) =>
             Store.GetTxExecution(blockHash, txid);
 
         /// <inheritdoc cref="IStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
@@ -167,7 +167,7 @@ namespace Libplanet.Tests.Store
             Store.PruneOutdatedChains(noopWithoutCanon);
 
         /// <inheritdoc cref="IStore.GetChainBlockCommit" />
-        public BlockCommit GetChainBlockCommit(Guid chainId) =>
+        public BlockCommit? GetChainBlockCommit(Guid chainId) =>
             Store.GetChainBlockCommit(chainId);
 
         /// <inheritdoc cref="IStore.PutChainBlockCommit" />
@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Store
             Store.PutChainBlockCommit(chainId, blockCommit);
 
         /// <inheritdoc cref="IStore.GetBlockCommit"/>
-        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+        public BlockCommit? GetBlockCommit(BlockHash blockHash) =>
             Store.GetBlockCommit(blockHash);
 
         /// <inheritdoc cref="IStore.PutBlockCommit"/>

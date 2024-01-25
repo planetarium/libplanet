@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Fixtures
             Operand = operand;
         }
 
-        public string Error { get; private set; }
+        public string? Error { get; private set; }
 
         public OperatorType Operator { get; private set; }
 
@@ -132,7 +132,7 @@ namespace Libplanet.Tests.Fixtures
                     context.Signer, (Bencodex.Types.Integer)result));
         }
 
-        public bool Equals(Arithmetic other)
+        public bool Equals(Arithmetic? other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -150,7 +150,7 @@ namespace Libplanet.Tests.Fixtures
             }
         }
 
-        public override bool Equals(object obj) =>
+        public override bool Equals(object? obj) =>
             ReferenceEquals(this, obj) || (obj is Arithmetic other && Equals(other));
 
         public override int GetHashCode() =>

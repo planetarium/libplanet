@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Equal(expected, actual);
 
-            Assert.Throws<ArgumentNullException>(() => BlockHash.FromString(null));
+            Assert.Throws<ArgumentNullException>(() => BlockHash.FromString(null!));
             Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString(string.Empty));
             Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString("abc"));
             Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString("ab"));

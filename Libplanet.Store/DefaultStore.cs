@@ -125,7 +125,7 @@ namespace Libplanet.Store
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
-            string path,
+            string? path,
             bool journal = true,
             int indexCacheSize = 50000,
             int blockCacheSize = 512,

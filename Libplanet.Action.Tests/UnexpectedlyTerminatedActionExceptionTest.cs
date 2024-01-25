@@ -44,7 +44,7 @@ namespace Libplanet.Action.Tests
                 var deserialized = (UnexpectedlyTerminatedActionException)formatter.Deserialize(ms);
                 Assert.Equal("for testing", deserialized.Message);
                 Assert.IsType<Exception>(deserialized.InnerException);
-                Assert.Equal(innerExc.Message, deserialized.InnerException.Message);
+                Assert.Equal(innerExc.Message, deserialized!.InnerException!.Message);
 
                 Assert.Equal(preEvaluationHash, deserialized.PreEvaluationHash);
                 Assert.Equal(blockIndex, deserialized.BlockIndex);

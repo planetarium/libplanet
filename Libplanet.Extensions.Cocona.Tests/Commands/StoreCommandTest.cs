@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.IO;
@@ -105,8 +104,8 @@ public class StoreCommandTest : IDisposable
             v.Store.PutBlock(_block4);
             v.Store.AppendIndex(guid, _block4.Hash);
 
-            v.Store?.Dispose();
-            v.StateStore?.Dispose();
+            v.Store.Dispose();
+            v.StateStore.Dispose();
         }
     }
 

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -563,7 +562,7 @@ namespace Libplanet.Net.Tests.Protocols
         }
 
         private TestTransport CreateTestTransport(
-            PrivateKey privateKey = null,
+            PrivateKey? privateKey = null,
             bool blockBroadcast = false,
             int tableSize = Kademlia.TableSize,
             int bucketSize = Kademlia.BucketSize,

@@ -95,8 +95,8 @@ namespace Libplanet.Tests.Action
         [Fact]
         public virtual void NullDelta()
         {
-            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
-            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0])!);
+            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1])!);
             Assert.Null(_initAccount.GetState(_addr[2]));
             Assert.Equal(Value(0, 5), _initAccount.GetBalance(_addr[0], _currencies[0]));
             Assert.Equal(Value(1, 10), _initAccount.GetBalance(_addr[0], _currencies[1]));
@@ -114,10 +114,10 @@ namespace Libplanet.Tests.Action
         {
             IAccount a = _initAccount.SetState(_addr[0], (Text)"A");
             AccountDiff diffa = AccountDiff.Create(_initAccount.Trie, a.Trie);
-            Assert.Equal("A", (Text)a.GetState(_addr[0]));
-            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
-            Assert.Equal("b", (Text)a.GetState(_addr[1]));
-            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
+            Assert.Equal("A", (Text)a.GetState(_addr[0])!);
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0])!);
+            Assert.Equal("b", (Text)a.GetState(_addr[1])!);
+            Assert.Equal("b", (Text)_initAccount.GetState(_addr[1])!);
             Assert.Null(a.GetState(_addr[2]));
             Assert.Null(_initAccount.GetState(_addr[2]));
             Assert.Equal(
@@ -128,11 +128,11 @@ namespace Libplanet.Tests.Action
 
             IAccount b = a.SetState(_addr[0], (Text)"z");
             AccountDiff diffb = AccountDiff.Create(a.Trie, b.Trie);
-            Assert.Equal("z", (Text)b.GetState(_addr[0]));
-            Assert.Equal("A", (Text)a.GetState(_addr[0]));
-            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
-            Assert.Equal("b", (Text)b.GetState(_addr[1]));
-            Assert.Equal("b", (Text)a.GetState(_addr[1]));
+            Assert.Equal("z", (Text)b.GetState(_addr[0])!);
+            Assert.Equal("A", (Text)a.GetState(_addr[0])!);
+            Assert.Equal("a", (Text)_initAccount.GetState(_addr[0])!);
+            Assert.Equal("b", (Text)b.GetState(_addr[1])!);
+            Assert.Equal("b", (Text)a.GetState(_addr[1])!);
             Assert.Null(b.GetState(_addr[2]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Equal(
@@ -142,8 +142,8 @@ namespace Libplanet.Tests.Action
             Assert.Empty(diffb.TotalSupplyDiffs);
 
             IAccount c = b.SetState(_addr[0], (Text)"a");
-            Assert.Equal("a", (Text)c.GetState(_addr[0]));
-            Assert.Equal("z", (Text)b.GetState(_addr[0]));
+            Assert.Equal("a", (Text)c.GetState(_addr[0])!);
+            Assert.Equal("z", (Text)b.GetState(_addr[0])!);
         }
 
         [Fact]
@@ -247,7 +247,7 @@ namespace Libplanet.Tests.Action
                 : chain.EvaluateAndSign(preEvalBlock, privateKey);
             chain.Append(
                 block,
-                TestUtils.CreateBlockCommit(block)
+                TestUtils.CreateBlockCommit(block)!
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

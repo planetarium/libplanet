@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        protected StoreFixture(IAction blockAction = null)
+        protected StoreFixture(IAction? blockAction = null)
         {
             Path = null;
 
@@ -141,7 +141,7 @@ namespace Libplanet.Tests.Store
             Transaction3 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
         }
 
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
         public string Scheme { get; set; }
 
@@ -191,21 +191,21 @@ namespace Libplanet.Tests.Store
 
         public Transaction Transaction3 { get; }
 
-        public IStore Store { get; set; }
+        public abstract IStore Store { get; }
 
-        public IStateStore StateStore { get; set; }
+        public abstract IStateStore StateStore { get; }
 
-        public IKeyValueStore StateHashKeyValueStore { get; set; }
+        public abstract IKeyValueStore StateHashKeyValueStore { get; }
 
-        public IKeyValueStore StateKeyValueStore { get; set; }
+        public abstract IKeyValueStore StateKeyValueStore { get; }
 
         public abstract void Dispose();
 
         public Transaction MakeTransaction(
-            IEnumerable<DumbAction> actions = null,
-            ImmutableHashSet<Address> updatedAddresses = null,
+            IEnumerable<DumbAction>? actions = null,
+            ImmutableHashSet<Address>? updatedAddresses = null,
             long nonce = 0,
-            PrivateKey privateKey = null,
+            PrivateKey? privateKey = null,
             DateTimeOffset? timestamp = null
         )
         {

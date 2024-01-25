@@ -32,11 +32,11 @@ namespace Libplanet.Benchmarks.DataModel
             {
             }
 
-            public LeafModel LeafModel { get; private set; }
+            public LeafModel? LeafModel { get; private set; }
 
-            public ImmutableList<int> BigList { get; private set; }
+            public ImmutableList<int>? BigList { get; private set; }
 
-            public ImmutableDictionary<Address, string> BigDict { get; private set; }
+            public ImmutableDictionary<Address, string>? BigDict { get; private set; }
         }
     }
 }

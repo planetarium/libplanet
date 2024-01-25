@@ -110,7 +110,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 { "blockHash", lastBlockCommit.BlockHash.ToString() },
                 { "votes", new object[]
                     {
-                        new Dictionary<string, object>()
+                        new Dictionary<string, object?>()
                         {
                             { "height", lastVotes[0].Height },
                             { "round", lastVotes[0].Round },

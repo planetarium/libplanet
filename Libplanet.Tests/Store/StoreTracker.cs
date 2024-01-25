@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Store
             _store.PutTxExecution(txExecution);
         }
 
-        public TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        public TxExecution? GetTxExecution(BlockHash blockHash, TxId txid)
         {
             Log(nameof(GetTxExecution), blockHash, txid);
             return _store.GetTxExecution(blockHash, txid);
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Store
             _store.DeleteChainId(chainId);
         }
 
-        public Block GetBlock(BlockHash blockHash)
+        public Block? GetBlock(BlockHash blockHash)
         {
             Log(nameof(GetBlock), blockHash);
             return _store.GetBlock(blockHash);
@@ -107,7 +107,7 @@ namespace Libplanet.Tests.Store
             return _store.GetBlockDigest(blockHash);
         }
 
-        public Transaction GetTransaction(TxId txid)
+        public Transaction? GetTransaction(TxId txid)
         {
             Log(nameof(GetTransaction), txid);
             return _store.GetTransaction(txid);
@@ -194,7 +194,7 @@ namespace Libplanet.Tests.Store
             _store.PruneOutdatedChains();
         }
 
-        public BlockCommit GetChainBlockCommit(Guid chainId)
+        public BlockCommit? GetChainBlockCommit(Guid chainId)
         {
             Log(nameof(GetChainBlockCommit), chainId);
             return _store.GetChainBlockCommit(chainId);
@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Store
             _store.PutChainBlockCommit(chainId, blockCmmit);
         }
 
-        public BlockCommit GetBlockCommit(BlockHash blockHash)
+        public BlockCommit? GetBlockCommit(BlockHash blockHash)
         {
             Log(nameof(GetBlockCommit), blockHash);
             return _store.GetBlockCommit(blockHash);

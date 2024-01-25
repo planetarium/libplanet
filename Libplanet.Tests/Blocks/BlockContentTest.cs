@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Blocks
                 new BlockMetadata(
                     index: Block1Content.Index,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: Block1Content.PublicKey,
+                    publicKey: Block1Content.PublicKey!,
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
@@ -96,7 +96,7 @@ namespace Libplanet.Tests.Blocks
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
-                        publicKey: Block1Content.PublicKey,
+                        publicKey: Block1Content.PublicKey!,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
@@ -131,7 +131,7 @@ namespace Libplanet.Tests.Blocks
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
-                        publicKey: Block1Content.PublicKey,
+                        publicKey: Block1Content.PublicKey!,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
@@ -169,7 +169,7 @@ namespace Libplanet.Tests.Blocks
                     new BlockMetadata(
                         index: Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
-                        publicKey: Block1Content.PublicKey,
+                        publicKey: Block1Content.PublicKey!,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(inconsistentTxs),
                         lastCommit: null),

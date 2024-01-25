@@ -101,7 +101,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.False(empty.Equals((object)b123));
             Assert.False(empty.Equals((object)b122));
             Assert.False(empty.Equals((object)b1234));
-            Assert.False(empty.Equals((object)null));
+            Assert.False(empty.Equals((object)null!));
             Assert.Equal(empty.GetHashCode(), new KeyBytes(Array.Empty<byte>()).GetHashCode());
             Assert.NotEqual(empty.GetHashCode(), b123.GetHashCode());
             Assert.NotEqual(empty.GetHashCode(), b122.GetHashCode());
@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.True(b123.Equals((object)b123));
             Assert.False(b123.Equals((object)b122));
             Assert.False(b123.Equals((object)b1234));
-            Assert.False(b123.Equals((object)null));
+            Assert.False(b123.Equals((object)null!));
             Assert.NotEqual(b123.GetHashCode(), default(KeyBytes).GetHashCode());
             Assert.Equal(b123.GetHashCode(), new KeyBytes(1, 2, 3).GetHashCode());
             Assert.NotEqual(b123.GetHashCode(), b122.GetHashCode());

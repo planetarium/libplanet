@@ -33,8 +33,8 @@ namespace Libplanet.Tests.Store.Trie
             {
                 foreach (var address in addresses)
                 {
-                    IValue v = trie.Get(new[] { new KeyBytes(address.ByteArray) })[0];
-                    IValue expectedState = states.ContainsKey(address) ? states[address] : null;
+                    IValue? v = trie.Get(new[] { new KeyBytes(address.ByteArray) })[0];
+                    IValue? expectedState = states.ContainsKey(address) ? states[address] : null;
                     Assert.Equal(expectedState, v);
                 }
             }
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Store.Trie
             ITrie trie = new MerkleTrie(keyValueStore);
 
             Assert.Throws<ArgumentNullException>(
-                () => trie.Set(new KeyBytes(0xbe, 0xef), null)
+                () => trie.Set(new KeyBytes(0xbe, 0xef), null!)
             );
         }
     }

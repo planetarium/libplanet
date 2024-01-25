@@ -231,7 +231,7 @@ namespace Libplanet.Analyzers.Tests.Verifiers
                             Assert.True(location.IsInSource, msg);
 
                             string resultMethodName =
-                                diagnostics[i].Location.SourceTree.FilePath.EndsWith(".cs")
+                                diagnostics[i].Location.SourceTree!.FilePath.EndsWith(".cs")
                                     ? "GetCSharpResultAt"
                                     : "GetBasicResultAt";
                             var linePosition =

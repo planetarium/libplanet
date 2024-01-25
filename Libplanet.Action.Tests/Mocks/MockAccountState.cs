@@ -66,10 +66,10 @@ namespace Libplanet.Action.Tests.Mocks
 
         public ITrie Trie { get; }
 
-        public IValue GetState(Address address) =>
+        public IValue? GetState(Address address) =>
             Trie.Get(ToStateKey(address));
 
-        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(GetState).ToList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>

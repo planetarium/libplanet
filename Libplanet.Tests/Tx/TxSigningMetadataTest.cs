@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Tx
 
             PublicKey ITxSigningMetadata.PublicKey => PublicKey;
 
-            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata other) => false;
+            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata? other) => false;
         }
     }
 }

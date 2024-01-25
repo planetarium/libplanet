@@ -20,7 +20,6 @@
     <RootNamespace>Libplanet.Explorer</RootNamespace>
     <AssemblyName>Libplanet.Explorer</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsTestProject>false</IsTestProject>

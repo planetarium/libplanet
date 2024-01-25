@@ -26,7 +26,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreTest
     {
-        private ILogger _logger = null;
+        private ILogger? _logger = null;
 
         protected abstract ITestOutputHelper TestOutputHelper { get; }
 
@@ -413,10 +413,10 @@ namespace Libplanet.Tests.Store
                 false,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new List<string>() { string.Empty });
+                new List<string?>() { string.Empty });
             Fx.Store.PutTxExecution(inputA);
 
-            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1)!);
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
@@ -427,11 +427,11 @@ namespace Libplanet.Tests.Store
                 true,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new List<string>() { "AnExceptionName" });
+                new List<string?>() { "AnExceptionName" });
             Fx.Store.PutTxExecution(inputB);
 
-            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
-            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1)!);
+            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2)!);
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
 
@@ -441,12 +441,12 @@ namespace Libplanet.Tests.Store
                 true,
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new List<string>() { "AnotherExceptionName", "YetAnotherExceptionName" });
+                new List<string?>() { "AnotherExceptionName", "YetAnotherExceptionName" });
             Fx.Store.PutTxExecution(inputC);
 
-            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1));
-            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2));
-            AssertTxExecutionEqual(inputC, Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1));
+            AssertTxExecutionEqual(inputA, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId1)!);
+            AssertTxExecutionEqual(inputB, Fx.Store.GetTxExecution(Fx.Hash1, Fx.TxId2)!);
+            AssertTxExecutionEqual(inputC, Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId1)!);
             Assert.Null(Fx.Store.GetTxExecution(Fx.Hash2, Fx.TxId2));
         }
 
@@ -1024,11 +1024,11 @@ namespace Libplanet.Tests.Store
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
                 var block = blocks.ProposeBlock(key);
-                blocks.Append(block, CreateBlockCommit(block));
+                blocks.Append(block, CreateBlockCommit(block)!);
                 block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
-                blocks.Append(block, CreateBlockCommit(block));
+                blocks.Append(block, CreateBlockCommit(block)!);
                 block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
-                blocks.Append(block, CreateBlockCommit(block));
+                blocks.Append(block, CreateBlockCommit(block)!);
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);
@@ -1060,7 +1060,7 @@ namespace Libplanet.Tests.Store
                     miner: fx.Proposer);
 
                 fx.Store.PutBlock(block);
-                Block storedBlock =
+                Block? storedBlock =
                     fx.Store.GetBlock(block.Hash);
 
                 Assert.Equal(block, storedBlock);
@@ -1089,7 +1089,7 @@ namespace Libplanet.Tests.Store
 
                 BlockCommit commit = new BlockCommit(height, round, hash, votes);
                 fx.Store.PutBlockCommit(commit);
-                BlockCommit storedCommitVotes =
+                BlockCommit? storedCommitVotes =
                     fx.Store.GetBlockCommit(commit.BlockHash);
 
                 Assert.Equal(commit, storedCommitVotes);
@@ -1132,7 +1132,7 @@ namespace Libplanet.Tests.Store
                 IEnumerable<BlockHash> indices = fx.Store.GetBlockCommitHashes();
 
                 HashSet<long> indicesFromOperation = indices
-                    .Select(hash => fx.Store.GetBlockCommit(hash).Height)
+                    .Select(hash => fx.Store.GetBlockCommit(hash)!.Height)
                     .ToHashSet();
                 HashSet<long> expectedIndices = new HashSet<long>() { 1, 2 };
 

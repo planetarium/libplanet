@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Blocks
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
-                        publicKey: _contents.Block1Content.PublicKey,
+                        publicKey: _contents.Block1Content.PublicKey!,
                         previousHash: genesis.Hash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Blocks
                     blockChain.DetermineBlockStateRootHash(preEval1, out _);
                 AssertBytesEqual(block1.StateRootHash, identicalBlock1StateRootHash);
 
-                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
                 AssertBencodexEqual(
                     (Bencodex.Types.Integer)158,
                     blockChain
@@ -152,7 +152,7 @@ namespace Libplanet.Tests.Blocks
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
                         timestamp: DateTimeOffset.UtcNow,
-                        publicKey: _contents.Block1Content.PublicKey,
+                        publicKey: _contents.Block1Content.PublicKey!,
                         previousHash: genesis.Hash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null),
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Blocks
                 Block block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
 
-                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
                 AssertBencodexEqual(
                     (Bencodex.Types.Integer)158,
                     blockChain

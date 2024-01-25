@@ -11,13 +11,13 @@ namespace Libplanet.Action.Tests.Common
         public override IValue PlainValue => Dictionary.Empty
             .Add("type_id", TypeId)
             .Add("values", Dictionary.Empty
-                .Add("weapon", Weapon)
-                .Add("target", Target)
+                .Add("weapon", Weapon!)
+                .Add("target", Target!)
                 .Add("target_address", TargetAddress.Bencoded));
 
-        public string Weapon { get; set; }
+        public string? Weapon { get; set; }
 
-        public string Target { get; set; }
+        public string? Target { get; set; }
 
         public Address TargetAddress { get; set; }
 
@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests.Common
             IWorld previousState = context.PreviousState;
             IAccount legacyAccount = previousState.GetAccount(ReservedAddresses.LegacyAccount);
 
-            object value = legacyAccount.GetState(TargetAddress);
+            object? value = legacyAccount.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
             {
                 var previousResult = BattleResult.FromBencodex((Bencodex.Types.Dictionary)value);
@@ -44,8 +44,8 @@ namespace Libplanet.Action.Tests.Common
                 targets = previousResult.Targets;
             }
 
-            usedWeapons = usedWeapons.Add(Weapon);
-            targets = targets.Add(Target);
+            usedWeapons = usedWeapons.Add(Weapon!);
+            targets = targets.Add(Target!);
             var result = new BattleResult(usedWeapons, targets);
             legacyAccount = legacyAccount.SetState(TargetAddress, result.ToBencodex());
 

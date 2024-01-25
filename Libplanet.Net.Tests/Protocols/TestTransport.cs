@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -32,8 +31,8 @@ namespace Libplanet.Net.Tests.Protocols
         private readonly Random _random;
         private readonly bool _blockBroadcast;
 
-        private TaskCompletionSource<object> _runningEvent;
-        private CancellationTokenSource _swarmCancellationTokenSource;
+        private TaskCompletionSource<object?> _runningEvent;
+        private CancellationTokenSource? _swarmCancellationTokenSource;
         private TimeSpan _networkDelay;
         private bool _disposed;
 
@@ -45,7 +44,7 @@ namespace Libplanet.Net.Tests.Protocols
             int bucketSize,
             TimeSpan? networkDelay)
         {
-            _runningEvent = new TaskCompletionSource<object>();
+            _runningEvent = new TaskCompletionSource<object?>();
             _privateKey = privateKey;
             _blockBroadcast = blockBroadcast;
             var loggerId = _privateKey.Address.ToHex();
@@ -94,7 +93,7 @@ namespace Libplanet.Net.Tests.Protocols
                 }
                 else
                 {
-                    _runningEvent = new TaskCompletionSource<object>();
+                    _runningEvent = new TaskCompletionSource<object?>();
                 }
             }
         }
@@ -157,7 +156,7 @@ namespace Libplanet.Net.Tests.Protocols
             if (Running)
             {
                 _logger.Debug("Stopping transport of {Peer}", AsPeer);
-                _swarmCancellationTokenSource.Cancel();
+                _swarmCancellationTokenSource!.Cancel();
                 Running = false;
             }
 
@@ -295,7 +294,7 @@ namespace Libplanet.Net.Tests.Protocols
 
             Task.Run(() =>
             {
-                _ = (Protocol as KademliaProtocol).PingAsync(
+                _ = ((KademliaProtocol)Protocol).PingAsync(
                     peer,
                     timeSpan,
                     default);
@@ -324,6 +323,11 @@ namespace Libplanet.Net.Tests.Protocols
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(TestTransport));
+            }
+
+            if (_swarmCancellationTokenSource is null)
+            {
+                throw new InvalidOperationException($"{nameof(NetMQTransport)} did not start.");
             }
 
             var peersList = peers.ToList();
@@ -400,7 +404,7 @@ namespace Libplanet.Net.Tests.Protocols
                     $"Operation is canceled during {nameof(SendMessageAsync)}().");
             }
 
-            if (_replyToReceive.TryRemove(identity, out Message reply))
+            if (_replyToReceive.TryRemove(identity, out var reply))
             {
                 _logger.Debug(
                     "Received reply {Content} of message with identity {identity}",
@@ -438,7 +442,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public async Task ReplyMessageAsync(
             MessageContent content,
-            byte[] identity,
+            byte[]? identity,
             CancellationToken cancellationToken)
         {
             if (_disposed)
@@ -459,8 +463,8 @@ namespace Libplanet.Net.Tests.Protocols
                 DateTimeOffset.UtcNow,
                 identity);
             await Task.Delay(_networkDelay, cancellationToken);
-            _transports[_peersToReply[identity]].ReceiveReply(message);
-            _peersToReply.TryRemove(identity, out Address addr);
+            _transports[_peersToReply[identity!]].ReceiveReply(message);
+            _peersToReply.TryRemove(identity!, out Address addr);
         }
 
         public async Task WaitForTestMessageWithData(
@@ -497,7 +501,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         private void ReceiveMessage(Message message)
         {
-            if (_swarmCancellationTokenSource.IsCancellationRequested)
+            if (_swarmCancellationTokenSource!.IsCancellationRequested)
             {
                 return;
             }

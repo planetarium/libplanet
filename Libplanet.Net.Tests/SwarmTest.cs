@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -93,7 +92,7 @@ namespace Libplanet.Net.Tests
             Assert.True(swarm.Running);
             Assert.True(t.IsFaulted);
             Assert.True(
-                t.Exception.InnerException is SwarmException,
+                t.Exception?.InnerException is SwarmException,
                 $"Expected SwarmException, but actual exception was: {t.Exception.InnerException}"
             );
 
@@ -491,7 +490,7 @@ namespace Libplanet.Net.Tests
                 await roundOneProposed.WaitAsync();
 
                 await AssertThatEventually(() => swarms[0].BlockChain.Tip.Index == 1, int.MaxValue);
-                Assert.Equal(1, swarms[0].BlockChain.GetBlockCommit(1).Round);
+                Assert.Equal(1, swarms[0].BlockChain.GetBlockCommit(1)!.Round);
             }
             finally
             {
@@ -515,9 +514,9 @@ namespace Libplanet.Net.Tests
             BlockChain chainA = swarmA.BlockChain;
 
             Block block1 = chainA.ProposeBlock(keyA);
-            chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
+            chainA.Append(block1, TestUtils.CreateBlockCommit(block1)!);
             Block block2 = chainA.ProposeBlock(keyA, CreateBlockCommit(block1));
-            chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
+            chainA.Append(block2, TestUtils.CreateBlockCommit(block2)!);
 
             try
             {
@@ -553,7 +552,7 @@ namespace Libplanet.Net.Tests
                     new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
                     inventories2);
 
-                (Block, BlockCommit)[] receivedBlocks =
+                (Block, BlockCommit?)[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer,
                         inventories1.Select(pair => pair.Item2),
@@ -585,10 +584,10 @@ namespace Libplanet.Net.Tests
 
             Block block1 = chainA.ProposeBlock(
                 keyA, CreateBlockCommit(chainA.Tip));
-            chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
+            chainA.Append(block1, TestUtils.CreateBlockCommit(block1)!);
             Block block2 = chainA.ProposeBlock(
                 keyA, CreateBlockCommit(chainA.Tip));
-            chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
+            chainA.Append(block2, TestUtils.CreateBlockCommit(block2)!);
 
             try
             {
@@ -650,7 +649,7 @@ namespace Libplanet.Net.Tests
             );
             chainB.StageTransaction(tx);
             Block block = chainB.ProposeBlock(keyB);
-            chainB.Append(block, TestUtils.CreateBlockCommit(block));
+            chainB.Append(block, TestUtils.CreateBlockCommit(block)!);
 
             try
             {
@@ -694,9 +693,9 @@ namespace Libplanet.Net.Tests
 
             // TODO: Check Consensus Parameters.
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm(null, key, transport));
+                new Swarm(null!, key, transport));
             Assert.Throws<ArgumentNullException>(() =>
-                new Swarm(blockchain, null, transport));
+                new Swarm(blockchain, null!, transport));
         }
 
         [Fact(Timeout = Timeout)]
@@ -790,7 +789,7 @@ namespace Libplanet.Net.Tests
             using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.Bind(new IPEndPoint(IPAddress.Loopback, 0));
-                port = ((IPEndPoint)socket.LocalEndPoint).Port;
+                port = ((IPEndPoint)socket.LocalEndPoint!).Port;
             }
 
             Uri turnUrl = FactOnlyTurnAvailableAttribute.GetTurnUri();
@@ -835,7 +834,7 @@ namespace Libplanet.Net.Tests
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var block = seed.BlockChain.ProposeBlock(seedKey);
-                    seed.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
+                    seed.BlockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
                     seed.BroadcastBlock(block);
                     await Task.Delay(1000, cancellationToken);
                 }
@@ -910,17 +909,17 @@ namespace Libplanet.Net.Tests
             miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             Block block1 = miner1.BlockChain.ProposeBlock(
                 key1, CreateBlockCommit(miner1.BlockChain.Tip));
-            miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             Block block2 = miner2.BlockChain.ProposeBlock(
                 key2, CreateBlockCommit(miner2.BlockChain.Tip));
-            miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+            miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2)!);
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
             var latest = miner2.BlockChain.ProposeBlock(
                 key2, CreateBlockCommit(miner2.BlockChain.Tip));
-            miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
+            miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest)!);
 
             renderer.RenderEventHandler += (_, a) =>
                 renderCount += IsDumbAction(a) ? 1 : 0;
@@ -948,7 +947,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy(new MinerReward(1));
 
-            async Task<Swarm> MakeSwarm(PrivateKey key = null) =>
+            async Task<Swarm> MakeSwarm(PrivateKey? key = null) =>
                 await CreateSwarm(
                     MakeBlockChain(
                         policy,
@@ -982,8 +981,8 @@ namespace Libplanet.Net.Tests
                         miner1.BlockChain.Tip.Hash,
                         miner1.BlockChain.Tip.Index,
                         0));
-                miner1.BlockChain.Append(b, TestUtils.CreateBlockCommit(b));
-                miner2.BlockChain.Append(b, TestUtils.CreateBlockCommit(b));
+                miner1.BlockChain.Append(b, TestUtils.CreateBlockCommit(b)!);
+                miner2.BlockChain.Append(b, TestUtils.CreateBlockCommit(b)!);
             }
 
             try
@@ -996,11 +995,11 @@ namespace Libplanet.Net.Tests
 
                 var t = receiver.PreloadAsync();
                 Block block1 = miner1.BlockChain.ProposeBlock(key1);
-                miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+                miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
                 Block block2 = miner2.BlockChain.ProposeBlock(key1);
-                miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+                miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2)!);
                 Block latest = miner2.BlockChain.ProposeBlock(key2);
-                miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
+                miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest)!);
                 miner2.BroadcastBlock(latest);
                 await t;
 
@@ -1052,13 +1051,13 @@ namespace Libplanet.Net.Tests
                 Log.Debug("Make minerB's chain longer than minerA's chain");
                 Block blockA = minerA.BlockChain.ProposeBlock(
                     keyA, CreateBlockCommit(minerA.BlockChain.Tip));
-                minerA.BlockChain.Append(blockA, TestUtils.CreateBlockCommit(blockA));
+                minerA.BlockChain.Append(blockA, TestUtils.CreateBlockCommit(blockA)!);
                 Block blockB = minerB.BlockChain.ProposeBlock(
                     keyB, CreateBlockCommit(minerB.BlockChain.Tip));
-                minerB.BlockChain.Append(blockB, TestUtils.CreateBlockCommit(blockB));
+                minerB.BlockChain.Append(blockB, TestUtils.CreateBlockCommit(blockB)!);
                 Block blockC = minerB.BlockChain.ProposeBlock(
                     keyB, CreateBlockCommit(minerB.BlockChain.Tip));
-                minerB.BlockChain.Append(blockC, TestUtils.CreateBlockCommit(blockC));
+                minerB.BlockChain.Append(blockC, TestUtils.CreateBlockCommit(blockC)!);
 
                 Assert.Equal(
                     (Text)dumbItem,
@@ -1104,7 +1103,7 @@ namespace Libplanet.Net.Tests
 
                 Block block = minerA.BlockChain.ProposeBlock(
                     keyA, CreateBlockCommit(minerA.BlockChain.Tip));
-                minerA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
+                minerA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
                 minerA.BroadcastBlock(minerA.BlockChain.Tip);
                 await minerB.BlockAppended.WaitAsync();
 
@@ -1134,7 +1133,7 @@ namespace Libplanet.Net.Tests
         {
             var validKey = new PrivateKey();
 
-            TxPolicyViolationException IsSignerValid(
+            TxPolicyViolationException? IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.Address;
@@ -1203,7 +1202,7 @@ namespace Libplanet.Net.Tests
         {
             var validKey = new PrivateKey();
 
-            TxPolicyViolationException IsSignerValid(
+            TxPolicyViolationException? IsSignerValid(
                 BlockChain chain, Transaction tx)
             {
                 var validAddress = validKey.Address;
@@ -1325,7 +1324,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(minerSwarmB, receiverSwarm.AsPeer);
 
                 // Broadcast SwarmA's first block.
-                minerChainA.Append(aBlock1, TestUtils.CreateBlockCommit(aBlock1));
+                minerChainA.Append(aBlock1, TestUtils.CreateBlockCommit(aBlock1)!);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
@@ -1335,10 +1334,10 @@ namespace Libplanet.Net.Tests
                         $"{nameof(receiverChain)}'s tip being same to " +
                         $"{nameof(minerChainA)}'s tip 1st"
                 );
-                minerChainB.Append(bBlock1, TestUtils.CreateBlockCommit(bBlock1));
+                minerChainB.Append(bBlock1, TestUtils.CreateBlockCommit(bBlock1)!);
 
                 // Broadcast SwarmB's second block.
-                minerChainB.Append(bBlock2, TestUtils.CreateBlockCommit(bBlock2));
+                minerChainB.Append(bBlock2, TestUtils.CreateBlockCommit(bBlock2)!);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainB.Tip),
@@ -1348,10 +1347,10 @@ namespace Libplanet.Net.Tests
                         $"{nameof(receiverChain)}'s tip being same to " +
                         $"{nameof(minerChainB)}'s tip 2nd"
                 );
-                minerChainA.Append(aBlock2, TestUtils.CreateBlockCommit(aBlock2));
+                minerChainA.Append(aBlock2, TestUtils.CreateBlockCommit(aBlock2)!);
 
                 // Broadcast SwarmA's third block.
-                minerChainA.Append(aBlock3, TestUtils.CreateBlockCommit(aBlock3));
+                minerChainA.Append(aBlock3, TestUtils.CreateBlockCommit(aBlock3)!);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
@@ -1429,7 +1428,7 @@ namespace Libplanet.Net.Tests
                 await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
 
                 var block = swarmA.BlockChain.ProposeBlock(privateKeyA);
-                swarmA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
+                swarmA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
 
                 Task.WaitAll(new[]
                 {
@@ -1448,19 +1447,19 @@ namespace Libplanet.Net.Tests
                     (Text)genesisChainA
                         .GetWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
-                        .GetState(signerAddress));
+                        .GetState(signerAddress)!);
                 Assert.Equal(
                     "2",
                     (Text)genesisChainB
                         .GetWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
-                        .GetState(signerAddress));
+                        .GetState(signerAddress)!);
                 Assert.Equal(
                     "1",
                     (Text)genesisChainC
                         .GetWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
-                        .GetState(signerAddress));
+                        .GetState(signerAddress)!);
             }
             finally
             {
@@ -1488,12 +1487,12 @@ namespace Libplanet.Net.Tests
                 await swarmB.AddPeersAsync(new BoundPeer[] { swarmC.AsPeer }, null);
                 await swarmC.AddPeersAsync(new BoundPeer[] { swarmD.AsPeer }, null);
 
-                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                BoundPeer? foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmB.AsPeer.Address,
                     -1,
                     TimeSpan.FromMilliseconds(3000));
 
-                Assert.Equal(swarmB.AsPeer.Address, foundPeer.Address);
+                Assert.Equal(swarmB.AsPeer.Address, foundPeer!.Address);
                 Assert.DoesNotContain(swarmC.AsPeer, swarmA.Peers);
 
                 foundPeer = await swarmA.FindSpecificPeerAsync(
@@ -1501,7 +1500,7 @@ namespace Libplanet.Net.Tests
                     -1,
                     TimeSpan.FromMilliseconds(3000));
 
-                Assert.Equal(swarmD.AsPeer.Address, foundPeer.Address);
+                Assert.Equal(swarmD.AsPeer.Address, foundPeer!.Address);
                 Assert.Contains(swarmC.AsPeer, swarmA.Peers);
                 Assert.Contains(swarmD.AsPeer, swarmA.Peers);
             }
@@ -1531,7 +1530,7 @@ namespace Libplanet.Net.Tests
 
                 CleaningSwarm(swarmB);
 
-                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                BoundPeer? foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmB.AsPeer.Address,
                     -1,
                     TimeSpan.FromMilliseconds(3000));
@@ -1577,12 +1576,12 @@ namespace Libplanet.Net.Tests
                 await swarmB.AddPeersAsync(new BoundPeer[] { swarmC.AsPeer }, null);
                 await swarmC.AddPeersAsync(new BoundPeer[] { swarmD.AsPeer }, null);
 
-                BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
+                BoundPeer? foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmC.AsPeer.Address,
                     1,
                     TimeSpan.FromMilliseconds(3000));
 
-                Assert.Equal(swarmC.AsPeer.Address, foundPeer.Address);
+                Assert.Equal(swarmC.AsPeer.Address, foundPeer!.Address);
                 swarmA.RoutingTable.Clear();
                 Assert.Empty(swarmA.Peers);
                 await swarmA.AddPeersAsync(new BoundPeer[] { swarmB.AsPeer }, null);
@@ -1619,7 +1618,7 @@ namespace Libplanet.Net.Tests
             {
                 Block block = chain.ProposeBlock(
                     ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
-                chain.Append(block, TestUtils.CreateBlockCommit(block));
+                chain.Append(block, TestUtils.CreateBlockCommit(block)!);
             }
 
             Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
@@ -1659,7 +1658,7 @@ namespace Libplanet.Net.Tests
             {
                 Block block = chain.ProposeBlock(
                     ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
-                chain.Append(block, TestUtils.CreateBlockCommit(block));
+                chain.Append(block, TestUtils.CreateBlockCommit(block)!);
             }
 
             Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
@@ -1700,7 +1699,7 @@ namespace Libplanet.Net.Tests
             {
                 Block block = chain.ProposeBlock(
                     ChainPrivateKey, CreateBlockCommit(chain.Tip));
-                chain.Append(block, TestUtils.CreateBlockCommit(block));
+                chain.Append(block, TestUtils.CreateBlockCommit(block)!);
             }
 
             Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
@@ -1774,7 +1773,7 @@ namespace Libplanet.Net.Tests
                 );
 
                 Block block = swarm2.BlockChain.ProposeBlock(key2);
-                swarm2.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
+                swarm2.BlockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
@@ -2100,7 +2099,7 @@ namespace Libplanet.Net.Tests
 
             public bool BlockGettable { get; set; } = true;
 
-            public override Block GetBlock(BlockHash blockHash) =>
+            public override Block? GetBlock(BlockHash blockHash) =>
                 BlockGettable ? base.GetBlock(blockHash) : null;
         }
     }

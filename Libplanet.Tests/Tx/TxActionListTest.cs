@@ -185,9 +185,9 @@ namespace Libplanet.Tests.Tx
             }
 
             Assert.False(a.Equals(null));
-            Assert.False(((object)a).Equals(null));
+            Assert.False(((object)a!).Equals(null));
             Assert.False(b.Equals(null));
-            Assert.False(((object)b).Equals(null));
+            Assert.False(((object)b!).Equals(null));
         }
     }
 }

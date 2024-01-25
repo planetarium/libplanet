@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void RenderBlock(bool exception)
         {
             bool called = false;
-            LogEvent firstLog = null;
+            LogEvent? firstLog = null;
 
             IRenderer renderer = new AnonymousRenderer
             {
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             LogEvent[] logEvents = LogEvents.ToArray();
             Assert.Equal(2, logEvents.Length);
             Assert.Equal(firstLog, logEvents[0]);
-            Assert.Equal(LogEventLevel.Debug, firstLog.Level);
+            Assert.Equal(LogEventLevel.Debug, firstLog!.Level);
             Assert.Equal(
                 "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash})...",
                 firstLog.MessageTemplate.Text

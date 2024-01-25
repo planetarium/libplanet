@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +29,7 @@ namespace Libplanet.Net.Tests
                 }
             })
             .Where(s => !(s is null))
+            .Select(s => s!)
             .ToArray();
 
         public FactOnlyTurnAvailableAttribute(int maxRetries = 1, int delayBetweenRetriesMs = 0)

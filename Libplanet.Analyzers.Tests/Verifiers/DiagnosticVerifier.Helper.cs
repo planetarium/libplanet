@@ -48,7 +48,7 @@ namespace Libplanet.Analyzers.Tests.Verifiers
             var diagnostics = new List<Diagnostic>();
             foreach (var project in projects)
             {
-                Compilation result = project.GetCompilationAsync().Result;
+                Compilation result = project.GetCompilationAsync().Result!;
                 EmitResult emitted = result.Emit(new MemoryStream());
                 if (!emitted.Success)
                 {
@@ -208,7 +208,13 @@ namespace Libplanet.Analyzers.Tests.Verifiers
                 count++;
             }
 
-            return solution.GetProject(projectId);
+            if (solution.GetProject(projectId) is { } project)
+            {
+                return project;
+            }
+
+            throw new InvalidOperationException(
+                $"Cannot found project '{projectId}' in the solution '{solution}'.");
         }
 
         private static IEnumerable<Assembly> GetAssemblies(params Type[] rootTypes)
@@ -217,6 +223,12 @@ namespace Libplanet.Analyzers.Tests.Verifiers
 
             void Register(Assembly assembly)
             {
+                if (assembly.FullName is null)
+                {
+                    throw new InvalidOperationException(
+                        $"'{assembly}' is invalid assembly.");
+                }
+
                 if (assembly.IsDynamic || registry.ContainsKey(assembly.FullName))
                 {
                     return;

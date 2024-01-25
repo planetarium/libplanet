@@ -22,11 +22,11 @@ namespace Libplanet.Tests.Blockchain
         public void Constructor()
         {
             // Cannot create empty
-            var emptySet = new List<(Block, BlockCommit)>();
+            var emptySet = new List<(Block, BlockCommit?)>();
             Assert.Throws<ArgumentException>(() => new Branch(emptySet));
 
             // Cannot create with duplicates
-            var duplicateSet = new List<(Block, BlockCommit)>
+            var duplicateSet = new List<(Block, BlockCommit?)>
             {
                 (_fx.Block1, CreateBlockCommit(_fx.Block1)),
                 (_fx.Block1, CreateBlockCommit(_fx.Block1)),
@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentException>(() => new Branch(duplicateSet));
 
             // Cannot create with non-consecutive indices
-            var nonConsecutiveIndexSet = new List<(Block, BlockCommit)>
+            var nonConsecutiveIndexSet = new List<(Block, BlockCommit?)>
             {
                 (_fx.Block1, CreateBlockCommit(_fx.Block1)),
                 (_fx.Block2, CreateBlockCommit(_fx.Block2)),
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentException>(() => new Branch(nonConsecutiveIndexSet));
 
             // Cannot create with non-consecutive blocks
-            var nonConsecutiveHashSet = new List<(Block, BlockCommit)>
+            var nonConsecutiveHashSet = new List<(Block, BlockCommit?)>
             {
                 (_fx.Block2, CreateBlockCommit(_fx.Block2)),
                 (_fx.Block3Alt, CreateBlockCommit(_fx.Block3Alt)),
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blockchain
             };
             Assert.Throws<ArgumentException>(() => new Branch(nonConsecutiveHashSet));
 
-            var shuffledSet = new List<(Block, BlockCommit)>
+            var shuffledSet = new List<(Block, BlockCommit?)>
             {
                 (_fx.Block4, CreateBlockCommit(_fx.Block4)),
                 (_fx.Block2, CreateBlockCommit(_fx.Block2)),

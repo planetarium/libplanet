@@ -101,8 +101,13 @@ namespace Libplanet.Stun.Tests.Messages
 
         private class AttributeComparer : IEqualityComparer<Attribute>
         {
-            public bool Equals(Attribute x, Attribute y)
+            public bool Equals(Attribute? x, Attribute? y)
             {
+                if (x is null || y is null)
+                {
+                    return false;
+                }
+
                 return x.ToByteArray().SequenceEqual(y.ToByteArray());
             }
 

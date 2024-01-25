@@ -9,7 +9,7 @@ namespace Libplanet.Tests
         [Fact]
         public void StartsWith()
         {
-            byte[] bytes = null;
+            byte[] bytes = null!;
 
             Assert.Throws<ArgumentNullException>(() => bytes.StartsWith(new byte[] { 0 }));
             bytes = new byte[]

@@ -16,9 +16,9 @@ namespace Libplanet.Benchmarks
         private readonly ImmutableArray<Block> Blocks = default;
         private readonly int BlocksCount = default;
         private readonly ImmutableArray<Transaction> Txs = default;
-        private StoreFixture _fx = null;
+        private StoreFixture? _fx = null;
         private int TxsCount = default;
-        private IStore _store = null;
+        private IStore? _store = null;
 
         public Store()
         {
@@ -58,19 +58,19 @@ namespace Libplanet.Benchmarks
         [IterationCleanup]
         public void FinalizeFixture()
         {
-            _fx.Dispose();
+            _fx!.Dispose();
         }
 
         [Benchmark]
         public void PutFirstEmptyBlock()
         {
-            _store.PutBlock(Blocks[0]);
+            _store!.PutBlock(Blocks[0]);
         }
 
         [Benchmark]
         public void PutFirstBlockWithTxs()
         {
-            _store.PutBlock(Blocks[5]);
+            _store!.PutBlock(Blocks[5]);
         }
 
         [IterationSetup(
@@ -87,7 +87,7 @@ namespace Libplanet.Benchmarks
             int i = 0;
             foreach (Block block in Blocks)
             {
-                _store.PutBlock(block);
+                _store!.PutBlock(block);
                 i++;
                 if (i >= Blocks.Length - 1)
                 {
@@ -99,43 +99,43 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public void PutBlockOnManyBlocks()
         {
-            _store.PutBlock(Blocks[BlocksCount - 1]);
+            _store!.PutBlock(Blocks[BlocksCount - 1]);
         }
 
         [Benchmark]
-        public Block GetOldBlockOutOfManyBlocks()
+        public Block? GetOldBlockOutOfManyBlocks()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock(Blocks[0].Hash);
+            return _store!.GetBlock(Blocks[0].Hash);
         }
 
         [Benchmark]
-        public Block GetRecentBlockOutOfManyBlocks()
+        public Block? GetRecentBlockOutOfManyBlocks()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock(Blocks[BlocksCount - 2].Hash);
+            return _store!.GetBlock(Blocks[BlocksCount - 2].Hash);
         }
 
         [Benchmark]
-        public Block TryGetNonExistentBlockHash()
+        public Block? TryGetNonExistentBlockHash()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock(default);
+            return _store!.GetBlock(default);
         }
 
         [Benchmark]
         public void PutFirstTx()
         {
-            _store.PutTransaction(Txs[0]);
+            _store!.PutTransaction(Txs[0]);
         }
 
         [IterationSetup(
@@ -152,7 +152,7 @@ namespace Libplanet.Benchmarks
             int i = 0;
             foreach (Transaction tx in Txs)
             {
-                _store.PutTransaction(tx);
+                _store!.PutTransaction(tx);
                 i++;
                 if (i >= Txs.Length - 1)
                 {
@@ -164,37 +164,37 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public void PutTxOnManyTxs()
         {
-            _store.PutTransaction(Txs[TxsCount - 1]);
+            _store!.PutTransaction(Txs[TxsCount - 1]);
         }
 
         [Benchmark]
-        public Transaction GetOldTxOutOfManyTxs()
+        public Transaction? GetOldTxOutOfManyTxs()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction(Txs[0].Id);
+            return _store!.GetTransaction(Txs[0].Id);
         }
 
         [Benchmark]
-        public Transaction GetRecentTxOutOfManyTxs()
+        public Transaction? GetRecentTxOutOfManyTxs()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction(Txs[TxsCount - 2].Id);
+            return _store!.GetTransaction(Txs[TxsCount - 2].Id);
         }
 
         [Benchmark]
-        public Transaction TryGetNonExistentTxId()
+        public Transaction? TryGetNonExistentTxId()
         {
             // Note that why this benchmark method returns something is
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetTransaction(default);
+            return _store!.GetTransaction(default);
         }
     }
 }

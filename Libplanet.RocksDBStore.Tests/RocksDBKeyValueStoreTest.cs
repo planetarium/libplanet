@@ -16,7 +16,7 @@ namespace Libplanet.RocksDBStore.Tests
         {
             try
             {
-                KeyValueStore = _rocksDbKeyValueStore = new RocksDBKeyValueStore(Path.Combine(
+                _rocksDbKeyValueStore = new RocksDBKeyValueStore(Path.Combine(
                         Path.GetTempPath(),
                         $"rocksdb_key_value_test_{Guid.NewGuid()}"));
                 InitializePreStoredData();
@@ -26,6 +26,8 @@ namespace Libplanet.RocksDBStore.Tests
                 throw new SkipException("RocksDB is not available.");
             }
         }
+
+        protected override IKeyValueStore KeyValueStore => _rocksDbKeyValueStore;
 
         [Fact]
         public void ReadOnlyRocksDb()

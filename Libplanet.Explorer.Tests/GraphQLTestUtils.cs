@@ -15,8 +15,8 @@ namespace Libplanet.Explorer.Tests
     {
         public static Task<ExecutionResult> ExecuteQueryAsync<TObjectGraphType>(
             string query,
-            IDictionary<string, object> userContext = null,
-            object source = null)
+            IDictionary<string, object?>? userContext = null,
+            object? source = null)
             where TObjectGraphType : IObjectGraphType, new()
         {
             return ExecuteQueryAsync(
@@ -30,8 +30,8 @@ namespace Libplanet.Explorer.Tests
         public static Task<ExecutionResult> ExecuteQueryAsync(
             string query,
             IObjectGraphType queryGraphType,
-            IDictionary<string, object> userContext = null,
-            object source = null
+            IDictionary<string, object?>? userContext = null,
+            object? source = null
         )
         {
             var documentExecutor = new DocumentExecuter();
@@ -74,7 +74,7 @@ namespace Libplanet.Explorer.Tests
                     {
                         Query = queryGraphType,
                     },
-                    UserContext = userContext,
+                    UserContext = userContext ?? new Dictionary<string, object?>(),
                     Root = source,
                 }
             );

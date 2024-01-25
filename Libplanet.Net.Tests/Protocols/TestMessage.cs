@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 using System.Text;
 using Libplanet.Net.Messages;

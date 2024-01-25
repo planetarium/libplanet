@@ -198,7 +198,7 @@ namespace Libplanet.Tests.Tx
                             100)
                         : (FungibleAssetValue?)null,
                     i == 4 ? 10 : (long?)null);
-                Assert.False(invoice1.Equals(invoice));
+                Assert.False(invoice1!.Equals(invoice));
                 Assert.False(invoice1.Equals((object)invoice));
                 Assert.NotEqual(invoice1.GetHashCode(), invoice.GetHashCode());
             }
@@ -289,7 +289,7 @@ namespace Libplanet.Tests.Tx
 
             public long? GasLimit => null;
 
-            bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
+            bool IEquatable<ITxInvoice>.Equals(ITxInvoice? other) => false;
         }
     }
 }

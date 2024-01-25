@@ -13,11 +13,11 @@ namespace Libplanet.Benchmarks
     {
         private const int MaxValidatorSize = 100;
 
-        private Vote[] _votes;
-        private PrivateKey[] _privateKeys;
-        private BlockHash _blockHash;
-        private BlockCommit _blockCommit;
-        private Bencodex.Types.IValue _encodedBlockCommit;
+        private Vote[]? _votes;
+        private PrivateKey[]? _privateKeys;
+        private BlockHash? _blockHash;
+        private BlockCommit? _blockCommit;
+        private Bencodex.Types.IValue? _encodedBlockCommit;
 
         [Params(4, 10, 25, 50, MaxValidatorSize)]
         // ReSharper disable once MemberCanBePrivate.Global
@@ -36,14 +36,14 @@ namespace Libplanet.Benchmarks
         [IterationSetup(Target = nameof(DecodeBlockCommit))]
         public void PrepareDecode()
         {
-            _blockCommit = new BlockCommit(1, 0, _blockHash, _votes.Take(ValidatorSize).ToImmutableArray());
+            _blockCommit = new BlockCommit(1, 0, _blockHash!.Value, _votes!.Take(ValidatorSize).ToImmutableArray());
             _encodedBlockCommit = _blockCommit.Bencoded;
         }
 
         [Benchmark]
         public void DecodeBlockCommit()
         {
-            _blockCommit = new BlockCommit(_encodedBlockCommit);
+            _blockCommit = new BlockCommit(_encodedBlockCommit!);
         }
 
         private void SetupKeys()
@@ -62,9 +62,9 @@ namespace Libplanet.Benchmarks
                     new VoteMetadata(
                         1,
                         0,
-                        _blockHash,
+                        _blockHash!.Value,
                         DateTimeOffset.UtcNow,
-                        _privateKeys[x].PublicKey,
+                        _privateKeys![x].PublicKey,
                         VoteFlag.PreCommit).Sign(_privateKeys[x]))
                 .ToArray();
         }

@@ -28,10 +28,10 @@ public partial class StateQueryTest
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
-        IDictionary<string, object> resultDict =
-            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object[] states =
-            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
+        IDictionary<string, object?> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object?>>(resultData!.ToValue());
+        object?[] states =
+            Assert.IsAssignableFrom<object?[]>(resultDict["states"]);
         Assert.Equal(2, states.Length);
         Assert.Equal(new[] { new byte[] { 110, }, null }, states);
     }
@@ -126,7 +126,7 @@ public partial class StateQueryTest
         }
         ", source: source);
         Assert.Single(result.Errors);
-        Assert.Contains("not trackable", result.Errors[0].Message);
+        Assert.Contains("not trackable", result.Errors![0].Message);
     }
 
     [Fact]
@@ -189,10 +189,10 @@ public partial class StateQueryTest
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
-        IDictionary<string, object> resultDict =
-            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        object[] states =
-            Assert.IsAssignableFrom<object[]>(resultDict["states"]);
+        IDictionary<string, object?> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object?>>(resultData!.ToValue());
+        object?[] states =
+            Assert.IsAssignableFrom<object?[]>(resultDict["states"]);
         Assert.Equal(new[] { new byte[] { 110, }, null }, states);
     }
 
@@ -286,7 +286,7 @@ public partial class StateQueryTest
         }
         ", source: source);
         Assert.Single(result.Errors);
-        Assert.Contains("not trackable", result.Errors[0].Message);
+        Assert.Contains("not trackable", result.Errors![0].Message);
     }
 
     [Fact]

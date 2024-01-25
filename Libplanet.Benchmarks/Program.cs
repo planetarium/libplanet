@@ -46,10 +46,10 @@ namespace Libplanet.Benchmarks
                 return;
             }
 
-            var title = combinedReport["Title"];
+            var title = combinedReport["Title"]!;
             var titleString = title.GetValue<string>();
             var timestampString = titleString.Substring(titleString.Length - 15);
-            var benchmarks = combinedReport["Benchmarks"].AsArray();
+            var benchmarks = combinedReport["Benchmarks"]!.AsArray();
             // Rename title whilst keeping original timestamp
             combinedReport["Title"] = $"{resultsFile}-{timestampString}";
 
@@ -61,11 +61,11 @@ namespace Libplanet.Benchmarks
                     continue;
                 }
 
-                var targetBenchmarks = reportJsonNode["Benchmarks"].AsArray();
+                var targetBenchmarks = reportJsonNode["Benchmarks"]!.AsArray();
                 foreach (var benchmark in targetBenchmarks)
                 {
                     // Double parse avoids "The node already has a parent" exception
-                    benchmarks.Add(JsonNode.Parse(benchmark.ToJsonString()));
+                    benchmarks.Add(JsonNode.Parse(benchmark!.ToJsonString()));
                 }
             }
             File.WriteAllText(resultsPath, combinedReport.ToString());

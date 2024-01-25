@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void ActionRenderings(bool error, bool exception)
         {
             bool called = false;
-            LogEvent firstLog = null;
+            LogEvent? firstLog = null;
             ICommittedActionContext actionContext =
                 new CommittedActionContext(new ActionContext(
                     default,
@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(2, LogEvents.Count());
             ResetContext();
 
-            ThrowException.SomeException thrownException = null;
+            ThrowException.SomeException? thrownException = null;
             try
             {
                 if (error)
@@ -164,7 +164,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             LogEvent[] logEvents = LogEvents.ToArray();
             Assert.Equal(2, logEvents.Length);
             Assert.Equal(firstLog, logEvents[0]);
-            Assert.Equal(LogEventLevel.Information, firstLog.Level);
+            Assert.Equal(LogEventLevel.Information, firstLog!.Level);
             const string expected1stLog =
                 "Invoking {MethodName}() for an action {ActionType} at block #{BlockIndex}...";
             Assert.Equal(
@@ -234,7 +234,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         public void RenderBlock(bool end, bool exception)
         {
             bool called = false;
-            LogEvent firstLog = null;
+            LogEvent? firstLog = null;
 
             void Callback(Block oldTip, Block newTip)
             {
@@ -252,8 +252,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             IActionRenderer actionRenderer = new AnonymousActionRenderer
             {
-                BlockRenderer = end ? (Action<Block, Block>)null : Callback,
-                BlockEndRenderer = end ? Callback : (Action<Block, Block>)null,
+                BlockRenderer = end ? (Action<Block, Block>?)null : Callback,
+                BlockEndRenderer = end ? Callback : (Action<Block, Block>?)null,
             };
             actionRenderer = new LoggedActionRenderer(actionRenderer, _logger);
             var invoke = end
@@ -287,7 +287,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             LogEvent[] logEvents = LogEvents.ToArray();
             Assert.Equal(2, logEvents.Length);
             Assert.Equal(firstLog, logEvents[0]);
-            Assert.Equal(LogEventLevel.Debug, firstLog.Level);
+            Assert.Equal(LogEventLevel.Debug, firstLog!.Level);
             Assert.Equal(
                 "Invoking {MethodName}() for #{NewIndex} {NewHash} (was #{OldIndex} {OldHash})...",
                 firstLog.MessageTemplate.Text

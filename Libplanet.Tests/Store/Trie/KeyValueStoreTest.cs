@@ -15,13 +15,18 @@ namespace Libplanet.Tests.Store.Trie
 
         private const int PreStoredDataValueSize = 32;
 
-        protected IKeyValueStore KeyValueStore { get; set; }
+        private KeyBytes[]? _preStoredDataKeys;
+        private byte[][]? _preStoredDataValues;
+
+        protected abstract IKeyValueStore KeyValueStore { get; }
 
         protected Random Random { get; } = new Random();
 
-        private KeyBytes[] PreStoredDataKeys { get; set; }
+        private KeyBytes[] PreStoredDataKeys => _preStoredDataKeys ??
+            throw new InvalidOperationException();
 
-        private byte[][] PreStoredDataValues { get; set; }
+        private byte[][] PreStoredDataValues => _preStoredDataValues ??
+            throw new InvalidOperationException();
 
         [SkippableFact]
         public void Get()
@@ -145,14 +150,14 @@ namespace Libplanet.Tests.Store.Trie
 
         protected void InitializePreStoredData()
         {
-            PreStoredDataKeys = new KeyBytes[PreStoredDataCount];
-            PreStoredDataValues = new byte[PreStoredDataCount][];
+            _preStoredDataKeys = new KeyBytes[PreStoredDataCount];
+            _preStoredDataValues = new byte[PreStoredDataCount][];
 
             for (int i = 0; i < PreStoredDataCount; ++i)
             {
-                PreStoredDataKeys[i] = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
-                PreStoredDataValues[i] = Random.NextBytes(PreStoredDataValueSize);
-                KeyValueStore.Set(PreStoredDataKeys[i], PreStoredDataValues[i]);
+                _preStoredDataKeys[i] = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
+                _preStoredDataValues[i] = Random.NextBytes(PreStoredDataValueSize);
+                KeyValueStore.Set(_preStoredDataKeys[i], _preStoredDataValues[i]);
             }
         }
     }

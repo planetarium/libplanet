@@ -32,9 +32,9 @@ namespace Libplanet.Benchmarks.DataModel
             {
             }
 
-            public ImmutableList<int> BigList { get; private set; }
+            public ImmutableList<int>? BigList { get; private set; }
 
-            public ImmutableDictionary<Address, string> BigDict { get; private set; }
+            public ImmutableDictionary<Address, string>? BigDict { get; private set; }
         }
 
         public class RawLeafModel
@@ -57,19 +57,19 @@ namespace Libplanet.Benchmarks.DataModel
                     .Add(
                         nameof(BigList),
                         (BTypes.IValue)new BTypes.List(
-                            BigList.Select(x => (BTypes.IValue)new BTypes.Integer(x)).ToList()))
+                            BigList!.Select(x => (BTypes.IValue)new BTypes.Integer(x)).ToList()))
                     .Add(
                         nameof(BigDict),
                         new BTypes.Dictionary(
-                            BigDict
+                            BigDict!
                                 .Select(kv => new KeyValuePair<BTypes.IKey, BTypes.IValue>(
                                     new BTypes.Binary(kv.Key.ByteArray),
                                     new BTypes.Text(kv.Value)))));
             }
 
-            public ImmutableList<int> BigList { get; private set; }
+            public ImmutableList<int>? BigList { get; private set; }
 
-            public ImmutableDictionary<Address, string> BigDict { get; private set; }
+            public ImmutableDictionary<Address, string>? BigDict { get; private set; }
         }
     }
 }

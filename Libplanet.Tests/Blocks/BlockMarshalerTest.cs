@@ -61,8 +61,8 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     TimestampKey,
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true))
-                .Add(TxHashKey, _fx.Genesis.TxHash.Value.ByteArray);
+                .Add(PublicKeyKey, _fx.Genesis.PublicKey!.Format(compress: true))
+                .Add(TxHashKey, _fx.Genesis.TxHash!.Value.ByteArray);
             var expectedGenesisHeader = _marshaledGenesisMetadata
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
@@ -78,11 +78,11 @@ namespace Libplanet.Tests.Blocks
             _marshaledNextMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Next.ProtocolVersion)
                 .Add(IndexKey, _fx.Next.Index)
-                .Add(PreviousHashKey, _fx.Next.PreviousHash.Value.ByteArray)
+                .Add(PreviousHashKey, _fx.Next.PreviousHash!.Value.ByteArray)
                 .Add(
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
+                .Add(PublicKeyKey, _fx.Next.PublicKey!.Format(compress: true));
             var expectedNextHeader = _marshaledNextMetadata
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
@@ -94,13 +94,13 @@ namespace Libplanet.Tests.Blocks
             _marshaledHasTxMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.HasTx.ProtocolVersion)
                 .Add(IndexKey, _fx.HasTx.Index)
-                .Add(PreviousHashKey, _fx.HasTx.PreviousHash.Value.ByteArray)
+                .Add(PreviousHashKey, _fx.HasTx.PreviousHash!.Value.ByteArray)
                 .Add(
                     TimestampKey,
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
-                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
-                .Add(LastCommitKey, _fx.HasTx.LastCommit.Bencoded);
+                .Add(PublicKeyKey, _fx.HasTx.PublicKey!.Format(true))
+                .Add(TxHashKey, _fx.HasTx.TxHash!.Value.ByteArray)
+                .Add(LastCommitKey, _fx.HasTx.LastCommit!.Bencoded);
             var expectedHasTxHeader = _marshaledHasTxMetadata
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)

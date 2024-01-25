@@ -10,10 +10,12 @@ namespace Libplanet.Tests.Store.Trie
         public CacheableKeyValueStoreTest()
         {
             // Memory mode.
-            KeyValueStore = _cacheableKeyValueStore =
+            _cacheableKeyValueStore =
                 new CacheableKeyValueStore(new DefaultKeyValueStore(null));
             InitializePreStoredData();
         }
+
+        protected override IKeyValueStore KeyValueStore => _cacheableKeyValueStore;
 
         public void Dispose()
         {

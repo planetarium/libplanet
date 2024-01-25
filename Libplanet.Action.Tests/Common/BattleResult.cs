@@ -46,13 +46,13 @@ namespace Libplanet.Action.Tests.Common
                 ["targets"] = new List(Targets),
             });
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             return other is IEquatable<BattleResult> o &&
                    o.Equals(this);
         }
 
-        public bool Equals(BattleResult other)
+        public bool Equals(BattleResult? other)
         {
             return other != null &&
                 UsedWeapons.SetEquals(other.UsedWeapons) &&

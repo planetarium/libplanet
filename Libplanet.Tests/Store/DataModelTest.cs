@@ -98,7 +98,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, bool>(
                         ((BTypes.Binary)x.Key).ByteArray, ((BTypes.Boolean)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesBool)
+            foreach (var kv in root.DictBytesBool!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesBool[kv.Key]);
             }
@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, int>(
                         ((BTypes.Binary)x.Key).ByteArray, (int)((BTypes.Integer)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesInt)
+            foreach (var kv in root.DictBytesInt!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesInt[kv.Key]);
             }
@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, long>(
                         ((BTypes.Binary)x.Key).ByteArray, (long)((BTypes.Integer)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesLong)
+            foreach (var kv in root.DictBytesLong!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesLong[kv.Key]);
             }
@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, BigInteger>(
                         ((BTypes.Binary)x.Key).ByteArray, ((BTypes.Integer)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesBigInt)
+            foreach (var kv in root.DictBytesBigInt!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesBigInteger[kv.Key]);
             }
@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, ImmutableArray<byte>>(
                         ((BTypes.Binary)x.Key).ByteArray, ((BTypes.Binary)x.Value).ByteArray))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesBytes)
+            foreach (var kv in root.DictBytesBytes!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesBytes[kv.Key]);
             }
@@ -149,7 +149,7 @@ namespace Libplanet.Tests.Store
                         ((BTypes.Binary)x.Key).ByteArray,
                         new Address(((BTypes.Binary)x.Value).ByteArray)))
                 .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesAddr)
+            foreach (var kv in root.DictBytesAddr!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesAddr[kv.Key]);
             }
@@ -159,7 +159,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, string>(
                         ((BTypes.Binary)x.Key).ByteArray, ((BTypes.Text)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictBytesStr)
+            foreach (var kv in root.DictBytesStr!)
             {
                 Assert.Equal(kv.Value, dictionaryBytesString[kv.Key]);
             }
@@ -170,7 +170,7 @@ namespace Libplanet.Tests.Store
                         new Guid(((BTypes.Binary)x.Key).ToByteArray()),
                         ((BTypes.Text)x.Value).Value))
                 .ToImmutableDictionary();
-            foreach (var kv in root.DictGuidStr)
+            foreach (var kv in root.DictGuidStr!)
             {
                 Assert.Equal(kv.Value, dictionaryGuidStr[kv.Key]);
             }
@@ -181,7 +181,7 @@ namespace Libplanet.Tests.Store
                         new Address(((BTypes.Binary)x.Key).ByteArray),
                         ((BTypes.Text)x.Value).Value))
                 .ToImmutableDictionary();
-            foreach (var kv in root.DictAddrStr)
+            foreach (var kv in root.DictAddrStr!)
             {
                 Assert.Equal(kv.Value, dictionaryAddrStr[kv.Key]);
             }
@@ -191,7 +191,7 @@ namespace Libplanet.Tests.Store
                     .Select(x => new KeyValuePair<string, string>(
                         ((BTypes.Text)x.Key).Value, ((BTypes.Text)x.Value).Value))
                     .ToImmutableDictionary();
-            foreach (var kv in root.DictStrStr)
+            foreach (var kv in root.DictStrStr!)
             {
                 Assert.Equal(kv.Value, dictionaryStringString[kv.Key]);
             }
@@ -199,17 +199,17 @@ namespace Libplanet.Tests.Store
             // Although not entirely strict, for the most part, we only check
             // randomly generated guid string still matches to assume all has gone well.
             Assert.Equal(
-                root.Mid.Str,
+                root.Mid!.Str,
                 ((BTypes.Text)(
                     (BTypes.Dictionary)rootEncoded[nameof(root.Mid)]
                 )[nameof(root.Mid.Str)]).Value);
             Assert.Equal(
-                root.Leaf.Str,
+                root.Leaf!.Str,
                 ((BTypes.Text)(
                     (BTypes.Dictionary)rootEncoded[nameof(root.Leaf)]
                 )[nameof(root.Leaf.Str)]).Value);
             Assert.Equal(
-                root.Mid.Leaf.Str,
+                root.Mid.Leaf!.Str,
                 ((BTypes.Text)(
                     (BTypes.Dictionary)(
                         (BTypes.Dictionary)rootEncoded[nameof(root.Mid)]
@@ -310,7 +310,7 @@ namespace Libplanet.Tests.Store
                     (BTypes.IValue)BTypes.List.Empty
                         .Add((BTypes.IValue)new BTypes.Integer(randInt)));
             ListIntWrapper decodedListIntWrapper = new ListIntWrapper(encoded);
-            Assert.Equal(randInt, decodedListIntWrapper.Value[0]);
+            Assert.Equal(randInt, decodedListIntWrapper.Value![0]);
             encoded = BTypes.Dictionary.Empty
                 .Add(
                     nameof(DictStrIntWrapper.Value),
@@ -319,11 +319,11 @@ namespace Libplanet.Tests.Store
                             (BTypes.IKey)new BTypes.Text(randStr),
                             (BTypes.IValue)new BTypes.Integer(randInt)));
             DictStrIntWrapper decodedDictStrIntWrapper = new DictStrIntWrapper(encoded);
-            Assert.Equal(randInt, decodedDictStrIntWrapper.Value[randStr]);
+            Assert.Equal(randInt, decodedDictStrIntWrapper.Value![randStr]);
 
             // Try null.
             Assert.Throws<NullReferenceException>(
-                () => new IntWrapper(null));
+                () => new IntWrapper(null!));
 
             // Try missing data.
             encoded = BTypes.Dictionary.Empty;
@@ -587,62 +587,62 @@ namespace Libplanet.Tests.Store
 
             public Address Addr { get; private set; }
 
-            public string Str { get; private set; }
+            public string? Str { get; private set; }
 
-            public ImmutableList<int> ListEmpty { get; private set; }
+            public ImmutableList<int>? ListEmpty { get; private set; }
 
-            public ImmutableList<bool> ListBool { get; private set; }
+            public ImmutableList<bool>? ListBool { get; private set; }
 
-            public ImmutableList<int> ListInt { get; private set; }
+            public ImmutableList<int>? ListInt { get; private set; }
 
-            public ImmutableList<long> ListLong { get; private set; }
+            public ImmutableList<long>? ListLong { get; private set; }
 
-            public ImmutableList<BigInteger> ListBigInt { get; private set; }
+            public ImmutableList<BigInteger>? ListBigInt { get; private set; }
 
-            public ImmutableList<ImmutableArray<byte>> ListBytes { get; private set; }
+            public ImmutableList<ImmutableArray<byte>>? ListBytes { get; private set; }
 
-            public ImmutableList<Guid> ListGuid { get; private set; }
+            public ImmutableList<Guid>? ListGuid { get; private set; }
 
-            public ImmutableList<Address> ListAddr { get; private set; }
+            public ImmutableList<Address>? ListAddr { get; private set; }
 
-            public ImmutableList<string> ListStr { get; private set; }
+            public ImmutableList<string>? ListStr { get; private set; }
 
-            public ImmutableDictionary<string, string>
+            public ImmutableDictionary<string, string>?
                 DictEmpty { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, bool>
+            public ImmutableDictionary<ImmutableArray<byte>, bool>?
                 DictBytesBool { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, int>
+            public ImmutableDictionary<ImmutableArray<byte>, int>?
                 DictBytesInt { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, long>
+            public ImmutableDictionary<ImmutableArray<byte>, long>?
                 DictBytesLong { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, BigInteger>
+            public ImmutableDictionary<ImmutableArray<byte>, BigInteger>?
                 DictBytesBigInt { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, ImmutableArray<byte>>
+            public ImmutableDictionary<ImmutableArray<byte>, ImmutableArray<byte>>?
                 DictBytesBytes { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, Address>
+            public ImmutableDictionary<ImmutableArray<byte>, Address>?
                 DictBytesAddr { get; private set; }
 
-            public ImmutableDictionary<ImmutableArray<byte>, string>
+            public ImmutableDictionary<ImmutableArray<byte>, string>?
                 DictBytesStr { get; private set; }
 
-            public ImmutableDictionary<Guid, string>
+            public ImmutableDictionary<Guid, string>?
                 DictGuidStr { get; private set; }
 
-            public ImmutableDictionary<Address, string>
+            public ImmutableDictionary<Address, string>?
                 DictAddrStr { get; private set; }
 
-            public ImmutableDictionary<string, string>
+            public ImmutableDictionary<string, string>?
                 DictStrStr { get; private set; }
 
-            public MidModel Mid { get; private set; }
+            public MidModel? Mid { get; private set; }
 
-            public LeafModel Leaf { get; private set; }
+            public LeafModel? Leaf { get; private set; }
         }
 
         private class MidModel : DataModel
@@ -671,11 +671,11 @@ namespace Libplanet.Tests.Store
 
             public int Int { get; private set; }
 
-            public string Str { get; private set; }
+            public string? Str { get; private set; }
 
-            public ImmutableList<int> ListInt { get; private set; }
+            public ImmutableList<int>? ListInt { get; private set; }
 
-            public LeafModel Leaf { get; private set; }
+            public LeafModel? Leaf { get; private set; }
         }
 
         private class LeafModel : DataModel
@@ -703,9 +703,9 @@ namespace Libplanet.Tests.Store
 
             public int Int { get; private set; }
 
-            public string Str { get; private set; }
+            public string? Str { get; private set; }
 
-            public ImmutableDictionary<string, string> DictStrStr
+            public ImmutableDictionary<string, string>? DictStrStr
             {
                 get;
                 private set;
@@ -837,7 +837,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableList<int?> Value { get; private set; }
+            public ImmutableList<int?>? Value { get; private set; }
         }
 
         private class HasInvalidListValueType : DataModel
@@ -857,7 +857,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableList<MidModel> Value { get; private set; }
+            public ImmutableList<MidModel>? Value { get; private set; }
         }
 
         private class HasInvalidDictionaryKeyType : DataModel
@@ -877,7 +877,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableDictionary<int, int> Value { get; private set; }
+            public ImmutableDictionary<int, int>? Value { get; private set; }
         }
 
         private class HasNullableDictionaryValueType : DataModel
@@ -897,7 +897,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableDictionary<string, int?> Value { get; private set; }
+            public ImmutableDictionary<string, int?>? Value { get; private set; }
         }
 
         private class HasInvalidDictionaryValueType : DataModel
@@ -917,7 +917,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableDictionary<string, MidModel> Value { get; private set; }
+            public ImmutableDictionary<string, MidModel>? Value { get; private set; }
         }
 
         private class HasNullReferencePropertyValue : DataModel
@@ -933,7 +933,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public string Value { get; private set; }
+            public string? Value { get; private set; }
         }
 
         private class HasNullReferenceListValue : DataModel
@@ -941,7 +941,7 @@ namespace Libplanet.Tests.Store
             public HasNullReferenceListValue()
                 : base()
             {
-                Value = new List<string>() { "foo", null, "bar" }.ToImmutableList();
+                Value = new List<string?>() { "foo", null, "bar" }.ToImmutableList();
             }
 
             public HasNullReferenceListValue(BTypes.Dictionary encoded)
@@ -949,7 +949,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableList<string> Value { get; private set; }
+            public ImmutableList<string?>? Value { get; private set; }
         }
 
         private class HasNullReferenceDictValue : DataModel
@@ -957,7 +957,7 @@ namespace Libplanet.Tests.Store
             public HasNullReferenceDictValue()
                 : base()
             {
-                Value = new Dictionary<string, string>()
+                Value = new Dictionary<string, string?>()
                 {
                     { "foo", "bar" },
                     { "lorem", null },
@@ -969,7 +969,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableDictionary<string, string> Value { get; private set; }
+            public ImmutableDictionary<string, string?>? Value { get; private set; }
         }
 
         private class IntWrapper : DataModel
@@ -1049,7 +1049,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public string Value { get; private set; }
+            public string? Value { get; private set; }
         }
 
         private class ListIntWrapper : DataModel
@@ -1065,7 +1065,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableList<int> Value { get; private set; }
+            public ImmutableList<int>? Value { get; private set; }
         }
 
         private class DictStrIntWrapper : DataModel
@@ -1081,7 +1081,7 @@ namespace Libplanet.Tests.Store
             {
             }
 
-            public ImmutableDictionary<string, int> Value { get; private set; }
+            public ImmutableDictionary<string, int>? Value { get; private set; }
         }
     }
 }

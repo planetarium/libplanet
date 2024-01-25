@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         public void ToBencodex()
         {
             var fullNode = new FullNode(
-                Enumerable.Repeat<INode>(null, 16).ToImmutableArray()
+                Enumerable.Repeat<INode?>(null, 16).ToImmutableArray()
                     .Add(new ValueNode(Dictionary.Empty)).ToImmutableArray());
 
             var expected =

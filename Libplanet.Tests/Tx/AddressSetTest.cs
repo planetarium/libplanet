@@ -386,10 +386,10 @@ namespace Libplanet.Tests.Tx
                     Assert.NotEqual(b.GetHashCode(), a.GetHashCode());
                 }
 
-                Assert.False(a.Equals((AddressSet)null));
-                Assert.False(b.Equals((AddressSet)null));
-                Assert.False(a.Equals((object)null));
-                Assert.False(b.Equals((object)null));
+                Assert.False(a.Equals((AddressSet?)null));
+                Assert.False(b.Equals((AddressSet?)null));
+                Assert.False(a!.Equals((object?)null));
+                Assert.False(b!.Equals((object?)null));
             }
         }
     }

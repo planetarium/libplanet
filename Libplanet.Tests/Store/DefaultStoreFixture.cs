@@ -8,7 +8,7 @@ namespace Libplanet.Tests.Store
 {
     public class DefaultStoreFixture : StoreFixture, IDisposable
     {
-        public DefaultStoreFixture(bool memory = true, IAction blockAction = null)
+        public DefaultStoreFixture(bool memory = true, IAction? blockAction = null)
             : base(blockAction)
         {
             if (memory)
@@ -30,7 +30,17 @@ namespace Libplanet.Tests.Store
             StateStore = LoadTrieStateStore(Path);
         }
 
-        public IStateStore LoadTrieStateStore(string path)
+        public override IStore Store { get; }
+
+        public override IStateStore StateStore { get; }
+
+        public override IKeyValueStore StateKeyValueStore =>
+            throw new InvalidOperationException();
+
+        public override IKeyValueStore StateHashKeyValueStore =>
+            throw new InvalidOperationException();
+
+        public IStateStore LoadTrieStateStore(string? path)
         {
             IKeyValueStore stateKeyValueStore =
                 new DefaultKeyValueStore(path is null

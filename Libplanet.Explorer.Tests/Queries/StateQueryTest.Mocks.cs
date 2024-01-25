@@ -42,10 +42,10 @@ public partial class StateQueryTest
         public IWorldState GetWorldState(BlockHash? blockHash) =>
             new MockWorldState(ToStateRootHash(blockHash));
 
-        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
+        public IValue? GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
             new MockAccountState(stateRootHash).GetState(address);
 
-        public IValue GetState(BlockHash? blockHash, Address address) =>
+        public IValue? GetState(BlockHash? blockHash, Address address) =>
             new MockAccountState(ToStateRootHash(blockHash)).GetState(address);
 
         public FungibleAssetValue GetBalance(
@@ -109,12 +109,12 @@ public partial class StateQueryTest
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets =>
             throw new System.NotImplementedException();
 
-        public IValue GetState(Address address) =>
+        public IValue? GetState(Address address) =>
             _stateRootHash is { } && Address.Equals(address)
                 ? (IValue)Null.Value
                 : null;
 
-        public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(address => GetState(address)).ToList();
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
@@ -158,7 +158,7 @@ public partial class StateQueryTest
 
         public ITrie Remove(in KeyBytes key) => throw new NotSupportedException();
 
-        public IValue Get(KeyBytes key)
+        public IValue? Get(KeyBytes key)
         {
             if (_stateRootHash is { })
             {
@@ -197,7 +197,7 @@ public partial class StateQueryTest
         public IEnumerable<(Nibbles Path, INode Node)> IterateNodes() =>
             throw new NotSupportedException();
 
-        public IEnumerable<(KeyBytes Path, IValue TargetValue, IValue SourceValue)> Diff(ITrie other) =>
+        public IEnumerable<(KeyBytes Path, IValue? TargetValue, IValue SourceValue)> Diff(ITrie other) =>
             throw new NotSupportedException();
     }
 }

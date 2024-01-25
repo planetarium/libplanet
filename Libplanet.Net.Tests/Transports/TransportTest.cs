@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,11 +22,16 @@ namespace Libplanet.Net.Tests.Transports
     public abstract class TransportTest
     {
         protected const int Timeout = 60 * 1000;
+        private ILogger? _logger;
 
-        protected ILogger Logger { get; set; }
+        protected ILogger Logger
+        {
+            get => _logger ?? throw new InvalidOperationException();
+            set => _logger = value;
+        }
 
         #pragma warning disable MEN002
-        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan?, Task<ITransport>> TransportConstructor { get; set; }
+        protected Func<PrivateKey, AppProtocolVersionOptions, HostOptions, TimeSpan?, Task<ITransport>>? TransportConstructor { get; set; }
         #pragma warning restore MEN002
 
         [SkippableFact(Timeout = Timeout)]
@@ -108,7 +112,7 @@ namespace Libplanet.Net.Tests.Transports
                         false,
                         default));
                 Assert.Throws<ObjectDisposedException>(
-                    () => transport.BroadcastMessage(null, message));
+                    () => transport.BroadcastMessage(null!, message));
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.ReplyMessageAsync(
                         message,
@@ -354,7 +358,7 @@ namespace Libplanet.Net.Tests.Transports
         public async Task BroadcastMessage()
         {
             var address = new PrivateKey().Address;
-            ITransport transportA = null;
+            ITransport transportA = null!;
             ITransport transportB = await CreateTransportAsync(
                 privateKey: GeneratePrivateKeyOfBucketIndex(address, 0));
             ITransport transportC = await CreateTransportAsync(
@@ -411,8 +415,8 @@ namespace Libplanet.Net.Tests.Transports
             }
             finally
             {
-                await transportA?.StopAsync(TimeSpan.FromMilliseconds(100));
-                transportA?.Dispose();
+                await transportA.StopAsync(TimeSpan.FromMilliseconds(100));
+                transportA.Dispose();
                 await transportB.StopAsync(TimeSpan.FromMilliseconds(100));
                 transportB.Dispose();
                 await transportC.StopAsync(TimeSpan.FromMilliseconds(100));
@@ -431,9 +435,9 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         private Task<ITransport> CreateTransportAsync(
-            PrivateKey privateKey = null,
-            AppProtocolVersionOptions appProtocolVersionOptions = null,
-            HostOptions hostOptions = null,
+            PrivateKey? privateKey = null,
+            AppProtocolVersionOptions? appProtocolVersionOptions = null,
+            HostOptions? hostOptions = null,
             TimeSpan? messageTimestampBuffer = null
         )
         {

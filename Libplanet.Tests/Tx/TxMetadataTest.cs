@@ -58,9 +58,8 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CopyConstructor()
         {
-            var meta1 = new MetadataTransaction
+            var meta1 = new MetadataTransaction(_key1.PublicKey)
             {
-                PublicKey = _key1.PublicKey,
                 Nonce = 123L,
                 Timestamp = new DateTimeOffset(2022, 5, 23, 10, 2, 0, default),
             };
@@ -72,9 +71,8 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(meta1.PublicKey, copy1.PublicKey);
             AssertBytesEqual(meta1.GenesisHash, copy1.GenesisHash);
 
-            var meta2 = new MetadataTransaction
+            var meta2 = new MetadataTransaction(_key2.PublicKey)
             {
-                PublicKey = _key2.PublicKey,
                 Nonce = 0L,
                 UpdatedAddresses = new[]
                 {
@@ -196,6 +194,11 @@ namespace Libplanet.Tests.Tx
 
         private class MetadataTransaction : ITransaction
         {
+            public MetadataTransaction(PublicKey publicKey)
+            {
+                PublicKey = publicKey;
+            }
+
             public TxId Id { get; set; } = default(TxId);
 
             public long Nonce { get; set; } = 0L;
@@ -207,7 +210,7 @@ namespace Libplanet.Tests.Tx
 
             public DateTimeOffset Timestamp { get; set; }
 
-            public PublicKey PublicKey { get; set; }
+            public PublicKey PublicKey { get; }
 
             public BlockHash? GenesisHash { get; set; }
 
@@ -219,11 +222,11 @@ namespace Libplanet.Tests.Tx
 
             public long? GasLimit => null;
 
-            bool IEquatable<ITxInvoice>.Equals(ITxInvoice other) => false;
+            bool IEquatable<ITxInvoice>.Equals(ITxInvoice? other) => false;
 
-            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata other) => false;
+            bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata? other) => false;
 
-            bool IEquatable<IUnsignedTx>.Equals(IUnsignedTx other) => false;
+            bool IEquatable<IUnsignedTx>.Equals(IUnsignedTx? other) => false;
         }
     }
 }

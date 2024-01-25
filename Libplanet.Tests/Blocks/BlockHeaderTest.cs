@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blocks
         {
             Block fx = _fx.HasTx;
             var preEval = new PreEvaluationBlockHeader(fx);
-            ImmutableArray<byte> sig = fx.Signature.Value;
+            ImmutableArray<byte> sig = fx.Signature!.Value;
             HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
             BlockHash invalidHash = preEval.DeriveBlockHash(arbitraryHash, sig);
             Assert.Throws<InvalidBlockHashException>(() =>

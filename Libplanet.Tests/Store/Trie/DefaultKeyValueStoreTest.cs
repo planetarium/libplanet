@@ -10,9 +10,11 @@ namespace Libplanet.Tests.Store.Trie
         public DefaultKeyValueStoreTest()
         {
             // Memory mode.
-            KeyValueStore = _defaultKeyValueStore = new DefaultKeyValueStore(null);
+            _defaultKeyValueStore = new DefaultKeyValueStore(null);
             InitializePreStoredData();
         }
+
+        protected override IKeyValueStore KeyValueStore => _defaultKeyValueStore;
 
         public void Dispose()
         {

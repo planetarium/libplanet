@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Action
                 _keys[1]);
             chain.Append(
                 block,
-                TestUtils.CreateBlockCommit(block)
+                TestUtils.CreateBlockCommit(block)!
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

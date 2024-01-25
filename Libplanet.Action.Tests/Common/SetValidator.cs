@@ -23,11 +23,11 @@ namespace Libplanet.Action.Tests.Common
             Validator = null;
         }
 
-        public Validator Validator { get; private set; }
+        public Validator? Validator { get; private set; }
 
         /// <inheritdoc cref="IAction.PlainValue"/>
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("validator", Validator.Bencoded);
+            .Add("validator", Validator!.Bencoded);
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)
@@ -42,20 +42,20 @@ namespace Libplanet.Action.Tests.Common
             IWorld states = context.PreviousState;
             IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
             return states.SetAccount(
-                ReservedAddresses.LegacyAccount, legacyAccount.SetValidator(Validator));
+                ReservedAddresses.LegacyAccount, legacyAccount.SetValidator(Validator!));
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(SetValidator other) =>
-            other is SetValidator o && Validator.Equals(o.Validator);
+        public bool Equals(SetValidator? other) =>
+            other is SetValidator o && Validator!.Equals(o.Validator);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(IAction other) => other is SetValidator o && Equals(o);
+        public bool Equals(IAction? other) => other is SetValidator o && Equals(o);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
-        public override bool Equals(object obj) => obj is SetValidator o && Equals(o);
+        public override bool Equals(object? obj) => obj is SetValidator o && Equals(o);
 
         /// <inheritdoc cref="object.GetHashCode()"/>
-        public override int GetHashCode() => Validator.GetHashCode();
+        public override int GetHashCode() => Validator!.GetHashCode();
     }
 }

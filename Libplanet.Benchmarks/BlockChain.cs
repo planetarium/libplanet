@@ -1,3 +1,4 @@
+using System;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -11,8 +12,8 @@ namespace Libplanet.Benchmarks
 {
     public class BlockChain
     {
-        private StoreFixture _fx;
-        private Libplanet.Blockchain.BlockChain _blockChain;
+        private StoreFixture? _fx;
+        private Libplanet.Blockchain.BlockChain? _blockChain;
 
         public BlockChain()
         {
@@ -21,7 +22,7 @@ namespace Libplanet.Benchmarks
         [IterationCleanup]
         public void FinalizeFixture()
         {
-            _fx.Dispose();
+            _fx!.Dispose();
         }
 
         [IterationSetup(Target = nameof(ContainsBlock))]
@@ -48,7 +49,7 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public void ContainsBlock()
         {
-            _blockChain.ContainsBlock(_blockChain.Tip.Hash);
+            _blockChain!.ContainsBlock(_blockChain.Tip.Hash);
         }
     }
 }

@@ -41,20 +41,20 @@ namespace Libplanet.Tests.Fixtures
 
         public IntegerSet(
             IReadOnlyList<BigInteger?> initialStates,
-            IBlockPolicy policy = null,
-            IEnumerable<IRenderer> renderers = null)
+            IBlockPolicy? policy = null,
+            IEnumerable<IRenderer>? renderers = null)
         {
             PrivateKeys = initialStates.Select(_ => new PrivateKey()).ToImmutableArray();
             Addresses = PrivateKeys.Select(key => key.Address).ToImmutableArray();
             Actions = initialStates
                 .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
                 .Where(pair => !(pair.State is null))
-                .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
+                .Select(pair => new { State = (BigInteger)pair.State!, pair.Key })
                 .Select(pair => Arithmetic.Add(pair.State)).ToImmutableArray();
             Txs = initialStates
                 .Select((state, index) => new { State = state, Key = PrivateKeys[index] })
                 .Where(pair => !(pair.State is null))
-                .Select(pair => new { State = (BigInteger)pair.State, pair.Key })
+                .Select(pair => new { State = (BigInteger)pair.State!, pair.Key })
                 .Select(pair => new { Action = Arithmetic.Add(pair.State), pair.Key })
                 .Select(pair =>
                     new Transaction(
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Fixtures
                     ? i.Value
                     : 0;
             HashDigest<SHA256> prevStateRootHash = Chain.Tip.StateRootHash;
-            ITrie prevTrie = GetTrie(Chain.Tip.Hash);
+            ITrie prevTrie = GetTrie(Chain.Tip.Hash)!;
             (BigInteger, HashDigest<SHA256>) prevPair = (prevState, prevStateRootHash);
             (BigInteger, HashDigest<SHA256>) stagedStates = Chain.ListStagedTransactions()
                 .Where(t => t.Signer.Equals(signerAddress))
@@ -177,12 +177,12 @@ namespace Libplanet.Tests.Fixtures
             Miner, TestUtils.CreateBlockCommit(Chain.Tip));
 
         public void Append(Block block) =>
-            Chain.Append(block, TestUtils.CreateBlockCommit(block));
+            Chain.Append(block, TestUtils.CreateBlockCommit(block)!);
 
         public IWorld CreateWorld(BlockHash? offset = null)
             => new World(Chain.GetWorldState(offset ?? Tip.Hash));
 
-        public ITrie GetTrie(BlockHash? blockHash)
+        public ITrie? GetTrie(BlockHash? blockHash)
         {
             return (blockHash is BlockHash h &&
                     Store.GetBlockDigest(h) is BlockDigest d &&

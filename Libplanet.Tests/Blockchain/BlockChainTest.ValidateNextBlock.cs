@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
+            _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock)!);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
 
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
 
             Assert.Throws<ApplicationException>(() => _blockChain.EvaluateAndSign(
                 new BlockContent(
@@ -79,14 +79,14 @@ namespace Libplanet.Tests.Blockchain
                             txHash: null,
                             lastCommit: null)).Propose(),
                     _fx.Proposer);
-                _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
+                _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3)!);
             });
         }
 
         [SkippableFact]
         public void ValidateNextBlockInvalidIndex()
         {
-            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
+            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext)!);
 
             Block prev = _blockChain.Tip;
             Block blockWithAlreadyUsedIndex = _blockChain.EvaluateAndSign(
@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithAlreadyUsedIndex,
-                    TestUtils.CreateBlockCommit(blockWithAlreadyUsedIndex))
+                    TestUtils.CreateBlockCommit(blockWithAlreadyUsedIndex)!)
             );
 
             Block blockWithIndexAfterNonexistentIndex = _blockChain.EvaluateAndSign(
@@ -119,14 +119,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
                     blockWithIndexAfterNonexistentIndex,
-                    TestUtils.CreateBlockCommit(blockWithIndexAfterNonexistentIndex))
+                    TestUtils.CreateBlockCommit(blockWithIndexAfterNonexistentIndex)!)
             );
         }
 
         [SkippableFact]
         public void ValidateNextBlockInvalidPreviousHash()
         {
-            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
+            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext)!);
 
             Block invalidPreviousHashBlock = _blockChain.EvaluateAndSign(
                 new BlockContent(
@@ -139,18 +139,18 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         // ReSharper disable once PossibleInvalidOperationException
                         lastCommit: TestUtils.CreateBlockCommit(
-                            _validNext.PreviousHash.Value, 1, 0))).Propose(),
+                            _validNext.PreviousHash!.Value, 1, 0))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(
                         invalidPreviousHashBlock,
-                        TestUtils.CreateBlockCommit(invalidPreviousHashBlock)));
+                        TestUtils.CreateBlockCommit(invalidPreviousHashBlock)!));
         }
 
         [SkippableFact]
         public void ValidateNextBlockInvalidTimestamp()
         {
-            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
+            _blockChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext)!);
 
             Block invalidPreviousTimestamp = _blockChain.EvaluateAndSign(
                 new BlockContent(
@@ -165,7 +165,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(
                         invalidPreviousTimestamp,
-                        TestUtils.CreateBlockCommit(invalidPreviousTimestamp)));
+                        TestUtils.CreateBlockCommit(invalidPreviousTimestamp)!));
         }
 
         [SkippableFact]
@@ -226,7 +226,7 @@ namespace Libplanet.Tests.Blockchain
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
-                chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
+                chain2.Append(block1, TestUtils.CreateBlockCommit(block1)!));
         }
 
         [SkippableFact]
@@ -242,7 +242,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock));
+            _blockChain.Append(validNextBlock, TestUtils.CreateBlockCommit(validNextBlock)!);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
 
@@ -259,7 +259,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
 
             var blockCommit = TestUtils.CreateBlockCommit(block1);
             Block block2 = _blockChain.EvaluateAndSign(
@@ -272,7 +272,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: blockCommit)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+            _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)!);
             Assert.Equal(_blockChain.Tip, block2);
         }
 
@@ -289,7 +289,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
 
             var invalidValidator = new PrivateKey();
             var validators = TestUtils.ValidatorPrivateKeys.Append(invalidValidator).ToList();
@@ -313,7 +313,7 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: blockCommit)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
-                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
+                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)!));
         }
 
         [SkippableFact]
@@ -329,7 +329,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         lastCommit: null)).Propose(),
                 _fx.Proposer);
-            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1)!);
 
             var keysExceptPeer0 = TestUtils.ValidatorPrivateKeys.Where(
                 key => key != TestUtils.ValidatorPrivateKeys[0]).ToList();
@@ -352,7 +352,7 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: blockCommit)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
-                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
+                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)!));
         }
 
         [SkippableFact]
@@ -397,7 +397,7 @@ namespace Libplanet.Tests.Blockchain
                     TestUtils.CreateBlockCommit(
                         new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                         1,
-                        0)));
+                        0)!));
         }
 
         [SkippableFact]
@@ -420,7 +420,7 @@ namespace Libplanet.Tests.Blockchain
                     TestUtils.CreateBlockCommit(
                         validNextBlock.Hash,
                         2,
-                        0)));
+                        0)!));
         }
 
         [SkippableFact]
@@ -470,7 +470,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer);
 
             Assert.Throws<InvalidBlockCommitException>(() =>
-                _blockChain.Append(validNextBlock, null));
+                _blockChain.Append(validNextBlock, null!));
         }
 
         [SkippableFact]

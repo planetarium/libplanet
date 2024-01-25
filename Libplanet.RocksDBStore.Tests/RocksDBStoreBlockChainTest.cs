@@ -14,7 +14,7 @@ namespace Libplanet.RocksDBStore.Tests
         {
         }
 
-        protected override StoreFixture GetStoreFixture(IAction blockAction)
+        protected override StoreFixture GetStoreFixture(IAction? blockAction)
         {
             try
             {

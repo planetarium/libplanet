@@ -19,7 +19,7 @@ namespace Libplanet.Explorer.Interfaces
 
         Swarm Swarm { get; }
 
-        IBlockChainIndex Index { get; }
+        IBlockChainIndex? Index { get; }
     }
 
     public static class BlockChainContext

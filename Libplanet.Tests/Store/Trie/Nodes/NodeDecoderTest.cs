@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             });
             Assert.Equal(17, list.Count);
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Full);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Full)!;
             Assert.IsType<FullNode>(node);
             var fullNode = (FullNode)node;
             Assert.Equal(new HashNode(hashB), fullNode.Value);
@@ -65,7 +65,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
                 .Add(new List(new IValue[] { Null.Value, (Text)"beef", }));
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short)!;
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<ValueNode>(shortNode.Value);
@@ -80,7 +80,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
                 .Add(default(HashDigest<SHA256>).ByteArray);
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
+            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short)!;
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<HashNode>(shortNode.Value);

@@ -49,7 +49,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
                         HashDigest<SHA256>.FromString(
                             "72bb2e17da644cbca9045f5e689fae0323b6af56a0acab9fd828d2243b50df1c"),
-                        new List<string>() { "" }
+                        new List<string?>() { "" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
@@ -71,7 +71,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
                         HashDigest<SHA256>.FromString(
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
-                        new List<string>() { "SomeException" }
+                        new List<string?>() { "SomeException" }
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "FAILURE",
@@ -91,9 +91,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
                         null,
                         null,
-                        new List<string>() { "" }
+                        new List<string?>() { "" }
                     ),
-                    new Dictionary<string, object> {
+                    new Dictionary<string, object?> {
                         ["txStatus"] = "INCLUDED",
                         ["blockIndex"] = 0L,
                         ["blockHash"] = "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
@@ -109,9 +109,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         null,
                         null,
                         null,
-                        new List<string>() { "" }
+                        new List<string?>() { "" }
                     ),
-                    new Dictionary<string, object> {
+                    new Dictionary<string, object?> {
                         ["txStatus"] = "INVALID",
                         ["blockIndex"] = null,
                         ["blockHash"] = null,
@@ -127,9 +127,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         null,
                         null,
                         null,
-                        new List<string>() { "" }
+                        new List<string?>() { "" }
                     ),
-                    new Dictionary<string, object> {
+                    new Dictionary<string, object?> {
                         ["txStatus"] = "STAGING",
                         ["blockIndex"] = null,
                         ["blockHash"] = null,

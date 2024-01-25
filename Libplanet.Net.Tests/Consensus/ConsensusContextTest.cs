@@ -74,10 +74,10 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            var blockCommit = TestUtils.CreateBlockCommit(block);
+            var blockCommit = TestUtils.CreateBlockCommit(block)!;
             blockChain.Append(block, blockCommit);
             block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2], blockCommit);
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
             Assert.Equal(2, blockChain.Tip.Index);
 
             // Wait for context of height 3 to start.
@@ -133,7 +133,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             Assert.Equal(-1, consensusContext.Height);
             Block block = blockChain.ProposeBlock(new PrivateKey());
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
             Assert.Equal(-1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
@@ -177,13 +177,13 @@ namespace Libplanet.Net.Tests.Consensus
                     1));
 
             var block = blockChain.ProposeBlock(new PrivateKey());
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
             block = blockChain.ProposeBlock(
                 new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
             block = blockChain.ProposeBlock(
                 new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
 
             // Create context of index 4, check if the context of 1 and 2 are removed correctly.
             consensusContext.NewHeight(4);

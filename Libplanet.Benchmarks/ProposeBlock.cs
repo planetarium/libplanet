@@ -8,6 +8,7 @@ using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
+using System;
 
 namespace Libplanet.Benchmarks
 {
@@ -15,8 +16,8 @@ namespace Libplanet.Benchmarks
     {
         private Libplanet.Blockchain.BlockChain _blockChain;
         private PrivateKey _privateKey;
-        private BlockCommit _lastCommit;
-        private Block _block;
+        private BlockCommit? _lastCommit;
+        private Block? _block;
 
         public ProposeBlock()
         {
@@ -52,8 +53,13 @@ namespace Libplanet.Benchmarks
         )]
         public void CleanupPropose()
         {
+            if (_block is null)
+            {
+                throw new InvalidOperationException($"'{nameof(_block)}' cannot be null.");
+            }
+
             // To unstaging transactions, a block is appended to blockchain.
-            _blockChain.Append(_block, TestUtils.CreateBlockCommit(_block));
+            _blockChain.Append(_block, TestUtils.CreateBlockCommit(_block)!);
         }
 
         [IterationSetup(Target = nameof(ProposeBlockOneTransactionNoAction))]

@@ -19,7 +19,7 @@ namespace Libplanet.Common.JsonConverters
         public override IReadOnlyList<byte>? Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
-            JsonSerializerOptions options)
+            JsonSerializerOptions? options)
         {
             var hex = reader.GetString();
             if (hex is null)
@@ -35,7 +35,7 @@ namespace Libplanet.Common.JsonConverters
         public override void Write(
             Utf8JsonWriter writer,
             IReadOnlyList<byte>? value,
-            JsonSerializerOptions options)
+            JsonSerializerOptions? options)
         {
             if (value is null)
             {

@@ -1,3 +1,5 @@
+using System;
+using GraphQL.Execution;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Explorer.Indexing;
@@ -9,25 +11,28 @@ namespace Libplanet.Explorer.Tests.Queries;
 
 public class MockBlockChainContext : IBlockChainContext
 {
+    private readonly BlockChain? _blockChain;
+    private readonly IStore? _store;
+
     public bool Preloaded => true;
 
-    public BlockChain BlockChain { get; }
+    public BlockChain BlockChain => _blockChain ?? throw new InvalidOperationException();
 
-    public IStore Store { get; }
+    public IStore Store => _store ?? throw new InvalidOperationException();
 
-    public Swarm Swarm { get; }
+    public Swarm Swarm => throw new InvalidOperationException();
 
-    public IBlockChainIndex Index { get; protected init; }
+    public IBlockChainIndex? Index { get; protected init; }
 
     public MockBlockChainContext(BlockChain chain)
     {
-        BlockChain = chain;
-        Store = BlockChain.Store;
+        _blockChain = chain;
+        _store = BlockChain.Store;
     }
 
     public MockBlockChainContext(IStore store)
     {
-        Store = store;
+        _store = store;
     }
 
     public MockBlockChainContext()

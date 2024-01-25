@@ -106,7 +106,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // It needs a lastCommit to use, so we assume that index #1 block is already committed.
             Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
+            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock)!);
             var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
             context.Start(lastCommit);
@@ -139,7 +139,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Add block #1 so we can start with a last commit for height 2.
             Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
+            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock)!);
             var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
             context.StateChanged += (_, eventArgs) =>
@@ -176,7 +176,7 @@ namespace Libplanet.Net.Tests.Consensus
             // Simulate bypass of context and block sync by swarm by
             // directly appending to the blockchain.
             Assert.NotNull(proposedBlock);
-            blockChain.Append(proposedBlock!, TestUtils.CreateBlockCommit(proposedBlock!));
+            blockChain.Append(proposedBlock!, TestUtils.CreateBlockCommit(proposedBlock!)!);
             Assert.Equal(2, blockChain.Tip.Index);
 
             // Make PreVotes to normally move to PreCommit step.

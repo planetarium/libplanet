@@ -60,7 +60,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(blockCommit.Round, resultData["round"]);
             Assert.Equal(blockCommit.BlockHash.ToString(), resultData["blockHash"]);
             var expectedVotes = new object[] {
-                new Dictionary<string, object>()
+                new Dictionary<string, object?>()
                 {
                     { "height", vote.Height },
                     { "round", vote.Round },

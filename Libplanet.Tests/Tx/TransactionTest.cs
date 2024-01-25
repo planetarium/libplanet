@@ -205,7 +205,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<ArgumentNullException>(() =>
                 Transaction.Create(
                     0,
-                    null,
+                    null!,
                     null,
                     Array.Empty<DumbAction>().Select(x => x.PlainValue),
                     null,

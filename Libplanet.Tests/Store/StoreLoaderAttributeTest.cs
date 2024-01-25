@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Store
             (IStore Store, IStateStore StateStore)? pair =
                 StoreLoaderAttribute.LoadStore(new Uri("test:///"));
             Assert.NotNull(pair);
-            Assert.IsAssignableFrom<MemoryStore>(pair.Value.Store);
+            Assert.IsAssignableFrom<MemoryStore>(pair!.Value.Store);
             Assert.IsAssignableFrom<TrieStateStore>(pair.Value.StateStore);
         }
 

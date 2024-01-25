@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -22,14 +21,14 @@ namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
-        private static Block[] _fixtureBlocksForPreloadAsyncCancellationTest;
+        private static Block[]? _fixtureBlocksForPreloadAsyncCancellationTest;
 
         private readonly List<Func<Task>> _finalizers;
 
         private static (Address, Block[])
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
-            Block[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
+            Block[]? blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
 
             if (blocks is null)
             {
@@ -59,7 +58,7 @@ namespace Libplanet.Net.Tests
                         Block block = chain.ProposeBlock(
                             miner, CreateBlockCommit(chain.Tip));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
-                        chain.Append(block, CreateBlockCommit(block));
+                        chain.Append(block, CreateBlockCommit(block)!);
                     }
 
                     var blockList = new List<Block>();
@@ -81,12 +80,12 @@ namespace Libplanet.Net.Tests
         }
 
         private Task<Swarm> CreateConsensusSwarm(
-            PrivateKey privateKey = null,
-            AppProtocolVersionOptions appProtocolVersionOptions = null,
-            HostOptions hostOptions = null,
-            SwarmOptions options = null,
-            IBlockPolicy policy = null,
-            Block genesis = null,
+            PrivateKey? privateKey = null,
+            AppProtocolVersionOptions? appProtocolVersionOptions = null,
+            HostOptions? hostOptions = null,
+            SwarmOptions? options = null,
+            IBlockPolicy? policy = null,
+            Block? genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
             return CreateSwarm(
@@ -108,12 +107,12 @@ namespace Libplanet.Net.Tests
         }
 
         private async Task<Swarm> CreateSwarm(
-            PrivateKey privateKey = null,
-            AppProtocolVersionOptions appProtocolVersionOptions = null,
-            HostOptions hostOptions = null,
-            SwarmOptions options = null,
-            IBlockPolicy policy = null,
-            Block genesis = null,
+            PrivateKey? privateKey = null,
+            AppProtocolVersionOptions? appProtocolVersionOptions = null,
+            HostOptions? hostOptions = null,
+            SwarmOptions? options = null,
+            IBlockPolicy? policy = null,
+            Block? genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
             policy = policy ?? new BlockPolicy(new MinerReward(1));
@@ -139,10 +138,10 @@ namespace Libplanet.Net.Tests
 
         private async Task<Swarm> CreateSwarm(
             BlockChain blockChain,
-            PrivateKey privateKey = null,
-            AppProtocolVersionOptions appProtocolVersionOptions = null,
-            HostOptions hostOptions = null,
-            SwarmOptions options = null,
+            PrivateKey? privateKey = null,
+            AppProtocolVersionOptions? appProtocolVersionOptions = null,
+            HostOptions? hostOptions = null,
+            SwarmOptions? options = null,
             ConsensusReactorOption? consensusReactorOption = null
         )
         {
@@ -155,7 +154,7 @@ namespace Libplanet.Net.Tests
                 appProtocolVersionOptions,
                 hostOptions,
                 options.MessageTimestampBuffer);
-            ITransport consensusTransport = null;
+            ITransport? consensusTransport = null;
             if (consensusReactorOption is { } option)
             {
                 var consensusHostOptions = new HostOptions(

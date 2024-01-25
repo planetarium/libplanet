@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -66,7 +65,7 @@ namespace Libplanet.Net.Tests
             Assert.False(claimWithExtra.Verify(otherParty));
 
             ArgumentNullException exception =
-                Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.Sign(null, 1));
+                Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.Sign(null!, 1));
             Assert.Equal("signer", exception.ParamName);
         }
 
@@ -123,7 +122,7 @@ namespace Libplanet.Net.Tests
             // Copy to make sure not to use the same reference
             var address = new Address(claim.Signer.ByteArray);
             var version = claim.Version;
-            var extra = codec.Decode(codec.Encode(claim.Extra));
+            var extra = codec.Decode(codec.Encode(claim.Extra!));
             var signature = claim.Signature.ToArray().ToImmutableArray();
 
             // Different version
@@ -251,7 +250,7 @@ namespace Libplanet.Net.Tests
                 )
             );
 
-            Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.FromToken(null));
+            Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.FromToken(null!));
 
             // No first delimiter
             Assert.Throws<FormatException>(() => AppProtocolVersion.FromToken("123"));

@@ -14,7 +14,7 @@ namespace Libplanet.Net.Tests.Consensus
     {
         private static Bencodex.Codec _codec = new Bencodex.Codec();
         private BlockChain _blockChain;
-        private BlockCommit _lastCommit;
+        private BlockCommit? _lastCommit;
         private HeightVoteSet _heightVoteSet;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Libplanet.Net.Tests.Consensus
             var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             _lastCommit = TestUtils.CreateBlockCommit(block);
             _heightVoteSet = new HeightVoteSet(2, TestUtils.ValidatorSet);
-            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            _blockChain.Append(block, TestUtils.CreateBlockCommit(block)!);
         }
 
         [Fact]

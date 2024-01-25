@@ -26,9 +26,9 @@ namespace Libplanet.Tests
         public void DisallowNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new HashDigest<SHA1>((byte[])null));
+                () => new HashDigest<SHA1>((byte[])null!));
             Assert.Throws<ArgumentNullException>(
-                () => new HashDigest<SHA256>((byte[])null));
+                () => new HashDigest<SHA256>((byte[])null!));
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace Libplanet.Tests
             Assert.Equal(expected, actual);
 
             Assert.Throws<ArgumentNullException>(
-                () => HashDigest<SHA1>.FromString(null)
+                () => HashDigest<SHA1>.FromString(null!)
             );
         }
 
