@@ -29,8 +29,7 @@ namespace Libplanet.Tests.Action
         protected readonly Currency[] _currencies;
         protected readonly IAccount _initAccount;
         protected readonly IActionContext _initContext;
-        protected readonly Address _accountAddress
-            = new Address("2000000000000000000000000000000000000000");
+        protected readonly Address _accountAddress = ReservedAddresses.LegacyAccount;
 
         protected AccountTest(ITestOutputHelper output)
         {

@@ -45,14 +45,19 @@ namespace Libplanet.Action.State
                 : new Account(_baseState.GetAccountState(address));
         }
 
-        /// <inheritdoc cref="IWorld.GetAccountState"/>
+        /// <inheritdoc cref="IWorldState.GetAccountState"/>
         [Pure]
         public IAccountState GetAccountState(Address address) => GetAccount(address);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IWorld.SetAccount/>
         [Pure]
         public IWorld SetAccount(Address address, IAccount account)
         {
+            if (Legacy && !address.Equals(ReservedAddresses.LegacyAccount))
+            {
+                return this;
+            }
+
             if (!address.Equals(ReservedAddresses.LegacyAccount)
                 && account.TotalUpdatedFungibleAssets.Count > 0)
             {

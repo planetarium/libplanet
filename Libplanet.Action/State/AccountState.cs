@@ -14,7 +14,7 @@ namespace Libplanet.Action.State
     /// </summary>
     public class AccountState : IAccountState
     {
-        private ITrie _trie;
+        private readonly ITrie _trie;
 
         public AccountState(ITrie trie)
         {
