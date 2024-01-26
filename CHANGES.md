@@ -25,6 +25,17 @@ To be released.
 ### CLI tools
 
 
+Version 4.0.1
+-------------
+
+Released on January 26, 2024.
+
+ -  (Libplanet.Action) Changed `IWorld.SetAccount()` to throw an
+    `ArgumentException` under certain undesirable circumstances.  [[#3633]]
+
+[#3633]: https://github.com/planetarium/libplanet/pull/3633
+
+
 Version 4.0.0
 -------------
 
@@ -97,6 +108,17 @@ Released on January 22, 2024.
 [#3626]: https://github.com/planetarium/libplanet/pull/3626
 
 
+Version 3.9.6
+-------------
+
+Released on January 26, 2024.
+
+ -  (Libplanet.Store) Optimized `TrieStateStore.CopyStates()` to greatly
+    reduce the amount of memory used.  [[#3634]]
+
+[#3634]: https://github.com/planetarium/libplanet/pull/3634
+
+
 Version 3.9.5
 -------------
 
@@ -132,7 +154,7 @@ Released on January 11, 2024.
 Version 3.9.3
 -------------
 
-To be released.
+Released on January 4, 2024.
 
 Due to changes in [#3567], a network ran with a prior version may not
 be compatible with this version,  specifically, those that ran with
