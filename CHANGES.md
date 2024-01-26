@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.1
 -------------
 
-To be released.
+Released on January 26, 2024.
 
  -  (Libplanet.Action) Changed `IWorld.SetAccount()` to throw an
     `ArgumentException` under certain undesirable circumstances.  [[#3633]]
