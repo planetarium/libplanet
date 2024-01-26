@@ -6,6 +6,8 @@ Version 4.0.1
 
 To be released.
 
+ -  (Libplanet.Action) Changed `IWorld.SetAccount()` to throw an
+    `ArgumentException` under certain undesirable circumstances.  [[#3633]]
 
 Version 4.0.0
 -------------
@@ -114,7 +116,7 @@ Released on January 11, 2024.
 Version 3.9.3
 -------------
 
-To be released.
+Released on January 4, 2024.
 
 Due to changes in [#3567], a network ran with a prior version may not
 be compatible with this version,  specifically, those that ran with
