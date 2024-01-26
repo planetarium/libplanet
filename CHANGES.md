@@ -9,6 +9,9 @@ To be released.
  -  (Libplanet.Action) Changed `IWorld.SetAccount()` to throw an
     `ArgumentException` under certain undesirable circumstances.  [[#3633]]
 
+[#3633]: https://github.com/planetarium/libplanet/pull/3633
+
+
 Version 4.0.0
 -------------
 
