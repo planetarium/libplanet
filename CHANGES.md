@@ -84,7 +84,7 @@ Released on January 22, 2024.
 Version 3.9.6
 -------------
 
-To be released.
+Released on January 26, 2024.
 
  -  (Libplanet.Store) Optimized `TrieStateStore.CopyStates()` to greatly
     reduce the amount of memory used.  [[#3634]]
