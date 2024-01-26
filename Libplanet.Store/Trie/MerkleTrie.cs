@@ -201,18 +201,18 @@ namespace Libplanet.Store.Trie
                 yield break;
             }
 
-            var queue = new Queue<INode>();
-            queue.Enqueue(Root);
+            var stack = new Stack<INode>();
+            stack.Push(Root);
 
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                INode node = queue.Dequeue();
+                INode node = stack.Pop();
                 if (node is HashNode dequeuedHashNode)
                 {
                     var storedKey = new KeyBytes(dequeuedHashNode.HashDigest.ByteArray);
                     var storedValue = KeyValueStore.Get(storedKey);
                     var intermediateEncoding = _codec.Decode(storedValue);
-                    queue.Enqueue(
+                    stack.Push(
                         NodeDecoder.Decode(
                             intermediateEncoding,
                             NodeDecoder.HashEmbeddedNodeType) ??
@@ -229,13 +229,13 @@ namespace Libplanet.Store.Trie
                             INode? child = fullNode.Children[index];
                             if (child is HashNode childHashNode)
                             {
-                                queue.Enqueue(childHashNode);
+                                stack.Push(childHashNode);
                             }
                         }
 
                         if (fullNode.Value is HashNode fullNodeValueHashNode)
                         {
-                            queue.Enqueue(fullNodeValueHashNode);
+                            stack.Push(fullNodeValueHashNode);
                         }
 
                         break;
@@ -243,7 +243,7 @@ namespace Libplanet.Store.Trie
                     case ShortNode shortNode:
                         if (shortNode.Value is HashNode shortNodeValueHashNode)
                         {
-                            queue.Enqueue(shortNodeValueHashNode);
+                            stack.Push(shortNodeValueHashNode);
                         }
 
                         break;
