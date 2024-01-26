@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
@@ -53,20 +54,33 @@ namespace Libplanet.Action.State
         IAccount GetAccount(Address address);
 
         /// <summary>
-        /// Gets a new instance that the world state of the given
-        /// <paramref name="address"/> is set to the given
-        /// <paramref name="account"/>.
+        /// Creates a new instance of <see cref="IWorld"/> with given <paramref name="address"/>
+        /// set to given <paramref name="account"/>.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> of the account to set.</param>
-        /// <param name="account">The new account to fill the account with.</param>
-        /// <returns>A new <see cref="IWorld"/> instance that
-        /// the account state of the given <paramref name="address"/>
-        /// is set to the given <paramref name="account"/>.</returns>
+        /// <param name="address">The <see cref="Address"/> for which to set
+        /// given <see cref="account"/> to.</param>
+        /// <param name="account">The new <see cref="IAccount"/> to set to
+        /// given <paramref name="address"/>.</param>
+        /// <returns>A new <see cref="IWorld"/> instance where the account state of given
+        /// <paramref name="address"/> is set to given <paramref name="account"/>.</returns>
         /// <remarks>
-        /// This method method does not manipulate the instance,
-        /// but returns a new <see cref="IWorld"/> instance
-        /// with updated world instead.
+        /// This method method does not manipulate the instance, but returns
+        /// a new <see cref="IWorld"/> instance with an updated world state instead.
         /// </remarks>
+        /// <exception cref="ArgumentException">
+        /// Thrown for one of the following reasons:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         If <see cref="Legacy"/> is <see langword="true"/> and <paramref name="address"/>
+        ///         is not <see cref="ReservedAddresses.LegacyAccount"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If <paramref name="address"/> is
+        ///         not <see cref="ReservedAddresses.LegacyAccount"/> and
+        ///         <see cref="IAccount.TotalUpdatedFungibleAssets"/> is non-empty.
+        ///     </description></item>
+        /// </list>
+        /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);
     }
