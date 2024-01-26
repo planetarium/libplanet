@@ -6,6 +6,11 @@ Version 3.9.6
 
 To be released.
 
+ -  (Libplanet.Store) Optimized `TrieStateStore.CopyStates()` to greatly
+    reduce the amount of memory used.  [[#3634]]
+
+[#3634]: https://github.com/planetarium/libplanet/pull/3634
+
 
 Version 3.9.5
 -------------
