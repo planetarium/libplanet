@@ -72,6 +72,12 @@
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-401">Version 4.0.1</h2>
+<p>Released on January 26, 2024.</p>
+<ul>
+<li>(Libplanet.Action) Changed <code>IWorld.SetAccount()</code> to throw an
+<code>ArgumentException</code> under certain undesirable circumstances.  [<a href="https://github.com/planetarium/libplanet/pull/3633">#3633</a>]</li>
+</ul>
 <h2 id="version-400">Version 4.0.0</h2>
 <p>Released on January 22, 2024.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
@@ -142,6 +148,12 @@ method.</li>
 <li>(Libplanet.Explorer) Changed <code>account</code> and <code>accounts</code> query in
 <code>StateQuery</code> to be compatible with <code>stateQuery.world</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3589">#3589</a>]</li>
 </ul>
+<h2 id="version-396">Version 3.9.6</h2>
+<p>Released on January 26, 2024.</p>
+<ul>
+<li>(Libplanet.Store) Optimized <code>TrieStateStore.CopyStates()</code> to greatly
+reduce the amount of memory used.  [<a href="https://github.com/planetarium/libplanet/pull/3634">#3634</a>]</li>
+</ul>
 <h2 id="version-395">Version 3.9.5</h2>
 <p>Released on January 18, 2024.</p>
 <ul>
@@ -166,7 +178,7 @@ more compatible with pre-3.9.3 API.  [<a href="https://github.com/planetarium/li
 </li>
 </ul>
 <h2 id="version-393">Version 3.9.3</h2>
-<p>To be released.</p>
+<p>Released on January 4, 2024.</p>
 <p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>, a network ran with a prior version may not
 be compatible with this version,  specifically, those that ran with
 <a href="https://www.nuget.org/packages/Libplanet/2.0.0">Libplanet 2.0.0</a> and onwards prior to this release that have included
