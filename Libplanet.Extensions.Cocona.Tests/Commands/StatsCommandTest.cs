@@ -46,6 +46,7 @@ public class StatsCommandTest : IDisposable
     }
 
     [SkippableFact]
+    [Trait("CircleCI", "Skip")]
     public void SummaryInvalidArguments()
     {
         string badPathFormat = "rocksdb+foo+bar://" + "/bar";

@@ -16,6 +16,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
+[Trait("CircleCI", "Skip")]
 public class StoreCommandTest : IDisposable
 {
     private readonly ImmutableArray<StoreFixture> _storeFixtures;
