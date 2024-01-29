@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
@@ -60,25 +59,21 @@ namespace Libplanet.Tests.Blockchain
 
             Transaction tx_0_0 = _fx.MakeTransaction(
                 new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
                 nonce: 0,
                 privateKey: key
             );
             Transaction tx_0_1 = _fx.MakeTransaction(
                 new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
                 nonce: 0,
                 privateKey: key
             );
             Transaction tx_1_0 = _fx.MakeTransaction(
                 new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
                 nonce: 1,
                 privateKey: key
             );
             Transaction tx_1_1 = _fx.MakeTransaction(
                 new DumbAction[0],
-                ImmutableHashSet<Address>.Empty,
                 nonce: 1,
                 privateKey: key
             );
