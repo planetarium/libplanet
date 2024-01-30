@@ -6,7 +6,7 @@ namespace Libplanet.Action.State
 {
     public class WorldDelta : IWorldDelta
     {
-        private IImmutableDictionary<Address, AccountItem> _accounts;
+        private readonly IImmutableDictionary<Address, AccountItem> _accounts;
 
         public WorldDelta()
         {
