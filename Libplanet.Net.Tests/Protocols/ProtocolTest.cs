@@ -17,6 +17,7 @@ using static Libplanet.Net.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests.Protocols
 {
+    [Trait("CircleCI", "Skip")]
     public class ProtocolTest
     {
         private const int Timeout = 60 * 1000;

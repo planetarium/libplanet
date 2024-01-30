@@ -30,7 +30,6 @@ commands:
     - restore_cache:
         keys:
         - "v1-codecov"
-        when: always
     - run:
         name: Upload a code coverage report file to Codecov.io
         shell: bash
@@ -65,6 +64,9 @@ commands:
       collect_tests_to:
         type: string
         default: .tests.txt
+      collect_tests_filter:
+        type: string
+        default: ""
     steps:
     - checkout
     - concat_files:
@@ -89,7 +91,7 @@ commands:
              [[ -d /usr/local/share/dotnet ]]; then
             export PATH="/usr/local/share/dotnet:$PATH"
           fi
-          dotnet test --no-restore --no-build -c Release --list-tests \
+          dotnet test --no-restore --no-build -c Release --list-tests --filter "<<parameters.collect_tests_filter>>" \
           > .dotnet-list-tests.txt
           grep '    ' .dotnet-list-tests.txt \
           | sed 's/    /\n    /g' \
@@ -183,51 +185,14 @@ commands:
           else
             head -n $part .head_tests.txt > .current_tests.txt
           fi
-          excluded_tests=(
-            Libplanet.Net.Tests.Protocols.ProtocolTest.KademliaTest
-            Libplanet.Net.Tests.Protocols.ProtocolTest.Start
-            Libplanet.Net.Tests.Protocols.ProtocolTest.Ping
-            Libplanet.Net.Tests.Protocols.ProtocolTest.PingTwice
-            Libplanet.Net.Tests.Protocols.ProtocolTest.PingToClosedPeer
-            Libplanet.Net.Tests.Protocols.ProtocolTest.BootstrapException
-            Libplanet.Net.Tests.Protocols.ProtocolTest.BootstrapAsyncTest
-            Libplanet.Net.Tests.Protocols.ProtocolTest.RemoveStalePeers
-            Libplanet.Net.Tests.Protocols.ProtocolTest.RoutingTableFull
-            Libplanet.Net.Tests.Protocols.ProtocolTest.ReplacementCache
-            Libplanet.Net.Tests.Protocols.ProtocolTest.RemoveDeadReplacementCache
-            Libplanet.Net.Tests.Protocols.ProtocolTest.BroadcastMessage
-            Libplanet.Net.Tests.Protocols.ProtocolTest.BroadcastGuarantee
-            Libplanet.Net.Tests.Protocols.ProtocolTest.DoNotBroadcastToSourcePeer
-            Libplanet.Net.Tests.Protocols.ProtocolTest.RefreshTable
-            Libplanet.Extensions.Cocona.Tests.Commands.StatsCommandTest.SummaryInvalidArguments
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestInvalidArguments
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByTxIdNotExist
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByTxIdTwo
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockHashesByTxId
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBuildIndexTxBlockBlockByTxId
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByHashNotExists
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByHash
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByIndexNotExists
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestBlockByIndex
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxByIdNotExists
-            Libplanet.Extensions.Cocona.Tests.Commands.StoreCommandTest.TestTxById
-          )
           cat .current_tests.txt
           first=1
           while read test; do
-            to_write=1
-            for excl in "${excluded_tests[@]}"; do
-              if [[ "$test" == "$excl"* ]]; then
-                to_write=0
-              fi
-            done
-            if [[ "$to_write" == "1" ]]; then
-              if [[ "$first" = "1" ]]; then
-                echo "FullyQualifiedName=$test"
-                first=0
-              else
-                echo "| FullyQualifiedName=$test"
-              fi
+            if [[ "$first" = "1" ]]; then
+              echo "FullyQualifiedName=$test"
+              first=0
+            else
+              echo "| FullyQualifiedName=$test"
             fi
           done < .current_tests.txt > .test-filter.txt
     - when:
@@ -245,7 +210,7 @@ commands:
               --dcDisableDefaultFilters
               --dcReportType=DetailedXML
               --dcFilters="+:Libplanet;+:Libplanet.*;-:Libplanet.Tests;-:Libplanet.*.Tests;-:Libplanet.*.UnitTests;-:Libplanet.Benchmarks;-:Libplanet.Explorer"
-            no_output_timeout: 180s
+            no_output_timeout: 360s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
@@ -258,6 +223,20 @@ commands:
         condition: "<<parameters.code_coverage>>"
         steps:
         - run:
+            name: Display tests
+            command: >-
+              dotnet test
+              --no-restore
+              --no-build
+              -c Release
+              -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
+              --filter "$(cat .test-filter.txt)"
+              --list-tests | grep -E "    .+"
+            environment:
+              LC_ALL: "<<parameters.locale>>"
+              LANG: "<<parameters.locale>>"
+              LANGUAGE: "<<parameters.locale>>"
+        - run:
             name: Run tests
             command: >-
               dotnet test
@@ -266,7 +245,7 @@ commands:
               -c Release
               -l "junit;FailureBodyFormat=Verbose;LogFilePath=/tmp/junit/{assembly}.xml"
               --filter "$(cat .test-filter.txt)"
-            no_output_timeout: 180s
+            no_output_timeout: 360s
             environment:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
@@ -439,11 +418,17 @@ commands:
 
 jobs:
   linux-netcore-build:
+    parameters:
+      collect_tests_filter:
+        type: string
+        default: ""
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    steps: [netcore_build_base]
+    steps:
+    - netcore_build_base:
+        collect_tests_filter: "<<parameters.collect_tests_filter>>"
 
   linux-mono-build:
     docker:
@@ -453,14 +438,18 @@ jobs:
     steps: [mono_build_base]
 
   linux-netcore-test-netmq:
+    parameters:
+      parallelism:
+        type: integer
+        default: 4
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
       TRANSPORT_TYPE: netmq
     resource_class: xlarge
     working_directory: /mnt/ramdisk
-    parallelism: 4
-    steps:     
+    parallelism: <<parameters.parallelism>>
+    steps:
     - linux_netcore_test_base:
         code_coverage: false
 
@@ -487,19 +476,28 @@ jobs:
         code_coverage: false
 
   macos-netcore-test:
+    parameters:
+      parallelism:
+        type: integer
+        default: 4
     macos:
       xcode: 14.3.1
     resource_class: macos.m1.medium.gen1
-    parallelism: 4
+    parallelism: <<parameters.parallelism>>
     steps:
     - macos_netcore_test_base: { code_coverage: false }
 
   windows-netcore-test:
+    parameters:
+      parallelism:
+        type: integer
+        default: 6
     executor:
       name: win/server-2022
       size: xlarge
-    parallelism: 6
-    steps: [netcore_test_base]
+    parallelism: <<parameters.parallelism>>
+    steps:
+    - netcore_test_base: { code_coverage: false }
 
   linux-unity-test:
     docker:
@@ -517,7 +515,7 @@ jobs:
 
   macos-unity-test:
     macos:
-      xcode: 11.3.0
+      xcode: 15.2.0
     environment:
       XUNIT_UNITY_RUNNER: 0.5.0
     parallelism: 3
@@ -543,7 +541,8 @@ jobs:
 workflows:
   main:
     jobs:
-    - linux-netcore-build
+    - linux-netcore-build:
+        collect_tests_filter: "FullyQualifiedName!~Libplanet.Net.Tests & CircleCI!=Skip"
     # Temporarily tunred off by excluding of linux-unity-test
     #- linux-mono-build
     - linux-netcore-test-netmq:
@@ -565,3 +564,21 @@ workflows:
     #    requires: [linux-mono-build]
     #- windows-unity-test:
     #    requires: [linux-mono-build]
+  net:
+    jobs:
+    - linux-netcore-build:
+        name: linux-netcore-build-net
+        collect_tests_filter: "FullyQualifiedName~Libplanet.Net.Tests"
+    - linux-netcore-test-netmq:
+        name: linux-netcore-test-netmq-net
+        requires: [linux-netcore-build-net]
+        parallelism: 1
+    # - macos-netcore-test:
+    #     name: macos-netcore-test-net
+    #     requires: [linux-netcore-build-net]
+    #     parallelism: 1
+    - windows-netcore-test:
+        name: windows-netcore-test-net
+        requires: [linux-netcore-build-net]
+        parallelism: 1
+
