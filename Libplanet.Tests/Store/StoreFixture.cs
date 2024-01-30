@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -95,10 +94,6 @@ namespace Libplanet.Tests.Store
 
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var stateRootHashes = new Dictionary<BlockHash, HashDigest<SHA256>>();
-            Func<BlockHash?, HashDigest<SHA256>?> rootHashGetter = bh =>
-                bh is BlockHash h && stateRootHashes.TryGetValue(h, out HashDigest<SHA256> rh)
-                    ? rh
-                    : (HashDigest<SHA256>?)null;
             Proposer = TestUtils.GenesisProposer;
             var preEval = TestUtils.ProposeGenesis(
                 proposer: Proposer.PublicKey,
@@ -136,9 +131,9 @@ namespace Libplanet.Tests.Store
             Block5 = TestUtils.ProposeNextBlock(Block4, miner: Proposer);
             stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
-            Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
-            Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
-            Transaction3 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
+            Transaction1 = MakeTransaction(new List<DumbAction>());
+            Transaction2 = MakeTransaction(new List<DumbAction>());
+            Transaction3 = MakeTransaction(new List<DumbAction>());
         }
 
         public string Path { get; set; }
@@ -203,7 +198,6 @@ namespace Libplanet.Tests.Store
 
         public Transaction MakeTransaction(
             IEnumerable<DumbAction> actions = null,
-            ImmutableHashSet<Address> updatedAddresses = null,
             long nonce = 0,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null

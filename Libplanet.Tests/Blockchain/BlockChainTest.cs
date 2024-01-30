@@ -1908,7 +1908,6 @@ namespace Libplanet.Tests.Blockchain
                     },
                     timestamp: epoch,
                     nonce: 0,
-                    updatedAddresses: new[] { addresses[0], addresses[1] }.ToImmutableHashSet(),
                     privateKey: privateKey),
                 _fx.MakeTransaction(
                     new[]
@@ -1918,7 +1917,6 @@ namespace Libplanet.Tests.Blockchain
                     },
                     timestamp: epoch.AddSeconds(5),
                     nonce: 1,
-                    updatedAddresses: new[] { addresses[2], addresses[3] }.ToImmutableHashSet(),
                     privateKey: privateKey),
             };
 
