@@ -75,7 +75,7 @@ namespace Libplanet.Explorer.Queries
                     Chain.Id,
                     (int)offset,
                     limit == null ? null : (int)limit)
-                .Select((value, i) => new { i, value } );
+                .Select((value, i) => new { i, value });
 
             if (desc)
             {
@@ -84,7 +84,10 @@ namespace Libplanet.Explorer.Queries
 
             foreach (var index in indexList)
             {
-                var block = store.GetBlock(index.value);
+                Block block = store.GetBlock(index.value)
+                    ?? throw new InvalidOperationException(
+                        $"Could not find block with block hash {index.value} in store.");
+
                 bool isMinerValid = miner is null || miner == block.Miner;
                 bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
                 if (!isMinerValid || !isTxValid)
@@ -154,7 +157,7 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);
+        internal static Block? GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);
 
         internal static Block GetBlockByIndex(long index) => Chain[index];
 
