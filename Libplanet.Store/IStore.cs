@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using Libplanet.Common;
@@ -88,7 +87,7 @@ namespace Libplanet.Store
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
 
-        Transaction GetTransaction(TxId txid);
+        Transaction? GetTransaction(TxId txid);
 
         /// <summary>
         /// Puts a given <see cref="Transaction"/> to the store.  If the same transaction
@@ -110,7 +109,7 @@ namespace Libplanet.Store
         /// <param name="blockHash"><see cref="Block.Hash"/> to find.</param>
         /// <returns>A found block, or <see langword="null"/> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
-        Block GetBlock(BlockHash blockHash);
+        Block? GetBlock(BlockHash blockHash);
 
         /// <summary>
         /// Gets a stored block's <see cref="Block.Index"/> by its <see cref="Block.Hash"/>.
@@ -183,7 +182,7 @@ namespace Libplanet.Store
         /// <returns>The recorded transaction execution summary.  If it has been never recorded
         /// <see langword="null"/> is returned instead.</returns>
         /// <seealso cref="PutTxExecution"/>
-        TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
+        TxExecution? GetTxExecution(BlockHash blockHash, TxId txid);
 
         /// <summary>
         /// Records a index for given pair <paramref name="txId"/> and <paramref name="blockHash"/>.
@@ -306,7 +305,7 @@ namespace Libplanet.Store
         /// the <see cref="BlockChain"/> to retrieve <see cref="BlockCommit"/>.</param>
         /// <returns>Returns <see cref="BlockCommit"/> if given <paramref name="chainId"/> is
         /// stored and available, otherwise returns <see langword="null"/>.</returns>
-        BlockCommit GetChainBlockCommit(Guid chainId);
+        BlockCommit? GetChainBlockCommit(Guid chainId);
 
         /// <summary>
         /// Puts a <see cref="BlockCommit"/> associated with a <see cref="BlockChain"/>
@@ -327,7 +326,7 @@ namespace Libplanet.Store
         /// to retrieve.</param>
         /// <returns>Returns <see cref="BlockCommit"/> if given <paramref name="blockHash"/> is
         /// stored and available, otherwise returns <see langword="null"/>.</returns>
-        BlockCommit GetBlockCommit(BlockHash blockHash);
+        BlockCommit? GetBlockCommit(BlockHash blockHash);
 
         /// <summary>
         /// Puts a <see cref="BlockCommit"/> to the store.

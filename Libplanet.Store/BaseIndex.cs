@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,7 +92,7 @@ namespace Libplanet.Store
             }
             catch (KeyNotFoundException)
             {
-                value = default(TVal);
+                value = default!;
                 return false;
             }
         }

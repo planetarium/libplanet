@@ -298,8 +298,11 @@ public abstract class BlockChainIndexBase : IBlockChainIndex
             }
 
             var blockDigest = store.GetBlockDigest(indexEnumerator.Current)!.Value;
-            var txs = blockDigest.TxIds.Select(
-                txId => (ITransaction)store.GetTransaction(new TxId(txId))).ToArray();
+            ITransaction[] txs = blockDigest.TxIds
+                .Select(txId => store.GetTransaction(new TxId(txId))
+                    ?? throw new InvalidOperationException(
+                        $"Could not find transaction with txid {txId} in store."))
+                .ToArray();
             try
             {
                 await IndexAsyncImpl(blockDigest, txs, addBlockContext, stoppingToken)
