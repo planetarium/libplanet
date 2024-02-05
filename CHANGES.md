@@ -6,6 +6,11 @@ Version 4.0.2
 
 To be released.
 
+ -  (Libplanet.Net) Changed `AppProtocolVersion.FromToken()` to throw an
+    `Exception` with more details.  [[#3648]]
+
+
+[#3648]: https://github.com/planetarium/libplanet/pull/3648
 
 Version 4.0.1
 -------------
