@@ -10,10 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
-- Remove the '#nullable disable' keyword from 3 projects
-  (Action, Common, Explorer). [[#3622]]
-- Removal of '#nullable disable' from the Libplanet.Store project. [[#3644]]
-
+ -  Remove the '#nullable disable' keyword from 3 projects
+    (Action, Common, Explorer). [[#3622]]
+ -  Removal of '#nullable disable' from the Libplanet.Store project. [[#3644]]
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
