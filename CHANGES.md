@@ -8,9 +8,11 @@ To be released.
 
  -  (Libplanet.Net) Changed `AppProtocolVersion.FromToken()` to throw an
     `Exception` with more details.  [[#3648]]
-
+ -  (Libplanet.Explorer) Updated outdated GraphQL schema.  [[#3649]]
 
 [#3648]: https://github.com/planetarium/libplanet/pull/3648
+[#3649]: https://github.com/planetarium/libplanet/pull/3649
+
 
 Version 4.0.1
 -------------

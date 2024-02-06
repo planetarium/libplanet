@@ -5,73 +5,70 @@ schema {
 type ExplorerQuery {
   blockQuery: BlockQuery
   transactionQuery: TransactionQuery
+  stateQuery: LibplanetStateQuery
   nodeState: NodeState!
+  helperQuery: HelperQuery
 }
 
 type BlockQuery {
   blocks(
-    # By default blocks queried from genesis block. in order to start query from tip, enable this.
     desc: Boolean = false
-
-    # The number of blocks to skip from tip or bottom.
     offset: Int = 0
-
-    # The number of blocks to get.
     limit: Int
-
-    # By enabling excludeEmptyTxs, you can filter out 'Empty" (Txless) blocks.
     excludeEmptyTxs: Boolean = false
-
-    # Address of current node.
     miner: Address
   ): [Block!]!
-  block(hash: ID, index: ID): Block
+  block(hash: BlockHash, index: Long): Block
 }
 
 type Block {
   # A block's hash.
-  hash: ID!
+  hash: BlockHash!
 
   # The height of the block.
   index: Long!
 
-  # The mining difficulty that the block's Nonce has to satisfy.
-  difficulty: Long!
-
-  # The total mining difficulty since the genesis including the block's Difficulty.
-  totalDifficulty: BigInt!
-
-  # The proof-of-work nonce which satisfies the required Difficulty.
-  nonce: ByteString!
-
   # The address of the miner.
   miner: Address!
 
-  # The public key of the Miner. This is used for verifying the signature.
-  # It is mandatory since ProtocolVersion 2, so It may be null under that version.
+  # The public key of the Miner.
   publicKey: PublicKey
 
-  # The previous block, If it's a genesis block (i.e., its Index is 0) this should be null.
+  # The previous block.  If it's a genesis block (i.e., its index is 0) this must be null.
   previousBlock: Block
-
-  # The time the block is created.
   timestamp: DateTimeOffset!
 
-  # The Hash of the resulting states after evaluating transactions and a BlockAction. (if exists)
-  stateRootHash: ByteString!
+  # The hash of the resulting states after evaluating transactions and a block action (if exists)
+  stateRootHash: HashDigestSHA256!
 
-  # The digital signature of the whole block content (except for Hash, which is derived from the signature and other contents). This is made by the Miner's PrivateKey.
+  # The digital signature of the whole block content (except for hash, which is derived from the signature and other contents)
   signature: ByteString
 
   # Transactions belonging to the block.
   transactions: [Transaction!]!
+
+  # The LastCommit of the block.
+  lastCommit: BlockCommit
+
+  # The mining difficulty that the block's nonce has to satisfy.
+  difficulty: Long!
+    @deprecated(reason: "Block does not have Difficulty field in PBFT.")
+
+  # The total mining difficulty since the genesis including the block's difficulty.
+  totalDifficulty: BigInt!
+    @deprecated(reason: "Block does not have TotalDifficulty field in PBFT.")
+
+  # The proof-of-work nonce which satisfies the required difficulty.
+  nonce: ByteString!
+    @deprecated(reason: "Block does not have Nonce field in PBFT.")
+
+  # The hash of PreEvaluationBlock.
+  preEvaluationHash: HashDigestSHA256!
 }
 
+scalar BlockHash
+
 scalar Long
-
-scalar BigInt
-
-scalar ByteString
 
 scalar Address
 
@@ -80,72 +77,374 @@ scalar PublicKey
 # The `DateTimeOffset` scalar type represents a date, time and offset from UTC. `DateTimeOffset` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 scalar DateTimeOffset
 
+scalar HashDigestSHA256
+
+scalar ByteString
+
 type Transaction {
+  # A unique identifier derived from this transaction content.
+  id: TxId!
 
-  # transaction id.
-  id: ID!
-
-  # The number of previous Transactions committed by the Signer of this transaction. This nonce is used for preventing replay attack.
-  # not be confused with block nonce.
+  # The number of previous transactions committed by the signer of this tx.
   nonce: Long!
 
-  # A Address of the account who signs this transaction.
+  # An address of the account who signed this transaction.
   signer: Address!
 
-  # A PublicKey of the account who signs this transaction. The Signer address is always corresponding to this for each transaction.
+  # A PublicKey of the account who signed this transaction.
   publicKey: ByteString!
 
-  # list of addresses whose states would be affected by actions in this transaction.
+  # Addresses whose states were affected by Actions.
   updatedAddresses: [Address!]!
 
-  # A digital signature of the content of this Transaction. This is signed by the account who corresponds to PublicKey.
+  # A digital signature of the content of this transaction.
   signature: ByteString!
 
-  # The time this transaction is created and signed.
+  # The time this transaction was created and signed.
   timestamp: DateTimeOffset!
 
-  # A list of IActions. These are executed in the order. This can be empty, but cannot be null.
+  # A list of actions in this transaction.
   actions: [Action!]!
 
-  # A block reference which this transaction was included.
-  blockRef: [Block!]
+  # A serialized tx payload in base64 string.
+  serializedPayload: String!
+
+  # The block including the transaction.
+  blockRef: Block!
 }
+
+scalar TxId
 
 type Action {
-  # Action data encoded as Hex string.
+  # Raw Action data ('hex' or 'base64' encoding available.)
   raw(encode: String = "hex"): String!
 
-  # A human-readable representation for debugging, which looks similar to Python's
-  # literal syntax.  However, if a value is a complex tree and contains any unloaded
-  # subvalues, these are omitted and their fingerprints are shown instead.
+  # A readable representation for debugging.
   inspection: String!
+
+  # A JSON representation of action data
+  json: String!
 }
+
+type BlockCommit {
+  # The height of the block commit.
+  height: Long!
+
+  # The round of the block commit.
+  round: Int!
+
+  # The hash of the block which contains block commit.
+  blockHash: BlockHash!
+
+  # Total votes of the block commit.
+  votes: [Vote!]!
+}
+
+type Vote {
+  # Height of the consensus voted.
+  height: Long!
+
+  # Round of the consensus voted.
+  round: Int!
+
+  # Hash of the block voted.
+  blockHash: String!
+
+  # The time this vote was created and signed.
+  timestamp: DateTimeOffset!
+
+  # Public key of the validator which is subject of the vote.
+  validatorPublicKey: PublicKey!
+
+  # Flag of the vote
+  flag: VoteFlag!
+
+  # A digital signature of the content of this vote.
+  signature: ByteString!
+}
+
+scalar VoteFlag
+
+scalar BigInt
 
 type TransactionQuery {
   transactions(
-
-    # Address of the account who signs this transaction.
     signer: Address
-
-    # All Addresses of the accounts that have been updated by the actions in the transaction within the block.
-    involvedAddress: Address
-
     desc: Boolean = false
     offset: Int = 0
     limit: Int
   ): [Transaction!]!
   stagedTransactions(
     signer: Address
-    involvedAddress: Address
     desc: Boolean = false
     offset: Int = 0
     limit: Int
   ): [Transaction!]!
-  transaction(id: ID): Transaction
+  transaction(id: TxId!): Transaction
+  unsignedTransaction(
+    # The hexadecimal string of public key for Transaction.
+    publicKey: String!
+
+    # The hexadecimal string of plain value for Action.
+    plainValue: String!
+
+    # The nonce for Transaction.
+    nonce: Long
+  ): ByteString!
+  nextNonce(
+    # Address of the account to get the next tx nonce.
+    address: Address!
+  ): Long!
+
+  # Attach the given signature to the given transaction and return tx as hexadecimal
+  bindSignature(
+    # The hexadecimal string of unsigned transaction to attach the given signature.
+    unsignedTransaction: String!
+
+    # The hexadecimal string of the given unsigned transaction.
+    signature: String!
+  ): String!
+  transactionResult(
+    # transaction id.
+    txId: TxId!
+  ): TxResult!
 }
 
+type TxResult {
+  # The transaction status.
+  txStatus: TxStatus!
 
-# NodeState.preloaded specifies whether block preload has been completed.
+  # The block index which the target transaction executed.
+  blockIndex: Long
+
+  # The block hash which the target transaction executed.
+  blockHash: String
+
+  # The input state's root hash which the target transaction executed.
+  inputState: HashDigestSHA256
+
+  # The output state's root hash which the target transaction executed.
+  outputState: HashDigestSHA256
+
+  # The name of exception. (when only failed)
+  exceptionNames: [String]
+}
+
+enum TxStatus {
+  INVALID
+  STAGING
+  SUCCESS
+  FAILURE
+  INCLUDED
+}
+
+type LibplanetStateQuery {
+  world(blockHash: BlockHash, stateRootHash: HashDigestSHA256): WorldState!
+
+  # Retrieves states from the legacy account.
+  states(
+    addresses: [Address!]!
+    offsetBlockHash: BlockHash
+    offsetStateRootHash: HashDigestSHA256
+  ): [BencodexValue]!
+
+  # Retrieves balance from the legacy account.
+  balance(
+    owner: Address!
+    currency: CurrencyInput!
+    offsetBlockHash: BlockHash
+    offsetStateRootHash: HashDigestSHA256
+  ): FungibleAssetValue!
+
+  # Retrieves total supply from the legacy account.
+  totalSupply(
+    currency: CurrencyInput!
+    offsetBlockHash: BlockHash
+    offsetStateRootHash: HashDigestSHA256
+  ): FungibleAssetValue
+
+  # Retrieves validator set from the legacy account.
+  validators(
+    offsetBlockHash: BlockHash
+    offsetStateRootHash: HashDigestSHA256
+  ): [Validator!]
+}
+
+type WorldState {
+  # The state root hash of the world state.
+  stateRootHash: HashDigestSHA256!
+
+  # The legacy flag of the world state.
+  legacy: Boolean!
+
+  # Gets the account associated with given address.
+  account(
+    # The address of an account to retrieve.
+    address: Address!
+  ): AccountState!
+
+  # Gets the accounts associated with given addresses.
+  accounts(
+    # The list of addresses of accounts to retrieve.
+    addresses: [Address!]!
+  ): [AccountState!]!
+}
+
+# Represents a raw account state.  This is meant to represent a raw storage state void of any application layer context and/or logic.  In particular, this does not deal with currency or fungible asset value directly, which requires additional information on currency such as its ticker and possible minters, etc. while interpreting the data retrieved with the provided contextual information. The same is true for validator sets.
+type AccountState {
+  # The state root hash associated with this account state.
+  stateRootHash: HashDigestSHA256!
+
+  # The state at given address.
+  state(
+    # The address to look up.
+    address: Address!
+  ): IValue
+
+  # The states at given addresses.
+  states(
+    # The list of addresses to look up.
+    addresses: [Address!]!
+  ): [IValue]!
+
+  # Balance at given address and currency hash pair.
+  balance(
+    # The address to look up.
+    address: Address!
+
+    # The currency hash to look up.
+    currencyHash: HashDigestSHA1!
+  ): IValue
+
+  # Balances at given addresses and currency hash pair.
+  balances(
+    # The list of addresses to look up.
+    addresses: [Address!]!
+
+    # The currency hash to look up.
+    currencyHash: HashDigestSHA1!
+  ): [IValue]!
+
+  # Total supply in circulation, if recorded, for given currency hash.
+  totalSupply(
+    # The currency hash to look up.
+    currencyHash: HashDigestSHA1!
+  ): IValue
+
+  # The validator set.
+  validatorSet: IValue
+}
+
+type IValue {
+  # A hexadecimal representation of the bencodex value encoded as byte array.
+  hex: String!
+
+  # A base64 representation of the bencodex value encoded to byte array.
+  base64: String!
+
+  # A human readable representation of the bencodex value.
+  inspection: String!
+
+  # A JSON representation of the bencodex value
+  json: String!
+}
+
+scalar HashDigestSHA1
+
+scalar BencodexValue
+
+# Holds a fungible asset value which holds its currency together.
+type FungibleAssetValue {
+  # The currency of the fungible asset.
+  currency: Currency!
+
+  # Gets a number that indicates the sign (-1: negative, 1: positive, or 0: zero) of the value.
+  sign: Int!
+  majorUnit: BigInt!
+  minorUnit: BigInt!
+
+  # The value quantity without its currency in string, e.g., "123.45".
+  quantity: String!
+
+  # The value quantity with its currency in string, e.g., "123.45 ABC".
+  string: String!
+}
+
+type Currency {
+  # The ticker symbol, e.g., USD.
+  ticker: String!
+
+  # The number of digits to treat as minor units (i.e., exponents).
+  decimalPlaces: Byte!
+
+  # The addresses who can mint this currency.  If this is null anyone can mint the currency.  On the other hand, unlike null, an empty set means no one can mint the currency.
+  minters: [Address!]
+
+  # The uppermost quantity of currency allowed to exist.  null means unlimited supply.
+  maximumSupply: FungibleAssetValue
+
+  # Whether the total supply of this currency is trackable.
+  totalSupplyTrackable: Boolean!
+
+  # The deterministic hash derived from other fields.
+  hash: HashDigestSHA1!
+}
+
+scalar Byte
+
+input CurrencyInput {
+  # The ticker symbol, e.g., USD.
+  ticker: String!
+
+  # The number of digits to treat as minor units (i.e., exponents).
+  decimalPlaces: Byte!
+
+  # The addresses who can mint this currency.  If this is null anyone can mint the currency.  On the other hand, unlike null, an empty set means no one can mint the currency.
+  minters: [Address!]
+  maximumSupplyMajorUnit: BigInt
+  maximumSupplyMinorUnit: BigInt
+
+  # Whether the total supply of this currency is trackable.
+  totalSupplyTrackable: Boolean
+}
+
+# A data type holds validator's public key and its voting power.
+type Validator {
+  # The public key of the validator.
+  publicKey: PublicKey!
+
+  # Gets the voting power of the validator.
+  power: BigInt!
+}
+
 type NodeState {
   preloaded: Boolean!
+  peers: [BoundPeer!]
+  validators: [BoundPeer!]
+}
+
+type BoundPeer {
+  # The public key of the peer.
+  publicKey: PublicKey!
+
+  # The endpoint of the peer.
+  endPoint: String!
+
+  # The address of the miner.
+  publicIpAddress: String
+}
+
+# A number of queries for convenience.
+type HelperQuery {
+  # Converts currency info to currency hash.
+  currencyHash(
+    # The currency to convert.
+    currency: CurrencyInput!
+  ): HashDigestSHA1!
+
+  # Decodes hex encoded bencodex value
+  bencodexValue(
+    # The byte array in hex representation to decode.
+    hex: String!
+  ): IValue!
 }
