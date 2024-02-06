@@ -106,29 +106,29 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Wait for propose to process.
             await proposalSent.WaitAsync();
-            Assert.NotNull(proposal?.BlockHash);
+            BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
-                    hash: proposal.BlockHash,
+                    hash: proposedblockHash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
-                    hash: proposal.BlockHash,
+                    hash: proposedblockHash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
-                    hash: proposal.BlockHash,
+                    hash: proposedblockHash,
                     flag: VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
-            Assert.Equal(proposal?.BlockHash, preCommit?.BlockHash);
+            Assert.Equal(proposedblockHash, preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(ConsensusStep.PreCommit, context.Step);
