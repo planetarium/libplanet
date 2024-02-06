@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -643,9 +642,12 @@ namespace Libplanet.RocksDBStore
                 batch.Delete(k.Key());
             }
 
-            _chainDb.Write(batch);
+            if (!(GetBlockIndex(branchpoint) is { } bpIndex))
+            {
+                return;
+            }
 
-            long bpIndex = GetBlockIndex(branchpoint).Value;
+            _chainDb.Write(batch);
 
             // Do fork from previous chain instead current if it's available and same as current.
             if (GetPreviousChainInfo(sourceChainId) is { } chainInfo &&
@@ -670,7 +672,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override Transaction GetTransaction(TxId txid)
+        public override Transaction? GetTransaction(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
             {
@@ -999,7 +1001,7 @@ namespace Libplanet.RocksDBStore
             );
 
         /// <inheritdoc cref="BaseStore.GetTxExecution(BlockHash, TxId)"/>
-        public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)
+        public override TxExecution? GetTxExecution(BlockHash blockHash, TxId txid)
         {
             byte[] key = TxExecutionKey(blockHash, txid);
             if (_txExecutionDb.Get(key) is { } bytes)
@@ -1222,7 +1224,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
-        public override BlockCommit GetChainBlockCommit(Guid chainId)
+        public override BlockCommit? GetChainBlockCommit(Guid chainId)
         {
             try
             {
@@ -1259,7 +1261,7 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        public override BlockCommit GetBlockCommit(BlockHash blockHash)
+        public override BlockCommit? GetBlockCommit(BlockHash blockHash)
         {
             _rwBlockCommitLock.EnterReadLock();
 
