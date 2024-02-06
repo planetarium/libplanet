@@ -13,6 +13,7 @@ To be released.
  -  Remove the '#nullable disable' keyword from 3 projects
     (Action, Common, Explorer). [[#3622]]
  -  Removal of '#nullable disable' from the Libplanet.Store project. [[#3644]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -29,6 +30,19 @@ To be released.
 
 [#3622]: https://github.com/planetarium/libplanet/pull/3622
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
+
+
+Version 4.0.2
+-------------
+
+Released on February 6, 2024.
+
+ -  (Libplanet.Net) Changed `AppProtocolVersion.FromToken()` to throw an
+    `Exception` with more details.  [[#3648]]
+ -  (Libplanet.Explorer) Updated outdated GraphQL schema.  [[#3649]]
+
+[#3648]: https://github.com/planetarium/libplanet/pull/3648
+[#3649]: https://github.com/planetarium/libplanet/pull/3649
 
 
 Version 4.0.1

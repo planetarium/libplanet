@@ -1,0 +1,14 @@
+name: check-changelog
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened, labeled, unlabeled]
+    branches:
+      - main
+      - '*-maintenance'
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tarides/changelog-check-action@v2
+        with:
+          changelog: CHANGES.md
