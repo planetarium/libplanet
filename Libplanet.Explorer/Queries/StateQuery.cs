@@ -32,7 +32,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
                     { Name = "addresses" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveStates
         );
@@ -43,7 +43,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveBalance
         );
@@ -53,7 +53,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
         );
@@ -62,7 +62,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             description: "Retrieves validator set from the legacy account.",
             arguments: new QueryArguments(
                 new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
-                new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
+                new QueryArgument<HashDigestSHA256Type> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
         );
