@@ -157,7 +157,7 @@ namespace Libplanet.Net
             pos = token.IndexOf('/');
             if (pos < 0)
             {
-                throw new FormatException("Failed to find the first field delimiter.");
+                throw new FormatException($"Failed to find the first field delimiter: {token}");
             }
 
             int version;
@@ -167,14 +167,14 @@ namespace Libplanet.Net
             }
             catch (Exception e) when (e is OverflowException || e is FormatException)
             {
-                throw new FormatException("Failed to parse a version number", e);
+                throw new FormatException($"Failed to parse a version number: {token}", e);
             }
 
             pos++;
             pos2 = token.IndexOf('/', pos);
             if (pos2 < 0)
             {
-                throw new FormatException("Failed to find the second field delimiter.");
+                throw new FormatException($"Failed to find the second field delimiter: {token}");
             }
 
             Address signer;
@@ -184,7 +184,7 @@ namespace Libplanet.Net
             }
             catch (ArgumentException e)
             {
-                throw new FormatException("Failed to parse a signer address", e);
+                throw new FormatException($"Failed to parse a signer address: {token}", e);
             }
 
             pos2++;
@@ -198,7 +198,7 @@ namespace Libplanet.Net
             }
             catch (FormatException e)
             {
-                throw new FormatException("Failed to parse a signature", e);
+                throw new FormatException($"Failed to parse a signature: {token}", e);
             }
 
             IValue extra = null;
@@ -214,7 +214,7 @@ namespace Libplanet.Net
                 catch (DecodingException e)
                 {
                     throw new FormatException(
-                        $"Failed to parse extra data (offset = {pos})", e);
+                        $"Failed to parse extra data (offset = {pos}): {token}", e);
                 }
             }
 
