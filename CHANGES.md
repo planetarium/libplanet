@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.2
 -------------
 
-To be released.
+Released on February 6, 2024.
 
  -  (Libplanet.Net) Changed `AppProtocolVersion.FromToken()` to throw an
     `Exception` with more details.  [[#3648]]
