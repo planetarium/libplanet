@@ -6,6 +6,17 @@ Version 4.0.3
 
 To be released.
 
+ -  (Libplanet.Explorer) Revert GraphQL types to make it more compatible
+    with old schema.  [[#3657]]
+     -  Rolled back `TxResultType`'s name to auto generated `TxResultType`
+        from specified `TxResult`.
+     -  Rolled back `BlockHash` and `TxId` to be handled as `IDGraphType`
+        instead of `BlockHashType` and `TxIdType` in legacy queries.
+     -  Rolled back `HashDigest<SHA256>` to be handled as `HashDigestSHA256Type`
+        instead of `HashDigestType<T>` in legacy queries.
+
+[#3657]: https://github.com/planetarium/libplanet/pull/3657
+
 
 Version 4.0.2
 -------------

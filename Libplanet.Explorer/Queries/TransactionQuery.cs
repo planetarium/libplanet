@@ -36,6 +36,11 @@ namespace Libplanet.Explorer.Queries
                         Name = "signer",
                         DefaultValue = null,
                     },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "desc",
@@ -65,6 +70,11 @@ namespace Libplanet.Explorer.Queries
                     new QueryArgument<AddressType>
                     {
                         Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
                         DefaultValue = null,
                     },
                     new QueryArgument<BooleanGraphType>
@@ -98,10 +108,10 @@ namespace Libplanet.Explorer.Queries
             Field<TransactionType>(
                 "transaction",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<TxIdType>> { Name = "id" }
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id" }
                 ),
-                resolve: context =>
-                    ExplorerQuery.GetTransaction(context.GetArgument<TxId>("id"))
+                resolve: context => ExplorerQuery.GetTransaction(
+                    new TxId(ByteUtil.ParseHex(context.GetArgument<string>("id"))))
             );
 
             Field<NonNullGraphType<ByteStringType>>(
@@ -196,7 +206,7 @@ namespace Libplanet.Explorer.Queries
             Field<NonNullGraphType<TxResultType>>(
                 name: "transactionResult",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<TxIdType>>
+                    new QueryArgument<NonNullGraphType<IdGraphType>>
                     {
                         Name = "txId",
                         Description = "transaction id.",
@@ -207,7 +217,7 @@ namespace Libplanet.Explorer.Queries
                     var blockChain = _context.BlockChain;
                     var store = _context.Store;
                     var index = _context.Index;
-                    var txId = context.GetArgument<TxId>("txId");
+                    var txId = new TxId(ByteUtil.ParseHex(context.GetArgument<string>("txId")));
 
                     if (GetBlockContainingTx(_context, txId) is { } block)
                     {
