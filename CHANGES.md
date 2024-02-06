@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.3
 -------------
 
-To be released.
+Released on February 6, 2024.
 
  -  (Libplanet.Explorer) Revert GraphQL types to make it more compatible
     with old schema.  [[#3657]]
