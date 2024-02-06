@@ -40,10 +40,10 @@ public class CurrencyType : ObjectGraphType<Currency>
             "Whether the total supply of this currency is trackable.",
             resolve: context => context.Source.TotalSupplyTrackable
         );
-        Field<NonNullGraphType<HashDigestType<SHA1>>>(
+        Field<NonNullGraphType<ByteStringType>>(
             "hash",
             "The deterministic hash derived from other fields.",
-            resolve: context => context.Source.Hash
+            resolve: context => context.Source.Hash.ToByteArray()
         );
     }
 }
