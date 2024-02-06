@@ -89,14 +89,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Throws<InvalidHeightIncreasingException>(() => consensusContext.NewHeight(3));
 
             await proposalMessageSent.WaitAsync();
-            Assert.NotNull(proposal?.BlockHash);
+            BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[0], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[0], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[1], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[1], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[2], 3, hash: proposal.BlockHash, flag: VoteFlag.PreCommit)));
+                TestUtils.PrivateKeys[2], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
@@ -224,7 +224,7 @@ namespace Libplanet.Net.Tests.Consensus
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             await heightOneProposalSent.WaitAsync();
-            Assert.NotNull(proposal?.BlockHash);
+            BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
             votes.Add(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0],
@@ -236,7 +236,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[x],
                 1,
                 0,
-                proposal.BlockHash,
+                proposedblockHash,
                 VoteFlag.PreCommit)));
 
             foreach (var vote in votes)
