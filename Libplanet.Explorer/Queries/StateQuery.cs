@@ -31,7 +31,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>
                     { Name = "addresses" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveStates
@@ -42,7 +42,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveBalance
@@ -52,7 +52,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             description: "Retrieves total supply from the legacy account.",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<CurrencyInputType>> { Name = "currency" },
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveTotalSupply
@@ -61,7 +61,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             "validators",
             description: "Retrieves validator set from the legacy account.",
             arguments: new QueryArguments(
-                new QueryArgument<BlockHashType> { Name = "offsetBlockHash" },
+                new QueryArgument<IdGraphType> { Name = "offsetBlockHash" },
                 new QueryArgument<HashDigestType<SHA256>> { Name = "offsetStateRootHash" }
             ),
             resolve: ResolveValidatorSet
@@ -94,7 +94,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     private static object? ResolveStates(IResolveFieldContext<IBlockChainStates> context)
     {
         Address[] addresses = context.GetArgument<Address[]>("addresses");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        BlockHash? offsetBlockHash =
+            context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
+                ? BlockHash.FromString(blockHashString)
+                : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -128,7 +131,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     {
         Address owner = context.GetArgument<Address>("owner");
         Currency currency = context.GetArgument<Currency>("currency");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        BlockHash? offsetBlockHash =
+            context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
+                ? BlockHash.FromString(blockHashString)
+                : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -161,7 +167,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     private static object? ResolveTotalSupply(IResolveFieldContext<IBlockChainStates> context)
     {
         Currency currency = context.GetArgument<Currency>("currency");
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        BlockHash? offsetBlockHash =
+            context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
+                ? BlockHash.FromString(blockHashString)
+                : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
@@ -199,7 +208,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
 
     private static object? ResolveValidatorSet(IResolveFieldContext<IBlockChainStates> context)
     {
-        BlockHash? offsetBlockHash = context.GetArgument<BlockHash?>("offsetBlockHash");
+        BlockHash? offsetBlockHash =
+            context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
+                ? BlockHash.FromString(blockHashString)
+                : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
