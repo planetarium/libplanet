@@ -36,6 +36,11 @@ namespace Libplanet.Explorer.Queries
                         Name = "signer",
                         DefaultValue = null,
                     },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
                     new QueryArgument<BooleanGraphType>
                     {
                         Name = "desc",
@@ -65,6 +70,11 @@ namespace Libplanet.Explorer.Queries
                     new QueryArgument<AddressType>
                     {
                         Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
                         DefaultValue = null,
                     },
                     new QueryArgument<BooleanGraphType>
