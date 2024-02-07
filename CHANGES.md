@@ -10,9 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Remove the '#nullable disable' keyword from 3 projects
+ -  Removed the '#nullable disable' from 3 projects
     (Action, Common, Explorer). [[#3622]]
- -  Removal of '#nullable disable' from the Libplanet.Store project. [[#3644]]
+ -  Removed the '#nullable disable' from the Libplanet.Store project. [[#3644]]
+ -  Removed the '#nullable disable' from the Libplanet.RocksDBStore project.
+    [[#3651]]
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +32,7 @@ To be released.
 
 [#3622]: https://github.com/planetarium/libplanet/pull/3622
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
+[#3651]: https://github.com/planetarium/libplanet/pull/3651
 
 
 Version 4.0.3
