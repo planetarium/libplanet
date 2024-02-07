@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.4
 -------------
 
-To be released.
+Released on February 7, 2024.
 
  -  (Libplanet.Explorer) Revert a GraphQL query argument type change to make it
     compatible with old schema.  [[#3663]]
