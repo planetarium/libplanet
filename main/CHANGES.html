@@ -77,6 +77,21 @@
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-403">Version 4.0.3</h2>
+<p>Released on February 6, 2024.</p>
+<ul>
+<li>(Libplanet.Explorer) Revert GraphQL types to make it more compatible
+with old schema.  [<a href="https://github.com/planetarium/libplanet/pull/3657">#3657</a>]
+<ul>
+<li>Rolled back <code>TxResultType</code>'s name to auto generated <code>TxResultType</code>
+from specified <code>TxResult</code>.</li>
+<li>Rolled back <code>BlockHash</code> and <code>TxId</code> to be handled as <code>IDGraphType</code>
+instead of <code>BlockHashType</code> and <code>TxIdType</code> in legacy queries.</li>
+<li>Rolled back <code>HashDigest&lt;SHA256&gt;</code> to be handled as <code>HashDigestSHA256Type</code>
+instead of <code>HashDigestType&lt;T&gt;</code> in legacy queries.</li>
+</ul>
+</li>
+</ul>
 <h2 id="version-402">Version 4.0.2</h2>
 <p>Released on February 6, 2024.</p>
 <ul>
