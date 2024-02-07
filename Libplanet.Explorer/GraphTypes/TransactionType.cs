@@ -13,10 +13,10 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Name = "Transaction";
 
-            Field<NonNullGraphType<TxIdType>>(
+            Field<NonNullGraphType<IdGraphType>>(
                 name: "Id",
                 description: "A unique identifier derived from this transaction content.",
-                resolve: ctx => ctx.Source.Id
+                resolve: ctx => ctx.Source.Id.ToString()
             );
             Field<NonNullGraphType<LongGraphType>>(
                 name: "Nonce",
