@@ -6,6 +6,11 @@ Version 4.0.4
 
 To be released.
 
+ -  (Libplanet.Explorer) Revert a GraphQL query argument type change to make it
+    compatible with old schema.  [[#3663]]
+
+[#3663]: https://github.com/planetarium/libplanet/pull/3663
+
 
 Version 4.0.3
 -------------

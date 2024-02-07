@@ -108,10 +108,11 @@ namespace Libplanet.Explorer.Queries
             Field<TransactionType>(
                 "transaction",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id" }
+                    new QueryArgument<IdGraphType> { Name = "id" }
                 ),
                 resolve: context => ExplorerQuery.GetTransaction(
-                    new TxId(ByteUtil.ParseHex(context.GetArgument<string>("id"))))
+                    new TxId(ByteUtil.ParseHex(context.GetArgument<string>("id")
+                        ?? throw new ArgumentException("Given id cannot be null."))))
             );
 
             Field<NonNullGraphType<ByteStringType>>(
