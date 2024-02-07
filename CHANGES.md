@@ -35,6 +35,17 @@ To be released.
 [#3651]: https://github.com/planetarium/libplanet/pull/3651
 
 
+Version 4.0.4
+-------------
+
+Released on February 7, 2024.
+
+ -  (Libplanet.Explorer) Revert a GraphQL query argument type change to make it
+    compatible with old schema.  [[#3663]]
+
+[#3663]: https://github.com/planetarium/libplanet/pull/3663
+
+
 Version 4.0.3
 -------------
 
