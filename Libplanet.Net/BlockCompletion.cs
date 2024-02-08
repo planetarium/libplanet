@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,16 +15,17 @@ using Serilog.Events;
 namespace Libplanet.Net
 {
     internal class BlockCompletion<TPeer>
+        where TPeer : notnull
     {
         private readonly ILogger _logger;
-        private readonly Func<BlockHash, bool> _completionPredicate;
+        private readonly Func<BlockHash, bool>? _completionPredicate;
         private readonly int _window;
         private readonly ConcurrentDictionary<BlockHash, bool> _satisfiedBlocks;
         private readonly ConcurrentQueue<BlockHash> _demands;
         private readonly SemaphoreSlim _demandEnqueued;
         private bool _started;
 
-        public BlockCompletion(Func<BlockHash, bool> completionPredicate = null, int window = 100)
+        public BlockCompletion(Func<BlockHash, bool>? completionPredicate = null, int window = 100)
         {
             _logger = Log.ForContext<BlockCompletion<TPeer>>();
             _completionPredicate = completionPredicate;
@@ -36,7 +36,7 @@ namespace Libplanet.Net
             _demandEnqueued = new SemaphoreSlim(0);
         }
 
-        public delegate IAsyncEnumerable<(Block, BlockCommit)> BlockFetcher(
+        public delegate IAsyncEnumerable<(Block, BlockCommit?)> BlockFetcher(
             TPeer peer,
             IEnumerable<BlockHash> blockHashes,
             CancellationToken cancellationToken
@@ -182,7 +182,7 @@ namespace Libplanet.Net
         /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
-        public async IAsyncEnumerable<Tuple<Block, BlockCommit, TPeer>> Complete(
+        public async IAsyncEnumerable<Tuple<Block, BlockCommit?, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
@@ -195,7 +195,7 @@ namespace Libplanet.Net
 
             var pool = new PeerPool(peers);
             var queue =
-                new AsyncProducerConsumerQueue<Tuple<Block, BlockCommit, TPeer>>();
+                new AsyncProducerConsumerQueue<Tuple<Block, BlockCommit?, TPeer>>();
 
             Task producer = Task.Run(async () =>
             {
@@ -229,7 +229,7 @@ namespace Libplanet.Net
 
             while (await queue.OutputAvailableAsync(cancellationToken))
             {
-                Tuple<Block, BlockCommit, TPeer> triple;
+                Tuple<Block, BlockCommit?, TPeer> triple;
                 try
                 {
                     triple = await queue.DequeueAsync(cancellationToken);
@@ -291,7 +291,7 @@ namespace Libplanet.Net
             IList<BlockHash> blockHashes,
             BlockFetcher blockFetcher,
             CancellationToken cancellationToken,
-            AsyncProducerConsumerQueue<Tuple<Block, BlockCommit, TPeer>> queue
+            AsyncProducerConsumerQueue<Tuple<Block, BlockCommit?, TPeer>> queue
         ) =>
             async (peer, ct) =>
             {
@@ -307,10 +307,10 @@ namespace Libplanet.Net
 
                     try
                     {
-                        ConfiguredCancelableAsyncEnumerable<(Block, BlockCommit)> blocks =
+                        ConfiguredCancelableAsyncEnumerable<(Block, BlockCommit?)> blocks =
                             blockFetcher(peer, blockHashes, cancellationToken)
                                 .WithCancellation(cancellationToken);
-                        await foreach ((Block block, BlockCommit commit) in blocks)
+                        await foreach ((Block block, BlockCommit? commit) in blocks)
                         {
                             _logger.Debug(
                                 "Downloaded block #{BlockIndex} {BlockHash} from {Peer}",
@@ -405,7 +405,7 @@ namespace Libplanet.Net
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
-                if (_tasks.TryRemove(peer, out Task completeTask))
+                if (_tasks.TryRemove(peer, out Task? completeTask))
                 {
                     await completeTask;
                 }

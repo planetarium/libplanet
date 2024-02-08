@@ -24,14 +24,14 @@ namespace Libplanet.Net.Tests
 
             // Ignore existing key
             var firstBranch = new Branch(
-                new List<(Block, BlockCommit)>
+                new List<(Block, BlockCommit?)>
                 {
                     (_fx.Block2, TestUtils.CreateBlockCommit(_fx.Block2)),
                     (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
                     (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
                 });
             var secondBranch = new Branch(
-                new List<(Block, BlockCommit)>
+                new List<(Block, BlockCommit?)>
                 {
                     (_fx.Block3, TestUtils.CreateBlockCommit(_fx.Block3)),
                     (_fx.Block4, TestUtils.CreateBlockCommit(_fx.Block4)),
