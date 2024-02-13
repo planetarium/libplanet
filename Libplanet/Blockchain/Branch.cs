@@ -28,9 +28,9 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </exception>
-        public Branch(IEnumerable<(Block, BlockCommit)> blocks)
+        public Branch(IEnumerable<(Block, BlockCommit?)> blocks)
         {
-            ImmutableArray<(Block, BlockCommit)> sorted =
+            ImmutableArray<(Block, BlockCommit?)> sorted =
                 blocks.OrderBy(block => block.Item1.Index).ToImmutableArray();
             if (!sorted.Any())
             {
@@ -71,6 +71,6 @@ namespace Libplanet.Blockchain
         ///     </description></item>
         /// </list>
         /// </summary>
-        public ImmutableArray<(Block, BlockCommit)> Blocks { get; }
+        public ImmutableArray<(Block, BlockCommit?)> Blocks { get; }
     }
 }
