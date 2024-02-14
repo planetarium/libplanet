@@ -18,6 +18,17 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  (Libplanet.Net) Changed some types due to removal of 'nullable keyword'.
+    [[#3669]]
+     - Changed `blocks` parameter type of `Branch` class constructor from
+       `IEnumerable<(Block, BlockCommit)>` to
+       `IEnumerable<(Block, BlockCommit?)>`.
+     - Changed `AppProtocolVersion.Extra` field type from `IValue` to `IValue?`.
+     - Changed `extra` parameter type of `AppProtocolVersion` class constructor
+       from `IValue` to `IValue?`.
+     - Changed `extra` parameter type of `AppProtocolVersion.Sign` method
+       from `IValue` to `IValue?`.
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -33,6 +44,7 @@ To be released.
 [#3622]: https://github.com/planetarium/libplanet/pull/3622
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
 [#3651]: https://github.com/planetarium/libplanet/pull/3651
+[#3669]: https://github.com/planetarium/libplanet/pull/3669
 
 
 Version 4.0.4
