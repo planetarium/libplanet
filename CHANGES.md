@@ -18,6 +18,11 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+-  (Libplanet.Net) Changed transport-related types due to removal of
+   'nullable keyword'. [[#3671]]
+     - Changed `identity` parameter type of `ITransport.ReplyMessageAsync`
+       method from `byte[]` to `byte[]?`.
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -33,6 +38,7 @@ To be released.
 [#3622]: https://github.com/planetarium/libplanet/pull/3622
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
 [#3651]: https://github.com/planetarium/libplanet/pull/3651
+[#3671]: https://github.com/planetarium/libplanet/pull/3671
 
 
 Version 4.0.4
