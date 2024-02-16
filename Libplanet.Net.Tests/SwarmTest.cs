@@ -382,8 +382,12 @@ namespace Libplanet.Net.Tests
             );
 
             await Task.Delay(100);
-            cts.Cancel();
-            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+
+            await Assert.ThrowsAsync<TaskCanceledException>(() =>
+            {
+                cts.Cancel();
+                return task;
+            });
             CleaningSwarm(swarm);
         }
 
