@@ -125,8 +125,6 @@ namespace Libplanet.Net.Tests
                 new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: genesis
             );
-            appProtocolVersionOptions ??= new AppProtocolVersionOptions();
-            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
 
             return await CreateSwarm(
                 blockchain,
@@ -147,7 +145,7 @@ namespace Libplanet.Net.Tests
         )
         {
             appProtocolVersionOptions ??= new AppProtocolVersionOptions();
-            hostOptions ??= new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { });
+            hostOptions ??= new HostOptions(IPAddress.None.ToString(), new IceServer[] { });
             options ??= new SwarmOptions();
             privateKey ??= new PrivateKey();
             var transport = await NetMQTransport.Create(
