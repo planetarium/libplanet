@@ -16,28 +16,7 @@ namespace Libplanet.Action
 
         public void UseGas(long gas)
         {
-            if (gas < 0)
-            {
-                throw new GasUseNegativeException();
-            }
-
-            long newGasUsed = 0;
-            try
-            {
-                newGasUsed = checked(GasUsed + gas);
-            }
-            catch (System.OverflowException)
-            {
-                throw new GasLimitExceededException(GasLimit, GasUsed + gas);
-            }
-
-            if (newGasUsed > GasLimit)
-            {
-                GasUsed = GasLimit;
-                throw new GasLimitExceededException(GasLimit, newGasUsed);
-            }
-
-            GasUsed = newGasUsed;
+            return;
         }
 
         private void SetGasLimit(long gasLimit)
