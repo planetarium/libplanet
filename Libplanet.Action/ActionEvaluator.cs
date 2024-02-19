@@ -591,6 +591,11 @@ namespace Libplanet.Action
                 var accountTrie = stateStore.Commit(account.Value.Trie);
                 worldTrie = worldTrie.Set(
                     ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
+                worldDelta = worldDelta.SetAccount(
+                    account.Key,
+                    new Account(
+                        new AccountState(accountTrie),
+                        account.Value.TotalUpdatedFungibleAssets));
                 worldDelta = worldDelta.CommitAccount(account.Key);
             }
 
