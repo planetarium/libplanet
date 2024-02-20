@@ -6,6 +6,11 @@ Version 4.0.5
 
 To be released.
 
+ -  (Libplanet.Action) Optimized `ActionEvaluation` by removing
+    redundant commits.  [[#3675]]
+
+[#3675]: https://github.com/planetarium/libplanet/pull/3675
+
 
 Version 4.0.4
 -------------
