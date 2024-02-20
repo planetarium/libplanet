@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.5
 -------------
 
-To be released.
+Released on February 20, 2024.
 
  -  (Libplanet.Action) Optimized `ActionEvaluation` by removing
     redundant commits.  [[#3675]]
