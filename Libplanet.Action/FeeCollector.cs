@@ -81,7 +81,7 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(msg, _context.Signer, balance);
             }
 
-            IAccount nextAccount = new Account(account).BurnAsset(
+            IAccount nextAccount = account.BurnAsset(
                 _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
