@@ -968,25 +968,46 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void TotalUpdatedFungibleAssets()
         {
+            var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
+            var gas = Currency.Uncapped("GAS", 0, null);
+
+            var gasFillActions = privateKeys.Select(pk => new UseGasAction()
+            {
+                GasUsage = 0,
+                Memo = "Refill",
+                MintValue = gas * 100,
+                Receiver = pk.Address,
+            });
+
             var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
                 policy: _policy,
                 store: _storeFx.Store,
                 stateStore: _storeFx.StateStore,
-                actionLoader: new SingleActionLoader(typeof(MintAction)),
-                genesisBlock: _storeFx.GenesisBlock,
+                actionLoader: new SingleActionLoader(typeof(UseGasAction)),
+                actions: gasFillActions,
                 privateKey: ChainPrivateKey);
-            var privateKeys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(privateKey => privateKey.Address).ToList();
 
             // Only addresses[0] and addresses[1] are able to mint
             var currency = Currency.Uncapped(
                 "FOO", 0, addresses.Take(2).ToImmutableHashSet());
 
-            var mintAction = new MintAction();
-            mintAction.LoadPlainValue(currency.Serialize());
-            var txs = privateKeys.Select(privateKey =>
+            var useGasActions = privateKeys.Select(pk => new UseGasAction()
+            {
+                GasUsage = 1,
+                Memo = "Use",
+                MintValue = currency * 1,
+                Receiver = pk.Address,
+            }).ToList();
+
+            var txs = privateKeys.Select((privateKey, i) =>
                 Transaction.Create(
-                    0, privateKey, chain.Genesis.Hash, new[] { mintAction }.ToPlainValues()))
+                    0,
+                    privateKey,
+                    chain.Genesis.Hash,
+                    new[] { useGasActions[i] }.ToPlainValues(),
+                    FungibleAssetValue.FromRawValue(gas, 1),
+                    2))
                 .ToList();
 
             var genesis = chain.Genesis;
@@ -1005,7 +1026,15 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 2,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets.Count);
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .TotalUpdatedFungibleAssets
+                    .Count(updated => updated.Item2.Equals(currency)));
+            Assert.Equal(
+                4,
+                latest
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .TotalUpdatedFungibleAssets
+                    .Count(updated => updated.Item2.Equals(gas)));
             Assert.Contains(
                 (addresses[0], currency),
                 latest
@@ -1014,10 +1043,8 @@ namespace Libplanet.Tests.Action
                 (addresses[1], currency),
                 latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
-                addresses[2],
-                latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
+                (addresses[2], currency),
+                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
         }
 
         [Fact]
