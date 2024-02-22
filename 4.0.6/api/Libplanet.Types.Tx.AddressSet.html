@@ -1,0 +1,1202 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class AddressSet
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class AddressSet
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Tx.AddressSet">
+
+
+  <h1 id="Libplanet_Types_Tx_AddressSet" data-uid="Libplanet.Types.Tx.AddressSet" class="text-break">Class AddressSet
+</h1>
+  <div class="markdown level0 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">AddressSet</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.AddressSet.html">AddressSet</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Tx_AddressSet_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class AddressSet : IImmutableSet&lt;Address&gt;, IReadOnlyCollection&lt;Address&gt;, IEnumerable&lt;Address&gt;, IEnumerable, IEquatable&lt;AddressSet&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet__ctor_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.%23ctor(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L29">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet__ctor_" data-uid="Libplanet.Types.Tx.AddressSet.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet__ctor_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">AddressSet(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.AddressSet.html">AddressSet</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AddressSet(IEnumerable&lt;Address&gt; addresses)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p><a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es to include in the set.  Duplicated
+<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es are ignored, and only the first occurrence is included.
+The order of <code data-dev-comment-type="paramref" class="paramref">addresses</code> is preserved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Empty.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Empty%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L19">View Source</a>
+  </span>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Empty" data-uid="Libplanet.Types.Tx.AddressSet.Empty">Empty</h4>
+  <div class="markdown level1 summary"><p>An empty <a class="xref" href="Libplanet.Types.Tx.AddressSet.html">AddressSet</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly AddressSet Empty</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.AddressSet.html">AddressSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Count.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L56">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Count_" data-uid="Libplanet.Types.Tx.AddressSet.Count*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Count" data-uid="Libplanet.Types.Tx.AddressSet.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Add_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Add(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L79">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Add_" data-uid="Libplanet.Types.Tx.AddressSet.Add*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Add_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Tx.AddressSet.Add(Libplanet.Crypto.Address)">Add(Address)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Add(Address value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Clear.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Clear%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L70">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Clear_" data-uid="Libplanet.Types.Tx.AddressSet.Clear*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Clear" data-uid="Libplanet.Types.Tx.AddressSet.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Clear()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Contains_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Contains(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Contains_" data-uid="Libplanet.Types.Tx.AddressSet.Contains*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Contains_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Tx.AddressSet.Contains(Libplanet.Crypto.Address)">Contains(Address)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Contains(Address value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Equals_Libplanet_Types_Tx_AddressSet_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Equals(Libplanet.Types.Tx.AddressSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L192">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Equals_" data-uid="Libplanet.Types.Tx.AddressSet.Equals*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Equals_Libplanet_Types_Tx_AddressSet_" data-uid="Libplanet.Types.Tx.AddressSet.Equals(Libplanet.Types.Tx.AddressSet)">Equals(AddressSet)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Equals(AddressSet other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.AddressSet.html">AddressSet</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L197">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Equals_" data-uid="Libplanet.Types.Tx.AddressSet.Equals*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Equals_System_Object_" data-uid="Libplanet.Types.Tx.AddressSet.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Except_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Except(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L107">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Except_" data-uid="Libplanet.Types.Tx.AddressSet.Except*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Except_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.Except(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">Except(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Except(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_GetEnumerator_" data-uid="Libplanet.Types.Tx.AddressSet.GetEnumerator*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_GetEnumerator" data-uid="Libplanet.Types.Tx.AddressSet.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IEnumerator&lt;Address&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L202">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_GetHashCode_" data-uid="Libplanet.Types.Tx.AddressSet.GetHashCode*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_GetHashCode" data-uid="Libplanet.Types.Tx.AddressSet.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Intersect_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Intersect(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L102">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Intersect_" data-uid="Libplanet.Types.Tx.AddressSet.Intersect*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Intersect_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.Intersect(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">Intersect(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Intersect(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_IsProperSubsetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.IsProperSubsetOf(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L142">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_IsProperSubsetOf_" data-uid="Libplanet.Types.Tx.AddressSet.IsProperSubsetOf*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_IsProperSubsetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.IsProperSubsetOf(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">IsProperSubsetOf(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool IsProperSubsetOf(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_IsProperSupersetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.IsProperSupersetOf(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L152">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_IsProperSupersetOf_" data-uid="Libplanet.Types.Tx.AddressSet.IsProperSupersetOf*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_IsProperSupersetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.IsProperSupersetOf(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">IsProperSupersetOf(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool IsProperSupersetOf(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_IsSubsetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.IsSubsetOf(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L162">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_IsSubsetOf_" data-uid="Libplanet.Types.Tx.AddressSet.IsSubsetOf*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_IsSubsetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.IsSubsetOf(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">IsSubsetOf(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool IsSubsetOf(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_IsSupersetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.IsSupersetOf(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L172">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_IsSupersetOf_" data-uid="Libplanet.Types.Tx.AddressSet.IsSupersetOf*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_IsSupersetOf_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.IsSupersetOf(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">IsSupersetOf(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool IsSupersetOf(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Overlaps_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Overlaps(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L182">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Overlaps_" data-uid="Libplanet.Types.Tx.AddressSet.Overlaps*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Overlaps_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.Overlaps(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">Overlaps(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Overlaps(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Remove_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Remove(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L84">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Remove_" data-uid="Libplanet.Types.Tx.AddressSet.Remove*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Remove_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Tx.AddressSet.Remove(Libplanet.Crypto.Address)">Remove(Address)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Remove(Address value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_SetEquals_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.SetEquals(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L127">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_SetEquals_" data-uid="Libplanet.Types.Tx.AddressSet.SetEquals*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_SetEquals_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.SetEquals(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">SetEquals(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool SetEquals(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_SymmetricExcept_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.SymmetricExcept(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L112">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_SymmetricExcept_" data-uid="Libplanet.Types.Tx.AddressSet.SymmetricExcept*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_SymmetricExcept_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.SymmetricExcept(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">SymmetricExcept(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; SymmetricExcept(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_TryGetValue_Libplanet_Crypto_Address_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.TryGetValue(Libplanet.Crypto.Address%2CLibplanet.Crypto.Address%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L89">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_TryGetValue_" data-uid="Libplanet.Types.Tx.AddressSet.TryGetValue*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_TryGetValue_Libplanet_Crypto_Address_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.TryGetValue(Libplanet.Crypto.Address,Libplanet.Crypto.Address@)">TryGetValue(Address, out Address)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool TryGetValue(Address equalValue, out Address actualValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">equalValue</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">actualValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_Union_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.Union(System.Collections.Generic.IEnumerable%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_Union_" data-uid="Libplanet.Types.Tx.AddressSet.Union*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_Union_System_Collections_Generic_IEnumerable_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Tx.AddressSet.Union(System.Collections.Generic.IEnumerable{Libplanet.Crypto.Address})">Union(IEnumerable&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public IImmutableSet&lt;Address&gt; Union(IEnumerable&lt;Address&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L65">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_AddressSet_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Types.Tx.AddressSet.System#Collections#IEnumerable#GetEnumerator*"></a>
+  <h4 id="Libplanet_Types_Tx_AddressSet_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Types.Tx.AddressSet.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Order-preserving set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+IEnumerator IEnumerable.GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">System.Collections.Immutable.IImmutableSet&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/4.0.6/apiSpec/new?filename=Libplanet_Types_Tx_AddressSet.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.AddressSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/4.0.6/Libplanet.Types/Tx/AddressSet.cs/#L14" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
