@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.0.6
 -------------
 
-To be released.
+Released on February 22, 2024.
 
  -  (Libplanet.Action) Fixed a bug where `FeeCollector.Mortgage()`
     unintentionally resets accumulated `Account.TotalUpdatedFungibleAssets`.
