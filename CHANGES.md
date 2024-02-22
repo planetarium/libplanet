@@ -47,6 +47,18 @@ To be released.
 [#3669]: https://github.com/planetarium/libplanet/pull/3669
 
 
+Version 4.0.6
+-------------
+
+Released on February 22, 2024.
+
+ -  (Libplanet.Action) Fixed a bug where `FeeCollector.Mortgage()`
+    unintentionally resets accumulated `Account.TotalUpdatedFungibleAssets`.
+    [[#3680]]
+
+[#3680]: https://github.com/planetarium/libplanet/pull/3680
+
+
 Version 4.0.5
 -------------
 
