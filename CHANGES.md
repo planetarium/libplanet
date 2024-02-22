@@ -6,6 +6,12 @@ Version 4.0.6
 
 To be released.
 
+ -  (Libplanet.Action) Fixed a bug where `FeeCollector.Mortgage()`
+    unintentionally resets accumulated `Account.TotalUpdatedFungibleAssets`.
+    [[#3680]]
+
+[#3680]: https://github.com/planetarium/libplanet/pull/3680
+
 
 Version 4.0.5
 -------------
