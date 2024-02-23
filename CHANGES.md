@@ -15,6 +15,18 @@ To be released.
  -  Removed the '#nullable disable' from the Libplanet.Store project. [[#3644]]
  -  Removed the '#nullable disable' from the Libplanet.RocksDBStore project.
     [[#3651]]
+ -  (Libplanet.Net) Changed swarm-related types due to removal of
+    'nullable keyword'. [[#3670]]
+     - Changed `options` parameter type of `Swarm` class constructor from
+       `SwarmOptions` to `SwarmOptions?`.
+     - Changed `consensusTransport` parameter type of `Swarm` class constructor
+       from `ITransport` to `ITransport?`.
+     - Changed `Swarm.Validators` property type
+       from `IReadOnlyList<BoundPeer>` to `IReadOnlyList<BoundPeer>?`.
+     - Changed `progress` parameter type of `Swarm.PreloadAsync` method
+       from `IProgress<BlockSyncState>` to `IProgress<BlockSyncState>?`.
+     - Changed return type of `Swarm.FindSpecificPeerAsync` method
+       from `Task<BoundPeer>` to `Task<BoundPeer?>`.
 
 ### Backward-incompatible network protocol changes
 
@@ -45,6 +57,7 @@ To be released.
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
 [#3651]: https://github.com/planetarium/libplanet/pull/3651
 [#3669]: https://github.com/planetarium/libplanet/pull/3669
+[#3670]: https://github.com/planetarium/libplanet/pull/3670
 
 
 Version 4.0.6

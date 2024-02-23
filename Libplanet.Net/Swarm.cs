@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -39,9 +38,9 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
         private readonly IStore _store;
-        private readonly ConsensusReactor _consensusReactor;
+        private readonly ConsensusReactor? _consensusReactor;
 
-        private CancellationTokenSource _workerCancellationTokenSource;
+        private CancellationTokenSource? _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
 
         private bool _disposed;
@@ -66,8 +65,8 @@ namespace Libplanet.Net
             BlockChain blockChain,
             PrivateKey privateKey,
             ITransport transport,
-            SwarmOptions options = null,
-            ITransport consensusTransport = null,
+            SwarmOptions? options = null,
+            ITransport? consensusTransport = null,
             ConsensusReactorOption? consensusOption = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
@@ -95,7 +94,7 @@ namespace Libplanet.Net
             // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
             // fixed. for context, refer to
             // https://github.com/planetarium/libplanet/discussions/2303.
-            Transport = transport;
+            Transport = transport ?? throw new ArgumentNullException(nameof(transport));
             _processBlockDemandSessions = new ConcurrentDictionary<BoundPeer, int>();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
@@ -138,11 +137,11 @@ namespace Libplanet.Net
 
         public bool ConsensusRunning => _consensusReactor?.Running ?? false;
 
-        public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
+        public DnsEndPoint EndPoint => AsPeer.EndPoint;
 
         public Address Address => _privateKey.Address;
 
-        public BoundPeer AsPeer => Transport?.AsPeer;
+        public BoundPeer AsPeer => Transport.AsPeer;
 
         /// <summary>
         /// The last time when any message was arrived.
@@ -159,7 +158,7 @@ namespace Libplanet.Net
         /// Returns list of the validators that consensus has in its routing table.
         /// If the node is not joining consensus, returns <c>null</c>.
         /// </summary>
-        public IReadOnlyList<BoundPeer> Validators => _consensusReactor?.Validators;
+        public IReadOnlyList<BoundPeer>? Validators => _consensusReactor?.Validators;
 
         /// <summary>
         /// The <see cref="BlockChain"/> instance this <see cref="Swarm"/> instance
@@ -183,7 +182,7 @@ namespace Libplanet.Net
 
         internal TxCompletion<BoundPeer> TxCompletion { get; }
 
-        internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
+        internal AsyncAutoResetEvent TxReceived => TxCompletion.TxReceived;
 
         internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
@@ -200,7 +199,8 @@ namespace Libplanet.Net
         internal SwarmOptions Options { get; }
 
         // FIXME: This should be exposed in a better way.
-        internal ConsensusReactor ConsensusReactor => _consensusReactor;
+        internal ConsensusReactor ConsensusReactor => _consensusReactor ??
+            throw new InvalidOperationException();
 
         /// <summary>
         /// Waits until this <see cref="Swarm"/> instance gets started to run.
@@ -208,7 +208,7 @@ namespace Libplanet.Net
         /// <seealso cref="ITransport.WaitForRunningAsync()"/>
         /// <returns>A <see cref="Task"/> completed when <see cref="ITransport.Running"/>
         /// property becomes <see langword="true"/>.</returns>
-        public Task WaitForRunningAsync() => Transport?.WaitForRunningAsync();
+        public Task WaitForRunningAsync() => Transport.WaitForRunningAsync();
 
         public void Dispose()
         {
@@ -216,7 +216,7 @@ namespace Libplanet.Net
             {
                 _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
-                Transport?.Dispose();
+                Transport.Dispose();
                 _consensusReactor?.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
@@ -516,7 +516,7 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
         public async Task PreloadAsync(
-            IProgress<BlockSyncState> progress = null,
+            IProgress<BlockSyncState>? progress = null,
             CancellationToken cancellationToken = default)
         {
             await PreloadAsync(
@@ -556,7 +556,7 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             TimeSpan? dialTimeout,
             long tipDeltaThreshold,
-            IProgress<BlockSyncState> progress = null,
+            IProgress<BlockSyncState>? progress = null,
             CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
@@ -663,7 +663,7 @@ namespace Libplanet.Net
         /// A <see cref="BoundPeer"/> with <see cref="Address"/> of <paramref name="target"/>.
         /// Returns <see langword="null"/> if the peer with address does not exist.
         /// </returns>
-        public async Task<BoundPeer> FindSpecificPeerAsync(
+        public async Task<BoundPeer?> FindSpecificPeerAsync(
             Address target,
             int depth = 3,
             TimeSpan? timeout = null,
@@ -805,7 +805,7 @@ namespace Libplanet.Net
             throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
         }
 
-        internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
+        internal async IAsyncEnumerable<(Block, BlockCommit?)> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<BlockHash> blockHashes,
             [EnumeratorCancellation] CancellationToken cancellationToken
@@ -870,7 +870,7 @@ namespace Libplanet.Net
                         cancellationToken.ThrowIfCancellationRequested();
                         Block block = BlockMarshaler.UnmarshalBlock(
                             (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
-                        BlockCommit commit = commitPayload.Length == 0
+                        BlockCommit? commit = commitPayload.Length == 0
                             ? null
                             : new BlockCommit(Codec.Decode(commitPayload));
 
@@ -985,7 +985,7 @@ namespace Libplanet.Net
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
             int chunkSize = int.MaxValue,
-            IProgress<BlockSyncState> progress = null,
+            IProgress<BlockSyncState>? progress = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
@@ -1008,7 +1008,7 @@ namespace Libplanet.Net
                 int totalBlockHashesToDownload = -1;
                 int chunkBlockHashesToDownload = -1;
                 var pairsToYield = new List<Tuple<long, BlockHash>>();
-                Exception error = null;
+                Exception? error = null;
                 try
                 {
                     var downloaded = new List<BlockHash>();
@@ -1181,7 +1181,7 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private void BroadcastTxs(BoundPeer except, IEnumerable<Transaction> txs)
+        private void BroadcastTxs(BoundPeer? except, IEnumerable<Transaction> txs)
         {
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             _logger.Information("Broadcasting {Count} txIds...", txIds.Count);
@@ -1221,7 +1221,7 @@ namespace Libplanet.Net
                     pair => pair.Item2 is { } chainStatus &&
                         genesisHash.Equals(chainStatus.GenesisHash) &&
                         chainStatus.TipIndex > tip.Index)
-                .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
+                .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2!))
                 .OrderByDescending(pair => pair.Item2.Index)
                 .ToList();
         }
@@ -1241,7 +1241,7 @@ namespace Libplanet.Net
         /// of <see cref="BoundPeer"/> and <see cref="ChainStatusMsg"/> where
         /// <see cref="ChainStatusMsg"/> can be <see langword="null"/> if dialing fails for
         /// a selected <see cref="BoundPeer"/>.</returns>
-        private Task<(BoundPeer, ChainStatusMsg)[]> DialExistingPeers(
+        private Task<(BoundPeer, ChainStatusMsg?)[]> DialExistingPeers(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
             CancellationToken cancellationToken)
@@ -1268,7 +1268,7 @@ namespace Libplanet.Net
             }
 
             var rnd = new System.Random();
-            IEnumerable<Task<(BoundPeer, ChainStatusMsg)>> tasks = Peers.OrderBy(_ => rnd.Next())
+            IEnumerable<Task<(BoundPeer, ChainStatusMsg?)>> tasks = Peers.OrderBy(_ => rnd.Next())
                 .Take(maxPeersToDial)
                 .Select(
                     peer => Transport.SendMessageAsync(
@@ -1276,7 +1276,7 @@ namespace Libplanet.Net
                         new GetChainStatusMsg(),
                         dialTimeout,
                         cancellationToken
-                    ).ContinueWith<(BoundPeer, ChainStatusMsg)>(
+                    ).ContinueWith<(BoundPeer, ChainStatusMsg?)>(
                         task =>
                         {
                             if (task.IsFaulted || task.IsCanceled ||
@@ -1300,7 +1300,7 @@ namespace Libplanet.Net
                 {
                     if (task.IsFaulted)
                     {
-                        throw task.Exception;
+                        throw task.Exception!;
                     }
 
                     return task.Result.ToArray();

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace Libplanet.Net
         private async Task ConsumeBlockCandidates(
             TimeSpan? checkInterval = null,
             bool render = true,
-            IProgress<BlockSyncState> progress = null,
+            IProgress<BlockSyncState>? progress = null,
             CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -63,10 +62,10 @@ namespace Libplanet.Net
         private bool BlockCandidateProcess(
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress,
+            IProgress<BlockSyncState>? progress,
             CancellationToken cancellationToken)
         {
-            BlockChain synced = null;
+            BlockChain? synced = null;
             System.Action renderSwap = () => { };
             try
             {
@@ -99,7 +98,7 @@ namespace Libplanet.Net
             }
 
             if (synced is { } syncedB
-                && !syncedB.Id.Equals(BlockChain?.Id)
+                && !syncedB.Id.Equals(BlockChain.Id)
                 && BlockChain.Tip.Index < syncedB.Tip.Index)
             {
                 _logger.Debug(
@@ -126,7 +125,7 @@ namespace Libplanet.Net
             BlockChain blockChain,
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress)
+            IProgress<BlockSyncState>? progress)
         {
             BlockChain workspace = blockChain;
             List<Guid> scope = new List<Guid>();
@@ -134,7 +133,7 @@ namespace Libplanet.Net
 
             Block oldTip = workspace.Tip;
             Block newTip = candidate.Blocks.Last().Item1;
-            List<(Block, BlockCommit)> blocks = candidate.Blocks.ToList();
+            List<(Block, BlockCommit?)> blocks = candidate.Blocks.ToList();
             Block branchpoint = FindBranchpoint(
                  oldTip,
                  newTip,
@@ -429,7 +428,7 @@ namespace Libplanet.Net
                 return false;
             }
 
-            IAsyncEnumerable<(Block, BlockCommit)> blocksAsync = GetBlocksAsync(
+            IAsyncEnumerable<(Block, BlockCommit?)> blocksAsync = GetBlocksAsync(
                 peer,
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);

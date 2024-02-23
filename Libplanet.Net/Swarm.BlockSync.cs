@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +52,7 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             int maximumPollPeers,
             int chunkSize,
-            IProgress<BlockSyncState> progress,
+            IProgress<BlockSyncState>? progress,
             CancellationToken cancellationToken)
         {
             if (maximumPollPeers <= 0)
@@ -72,7 +71,7 @@ namespace Libplanet.Net
         private async Task PullBlocksAsync(
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
             int chunkSize,
-            IProgress<BlockSyncState> progress,
+            IProgress<BlockSyncState>? progress,
             CancellationToken cancellationToken)
         {
             if (!peersWithBlockExcerpt.Any())
@@ -84,7 +83,7 @@ namespace Libplanet.Net
             long totalBlocksToDownload = 0L;
             long receivedBlockCount = 0L;
             Block tempTip = BlockChain.Tip;
-            var blocks = new List<(Block, BlockCommit)>();
+            var blocks = new List<(Block, BlockCommit?)>();
 
             try
             {
@@ -142,7 +141,7 @@ namespace Libplanet.Net
                     return;
                 }
 
-                IAsyncEnumerable<Tuple<Block, BlockCommit, BoundPeer>> completedBlocks =
+                IAsyncEnumerable<Tuple<Block, BlockCommit?, BoundPeer>> completedBlocks =
                     blockCompletion.Complete(
                         peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
@@ -150,7 +149,7 @@ namespace Libplanet.Net
                     );
 
                 await foreach (
-                    (Block block, BlockCommit commit, BoundPeer sourcePeer)
+                    (Block block, BlockCommit? commit, BoundPeer sourcePeer)
                     in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
@@ -208,13 +207,13 @@ namespace Libplanet.Net
                 }
 
                 BlockHash? previousHash = blocks.First().Item1.PreviousHash;
-                Block branchpoint;
-                BlockCommit branchpointCommit;
+                Block? branchpoint;
+                BlockCommit? branchpointCommit;
                 if (previousHash != null)
                 {
                     branchpoint = BlockChain.Store.GetBlock(
                         (BlockHash)previousHash);
-                    branchpointCommit = BlockChain.GetBlockCommit(branchpoint.Hash);
+                    branchpointCommit = BlockChain.GetBlockCommit(branchpoint!.Hash);
                 }
                 else
                 {
@@ -321,7 +320,7 @@ namespace Libplanet.Net
             }
         }
 
-        private void OnBlockChainTipChanged(object sender, (Block OldTip, Block NewTip) e)
+        private void OnBlockChainTipChanged(object? sender, (Block OldTip, Block NewTip) e)
         {
             if (Running)
             {
