@@ -10,14 +10,11 @@ namespace Libplanet.Blockchain.Policies
     public class NullBlockPolicy : IBlockPolicy
     {
         private readonly BlockPolicyViolationException _exceptionToThrow;
-        private readonly long _difficulty;
 
         public NullBlockPolicy(
-            BlockPolicyViolationException exceptionToThrow = null,
-            long difficulty = 1)
+            BlockPolicyViolationException exceptionToThrow = null)
         {
             _exceptionToThrow = exceptionToThrow;
-            _difficulty = difficulty;
         }
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
