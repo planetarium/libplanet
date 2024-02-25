@@ -80,8 +80,8 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -89,10 +89,10 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Assets.html">Libplanet.Types.Assets</a></h6>
@@ -216,7 +216,7 @@ public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, 
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">totalSupplyTrackable</span></td>
         <td></td>
       </tr>
@@ -436,7 +436,7 @@ public readonly bool TotalSupplyTrackable</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -549,7 +549,7 @@ public readonly bool AllowsToMint(Address address)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span> if and only if
 the given <code data-dev-comment-type="paramref" class="paramref">address</code> is allowed to
 mint or burn assets of this currency.</p>
@@ -660,7 +660,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string, or when either the Major or the Minor values of
 <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
@@ -764,7 +764,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string, or when either the Major or the Minor values of
 <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
@@ -825,7 +825,7 @@ public readonly bool Equals(Currency other)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -889,13 +889,13 @@ public override readonly bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
   <h5 id="Libplanet_Types_Assets_Currency_Equals_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
@@ -944,7 +944,7 @@ public override readonly int GetHashCode()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <h5 id="Libplanet_Types_Assets_Currency_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
@@ -1045,7 +1045,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1143,7 +1143,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1331,7 +1331,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1424,7 +1424,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1605,7 +1605,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
@@ -1630,10 +1630,10 @@ following.</p>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
