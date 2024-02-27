@@ -35,6 +35,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Store) Optimized `ITrie.IterateNodes()` to greatly
+    reduce the amount of memory used.  [[#3687]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -45,6 +48,7 @@ To be released.
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
 [#3651]: https://github.com/planetarium/libplanet/pull/3651
 [#3669]: https://github.com/planetarium/libplanet/pull/3669
+[#3687]: https://github.com/planetarium/libplanet/pull/3687
 
 
 Version 4.0.6
