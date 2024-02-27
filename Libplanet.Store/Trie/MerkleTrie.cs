@@ -148,24 +148,23 @@ namespace Libplanet.Store.Trie
                     case FullNode fullNode:
                         foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
                         {
-                            INode? child = fullNode.Children[index];
-                            if (!(child is null))
+                            if (fullNode.Children[index] is { } childNode)
                             {
-                                stack.Push((path.Add((byte)index), child));
+                                stack.Push((path.Add((byte)index), childNode));
                             }
                         }
 
-                        if (!(fullNode.Value is null))
+                        if (fullNode.Value is { } fullNodeValue)
                         {
-                            stack.Push((path, fullNode.Value));
+                            stack.Push((path, fullNodeValue));
                         }
 
                         break;
 
                     case ShortNode shortNode:
-                        if (!(shortNode.Value is null))
+                        if (shortNode.Value is { } shortNodeValue)
                         {
-                            stack.Push((path.AddRange(shortNode.Key), shortNode.Value));
+                            stack.Push((path.AddRange(shortNode.Key), shortNodeValue));
                         }
 
                         break;
@@ -175,12 +174,6 @@ namespace Libplanet.Store.Trie
                         break;
                 }
             }
-        }
-
-        internal IEnumerable<HashDigest<SHA256>> IterateHashNodes()
-        {
-            return IterateNodes().Where(pair => pair.Node is HashNode)
-                .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
         /// <summary>
@@ -205,9 +198,9 @@ namespace Libplanet.Store.Trie
             while (stack.Count > 0)
             {
                 INode node = stack.Pop();
-                if (node is HashNode dequeuedHashNode)
+                if (node is HashNode poppedHashNode)
                 {
-                    var storedKey = new KeyBytes(dequeuedHashNode.HashDigest.ByteArray);
+                    var storedKey = new KeyBytes(poppedHashNode.HashDigest.ByteArray);
                     var storedValue = KeyValueStore.Get(storedKey);
                     var intermediateEncoding = _codec.Decode(storedValue);
                     stack.Push(
