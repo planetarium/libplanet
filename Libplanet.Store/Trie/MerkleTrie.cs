@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
@@ -138,12 +136,12 @@ namespace Libplanet.Store.Trie
                 yield break;
             }
 
-            var queue = new Queue<(Nibbles, INode)>();
-            queue.Enqueue((Nibbles.Empty, Root));
+            var stack = new Stack<(Nibbles, INode)>();
+            stack.Push((Nibbles.Empty, Root));
 
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                (Nibbles path, INode node) = queue.Dequeue();
+                (Nibbles path, INode node) = stack.Pop();
                 yield return (path, node);
                 switch (node)
                 {
@@ -153,13 +151,13 @@ namespace Libplanet.Store.Trie
                             INode? child = fullNode.Children[index];
                             if (!(child is null))
                             {
-                                queue.Enqueue((path.Add((byte)index), child));
+                                stack.Push((path.Add((byte)index), child));
                             }
                         }
 
                         if (!(fullNode.Value is null))
                         {
-                            queue.Enqueue((path, fullNode.Value));
+                            stack.Push((path, fullNode.Value));
                         }
 
                         break;
@@ -167,13 +165,13 @@ namespace Libplanet.Store.Trie
                     case ShortNode shortNode:
                         if (!(shortNode.Value is null))
                         {
-                            queue.Enqueue((path.AddRange(shortNode.Key), shortNode.Value));
+                            stack.Push((path.AddRange(shortNode.Key), shortNode.Value));
                         }
 
                         break;
 
                     case HashNode hashNode:
-                        queue.Enqueue((path, UnhashNode(hashNode)));
+                        stack.Push((path, UnhashNode(hashNode)));
                         break;
                 }
             }
