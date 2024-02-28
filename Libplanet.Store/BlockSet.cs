@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Caching;
@@ -6,31 +7,32 @@ using Libplanet.Types.Blocks;
 
 namespace Libplanet.Store
 {
-    public class BlockSet : BaseIndex<BlockHash, Block>
+    public class BlockSet : IReadOnlyDictionary<BlockHash, Block>
     {
+        private readonly IStore _store;
         private readonly LRUCache<BlockHash, Block> _cache;
 
         public BlockSet(IStore store, int cacheSize = 4096)
-            : base(store)
         {
+            _store = store;
             _cache = new LRUCache<BlockHash, Block>(cacheSize, Math.Max(cacheSize / 64, 8));
         }
 
-        public override ICollection<BlockHash> Keys =>
-            Store.IterateBlockHashes().ToList();
+        public IEnumerable<BlockHash> Keys =>
+            _store.IterateBlockHashes().ToList();
 
-        public override ICollection<Block> Values =>
-            Store.IterateBlockHashes()
+        public IEnumerable<Block> Values =>
+            _store.IterateBlockHashes()
                 .Select(GetBlock)
                 .Where(block => block is { })
                 .Select(block => block!)
                 .ToList();
 
-        public override int Count => (int)Store.CountBlocks();
+        public int Count => (int)_store.CountBlocks();
 
-        public override bool IsReadOnly => false;
+        public bool IsReadOnly => false;
 
-        public override Block this[BlockHash key]
+        public Block this[BlockHash key]
         {
             get
             {
@@ -65,42 +67,106 @@ namespace Libplanet.Store
                 }
 
                 value.ValidateTimestamp();
-                Store.PutBlock(value);
+                _store.PutBlock(value);
                 _cache.AddReplace(value.Hash, value);
             }
         }
 
-        public override bool Contains(KeyValuePair<BlockHash, Block> item) =>
-            Store.ContainsBlock(item.Key);
+        public bool Contains(KeyValuePair<BlockHash, Block> item) =>
+            _store.ContainsBlock(item.Key);
 
-        public override bool ContainsKey(BlockHash key) =>
-            Store.ContainsBlock(key);
+        public bool ContainsKey(BlockHash key) =>
+            _store.ContainsBlock(key);
 
-        public override bool Remove(BlockHash key)
+        public bool Remove(BlockHash key)
         {
-            bool deleted = Store.DeleteBlock(key);
+            bool deleted = _store.DeleteBlock(key);
 
             _cache.Remove(key);
 
             return deleted;
         }
 
+        public void Add(BlockHash key, Block value)
+        {
+            this[key] = value;
+        }
+
+        public bool TryGetValue(BlockHash key, out Block value)
+        {
+            try
+            {
+                value = this[key];
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                value = default!;
+                return false;
+            }
+        }
+
+        public void Add(KeyValuePair<BlockHash, Block> item) => Add(item.Key, item.Value);
+
+        public void Clear()
+        {
+            foreach (BlockHash key in Keys)
+            {
+                Remove(key);
+            }
+        }
+
+        public void CopyTo(KeyValuePair<BlockHash, Block>[] array, int arrayIndex)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
+
+            if (Count > array.Length + arrayIndex)
+            {
+                throw new ArgumentException();
+            }
+
+            foreach (KeyValuePair<BlockHash, Block> kv in this)
+            {
+                array[arrayIndex++] = kv;
+            }
+        }
+
+        public bool Remove(KeyValuePair<BlockHash, Block> item) => Remove(item.Key);
+
+        public IEnumerator<KeyValuePair<BlockHash, Block>> GetEnumerator()
+        {
+            foreach (var key in Keys)
+            {
+                yield return new KeyValuePair<BlockHash, Block>(key, this[key]);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
         private Block? GetBlock(BlockHash key)
         {
             if (_cache.TryGet(key, out Block cached))
             {
-                if (Store.ContainsBlock(key))
+                if (_store.ContainsBlock(key))
                 {
                     return cached;
                 }
                 else
                 {
-                    // The cached block had been deleted on Store...
+                    // The cached block had been deleted on _store...
                     _cache.Remove(key);
                 }
             }
 
-            Block? fetched = Store.GetBlock(key);
+            Block? fetched = _store.GetBlock(key);
             if (fetched is { })
             {
                 _cache.AddReplace(key, fetched);
