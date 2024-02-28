@@ -71,6 +71,9 @@
 <li>Removed the '#nullable disable' from the Libplanet.Store project. [<a href="https://github.com/planetarium/libplanet/pull/3644">#3644</a>]</li>
 <li>Removed the '#nullable disable' from the Libplanet.RocksDBStore project.
 [<a href="https://github.com/planetarium/libplanet/pull/3651">#3651</a>]</li>
+<li>Removed <code>BaseIndex</code> class and changed <code>BlockSet</code> base class from
+<code>BaseIndex&lt;BlockHash, Block&gt;</code> to <code>IReadOnlyDictionary&lt;BlockHash, Block&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3686">#3686</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>

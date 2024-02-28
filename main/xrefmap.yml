@@ -19620,311 +19620,6 @@ references:
   commentId: N:Libplanet.Store
   fullName: Libplanet.Store
   nameWithType: Libplanet.Store
-- uid: Libplanet.Store.BaseIndex`2
-  name: BaseIndex<TKey, TVal>
-  href: api/Libplanet.Store.BaseIndex-2.html
-  commentId: T:Libplanet.Store.BaseIndex`2
-  name.vb: BaseIndex(Of TKey, TVal)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal)
-  nameWithType: BaseIndex<TKey, TVal>
-  nameWithType.vb: BaseIndex(Of TKey, TVal)
-- uid: Libplanet.Store.BaseIndex`2.#ctor(Libplanet.Store.IStore)
-  name: BaseIndex(IStore)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2__ctor_Libplanet_Store_IStore_
-  commentId: M:Libplanet.Store.BaseIndex`2.#ctor(Libplanet.Store.IStore)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.BaseIndex(Libplanet.Store.IStore)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).BaseIndex(Libplanet.Store.IStore)
-  nameWithType: BaseIndex<TKey, TVal>.BaseIndex(IStore)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).BaseIndex(IStore)
-- uid: Libplanet.Store.BaseIndex`2.#ctor*
-  name: BaseIndex
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2__ctor_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.BaseIndex
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).BaseIndex
-  nameWithType: BaseIndex<TKey, TVal>.BaseIndex
-  nameWithType.vb: BaseIndex(Of TKey, TVal).BaseIndex
-- uid: Libplanet.Store.BaseIndex`2.Add(`0,`1)
-  name: Add(TKey, TVal)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Add__0__1_
-  commentId: M:Libplanet.Store.BaseIndex`2.Add(`0,`1)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Add(TKey, TVal)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Add(TKey, TVal)
-  nameWithType: BaseIndex<TKey, TVal>.Add(TKey, TVal)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Add(TKey, TVal)
-- uid: Libplanet.Store.BaseIndex`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})
-  name: Add(KeyValuePair<TKey, TVal>)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Add_System_Collections_Generic_KeyValuePair__0__1__
-  commentId: M:Libplanet.Store.BaseIndex`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})
-  name.vb: Add(KeyValuePair(Of TKey, TVal))
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Add(System.Collections.Generic.KeyValuePair<TKey, TVal>)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Add(System.Collections.Generic.KeyValuePair(Of TKey, TVal))
-  nameWithType: BaseIndex<TKey, TVal>.Add(KeyValuePair<TKey, TVal>)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Add(KeyValuePair(Of TKey, TVal))
-- uid: Libplanet.Store.BaseIndex`2.Add*
-  name: Add
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Add_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Add
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Add
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Add
-  nameWithType: BaseIndex<TKey, TVal>.Add
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Add
-- uid: Libplanet.Store.BaseIndex`2.Clear
-  name: Clear()
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Clear
-  commentId: M:Libplanet.Store.BaseIndex`2.Clear
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Clear()
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Clear()
-  nameWithType: BaseIndex<TKey, TVal>.Clear()
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Clear()
-- uid: Libplanet.Store.BaseIndex`2.Clear*
-  name: Clear
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Clear_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Clear
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Clear
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Clear
-  nameWithType: BaseIndex<TKey, TVal>.Clear
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Clear
-- uid: Libplanet.Store.BaseIndex`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})
-  name: Contains(KeyValuePair<TKey, TVal>)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Contains_System_Collections_Generic_KeyValuePair__0__1__
-  commentId: M:Libplanet.Store.BaseIndex`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})
-  name.vb: Contains(KeyValuePair(Of TKey, TVal))
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Contains(System.Collections.Generic.KeyValuePair<TKey, TVal>)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Contains(System.Collections.Generic.KeyValuePair(Of TKey, TVal))
-  nameWithType: BaseIndex<TKey, TVal>.Contains(KeyValuePair<TKey, TVal>)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Contains(KeyValuePair(Of TKey, TVal))
-- uid: Libplanet.Store.BaseIndex`2.Contains*
-  name: Contains
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Contains_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Contains
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Contains
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Contains
-  nameWithType: BaseIndex<TKey, TVal>.Contains
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Contains
-- uid: Libplanet.Store.BaseIndex`2.ContainsKey(`0)
-  name: ContainsKey(TKey)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_ContainsKey__0_
-  commentId: M:Libplanet.Store.BaseIndex`2.ContainsKey(`0)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.ContainsKey(TKey)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).ContainsKey(TKey)
-  nameWithType: BaseIndex<TKey, TVal>.ContainsKey(TKey)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).ContainsKey(TKey)
-- uid: Libplanet.Store.BaseIndex`2.ContainsKey*
-  name: ContainsKey
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_ContainsKey_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.ContainsKey
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.ContainsKey
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).ContainsKey
-  nameWithType: BaseIndex<TKey, TVal>.ContainsKey
-  nameWithType.vb: BaseIndex(Of TKey, TVal).ContainsKey
-- uid: Libplanet.Store.BaseIndex`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)
-  name: CopyTo(KeyValuePair<TKey, TVal>[], Int32)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_CopyTo_System_Collections_Generic_KeyValuePair__0__1____System_Int32_
-  commentId: M:Libplanet.Store.BaseIndex`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)
-  name.vb: CopyTo(KeyValuePair(Of TKey, TVal)(), Int32)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TVal>[], System.Int32)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).CopyTo(System.Collections.Generic.KeyValuePair(Of TKey, TVal)(), System.Int32)
-  nameWithType: BaseIndex<TKey, TVal>.CopyTo(KeyValuePair<TKey, TVal>[], Int32)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).CopyTo(KeyValuePair(Of TKey, TVal)(), Int32)
-- uid: Libplanet.Store.BaseIndex`2.CopyTo*
-  name: CopyTo
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_CopyTo_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.CopyTo
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.CopyTo
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).CopyTo
-  nameWithType: BaseIndex<TKey, TVal>.CopyTo
-  nameWithType.vb: BaseIndex(Of TKey, TVal).CopyTo
-- uid: Libplanet.Store.BaseIndex`2.Count
-  name: Count
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Count
-  commentId: P:Libplanet.Store.BaseIndex`2.Count
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Count
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Count
-  nameWithType: BaseIndex<TKey, TVal>.Count
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Count
-- uid: Libplanet.Store.BaseIndex`2.Count*
-  name: Count
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Count_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Count
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Count
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Count
-  nameWithType: BaseIndex<TKey, TVal>.Count
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Count
-- uid: Libplanet.Store.BaseIndex`2.GetEnumerator
-  name: GetEnumerator()
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_GetEnumerator
-  commentId: M:Libplanet.Store.BaseIndex`2.GetEnumerator
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.GetEnumerator()
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).GetEnumerator()
-  nameWithType: BaseIndex<TKey, TVal>.GetEnumerator()
-  nameWithType.vb: BaseIndex(Of TKey, TVal).GetEnumerator()
-- uid: Libplanet.Store.BaseIndex`2.GetEnumerator*
-  name: GetEnumerator
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_GetEnumerator_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.GetEnumerator
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.GetEnumerator
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).GetEnumerator
-  nameWithType: BaseIndex<TKey, TVal>.GetEnumerator
-  nameWithType.vb: BaseIndex(Of TKey, TVal).GetEnumerator
-- uid: Libplanet.Store.BaseIndex`2.IsReadOnly
-  name: IsReadOnly
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_IsReadOnly
-  commentId: P:Libplanet.Store.BaseIndex`2.IsReadOnly
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.IsReadOnly
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).IsReadOnly
-  nameWithType: BaseIndex<TKey, TVal>.IsReadOnly
-  nameWithType.vb: BaseIndex(Of TKey, TVal).IsReadOnly
-- uid: Libplanet.Store.BaseIndex`2.IsReadOnly*
-  name: IsReadOnly
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_IsReadOnly_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.IsReadOnly
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.IsReadOnly
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).IsReadOnly
-  nameWithType: BaseIndex<TKey, TVal>.IsReadOnly
-  nameWithType.vb: BaseIndex(Of TKey, TVal).IsReadOnly
-- uid: Libplanet.Store.BaseIndex`2.Item(`0)
-  name: Item[TKey]
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Item__0_
-  commentId: P:Libplanet.Store.BaseIndex`2.Item(`0)
-  name.vb: Item(TKey)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Item[TKey]
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Item(TKey)
-  nameWithType: BaseIndex<TKey, TVal>.Item[TKey]
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Item(TKey)
-- uid: Libplanet.Store.BaseIndex`2.Item*
-  name: Item
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Item_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Item
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Item
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Item
-  nameWithType: BaseIndex<TKey, TVal>.Item
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Item
-- uid: Libplanet.Store.BaseIndex`2.Keys
-  name: Keys
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Keys
-  commentId: P:Libplanet.Store.BaseIndex`2.Keys
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Keys
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Keys
-  nameWithType: BaseIndex<TKey, TVal>.Keys
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Keys
-- uid: Libplanet.Store.BaseIndex`2.Keys*
-  name: Keys
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Keys_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Keys
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Keys
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Keys
-  nameWithType: BaseIndex<TKey, TVal>.Keys
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Keys
-- uid: Libplanet.Store.BaseIndex`2.Remove(`0)
-  name: Remove(TKey)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Remove__0_
-  commentId: M:Libplanet.Store.BaseIndex`2.Remove(`0)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Remove(TKey)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Remove(TKey)
-  nameWithType: BaseIndex<TKey, TVal>.Remove(TKey)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Remove(TKey)
-- uid: Libplanet.Store.BaseIndex`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})
-  name: Remove(KeyValuePair<TKey, TVal>)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Remove_System_Collections_Generic_KeyValuePair__0__1__
-  commentId: M:Libplanet.Store.BaseIndex`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})
-  name.vb: Remove(KeyValuePair(Of TKey, TVal))
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Remove(System.Collections.Generic.KeyValuePair<TKey, TVal>)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Remove(System.Collections.Generic.KeyValuePair(Of TKey, TVal))
-  nameWithType: BaseIndex<TKey, TVal>.Remove(KeyValuePair<TKey, TVal>)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Remove(KeyValuePair(Of TKey, TVal))
-- uid: Libplanet.Store.BaseIndex`2.Remove*
-  name: Remove
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Remove_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Remove
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Remove
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Remove
-  nameWithType: BaseIndex<TKey, TVal>.Remove
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Remove
-- uid: Libplanet.Store.BaseIndex`2.Store
-  name: Store
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Store
-  commentId: P:Libplanet.Store.BaseIndex`2.Store
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Store
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Store
-  nameWithType: BaseIndex<TKey, TVal>.Store
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Store
-- uid: Libplanet.Store.BaseIndex`2.Store*
-  name: Store
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Store_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Store
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Store
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Store
-  nameWithType: BaseIndex<TKey, TVal>.Store
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Store
-- uid: Libplanet.Store.BaseIndex`2.System#Collections#IEnumerable#GetEnumerator
-  name: IEnumerable.GetEnumerator()
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_System_Collections_IEnumerable_GetEnumerator
-  commentId: M:Libplanet.Store.BaseIndex`2.System#Collections#IEnumerable#GetEnumerator
-  name.vb: System.Collections.IEnumerable.GetEnumerator()
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.System.Collections.IEnumerable.GetEnumerator()
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).System.Collections.IEnumerable.GetEnumerator()
-  nameWithType: BaseIndex<TKey, TVal>.IEnumerable.GetEnumerator()
-  nameWithType.vb: BaseIndex(Of TKey, TVal).System.Collections.IEnumerable.GetEnumerator()
-- uid: Libplanet.Store.BaseIndex`2.System#Collections#IEnumerable#GetEnumerator*
-  name: IEnumerable.GetEnumerator
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_System_Collections_IEnumerable_GetEnumerator_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.System#Collections#IEnumerable#GetEnumerator
-  isSpec: "True"
-  name.vb: System.Collections.IEnumerable.GetEnumerator
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.System.Collections.IEnumerable.GetEnumerator
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).System.Collections.IEnumerable.GetEnumerator
-  nameWithType: BaseIndex<TKey, TVal>.IEnumerable.GetEnumerator
-  nameWithType.vb: BaseIndex(Of TKey, TVal).System.Collections.IEnumerable.GetEnumerator
-- uid: Libplanet.Store.BaseIndex`2.TryGetValue(`0,`1@)
-  name: TryGetValue(TKey, out TVal)
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_TryGetValue__0__1__
-  commentId: M:Libplanet.Store.BaseIndex`2.TryGetValue(`0,`1@)
-  name.vb: TryGetValue(TKey, ByRef TVal)
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.TryGetValue(TKey, out TVal)
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).TryGetValue(TKey, ByRef TVal)
-  nameWithType: BaseIndex<TKey, TVal>.TryGetValue(TKey, out TVal)
-  nameWithType.vb: BaseIndex(Of TKey, TVal).TryGetValue(TKey, ByRef TVal)
-- uid: Libplanet.Store.BaseIndex`2.TryGetValue*
-  name: TryGetValue
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_TryGetValue_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.TryGetValue
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.TryGetValue
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).TryGetValue
-  nameWithType: BaseIndex<TKey, TVal>.TryGetValue
-  nameWithType.vb: BaseIndex(Of TKey, TVal).TryGetValue
-- uid: Libplanet.Store.BaseIndex`2.Values
-  name: Values
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Values
-  commentId: P:Libplanet.Store.BaseIndex`2.Values
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Values
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Values
-  nameWithType: BaseIndex<TKey, TVal>.Values
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Values
-- uid: Libplanet.Store.BaseIndex`2.Values*
-  name: Values
-  href: api/Libplanet.Store.BaseIndex-2.html#Libplanet_Store_BaseIndex_2_Values_
-  commentId: Overload:Libplanet.Store.BaseIndex`2.Values
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseIndex<TKey, TVal>.Values
-  fullName.vb: Libplanet.Store.BaseIndex(Of TKey, TVal).Values
-  nameWithType: BaseIndex<TKey, TVal>.Values
-  nameWithType.vb: BaseIndex(Of TKey, TVal).Values
 - uid: Libplanet.Store.BaseStore
   name: BaseStore
   href: api/Libplanet.Store.BaseStore.html
@@ -20725,6 +20420,41 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockSet.BlockSet
   nameWithType: BlockSet.BlockSet
+- uid: Libplanet.Store.BlockSet.Add(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block)
+  name: Add(BlockHash, Block)
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Add_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block_
+  commentId: M:Libplanet.Store.BlockSet.Add(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block)
+  fullName: Libplanet.Store.BlockSet.Add(Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block)
+  nameWithType: BlockSet.Add(BlockHash, Block)
+- uid: Libplanet.Store.BlockSet.Add(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block})
+  name: Add(KeyValuePair<BlockHash, Block>)
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Add_System_Collections_Generic_KeyValuePair_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block__
+  commentId: M:Libplanet.Store.BlockSet.Add(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block})
+  name.vb: Add(KeyValuePair(Of BlockHash, Block))
+  fullName: Libplanet.Store.BlockSet.Add(System.Collections.Generic.KeyValuePair<Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block>)
+  fullName.vb: Libplanet.Store.BlockSet.Add(System.Collections.Generic.KeyValuePair(Of Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block))
+  nameWithType: BlockSet.Add(KeyValuePair<BlockHash, Block>)
+  nameWithType.vb: BlockSet.Add(KeyValuePair(Of BlockHash, Block))
+- uid: Libplanet.Store.BlockSet.Add*
+  name: Add
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Add_
+  commentId: Overload:Libplanet.Store.BlockSet.Add
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet.Add
+  nameWithType: BlockSet.Add
+- uid: Libplanet.Store.BlockSet.Clear
+  name: Clear()
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Clear
+  commentId: M:Libplanet.Store.BlockSet.Clear
+  fullName: Libplanet.Store.BlockSet.Clear()
+  nameWithType: BlockSet.Clear()
+- uid: Libplanet.Store.BlockSet.Clear*
+  name: Clear
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Clear_
+  commentId: Overload:Libplanet.Store.BlockSet.Clear
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet.Clear
+  nameWithType: BlockSet.Clear
 - uid: Libplanet.Store.BlockSet.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block})
   name: Contains(KeyValuePair<BlockHash, Block>)
   href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block__
@@ -20754,6 +20484,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockSet.ContainsKey
   nameWithType: BlockSet.ContainsKey
+- uid: Libplanet.Store.BlockSet.CopyTo(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block}[],System.Int32)
+  name: CopyTo(KeyValuePair<BlockHash, Block>[], Int32)
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_CopyTo_System_Collections_Generic_KeyValuePair_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block____System_Int32_
+  commentId: M:Libplanet.Store.BlockSet.CopyTo(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block}[],System.Int32)
+  name.vb: CopyTo(KeyValuePair(Of BlockHash, Block)(), Int32)
+  fullName: Libplanet.Store.BlockSet.CopyTo(System.Collections.Generic.KeyValuePair<Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block>[], System.Int32)
+  fullName.vb: Libplanet.Store.BlockSet.CopyTo(System.Collections.Generic.KeyValuePair(Of Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block)(), System.Int32)
+  nameWithType: BlockSet.CopyTo(KeyValuePair<BlockHash, Block>[], Int32)
+  nameWithType.vb: BlockSet.CopyTo(KeyValuePair(Of BlockHash, Block)(), Int32)
+- uid: Libplanet.Store.BlockSet.CopyTo*
+  name: CopyTo
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_CopyTo_
+  commentId: Overload:Libplanet.Store.BlockSet.CopyTo
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet.CopyTo
+  nameWithType: BlockSet.CopyTo
 - uid: Libplanet.Store.BlockSet.Count
   name: Count
   href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Count
@@ -20767,6 +20513,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockSet.Count
   nameWithType: BlockSet.Count
+- uid: Libplanet.Store.BlockSet.GetEnumerator
+  name: GetEnumerator()
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_GetEnumerator
+  commentId: M:Libplanet.Store.BlockSet.GetEnumerator
+  fullName: Libplanet.Store.BlockSet.GetEnumerator()
+  nameWithType: BlockSet.GetEnumerator()
+- uid: Libplanet.Store.BlockSet.GetEnumerator*
+  name: GetEnumerator
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_GetEnumerator_
+  commentId: Overload:Libplanet.Store.BlockSet.GetEnumerator
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet.GetEnumerator
+  nameWithType: BlockSet.GetEnumerator
 - uid: Libplanet.Store.BlockSet.IsReadOnly
   name: IsReadOnly
   href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_IsReadOnly
@@ -20815,6 +20574,15 @@ references:
   commentId: M:Libplanet.Store.BlockSet.Remove(Libplanet.Types.Blocks.BlockHash)
   fullName: Libplanet.Store.BlockSet.Remove(Libplanet.Types.Blocks.BlockHash)
   nameWithType: BlockSet.Remove(BlockHash)
+- uid: Libplanet.Store.BlockSet.Remove(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block})
+  name: Remove(KeyValuePair<BlockHash, Block>)
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Remove_System_Collections_Generic_KeyValuePair_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block__
+  commentId: M:Libplanet.Store.BlockSet.Remove(System.Collections.Generic.KeyValuePair{Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block})
+  name.vb: Remove(KeyValuePair(Of BlockHash, Block))
+  fullName: Libplanet.Store.BlockSet.Remove(System.Collections.Generic.KeyValuePair<Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block>)
+  fullName.vb: Libplanet.Store.BlockSet.Remove(System.Collections.Generic.KeyValuePair(Of Libplanet.Types.Blocks.BlockHash, Libplanet.Types.Blocks.Block))
+  nameWithType: BlockSet.Remove(KeyValuePair<BlockHash, Block>)
+  nameWithType.vb: BlockSet.Remove(KeyValuePair(Of BlockHash, Block))
 - uid: Libplanet.Store.BlockSet.Remove*
   name: Remove
   href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Remove_
@@ -20822,6 +20590,39 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BlockSet.Remove
   nameWithType: BlockSet.Remove
+- uid: Libplanet.Store.BlockSet.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Libplanet.Store.BlockSet.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  fullName: Libplanet.Store.BlockSet.System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: BlockSet.IEnumerable.GetEnumerator()
+  nameWithType.vb: BlockSet.System.Collections.IEnumerable.GetEnumerator()
+- uid: Libplanet.Store.BlockSet.System#Collections#IEnumerable#GetEnumerator*
+  name: IEnumerable.GetEnumerator
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Libplanet.Store.BlockSet.System#Collections#IEnumerable#GetEnumerator
+  isSpec: "True"
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+  fullName: Libplanet.Store.BlockSet.System.Collections.IEnumerable.GetEnumerator
+  nameWithType: BlockSet.IEnumerable.GetEnumerator
+  nameWithType.vb: BlockSet.System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Store.BlockSet.TryGetValue(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block@)
+  name: TryGetValue(BlockHash, out Block)
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_TryGetValue_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Blocks_Block__
+  commentId: M:Libplanet.Store.BlockSet.TryGetValue(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Blocks.Block@)
+  name.vb: TryGetValue(BlockHash, ByRef Block)
+  fullName: Libplanet.Store.BlockSet.TryGetValue(Libplanet.Types.Blocks.BlockHash, out Libplanet.Types.Blocks.Block)
+  fullName.vb: Libplanet.Store.BlockSet.TryGetValue(Libplanet.Types.Blocks.BlockHash, ByRef Libplanet.Types.Blocks.Block)
+  nameWithType: BlockSet.TryGetValue(BlockHash, out Block)
+  nameWithType.vb: BlockSet.TryGetValue(BlockHash, ByRef Block)
+- uid: Libplanet.Store.BlockSet.TryGetValue*
+  name: TryGetValue
+  href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_TryGetValue_
+  commentId: Overload:Libplanet.Store.BlockSet.TryGetValue
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet.TryGetValue
+  nameWithType: BlockSet.TryGetValue
 - uid: Libplanet.Store.BlockSet.Values
   name: Values
   href: api/Libplanet.Store.BlockSet.html#Libplanet_Store_BlockSet_Values
