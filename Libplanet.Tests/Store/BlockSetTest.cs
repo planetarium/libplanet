@@ -56,10 +56,10 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void CanCountItem()
         {
-            Assert.Equal(0, _set.Count);
+            Assert.Empty(_set);
 
             _set[_fx.Block1.Hash] = _fx.Block1;
-            Assert.Equal(1, _set.Count);
+            Assert.Single(_set);
 
             _set[_fx.Block2.Hash] = _fx.Block2;
             _set[_fx.Block3.Hash] = _fx.Block3;

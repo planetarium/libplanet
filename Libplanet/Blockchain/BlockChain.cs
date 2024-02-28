@@ -56,7 +56,7 @@ namespace Libplanet.Blockchain
         /// Keys are <see cref="Block.Hash"/>es and values are
         /// their corresponding <see cref="Block"/>s.
         /// </summary>
-        private IDictionary<BlockHash, Block> _blocks;
+        private BlockSet _blocks;
 
         /// <summary>
         /// Cached genesis block.
