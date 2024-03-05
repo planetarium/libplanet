@@ -51,11 +51,11 @@ var channel = GrpcChannel.ForAddress("https://localhost:5239");
 var client = new RemoteKeyValueStoreClient(channel);
 
 await client
-        .SetAsync("key", new byte[] { 1, 2, 3, 4, 5 })
+        .SetAsync(new KeyBytes(1, 2, 3), new byte[] { 1, 2, 3, 4, 5 })
         .ConfigureAwait(false);
 
-var value = await client
-        .GetAsync("key")
+byte[] value = await client
+        .GetAsync(new KeyBytes(1, 2, 3))
         .ConfigureAwait(false);
 ```
 
@@ -67,7 +67,7 @@ using Libplanet.Store.Trie;
 var channel = GrpcChannel.ForAddress("https://localhost:5239");
 var client = new RemoteKeyValueStoreClient(channel);
 
-client.Set("key", new byte[] { 1, 2, 3, 4, 5 });
+client.Set(new KeyBytes(1, 2, 3), new byte[] { 1, 2, 3, 4, 5 });
 
-var value = client.Get("key");
+byte[] value = client.Get(new KeyBytes(1, 2, 3));
 ```
