@@ -35,6 +35,10 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+ -  (Libplanet.Store.Remote) Introduce
+    `Libplanet.Store.Server.RemoteKeyValueService`  [[#3688]]
+ -  (Libplanet.Store.Remote) Introduce
+   `Libplanet.Store.Client.RemoteKeyValueStore`  [[#3688]]
 
 ### Behavioral changes
 
