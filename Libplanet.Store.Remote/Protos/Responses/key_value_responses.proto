@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "Libplanet.Store.Remote";
+
+package libplanet.rpc.v1;
+
+message GetResponse {
+  bytes value = 1;
+  bool exists = 2;
+}
+
+message SetResponse {
+}
+
+message SetMapResponse {
+}
+
+message DeleteResponse {
+}
+
+message DeleteCollectionResponse {
+}
+
+message ExistsResponse {
+  bool exists = 1;
+}
+
+message ListKeysResponse {
+  repeated bytes keys = 1;
+}

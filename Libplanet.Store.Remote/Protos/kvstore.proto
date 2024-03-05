@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "Protos/Responses/key_value_responses.proto";
+import "Protos/Requests/key_value_requests.proto";
+
+package libplanet.rpc.v1;
+
+option csharp_namespace = "Libplanet.Store.Remote";
+
+service KeyValueStore {
+  rpc Get(GetRequest) returns (GetResponse) {
+  }
+
+  rpc Set(SetRequest) returns (SetResponse) {
+  }
+  
+  rpc SetMap(SetMapRequest) returns (SetMapResponse) {
+  }
+
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+  }
+  
+  rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse) {
+  }
+  
+  rpc Exists(ExistsRequest) returns (ExistsResponse) {
+  }
+  
+  rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {
+  }
+}
