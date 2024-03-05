@@ -24,6 +24,7 @@ namespace Libplanet.Store.Remote.Server
         {
             var key = new KeyBytes(request.Key.ToByteArray());
             var result = _baseStore.TryGet(key, out var value);
+            _logger.LogTrace("Get: {Key} => {Value}", key, value);
             return Task.FromResult(new GetResponse { Value = ByteString.CopyFrom(value), Exists = result});
         }
 
@@ -31,6 +32,7 @@ namespace Libplanet.Store.Remote.Server
         {
             var key = new KeyBytes(request.Key.ToByteArray());
             _baseStore.Set(key, request.Value.ToByteArray());
+            _logger.LogTrace("Set: {Key} <= {Value}", key, request.Value);
             return Task.FromResult(new SetResponse());
         }
 
@@ -43,6 +45,7 @@ namespace Libplanet.Store.Remote.Server
                 dict[new KeyBytes(key)] = value.ToByteArray();
             }
             _baseStore.Set(dict);
+            _logger.LogTrace("SetMap: {Count}", map.Count);
             return Task.FromResult(new SetMapResponse());
         }
 
@@ -50,6 +53,7 @@ namespace Libplanet.Store.Remote.Server
         {
             var key = new KeyBytes(request.Key.ToByteArray());
             _baseStore.Delete(key);
+            _logger.LogTrace("Delete: {Key}", key);
             return Task.FromResult(new DeleteResponse());
         }
 
@@ -57,12 +61,14 @@ namespace Libplanet.Store.Remote.Server
         {
             IEnumerable<KeyBytes> keys = request.Key.Select(KeyBytesExtensions.ToKeyBytes);
             _baseStore.Delete(keys);
+            _logger.LogTrace("DeleteCollection: {Count}", request.Key.Count);
             return Task.FromResult(new DeleteCollectionResponse());
         }
 
         public override Task<ExistsResponse> Exists(ExistsRequest request, ServerCallContext context)
         {
             var key = new KeyBytes(request.Key.ToByteArray());
+            _logger.LogTrace("Exists: {Key}", key);
             return Task.FromResult(new ExistsResponse { Exists = _baseStore.Exists(key) });
         }
 
@@ -71,6 +77,7 @@ namespace Libplanet.Store.Remote.Server
             IEnumerable<KeyBytes> keys = _baseStore.ListKeys();
             var response = new ListKeysResponse();
             response.Keys.AddRange(keys.Select(KeyBytesExtensions.ToByteString));
+            _logger.LogTrace("ListKeys: {Count}", response.Keys.Count);
             return Task.FromResult(response);
         }
     }
