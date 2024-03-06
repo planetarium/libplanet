@@ -1,5 +1,5 @@
 Libplanet.Store.Remote
-=========
+======================
 A remote store service for Libplanet.
 
 # Table of Contents

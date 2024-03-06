@@ -35,6 +35,7 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
  -  (Libplanet.Store.Remote) Introduce
     `Libplanet.Store.Server.RemoteKeyValueService`  [[#3688]]
  -  (Libplanet.Store.Remote) Introduce
@@ -57,6 +58,7 @@ To be released.
 [#3669]: https://github.com/planetarium/libplanet/pull/3669
 [#3686]: https://github.com/planetarium/libplanet/pull/3686
 [#3687]: https://github.com/planetarium/libplanet/pull/3687
+[#3688]: https://github.com/planetarium/libplanet/pull/3688
 
 
 Version 4.0.6
