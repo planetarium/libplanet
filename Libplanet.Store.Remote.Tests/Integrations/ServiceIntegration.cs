@@ -1,8 +1,10 @@
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Libplanet.Store.Remote.Extensions;
 using Libplanet.Store.Remote.Server;
 using Libplanet.Store.Remote.Tests.Helpers;
 using Libplanet.Store.Trie;
+using Microsoft.Extensions.Logging;
 
 namespace Libplanet.Store.Remote.Tests.Integrations
 {
@@ -13,19 +15,30 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            
+            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
+            KeyValueStoreValue setResponse = await service.SetValue(new SetValueRequest
+            {
+                Item = new KeyValueStorePair
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+
             // Assert
-            Assert.Empty(response.Value.ToByteArray());
-            Assert.False(response.Exists);
+            Assert.Empty(response.Data.ToByteArray());
             Assert.Equal(value, store.Get(key));
+            Assert.Equal(value, setResponse.Data);
         }
 
         [Fact]
@@ -33,19 +46,26 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            store.Set(key, value);
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            await service.Delete(new DeleteRequest { Key = key.ToByteString() });
-            
+            KeyValueStoreValue getResponse = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
+            _ = await service.DeleteValue(new DeleteValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Empty(response.Value.ToByteArray());
-            Assert.False(response.Exists);
-            Assert.Throws<KeyNotFoundException>(() => store.Get(key));
+            Assert.Equal(value, getResponse.Data.ToByteArray());
+            Assert.Empty(store.Get(key));
         }
 
         [Fact]
@@ -53,43 +73,62 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
             store.Set(key, value);
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
-            // Act
-            var first = await service.Get(new GetRequest { Key = key.ToByteString() });
-            await service.Delete(new DeleteRequest { Key = key.ToByteString() });
-            var second = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
-            // Assert
-            Assert.Equal(value, first.Value.ToByteArray());
-            Assert.True(first.Exists);
-            
-            Assert.Empty(second.Value.ToByteArray());
-            Assert.False(second.Exists);
 
-            Assert.Throws<KeyNotFoundException>(() => store.Get(key));
+            // Act
+            KeyValueStoreValue first = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
+            _ = await service.DeleteValue(new DeleteValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
+            // Assert
+            Assert.Equal(value, first.Data.ToByteArray());
+
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+            {
+                _ = await service.GetValue(new GetValueRequest
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                });
+            });
         }
-        
+
         [Fact]
         public async Task Set_Get()
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
+            _ = await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+
+            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Equal(value, response.Value.ToByteArray());
+            Assert.Equal(value, response.Data);
             Assert.Equal(value, store.Get(key));
         }
 
@@ -98,82 +137,145 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            await service.Delete(new DeleteRequest { Key = key.ToByteString() });
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
+            _ = await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+
+            _ = await service.DeleteValue(new DeleteValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Empty(response.Value.ToByteArray());
-            Assert.False(response.Exists);
-            Assert.Throws<KeyNotFoundException>(() => store.Get(key));
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+                await service.GetValue(new GetValueRequest
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                }));
         }
-        
+
         [Fact]
         public async Task Set_Set()
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
+            await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+            await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Equal(value, response.Value.ToByteArray());
+            Assert.Equal(value, response.Data);
             Assert.Equal(value, store.Get(key));
         }
-        
+
         [Fact]
         public async Task Set_SetDifferentValue()
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var differentValue = new byte[] { 0x03 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            byte[] differentValue = { 0x03 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(differentValue) });
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
+            await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+            await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(differentValue).ToKeyValueStoreValue(),
+                },
+            });
+            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Equal(differentValue, response.Value.ToByteArray());
+            Assert.Equal(differentValue, response.Data);
             Assert.Equal(differentValue, store.Get(key));
         }
-        
+
         [Fact]
         public async Task Set_Delete_Set()
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(new byte[] { 0x01 });
-            var value = new byte[] { 0x02 };
-            var differentValue = new byte[] { 0x03 };
-            var logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
+            var key = new KeyBytes(0x01);
+            byte[] value = { 0x02 };
+            byte[] differentValue = { 0x03 };
+            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
             var service = new RemoteKeyValueService(logger, store);
-            
+
             // Act
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
-            await service.Delete(new DeleteRequest { Key = key.ToByteString() });
-            await service.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(differentValue) });
-            var response = await service.Get(new GetRequest { Key = key.ToByteString() });
-            
+            _ = await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
+            _ = await service.DeleteValue(new DeleteValueRequest { Key = key.ToKeyValueStoreKey() });
+            _ = await service.SetValue(new SetValueRequest
+            {
+                Item =
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(differentValue).ToKeyValueStoreValue(),
+                },
+            });
+            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+
             // Assert
-            Assert.Equal(differentValue, response.Value.ToByteArray());
+            Assert.Equal(differentValue, response.Data);
             Assert.Equal(differentValue, store.Get(key));
         }
     }

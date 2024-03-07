@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using Grpc.Core;
 using Libplanet.Store.Remote.Extensions;
 using Libplanet.Store.Remote.Server;
 using Libplanet.Store.Remote.Tests.Helpers;
@@ -16,17 +17,19 @@ public class ServiceUnit
         // Arrange
         var mocker = new AutoMocker();
         var key = new KeyBytes(1, 2, 3);
-        var value = new byte[] { 4, 5, 6 };
+        byte[] value = new byte[] { 4, 5, 6 };
         mocker.Use<IKeyValueStore>(kvStore => kvStore.Get(key) == value);
-        var service = mocker.CreateInstance<RemoteKeyValueService>();
+        RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        var response = await service.Get(new GetRequest { Key = key.ToByteString() });
+        KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+        {
+            Key = key.ToKeyValueStoreKey(),
+        });
 
         // Assert
         mocker.VerifyAll();
-        Assert.Equal(value, response.Value.ToByteArray());
-        Assert.True(response.Exists);
+        Assert.Equal(value, response.Data);
     }
 
     [Fact]
@@ -35,16 +38,22 @@ public class ServiceUnit
         // Arrange
         var mocker = new AutoMocker();
         var key = new KeyBytes(1, 2, 3);
-        mocker.Setup<IKeyValueStore>(store => store.Get(key)).Throws<KeyNotFoundException>();
-        var service = mocker.CreateInstance<RemoteKeyValueService>();
+        mocker.Setup<IKeyValueStore>(store => store.Get(key))
+            .Throws<KeyNotFoundException>()
+            .Verifiable();
+        RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        var response = await service.Get(new GetRequest { Key = key.ToByteString() });
+        await Assert.ThrowsAsync<RpcException>(async () =>
+        {
+            await service.GetValue(new GetValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
+        });
 
         // Assert
         mocker.VerifyAll();
-        Assert.Empty(response.Value.ToByteArray());
-        Assert.False(response.Exists);
     }
 
     [Fact]
@@ -54,15 +63,17 @@ public class ServiceUnit
         var mocker = new AutoMocker();
         var key = new KeyBytes(1, 2, 3);
         mocker.Use<IKeyValueStore>(kvStore => kvStore.Get(key) == Array.Empty<byte>());
-        var service = mocker.CreateInstance<RemoteKeyValueService>();
+        RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        var response = await service.Get(new GetRequest { Key = key.ToByteString() });
+        KeyValueStoreValue response = await service.GetValue(new GetValueRequest
+        {
+            Key = key.ToKeyValueStoreKey(),
+        });
 
         // Assert
         mocker.VerifyAll();
-        Assert.Empty(response.Value.ToByteArray());
-        Assert.True(response.Exists);
+        Assert.Empty(response.Data);
     }
 
     [Fact]
@@ -78,10 +89,13 @@ public class ServiceUnit
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        await service.Set(new SetRequest
+        await service.SetValue(new SetValueRequest
         {
-            Key = ByteString.CopyFrom(key.ToByteArray()),
-            Value = ByteString.CopyFrom(value),
+                Item = new KeyValueStorePair
+                {
+                        Key = key.ToKeyValueStoreKey(),
+                        Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
         });
 
         // Assert
@@ -89,21 +103,34 @@ public class ServiceUnit
     }
 
     [Fact]
-    public async Task SetMapUnaryTest()
+    public async Task SetValuesUnaryTest()
     {
         // Arrange
         var mocker = new AutoMocker();
-        var setMapRequest = new SetMapRequest();
-        setMapRequest.MapField.Add(new KeyBytes(1, 2, 3).Hex, ByteString.CopyFrom(4, 5, 6));
-        setMapRequest.MapField.Add(new KeyBytes(2, 3, 4).Hex, ByteString.CopyFrom(5, 6, 7));
+        var setValuesRequest = new SetValuesRequest
+        {
+            Items =
+            {
+                new KeyValueStorePair
+                {
+                    Key = new KeyBytes(1, 2, 3).ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(4, 5, 6).ToKeyValueStoreValue(),
+                },
+                new KeyValueStorePair
+                {
+                    Key = new KeyBytes(2, 3, 4).ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(5, 6, 7).ToKeyValueStoreValue(),
+                },
+            },
+        };
 
         mocker
             .Setup<IKeyValueStore>(store => store.Set(It.IsAny<IDictionary<KeyBytes, byte[]>>()))
             .Verifiable();
-        var service = mocker.CreateInstance<RemoteKeyValueService>();
+        RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        await service.SetMap(setMapRequest);
+        await service.SetValues(setValuesRequest);
 
         // Assert
         mocker.VerifyAll();
@@ -121,7 +148,10 @@ public class ServiceUnit
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        await service.Delete(new DeleteRequest { Key = ByteString.CopyFrom(key.ToByteArray()) });
+        await service.DeleteValue(new DeleteValueRequest
+        {
+            Key = key.ToKeyValueStoreKey(),
+        });
 
         // Assert
         mocker.VerifyAll();
@@ -132,9 +162,14 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var deleteCollectionRequest = new DeleteCollectionRequest();
-        deleteCollectionRequest.Key.Add(ByteString.CopyFrom(new KeyBytes(1, 2, 3).ToByteArray()));
-        deleteCollectionRequest.Key.Add(ByteString.CopyFrom(new KeyBytes(2, 3, 4).ToByteArray()));
+        var deleteValuesRequest = new DeleteValuesRequest
+        {
+            Keys =
+            {
+                new KeyBytes(1, 2, 3).ToKeyValueStoreKey(),
+                new KeyBytes(2, 3, 4).ToKeyValueStoreKey(),
+            },
+        };
 
         mocker
             .Setup<IKeyValueStore>(store => store.Delete(It.IsAny<IEnumerable<KeyBytes>>()))
@@ -142,7 +177,7 @@ public class ServiceUnit
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        await service.DeleteCollection(deleteCollectionRequest);
+        await service.DeleteValues(deleteValuesRequest);
 
         // Assert
         mocker.VerifyAll();
@@ -158,7 +193,10 @@ public class ServiceUnit
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
-        var response = await service.Exists(new ExistsRequest { Key = ByteString.CopyFrom(key.ToByteArray()) });
+        var response = await service.ExistsKey(new ExistsKeyRequest
+        {
+            Key = key.ToKeyValueStoreKey(),
+        });
 
         // Assert
         mocker.VerifyAll();
@@ -184,6 +222,6 @@ public class ServiceUnit
 
         // Assert
         mocker.VerifyAll();
-        Assert.Equal(keys.Select(k => k.ToByteString()), response.Keys);
+        Assert.Equal(keys.Select(bytes => bytes.ToKeyValueStoreKey()), response.Keys);
     }
 }
