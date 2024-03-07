@@ -69,6 +69,19 @@ namespace Libplanet.Net.Protocols
         Task RebuildConnectionAsync(int depth, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Reconstructs network connection between peers on network using seed peers.
+        /// </summary>
+        /// <param name="seedPeers">The list of the see peers.</param>
+        /// <param name="depth">Recursive operation depth to search peers from network.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        Task RebuildConnectionAsync(
+            IEnumerable<BoundPeer> seedPeers,
+            int depth,
+            CancellationToken cancellationToken);
+
+        /// <summary>
         /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
         /// there is an empty <see cref="KBucket"/>, fill it with <see cref="BoundPeer"/>s
         /// in the <see cref="KBucket.ReplacementCache"/>.

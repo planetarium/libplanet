@@ -23,13 +23,16 @@ namespace Libplanet.Net.Protocols
         /// <param name="address"><see cref="Address"/> of this peer.</param>
         /// <param name="tableSize">The number of buckets in the table.</param>
         /// <param name="bucketSize">The size of a single bucket.</param>
+        /// <param name="seedPeers">The list of the seed peers.
+        /// If null is given, <see cref="SeedPeers"/> is set to an empty list.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="tableSize"/> or <paramref name="bucketSize"/> is
         /// less then or equal to 0.</exception>
         public RoutingTable(
             Address address,
             int tableSize = Kademlia.TableSize,
-            int bucketSize = Kademlia.BucketSize)
+            int bucketSize = Kademlia.BucketSize,
+            IEnumerable<BoundPeer>? seedPeers = null)
         {
             if (tableSize <= 0)
             {
@@ -45,6 +48,7 @@ namespace Libplanet.Net.Protocols
             _address = address;
             TableSize = tableSize;
             BucketSize = bucketSize;
+            SeedPeers = seedPeers?.ToList() ?? new List<BoundPeer>();
             _logger = Log
                 .ForContext<RoutingTable>()
                 .ForContext("Source", nameof(RoutingTable));
@@ -66,6 +70,13 @@ namespace Libplanet.Net.Protocols
         /// The size of a single bucket.
         /// </summary>
         public int BucketSize { get; }
+
+        /// <summary>
+        /// The list of the seed peers.
+        /// <remarks>Seed peers are excluded from bound peer selection, and neighbor.</remarks>
+        /// <seealso cref="PeersToBroadcast"/>
+        /// </summary>
+        public IReadOnlyList<BoundPeer> SeedPeers { get; }
 
         /// <inheritdoc />
         public int Count => _buckets.Sum(bucket => bucket.Count);
@@ -144,7 +155,7 @@ namespace Libplanet.Net.Protocols
             Peers.FirstOrDefault(peer => peer.Address.Equals(addr));
 
         /// <summary>
-        /// Removes all peers in the table. This method does not affect static peers.
+        /// Removes all peers in the table.
         /// </summary>
         public void Clear()
         {
@@ -179,7 +190,6 @@ namespace Libplanet.Net.Protocols
         /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
         public IReadOnlyList<BoundPeer> Neighbors(Address target, int k, bool includeTarget)
         {
-            // TODO: Should include static peers?
             var sorted = _buckets
                 .Where(b => !b.IsEmpty)
                 .SelectMany(b => b.Peers)
@@ -200,12 +210,17 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Marks <paramref name="peer"/> checked and refreshes last checked time of the peer.
+        /// If the given <paramref name="peer"/> is one of the <see cref="SeedPeers"/>,
+        /// it is not added.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
         /// <param name="start"><see cref="DateTimeOffset"/> at the beginning of the check.</param>
         /// <param name="end"><see cref="DateTimeOffset"/> at the end of the check.</param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="peer"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when given <paramref name="peer"/>'s <see cref="Address"/> is equal to
+        /// <see cref="RoutingTable"/>'s <see cref="Address"/>.</exception>
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
             => BucketOf(peer).Check(peer, start, end);
 
@@ -216,6 +231,12 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException(
                     "A node is disallowed to add itself to its routing table.",
                     nameof(peer));
+            }
+
+            if (SeedPeers.Any(seed => peer.Address.Equals(seed.Address)))
+            {
+                _logger.Verbose("A seed peer is disallowed to add in the routing table.");
+                return;
             }
 
             _logger.Debug("Adding peer {Peer} to the routing table...", peer);
