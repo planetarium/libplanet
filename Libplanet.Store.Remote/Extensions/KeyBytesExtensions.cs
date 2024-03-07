@@ -7,8 +7,8 @@ namespace Libplanet.Store.Remote.Extensions
     {
         public static ByteString ToByteString(this KeyBytes key) =>
             ByteString.CopyFrom(key.ToByteArray());
-        
-        public static KeyBytes ToKeyBytes(this ByteString byteString) =>
-            new KeyBytes(byteString.ToByteArray());
+
+        public static KeyValueStoreKey ToKeyValueStoreKey(this KeyBytes key) =>
+            new KeyValueStoreKey { Data = key.ToByteString() };
     }
 }
