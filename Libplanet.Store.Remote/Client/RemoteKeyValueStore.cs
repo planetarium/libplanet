@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using Grpc.Core;
 using Libplanet.Store.Remote.Extensions;
 using Libplanet.Store.Remote.Server;
 using Libplanet.Store.Trie;
@@ -40,59 +41,74 @@ namespace Libplanet.Store.Remote.Client
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key)
         {
-            GetResponse response = _client.Get(new GetRequest
+            KeyValueStoreValue value;
+            try
             {
-                Key = key.ToByteString(),
-            });
-
-            // _client returns empty list of bytes if the key does not exist.
-            // but we want to throw KeyNotFoundException in that case.
-            if(response.Exists == false)
+                value = _client.GetValue(new GetValueRequest
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                });
+            }
+            catch (RpcException e) when (e.StatusCode == StatusCode.NotFound)
             {
                 throw new KeyNotFoundException();
             }
 
-            return response.Value.ToByteArray();
+            return value.Data.ToByteArray();
         }
 
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value) =>
-            _client.Set(new SetRequest { Key = key.ToByteString(), Value = ByteString.CopyFrom(value) });
+            _client.SetValue(new SetValueRequest
+            {
+                Item = new KeyValueStorePair
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                    Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
+                },
+            });
 
         /// <inheritdoc/>
-        public void Set(IDictionary<KeyBytes, byte[]> values)
-        {
-            var request = new SetMapRequest();
-            foreach ((KeyBytes key, byte[] value) in values)
+        public void Set(IDictionary<KeyBytes, byte[]> values) =>
+            _client.SetValues(new SetValuesRequest
             {
-                request.MapField.Add(key.Hex, ByteString.CopyFrom(value));
-            }
-
-            _client.SetMap(request);
-        }
+                Items =
+                {
+                    values.Select(kv =>
+                        new KeyValueStorePair
+                        {
+                            Key = kv.Key.ToKeyValueStoreKey(),
+                            Value = ByteString.CopyFrom(kv.Value).ToKeyValueStoreValue(),
+                        }),
+                },
+            });
 
         /// <inheritdoc/>
         public void Delete(in KeyBytes key) =>
-            _client.Delete(new DeleteRequest { Key = key.ToByteString() });
+            _client.DeleteValue(new DeleteValueRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            });
 
         /// <inheritdoc/>
-        public void Delete(IEnumerable<KeyBytes> keys)
-        {
-            var request = new DeleteCollectionRequest();
-            foreach (KeyBytes keyBytes in keys)
+        public void Delete(IEnumerable<KeyBytes> keys) =>
+            _client.DeleteValues(new DeleteValuesRequest
             {
-                request.Key.Add(keyBytes.ToByteString());
-            }
-
-            _client.DeleteCollection(request);
-        }
+                Keys = { keys.Select(KeyBytesExtensions.ToKeyValueStoreKey) },
+            });
 
         /// <inheritdoc/>
         public bool Exists(in KeyBytes key) =>
-            _client.Exists(new ExistsRequest { Key = key.ToByteString() }).Exists;
+            _client.ExistsKey(new ExistsKeyRequest
+            {
+                Key = key.ToKeyValueStoreKey(),
+            }).Exists;
 
         /// <inheritdoc/>
         public IEnumerable<KeyBytes> ListKeys() =>
-            _client.ListKeys(new ListKeysRequest()).Keys.Select(KeyBytesExtensions.ToKeyBytes);
+            _client
+                .ListKeys(new ListKeysRequest())
+                .Keys
+                .Select(kv => kv.ToKeyBytes());
     }
 }
