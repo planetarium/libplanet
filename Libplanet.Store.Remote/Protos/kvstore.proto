@@ -2,30 +2,32 @@ syntax = "proto3";
 
 import "Protos/Responses/key_value_responses.proto";
 import "Protos/Requests/key_value_requests.proto";
+import "Protos/Types/pair.proto";
+import "google/protobuf/empty.proto";
 
 package libplanet.rpc.v1;
 
 option csharp_namespace = "Libplanet.Store.Remote";
 
 service KeyValueStore {
-  rpc Get(GetRequest) returns (GetResponse) {
+  rpc GetValue(GetValueRequest) returns (KeyValueStoreValue) {
   }
 
-  rpc Set(SetRequest) returns (SetResponse) {
-  }
-  
-  rpc SetMap(SetMapRequest) returns (SetMapResponse) {
+  rpc SetValue(SetValueRequest) returns (KeyValueStoreValue) {
   }
 
-  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+  rpc SetValues(SetValuesRequest) returns (SetValuesResponse) {
   }
-  
-  rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse) {
+
+  rpc DeleteValue(DeleteValueRequest) returns (google.protobuf.Empty) {
   }
-  
-  rpc Exists(ExistsRequest) returns (ExistsResponse) {
+
+  rpc DeleteValues(DeleteValuesRequest) returns (google.protobuf.Empty) {
   }
-  
+
+  rpc ExistsKey(ExistsKeyRequest) returns (ExistsKeyResponse) {
+  }
+
   rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {
   }
 }

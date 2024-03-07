@@ -1,32 +1,34 @@
 syntax = "proto3";
 
-option csharp_namespace = "Libplanet.Store.Remote";
+import "Protos/Types/pair.proto";
 
 package libplanet.rpc.v1;
 
-message GetRequest {
-    bytes key = 1;
+option csharp_namespace = "Libplanet.Store.Remote";
+
+
+message GetValueRequest {
+    KeyValueStoreKey key = 1;
 }
 
-message SetRequest {
-    bytes key = 1;
-    bytes value = 2;
+message SetValueRequest {
+    KeyValueStorePair item = 1;
 }
 
-message SetMapRequest {
-    map<string, bytes> map_field = 1;
+message SetValuesRequest {
+    repeated KeyValueStorePair items = 1;
 }
 
-message DeleteRequest {
-    bytes key = 1;
+message DeleteValueRequest {
+    KeyValueStoreKey key = 1;
 }
 
-message DeleteCollectionRequest {
-    repeated bytes key = 1;
+message DeleteValuesRequest {
+    repeated KeyValueStoreKey keys = 1;
 }
 
-message ExistsRequest {
-    bytes key = 1;
+message ExistsKeyRequest {
+    KeyValueStoreKey key = 1;
 }
 
 message ListKeysRequest {
