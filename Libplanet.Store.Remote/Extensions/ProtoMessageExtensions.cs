@@ -4,7 +4,7 @@ namespace Libplanet.Store.Remote.Extensions
 {
     public static class ProtoMessageExtensions
     {
-        public static KeyBytes ToKeyBytes(this KeyValueStoreKey keyValueStoreKey) =>
-            new KeyBytes(keyValueStoreKey.Data.ToByteArray());
+        public static KeyBytes ToKeyBytes(this KeyValueStoreKey @this) =>
+            new KeyBytes(@this.Data.ToByteArray());
     }
 }

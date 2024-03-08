@@ -5,10 +5,10 @@ namespace Libplanet.Store.Remote.Extensions
 {
     public static class KeyBytesExtensions
     {
-        public static ByteString ToByteString(this KeyBytes key) =>
-            ByteString.CopyFrom(key.ToByteArray());
+        public static ByteString ToByteString(this KeyBytes @this) =>
+            ByteString.CopyFrom(@this.ToByteArray());
 
-        public static KeyValueStoreKey ToKeyValueStoreKey(this KeyBytes key) =>
-            new KeyValueStoreKey { Data = key.ToByteString() };
+        public static KeyValueStoreKey ToKeyValueStoreKey(this KeyBytes @this) =>
+            new KeyValueStoreKey { Data = @this.ToByteString() };
     }
 }
