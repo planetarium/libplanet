@@ -4,17 +4,17 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Libplanet.Store.Remote.Extensions;
 using Libplanet.Store.Trie;
-using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace Libplanet.Store.Remote.Server
 {
     public class RemoteKeyValueService : KeyValueStore.KeyValueStoreBase
     {
-        private readonly ILogger<RemoteKeyValueService> _logger;
+        private readonly ILogger _logger;
         private readonly IKeyValueStore _baseStore;
 
         public RemoteKeyValueService(
-            ILogger<RemoteKeyValueService> logger,
+            ILogger logger,
             IKeyValueStore baseStore)
         {
             _logger = logger;
@@ -34,11 +34,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (KeyNotFoundException e)
             {
-                _logger.LogError(e, "Get: {Key}", key);
+                _logger.Error(e, "Get: {Key}", key);
                 throw new RpcException(new Status(StatusCode.NotFound, e.Message));
             }
 
-            _logger.LogTrace("Get: {Key} => {Value}", key, value);
+            _logger.Verbose("Get: {Key} => {Value}", key, value);
             return Task.FromResult(new KeyValueStoreValue { Data = ByteString.CopyFrom(value) });
         }
 
@@ -55,11 +55,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Set: {Key} <= {Value}", key, ByteString.CopyFrom(value));
+                _logger.Error(e, "Set: {Key} <= {Value}", key, ByteString.CopyFrom(value));
                 throw new RpcException(new Status(StatusCode.Internal, e.Message));
             }
 
-            _logger.LogTrace("Set: {Key} <= {Value}", key, ByteString.CopyFrom(value));
+            _logger.Verbose("Set: {Key} <= {Value}", key, ByteString.CopyFrom(value));
             return Task.FromResult(new KeyValueStoreValue { Data = ByteString.CopyFrom(value) });
         }
 
@@ -84,11 +84,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "SetValues: {Count}", items.Count);
+                _logger.Error(e, "SetValues: {Count}", items.Count);
                 throw new RpcException(new Status(StatusCode.Internal, e.Message));
             }
 
-            _logger.LogTrace("SetValues: {Count}", items.Count);
+            _logger.Verbose("SetValues: {Count}", items.Count);
             return Task.FromResult(new SetValuesResponse());
         }
 
@@ -103,11 +103,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Delete: {Key}", key);
+                _logger.Error(e, "Delete: {Key}", key);
                 throw new RpcException(new Status(StatusCode.Internal, e.Message));
             }
 
-            _logger.LogTrace("Delete: {Key}", key);
+            _logger.Verbose("Delete: {Key}", key);
             return Task.FromResult(new Empty());
         }
 
@@ -129,11 +129,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "DeleteValues: {Count}", keys.Count);
+                _logger.Error(e, "DeleteValues: {Count}", keys.Count);
                 throw new RpcException(new Status(StatusCode.Internal, e.Message));
             }
 
-            _logger.LogTrace("DeleteValues: {Count}", keys.Count);
+            _logger.Verbose("DeleteValues: {Count}", keys.Count);
             return Task.FromResult(new Empty());
         }
 
@@ -149,11 +149,11 @@ namespace Libplanet.Store.Remote.Server
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Exists: {Key}", key);
+                _logger.Error(e, "Exists: {Key}", key);
                 throw new RpcException(new Status(StatusCode.Internal, e.Message));
             }
 
-            _logger.LogTrace("Exists: {Key} => {Exists}", key, exists);
+            _logger.Verbose("Exists: {Key} => {Exists}", key, exists);
             return Task.FromResult(new ExistsKeyResponse { Exists = exists });
         }
 
@@ -167,7 +167,7 @@ namespace Libplanet.Store.Remote.Server
                 keys
                     .Select(KeyBytesExtensions.ToByteString)
                     .Select(key => new KeyValueStoreKey{ Data = key }));
-            _logger.LogTrace("ListKeys: {Count}", response.Keys.Count);
+            _logger.Verbose("ListKeys: {Count}", response.Keys.Count);
             return Task.FromResult(response);
         }
     }

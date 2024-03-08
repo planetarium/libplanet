@@ -1,15 +1,26 @@
 using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Libplanet.Store.Remote.Extensions;
 using Libplanet.Store.Remote.Server;
 using Libplanet.Store.Remote.Tests.Helpers;
 using Libplanet.Store.Trie;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Xunit.Abstractions;
+using ILogger = Serilog.ILogger;
 
 namespace Libplanet.Store.Remote.Tests.Integrations
 {
     public class ServiceIntegration
     {
+        private readonly ILogger _logger;
+
+        public ServiceIntegration(ITestOutputHelper output)
+        {
+            _logger = new LoggerConfiguration()
+                .WriteTo.TestOutput(output)
+                .CreateLogger();
+        }
+
         [Fact]
         public async Task Get_Set()
         {
@@ -17,14 +28,14 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var store = (IKeyValueStore)new MemoryKeyValueStore();
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
-            KeyValueStoreValue response = await service.GetValue(new GetValueRequest
-            {
-                Key = key.ToKeyValueStoreKey(),
-            });
+            await Assert.ThrowsAsync<RpcException>(() =>
+                service.GetValue(new GetValueRequest
+                {
+                    Key = key.ToKeyValueStoreKey(),
+                }));
 
             KeyValueStoreValue setResponse = await service.SetValue(new SetValueRequest
             {
@@ -36,7 +47,6 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             });
 
             // Assert
-            Assert.Empty(response.Data.ToByteArray());
             Assert.Equal(value, store.Get(key));
             Assert.Equal(value, setResponse.Data);
         }
@@ -49,8 +59,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
             store.Set(key, value);
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             KeyValueStoreValue getResponse = await service.GetValue(new GetValueRequest
@@ -65,7 +74,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(value, getResponse.Data.ToByteArray());
-            Assert.Empty(store.Get(key));
+            Assert.Throws<KeyNotFoundException>(() => store.Get(key));
         }
 
         [Fact]
@@ -76,8 +85,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
             store.Set(key, value);
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             KeyValueStoreValue first = await service.GetValue(new GetValueRequest
@@ -93,7 +101,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             // Assert
             Assert.Equal(value, first.Data.ToByteArray());
 
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+            await Assert.ThrowsAsync<RpcException>(async () =>
             {
                 _ = await service.GetValue(new GetValueRequest
                 {
@@ -109,13 +117,12 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var store = (IKeyValueStore)new MemoryKeyValueStore();
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             _ = await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -139,13 +146,12 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var store = (IKeyValueStore)new MemoryKeyValueStore();
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             _ = await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -158,7 +164,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             });
 
             // Assert
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+            await Assert.ThrowsAsync<RpcException>(async () =>
                 await service.GetValue(new GetValueRequest
                 {
                     Key = key.ToKeyValueStoreKey(),
@@ -172,13 +178,12 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var store = (IKeyValueStore)new MemoryKeyValueStore();
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -186,7 +191,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             });
             await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -210,13 +215,12 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
             byte[] differentValue = { 0x03 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -224,7 +228,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             });
             await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(differentValue).ToKeyValueStoreValue(),
@@ -248,13 +252,12 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             var key = new KeyBytes(0x01);
             byte[] value = { 0x02 };
             byte[] differentValue = { 0x03 };
-            ILogger<RemoteKeyValueService> logger = LoggerHelper.CreateLogger<RemoteKeyValueService>();
-            var service = new RemoteKeyValueService(logger, store);
+            var service = new RemoteKeyValueService(_logger, store);
 
             // Act
             _ = await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
@@ -263,7 +266,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             _ = await service.DeleteValue(new DeleteValueRequest { Key = key.ToKeyValueStoreKey() });
             _ = await service.SetValue(new SetValueRequest
             {
-                Item =
+                Item = new KeyValueStorePair
                 {
                     Key = key.ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(differentValue).ToKeyValueStoreValue(),
