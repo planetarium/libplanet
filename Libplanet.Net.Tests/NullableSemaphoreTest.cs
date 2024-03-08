@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace Libplanet.Net.Tests
                 if (await sema.WaitAsync(TimeSpan.Zero, default))
                 {
                     await Task.Delay(1000);
-                    count += 1;
+                    Interlocked.Increment(ref count);
                 }
             }
 
@@ -43,7 +44,7 @@ namespace Libplanet.Net.Tests
                 if (await sema.WaitAsync(TimeSpan.Zero, default))
                 {
                     await Task.Delay(1000);
-                    count += 1;
+                    Interlocked.Increment(ref count);
                 }
             }
 
@@ -68,7 +69,7 @@ namespace Libplanet.Net.Tests
                 if (await sema.WaitAsync(TimeSpan.Zero, default))
                 {
                     await Task.Delay(1000);
-                    count += 1;
+                    Interlocked.Increment(ref count);
                     sema.Release();
                 }
             }
