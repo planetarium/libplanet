@@ -4,9 +4,7 @@ Libplanet changelog
 Version 4.1.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on March 8, 2024.
 
 ### Backward-incompatible API changes
 
@@ -32,8 +30,6 @@ To be released.
      - Changed `extra` parameter type of `AppProtocolVersion.Sign` method
        from `IValue` to `IValue?`.
 
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Store.Remote) Introduce
@@ -46,11 +42,6 @@ To be released.
  -  (Libplanet.Store) Optimized `ITrie.IterateNodes()` to greatly
     reduce the amount of memory used.  [[#3687]]
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3622]: https://github.com/planetarium/libplanet/pull/3622
 [#3644]: https://github.com/planetarium/libplanet/pull/3644
