@@ -77,7 +77,7 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">KademliaProtocol</span></div>
   </div>
   <div class="implements">
@@ -87,7 +87,7 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
@@ -99,13 +99,13 @@
       <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Protocols.html">Libplanet.Net.Protocols</a></h6>
@@ -162,13 +162,13 @@ to be the reference point.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">findConcurrency</span></td>
         <td><p>The number of concurrency in peer discovery.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">requestTimeout</span></td>
         <td><p>A timeout of waiting for the reply of messages.  If it's omitted
 or <span class="xref">null</span> is given, will automatically be set to 5 seconds.</p>
@@ -212,7 +212,7 @@ by sending <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a>
 message sent to <code data-dev-comment-type="paramref" class="paramref">peers</code>.
@@ -221,7 +221,7 @@ even the target peer gives no any response.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -239,7 +239,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -279,7 +279,7 @@ to bootstrap.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">dialTimeout</span></td>
         <td><p>The timeout used when waiting a reply for either
 <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a> or <a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a>.
@@ -288,13 +288,13 @@ even no any response was given from the the target seed.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">depth</span></td>
         <td><p>Recursive operation depth to search peers from network.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -312,7 +312,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -345,7 +345,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of messages.
 If <span class="xref">null</span> is given, the task never halts by itself
@@ -353,7 +353,7 @@ even no any response was given from the the target peer.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -371,7 +371,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -406,7 +406,7 @@ in the <span class="xref">Libplanet.Net.Protocols.KBucket.ReplacementCache</span
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -424,7 +424,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -464,20 +464,20 @@ that this operation should be canceled.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">depth</span></td>
         <td><p>Target depth of recursive operation.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
-        <td><p><span class="xref">System.TimeSpan</span> for waiting reply of
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> for waiting reply of
 <a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -495,7 +495,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with <code data-dev-comment-type="paramref" class="paramref">target</code> as its
 <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> if found.  Otherwise, <span class="xref">null</span>.</p>
 </td>
@@ -529,13 +529,13 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">depth</span></td>
         <td><p>Recursive operation depth to search peers from network.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -553,7 +553,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -587,13 +587,13 @@ sending <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a>.<
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
         <td><span class="parametername">maxAge</span></td>
         <td><p>Maximum age of peer to validate.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -611,7 +611,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
