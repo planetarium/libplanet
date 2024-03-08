@@ -226,7 +226,12 @@ Released on January 22, 2024.
 Previous version changes
 ------------------------
 
-  - [Version 3.x.x](./changes/v3.md)
-  - [Version 2.x.x](./changes/v2.md)
-  - [Version 1.x.x](./changes/v1.md)
-  - [Version 0.x.x](./changes/v0.md)
+  - [Version 3.x.x]
+  - [Version 2.x.x]
+  - [Version 1.x.x]
+  - [Version 0.x.x]
+
+[Version 3.x.x]: ./changes/v3.md
+[Version 2.x.x]: ./changes/v2.md
+[Version 1.x.x]: ./changes/v1.md
+[Version 0.x.x]: ./changes/v0.md
