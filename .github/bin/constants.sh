@@ -10,6 +10,7 @@ projects=(
   "Libplanet.Crypto.Secp256k1"
   "Libplanet.Net"
   "Libplanet.Store"
+  "Libplanet.Store.Remote"
   "Libplanet.Stun"
   "Libplanet.Types"
   "Libplanet.RocksDBStore"

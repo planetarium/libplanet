@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core.Testing" Version="2.46.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.27" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageReference Include="Moq" Version="4.20.70" />
+        <PackageReference Include="Moq.AutoMock" Version="3.5.0" />
+        <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
+        <PackageReference Include="xunit" Version="2.4.2"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE">
+        <Pack>true</Pack>
+        <PackagePath>LICENSE.txt</PackagePath>
+        <Link>LICENSE</Link>
+      </None>
+    </ItemGroup>
+
+</Project>

@@ -132,6 +132,11 @@ on GitHub consists of several projects.  There are two types of projects:
     As this depends on platform-dependent libraries (which is written in C/C++),
     this is distributed as a distinct NuGet package: *[Libplanet.RocksDBStore]*.
 
+ -  *Libplanet.Store.Remote*: The `IKeyValueStore` implementation for use with
+    *Libplanet.Store* to store data in a remote server and communicate using
+    [gRPC]. This is cannot be used standalone. Need `IKeyValueStore`
+    implementation for local storage like *[Libplanet.RocksDBStore]*.
+
  -  *Libplanet.Analyzers*: Roslyn Analyzer (i.e., lint) for game programmers who
     use Libplanet.  This project is distributed as a distinct NuGet package:
     *[Libplanet.Analyzers]*.
@@ -175,6 +180,9 @@ on GitHub consists of several projects.  There are two types of projects:
  -  *Libplanet.RocksDBStore.Tests*: Unit tests for the *Libplanet.RocksDBStore*
     project.
 
+ -  *Libplanet.Store.Remote.Tests*: Unit tests for the *Libplanet.Store.Remote*
+    project.
+
  -  *Libplanet.Analyzers.Tests*: Unit tests for the *Libplanet.Analyzers*
     project.
 
@@ -193,6 +201,7 @@ on GitHub consists of several projects.  There are two types of projects:
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
 [libsecp256k1]: https://github.com/bitcoin-core/secp256k1
 [RocksDB]: https://rocksdb.org/
+[gRPC]: https://grpc.io/
 [Libplanet.Stun]: https://www.nuget.org/packages/Libplanet.Stun/
 [Libplanet.Crypto.Secp256k1]: https://www.nuget.org/packages/Libplanet.Crypto.Secp256k1/
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
