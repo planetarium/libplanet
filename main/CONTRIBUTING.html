@@ -157,6 +157,11 @@ on native <a href="https://github.com/bitcoin-core/secp256k1">libsecp256k1</a>. 
 As this depends on platform-dependent libraries (which is written in C/C++),
 this is distributed as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.RocksDBStore/">Libplanet.RocksDBStore</a></em>.</p>
 </li>
+<li><p><em>Libplanet.Store.Remote</em>: The <code>IKeyValueStore</code> implementation for use with
+<em>Libplanet.Store</em> to store data in a remote server and communicate using
+<a href="https://grpc.io/">gRPC</a>. This is cannot be used standalone. Need <code>IKeyValueStore</code>
+implementation for local storage like <em><a href="https://www.nuget.org/packages/Libplanet.RocksDBStore/">Libplanet.RocksDBStore</a></em>.</p>
+</li>
 <li><p><em>Libplanet.Analyzers</em>: Roslyn Analyzer (i.e., lint) for game programmers who
 use Libplanet.  This project is distributed as a distinct NuGet package:
 <em><a href="https://www.nuget.org/packages/Libplanet.Analyzers/">Libplanet.Analyzers</a></em>.</p>
@@ -198,6 +203,9 @@ section below.</p>
 the <em>Libplanet.Crypto.Secp256k1</em> project.</p>
 </li>
 <li><p><em>Libplanet.RocksDBStore.Tests</em>: Unit tests for the <em>Libplanet.RocksDBStore</em>
+project.</p>
+</li>
+<li><p><em>Libplanet.Store.Remote.Tests</em>: Unit tests for the <em>Libplanet.Store.Remote</em>
 project.</p>
 </li>
 <li><p><em>Libplanet.Analyzers.Tests</em>: Unit tests for the <em>Libplanet.Analyzers</em>
