@@ -14,8 +14,7 @@ jobs:
     strategy:
       matrix:
         os:
-#       opt-out until we have a macos self-hosted runner
-#       - macos-latest
+        - [macOS, self-hosted, ARM64]
         - linux-8cores
         - windows-8cores
     runs-on: ${{ matrix.os }}
