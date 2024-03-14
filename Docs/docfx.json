@@ -73,7 +73,8 @@
         "files": [
           "CHANGES.md",
           "CONTRIBUTING.md",
-          "RELEASE.md"
+          "RELEASE.md",
+          "changes/**.md"
         ]
       }
     ],
