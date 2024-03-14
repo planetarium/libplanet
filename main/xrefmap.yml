@@ -4048,12 +4048,12 @@ references:
   commentId: T:Libplanet.Blockchain.Policies.NullBlockPolicy
   fullName: Libplanet.Blockchain.Policies.NullBlockPolicy
   nameWithType: NullBlockPolicy
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException,System.Int64)
-  name: NullBlockPolicy(BlockPolicyViolationException, Int64)
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_Libplanet_Types_Blocks_BlockPolicyViolationException_System_Int64_
-  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException,System.Int64)
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.NullBlockPolicy(Libplanet.Types.Blocks.BlockPolicyViolationException, System.Int64)
-  nameWithType: NullBlockPolicy.NullBlockPolicy(BlockPolicyViolationException, Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException)
+  name: NullBlockPolicy(BlockPolicyViolationException)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_Libplanet_Types_Blocks_BlockPolicyViolationException_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor(Libplanet.Types.Blocks.BlockPolicyViolationException)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy.NullBlockPolicy(Libplanet.Types.Blocks.BlockPolicyViolationException)
+  nameWithType: NullBlockPolicy.NullBlockPolicy(BlockPolicyViolationException)
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy.#ctor*
   name: NullBlockPolicy
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy.html#Libplanet_Blockchain_Policies_NullBlockPolicy__ctor_

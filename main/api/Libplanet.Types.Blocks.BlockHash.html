@@ -78,7 +78,7 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</div>
     <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -191,7 +191,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.</p
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1.length#system-collections-immutable-immutablearray-1-length">Length</a> is not 32.</p>
 </td>
@@ -229,7 +229,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.</p
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
         <td><p>An immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a SHA-256 digest of a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
@@ -247,7 +247,7 @@ a SHA-256 digest of a <a class="xref" href="Libplanet.Types.Blocks.Block.html">B
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1.length#system-collections-immutable-immutablearray-1-length">Length</a> is not 32.</p>
 </td>
@@ -357,7 +357,7 @@ a SHA-256 digest of a <a class="xref" href="Libplanet.Types.Blocks.Block.html">B
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -563,7 +563,7 @@ public static BlockHash FromHashDigest(HashDigest&lt;SHA256&gt; hashDigest)</cod
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
         <td><p>A SHA-256 digest.</p>
 </td>
@@ -620,7 +620,7 @@ public static BlockHash FromString(string hex)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal representation of a <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.</p>
 </td>
@@ -659,7 +659,7 @@ public static BlockHash FromString(string hex)</code></pre>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the length of the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number.</p>
 </td>
@@ -671,7 +671,7 @@ is not a valid hexadecimal string.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code>'s length is not 64.</p>
 </td>
@@ -715,7 +715,7 @@ public override readonly int GetHashCode()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <h5 id="Libplanet_Types_Blocks_BlockHash_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Hash">Hash</a></div>
@@ -752,7 +752,7 @@ public override readonly int GetHashCode()</code></pre>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -828,7 +828,7 @@ public override readonly string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -844,7 +844,7 @@ public override readonly string ToString()</code></pre>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
       <span class="xref">Bencodex.IBencodable</span>
