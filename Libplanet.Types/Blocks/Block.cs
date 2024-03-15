@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Libplanet.Common;
 using Libplanet.Common.JsonConverters;
 using Libplanet.Crypto;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -122,6 +123,9 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlock.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.Evidences"/>
+        public ImmutableArray<Evidence>? Evidences => _preEvaluationBlock.Evidences;
 
         /// <inheritdoc cref="IBlockContent.Transactions"/>
         public IReadOnlyList<Transaction> Transactions => _preEvaluationBlock.Transactions;

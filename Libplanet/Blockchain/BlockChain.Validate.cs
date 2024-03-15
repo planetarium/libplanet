@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
 using Libplanet.Action.State;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -296,6 +297,28 @@ namespace Libplanet.Blockchain
                 catch (InvalidBlockCommitException ibce)
                 {
                     throw new InvalidBlockLastCommitException(ibce.Message);
+                }
+            }
+
+            if (block.ProtocolVersion < 5)
+            {
+                if (block.Evidences is { })
+                {
+                    throw new InvalidBlockEvidencesException(
+                        "A block before protocol version 5 should not have evidences.");
+                }
+            }
+            else
+            {
+                if (block.Evidences is null)
+                {
+                    throw new InvalidBlockEvidencesException(
+                        "A PBFT block after protocol version 5 should have evidences.");
+                }
+
+                foreach (Evidence evidence in block.Evidences)
+                {
+                    VerifyEvidence(evidence);
                 }
             }
         }

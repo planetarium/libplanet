@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Types.Blocks
 {
@@ -89,5 +91,11 @@ namespace Libplanet.Types.Blocks
         /// The <see cref="BlockCommit"/> about previous block's vote information.
         /// </summary>
         BlockCommit? LastCommit { get; }
+
+        /// <summary>
+        /// Committing <see cref="Evidence"/>s of vote infraction
+        /// that has been made on previous blocks.
+        /// </summary>
+        ImmutableArray<Evidence>? Evidences { get; }
     }
 }

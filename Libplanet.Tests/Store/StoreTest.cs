@@ -1169,6 +1169,149 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void IteratePendingEvidenceIds()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVoteOne = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block1.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer));
+                var duplicateVoteTwo = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        2,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        2,
+                        0,
+                        fx.Block3.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer));
+
+                Evidence[] evidences =
+                {
+                    new DuplicateVoteEvidence(
+                        duplicateVoteOne[0],
+                        duplicateVoteOne[1],
+                        TestUtils.ValidatorSet,
+                        duplicateVoteOne.Last().Timestamp),
+                    new DuplicateVoteEvidence(
+                        duplicateVoteTwo[0],
+                        duplicateVoteTwo[1],
+                        TestUtils.ValidatorSet,
+                        duplicateVoteTwo.Last().Timestamp),
+                };
+
+                foreach (var evidence in evidences)
+                {
+                    fx.Store.PutPendingEvidence(evidence);
+                }
+
+                IEnumerable<EvidenceId> ids = fx.Store.IteratePendingEvidenceIds();
+                Assert.Equal(evidences.Select(e => e.Id).ToHashSet(), ids.ToHashSet());
+            }
+        }
+
+        [SkippableFact]
+        public void ManipulatePendingEvidence()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVote = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block1.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer));
+                Evidence evidence = new DuplicateVoteEvidence(
+                    duplicateVote[0],
+                    duplicateVote[1],
+                    TestUtils.ValidatorSet,
+                    duplicateVote.Last().Timestamp);
+
+                Assert.False(fx.Store.ContainsPendingEvidence(evidence.Id));
+
+                fx.Store.PutPendingEvidence(evidence);
+                Evidence storedEvidence =
+                    fx.Store.GetPendingEvidence(evidence.Id);
+
+                Assert.Equal(evidence, storedEvidence);
+                Assert.True(fx.Store.ContainsPendingEvidence(evidence.Id));
+
+                fx.Store.DeletePendingEvidence(evidence.Id);
+                Assert.False(fx.Store.ContainsPendingEvidence(evidence.Id));
+            }
+        }
+
+        [SkippableFact]
+        public void ManipulateCommittedEvidence()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVote = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block1.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        signer.PublicKey,
+                        VoteFlag.PreCommit).Sign(signer));
+                Evidence evidence = new DuplicateVoteEvidence(
+                    duplicateVote[0],
+                    duplicateVote[1],
+                    TestUtils.ValidatorSet,
+                    duplicateVote.Last().Timestamp);
+
+                Assert.False(fx.Store.ContainsCommittedEvidence(evidence.Id));
+
+                fx.Store.PutCommittedEvidence(evidence);
+                Evidence storedEvidence =
+                    fx.Store.GetCommittedEvidence(evidence.Id);
+
+                Assert.Equal(evidence, storedEvidence);
+                Assert.True(fx.Store.ContainsCommittedEvidence(evidence.Id));
+
+                fx.Store.DeleteCommittedEvidence(evidence.Id);
+                Assert.False(fx.Store.ContainsCommittedEvidence(evidence.Id));
+            }
+        }
+
+        [SkippableFact]
         public void ForkTxNonces()
         {
             IStore store = Fx.Store;

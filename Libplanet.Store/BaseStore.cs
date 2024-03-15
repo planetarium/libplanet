@@ -7,6 +7,7 @@ using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Serilog;
 using FAV = Libplanet.Types.Assets.FungibleAssetValue;
@@ -174,6 +175,33 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
+
+        /// <inheritdoc/>
+        public abstract IEnumerable<EvidenceId> IteratePendingEvidenceIds();
+
+        /// <inheritdoc/>
+        public abstract Evidence? GetPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract Evidence? GetCommittedEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract void PutPendingEvidence(Evidence evidence);
+
+        /// <inheritdoc/>
+        public abstract void PutCommittedEvidence(Evidence evidence);
+
+        /// <inheritdoc/>
+        public abstract void DeletePendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract void DeleteCommittedEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsCommittedEvidence(EvidenceId evidenceId);
 
         protected static IValue SerializeTxExecution(TxExecution txExecution)
         {

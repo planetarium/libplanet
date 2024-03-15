@@ -30,7 +30,8 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
                     "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa"),
-                lastCommit: null
+                lastCommit: null,
+                evidences: ImmutableArray<Evidence>.Empty
             );
             HasTx = TestUtils.ProposeNextBlock(
                 Next,
@@ -55,7 +56,8 @@ namespace Libplanet.Tests.Blocks
                             Next.Timestamp,
                             Miner.PublicKey,
                             VoteFlag.PreCommit).Sign(Miner),
-                    }.ToImmutableArray())
+                    }.ToImmutableArray()),
+                evidences: ImmutableArray<Evidence>.Empty
             );
         }
 

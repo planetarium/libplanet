@@ -6,6 +6,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -64,7 +65,8 @@ namespace Libplanet.Tests.Blocks
                     publicKey: Block1Content.PublicKey,
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs);
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
@@ -99,7 +101,8 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
-                        lastCommit: null),
+                        lastCommit: null,
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs));
             Assert.Equal(Block1Tx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
@@ -134,7 +137,8 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
-                        lastCommit: null),
+                        lastCommit: null,
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: txs));
             Assert.Equal(dupTx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
@@ -172,7 +176,8 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(inconsistentTxs),
-                        lastCommit: null),
+                        lastCommit: null,
+                        evidences: ImmutableArray<Evidence>.Empty),
                     transactions: inconsistentTxs));
             Assert.Equal(Block1Content.Transactions[0].GenesisHash, e.ExpectedGenesisHash);
             Assert.Equal(differentGenesisHash, e.ImproperGenesisHash);

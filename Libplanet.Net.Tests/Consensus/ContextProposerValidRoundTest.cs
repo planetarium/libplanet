@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -176,7 +177,8 @@ namespace Libplanet.Net.Tests.Consensus
                         publicKey: key.PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose(),
+                        lastCommit: null,
+                        evidences: ImmutableArray<Evidence>.Empty)).Propose(),
                 key);
 
             context.Start();

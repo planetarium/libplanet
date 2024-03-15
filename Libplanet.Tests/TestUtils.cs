@@ -442,7 +442,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidences: ImmutableArray<Evidence>.Empty),
                 transactions: txs);
             return content.Propose();
         }
@@ -482,11 +483,17 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            ImmutableArray<Evidence>? evidences = null)
         {
             var txs = transactions is null
                 ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
+
+            if (protocolVersion >= 5)
+            {
+                evidences = evidences ?? ImmutableArray<Evidence>.Empty;
+            }
 
             var content = new BlockContent(
                 new BlockMetadata(
@@ -498,7 +505,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: lastCommit),
+                    lastCommit: lastCommit,
+                    evidences: evidences),
                 transactions: txs);
             var preEval = content.Propose();
             preEval.ValidateTimestamp();
@@ -512,7 +520,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            ImmutableArray<Evidence>? evidences = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -525,7 +534,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 blockInterval,
                 protocolVersion,
-                lastCommit);
+                lastCommit,
+                evidences);
             return preEval.Sign(miner, stateRootHash);
         }
 

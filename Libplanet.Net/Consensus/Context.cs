@@ -91,6 +91,7 @@ namespace Libplanet.Net.Consensus
         private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
         private readonly HashSet<int> _preCommitTimeoutFlags;
+        private readonly DuplicatedVotePairPool _duplicatedVotePairPool;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
 
@@ -108,6 +109,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private ImmutableArray<Evidence>? _commitEvidences;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -190,6 +192,7 @@ namespace Libplanet.Net.Consensus
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
+            _duplicatedVotePairPool = new DuplicatedVotePairPool();
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             _blockValidationCache =
@@ -371,6 +374,16 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Gets the duplicated <see cref="Vote"/> pairs from it's
+        /// <see cref="DuplicatedVotePairPool"/>.
+        /// </summary>
+        /// <returns>Duplicated <see cref="Vote"/> pairs collected by
+        /// <see cref="DuplicatedVotePairPool"/>.
+        /// </returns>
+        internal IEnumerable<Tuple<Vote, Vote>> GetDuplicatedVotePairs()
+            => _duplicatedVotePairPool.Exhaust();
+
+        /// <summary>
         /// Gets the timeout of <see cref="ConsensusStep.PreVote"/> with the given
         /// round.
         /// </summary>
@@ -418,7 +431,7 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit);
+                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit, _commitEvidences);
                 _blockChain.Store.PutBlock(block);
                 return block;
             }

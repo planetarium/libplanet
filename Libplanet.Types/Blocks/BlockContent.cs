@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -145,6 +146,9 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _blockMetadata.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.Evidences"/>
+        public ImmutableArray<Evidence>? Evidences => _blockMetadata.Evidences;
 
         /// <summary>
         /// Transactions belonging to the block.

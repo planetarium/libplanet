@@ -5,6 +5,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Types.Blocks
 {
@@ -96,6 +97,9 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => Metadata.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.Evidences"/>
+        public ImmutableArray<Evidence>? Evidences => Metadata.Evidences;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash => _preEvaluationHash;

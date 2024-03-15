@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action.State;
@@ -8,6 +9,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -169,11 +171,13 @@ namespace Libplanet.Net.Consensus
                 }
 
                 BlockCommit? lastCommit = null;
+                ImmutableArray<Evidence>? commitEvidences = null;
                 lock (_contextLock)
                 {
-                    lastCommit = _contexts.ContainsKey(height - 1)
-                        ? _contexts[height - 1].GetBlockCommit()
+                    Context? lastContext = _contexts.ContainsKey(height - 1)
+                        ? _contexts[height - 1]
                         : null;
+                    lastCommit = lastContext?.GetBlockCommit();
                     _logger.Debug(
                         "LastCommit of height #{Height} is: {LastCommit}",
                         Height,
@@ -192,6 +196,12 @@ namespace Libplanet.Net.Consensus
                                 lastCommit.Round);
                         }
                     }
+
+                    _blockChain.UpdateEvidence(
+                        lastContext?.GetDuplicatedVotePairs() ?? new List<Tuple<Vote, Vote>>(),
+                        _blockChain[height - 1].Evidences);
+
+                    commitEvidences = _blockChain.GetPendingEvidences();
                 }
 
                 RemoveOldContexts(height);
@@ -206,7 +216,7 @@ namespace Libplanet.Net.Consensus
                         _contexts[height] = CreateContext(height);
                     }
 
-                    _contexts[height].Start(lastCommit);
+                    _contexts[height].Start(lastCommit, commitEvidences);
                 }
             }
         }

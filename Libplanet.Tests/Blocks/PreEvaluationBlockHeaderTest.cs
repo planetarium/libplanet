@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -68,7 +69,8 @@ namespace Libplanet.Tests.Blocks
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"));
+                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"))
+                .Add("evidences", List.Empty);
             var genesis = new PreEvaluationBlockHeader(
                 _contents.GenesisMetadata,
                 _contents.GenesisMetadata.DerivePreEvaluationHash(default));
@@ -100,7 +102,8 @@ namespace Libplanet.Tests.Blocks
                     )
                 )
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
-                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
+                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray)
+                .Add("evidences", List.Empty);
             var block1 = new PreEvaluationBlockHeader(
                 _contents.Block1Metadata,
                 _contents.Block1Metadata.DerivePreEvaluationHash(default));

@@ -6,10 +6,10 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using ImmutableTrie;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Store
@@ -53,6 +53,12 @@ namespace Libplanet.Store
 
         private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
             new ConcurrentDictionary<Guid, BlockCommit>();
+
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _pendingEvidences =
+            new ConcurrentDictionary<EvidenceId, Evidence>();
+
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _committedEvidences
+            = new ConcurrentDictionary<EvidenceId, Evidence>();
 
         private Guid? _canonicalChainId;
 
@@ -296,6 +302,46 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
+
+        /// <inheritdoc/>
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+            => _pendingEvidences.Keys;
+
+        /// <inheritdoc/>
+        public Evidence? GetPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutPendingEvidence(Evidence evidence)
+            => _pendingEvidences[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeletePendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.ContainsKey(evidenceId);
+
+        /// <inheritdoc/>
+        public Evidence? GetCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutCommittedEvidence(Evidence evidence)
+            => _committedEvidences[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeleteCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.ContainsKey(evidenceId);
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
