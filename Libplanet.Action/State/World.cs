@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
@@ -18,20 +19,25 @@ namespace Libplanet.Action.State
         private readonly IWorldState _baseState;
 
         public World(IWorldState baseState)
-            : this(baseState, new WorldDelta())
+            : this(baseState, new WorldDelta(), ImmutableHashSet<(Address, Currency)>.Empty)
         {
         }
 
         public World(
             IWorldState baseState,
-            IWorldDelta delta)
+            IWorldDelta delta,
+            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
         {
             _baseState = baseState;
             Delta = delta;
+            TotalUpdatedFungibleAssets = totalUpdatedFungibleAssets;
         }
 
         /// <inheritdoc/>
         public IWorldDelta Delta { get; }
+
+        /// <inheritdoc/>
+        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
         /// <inheritdoc/>
         [Pure]
@@ -73,7 +79,10 @@ namespace Libplanet.Action.State
                     nameof(address));
             }
 
-            return new World(_baseState, Delta.SetAccount(address, account));
+            return new World(
+                _baseState,
+                Delta.SetAccount(address, account),
+                TotalUpdatedFungibleAssets.Union(account.TotalUpdatedFungibleAssets));
         }
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>

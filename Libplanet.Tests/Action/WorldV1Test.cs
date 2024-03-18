@@ -130,25 +130,21 @@ namespace Libplanet.Tests.Action
             // currencies[0] (FOO) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 1));
             Assert.Contains(
-                (_addr[0], Value(0, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
-                (_addr[0], Value(1, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
             delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
             Assert.Contains(
                 (_addr[0], Value(0, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (_addr[0], Value(1, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
                 _addr[1],
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets
-                    .Select(pair => pair.Item1));
+                delta0.TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
 
             context0 = CreateContext(delta0, _addr[1]);
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
@@ -157,16 +153,16 @@ namespace Libplanet.Tests.Action
             // _addr[1] burned currencies[1]
             Assert.Contains(
                 (_addr[0], Value(0, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (_addr[0], Value(1, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
                 (_addr[1], Value(0, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (_addr[1], Value(1, 0).Currency),
-                delta0.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                delta0.TotalUpdatedFungibleAssets);
         }
     }
 }
