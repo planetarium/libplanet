@@ -1528,25 +1528,6 @@ namespace Libplanet.Tests.Action
                 return state;
             }
         }
-
-        private sealed class MintAction : IAction
-        {
-            public Currency Currency { get; set; }
-
-            public IValue PlainValue => Currency.Serialize();
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-                Currency = new Currency(plainValue);
-            }
-
-            public IWorld Execute(IActionContext context) =>
-                context.PreviousState.SetAccount(
-                    ReservedAddresses.LegacyAccount,
-                    context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
-                        .MintAsset(
-                            context, context.Signer, FungibleAssetValue.FromRawValue(Currency, 1)));
-        }
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
