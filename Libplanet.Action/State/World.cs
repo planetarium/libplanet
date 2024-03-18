@@ -1,7 +1,11 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Numerics;
+using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
 {
@@ -70,6 +74,204 @@ namespace Libplanet.Action.State
             }
 
             return new World(_baseState, Delta.SetAccount(address, account));
+        }
+
+        public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
+        {
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to mint has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(context.Signer))
+            {
+                throw new CurrencyPermissionException(
+                    $"The account {context.Signer} has no permission to mint currency {currency}.",
+                    context.Signer,
+                    currency
+                );
+            }
+
+            FungibleAssetValue balance = account.GetBalance(recipient, currency);
+            BigInteger rawBalance = (balance + value).RawValue;
+
+            if (currency.TotalSupplyTrackable)
+            {
+                var currentTotalSupply = account.GetTotalSupply(currency);
+                if (currency.MaximumSupply < currentTotalSupply + value)
+                {
+                    var msg = $"The amount {value} attempted to be minted added to the current"
+                              + $" total supply of {currentTotalSupply} exceeds the"
+                              + $" maximum allowed supply of {currency.MaximumSupply}.";
+                    throw new SupplyOverflowException(msg, value);
+                }
+
+                return UpdateFungibleAssets(
+                    recipient,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply + value).RawValue);
+            }
+            else
+            {
+                return UpdateFungibleAssets(recipient, currency, rawBalance);
+            }
+        }
+
+        public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
+        {
+            string msg;
+
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to burn has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(context.Signer))
+            {
+                msg = $"The account {context.Signer} has no permission to burn assets of " +
+                      $"the currency {currency}.";
+                throw new CurrencyPermissionException(msg, context.Signer, currency);
+            }
+
+            FungibleAssetValue balance = account.GetBalance(owner, currency);
+
+            if (balance < value)
+            {
+                msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
+                      $"{balance} < {value}.";
+                throw new InsufficientBalanceException(msg, owner, balance);
+            }
+
+            BigInteger rawBalance = (balance - value).RawValue;
+            if (currency.TotalSupplyTrackable)
+            {
+                var currentTotalSupply = account.GetTotalSupply(currency);
+                return UpdateFungibleAssets(
+                    owner,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply - value).RawValue);
+            }
+            else
+            {
+                return UpdateFungibleAssets(owner, currency, rawBalance);
+            }
+        }
+
+        public IWorld TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
+                : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
+
+        private IWorld UpdateFungibleAssets(
+            Address address,
+            Currency currency,
+            BigInteger amount,
+            BigInteger? supplyAmount = null)
+        {
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+            if (supplyAmount is { } sa)
+            {
+                account = new Account(
+                    new AccountState(
+                        account.Trie
+                            .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                            .Set(ToTotalSupplyKey(currency), new Integer(sa))),
+                    account.TotalUpdatedFungibleAssets.Add((address, currency)));
+            }
+            else
+            {
+                account = new Account(
+                    new AccountState(
+                        account.Trie
+                            .Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
+                    account.TotalUpdatedFungibleAssets.Add((address, currency)));
+            }
+
+            return SetAccount(ReservedAddresses.LegacyAccount, account);
+        }
+
+        private IWorld TransferAssetV0(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = account.GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = account.GetBalance(recipient, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            return ((World)UpdateFungibleAssets(sender, currency, (senderBalance - value).RawValue))
+                .UpdateFungibleAssets(recipient, currency, (recipientBalance + value).RawValue);
+        }
+
+        [Pure]
+        private IWorld TransferAssetV1(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = account.GetBalance(sender, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            BigInteger senderRawBalance = (senderBalance - value).RawValue;
+            IWorld intermediate = UpdateFungibleAssets(sender, currency, senderRawBalance);
+            FungibleAssetValue recipientBalance = intermediate
+                .GetAccount(ReservedAddresses.LegacyAccount)
+                .GetBalance(recipient, currency);
+            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
+
+            return ((World)intermediate).UpdateFungibleAssets(
+                recipient, currency, recipientRawBalance);
         }
     }
 }
