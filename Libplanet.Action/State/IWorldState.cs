@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
@@ -49,5 +50,9 @@ namespace Libplanet.Action.State
         /// instead.</returns>
         [Pure]
         IAccountState GetAccountState(Address address);
+
+        FungibleAssetValue GetBalance(Address address, Currency currency);
+
+        FungibleAssetValue GetTotalSupply(Currency currency);
     }
 }
