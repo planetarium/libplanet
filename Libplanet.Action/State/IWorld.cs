@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
@@ -83,5 +84,16 @@ namespace Libplanet.Action.State
         /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);
+
+        IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value);
+
+        IWorld BurnAsset(IActionContext context, Address recipient, FungibleAssetValue value);
+
+        IWorld TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false);
     }
 }
