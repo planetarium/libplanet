@@ -45,14 +45,10 @@ namespace Libplanet.Tests.Action
                 _addr[1],
                 Value(0, 6),
                 allowNegativeBalance: true);
-            Assert.Equal(
-                Value(0, 6),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
             IActionContext c = CreateContext(a, _addr[0]);
             a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 5));
-            Assert.Equal(
-                Value(0, 6),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]
@@ -81,10 +77,7 @@ namespace Libplanet.Tests.Action
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain
-                    .GetWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], DumbAction.DumbCurrency)
+                chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency)
             );
 
             return chain;
@@ -100,7 +93,7 @@ namespace Libplanet.Tests.Action
                 world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                world.GetAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(_currencies[0]));
+                world.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             Assert.Equal(
@@ -115,9 +108,7 @@ namespace Libplanet.Tests.Action
                 _initWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie,
                 world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                world
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetTotalSupply(_currencies[0]));
+                world.GetTotalSupply(_currencies[0]));
             Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             world = world.MintAsset(context, _addr[0], Value(4, 10));
@@ -126,9 +117,7 @@ namespace Libplanet.Tests.Action
                 world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Equal(
                 Value(4, 10),
-                world
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetTotalSupply(_currencies[4]));
+                world.GetTotalSupply(_currencies[4]));
             Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
             Assert.Equal((Integer)10, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
 
@@ -138,9 +127,7 @@ namespace Libplanet.Tests.Action
                 world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Equal(
                 Value(4, 5),
-                world
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetTotalSupply(_currencies[4]));
+                world.GetTotalSupply(_currencies[4]));
             Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
             Assert.Equal((Integer)5, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
         }

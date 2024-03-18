@@ -28,7 +28,6 @@ namespace Libplanet.Tests.Action
         protected readonly Currency[] _currencies;
         protected readonly IWorld _initWorld;
         protected readonly IActionContext _initContext;
-        protected readonly Address _accountAddress = ReservedAddresses.LegacyAccount;
 
         protected WorldTest(ITestOutputHelper output)
         {
@@ -74,14 +73,10 @@ namespace Libplanet.Tests.Action
                     "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}",
                     i++,
                     a,
-                    _initWorld
-                        .GetAccount(ReservedAddresses.LegacyAccount).GetBalance(a, _currencies[0]),
-                    _initWorld
-                        .GetAccount(ReservedAddresses.LegacyAccount).GetBalance(a, _currencies[1]),
-                    _initWorld
-                        .GetAccount(ReservedAddresses.LegacyAccount).GetBalance(a, _currencies[2]),
-                    _initWorld
-                        .GetAccount(ReservedAddresses.LegacyAccount).GetBalance(a, _currencies[3]));
+                    _initWorld.GetBalance(a, _currencies[0]),
+                    _initWorld.GetBalance(a, _currencies[1]),
+                    _initWorld.GetBalance(a, _currencies[2]),
+                    _initWorld.GetBalance(a, _currencies[3]));
             }
 
             _initContext = CreateContext(_initWorld, _addr[0]);
@@ -94,31 +89,11 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void InitialSetup()
         {
-            Assert.Equal(
-                Value(2, 20),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(
-                Value(2, 0),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[2], _currencies[2]));
-            Assert.Equal(
-                Value(0, 5),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(
-                Value(1, 10),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(
-                Zero(2),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Value(2, 20), _initWorld.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(2, 0), _initWorld.GetBalance(_addr[2], _currencies[2]));
+            Assert.Equal(Value(0, 5), _initWorld.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(1, 10), _initWorld.GetBalance(_addr[0], _currencies[1]));
+            Assert.Equal(Zero(2), _initWorld.GetBalance(_addr[0], _currencies[2]));
         }
 
         [Fact]
@@ -126,36 +101,18 @@ namespace Libplanet.Tests.Action
         {
             IWorld a = _initWorld.TransferAsset(
                 _initContext, _addr[1], _addr[2], Value(2, 5));
-            Assert.Equal(
-                Value(2, 15),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(
-                Value(2, 5),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[2], _currencies[2]));
-            Assert.Equal(
-                Value(0, 5),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(
-                Value(1, 10),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(
-                Zero(2),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[0], _currencies[2]));
-            Assert.Equal(
-                Zero(0),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[0]));
-            Assert.Equal(
-                Value(1, 15),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[1]));
-            Assert.Equal(
-                Zero(0),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[2], _currencies[0]));
-            Assert.Equal(
-                Zero(1),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[2], _currencies[1]));
+            Assert.Equal(Value(2, 15), a.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(2, 5), a.GetBalance(_addr[2], _currencies[2]));
+            Assert.Equal(Value(0, 5), a.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(1, 10), a.GetBalance(_addr[0], _currencies[1]));
+            Assert.Equal(Zero(2), a.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Zero(0), a.GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(1, 15), a.GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
+            Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
 
             var accountDiff = AccountDiff.Create(
-                _initContext.PreviousState.GetAccount(_accountAddress).Trie,
+                _initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie,
                 a.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Equal(
                 new[] { (_addr[1], _currencies[2].Hash), (_addr[2], _currencies[2].Hash) }
@@ -185,12 +142,8 @@ namespace Libplanet.Tests.Action
                 Value(0, 6),
                 allowNegativeBalance: true
             );
-            Assert.Equal(
-                Value(0, -1),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(
-                Value(0, 6),
-                a.GetAccount(ReservedAddresses.LegacyAccount).GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(0, -1), a.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]
@@ -233,14 +186,12 @@ namespace Libplanet.Tests.Action
                 DumbAction.DumbCurrency * 5,
                 chain
                     .GetWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(_addr[0], DumbAction.DumbCurrency)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * -5,
                 chain
                     .GetWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(_addr[1], DumbAction.DumbCurrency)
             );
 
@@ -261,27 +212,15 @@ namespace Libplanet.Tests.Action
             IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to mint
             delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
-            Assert.Equal(
-                Value(0, 15),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(0, 15), delta0.GetBalance(_addr[0], _currencies[0]));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
             delta0 = delta0.MintAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(
-                Value(1, 25),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Value(1, 25), delta0.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to mint
             delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
-            Assert.Equal(
-                Value(2, 10),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[2], _currencies[2]));
+            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
@@ -291,19 +230,11 @@ namespace Libplanet.Tests.Action
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
             delta1 = delta1.MintAsset(context1, _addr[0], Value(1, 20));
-            Assert.Equal(
-                Value(1, 30),
-                delta1
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[1]));
+            Assert.Equal(Value(1, 30), delta1.GetBalance(_addr[0], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to mint
             delta1 = delta1.MintAsset(context1, _addr[2], Value(2, 10));
-            Assert.Equal(
-                Value(2, 10),
-                delta1
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[2], _currencies[2]));
+            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[2], _currencies[2]));
         }
 
         [Fact]
@@ -323,27 +254,15 @@ namespace Libplanet.Tests.Action
             IActionContext context0 = _initContext;
             // currencies[0] (FOO) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
-            Assert.Equal(
-                Value(0, 1),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(0, 1), delta0.GetBalance(_addr[0], _currencies[0]));
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(
-                Value(1, 5),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Value(1, 5), delta0.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to burn
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
-            Assert.Equal(
-                Value(2, 10),
-                delta0
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
@@ -353,19 +272,11 @@ namespace Libplanet.Tests.Action
 
             // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
             delta1 = delta1.BurnAsset(context1, _addr[1], Value(1, 10));
-            Assert.Equal(
-                Value(1, 5),
-                delta1
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Value(1, 5), delta1.GetBalance(_addr[1], _currencies[1]));
 
             // currencies[2] (BAZ) allows everyone to burn
             delta1 = delta1.BurnAsset(context1, _addr[1], Value(2, 10));
-            Assert.Equal(
-                Value(2, 10),
-                delta1
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
