@@ -22,7 +22,6 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -209,8 +208,11 @@ namespace Libplanet.Tests.Blockchain
                 var outputAccount = _blockChain
                     .GetWorldState(Assert.IsType<HashDigest<SHA256>>(e.OutputState))
                     .GetAccountState(ReservedAddresses.LegacyAccount);
-                var accountDiff = AccountDiff.Create(inputAccount, outputAccount);
-                Assert.Empty(accountDiff.FungibleAssetValueDiffs);
+
+                var trieDiff = outputAccount.Trie.Diff(inputAccount.Trie).ToList();
+                const byte underScore = 95;  // '_'
+                Assert.Empty(trieDiff.Where(
+                    elem => elem.Path.ByteArray.First() == underScore));
             }
 
             var pk = new PrivateKey();
@@ -260,11 +262,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (new Address[] { addresses[0], pk.Address }).ToImmutableHashSet(),
                 accountDiff1.StateDiffs.Select(kv => kv.Key).ToImmutableHashSet());
-            Assert.Equal(
-                (new Address[] { addresses[1], addresses[2], pk.Address })
-                    .ToImmutableHashSet(),
-                accountDiff1.FungibleAssetValueDiffs.Select(kv => kv.Key.Item1)
-                    .ToImmutableHashSet());
             Assert.Equal(
                 new Text("foo"),
                 outputAccount1.GetState(pk.Address));

@@ -1,5 +1,4 @@
 using System.Linq;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
@@ -39,32 +38,21 @@ namespace Libplanet.Tests.Action
         {
             IAccount account = _initAccount;
             IActionContext context = _initContext;
-            AccountDiff diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 account.GetTotalSupply(_currencies[0]));
-            Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             Assert.Equal(Value(4, 0), _initAccount.GetTotalSupply(_currencies[4]));
-            Assert.DoesNotContain(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
 
             account = account.MintAsset(context, _addr[0], Value(0, 10));
-            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 account.GetTotalSupply(_currencies[0]));
-            Assert.DoesNotContain(_currencies[0].Hash, diff.TotalSupplyDiffs.Keys);
 
             account = account.MintAsset(context, _addr[0], Value(4, 10));
-            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Equal(Value(4, 10), account.GetTotalSupply(_currencies[4]));
-            Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
-            Assert.Equal((Integer)10, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
 
             account = account.BurnAsset(context, _addr[0], Value(4, 5));
-            diff = AccountDiff.Create(_initAccount.Trie, account.Trie);
             Assert.Equal(Value(4, 5), account.GetTotalSupply(_currencies[4]));
-            Assert.Contains(_currencies[4].Hash, diff.TotalSupplyDiffs.Keys);
-            Assert.Equal((Integer)5, diff.TotalSupplyDiffs[_currencies[4].Hash].Item2);
         }
 
         [Fact]

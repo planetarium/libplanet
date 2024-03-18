@@ -114,8 +114,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 _addr[0],
                 Assert.Single(diffa.StateDiffs).Key);
-            Assert.Empty(diffa.FungibleAssetValueDiffs);
-            Assert.Empty(diffa.TotalSupplyDiffs);
 
             IAccount b = a.SetState(_addr[0], (Text)"z");
             AccountDiff diffb = AccountDiff.Create(a.Trie, b.Trie);
@@ -129,8 +127,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 _addr[0],
                 Assert.Single(diffb.StateDiffs).Key);
-            Assert.Empty(diffb.FungibleAssetValueDiffs);
-            Assert.Empty(diffb.TotalSupplyDiffs);
 
             IAccount c = b.SetState(_addr[0], (Text)"a");
             Assert.Equal("a", (Text)c.GetState(_addr[0]));

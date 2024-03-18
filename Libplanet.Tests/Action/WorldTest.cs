@@ -111,14 +111,16 @@ namespace Libplanet.Tests.Action
             Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
             Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
 
+            var trieDiff = a.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                .Diff(_initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie)
+                .ToList();
+            Assert.Single(trieDiff.Where(elem =>
+                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[1], _currencies[2]))));
+            Assert.Single(trieDiff.Where(elem =>
+                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[2], _currencies[2]))));
             var accountDiff = AccountDiff.Create(
                 _initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie,
                 a.GetAccount(ReservedAddresses.LegacyAccount).Trie);
-            Assert.Equal(
-                new[] { (_addr[1], _currencies[2].Hash), (_addr[2], _currencies[2].Hash) }
-                    .ToImmutableHashSet(),
-                accountDiff.FungibleAssetValueDiffs.Select(kv => (kv.Key.Item1, kv.Key.Item2))
-                    .ToImmutableHashSet());
             Assert.Empty(accountDiff.StateDiffs);
         }
 
