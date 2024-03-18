@@ -82,6 +82,7 @@ namespace Libplanet.Action.State
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
             GetAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
 
+        /// <inheritdoc cref="IWorld.MintAsset"/>
         public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
         {
             if (value.Sign <= 0)
@@ -128,6 +129,7 @@ namespace Libplanet.Action.State
             }
         }
 
+        /// <inheritdoc cref="IWorld.BurnAsset"/>
         public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
@@ -172,6 +174,7 @@ namespace Libplanet.Action.State
             }
         }
 
+        /// <inheritdoc cref="IWorld.TransferAsset"/>
         public IWorld TransferAsset(
             IActionContext context,
             Address sender,
