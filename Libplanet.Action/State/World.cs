@@ -76,10 +76,14 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            GetAccount(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            GetAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+
         public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
         {
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
-
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -98,12 +102,12 @@ namespace Libplanet.Action.State
                 );
             }
 
-            FungibleAssetValue balance = account.GetBalance(recipient, currency);
+            FungibleAssetValue balance = GetBalance(recipient, currency);
             BigInteger rawBalance = (balance + value).RawValue;
 
             if (currency.TotalSupplyTrackable)
             {
-                var currentTotalSupply = account.GetTotalSupply(currency);
+                var currentTotalSupply = GetTotalSupply(currency);
                 if (currency.MaximumSupply < currentTotalSupply + value)
                 {
                     var msg = $"The amount {value} attempted to be minted added to the current"
@@ -127,8 +131,6 @@ namespace Libplanet.Action.State
         public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
         {
             string msg;
-
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -145,7 +147,7 @@ namespace Libplanet.Action.State
                 throw new CurrencyPermissionException(msg, context.Signer, currency);
             }
 
-            FungibleAssetValue balance = account.GetBalance(owner, currency);
+            FungibleAssetValue balance = GetBalance(owner, currency);
 
             if (balance < value)
             {
@@ -157,7 +159,7 @@ namespace Libplanet.Action.State
             BigInteger rawBalance = (balance - value).RawValue;
             if (currency.TotalSupplyTrackable)
             {
-                var currentTotalSupply = account.GetTotalSupply(currency);
+                var currentTotalSupply = GetTotalSupply(currency);
                 return UpdateFungibleAssets(
                     owner,
                     currency,
@@ -221,10 +223,9 @@ namespace Libplanet.Action.State
                 );
             }
 
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
             Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = account.GetBalance(sender, currency);
-            FungibleAssetValue recipientBalance = account.GetBalance(recipient, currency);
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
 
             if (!allowNegativeBalance && senderBalance < value)
             {
@@ -252,9 +253,8 @@ namespace Libplanet.Action.State
                 );
             }
 
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
             Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = account.GetBalance(sender, currency);
+            FungibleAssetValue senderBalance = GetBalance(sender, currency);
 
             if (!allowNegativeBalance && senderBalance < value)
             {
@@ -265,9 +265,7 @@ namespace Libplanet.Action.State
 
             BigInteger senderRawBalance = (senderBalance - value).RawValue;
             IWorld intermediate = UpdateFungibleAssets(sender, currency, senderRawBalance);
-            FungibleAssetValue recipientBalance = intermediate
-                .GetAccount(ReservedAddresses.LegacyAccount)
-                .GetBalance(recipient, currency);
+            FungibleAssetValue recipientBalance = intermediate.GetBalance(recipient, currency);
             BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
 
             return ((World)intermediate).UpdateFungibleAssets(

@@ -89,6 +89,12 @@ public partial class StateQueryTest
             _stateRootHash is { } && ReservedAddresses.LegacyAccount.Equals(address)
                 ? new MockAccountState(_stateRootHash)
                 : new MockAccountState(null);
+
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            GetAccountState(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            GetAccountState(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
     }
 
     // Behaves like a non-empty account only if state root hash is non-null.
