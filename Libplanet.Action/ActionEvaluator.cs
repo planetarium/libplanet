@@ -579,7 +579,8 @@ namespace Libplanet.Action
                 new WorldBaseState(
                     stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
                     stateStore),
-                prevWorld.Delta.CommitAccount(ReservedAddresses.LegacyAccount));
+                prevWorld.Delta.CommitAccount(ReservedAddresses.LegacyAccount),
+                prevWorld.TotalUpdatedFungibleAssets);
         }
 
         private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
@@ -593,15 +594,14 @@ namespace Libplanet.Action
                     ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
                 worldDelta = worldDelta.SetAccount(
                     account.Key,
-                    new Account(
-                        new AccountState(accountTrie),
-                        account.Value.TotalUpdatedFungibleAssets));
+                    new Account(new AccountState(accountTrie)));
                 worldDelta = worldDelta.CommitAccount(account.Key);
             }
 
             return new World(
                 new WorldBaseState(stateStore.Commit(worldTrie), stateStore),
-                worldDelta);
+                worldDelta,
+                prevWorld.TotalUpdatedFungibleAssets);
         }
 
         [Pure]

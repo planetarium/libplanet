@@ -152,14 +152,12 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             {
                 return context.Source
                     .GetWorldState(offsetBlockHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(owner, currency);
             }
 
             case (_, srh: not null):
                 return context.Source
                     .GetWorldState(offsetStateRootHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(owner, currency);
         }
     }
@@ -196,12 +194,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             case (blockhash: not null, _):
                 return context.Source
                     .GetWorldState(offsetBlockHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetTotalSupply(currency);
             case (_, srh: not null):
                 return context.Source
                     .GetWorldState(offsetStateRootHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetTotalSupply(currency);
         }
     }

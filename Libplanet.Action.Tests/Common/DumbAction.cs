@@ -161,17 +161,6 @@ namespace Libplanet.Action.Tests.Common
 
             account = account.SetState(TargetAddress, (Text)items);
 
-            if (!(Transfer is null))
-            {
-                account = account.TransferAsset(
-                    context,
-                    sender: Transfer.Item1,
-                    recipient: Transfer.Item2,
-                    value: FungibleAssetValue.FromRawValue(DumbCurrency, Transfer.Item3),
-                    allowNegativeBalance: true
-                );
-            }
-
             if (!(Validators is null))
             {
                 account = Validators.Aggregate(
@@ -180,7 +169,19 @@ namespace Libplanet.Action.Tests.Common
                         current.SetValidator(new Validator(validator, BigInteger.One)));
             }
 
-            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+
+            if (!(Transfer is null))
+            {
+                world = world.TransferAsset(
+                    context,
+                    sender: Transfer.Item1,
+                    recipient: Transfer.Item2,
+                    value: FungibleAssetValue.FromRawValue(DumbCurrency, Transfer.Item3),
+                    allowNegativeBalance: true);
+            }
+
+            return world;
         }
 
         public void LoadPlainValue(IValue plainValue)

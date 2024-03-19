@@ -70,8 +70,7 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount account = world.GetFungibleAssetsAccount();
-            var balance = account.GetBalance(_context.Signer, realGasPrice.Currency);
+            var balance = world.GetBalance(_context.Signer, realGasPrice.Currency);
             if (balance < realGasPrice * _context.GasLimit())
             {
                 var msg =
@@ -81,12 +80,12 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(msg, _context.Signer, balance);
             }
 
-            IAccount nextAccount = account.BurnAsset(
+            world = world.BurnAsset(
                 _context,
                 _context.Signer,
                 realGasPrice * _context.GasLimit());
             _state = FeeCollectState.Mortgage;
-            return world.SetFungibleAssetsAccount(nextAccount);
+            return world;
         }
 
         public IWorld Refund(IWorld world)
@@ -108,12 +107,12 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
+            world = world.MintAsset(
                 _context,
                 _context.Signer,
                 (_context.GasLimit() - _context.GasUsed()) * realGasPrice);
             _state = FeeCollectState.Refund;
-            return world.SetFungibleAssetsAccount(nextAccount);
+            return world;
         }
 
         public IWorld Reward(IWorld world)
@@ -135,12 +134,12 @@ namespace Libplanet.Action
                 return world;
             }
 
-            IAccount nextAccount = world.GetFungibleAssetsAccount().MintAsset(
+            world = world.MintAsset(
                 _context,
                 _context.Miner,
                 realGasPrice * _context.GasUsed());
             _state = FeeCollectState.Reward;
-            return world.SetFungibleAssetsAccount(nextAccount);
+            return world;
         }
 
         public IFeeCollector Next(IActionContext context)

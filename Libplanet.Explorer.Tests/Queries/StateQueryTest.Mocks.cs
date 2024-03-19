@@ -14,6 +14,7 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Store.Trie.Nodes;
 using System;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -41,37 +42,14 @@ public partial class StateQueryTest
 
         public IWorldState GetWorldState(BlockHash? blockHash) =>
             new MockWorldState(ToStateRootHash(blockHash));
-
-        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
-            new MockAccountState(stateRootHash).GetState(address);
-
-        public IValue GetState(BlockHash? blockHash, Address address) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetState(address);
-
-        public FungibleAssetValue GetBalance(
-            HashDigest<SHA256>? stateRootHash, Address address, Currency currency) =>
-            new MockAccountState(stateRootHash).GetBalance(address, currency);
-
-        public FungibleAssetValue GetBalance(
-            BlockHash? blockHash, Address address, Currency currency) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetBalance(address, currency);
-
-        public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? stateRootHash, Currency currency) =>
-            new MockAccountState(stateRootHash).GetTotalSupply(currency);
-
-        public FungibleAssetValue GetTotalSupply(BlockHash? blockHash, Currency currency) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetTotalSupply(currency);
-
-        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash) =>
-            new MockAccountState(stateRootHash).GetValidatorSet();
-
-        public ValidatorSet GetValidatorSet(BlockHash? blockHash) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetValidatorSet();
     }
 
     // Behaves like a non-empty world only if state root hash is non-null.
     private class MockWorldState : IWorldState
     {
+        public static readonly Address Address =
+            new Address("0x5003712B63baAB98094aD678EA2B24BcE445D076");
+
         private readonly HashDigest<SHA256>? _stateRootHash;
 
         public MockWorldState(HashDigest<SHA256>? stateRootHash)
@@ -89,6 +67,16 @@ public partial class StateQueryTest
             _stateRootHash is { } && ReservedAddresses.LegacyAccount.Equals(address)
                 ? new MockAccountState(_stateRootHash)
                 : new MockAccountState(null);
+
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            _stateRootHash is { } && Address.Equals(address)
+                ? currency * 123
+                : currency * 0;
+
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            _stateRootHash is { }
+                ? currency * 10000
+                : currency * 0;
     }
 
     // Behaves like a non-empty account only if state root hash is non-null.
@@ -116,16 +104,6 @@ public partial class StateQueryTest
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(address => GetState(address)).ToList();
-
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            _stateRootHash is { } && Address.Equals(address)
-                ? currency * 123
-                : currency * 0;
-
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            _stateRootHash is { }
-                ? currency * 10000
-                : currency * 0;
 
         public ValidatorSet GetValidatorSet() =>
             new ValidatorSet(new List<Validator>

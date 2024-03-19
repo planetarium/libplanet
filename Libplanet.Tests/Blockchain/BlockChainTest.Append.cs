@@ -22,7 +22,6 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
-using FAV = Libplanet.Types.Assets.FungibleAssetValue;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -209,8 +208,11 @@ namespace Libplanet.Tests.Blockchain
                 var outputAccount = _blockChain
                     .GetWorldState(Assert.IsType<HashDigest<SHA256>>(e.OutputState))
                     .GetAccountState(ReservedAddresses.LegacyAccount);
-                var accountDiff = AccountDiff.Create(inputAccount, outputAccount);
-                Assert.Empty(accountDiff.FungibleAssetValueDiffs);
+
+                var trieDiff = outputAccount.Trie.Diff(inputAccount.Trie).ToList();
+                const byte underScore = 95;  // '_'
+                Assert.Empty(trieDiff.Where(
+                    elem => elem.Path.ByteArray.First() == underScore));
             }
 
             var pk = new PrivateKey();
@@ -252,19 +254,15 @@ namespace Libplanet.Tests.Blockchain
             var inputAccount1 = _blockChain.GetWorldState(
                 Assert.IsType<HashDigest<SHA256>>(txExecution1.InputState))
                     .GetAccountState(ReservedAddresses.LegacyAccount);
-            var outputAccount1 = _blockChain.GetWorldState(
-                Assert.IsType<HashDigest<SHA256>>(txExecution1.OutputState))
+            var outputWorld1 = _blockChain.GetWorldState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution1.OutputState));
+            var outputAccount1 = outputWorld1
                     .GetAccountState(ReservedAddresses.LegacyAccount);
             var accountDiff1 = AccountDiff.Create(inputAccount1, outputAccount1);
 
             Assert.Equal(
                 (new Address[] { addresses[0], pk.Address }).ToImmutableHashSet(),
                 accountDiff1.StateDiffs.Select(kv => kv.Key).ToImmutableHashSet());
-            Assert.Equal(
-                (new Address[] { addresses[1], addresses[2], pk.Address })
-                    .ToImmutableHashSet(),
-                accountDiff1.FungibleAssetValueDiffs.Select(kv => kv.Key.Item1)
-                    .ToImmutableHashSet());
             Assert.Equal(
                 new Text("foo"),
                 outputAccount1.GetState(pk.Address));
@@ -273,13 +271,13 @@ namespace Libplanet.Tests.Blockchain
                 outputAccount1.GetState(addresses[0]));
             Assert.Equal(
                 DumbAction.DumbCurrency * -30,
-                outputAccount1.GetBalance(pk.Address, DumbAction.DumbCurrency));
+                outputWorld1.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 10,
-                outputAccount1.GetBalance(addresses[1], DumbAction.DumbCurrency));
+                outputWorld1.GetBalance(addresses[1], DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 20,
-                outputAccount1.GetBalance(addresses[2], DumbAction.DumbCurrency));
+                outputWorld1.GetBalance(addresses[2], DumbAction.DumbCurrency));
 
             var txExecution2 = getTxExecution(block3.Hash, tx2Error.Id);
             _logger.Verbose(nameof(txExecution2) + " = {@TxExecution}", txExecution2);
@@ -293,15 +291,14 @@ namespace Libplanet.Tests.Blockchain
             var txExecution3 = getTxExecution(block3.Hash, tx3Transfer.Id);
             _logger.Verbose(nameof(txExecution3) + " = {@TxExecution}", txExecution3);
             Assert.False(txExecution3.Fail);
-            var outputAccount3 = _blockChain.GetWorldState(
-                Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState))
-                    .GetAccountState(ReservedAddresses.LegacyAccount);
+            var outputWorld3 = _blockChain.GetWorldState(
+                Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState));
             Assert.Equal(
                 DumbAction.DumbCurrency * -35,
-                outputAccount3.GetBalance(pk.Address, DumbAction.DumbCurrency));
+                outputWorld3.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 15,
-                outputAccount3.GetBalance(addresses[1], DumbAction.DumbCurrency));
+                outputWorld3.GetBalance(addresses[1], DumbAction.DumbCurrency));
         }
 
         [SkippableFact]

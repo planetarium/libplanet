@@ -5,6 +5,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.Tests.Mocks
@@ -61,5 +62,17 @@ namespace Libplanet.Action.Tests.Mocks
                 _stateStore,
                 _stateStore.Commit(
                     Trie.Set(ToStateKey(address), new Binary(account.Trie.Hash.ByteArray))).Hash);
+
+        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToFungibleAssetKey(address, currency)) is Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
+
+        public FungibleAssetValue GetTotalSupply(Currency currency) =>
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToTotalSupplyKey(currency)) is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
     }
 }

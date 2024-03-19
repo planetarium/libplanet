@@ -636,16 +636,13 @@ namespace Libplanet.Tests.Action
                         ? initBalances
                         : addresses.Select(a =>
                             prevEval.OutputState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
                                 .GetBalance(a, currency).RawValue),
                     addresses.Select(
                         a => eval.InputContext.PreviousState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
                                 .GetBalance(a, currency).RawValue));
                 Assert.Equal(
                     expectedBalances[i],
                     addresses.Select(a => eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
                         .GetBalance(a, currency).RawValue));
             }
 
@@ -1026,25 +1023,22 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 2,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
                     .TotalUpdatedFungibleAssets
                     .Count(updated => updated.Item2.Equals(currency)));
             Assert.Equal(
                 4,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
                     .TotalUpdatedFungibleAssets
                     .Count(updated => updated.Item2.Equals(gas)));
             Assert.Contains(
                 (addresses[0], currency),
-                latest
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (addresses[1], currency),
-                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
                 (addresses[2], currency),
-                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
         }
 
         [Fact]
@@ -1105,13 +1099,11 @@ namespace Libplanet.Tests.Action
                 FungibleAssetValue.FromRawValue(foo, 9),
                 chain
                     .GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 1),
                 chain
                     .GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 
@@ -1180,12 +1172,10 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 
@@ -1519,33 +1509,11 @@ namespace Libplanet.Tests.Action
                             .SetState(context.Signer, (Text)Memo));
                 if (!(Receiver is null) && !(MintValue is null))
                 {
-                    state = state.SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        state.GetAccount(ReservedAddresses.LegacyAccount)
-                            .MintAsset(context, Receiver.Value, MintValue.Value));
+                    state = state.MintAsset(context, Receiver.Value, MintValue.Value);
                 }
 
                 return state;
             }
-        }
-
-        private sealed class MintAction : IAction
-        {
-            public Currency Currency { get; set; }
-
-            public IValue PlainValue => Currency.Serialize();
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-                Currency = new Currency(plainValue);
-            }
-
-            public IWorld Execute(IActionContext context) =>
-                context.PreviousState.SetAccount(
-                    ReservedAddresses.LegacyAccount,
-                    context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
-                        .MintAsset(
-                            context, context.Signer, FungibleAssetValue.FromRawValue(Currency, 1)));
         }
     }
 

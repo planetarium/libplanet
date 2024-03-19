@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
@@ -43,6 +45,14 @@ namespace Libplanet.Action.State
         IWorldDelta Delta { get; }
 
         /// <summary>
+        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
+        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
+        /// since the previous <see cref="Block"/>'s output states.
+        /// </summary>
+        [Pure]
+        IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
+
+        /// <summary>
         /// Gets the <see cref="IAccount"/> of the given <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> referring
@@ -68,20 +78,87 @@ namespace Libplanet.Action.State
         /// a new <see cref="IWorld"/> instance with an updated world state instead.
         /// </remarks>
         /// <exception cref="ArgumentException">
-        /// Thrown for one of the following reasons:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <see cref="Legacy"/> is <see langword="true"/> and <paramref name="address"/>
-        ///         is not <see cref="ReservedAddresses.LegacyAccount"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If <paramref name="address"/> is
-        ///         not <see cref="ReservedAddresses.LegacyAccount"/> and
-        ///         <see cref="IAccount.TotalUpdatedFungibleAssets"/> is non-empty.
-        ///     </description></item>
-        /// </list>
+        /// Thrown when <see cref="Legacy"/> is <see langword="true"/> and
+        /// <paramref name="address"/> is not <see cref="ReservedAddresses.LegacyAccount"/>.
         /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);
+
+        /// <summary>
+        /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
+        /// and give it to the <paramref name="recipient"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="recipient">The address who receives the minted asset.</param>
+        /// <param name="value">The asset value to mint.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/> is added to <paramref name="recipient"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to 0.</exception>
+        /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
+        /// (or a miner in case of block actions) is not a member of the <see
+        /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="SupplyOverflowException">Thrown when the sum of the
+        /// <paramref name="value"/> to be minted and the current total supply amount of the
+        /// <see cref="FungibleAssetValue.Currency"/> exceeds the
+        /// <see cref="Currency.MaximumSupply"/>.</exception>
+        [Pure]
+        IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value);
+
+        /// <summary>
+        /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
+        /// <paramref name="owner"/>'s balance.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="owner">The address who owns the fungible asset to burn.</param>
+        /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/> is subtracted from <paramref name="owner"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
+        /// (or a miner in case of block actions) is not a member of the <see
+        /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
+        /// has insufficient balance than <paramref name="value"/> to burn.</exception>
+        [Pure]
+        IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value);
+
+        /// <summary>
+        /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
+        /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="sender">The address who sends the fungible asset to
+        /// the <paramref name="recipient"/>.</param>
+        /// <param name="recipient">The address who receives the fungible asset from
+        /// the <paramref name="sender"/>.</param>
+        /// <param name="value">The asset value to transfer.</param>
+        /// <param name="allowNegativeBalance">Turn on to allow <paramref name="sender"/>'s balance
+        /// less than zero.  Turned off by default.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/>  is subtracted from <paramref name="sender"/>'s balance and added to
+        /// <paramref name="recipient"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="sender"/>
+        /// has insufficient balance than <paramref name="value"/> to transfer and
+        /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
+        /// <remarks>
+        /// The behavior is different depending on <paramref name="context"/>'s
+        /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
+        /// where this may not act as intended.  Such behavior is left intact for backward
+        /// compatibility.
+        /// </remarks>
+        [Pure]
+        IWorld TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false);
     }
 }

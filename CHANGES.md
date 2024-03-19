@@ -10,6 +10,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Moved `GetBalance()` and `GetTotalSupply()` methods from
+    `IAccountState` to `IWorldState`.  [[#3694], [#3697]]
+ -  (Libplanet.Action) Moved `MintAsset()`, `BurnAsset()`, and `TransferAsset()`
+    methods from `IAccount` to `IWorld`.  [[#3694], [#3697]]
+ -  (Libplanet.Action) Removed `TotalSupplyDiff`, `FungibleAssetValueDiff`,
+    and `ValidatorDiff` properties from `AccountDiff`.  [[#3694], [#3697]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +30,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3694]: https://github.com/planetarium/libplanet/issues/3694
+[#3697]: https://github.com/planetarium/libplanet/pull/3697
 
 
 Version 4.1.0
