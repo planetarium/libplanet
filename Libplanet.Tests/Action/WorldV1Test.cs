@@ -93,9 +93,7 @@ namespace Libplanet.Tests.Action
 
             Assert.Equal(
                 Value(4, 0),
-                _initWorld
-                    .GetAccount(ReservedAddresses.LegacyAccount)
-                    .GetTotalSupply(_currencies[4]));
+                _initWorld.GetTotalSupply(_currencies[4]));
 
             world = world.MintAsset(context, _addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>

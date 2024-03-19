@@ -6,12 +6,12 @@ using Libplanet.Types.Assets;
 namespace Libplanet.Action.State
 {
     /// <summary>
-    /// The exception thrown when <see cref="IAccountState.GetTotalSupply"/> was called on a
+    /// The exception thrown when <see cref="IWorldState.GetTotalSupply"/> was called on a
     /// legacy untracked currency with
     /// <see cref="Common.Types.Assets.Currency.TotalSupplyTrackable"/> set to
     /// <see langword="false"/>.
     /// </summary>
-    /// <seealso cref="IAccountState.GetTotalSupply"/>
+    /// <seealso cref="IWorldState.GetTotalSupply"/>
     [Serializable]
     public sealed class TotalSupplyNotTrackableException : Exception
     {

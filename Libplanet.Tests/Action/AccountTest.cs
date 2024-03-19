@@ -62,13 +62,9 @@ namespace Libplanet.Tests.Action
             foreach (Address a in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3} {6}  {7}",
+                    "_addr[{0}]  {1}  {2}  {3}",
                     i++,
                     a,
-                    _initAccount.GetBalance(a, _currencies[0]),
-                    _initAccount.GetBalance(a, _currencies[1]),
-                    _initAccount.GetBalance(a, _currencies[2]),
-                    _initAccount.GetBalance(a, _currencies[3]),
                     _initAccount.GetStates(new[] { a })[0],
                     _initAccount.GetValidatorSet()
                 );
@@ -89,15 +85,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal("a", (Text)_initAccount.GetState(_addr[0]));
             Assert.Equal("b", (Text)_initAccount.GetState(_addr[1]));
             Assert.Null(_initAccount.GetState(_addr[2]));
-            Assert.Equal(Value(0, 5), _initAccount.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(1, 10), _initAccount.GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(Zero(2), _initAccount.GetBalance(_addr[0], _currencies[2]));
-            Assert.Equal(Zero(0), _initAccount.GetBalance(_addr[1], _currencies[0]));
-            Assert.Equal(Value(1, 15), _initAccount.GetBalance(_addr[1], _currencies[1]));
-            Assert.Equal(Value(2, 20), _initAccount.GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(Zero(0), _initAccount.GetBalance(_addr[2], _currencies[0]));
-            Assert.Equal(Zero(1), _initAccount.GetBalance(_addr[2], _currencies[1]));
-            Assert.Equal(Zero(2), _initAccount.GetBalance(_addr[2], _currencies[2]));
         }
 
         [Fact]

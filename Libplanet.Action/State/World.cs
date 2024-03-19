@@ -77,11 +77,30 @@ namespace Libplanet.Action.State
                 TotalUpdatedFungibleAssets);
         }
 
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccount(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+        /// <inheritdoc cref="IWorldState.GetBalance"/>
+        public FungibleAssetValue GetBalance(Address address, Currency currency)
+        {
+            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ToFungibleAssetKey(address, currency));
+            return value is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
+        }
 
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccount(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+        /// <inheritdoc cref="IWorldState.GetTotalSupply"/>
+        public FungibleAssetValue GetTotalSupply(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ToTotalSupplyKey(currency));
+            return value is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
+        }
 
         /// <inheritdoc cref="IWorld.MintAsset"/>
         public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)

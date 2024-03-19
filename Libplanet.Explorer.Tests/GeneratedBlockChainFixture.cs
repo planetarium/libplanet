@@ -34,7 +34,7 @@ public class GeneratedBlockChainFixture
     public ImmutableDictionary<Address, ImmutableArray<Transaction>>
         SignedTxs { get; private set; }
 
-    private Random Random { get; }
+    private System.Random Random { get; }
 
     public GeneratedBlockChainFixture(
         int seed,
@@ -50,7 +50,7 @@ public class GeneratedBlockChainFixture
         var store = new MemoryStore();
         var stateStore = new TrieStateStore(new MemoryKeyValueStore());
 
-        Random = new Random(seed);
+        Random = new System.Random(seed);
         MaxTxCount = maxTxCount;
         PrivateKeys = Enumerable
             .Range(0, privateKeyCount)

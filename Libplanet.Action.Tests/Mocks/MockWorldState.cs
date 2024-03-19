@@ -64,9 +64,15 @@ namespace Libplanet.Action.Tests.Mocks
                     Trie.Set(ToStateKey(address), new Binary(account.Trie.Hash.ByteArray))).Hash);
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToFungibleAssetKey(address, currency)) is Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
 
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToTotalSupplyKey(currency)) is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
     }
 }

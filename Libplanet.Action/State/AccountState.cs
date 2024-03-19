@@ -3,7 +3,6 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
@@ -30,29 +29,6 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(address => GetState(address)).ToList();
-
-        /// <inheritdoc cref="IAccountState.GetBalance"/>
-        public FungibleAssetValue GetBalance(Address address, Currency currency)
-        {
-            IValue? value = Trie.Get(ToFungibleAssetKey(address, currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
-
-        /// <inheritdoc cref="IAccountState.GetTotalSupply"/>
-        public FungibleAssetValue GetTotalSupply(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            IValue? value = Trie.Get(ToTotalSupplyKey(currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
 
         /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()

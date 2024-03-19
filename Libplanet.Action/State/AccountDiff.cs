@@ -7,6 +7,7 @@ using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
 {
@@ -25,8 +26,7 @@ namespace Libplanet.Action.State
     ///     <item><description>
     ///         This only shows the difference in "states" manipulated using
     ///         <see cref="IAccount.SetState"/> and <see cref="IAccount.RemoveState"/>.  That is,
-    ///         this does care about differences in <see cref="IAccountState.GetTotalSupply"/> and
-    ///         <see cref="IAccountState.GetValidatorSet"/>.
+    ///         this does care about differences in <see cref="FungibleAssetValue"/>s.
     ///     </description></item>
     ///     <item><description>
     ///         Due to the reason mentioned directly above, the size of <see cref="AccountDiff"/>

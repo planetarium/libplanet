@@ -636,16 +636,13 @@ namespace Libplanet.Tests.Action
                         ? initBalances
                         : addresses.Select(a =>
                             prevEval.OutputState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
                                 .GetBalance(a, currency).RawValue),
                     addresses.Select(
                         a => eval.InputContext.PreviousState
-                                .GetAccount(ReservedAddresses.LegacyAccount)
                                 .GetBalance(a, currency).RawValue));
                 Assert.Equal(
                     expectedBalances[i],
                     addresses.Select(a => eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
                         .GetBalance(a, currency).RawValue));
             }
 
@@ -1102,13 +1099,11 @@ namespace Libplanet.Tests.Action
                 FungibleAssetValue.FromRawValue(foo, 9),
                 chain
                     .GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 1),
                 chain
                     .GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 
@@ -1177,12 +1172,10 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(address, foo));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(foo, 5),
                 chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetBalance(miner.Address, foo));
         }
 

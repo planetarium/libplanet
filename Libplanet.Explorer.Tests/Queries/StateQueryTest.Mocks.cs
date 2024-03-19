@@ -14,6 +14,7 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Store.Trie.Nodes;
 using System;
+using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -41,32 +42,6 @@ public partial class StateQueryTest
 
         public IWorldState GetWorldState(BlockHash? blockHash) =>
             new MockWorldState(ToStateRootHash(blockHash));
-
-        public IValue GetState(HashDigest<SHA256>? stateRootHash, Address address) =>
-            new MockAccountState(stateRootHash).GetState(address);
-
-        public IValue GetState(BlockHash? blockHash, Address address) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetState(address);
-
-        public FungibleAssetValue GetBalance(
-            HashDigest<SHA256>? stateRootHash, Address address, Currency currency) =>
-            new MockAccountState(stateRootHash).GetBalance(address, currency);
-
-        public FungibleAssetValue GetBalance(
-            BlockHash? blockHash, Address address, Currency currency) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetBalance(address, currency);
-
-        public FungibleAssetValue GetTotalSupply(HashDigest<SHA256>? stateRootHash, Currency currency) =>
-            new MockAccountState(stateRootHash).GetTotalSupply(currency);
-
-        public FungibleAssetValue GetTotalSupply(BlockHash? blockHash, Currency currency) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetTotalSupply(currency);
-
-        public ValidatorSet GetValidatorSet(HashDigest<SHA256>? stateRootHash) =>
-            new MockAccountState(stateRootHash).GetValidatorSet();
-
-        public ValidatorSet GetValidatorSet(BlockHash? blockHash) =>
-            new MockAccountState(ToStateRootHash(blockHash)).GetValidatorSet();
     }
 
     // Behaves like a non-empty world only if state root hash is non-null.
@@ -91,10 +66,16 @@ public partial class StateQueryTest
                 : new MockAccountState(null);
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToFungibleAssetKey(address, currency)) is Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
 
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ToTotalSupplyKey(currency)) is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
     }
 
     // Behaves like a non-empty account only if state root hash is non-null.

@@ -47,10 +47,27 @@ namespace Libplanet.Action.State
             }
         }
 
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetBalance(address, currency);
+        public FungibleAssetValue GetBalance(Address address, Currency currency)
+        {
+            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ToFungibleAssetKey(address, currency));
+            return value is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
+        }
 
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).GetTotalSupply(currency);
+        public FungibleAssetValue GetTotalSupply(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ToTotalSupplyKey(currency));
+            return value is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
+        }
     }
 }

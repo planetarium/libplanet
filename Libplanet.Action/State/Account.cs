@@ -44,16 +44,6 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc/>
         [Pure]
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            _state.GetBalance(address, currency);
-
-        /// <inheritdoc/>
-        [Pure]
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            _state.GetTotalSupply(currency);
-
-        /// <inheritdoc/>
-        [Pure]
         public ValidatorSet GetValidatorSet() => _state.GetValidatorSet();
 
         /// <inheritdoc/>
