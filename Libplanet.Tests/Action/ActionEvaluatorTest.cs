@@ -1516,10 +1516,7 @@ namespace Libplanet.Tests.Action
                             .SetState(context.Signer, (Text)Memo));
                 if (!(Receiver is null) && !(MintValue is null))
                 {
-                    state = state.SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        state.GetAccount(ReservedAddresses.LegacyAccount)
-                            .MintAsset(context, Receiver.Value, MintValue.Value));
+                    state = state.MintAsset(context, Receiver.Value, MintValue.Value);
                 }
 
                 return state;
