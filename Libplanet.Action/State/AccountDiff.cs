@@ -38,6 +38,8 @@ namespace Libplanet.Action.State
     /// </summary>
     public class AccountDiff
     {
+        private static readonly int _metadataKeyLength = 0;
+
         private static readonly int _addressKeyLength = Address.Size * 2;
 
         private static readonly int _currencyKeyLength = HashDigest<SHA1>.Size * 2;
@@ -128,6 +130,10 @@ namespace Libplanet.Action.State
                     continue;
                 }
                 else if (diff.Path.Length == _validatorSetKeyLength)
+                {
+                    continue;
+                }
+                else if (diff.Path.Length == _metadataKeyLength)
                 {
                     continue;
                 }
