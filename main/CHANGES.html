@@ -65,6 +65,14 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) Moved <code>GetBalance()</code> and <code>GetTotalSupply()</code> methods from
+<code>IAccountState</code> to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3694">#3694</a>, <a href="https://github.com/planetarium/libplanet/pull/3697">#3697</a>]</li>
+<li>(Libplanet.Action) Moved <code>MintAsset()</code>, <code>BurnAsset()</code>, and <code>TransferAsset()</code>
+methods from <code>IAccount</code> to <code>IWorld</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3694">#3694</a>, <a href="https://github.com/planetarium/libplanet/pull/3697">#3697</a>]</li>
+<li>(Libplanet.Action) Removed <code>TotalSupplyDiff</code>, <code>FungibleAssetValueDiff</code>,
+and <code>ValidatorDiff</code> properties from <code>AccountDiff</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3694">#3694</a>, <a href="https://github.com/planetarium/libplanet/pull/3697">#3697</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>

@@ -100,7 +100,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
@@ -120,19 +120,19 @@ public class World : IWorld, IWorldState</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.%23ctor(Libplanet.Action.State.IWorldState%2CLibplanet.Action.State.IWorldDelta)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_System_Collections_Immutable_IImmutableSet_System_ValueTuple_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency___.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.%23ctor(Libplanet.Action.State.IWorldState%2CLibplanet.Action.State.IWorldDelta%2CSystem.Collections.Immutable.IImmutableSet%7BSystem.ValueTuple%7BLibplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World__ctor_" data-uid="Libplanet.Action.State.World.#ctor*"></a>
-  <h4 id="Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_" data-uid="Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta)">World(IWorldState, IWorldDelta)</h4>
+  <h4 id="Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_System_Collections_Immutable_IImmutableSet_System_ValueTuple_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency___" data-uid="Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta,System.Collections.Immutable.IImmutableSet{System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency}})">World(IWorldState, IWorldDelta, IImmutableSet&lt;(Address, Currency)&gt;)</h4>
   <div class="markdown level1 summary"><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public World(IWorldState baseState, IWorldDelta delta)</code></pre>
+    <pre><code class="lang-csharp hljs">public World(IWorldState baseState, IWorldDelta delta, IImmutableSet&lt;(Address, Currency)&gt; totalUpdatedFungibleAssets)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,6 +154,11 @@ public class World : IWorld, IWorldState</code></pre>
         <td><span class="parametername">delta</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(T1 Item1, T2 Item2)</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;&gt;</td>
+        <td><span class="parametername">totalUpdatedFungibleAssets</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -161,7 +166,7 @@ public class World : IWorld, IWorldState</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.%23ctor(Libplanet.Action.State.IWorldState)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L16">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L21">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World__ctor_" data-uid="Libplanet.Action.State.World.#ctor*"></a>
   <h4 id="Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_" data-uid="Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState)">World(IWorldState)</h4>
@@ -196,7 +201,7 @@ public class World : IWorld, IWorldState</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_Delta.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.Delta%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_Delta_" data-uid="Libplanet.Action.State.World.Delta*"></a>
   <h4 id="Libplanet_Action_State_World_Delta" data-uid="Libplanet.Action.State.World.Delta">Delta</h4>
@@ -228,7 +233,7 @@ this <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_Legacy.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.Legacy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L47">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_Legacy_" data-uid="Libplanet.Action.State.World.Legacy*"></a>
   <h4 id="Libplanet_Action_State_World_Legacy" data-uid="Libplanet.Action.State.World.Legacy">Legacy</h4>
@@ -250,7 +255,40 @@ public bool Legacy { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_TotalUpdatedFungibleAssets.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.TotalUpdatedFungibleAssets%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_TotalUpdatedFungibleAssets_" data-uid="Libplanet.Action.State.World.TotalUpdatedFungibleAssets*"></a>
+  <h4 id="Libplanet_Action_State_World_TotalUpdatedFungibleAssets" data-uid="Libplanet.Action.State.World.TotalUpdatedFungibleAssets">TotalUpdatedFungibleAssets</h4>
+  <div class="markdown level1 summary"><p>A set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> and <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> pairs where
+each pair has its asoociated <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> changed
+since the previous <see cref="!:Block"></see>'s output states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IImmutableSet&lt;(Address, Currency)&gt; TotalUpdatedFungibleAssets { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(T1 Item1, T2 Item2)</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -260,7 +298,7 @@ public bool Legacy { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_Trie.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.Trie%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_Trie_" data-uid="Libplanet.Action.State.World.Trie*"></a>
   <h4 id="Libplanet_Action_State_World_Trie" data-uid="Libplanet.Action.State.World.Trie">Trie</h4>
@@ -291,10 +329,103 @@ public ITrie Trie { get; }</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.BurnAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L153">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_BurnAsset_" data-uid="Libplanet.Action.State.World.BurnAsset*"></a>
+  <h4 id="Libplanet_Action_State_World_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.World.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">BurnAsset(IActionContext, Address, FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Burns the fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> (i.e., in-game monetary) from
+<code data-dev-comment-type="paramref" class="paramref">owner</code>'s balance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> of the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executing this method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">owner</span></td>
+        <td><p>The address who owns the fungible asset to burn.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> to burn.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance that the given <code data-dev-comment-type="paramref" class="paramref">value</code> is subtracted from <code data-dev-comment-type="paramref" class="paramref">owner</code>'s balance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
+is less than or equal to zero.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></td>
+        <td><p>Thrown when a transaction signer
+(or a miner in case of block actions) is not a member of the <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>'s <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">owner</code>
+has insufficient balance than <code data-dev-comment-type="paramref" class="paramref">value</code> to burn.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_GetAccount_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.GetAccount(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L41">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L51">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_GetAccount_" data-uid="Libplanet.Action.State.World.GetAccount*"></a>
   <h4 id="Libplanet_Action_State_World_GetAccount_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.World.GetAccount(Libplanet.Crypto.Address)">GetAccount(Address)</h4>
@@ -348,7 +479,7 @@ instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_GetAccountState_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.GetAccountState(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L60">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_GetAccountState_" data-uid="Libplanet.Action.State.World.GetAccountState*"></a>
   <h4 id="Libplanet_Action_State_World_GetAccountState_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.World.GetAccountState(Libplanet.Crypto.Address)">GetAccountState(Address)</h4>
@@ -399,10 +530,232 @@ instead.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L81">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_GetBalance_" data-uid="Libplanet.Action.State.World.GetBalance*"></a>
+  <h4 id="Libplanet_Action_State_World_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.World.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)">GetBalance(Address, Currency)</h4>
+  <div class="markdown level1 summary"><p>Queries <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The owner address to query.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_GetTotalSupply_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.GetTotalSupply(Libplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L91">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_GetTotalSupply_" data-uid="Libplanet.Action.State.World.GetTotalSupply*"></a>
+  <h4 id="Libplanet_Action_State_World_GetTotalSupply_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.World.GetTotalSupply(Libplanet.Types.Assets.Currency)">GetTotalSupply(Currency)</h4>
+  <div class="markdown level1 summary"><p>Returns the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetTotalSupply(Currency currency)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The total supply of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
+        <td><p>Thrown when the total supply of the
+given <code data-dev-comment-type="paramref" class="paramref">currency</code> is not trackable.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_State_World_GetTotalSupply_Libplanet_Types_Assets_Currency__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_MaximumSupply">MaximumSupply</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.MintAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L106">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_MintAsset_" data-uid="Libplanet.Action.State.World.MintAsset*"></a>
+  <h4 id="Libplanet_Action_State_World_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.World.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">MintAsset(IActionContext, Address, FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Mints the fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> (i.e., in-game monetary),
+and give it to the <code data-dev-comment-type="paramref" class="paramref">recipient</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> of the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executing this method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">recipient</span></td>
+        <td><p>The address who receives the minted asset.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The asset value to mint.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance that the given <code data-dev-comment-type="paramref" class="paramref">value</code> is added to <code data-dev-comment-type="paramref" class="paramref">recipient</code>'s balance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
+is less than or equal to 0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></td>
+        <td><p>Thrown when a transaction signer
+(or a miner in case of block actions) is not a member of the <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>'s <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.SupplyOverflowException.html">SupplyOverflowException</a></td>
+        <td><p>Thrown when the sum of the
+<code data-dev-comment-type="paramref" class="paramref">value</code> to be minted and the current total supply amount of the
+<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> exceeds the
+<a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_MaximumSupply">MaximumSupply</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccount)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L54">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L64">View Source</a>
   </span>
   <a id="Libplanet_Action_State_World_SetAccount_" data-uid="Libplanet.Action.State.World.SetAccount*"></a>
   <h4 id="Libplanet_Action_State_World_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Action.State.World.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)">SetAccount(Address, IAccount)</h4>
@@ -451,6 +804,116 @@ public IWorld SetAccount(Address address, IAccount account)</code></pre>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L198">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_World_TransferAsset_" data-uid="Libplanet.Action.State.World.TransferAsset*"></a>
+  <h4 id="Libplanet_Action_State_World_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_" data-uid="Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)">TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Transfers the fungible asset <code data-dev-comment-type="paramref" class="paramref">value</code> (i.e., in-game monetary)
+from the <code data-dev-comment-type="paramref" class="paramref">sender</code> to the <code data-dev-comment-type="paramref" class="paramref">recipient</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWorld TransferAsset(IActionContext context, Address sender, Address recipient, FungibleAssetValue value, bool allowNegativeBalance = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> of the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executing this method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">sender</span></td>
+        <td><p>The address who sends the fungible asset to
+the <code data-dev-comment-type="paramref" class="paramref">recipient</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">recipient</span></td>
+        <td><p>The address who receives the fungible asset from
+the <code data-dev-comment-type="paramref" class="paramref">sender</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The asset value to transfer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">allowNegativeBalance</span></td>
+        <td><p>Turn on to allow <code data-dev-comment-type="paramref" class="paramref">sender</code>'s balance
+less than zero.  Turned off by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance that the given <code data-dev-comment-type="paramref" class="paramref">value</code>  is subtracted from <code data-dev-comment-type="paramref" class="paramref">sender</code>'s balance and added to
+<code data-dev-comment-type="paramref" class="paramref">recipient</code>'s balance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_State_World_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The behavior is different depending on <code data-dev-comment-type="paramref" class="paramref">context</code>'s
+<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockProtocolVersion">BlockProtocolVersion</a>.  There is a bug for version 0
+where this may not act as intended.  Such behavior is left intact for backward
+compatibility.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
+is less than or equal to zero.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">sender</code>
+has insufficient balance than <code data-dev-comment-type="paramref" class="paramref">value</code> to transfer and
+the <code data-dev-comment-type="paramref" class="paramref">allowNegativeBalance</code> option is turned off.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>
@@ -469,7 +932,7 @@ public IWorld SetAccount(Address address, IAccount account)</code></pre>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_World.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.World%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/World.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
