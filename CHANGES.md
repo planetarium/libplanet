@@ -16,6 +16,8 @@ To be released.
     methods from `IAccount` to `IWorld`.  [[#3694], [#3697]]
  -  (Libplanet.Action) Removed `TotalSupplyDiff`, `FungibleAssetValueDiff`,
     and `ValidatorDiff` properties from `AccountDiff`.  [[#3694], [#3697]]
+ -  (Libplanet.Action) Removed `Uncommitted` property and `CommitAccount()`
+    method from `IWorldDelta`.  [[#3694], [#3699]]
 
 ### Backward-incompatible network protocol changes
 
@@ -33,6 +35,7 @@ To be released.
 
 [#3694]: https://github.com/planetarium/libplanet/issues/3694
 [#3697]: https://github.com/planetarium/libplanet/pull/3697
+[#3699]: https://github.com/planetarium/libplanet/pull/3699
 
 
 Version 4.1.0
