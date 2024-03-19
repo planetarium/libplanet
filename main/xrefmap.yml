@@ -2144,19 +2144,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldDelta.Accounts
   nameWithType: IWorldDelta.Accounts
-- uid: Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  name: CommitAccount(Address)
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_CommitAccount_Libplanet_Crypto_Address_
-  commentId: M:Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  fullName: Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  nameWithType: IWorldDelta.CommitAccount(Address)
-- uid: Libplanet.Action.State.IWorldDelta.CommitAccount*
-  name: CommitAccount
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_CommitAccount_
-  commentId: Overload:Libplanet.Action.State.IWorldDelta.CommitAccount
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldDelta.CommitAccount
-  nameWithType: IWorldDelta.CommitAccount
 - uid: Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
   name: SetAccount(Address, IAccount)
   href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
@@ -2170,19 +2157,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldDelta.SetAccount
   nameWithType: IWorldDelta.SetAccount
-- uid: Libplanet.Action.State.IWorldDelta.Uncommitted
-  name: Uncommitted
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted
-  commentId: P:Libplanet.Action.State.IWorldDelta.Uncommitted
-  fullName: Libplanet.Action.State.IWorldDelta.Uncommitted
-  nameWithType: IWorldDelta.Uncommitted
-- uid: Libplanet.Action.State.IWorldDelta.Uncommitted*
-  name: Uncommitted
-  href: api/Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted_
-  commentId: Overload:Libplanet.Action.State.IWorldDelta.Uncommitted
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldDelta.Uncommitted
-  nameWithType: IWorldDelta.Uncommitted
 - uid: Libplanet.Action.State.IWorldState
   name: IWorldState
   href: api/Libplanet.Action.State.IWorldState.html
@@ -2681,19 +2655,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldDelta.Accounts
   nameWithType: WorldDelta.Accounts
-- uid: Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  name: CommitAccount(Address)
-  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_CommitAccount_Libplanet_Crypto_Address_
-  commentId: M:Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  fullName: Libplanet.Action.State.WorldDelta.CommitAccount(Libplanet.Crypto.Address)
-  nameWithType: WorldDelta.CommitAccount(Address)
-- uid: Libplanet.Action.State.WorldDelta.CommitAccount*
-  name: CommitAccount
-  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_CommitAccount_
-  commentId: Overload:Libplanet.Action.State.WorldDelta.CommitAccount
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldDelta.CommitAccount
-  nameWithType: WorldDelta.CommitAccount
 - uid: Libplanet.Action.State.WorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
   name: SetAccount(Address, IAccount)
   href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
@@ -2707,19 +2668,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldDelta.SetAccount
   nameWithType: WorldDelta.SetAccount
-- uid: Libplanet.Action.State.WorldDelta.Uncommitted
-  name: Uncommitted
-  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Uncommitted
-  commentId: P:Libplanet.Action.State.WorldDelta.Uncommitted
-  fullName: Libplanet.Action.State.WorldDelta.Uncommitted
-  nameWithType: WorldDelta.Uncommitted
-- uid: Libplanet.Action.State.WorldDelta.Uncommitted*
-  name: Uncommitted
-  href: api/Libplanet.Action.State.WorldDelta.html#Libplanet_Action_State_WorldDelta_Uncommitted_
-  commentId: Overload:Libplanet.Action.State.WorldDelta.Uncommitted
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldDelta.Uncommitted
-  nameWithType: WorldDelta.Uncommitted
 - uid: Libplanet.Action.Sys
   name: Libplanet.Action.Sys
   href: api/Libplanet.Action.Sys.html

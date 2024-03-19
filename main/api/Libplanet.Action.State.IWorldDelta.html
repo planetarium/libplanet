@@ -115,107 +115,18 @@ IImmutableDictionary&lt;Address, IAccount&gt; Accounts { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldDelta_Uncommitted.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldDelta.Uncommitted%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldDelta.cs/#L21">View Source</a>
-  </span>
-  <a id="Libplanet_Action_State_IWorldDelta_Uncommitted_" data-uid="Libplanet.Action.State.IWorldDelta.Uncommitted*"></a>
-  <h4 id="Libplanet_Action_State_IWorldDelta_Uncommitted" data-uid="Libplanet.Action.State.IWorldDelta.Uncommitted">Uncommitted</h4>
-  <div class="markdown level1 summary"><p>A dictionary representing changed account states for each <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>.
-Elements of this collection are removed when <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_CommitAccount_Libplanet_Crypto_Address_">CommitAccount(Address)</a> called
-by corresponding <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IImmutableDictionary&lt;Address, IAccount&gt; Uncommitted { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldDelta_CommitAccount_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldDelta.cs/#L46">View Source</a>
-  </span>
-  <a id="Libplanet_Action_State_IWorldDelta_CommitAccount_" data-uid="Libplanet.Action.State.IWorldDelta.CommitAccount*"></a>
-  <h4 id="Libplanet_Action_State_IWorldDelta_CommitAccount_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IWorldDelta.CommitAccount(Libplanet.Crypto.Address)">CommitAccount(Address)</h4>
-  <div class="markdown level1 summary"><p>Remove item from <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted">Uncommitted</a> dictionary where its key is
-<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IWorldDelta CommitAccount(Address address)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p><a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> to
-remove from <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted">Uncommitted</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IWorldDelta.html">IWorldDelta</a></td>
-        <td><p>New <a class="xref" href="Libplanet.Action.State.IWorldDelta.html">IWorldDelta</a> item of <code data-dev-comment-type="paramref" class="paramref">address</code> removed from
-<a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted">Uncommitted</a>.
-If corresponding uncommitted does not exist, returns identical one.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccount)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldDelta.cs/#L32">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldDelta.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorldDelta_SetAccount_" data-uid="Libplanet.Action.State.IWorldDelta.SetAccount*"></a>
   <h4 id="Libplanet_Action_State_IWorldDelta_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Action.State.IWorldDelta.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)">SetAccount(Address, IAccount)</h4>
-  <div class="markdown level1 summary"><p>Set account on both of <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Accounts">Accounts</a> and <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Uncommitted">Uncommitted</a>
+  <div class="markdown level1 summary"><p>Set account on both of <a class="xref" href="Libplanet.Action.State.IWorldDelta.html#Libplanet_Action_State_IWorldDelta_Accounts">Accounts</a> and <see cref="!:Uncommitted"></see>
 dictionaries. If <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> already exists on
 <code data-dev-comment-type="paramref" class="paramref">address</code>, update with new <code data-dev-comment-type="paramref" class="paramref">account</code>.</p>
 </div>
