@@ -47,6 +47,9 @@ public partial class StateQueryTest
     // Behaves like a non-empty world only if state root hash is non-null.
     private class MockWorldState : IWorldState
     {
+        public static readonly Address Address =
+            new Address("0x5003712B63baAB98094aD678EA2B24BcE445D076");
+
         private readonly HashDigest<SHA256>? _stateRootHash;
 
         public MockWorldState(HashDigest<SHA256>? stateRootHash)
@@ -66,15 +69,13 @@ public partial class StateQueryTest
                 : new MockAccountState(null);
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).Trie
-                .Get(ToFungibleAssetKey(address, currency)) is Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
+            _stateRootHash is { } && Address.Equals(address)
+                ? currency * 123
+                : currency * 0;
 
         public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).Trie
-                .Get(ToTotalSupplyKey(currency)) is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
+            _stateRootHash is { }
+                ? currency * 10000
                 : currency * 0;
     }
 
@@ -103,16 +104,6 @@ public partial class StateQueryTest
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(address => GetState(address)).ToList();
-
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            _stateRootHash is { } && Address.Equals(address)
-                ? currency * 123
-                : currency * 0;
-
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            _stateRootHash is { }
-                ? currency * 10000
-                : currency * 0;
 
         public ValidatorSet GetValidatorSet() =>
             new ValidatorSet(new List<Validator>
