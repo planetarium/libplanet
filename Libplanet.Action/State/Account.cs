@@ -21,16 +21,8 @@ namespace Libplanet.Action.State
         private readonly IAccountState _state;
 
         public Account(IAccountState state)
-            : this(state, ImmutableHashSet<(Address, Currency)>.Empty)
-        {
-        }
-
-        public Account(
-            IAccountState state,
-            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
         {
             _state = state;
-            TotalUpdatedFungibleAssets = totalUpdatedFungibleAssets;
         }
 
         /// <inheritdoc/>
@@ -187,14 +179,8 @@ namespace Libplanet.Action.State
         private Account UpdateState(
             Address address,
             IValue? value) => value is { } v
-                ? new Account(
-                    new AccountState(
-                        Trie.Set(ToStateKey(address), v)),
-                    TotalUpdatedFungibleAssets)
-                : new Account(
-                    new AccountState(
-                        Trie.Remove(ToStateKey(address))),
-                    TotalUpdatedFungibleAssets);
+                ? new Account(new AccountState(Trie.Set(ToStateKey(address), v)))
+                : new Account(new AccountState(Trie.Remove(ToStateKey(address))));
 
         [Pure]
         private Account UpdateFungibleAssets(
@@ -206,19 +192,16 @@ namespace Libplanet.Action.State
                 new AccountState(
                     Trie
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))),
-                TotalUpdatedFungibleAssets.Add((address, currency)))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
             : new Account(
                 new AccountState(
-                    Trie.Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
-                TotalUpdatedFungibleAssets.Add((address, currency)));
+                    Trie.Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
 
         [Pure]
         private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
             new Account(
                 new AccountState(
-                    Trie.Set(ValidatorSetKey, validatorSet.Bencoded)),
-                TotalUpdatedFungibleAssets);
+                    Trie.Set(ValidatorSetKey, validatorSet.Bencoded)));
 
         [Pure]
         private IAccount TransferAssetV0(

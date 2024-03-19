@@ -1026,25 +1026,22 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 2,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
                     .TotalUpdatedFungibleAssets
                     .Count(updated => updated.Item2.Equals(currency)));
             Assert.Equal(
                 4,
                 latest
-                    .GetAccount(ReservedAddresses.LegacyAccount)
                     .TotalUpdatedFungibleAssets
                     .Count(updated => updated.Item2.Equals(gas)));
             Assert.Contains(
                 (addresses[0], currency),
-                latest
-                    .GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
             Assert.Contains(
                 (addresses[1], currency),
-                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
             Assert.DoesNotContain(
                 (addresses[2], currency),
-                latest.GetAccount(ReservedAddresses.LegacyAccount).TotalUpdatedFungibleAssets);
+                latest.TotalUpdatedFungibleAssets);
         }
 
         [Fact]

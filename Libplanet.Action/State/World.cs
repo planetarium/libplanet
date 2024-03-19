@@ -71,18 +71,10 @@ namespace Libplanet.Action.State
                     nameof(address));
             }
 
-            if (!address.Equals(ReservedAddresses.LegacyAccount)
-                && account.TotalUpdatedFungibleAssets.Count > 0)
-            {
-                throw new ArgumentException(
-                    $"Cannot set a non-legacy account ({address}) with an updated fungible assets.",
-                    nameof(address));
-            }
-
             return new World(
                 _baseState,
                 Delta.SetAccount(address, account),
-                TotalUpdatedFungibleAssets.Union(account.TotalUpdatedFungibleAssets));
+                TotalUpdatedFungibleAssets);
         }
 
         public FungibleAssetValue GetBalance(Address address, Currency currency) =>
@@ -193,32 +185,43 @@ namespace Libplanet.Action.State
                 ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
                 : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
 
+        private IWorld SetAccount(
+            Address address,
+            IAccount account,
+            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
+        {
+            if (Legacy && !address.Equals(ReservedAddresses.LegacyAccount))
+            {
+                throw new ArgumentException(
+                    $"Cannot set a non-legacy account ({address}) to a legacy {nameof(IWorld)}.",
+                    nameof(address));
+            }
+
+            return new World(
+                _baseState,
+                Delta.SetAccount(address, account),
+                totalUpdatedFungibleAssets);
+        }
+
         private IWorld UpdateFungibleAssets(
             Address address,
             Currency currency,
             BigInteger amount,
             BigInteger? supplyAmount = null)
         {
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
-            if (supplyAmount is { } sa)
-            {
-                account = new Account(
-                    new AccountState(
-                        account.Trie
-                            .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                            .Set(ToTotalSupplyKey(currency), new Integer(sa))),
-                    account.TotalUpdatedFungibleAssets.Add((address, currency)));
-            }
-            else
-            {
-                account = new Account(
-                    new AccountState(
-                        account.Trie
-                            .Set(ToFungibleAssetKey(address, currency), new Integer(amount))),
-                    account.TotalUpdatedFungibleAssets.Add((address, currency)));
-            }
+            IAccount account = supplyAmount is { } sa
+                ? new Account(new AccountState(
+                    GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
+                : new Account(new AccountState(
+                    GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
 
-            return SetAccount(ReservedAddresses.LegacyAccount, account);
+            return SetAccount(
+                ReservedAddresses.LegacyAccount,
+                account,
+                TotalUpdatedFungibleAssets.Add((address, currency)));
         }
 
         private IWorld TransferAssetV0(

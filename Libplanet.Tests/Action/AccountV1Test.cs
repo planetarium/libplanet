@@ -1,4 +1,3 @@
-using System.Linq;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
@@ -53,43 +52,6 @@ namespace Libplanet.Tests.Action
 
             account = account.BurnAsset(context, _addr[0], Value(4, 5));
             Assert.Equal(Value(4, 5), account.GetTotalSupply(_currencies[4]));
-        }
-
-        [Fact]
-        public virtual void TotalUpdatedFungibleAssets()
-        {
-            IAccount delta0 = _initAccount;
-            IActionContext context0 = _initContext;
-
-            // currencies[0] (FOO) allows only _addr[0] to burn
-            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 1));
-            Assert.Contains(
-                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.DoesNotContain(
-                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-
-            // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint and burn
-            delta0 = delta0.MintAsset(context0, _addr[0], Value(1, 1));
-            Assert.Contains(
-                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.Contains(
-                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.DoesNotContain(
-                _addr[1], delta0.TotalUpdatedFungibleAssets.Select(pair => pair.Item1));
-
-            context0 = CreateContext(delta0, _addr[1]);
-            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 1));
-
-            // _addr[0] burned currencies[0] & minted currencies[1]
-            // _addr[1] burned currencies[1]
-            Assert.Contains(
-                (_addr[0], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.Contains(
-                (_addr[0], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.DoesNotContain(
-                (_addr[1], Value(0, 0).Currency), delta0.TotalUpdatedFungibleAssets);
-            Assert.Contains(
-                (_addr[1], Value(1, 0).Currency), delta0.TotalUpdatedFungibleAssets);
         }
     }
 }

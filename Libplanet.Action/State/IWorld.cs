@@ -78,18 +78,8 @@ namespace Libplanet.Action.State
         /// a new <see cref="IWorld"/> instance with an updated world state instead.
         /// </remarks>
         /// <exception cref="ArgumentException">
-        /// Thrown for one of the following reasons:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <see cref="Legacy"/> is <see langword="true"/> and <paramref name="address"/>
-        ///         is not <see cref="ReservedAddresses.LegacyAccount"/>.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If <paramref name="address"/> is
-        ///         not <see cref="ReservedAddresses.LegacyAccount"/> and
-        ///         <see cref="IAccount.TotalUpdatedFungibleAssets"/> is non-empty.
-        ///     </description></item>
-        /// </list>
+        /// Thrown when <see cref="Legacy"/> is <see langword="true"/> and
+        /// <paramref name="address"/> is not <see cref="ReservedAddresses.LegacyAccount"/>.
         /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);

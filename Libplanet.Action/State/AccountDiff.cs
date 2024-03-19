@@ -25,8 +25,7 @@ namespace Libplanet.Action.State
     ///     <item><description>
     ///         This only shows the difference in "states" manipulated using
     ///         <see cref="IAccount.SetState"/> and <see cref="IAccount.RemoveState"/>.  That is,
-    ///         this does care about differences in <see cref="IAccountState.GetTotalSupply"/>,
-    ///         <see cref="IAccount.TotalUpdatedFungibleAssets"/> and
+    ///         this does care about differences in <see cref="IAccountState.GetTotalSupply"/> and
     ///         <see cref="IAccountState.GetValidatorSet"/>.
     ///     </description></item>
     ///     <item><description>
