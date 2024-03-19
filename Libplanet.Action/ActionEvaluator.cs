@@ -579,28 +579,23 @@ namespace Libplanet.Action
                 new WorldBaseState(
                     stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
                     stateStore),
-                prevWorld.Delta.CommitAccount(ReservedAddresses.LegacyAccount),
+                new WorldDelta(),
                 prevWorld.TotalUpdatedFungibleAssets);
         }
 
         private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
         {
             var worldTrie = prevWorld.Trie;
-            var worldDelta = prevWorld.Delta;
-            foreach (var account in prevWorld.Delta.Uncommitted)
+            foreach (var account in prevWorld.Delta.Accounts)
             {
                 var accountTrie = stateStore.Commit(account.Value.Trie);
                 worldTrie = worldTrie.Set(
                     ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
-                worldDelta = worldDelta.SetAccount(
-                    account.Key,
-                    new Account(new AccountState(accountTrie)));
-                worldDelta = worldDelta.CommitAccount(account.Key);
             }
 
             return new World(
                 new WorldBaseState(stateStore.Commit(worldTrie), stateStore),
-                worldDelta,
+                new WorldDelta(),
                 prevWorld.TotalUpdatedFungibleAssets);
         }
 
