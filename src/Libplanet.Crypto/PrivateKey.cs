@@ -231,6 +231,47 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
+        /// Creates a <see cref="Proof"/> from the given <paramref name="message"/>.
+        /// <para>
+        /// A created <see cref="Proof"/> can be verified by the corresponding
+        /// <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>
+        /// A created <see cref="Proof"/> can generate unique pseudorandom byte.
+        /// </para>
+        /// <para>
+        /// <see cref="Proof"/> can be created by the <see cref="PrivateKey"/>
+        /// and only can be verified with corresponding <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>
+        /// To sum up, a <see cref="Proof"/> is used to guarantee:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>that the <paramref name="message"/> was created
+        /// by someone possessing the corresponding <see cref="PrivateKey"/>,
+        /// </description></item>
+        /// <item><description>that the possessor cannot deny having sent the
+        /// <paramref name="message"/>,</description></item>
+        /// <item><description>that the <paramref name="message"/> was not
+        /// forged in the middle of transit, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was created
+        /// properly by someone possessing the corresponding
+        /// <see cref="PrivateKey"/>, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was not
+        /// forged in the middle of transit.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="message">A message <see cref="byte"/>s to sign.</param>
+        /// <returns>A <see cref="Proof"/> that proves the authenticity of the 
+        /// <paramref name="message"/>.
+        /// It can be verified using <see cref="PublicKey.VerifyProof"/> method.
+        /// </returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.VerifyProof"/>
+        /// 
+        public Proof Prove(IEnumerable<byte> message)
+            => new Proof(CryptoConfig.ConsensusCryptoBackend.Prove(message.ToArray(), this));
+
+        /// <summary>
         /// Creates a signature from the given <paramref name="message"/>.
         /// <para>A created signature can be verified by the corresponding <see cref="PublicKey"/>.
         /// </para>
