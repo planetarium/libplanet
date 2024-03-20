@@ -10,8 +10,8 @@ namespace Libplanet.Crypto
     public interface IConsensusCryptoBackend
     {
         /// <summary>
-        /// Creates a <c>piBytes</c>(proof) from <paramref name="alphaBytes"/> with the corresponding
-        /// <paramref name="privateKey"/>.
+        /// Creates a <c>piBytes</c>(proof) from <paramref name="alphaBytes"/>
+        /// with the corresponding <paramref name="privateKey"/>.
         /// </summary>
         /// <param name="alphaBytes">A message bytearray to generate piBytes.
         /// </param>

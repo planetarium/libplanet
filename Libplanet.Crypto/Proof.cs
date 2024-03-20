@@ -147,7 +147,9 @@ namespace Libplanet.Crypto
         /// </returns>
         public BigInteger Draw(int expectedSize, BigInteger power, BigInteger totalPower)
         {
-            double targetProb = (double)HashInt / (double)HashToInt(Enumerable.Repeat(byte.MaxValue, 64).ToImmutableArray());
+            double targetProb
+                = (double)HashInt
+                / (double)HashToInt(Enumerable.Repeat(byte.MaxValue, 64).ToImmutableArray());
 
             return BinomialQuantileFunction(targetProb, expectedSize / (double)totalPower, power);
         }
