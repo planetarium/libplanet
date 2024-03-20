@@ -217,6 +217,24 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
+        /// <para>
+        /// Verifies whether a <paramref name="proof"/> proves authenticity of
+        /// <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="message">A original plaintext message that the <paramref name="proof"/>
+        /// tries to prove its authenticity.  I.e., an argument data passed to
+        /// <see cref="PrivateKey.Prove(IEnumerable{byte})"/> method.</param>
+        /// <param name="proof">A <see cref="Proof"/> which tries to authenticity of
+        /// <paramref name="message"/>.
+        /// I.e., a data that <see cref="PrivateKey.Prove(IEnumerable{byte})"/> method returned.</param>
+        /// <returns><c>true</c> if the <paramref name="proof"/> proves authenticity of
+        /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// Otherwise <c>false</c>.</returns>
+        public bool VerifyProof(byte[] message, Proof proof)
+            => CryptoConfig.ConsensusCryptoBackend.VerifyProof(message, proof.ToByteArray(), this);
+
+        /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
         /// </summary>
         /// <param name="compress">Returns a short length representation if it is
