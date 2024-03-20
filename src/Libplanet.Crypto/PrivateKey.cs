@@ -262,12 +262,11 @@ namespace Libplanet.Crypto
         /// </list>
         /// </summary>
         /// <param name="message">A message <see cref="byte"/>s to sign.</param>
-        /// <returns>A <see cref="Proof"/> that proves the authenticity of the 
+        /// <returns>A <see cref="Proof"/> that proves the authenticity of the
         /// <paramref name="message"/>.
         /// It can be verified using <see cref="PublicKey.VerifyProof"/> method.
         /// </returns>
         /// <seealso cref="Libplanet.Crypto.PublicKey.VerifyProof"/>
-        /// 
         public Proof Prove(IEnumerable<byte> message)
             => new Proof(CryptoConfig.ConsensusCryptoBackend.Prove(message.ToArray(), this));
 

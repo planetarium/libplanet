@@ -227,7 +227,8 @@ namespace Libplanet.Crypto
         /// <see cref="PrivateKey.Prove(IEnumerable{byte})"/> method.</param>
         /// <param name="proof">A <see cref="Proof"/> which tries to authenticity of
         /// <paramref name="message"/>.
-        /// I.e., a data that <see cref="PrivateKey.Prove(IEnumerable{byte})"/> method returned.</param>
+        /// I.e., a data that <see cref="PrivateKey.Prove(IEnumerable{byte})"/> method returned.
+        /// </param>
         /// <returns><c>true</c> if the <paramref name="proof"/> proves authenticity of
         /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
         /// Otherwise <c>false</c>.</returns>
