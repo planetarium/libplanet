@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using Libplanet.Action;
 using Libplanet.Store;
@@ -9,8 +10,10 @@ namespace Libplanet.RocksDBStore.Tests
 {
     public class RocksDBStoreFixture : StoreFixture
     {
-        public RocksDBStoreFixture(IAction blockAction = null)
-            : base(blockAction)
+        public RocksDBStoreFixture(
+            ImmutableArray<IAction>? beginBlockActions = null,
+            ImmutableArray<IAction>? endBlockActions = null)
+            : base(beginBlockActions, endBlockActions)
         {
             Path = System.IO.Path.Combine(
                 System.IO.Path.GetTempPath(),

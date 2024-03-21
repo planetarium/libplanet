@@ -51,10 +51,13 @@ namespace Libplanet.Tests.Blockchain
                 .ForContext<BlockChainTest>();
 
             _policy = new BlockPolicy(
-                blockAction: new MinerReward(1),
+                beginBlockActions: ImmutableArray<IAction>.Empty,
+                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
                 getMaxTransactionsBytes: _ => 50 * 1024);
             _stagePolicy = new VolatileStagePolicy();
-            _fx = GetStoreFixture(_policy.BlockAction);
+            _fx = GetStoreFixture(
+                _policy.BeginBlockActions,
+                _policy.EndBlockActions);
             _renderer = new ValidatingActionRenderer();
             _blockChain = BlockChain.Create(
                 _policy,
@@ -63,7 +66,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
-                    _ => _policy.BlockAction,
+                    _ => _policy.BeginBlockActions,
+                    _ => _policy.EndBlockActions,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
                 renderers: new[] { new LoggedActionRenderer(_renderer, Log.Logger) }
@@ -128,7 +132,16 @@ namespace Libplanet.Tests.Blockchain
             chain2.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
-            var policy = new BlockPolicy(new MinerReward(1));
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new MinerReward(1)
+            );
+
+            var policy = new BlockPolicy(
+                beginActions,
+                endActions
+            );
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
             var z = new BlockChain(
                 policy,
@@ -138,7 +151,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -184,7 +198,8 @@ namespace Libplanet.Tests.Blockchain
             var actionLoader = TypedActionLoader.Create(
                 typeof(BaseAction).Assembly, typeof(BaseAction));
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore,
                 actionLoader);
             var nonce = 0;
@@ -560,7 +575,9 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ForkChainWithIncompleteBlockStates()
         {
-            var fx = new MemoryStoreFixture(_policy.BlockAction);
+            var fx = new MemoryStoreFixture(
+                _policy.BeginBlockActions,
+                _policy.EndBlockActions);
             (_, _, BlockChain chain) =
                 MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             BlockChain forked = chain.Fork(chain[5].Hash);
@@ -617,7 +634,8 @@ namespace Libplanet.Tests.Blockchain
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var actionEvaluator = new ActionEvaluator(
-                    _ => _policy.BlockAction,
+                    _ => _policy.BeginBlockActions,
+                    _ => _policy.EndBlockActions,
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var privateKey = new PrivateKey();
@@ -649,7 +667,8 @@ namespace Libplanet.Tests.Blockchain
                     stateStore,
                     genesis,
                     new ActionEvaluator(
-                        _ => _policy.BlockAction,
+                        _ => _policy.BeginBlockActions,
+                        _ => _policy.EndBlockActions,
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
                     renderers: new[] { renderer }
@@ -1039,10 +1058,13 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public void ReorgIsUnableToHeterogenousChain(bool render)
         {
-            using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
+            var beginActions = _policy.BeginBlockActions;
+            var endActions = _policy.EndBlockActions;
+            using (var fx2 = new MemoryStoreFixture(beginActions, endActions))
             {
                 var actionEvaluator = new ActionEvaluator(
-                    _ => _policy.BlockAction,
+                    _ => _policy.BeginBlockActions,
+                    _ => _policy.EndBlockActions,
                     stateStore: fx2.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
                 Block genesis2 = ProposeGenesisBlock(
@@ -1098,7 +1120,8 @@ namespace Libplanet.Tests.Blockchain
             IStore store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             Block genesisWithTx = ProposeGenesisBlock(
@@ -1140,7 +1163,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1199,7 +1223,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1300,7 +1325,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1387,9 +1413,11 @@ namespace Libplanet.Tests.Blockchain
                 new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
             var locator = new BlockLocator(
                 new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
+            var beginActions = _policy.BeginBlockActions;
+            var endActions = _policy.EndBlockActions;
 
-            using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
-            using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
+            using (var emptyFx = new MemoryStoreFixture(beginActions, endActions))
+            using (var forkFx = new MemoryStoreFixture(beginActions, endActions))
             {
                 var emptyChain = BlockChain.Create(
                     _blockChain.Policy,
@@ -1398,7 +1426,8 @@ namespace Libplanet.Tests.Blockchain
                     emptyFx.StateStore,
                     emptyFx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => _blockChain.Policy.BlockAction,
+                        _ => _blockChain.Policy.BeginBlockActions,
+                        _ => _blockChain.Policy.EndBlockActions,
                         stateStore: emptyFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var fork = BlockChain.Create(
@@ -1408,7 +1437,8 @@ namespace Libplanet.Tests.Blockchain
                     forkFx.StateStore,
                     forkFx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => _blockChain.Policy.BlockAction,
+                        _ => _blockChain.Policy.BeginBlockActions,
+                        _ => _blockChain.Policy.EndBlockActions,
                         stateStore: forkFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 fork.Append(b1, CreateBlockCommit(b1));
@@ -1764,7 +1794,8 @@ namespace Libplanet.Tests.Blockchain
             Guid chainId = Guid.NewGuid();
             var chainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
-                _ => blockPolicy.BlockAction,
+                _ => blockPolicy.BeginBlockActions,
+                _ => blockPolicy.EndBlockActions,
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
             Block genesisBlock = ProposeGenesisBlock(
@@ -1861,10 +1892,13 @@ namespace Libplanet.Tests.Blockchain
         /// Configures the store fixture that every test in this class depends on.
         /// Subclasses should override this.
         /// </summary>
-        /// <param name="blockAction">The block action to use.</param>
+        /// <param name="beginBlockActions">The begin block action to use.</param>
+        /// <param name="endBlockActions">The end block action to use.</param>
         /// <returns>The store fixture that every test in this class depends on.</returns>
-        protected virtual StoreFixture GetStoreFixture(IAction blockAction) =>
-            new MemoryStoreFixture(blockAction: blockAction);
+        protected virtual StoreFixture GetStoreFixture(
+            ImmutableArray<IAction>? beginBlockActions = null,
+            ImmutableArray<IAction>? endBlockActions = null)
+            => new MemoryStoreFixture(beginBlockActions, endBlockActions);
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
             PrivateKey privateKey = null,
@@ -2003,7 +2037,8 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(
                 storeFixture.Store, storeFixture.StateStore);
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 storeFixture.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             BlockChain blockChain = BlockChain.Create(
@@ -2048,7 +2083,8 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlockA = BlockChain.ProposeGenesisBlock();
@@ -2131,7 +2167,8 @@ namespace Libplanet.Tests.Blockchain
                 null,
                 List.Empty);
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisWithTx = ProposeGenesisBlock(
@@ -2198,7 +2235,8 @@ namespace Libplanet.Tests.Blockchain
                 .ToImmutableList();
 
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 storeFixture.StateStore,
                 new SingleActionLoader(typeof(SetValidator)));
             Block genesis = BlockChain.ProposeGenesisBlock(
