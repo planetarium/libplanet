@@ -1008,7 +1008,8 @@ namespace Libplanet.Tests.Store
                 var policy = new NullBlockPolicy();
                 var preEval = ProposeGenesis(proposer: GenesisProposer.PublicKey);
                 var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = preEval.Sign(

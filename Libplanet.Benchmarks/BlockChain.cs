@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -35,7 +36,8 @@ namespace Libplanet.Benchmarks
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
-                    policyBlockActionGetter: _ => null,
+                    policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             var key = new PrivateKey();

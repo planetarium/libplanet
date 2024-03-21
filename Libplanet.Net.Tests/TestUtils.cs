@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
@@ -46,7 +47,8 @@ namespace Libplanet.Net.Tests
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
         public static readonly IBlockPolicy Policy = new BlockPolicy(
-            blockAction: new MinerReward(1),
+            beginBlockActions: ImmutableArray<IAction>.Empty,
+            endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
             getMaxTransactionsBytes: _ => 50 * 1024);
 
         public static readonly IActionLoader ActionLoader = new SingleActionLoader(
@@ -234,7 +236,9 @@ namespace Libplanet.Net.Tests
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
-            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var fx = new MemoryStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions);
             var blockChain = CreateDummyBlockChain(fx, policy, actionLoader);
             ConsensusContext? consensusContext = null;
 

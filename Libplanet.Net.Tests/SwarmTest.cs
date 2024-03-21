@@ -398,7 +398,9 @@ namespace Libplanet.Net.Tests
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
             var policy = new NullBlockPolicy();
-            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+            var genesis = new MemoryStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
                 new BoundPeer(
@@ -877,7 +879,12 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var policy = new BlockPolicy(new MinerReward(1));
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new MinerReward(1)
+            );
+            var policy = new BlockPolicy(beginActions, endActions);
             var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain(
                 policy,
@@ -946,7 +953,12 @@ namespace Libplanet.Net.Tests
         [Fact(Skip = "This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
-            var policy = new BlockPolicy(new MinerReward(1));
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new MinerReward(1)
+            );
+            var policy = new BlockPolicy(beginActions, endActions);
 
             async Task<Swarm> MakeSwarm(PrivateKey key = null) =>
                 await CreateSwarm(
