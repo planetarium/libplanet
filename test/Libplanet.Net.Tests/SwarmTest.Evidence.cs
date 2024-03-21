@@ -26,7 +26,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new NullBlockPolicy();
             var genesisBlock = new MemoryStoreFixture(
-                policy.BlockAction).GenesisBlock;
+                policy.BeginBlockActions).GenesisBlock;
             var genesisProposer = Libplanet.Tests.TestUtils.GenesisProposer;
             var privateKeys = Libplanet.Tests.TestUtils.ValidatorPrivateKeys.ToArray();
             var count = privateKeys.Length;

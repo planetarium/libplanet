@@ -71,8 +71,11 @@ public class BlockPolicyParams : ICommandParameterSet
     public object? GetBlockPolicy() =>
         GetBlockPolicy(LoadAssemblies());
 
-    public IAction? GetBlockAction() =>
-        GetBlockAction(LoadAssemblies());
+    public ImmutableArray<IAction> GetBeginBlockActions() =>
+        GetBeginBlockActions(LoadAssemblies());
+
+    public ImmutableArray<IAction> GetEndBlockActions() =>
+        GetEndBlockActions(LoadAssemblies());
 
     [SuppressMessage(
         "Major Code Smell",
@@ -132,17 +135,65 @@ public class BlockPolicyParams : ICommandParameterSet
         );
     }
 
-    internal IAction? GetBlockAction(Assembly[] assemblies)
+    internal ImmutableArray<IAction> GetBeginBlockActions(Assembly[] assemblies)
     {
         object? policy = GetBlockPolicy(assemblies);
         if (policy is null)
         {
-            return null;
+            return ImmutableArray<IAction>.Empty;
         }
 
-        PropertyInfo? prop = policy
+        PropertyInfo? propertyInfo = policy
             .GetType()
-            .GetProperty(nameof(IBlockPolicy.BlockAction));
-        return (IAction?)prop!.GetValue(policy);
+            .GetProperty(nameof(IBlockPolicy.BeginBlockActions));
+        if (propertyInfo is null)
+        {
+            var message = $"The policy type "
+                + $"'{policy.GetType().FullName}' does not have a "
+                + $"'{nameof(IBlockPolicy.BeginBlockActions)}' property.";
+            throw new InvalidOperationException(message);
+        }
+
+        var value = propertyInfo.GetValue(policy);
+        if (value is null)
+        {
+            var message = $"The value of property "
+                + $"'{nameof(IBlockPolicy.BeginBlockActions)}' of type "
+                + $"'{policy.GetType().FullName}' cannot be null.";
+            throw new InvalidOperationException(message);
+        }
+
+        return (ImmutableArray<IAction>)value;
+    }
+
+    internal ImmutableArray<IAction> GetEndBlockActions(Assembly[] assemblies)
+    {
+        object? policy = GetBlockPolicy(assemblies);
+        if (policy is null)
+        {
+            return ImmutableArray<IAction>.Empty;
+        }
+
+        PropertyInfo? propertyInfo = policy
+            .GetType()
+            .GetProperty(nameof(IBlockPolicy.EndBlockActions));
+        if (propertyInfo is null)
+        {
+            var message = $"The policy type "
+                + $"'{policy.GetType().FullName}' does not have a "
+                + $"'{nameof(IBlockPolicy.EndBlockActions)}' property.";
+            throw new InvalidOperationException(message);
+        }
+
+        var value = propertyInfo.GetValue(policy);
+        if (value is null)
+        {
+            var message = $"The value of property "
+                + $"'{nameof(IBlockPolicy.EndBlockActions)}' of type "
+                + $"'{policy.GetType().FullName}' cannot be null.";
+            throw new InvalidOperationException(message);
+        }
+
+        return (ImmutableArray<IAction>)value;
     }
 }

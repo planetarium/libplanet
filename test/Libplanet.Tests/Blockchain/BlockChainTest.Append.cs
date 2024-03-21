@@ -489,7 +489,8 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BlockAction,
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions,
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -625,7 +626,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
@@ -753,13 +755,17 @@ namespace Libplanet.Tests.Blockchain
         public void DoesNotMigrateStateWithoutAction()
         {
             var policy = new BlockPolicy(
-                blockAction: null,
+                beginBlockActions: ImmutableArray<IAction>.Empty,
+                endBlockActions: ImmutableArray<IAction>.Empty,
                 getMaxTransactionsBytes: _ => 50 * 1024);
             var stagePolicy = new VolatileStagePolicy();
-            var fx = GetStoreFixture(policy.BlockAction);
+            var fx = GetStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions);
             var renderer = new ValidatingActionRenderer();
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore: fx.StateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -824,7 +830,10 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction, stateStore, actionLoader);
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
+                stateStore,
+                actionLoader);
 
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
             var genesis = preGenesis.Sign(

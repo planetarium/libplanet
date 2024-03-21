@@ -43,7 +43,9 @@ namespace Libplanet.Net.Tests
         {
             const int numBlocks = 5;
             var policy = new NullBlockPolicy();
-            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+            var genesis = new MemoryStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions).GenesisBlock;
 
             var swarmA = await CreateSwarm(
                 privateKey: new PrivateKey(),
@@ -95,7 +97,9 @@ namespace Libplanet.Net.Tests
         {
             var miner = new PrivateKey();
             var policy = new NullBlockPolicy();
-            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var fx = new MemoryStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions);
             var minerChain = MakeBlockChain(
                 policy, fx.Store, fx.StateStore, new SingleActionLoader(typeof(DumbAction)));
             foreach (int i in Enumerable.Range(0, 10))
@@ -468,7 +472,8 @@ namespace Libplanet.Net.Tests
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock,
                     new ActionEvaluator(
-                        policyBlockActionGetter: _ => policy.BlockAction,
+                        policyBeginBlockActionsGetter: _ => policy.BeginBlockActions,
+                        policyEndBlockActionsGetter_ => policy.EndBlockActions,
                         stateStore: fxs[i].StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 swarms[i] = await CreateSwarm(blockChains[i]).ConfigureAwait(false);
@@ -702,7 +707,12 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
-            var policy = new BlockPolicy(new MinerReward(1));
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new MinerReward(1)
+            );
+            var policy = new BlockPolicy(beginActions, endActions);
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain(
                 policy, fx1.Store, fx1.StateStore, new SingleActionLoader(typeof(DumbAction)));

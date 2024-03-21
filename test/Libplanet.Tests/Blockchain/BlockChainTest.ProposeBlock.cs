@@ -145,7 +145,8 @@ namespace Libplanet.Tests.Blockchain
             {
                 var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
@@ -185,7 +186,8 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BlockAction,
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions,
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
@@ -410,7 +412,8 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BlockAction,
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions,
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -514,8 +517,16 @@ namespace Libplanet.Tests.Blockchain
             var privateKey2 = new PrivateKey();
             var address2 = privateKey2.Address;
 
-            var blockAction = DumbAction.Create((address1, "foo"));
-            var policy = new BlockPolicy(blockAction);
+            var beginBlockActions = ImmutableArray.Create<IAction>(
+            );
+            var endBlockActions = ImmutableArray.Create<IAction>(
+                DumbAction.Create((address1, "foo"))
+            );
+
+            var policy = new BlockPolicy(
+                beginBlockActions,
+                endBlockActions
+            );
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
             var blockChain = new BlockChain(
@@ -526,7 +537,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
