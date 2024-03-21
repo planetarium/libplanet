@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Types.Blocks;
@@ -22,9 +23,14 @@ namespace Libplanet.Blockchain.Policies
     public interface IBlockPolicy
     {
         /// <summary>
-        /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
-        /// </summary>
-        IAction? BlockAction { get; }
+        /// An array of <see cref="IAction"/> to execute and be rendered at the beginning
+        /// for every block, if any.</summary>
+        ImmutableArray<IAction> BeginBlockActions { get; }
+
+        /// <summary>
+        /// An array of <see cref="IAction"/> to execute and be rendered at the end for every block,
+        /// if any.</summary>
+        ImmutableArray<IAction> EndBlockActions { get; }
 
         /// <summary>
         /// Checks if a <see cref="Transaction"/> can be included in a yet to be mined
