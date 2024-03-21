@@ -224,12 +224,10 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             case (blockhash: not null, _):
                 return context.Source
                     .GetWorldState(offsetBlockHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet().Validators;
             case (_, srh: not null):
                 return context.Source
                     .GetWorldState(offsetStateRootHash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet().Validators;
         }
     }

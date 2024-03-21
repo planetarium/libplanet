@@ -14,7 +14,6 @@ using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Store.Trie.Nodes;
 using System;
-using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
@@ -77,6 +76,15 @@ public partial class StateQueryTest
             _stateRootHash is { }
                 ? currency * 10000
                 : currency * 0;
+
+        public ValidatorSet GetValidatorSet() =>
+            new ValidatorSet(new List<Validator>
+            {
+                new(
+                    PublicKey.FromHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                    new BigInteger(1)),
+            });
     }
 
     // Behaves like a non-empty account only if state root hash is non-null.
@@ -104,15 +112,6 @@ public partial class StateQueryTest
 
         public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
             addresses.Select(address => GetState(address)).ToList();
-
-        public ValidatorSet GetValidatorSet() =>
-            new ValidatorSet(new List<Validator>
-            {
-                new(
-                    PublicKey.FromHex(
-                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                    new BigInteger(1)),
-            });
     }
 
     private class MockTrie : ITrie

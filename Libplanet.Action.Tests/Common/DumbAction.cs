@@ -160,16 +160,15 @@ namespace Libplanet.Action.Tests.Common
             }
 
             account = account.SetState(TargetAddress, (Text)items);
+            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
 
             if (!(Validators is null))
             {
-                account = Validators.Aggregate(
-                    account,
+                world = Validators.Aggregate(
+                    world,
                     (current, validator) =>
-                        current.SetValidator(new Validator(validator, BigInteger.One)));
+                        world.SetValidator(new Validator(validator, BigInteger.One)));
             }
-
-            world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
 
             if (!(Transfer is null))
             {

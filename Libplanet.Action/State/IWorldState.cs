@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {
@@ -73,5 +74,13 @@ namespace Libplanet.Action.State
         /// <seealso cref="Currency.MaximumSupply"/>
         [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
+
+        /// <summary>
+        /// Returns the validator set.
+        /// </summary>
+        /// <returns>The validator set of type <see cref="ValidatorSet"/>.
+        /// </returns>
+        [Pure]
+        ValidatorSet GetValidatorSet();
     }
 }

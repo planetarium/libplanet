@@ -6,6 +6,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.Tests.Mocks
@@ -74,5 +75,11 @@ namespace Libplanet.Action.Tests.Mocks
                 .Get(ToTotalSupplyKey(currency)) is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
+
+        public ValidatorSet GetValidatorSet() =>
+            GetAccountState(ReservedAddresses.LegacyAccount).Trie
+                .Get(ValidatorSetKey) is List l
+                    ? new ValidatorSet(l)
+                    : new ValidatorSet();
     }
 }

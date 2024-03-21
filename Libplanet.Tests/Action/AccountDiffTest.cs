@@ -5,7 +5,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 using Xunit;
 
 namespace Libplanet.Tests.Action
@@ -57,7 +56,6 @@ namespace Libplanet.Tests.Action
             IAccount sourceAccount = new Account(new AccountState(sourceTrie));
             sourceAccount = sourceAccount.SetState(addr2, new Text("Two_"));
             sourceAccount = sourceAccount.SetState(addr3, new Text("Three"));
-            sourceAccount = sourceAccount.SetValidator(new Validator(signer.PublicKey, 1));
 
             sourceTrie = stateStore.Commit(sourceAccount.Trie);
 
