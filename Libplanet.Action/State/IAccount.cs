@@ -71,15 +71,5 @@ namespace Libplanet.Action.State
         /// </remarks>
         [Pure]
         IAccount RemoveState(Address address);
-
-        /// <summary>
-        /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
-        /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
-        /// </summary>
-        /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
-        /// <returns>A new <see cref="IAccount"/> instance with
-        /// <paramref name="validator"/> set.</returns>
-        [Pure]
-        IAccount SetValidator(Validator validator);
     }
 }

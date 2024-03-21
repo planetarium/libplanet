@@ -66,7 +66,6 @@ namespace Libplanet.Action.Sys
         public IWorld Execute(IActionContext context)
         {
             IWorld world = context.PreviousState;
-            IAccount legacyAccount = world.GetAccount(ReservedAddresses.LegacyAccount);
 
             if (context.BlockIndex != 0)
             {
@@ -79,9 +78,11 @@ namespace Libplanet.Action.Sys
             {
                 foreach (Validator v in vs.Validators)
                 {
-                    legacyAccount = legacyAccount.SetValidator(v);
+                    world = world.SetValidator(v);
                 }
             }
+
+            IAccount legacyAccount = world.GetAccount(ReservedAddresses.LegacyAccount);
 
             if (States is { } s)
             {
@@ -92,7 +93,6 @@ namespace Libplanet.Action.Sys
             }
 
             world = world.SetAccount(ReservedAddresses.LegacyAccount, legacyAccount);
-
             return world;
         }
 

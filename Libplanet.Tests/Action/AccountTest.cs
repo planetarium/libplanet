@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
@@ -135,58 +134,6 @@ namespace Libplanet.Tests.Action
             a = a.RemoveState(_addr[1]);
             Assert.Null(a.GetState(_addr[0]));
             Assert.Null(a.GetState(_addr[1]));
-        }
-
-        [Fact]
-        public virtual void SetValidator()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initAccount.SetValidator(new Validator(new PrivateKey().PublicKey, -1))
-            );
-
-            var initCount = _keys.Length;
-            var key3 = new PrivateKey().PublicKey;
-            var key4 = new PrivateKey().PublicKey;
-
-            IAccount delta = _initAccount;
-            // delta already has 3 validators
-            Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
-
-            // nothing happens trying to delete non existing validator
-            delta = delta.SetValidator(new Validator(key3, 0));
-            Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
-
-            // add key 3 to the validator set
-            delta = delta.SetValidator(new Validator(key3, 1));
-            Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
-            Assert.False(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
-
-            // add key 4 to the validator set
-            delta = delta.SetValidator(new Validator(key4, 1));
-            Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
-
-            // remove key 3 from the validator set
-            delta = delta.SetValidator(new Validator(key3, 0));
-            Assert.Equal(initCount + 1, delta.GetValidatorSet().TotalCount);
-            Assert.False(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
-
-            // re-add key 3 to the validator set
-            delta = delta.SetValidator(new Validator(key3, 1));
-            Assert.Equal(initCount + 2, delta.GetValidatorSet().TotalCount);
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key3, 1)));
-            Assert.True(delta.GetValidatorSet().Contains(new Validator(key4, 1)));
-
-            // remove all keys from the validator set
-            delta = _keys.Aggregate(
-                delta,
-                (current, key) => current.SetValidator(new Validator(key.PublicKey, 0)));
-            delta = delta.SetValidator(new Validator(key3, 0));
-            delta = delta.SetValidator(new Validator(key4, 0));
-            Assert.Equal(0, delta.GetValidatorSet().TotalCount);
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>

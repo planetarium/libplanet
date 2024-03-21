@@ -46,22 +46,11 @@ namespace Libplanet.Action.State
         [Pure]
         public ValidatorSet GetValidatorSet() => _state.GetValidatorSet();
 
-        /// <inheritdoc/>
-        [Pure]
-        public IAccount SetValidator(Validator validator) =>
-            UpdateValidatorSet(GetValidatorSet().Update(validator));
-
         [Pure]
         private Account UpdateState(
             Address address,
             IValue? value) => value is { } v
                 ? new Account(new AccountState(Trie.Set(ToStateKey(address), v)))
                 : new Account(new AccountState(Trie.Remove(ToStateKey(address))));
-
-        [Pure]
-        private Account UpdateValidatorSet(ValidatorSet validatorSet) =>
-            new Account(
-                new AccountState(
-                    Trie.Set(ValidatorSetKey, validatorSet.Bencoded)));
     }
 }

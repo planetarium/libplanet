@@ -37,13 +37,8 @@ namespace Libplanet.Action.Tests.Common
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
-        public IWorld Execute(IActionContext context)
-        {
-            IWorld states = context.PreviousState;
-            IAccount legacyAccount = states.GetAccount(ReservedAddresses.LegacyAccount);
-            return states.SetAccount(
-                ReservedAddresses.LegacyAccount, legacyAccount.SetValidator(Validator));
-        }
+        public IWorld Execute(IActionContext context) =>
+            context.PreviousState.SetValidator(Validator);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(SetValidator other) =>
