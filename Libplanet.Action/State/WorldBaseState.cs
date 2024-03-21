@@ -31,6 +31,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IWorldState.Legacy"/>
         public bool Legacy { get; private set; }
 
+        /// <inheritdoc cref="IWorldState.GetAccountState"/>
         public IAccountState GetAccountState(Address address)
         {
             if (Legacy)
@@ -48,6 +49,7 @@ namespace Libplanet.Action.State
             }
         }
 
+        /// <inheritdoc cref="IWorldState.GetBalance"/>
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
             IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
@@ -57,6 +59,7 @@ namespace Libplanet.Action.State
                 : currency * 0;
         }
 
+        /// <inheritdoc cref="IWorldState.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency)
         {
             if (!currency.TotalSupplyTrackable)
@@ -71,6 +74,7 @@ namespace Libplanet.Action.State
                 : currency * 0;
         }
 
+        /// <inheritdoc cref="IWorldState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
             IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);

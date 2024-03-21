@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using Libplanet.Crypto;
 
 namespace Libplanet.Action.State
