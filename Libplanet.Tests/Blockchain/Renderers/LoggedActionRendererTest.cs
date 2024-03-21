@@ -69,8 +69,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     default,
                     default,
                     default,
-                    Block.CurrentProtocolVersion,
                     123,
+                    Block.CurrentProtocolVersion,
+                    // LastCommit should not be null if the block index is not 0, just for testing
+                    null,
                     _world,
                     default,
                     0));

@@ -51,6 +51,7 @@ namespace Libplanet.Action.Tests.Sys
                 miner: random.NextAddress(),
                 blockIndex: 0,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: null,
                 previousState: prevState,
                 randomSeed: 123,
                 gasLimit: 0);
@@ -74,12 +75,29 @@ namespace Libplanet.Action.Tests.Sys
             Address signer = random.NextAddress();
             var prevState = new World(MockWorldState.CreateModern());
             BlockHash genesisHash = random.NextBlockHash();
+            var key = new PrivateKey();
+            var hash = random.NextBlockHash();
+            var lastCommit = new BlockCommit(
+                0,
+                0,
+                hash,
+                new[]
+                {
+                    new VoteMetadata(
+                        0,
+                        0,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        VoteFlag.PreCommit).Sign(key),
+                }.ToImmutableArray());
             var context = new ActionContext(
                 signer: signer,
                 txid: random.NextTxId(),
                 miner: random.NextAddress(),
                 blockIndex: 10,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: lastCommit,
                 previousState: prevState,
                 randomSeed: 123,
                 gasLimit: long.MaxValue);
