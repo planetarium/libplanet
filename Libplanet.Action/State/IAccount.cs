@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {

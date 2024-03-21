@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {
