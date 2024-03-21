@@ -88,7 +88,7 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
@@ -106,7 +106,7 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
@@ -184,7 +184,7 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -227,12 +227,11 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_WorldBaseState_GetAccountState_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.WorldBaseState.GetAccountState(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Action_State_WorldBaseState_GetAccountState_" data-uid="Libplanet.Action.State.WorldBaseState.GetAccountState*"></a>
   <h4 id="Libplanet_Action_State_WorldBaseState_GetAccountState_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.WorldBaseState.GetAccountState(Libplanet.Crypto.Address)">GetAccountState(Address)</h4>
-  <div class="markdown level1 summary"><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
-It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -252,7 +251,9 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> referring
+the world to get its state.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -267,7 +268,10 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.
+If it has never been set to any state it returns <span class="xref">null</span>
+instead.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -276,12 +280,11 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_WorldBaseState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.WorldBaseState.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L51">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Action_State_WorldBaseState_GetBalance_" data-uid="Libplanet.Action.State.WorldBaseState.GetBalance*"></a>
   <h4 id="Libplanet_Action_State_WorldBaseState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.WorldBaseState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)">GetBalance(Address, Currency)</h4>
-  <div class="markdown level1 summary"><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
-It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+  <div class="markdown level1 summary"><p>Queries <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -301,12 +304,14 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td></td>
+        <td><p>The owner address to query.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
         <td><span class="parametername">currency</span></td>
-        <td></td>
+        <td><p>The currency type to query.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -321,7 +326,8 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -330,12 +336,11 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_WorldBaseState_GetTotalSupply_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.WorldBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L60">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L63">View Source</a>
   </span>
   <a id="Libplanet_Action_State_WorldBaseState_GetTotalSupply_" data-uid="Libplanet.Action.State.WorldBaseState.GetTotalSupply*"></a>
   <h4 id="Libplanet_Action_State_WorldBaseState_GetTotalSupply_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.WorldBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)">GetTotalSupply(Currency)</h4>
-  <div class="markdown level1 summary"><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
-It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+  <div class="markdown level1 summary"><p>Returns the total supply of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -355,7 +360,8 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
         <td><span class="parametername">currency</span></td>
-        <td></td>
+        <td><p>The currency type to query.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -370,21 +376,42 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td></td>
+        <td><p>The total supply of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></td>
+        <td><p>Thrown when the total supply of the
+given <code data-dev-comment-type="paramref" class="paramref">currency</code> is not trackable.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_State_WorldBaseState_GetTotalSupply_Libplanet_Types_Assets_Currency__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_MaximumSupply">MaximumSupply</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_WorldBaseState_GetValidatorSet.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.WorldBaseState.GetValidatorSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/WorldBaseState.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Action_State_WorldBaseState_GetValidatorSet_" data-uid="Libplanet.Action.State.WorldBaseState.GetValidatorSet*"></a>
   <h4 id="Libplanet_Action_State_WorldBaseState_GetValidatorSet" data-uid="Libplanet.Action.State.WorldBaseState.GetValidatorSet">GetValidatorSet()</h4>
-  <div class="markdown level1 summary"><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
-It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+  <div class="markdown level1 summary"><p>Returns the validator set.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -402,7 +429,8 @@ It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
-        <td></td>
+        <td><p>The validator set of type <a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
