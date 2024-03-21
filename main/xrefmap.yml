@@ -1611,19 +1611,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.GetStates
   nameWithType: Account.GetStates
-- uid: Libplanet.Action.State.Account.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_GetValidatorSet
-  commentId: M:Libplanet.Action.State.Account.GetValidatorSet
-  fullName: Libplanet.Action.State.Account.GetValidatorSet()
-  nameWithType: Account.GetValidatorSet()
-- uid: Libplanet.Action.State.Account.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.Account.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.Account.GetValidatorSet
-  nameWithType: Account.GetValidatorSet
 - uid: Libplanet.Action.State.Account.RemoveState(Libplanet.Crypto.Address)
   name: RemoveState(Address)
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_RemoveState_Libplanet_Crypto_Address_
@@ -1650,19 +1637,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.Account.SetState
   nameWithType: Account.SetState
-- uid: Libplanet.Action.State.Account.SetValidator(Libplanet.Types.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_SetValidator_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.Account.SetValidator(Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.Account.SetValidator(Libplanet.Types.Consensus.Validator)
-  nameWithType: Account.SetValidator(Validator)
-- uid: Libplanet.Action.State.Account.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_SetValidator_
-  commentId: Overload:Libplanet.Action.State.Account.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.State.Account.SetValidator
-  nameWithType: Account.SetValidator
 - uid: Libplanet.Action.State.Account.Trie
   name: Trie
   href: api/Libplanet.Action.State.Account.html#Libplanet_Action_State_Account_Trie
@@ -1865,19 +1839,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccount.SetState
   nameWithType: IAccount.SetState
-- uid: Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetValidator_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.IAccount.SetValidator(Libplanet.Types.Consensus.Validator)
-  nameWithType: IAccount.SetValidator(Validator)
-- uid: Libplanet.Action.State.IAccount.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetValidator_
-  commentId: Overload:Libplanet.Action.State.IAccount.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccount.SetValidator
-  nameWithType: IAccount.SetValidator
 - uid: Libplanet.Action.State.IAccountState
   name: IAccountState
   href: api/Libplanet.Action.State.IAccountState.html
@@ -1913,19 +1874,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IAccountState.GetStates
   nameWithType: IAccountState.GetStates
-- uid: Libplanet.Action.State.IAccountState.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetValidatorSet
-  commentId: M:Libplanet.Action.State.IAccountState.GetValidatorSet
-  fullName: Libplanet.Action.State.IAccountState.GetValidatorSet()
-  nameWithType: IAccountState.GetValidatorSet()
-- uid: Libplanet.Action.State.IAccountState.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.IAccountState.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IAccountState.GetValidatorSet
-  nameWithType: IAccountState.GetValidatorSet
 - uid: Libplanet.Action.State.IAccountState.Trie
   name: Trie
   href: api/Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_Trie
@@ -2099,6 +2047,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorld.SetAccount
   nameWithType: IWorld.SetAccount
+- uid: Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetValidator_Libplanet_Types_Consensus_Validator_
+  commentId: M:Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
+  fullName: Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
+  nameWithType: IWorld.SetValidator(Validator)
+- uid: Libplanet.Action.State.IWorld.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetValidator_
+  commentId: Overload:Libplanet.Action.State.IWorld.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorld.SetValidator
+  nameWithType: IWorld.SetValidator
 - uid: Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
   name: TotalUpdatedFungibleAssets
   href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TotalUpdatedFungibleAssets
@@ -2202,6 +2163,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldState.GetTotalSupply
   nameWithType: IWorldState.GetTotalSupply
+- uid: Libplanet.Action.State.IWorldState.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetValidatorSet
+  commentId: M:Libplanet.Action.State.IWorldState.GetValidatorSet
+  fullName: Libplanet.Action.State.IWorldState.GetValidatorSet()
+  nameWithType: IWorldState.GetValidatorSet()
+- uid: Libplanet.Action.State.IWorldState.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.IWorldState.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldState.GetValidatorSet
+  nameWithType: IWorldState.GetValidatorSet
 - uid: Libplanet.Action.State.IWorldState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Legacy
@@ -2461,6 +2435,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.GetTotalSupply
   nameWithType: World.GetTotalSupply
+- uid: Libplanet.Action.State.World.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetValidatorSet
+  commentId: M:Libplanet.Action.State.World.GetValidatorSet
+  fullName: Libplanet.Action.State.World.GetValidatorSet()
+  nameWithType: World.GetValidatorSet()
+- uid: Libplanet.Action.State.World.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.World.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.World.GetValidatorSet
+  nameWithType: World.GetValidatorSet
 - uid: Libplanet.Action.State.World.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Legacy
@@ -2500,6 +2487,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.SetAccount
   nameWithType: World.SetAccount
+- uid: Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
+  name: SetValidator(Validator)
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_SetValidator_Libplanet_Types_Consensus_Validator_
+  commentId: M:Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
+  fullName: Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
+  nameWithType: World.SetValidator(Validator)
+- uid: Libplanet.Action.State.World.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_SetValidator_
+  commentId: Overload:Libplanet.Action.State.World.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.State.World.SetValidator
+  nameWithType: World.SetValidator
 - uid: Libplanet.Action.State.World.TotalUpdatedFungibleAssets
   name: TotalUpdatedFungibleAssets
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TotalUpdatedFungibleAssets
@@ -2597,6 +2597,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.GetTotalSupply
   nameWithType: WorldBaseState.GetTotalSupply
+- uid: Libplanet.Action.State.WorldBaseState.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetValidatorSet
+  commentId: M:Libplanet.Action.State.WorldBaseState.GetValidatorSet
+  fullName: Libplanet.Action.State.WorldBaseState.GetValidatorSet()
+  nameWithType: WorldBaseState.GetValidatorSet()
+- uid: Libplanet.Action.State.WorldBaseState.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.WorldBaseState.GetValidatorSet
+  nameWithType: WorldBaseState.GetValidatorSet
 - uid: Libplanet.Action.State.WorldBaseState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Legacy
