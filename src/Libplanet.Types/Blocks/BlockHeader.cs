@@ -160,6 +160,9 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlockHeader.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof => _preEvaluationBlockHeader.Proof;
+
         /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
         public HashDigest<SHA256>? EvidenceHash => _preEvaluationBlockHeader.EvidenceHash;
 

@@ -138,6 +138,7 @@ namespace Libplanet.Types.Blocks
                 previousHash: metadata.PreviousHash,
                 txHash: metadata.TxHash,
                 lastCommit: metadata.LastCommit,
+                proof: metadata.Proof,
                 evidenceHash: metadata.EvidenceHash)
         {
         }
@@ -153,9 +154,10 @@ namespace Libplanet.Types.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="proof">Goes to <see cref="IBlockMetadata.Proof"/>.</param>
         /// <param name="evidenceHash">Goes to <see cref="IBlockMetadata.EvidenceHash"/>.</param>
         /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, HashDigest{SHA256}?)"/>
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, Proof?, HashDigest{SHA256}?)"/>
         public BlockMetadata(
             long index,
             DateTimeOffset timestamp,
@@ -163,6 +165,7 @@ namespace Libplanet.Types.Blocks
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
             BlockCommit? lastCommit,
+            Proof? proof,
             HashDigest<SHA256>? evidenceHash)
             : this(
                 protocolVersion: CurrentProtocolVersion,
@@ -173,6 +176,7 @@ namespace Libplanet.Types.Blocks
                 previousHash: previousHash,
                 txHash: txHash,
                 lastCommit: lastCommit,
+                proof: proof,
                 evidenceHash: evidenceHash)
         {
         }
@@ -193,6 +197,7 @@ namespace Libplanet.Types.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="proof">Goes to <see cref="IBlockMetadata.Proof"/>.</param>
         /// <param name="evidenceHash">Goes to <see cref="IBlockMetadata.EvidenceHash"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// <paramref name="protocolVersion"/> is less than zero or greater than
@@ -222,6 +227,7 @@ namespace Libplanet.Types.Blocks
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
             BlockCommit? lastCommit,
+            Proof? proof,
             HashDigest<SHA256>? evidenceHash)
         {
             // Protocol version validity check.
@@ -309,6 +315,7 @@ namespace Libplanet.Types.Blocks
 
             TxHash = txHash;
             LastCommit = lastCommit;
+            Proof = proof;
             EvidenceHash = evidenceHash;
         }
 
@@ -331,9 +338,13 @@ namespace Libplanet.Types.Blocks
         public BlockHash? PreviousHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        public HashDigest<SHA256>? TxHash { get; private set; }
+        public HashDigest<SHA256>? TxHash { get; }
 
-        public BlockCommit? LastCommit { get; set; }
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit { get; }
+
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof { get; }
 
         public HashDigest<SHA256>? EvidenceHash { get; private set; }
 
@@ -366,6 +377,11 @@ namespace Libplanet.Types.Blocks
             if (LastCommit is { } lastCommit)
             {
                 dict = dict.Add("last_commit", lastCommit.ToHash().ByteArray);
+            }
+
+            if (Proof is { } proof)
+            {
+                dict = dict.Add("proof", proof.ByteArray);
             }
 
             if (EvidenceHash is { } evidenceHash)

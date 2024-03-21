@@ -41,6 +41,9 @@ namespace Libplanet.Types.Blocks
         private static readonly Binary PreEvaluationHashKey = new Binary(0x63); // 'c'
         private static readonly Binary LastCommitKey = new Binary(0x43); // 'C'
 
+        private static readonly Binary ProofKey =
+            new Binary(new byte[] { 0x52 }); // 'R'
+
         private static readonly Binary EvidenceHashKey =
             new Binary(new byte[] { 0x76 }); // 'v'
 
@@ -74,6 +77,11 @@ namespace Libplanet.Types.Blocks
             if (metadata.LastCommit is { } commit)
             {
                 dict = dict.Add(LastCommitKey, commit.Bencoded);
+            }
+
+            if (metadata.Proof is { } proof)
+            {
+                dict = dict.Add(ProofKey, proof.Bencoded);
             }
 
             if (metadata.EvidenceHash is { } evidenceHash)
@@ -204,6 +212,9 @@ namespace Libplanet.Types.Blocks
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
                     ? new BlockCommit(marshaled[LastCommitKey])
                     : (BlockCommit?)null,
+                proof: marshaled.ContainsKey(ProofKey)
+                    ? new Proof(marshaled[ProofKey])
+                    : (Proof?)null),
                 evidenceHash: marshaled.TryGetValue(EvidenceHashKey, out IValue ehv)
                     ? new HashDigest<SHA256>(ehv)
                     : (HashDigest<SHA256>?)null);
