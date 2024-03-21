@@ -178,7 +178,8 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction,
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
@@ -209,8 +210,15 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: null)).Propose(),
                 TestUtils.GenesisProposer);
 
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new SetStatesAtBlock(default, (Text)"foo", default, 1)
+            );
+
             var policyWithBlockAction = new BlockPolicy(
-                new SetStatesAtBlock(default, (Text)"foo", default, 1),
+                beginActions,
+                endActions,
                 policy.BlockInterval
             );
             var blockChainStates = new BlockChainStates(store, stateStore);
@@ -222,7 +230,8 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policyWithBlockAction.BlockAction,
+                    _ => policyWithBlockAction.BeginBlockActions,
+                    _ => policyWithBlockAction.EndBlockActions,
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>

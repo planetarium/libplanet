@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
@@ -33,7 +34,12 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy(new MinerReward(1));
+                var beginActions = ImmutableArray.Create<IAction>(
+                );
+                var endActions = ImmutableArray.Create<IAction>(
+                    new MinerReward(1)
+                );
+                var policy = new BlockPolicy(beginActions, endActions);
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain =
@@ -116,8 +122,13 @@ namespace Libplanet.Net.Tests
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy(new MinerReward(1));
-            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var beginActions = ImmutableArray.Create<IAction>(
+            );
+            var endActions = ImmutableArray.Create<IAction>(
+                new MinerReward(1)
+            );
+            policy = policy ?? new BlockPolicy(beginActions, endActions);
+            var fx = new MemoryStoreFixture(policy.BeginBlockActions, policy.EndBlockActions);
             var blockchain = MakeBlockChain(
                 policy,
                 fx.Store,
