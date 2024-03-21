@@ -148,6 +148,7 @@ namespace Libplanet.Tests.Action
                 signer,
                 0,
                 Block.CurrentProtocolVersion,
+                null,
                 new World(
                     new WorldBaseState(
                         trie,

@@ -203,6 +203,7 @@ namespace Libplanet.Action
                     miner: blockHeader.Miner,
                     blockIndex: blockHeader.Index,
                     blockProtocolVersion: blockHeader.ProtocolVersion,
+                    lastCommit: blockHeader.LastCommit,
                     previousState: prevState,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit);
@@ -266,6 +267,7 @@ namespace Libplanet.Action
                     miner: inputContext.Miner,
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    lastCommit: inputContext.LastCommit,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit());

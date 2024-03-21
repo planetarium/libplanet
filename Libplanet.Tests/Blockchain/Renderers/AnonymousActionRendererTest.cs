@@ -23,8 +23,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 default,
                 default,
+                0,
                 Block.CurrentProtocolVersion,
-                default,
+                null,
                 _world,
                 default,
                 0));

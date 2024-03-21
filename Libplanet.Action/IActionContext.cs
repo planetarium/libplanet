@@ -52,6 +52,13 @@ namespace Libplanet.Action
         int BlockProtocolVersion { get; }
 
         /// <summary>
+        /// The <see cref="BlockCommit"/> about previous <see cref="Block"/>'s vote information.
+        /// <see langword="null"/> if the block is the genesis block.
+        /// </summary>
+        [Pure]
+        BlockCommit? LastCommit { get; }
+
+        /// <summary>
         /// A null delta of states, which means it represents the states
         /// before <see cref="IAction"/> executes.
         /// <para>Although a <see cref="IAccount"/> instance is

@@ -1,9 +1,11 @@
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -27,8 +29,25 @@ namespace Libplanet.Action.Tests
         [Fact]
         public void Constructor()
         {
-            var txid = new System.Random().NextTxId();
+            var random = new System.Random();
+            var txid = random.NextTxId();
             Address address = new PrivateKey().Address;
+            var key = new PrivateKey();
+            var hash = random.NextBlockHash();
+            var lastCommit = new BlockCommit(
+                0,
+                0,
+                hash,
+                new[]
+                {
+                    new VoteMetadata(
+                        0,
+                        0,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        VoteFlag.PreCommit).Sign(key),
+                }.ToImmutableArray());
             IWorld world = new World(new MockWorldState());
             world = world.SetAccount(
                 ReservedAddresses.LegacyAccount,
@@ -41,6 +60,7 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
+                    lastCommit,
                     new World(new MockWorldState()),
                     123,
                     0),
@@ -61,6 +81,7 @@ namespace Libplanet.Action.Tests
                 (Text)"item",
                 evaluation.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState(address)
             );
+            Assert.Equal(lastCommit, evaluation.InputContext.LastCommit);
         }
     }
 }

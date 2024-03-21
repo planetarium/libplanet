@@ -1,7 +1,9 @@
+using System.Collections.Immutable;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Xunit;
 
@@ -12,12 +14,29 @@ namespace Libplanet.Action.Tests
         private readonly System.Random _random;
         private readonly Address _address;
         private readonly TxId _txid;
+        private readonly BlockCommit _lastCommit;
 
         public ActionContextTest()
         {
             _random = new System.Random();
             _address = _random.NextAddress();
             _txid = _random.NextTxId();
+            var key = new PrivateKey();
+            var hash = _random.NextBlockHash();
+            _lastCommit = new BlockCommit(
+                0,
+                0,
+                hash,
+                new[]
+                {
+                    new VoteMetadata(
+                        0,
+                        0,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        VoteFlag.PreCommit).Sign(key),
+                }.ToImmutableArray());
         }
 
         [Fact]
@@ -36,6 +55,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
+                    lastCommit: _lastCommit,
                     previousState: new World(new MockWorldState()),
                     randomSeed: seed,
                     gasLimit: 0
@@ -54,6 +74,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 gasLimit: 0
@@ -65,6 +86,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 gasLimit: 0
@@ -76,6 +98,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(new MockWorldState()),
                 randomSeed: 1,
                 gasLimit: 0
@@ -115,6 +138,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
+                    lastCommit: _lastCommit,
                     previousState: new World(new MockWorldState()),
                     randomSeed: i,
                     gasLimit: 0
