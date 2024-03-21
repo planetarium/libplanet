@@ -215,6 +215,10 @@ namespace Libplanet.Action.State
                 ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
                 : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
 
+        /// <inheritdoc cref="IWorld.SetValidator"/>
+        public IWorld SetValidator(Validator validator) =>
+            UpdateValidatorSet(GetValidatorSet().Update(validator));
+
         private IWorld SetAccount(
             Address address,
             IAccount account,
@@ -252,6 +256,15 @@ namespace Libplanet.Action.State
                 ReservedAddresses.LegacyAccount,
                 account,
                 TotalUpdatedFungibleAssets.Add((address, currency)));
+        }
+
+        private IWorld UpdateValidatorSet(ValidatorSet validatorSet)
+        {
+            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
+            return SetAccount(
+                ReservedAddresses.LegacyAccount,
+                new Account(new AccountState(
+                    account.Trie.Set(ValidatorSetKey, validatorSet.Bencoded))));
         }
 
         private IWorld TransferAssetV0(
