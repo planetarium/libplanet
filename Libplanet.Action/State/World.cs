@@ -6,6 +6,7 @@ using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
@@ -100,6 +101,16 @@ namespace Libplanet.Action.State
             return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
+        }
+
+        /// <inheritdoc cref="IWorldState.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet()
+        {
+            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ValidatorSetKey);
+            return value is List list
+                ? new ValidatorSet(list)
+                : new ValidatorSet();
         }
 
         /// <inheritdoc cref="IWorld.MintAsset"/>

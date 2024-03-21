@@ -77,6 +77,15 @@ public partial class StateQueryTest
             _stateRootHash is { }
                 ? currency * 10000
                 : currency * 0;
+
+        public ValidatorSet GetValidatorSet() =>
+            new ValidatorSet(new List<Validator>
+            {
+                new(
+                    PublicKey.FromHex(
+                        "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
+                    new BigInteger(1)),
+            });
     }
 
     // Behaves like a non-empty account only if state root hash is non-null.
