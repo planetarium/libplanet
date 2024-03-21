@@ -20,23 +20,23 @@ namespace Libplanet.Action.State
             _state = state;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IAccountState.Trie"/>
         public ITrie Trie => _state.Trie;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IAccountState.GetState"/>
         [Pure]
         public IValue? GetState(Address address) => _state.GetState(address);
 
-        /// <inheritdoc cref="IAccountState.GetStates(IReadOnlyList{Address})"/>
+        /// <inheritdoc cref="IAccountState.GetStates"/>
         [Pure]
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
             _state.GetStates(addresses);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IAccount.SetState"/>
         [Pure]
         public IAccount SetState(Address address, IValue state) => UpdateState(address, state);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IAccount.RemoveState"/>
         [Pure]
         public IAccount RemoveState(Address address) => UpdateState(address, null);
 

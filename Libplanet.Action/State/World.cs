@@ -34,13 +34,13 @@ namespace Libplanet.Action.State
             TotalUpdatedFungibleAssets = totalUpdatedFungibleAssets;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IWorld.Delta"/>
         public IWorldDelta Delta { get; }
 
         /// <inheritdoc/>
         public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IWorldState.Trie"/>
         [Pure]
         public ITrie Trie => _baseState.Trie;
 
