@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
@@ -22,6 +23,7 @@ namespace Libplanet.Action
             Address miner,
             long blockIndex,
             int blockProtocolVersion,
+            BlockCommit? lastCommit,
             IWorld previousState,
             int randomSeed,
             long gasLimit,
@@ -32,6 +34,7 @@ namespace Libplanet.Action
             Miner = miner;
             BlockIndex = blockIndex;
             BlockProtocolVersion = blockProtocolVersion;
+            LastCommit = lastCommit;
             PreviousState = previousState;
             RandomSeed = randomSeed;
             _gasLimit = gasLimit;
@@ -54,6 +57,9 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.BlockProtocolVersion"/>
         public int BlockProtocolVersion { get; }
+
+        /// <inheritdoc cref="IActionContext.LastCommit"/>
+        public BlockCommit? LastCommit { get;  }
 
         /// <inheritdoc cref="IActionContext.PreviousState"/>
         public IWorld PreviousState { get; }
