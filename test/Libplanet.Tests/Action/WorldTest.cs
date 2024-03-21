@@ -141,6 +141,7 @@ namespace Libplanet.Tests.Action
                 signer,
                 0,
                 ProtocolVersion,
+                null,
                 world,
                 0,
                 false,
