@@ -146,6 +146,9 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _blockMetadata.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof => _blockMetadata.Proof;
+
         /// <summary>
         /// Transactions belonging to the block.
         /// </summary>

@@ -89,5 +89,14 @@ namespace Libplanet.Types.Blocks
         /// The <see cref="BlockCommit"/> about previous block's vote information.
         /// </summary>
         BlockCommit? LastCommit { get; }
+
+        /// <summary>
+        /// The <see cref="Proof"/> from the proposer candidate.  This can be verified with
+        /// proposer candidate's <see cref="PublicKey"/>, and can be used as a source of
+        /// proposer candidate dependent random variable.  With above property,
+        /// It is used for proposer sortition, and once proposer is decided, can be interpreted
+        /// as source of proposer dependent random variable.
+        /// </summary>
+        Proof? Proof { get; }
     }
 }
