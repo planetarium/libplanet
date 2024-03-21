@@ -3,8 +3,6 @@ using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
-using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
@@ -41,10 +39,6 @@ namespace Libplanet.Action.State
         /// <inheritdoc/>
         [Pure]
         public IAccount RemoveState(Address address) => UpdateState(address, null);
-
-        /// <inheritdoc/>
-        [Pure]
-        public ValidatorSet GetValidatorSet() => _state.GetValidatorSet();
 
         [Pure]
         private Account UpdateState(

@@ -54,13 +54,5 @@ namespace Libplanet.Action.State
         /// </returns>
         [Pure]
         IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses);
-
-        /// <summary>
-        /// Returns the validator set.
-        /// </summary>
-        /// <returns>The validator set of type <see cref="ValidatorSet"/>.
-        /// </returns>
-        [Pure]
-        ValidatorSet GetValidatorSet();
     }
 }

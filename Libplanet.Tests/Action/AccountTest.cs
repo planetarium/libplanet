@@ -61,12 +61,10 @@ namespace Libplanet.Tests.Action
             foreach (Address a in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2}  {3}",
+                    "_addr[{0}]  {1}  {2}",
                     i++,
                     a,
-                    _initAccount.GetStates(new[] { a })[0],
-                    _initAccount.GetValidatorSet()
-                );
+                    _initAccount.GetStates(new[] { a })[0]);
             }
 
             _initContext = CreateContext(_initAccount, _addr[0]);

@@ -94,7 +94,6 @@ namespace Libplanet.Tests.Blockchain
         {
             var validatorSet = _blockChain
                 .GetWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetValidatorSet();
             _logger.Debug(
                 "GenesisBlock is {Hash}, Transactions: {Txs}",
@@ -2021,7 +2020,6 @@ namespace Libplanet.Tests.Blockchain
 
             var validator = blockChain
                 .GetWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetValidatorSet()[0];
             Assert.Equal(validatorPrivKey.PublicKey, validator.PublicKey);
             Assert.Equal(BigInteger.One, validator.Power);
@@ -2282,7 +2280,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 blockChain
                     .GetWorldState(blockChain[0].Hash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     ValidatorPrivateKeys.Select(
@@ -2291,7 +2288,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 blockChain
                     .GetWorldState(blockChain[1].Hash)
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     newValidators.Select(

@@ -70,13 +70,14 @@ namespace Libplanet.Tests.Action
             foreach (Address a in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}",
+                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}  {6}",
                     i++,
                     a,
                     _initWorld.GetBalance(a, _currencies[0]),
                     _initWorld.GetBalance(a, _currencies[1]),
                     _initWorld.GetBalance(a, _currencies[2]),
-                    _initWorld.GetBalance(a, _currencies[3]));
+                    _initWorld.GetBalance(a, _currencies[3]),
+                    _initWorld.GetValidatorSet());
             }
 
             _initContext = CreateContext(_initWorld, _addr[0]);

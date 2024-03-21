@@ -61,9 +61,7 @@ namespace Libplanet.Action.Tests.Sys
 
             var nextState = initialize.Execute(context);
 
-            Assert.Equal(
-                _validatorSet,
-                nextState.GetAccount(ReservedAddresses.LegacyAccount).GetValidatorSet());
+            Assert.Equal(_validatorSet, nextState.GetValidatorSet());
             Assert.Equal(
                 _states[default],
                 nextState.GetAccount(ReservedAddresses.LegacyAccount).GetState(default));
