@@ -1,6 +1,6 @@
 using Libplanet.Action.State;
-using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -36,7 +36,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: new World(new MockWorldState()),
+                    previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: seed,
                     gasLimit: 0
                 );
@@ -54,7 +54,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new World(new MockWorldState()),
+                previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -65,7 +65,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new World(new MockWorldState()),
+                previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 gasLimit: 0
             );
@@ -76,7 +76,7 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
-                previousState: new World(new MockWorldState()),
+                previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 1,
                 gasLimit: 0
             );
@@ -115,7 +115,7 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
-                    previousState: new World(new MockWorldState()),
+                    previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: i,
                     gasLimit: 0
                 );

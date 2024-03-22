@@ -1,8 +1,8 @@
 using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Types.Blocks;
 using Serilog;
 using Xunit;
@@ -29,7 +29,7 @@ namespace Libplanet.Action.Tests
         {
             var txid = new System.Random().NextTxId();
             Address address = new PrivateKey().Address;
-            IWorld world = new World(new MockWorldState());
+            IWorld world = new World(MockWorldState.CreateModern());
             world = world.SetAccount(
                 ReservedAddresses.LegacyAccount,
                 world.GetAccount(ReservedAddresses.LegacyAccount).SetState(address, (Text)"item"));
@@ -41,7 +41,7 @@ namespace Libplanet.Action.Tests
                     address,
                     1,
                     Block.CurrentProtocolVersion,
-                    new World(new MockWorldState()),
+                    new World(MockWorldState.CreateModern()),
                     123,
                     0),
                 world);

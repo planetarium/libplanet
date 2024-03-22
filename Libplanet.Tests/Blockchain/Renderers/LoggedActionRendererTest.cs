@@ -7,9 +7,9 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
+using Libplanet.Mocks;
 using Libplanet.Types.Blocks;
 using Serilog;
 using Serilog.Events;
@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     {
         private static IValue _action = new DumbAction().PlainValue;
 
-        private static IWorld _world = new World(new MockWorldState());
+        private static IWorld _world = new World(MockUtil.MockModernWorldState);
 
         private static Block _genesis =
             TestUtils.ProposeGenesisBlock(TestUtils.GenesisProposer);
