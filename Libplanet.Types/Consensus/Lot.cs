@@ -9,7 +9,7 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Types.Consensus
 {
-    public struct Lot : ILot, IEquatable<Lot>, IBencodable
+    public readonly struct Lot : ILot, IEquatable<Lot>, IBencodable
     {
         private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x70 }); // 'p'
         private static readonly Binary ProofKey = new Binary(new byte[] { 0x50 }); // 'P'
@@ -71,16 +71,6 @@ namespace Libplanet.Types.Consensus
             => ((Dictionary)_metadata.Bencoded)
                 .Add(PublicKeyKey, PublicKey.Format(true))
                 .Add(ProofKey, Proof.ByteArray);
-
-        /// <summary>
-        /// Verifies whether <see cref="Proof"/> is proved by <see cref="PrivateKey"/>
-        /// that is corresponding to <see cref="PublicKey"/>.
-        /// </summary>
-        /// <returns><c>true</c> if the <see cref="Proof"/> proves authenticity of
-        /// the <see cref="PublicKey"/>.
-        /// Otherwise <c>false</c>.</returns>
-        public bool Verify()
-            => PublicKey.VerifyProof(_codec.Encode(_metadata.Bencoded), Proof);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(Lot other)
