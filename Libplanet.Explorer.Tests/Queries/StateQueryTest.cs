@@ -9,6 +9,7 @@ using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;

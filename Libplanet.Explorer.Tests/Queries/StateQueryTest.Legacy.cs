@@ -68,10 +68,10 @@ public partial class StateQueryTest
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(balanceDict["sign"]));
-        Assert.Equal(123, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
-        Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
-        Assert.Equal("123", balanceDict["quantity"]);
-        Assert.Equal("123 ABC", balanceDict["string"]);
+        Assert.Equal(1, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
+        Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
+        Assert.Equal("1.23", balanceDict["quantity"]);
+        Assert.Equal("1.23 ABC", balanceDict["string"]);
     }
 
     [Fact]
@@ -109,10 +109,10 @@ public partial class StateQueryTest
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
-        Assert.Equal(10000, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
+        Assert.Equal(100, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
-        Assert.Equal("10000", totalSupplyDict["quantity"]);
-        Assert.Equal("10000 ABC", totalSupplyDict["string"]);
+        Assert.Equal("100.00", totalSupplyDict["quantity"]);
+        Assert.Equal("100.00 ABC", totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -228,10 +228,10 @@ public partial class StateQueryTest
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(balanceDict["sign"]));
-        Assert.Equal(123, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
-        Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
-        Assert.Equal("123", balanceDict["quantity"]);
-        Assert.Equal("123 ABC", balanceDict["string"]);
+        Assert.Equal(1, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
+        Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
+        Assert.Equal("1.23", balanceDict["quantity"]);
+        Assert.Equal("1.23 ABC", balanceDict["string"]);
     }
 
     [Fact]
@@ -268,11 +268,11 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(100, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
-        Assert.Equal(10000, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
-        Assert.Equal("10000", totalSupplyDict["quantity"]);
-        Assert.Equal("10000 ABC", totalSupplyDict["string"]);
+        Assert.Equal("100", totalSupplyDict["quantity"]);
+        Assert.Equal("100.00 ABC", totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>(@"
         {
