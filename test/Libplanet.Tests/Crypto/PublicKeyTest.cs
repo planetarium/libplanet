@@ -113,7 +113,6 @@ namespace Libplanet.Tests.Crypto
         [Fact]
         public void VerifyProof()
         {
-            var x = new PrivateKey();
             var pubKey = new PublicKey(
                 new byte[]
                 {
@@ -163,7 +162,7 @@ namespace Libplanet.Tests.Crypto
                 0xa9, 0x8c, 0xa0, 0x63, 0xda, 0x27, 0xfa,
             });
             Assert.True(pubKey.VerifyProof(payload, proof));
-            Assert.False(pubKey.VerifyProof(payload, new Proof(new byte[97])));
+            Assert.False(pubKey.VerifyProof(payload, new PrivateKey().Prove(payload)));
         }
 
         [Fact]
