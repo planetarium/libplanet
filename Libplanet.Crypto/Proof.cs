@@ -163,7 +163,7 @@ namespace Libplanet.Crypto
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(Proof other)
-            => ByteArray.Equals(other.ByteArray);
+            => ByteArray.SequenceEqual(other.ByteArray);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj)
