@@ -111,8 +111,8 @@ public partial class StateQueryTest
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(100, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
-        Assert.Equal("100.00", totalSupplyDict["quantity"]);
-        Assert.Equal("100.00 ABC", totalSupplyDict["string"]);
+        Assert.Equal("100", totalSupplyDict["quantity"]);
+        Assert.Equal("100 ABC", totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>(@"
         {
@@ -272,7 +272,7 @@ public partial class StateQueryTest
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
         Assert.Equal("100", totalSupplyDict["quantity"]);
-        Assert.Equal("100.00 ABC", totalSupplyDict["string"]);
+        Assert.Equal("100 ABC", totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>(@"
         {
