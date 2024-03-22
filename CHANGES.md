@@ -29,6 +29,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `Libplanet.Mocks` project.  [[#3642]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -37,6 +39,7 @@ To be released.
 
 ### CLI tools
 
+[#3642]: https://github.com/planetarium/libplanet/pull/3642
 [#3694]: https://github.com/planetarium/libplanet/issues/3694
 [#3697]: https://github.com/planetarium/libplanet/pull/3697
 [#3699]: https://github.com/planetarium/libplanet/pull/3699

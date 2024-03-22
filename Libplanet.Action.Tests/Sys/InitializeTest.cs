@@ -3,8 +3,8 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Action.Sys;
-using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Xunit;
@@ -43,7 +43,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = new World(new MockWorldState());
+            var prevState = new World(MockWorldState.CreateModern());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,
@@ -72,7 +72,7 @@ namespace Libplanet.Action.Tests.Sys
         {
             var random = new System.Random();
             Address signer = random.NextAddress();
-            var prevState = new World(new MockWorldState());
+            var prevState = new World(MockWorldState.CreateModern());
             BlockHash genesisHash = random.NextBlockHash();
             var context = new ActionContext(
                 signer: signer,

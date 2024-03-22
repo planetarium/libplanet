@@ -65,6 +65,7 @@
     <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\Libplanet.Types\Libplanet.Types.csproj" />
     <ProjectReference Include="..\Libplanet.Action.Tests\Libplanet.Action.Tests.csproj" />
+    <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">

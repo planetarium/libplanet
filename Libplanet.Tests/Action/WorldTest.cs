@@ -6,10 +6,10 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Action.Tests.Mocks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
@@ -51,19 +51,16 @@ namespace Libplanet.Tests.Action
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
-            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            _initWorld = new World(new MockWorldState(stateStore, null))
-                .SetAccount(
-                    ReservedAddresses.LegacyAccount,
-                    new Account(new MockAccountState(stateStore, null)
-                        .SetBalance(_addr[0], _currencies[0], 5)
-                        .SetBalance(_addr[0], _currencies[1], 10)
-                        .SetBalance(_addr[0], _currencies[3], 5)
-                        .SetBalance(_addr[1], _currencies[1], 15)
-                        .SetBalance(_addr[1], _currencies[2], 20)
-                        .SetValidator(new Validator(_keys[0].PublicKey, 1))
-                        .SetValidator(new Validator(_keys[1].PublicKey, 1))
-                        .SetValidator(new Validator(_keys[2].PublicKey, 1))));
+            // FIXME: Should be tested on both legacy and modern.
+            _initWorld = new World(MockWorldState.CreateLegacy()
+                .SetBalance(_addr[0], _currencies[0], 5)
+                .SetBalance(_addr[0], _currencies[1], 10)
+                .SetBalance(_addr[0], _currencies[3], 5)
+                .SetBalance(_addr[1], _currencies[1], 15)
+                .SetBalance(_addr[1], _currencies[2], 20)
+                .SetValidatorSet(new ValidatorSet(_keys
+                    .Select(key => new Validator(key.PublicKey, 1))
+                    .ToList())));
 
             output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
             int i = 0;

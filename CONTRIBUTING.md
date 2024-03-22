@@ -137,6 +137,10 @@ on GitHub consists of several projects.  There are two types of projects:
     [gRPC]. This is cannot be used standalone. Need `IKeyValueStore`
     implementation for local storage like *[Libplanet.RocksDBStore]*.
 
+ -  *Libplanet.Mocks*: A mocking tool to be used for development when
+    designing `IAction`s and writing test codes.  This should not be
+    used or referenced in production code.
+
  -  *Libplanet.Analyzers*: Roslyn Analyzer (i.e., lint) for game programmers who
     use Libplanet.  This project is distributed as a distinct NuGet package:
     *[Libplanet.Analyzers]*.
