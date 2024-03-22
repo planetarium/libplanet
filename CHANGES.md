@@ -4,9 +4,7 @@ Libplanet changelog
 Version 4.2.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on March 22, 2024.
 
 ### Backward-incompatible API changes
 
@@ -23,21 +21,9 @@ To be released.
  -  (Libplanet.Action) Moved `SetValidator()` from `IAccount` to `IWorld`.
     [[#3702]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `Libplanet.Mocks` project.  [[#3642]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3642]: https://github.com/planetarium/libplanet/pull/3642
 [#3694]: https://github.com/planetarium/libplanet/issues/3694
