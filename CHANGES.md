@@ -40,7 +40,7 @@ To be released.
 [#3694]: https://github.com/planetarium/libplanet/issues/3694
 [#3697]: https://github.com/planetarium/libplanet/pull/3697
 [#3699]: https://github.com/planetarium/libplanet/pull/3699
-[#3072]: https://github.com/planetarium/libplanet/pull/3702
+[#3702]: https://github.com/planetarium/libplanet/pull/3702
 
 
 Version 4.1.0
@@ -63,21 +63,21 @@ Released on March 8, 2024.
 
  -  (Libplanet.Net) Changed some types due to removal of 'nullable keyword'.
     [[#3669]]
-     - Changed `blocks` parameter type of `Branch` class constructor from
-       `IEnumerable<(Block, BlockCommit)>` to
-       `IEnumerable<(Block, BlockCommit?)>`.
-     - Changed `AppProtocolVersion.Extra` field type from `IValue` to `IValue?`.
-     - Changed `extra` parameter type of `AppProtocolVersion` class constructor
-       from `IValue` to `IValue?`.
-     - Changed `extra` parameter type of `AppProtocolVersion.Sign` method
-       from `IValue` to `IValue?`.
+     -  Changed `blocks` parameter type of `Branch` class constructor from
+        `IEnumerable<(Block, BlockCommit)>` to
+        `IEnumerable<(Block, BlockCommit?)>`.
+     -  Changed `AppProtocolVersion.Extra` field type from `IValue` to `IValue?`.
+     -  Changed `extra` parameter type of `AppProtocolVersion` class constructor
+        from `IValue` to `IValue?`.
+     -  Changed `extra` parameter type of `AppProtocolVersion.Sign` method
+        from `IValue` to `IValue?`.
 
 ### Added APIs
 
  -  (Libplanet.Store.Remote) Introduce
     `Libplanet.Store.Server.RemoteKeyValueService`  [[#3688]]
  -  (Libplanet.Store.Remote) Introduce
-   `Libplanet.Store.Client.RemoteKeyValueStore`  [[#3688]]
+    `Libplanet.Store.Client.RemoteKeyValueStore`  [[#3688]]
 
 ### Behavioral changes
 
@@ -244,10 +244,11 @@ Released on January 22, 2024.
 Previous version changes
 ------------------------
 
-  - [Version 3.x.x]
-  - [Version 2.x.x]
-  - [Version 1.x.x]
-  - [Version 0.x.x]
+ -  [Version 3.x.x]
+ -  [Version 2.x.x]
+ -  [Version 1.x.x]
+ -  [Version 0.x.x]
+
 
 [Version 3.x.x]: ./changes/v3.md
 [Version 2.x.x]: ./changes/v2.md
