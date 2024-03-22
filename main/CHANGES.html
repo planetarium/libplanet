@@ -75,9 +75,9 @@ and <code>ValidatorDiff</code> properties from <code>AccountDiff</code>.  [<a hr
 <li>(Libplanet.Action) Removed <code>Uncommitted</code> property and <code>CommitAccount()</code>
 method from <code>IWorldDelta</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3694">#3694</a>, <a href="https://github.com/planetarium/libplanet/pull/3699">#3699</a>]</li>
 <li>(Libplanet.Action) Moved <code>GetValidatorSet()</code> from <code>IAccountState</code>
-to <code>IWorldState</code>.  [[#3702]]</li>
+to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3702">#3702</a>]</li>
 <li>(Libplanet.Action) Moved <code>SetValidator()</code> from <code>IAccount</code> to <code>IWorld</code>.
-[[#3702]]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/3702">#3702</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -107,7 +107,8 @@ to <code>IWorldState</code>.  [[#3702]]</li>
 <li>Changed <code>blocks</code> parameter type of <code>Branch</code> class constructor from
 <code>IEnumerable&lt;(Block, BlockCommit)&gt;</code> to
 <code>IEnumerable&lt;(Block, BlockCommit?)&gt;</code>.</li>
-<li>Changed <code>AppProtocolVersion.Extra</code> field type from <code>IValue</code> to <code>IValue?</code>.</li>
+<li>Changed <code>AppProtocolVersion.Extra</code> field type from
+<code>IValue</code> to <code>IValue?</code>.</li>
 <li>Changed <code>extra</code> parameter type of <code>AppProtocolVersion</code> class constructor
 from <code>IValue</code> to <code>IValue?</code>.</li>
 <li>Changed <code>extra</code> parameter type of <code>AppProtocolVersion.Sign</code> method
