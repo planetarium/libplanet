@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Store.Remote", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Store.Remote.Tests", "Libplanet.Store.Remote.Tests\Libplanet.Store.Remote.Tests.csproj", "{97F29346-636E-4BCA-B33D-6D0DB26A5AA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Mocks", "Libplanet.Mocks\Libplanet.Mocks.csproj", "{46C1A70D-D1DE-4173-A8C0-00F680F026E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -587,6 +589,24 @@ Global
 		{97F29346-636E-4BCA-B33D-6D0DB26A5AA6}.ReleaseMono|x64.Build.0 = Debug|Any CPU
 		{97F29346-636E-4BCA-B33D-6D0DB26A5AA6}.ReleaseMono|x86.ActiveCfg = Debug|Any CPU
 		{97F29346-636E-4BCA-B33D-6D0DB26A5AA6}.ReleaseMono|x86.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|x64.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Debug|x86.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|x64.ActiveCfg = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|x64.Build.0 = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.Release|x86.Build.0 = Release|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|Any CPU.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|x64.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|x64.Build.0 = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|x86.ActiveCfg = Debug|Any CPU
+		{46C1A70D-D1DE-4173-A8C0-00F680F026E3}.ReleaseMono|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
