@@ -1,28 +1,26 @@
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Mocks;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
-using Libplanet.Types.Consensus;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Action
 {
-    public abstract class AccountTest
+    public class AccountTest
     {
-        protected readonly PrivateKey[] _keys;
-        protected readonly Address[] _addr;
-        protected readonly Currency[] _currencies;
-        protected readonly IAccount _initAccount;
-        protected readonly IActionContext _initContext;
-        protected readonly Address _accountAddress = ReservedAddresses.LegacyAccount;
+        private readonly PrivateKey[] _keys;
+        private readonly Address[] _addr;
+        private readonly Currency[] _currencies;
+        private readonly IAccount _initAccount;
+        private readonly IActionContext _initContext;
+        private readonly Address _accountAddress = ReservedAddresses.LegacyAccount;
 
-        protected AccountTest(ITestOutputHelper output)
+        public AccountTest(ITestOutputHelper output)
         {
             _keys = new[]
             {
@@ -46,17 +44,9 @@ namespace Libplanet.Tests.Action
 
             _initAccount = new Account(new MockAccountState()
                 .SetState(_addr[0], (Text)"a")
-                .SetState(_addr[1], (Text)"b")
-                .SetBalance(_addr[0], _currencies[0], 5)
-                .SetBalance(_addr[0], _currencies[1], 10)
-                .SetBalance(_addr[0], _currencies[3], 5)
-                .SetBalance(_addr[1], _currencies[1], 15)
-                .SetBalance(_addr[1], _currencies[2], 20)
-                .SetValidator(new Validator(_keys[0].PublicKey, 1))
-                .SetValidator(new Validator(_keys[1].PublicKey, 1))
-                .SetValidator(new Validator(_keys[2].PublicKey, 1)));
+                .SetState(_addr[1], (Text)"b"));
 
-            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
+            output.WriteLine("Fixtures  {0,-42}  State", "Address");
             int i = 0;
             foreach (Address a in _addr)
             {
@@ -70,11 +60,20 @@ namespace Libplanet.Tests.Action
             _initContext = CreateContext(_initAccount, _addr[0]);
         }
 
-        public abstract int ProtocolVersion { get; }
-
-        public abstract IActionContext CreateContext(
-            IAccount delta,
-            Address signer);
+        public IActionContext CreateContext(IAccount delta, Address signer)
+        {
+            IWorld world = new World(new MockWorldState());
+            world = world.SetAccount(_accountAddress, delta);
+            return new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                0,
+                world,
+                0,
+                0);
+        }
 
         [Fact]
         public virtual void NullDelta()
@@ -133,10 +132,5 @@ namespace Libplanet.Tests.Action
             Assert.Null(a.GetState(_addr[0]));
             Assert.Null(a.GetState(_addr[1]));
         }
-
-        protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
-            new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
-
-        protected FungibleAssetValue Zero(int currencyIndex) => Value(currencyIndex, 0);
     }
 }
