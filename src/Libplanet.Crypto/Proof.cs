@@ -72,9 +72,17 @@ namespace Libplanet.Crypto
                 }
                 else
                 {
-                    _hash = CryptoConfig.ConsensusCryptoBackend
-                        .ProofToHash(ToByteArray()).ToImmutableArray();
-                    return (ImmutableArray<byte>)_hash;
+                    try
+                    {
+                        _hash = CryptoConfig.ConsensusCryptoBackend
+                            .ProofToHash(ToByteArray()).ToImmutableArray();
+                        return (ImmutableArray<byte>)_hash;
+                    }
+                    catch (ArgumentException e)
+                    {
+                        throw new InvalidProofException(
+                            $"Bytes of Proof is invalid", e);
+                    }
                 }
             }
         }
