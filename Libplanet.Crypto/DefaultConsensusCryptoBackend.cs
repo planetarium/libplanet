@@ -230,7 +230,10 @@ namespace Libplanet.Crypto
             int sBytesLen = (_eCParams.Curve.FieldSize + 7) >> 3;
             if (piBytes.Length != gammaBytesLen + cBytesLen + sBytesLen)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    $"Length of piBytes are expected to be " +
+                    $"{gammaBytesLen + cBytesLen + sBytesLen}, " +
+                    $"but found {piBytes.Length}");
             }
 
             byte[] gammaBytes = piBytes.Take(gammaBytesLen).ToArray();
@@ -242,11 +245,19 @@ namespace Libplanet.Crypto
 
             if (s.CompareTo(_eCParams.N) == 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("s cannot be bigger than EC parameter N");
             }
 
             // dH : Gamma
-            ECPoint gamma = _eCParams.Curve.DecodePoint(gammaBytes);
+            ECPoint gamma;
+            try
+            {
+                gamma = _eCParams.Curve.DecodePoint(gammaBytes);
+            }
+            catch (FormatException)
+            {
+                throw new ArgumentException("Given piBytes does not contain valid gammaBytes");
+            }
 
             return (gamma, c, s);
         }
