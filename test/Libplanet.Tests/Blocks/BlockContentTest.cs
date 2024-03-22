@@ -86,6 +86,7 @@ namespace Libplanet.Tests.Blocks
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs);
@@ -124,6 +125,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null),
                     transactions: txs,
                     evidence: evs));
@@ -162,6 +164,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null),
                     transactions: txs,
                     evidence: evs));
@@ -203,6 +206,7 @@ namespace Libplanet.Tests.Blocks
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(inconsistentTxs),
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null),
                     transactions: inconsistentTxs,
                     evidence: evs));

@@ -84,6 +84,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null)).Propose(),
                 _fx.Proposer);
         }
@@ -709,6 +710,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b1, TestUtils.CreateBlockCommit(b1));
 
@@ -716,6 +719,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2, CreateBlockCommit(b2)));
@@ -731,6 +736,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsB.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b2, CreateBlockCommit(b2));
         }
@@ -763,6 +770,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 
@@ -779,6 +788,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsB.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b2, CreateBlockCommit(b2));
 
@@ -835,6 +846,8 @@ namespace Libplanet.Tests.Blockchain
                 miner,
                 txs1.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(miner).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(block1, CreateBlockCommit(block1));
 
@@ -897,6 +910,8 @@ namespace Libplanet.Tests.Blockchain
                     miner,
                     txs.ToImmutableList(),
                     CreateBlockCommit(_blockChain.Tip),
+                    new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                        .Prove(_fx.Proposer).Proof,
                     ImmutableArray<EvidenceBase>.Empty);
                 _blockChain.Append(b, CreateBlockCommit(b));
             }
@@ -954,6 +969,8 @@ namespace Libplanet.Tests.Blockchain
                     miner,
                     txs.ToImmutableList(),
                     CreateBlockCommit(fork.Tip),
+                    new LotMetadata(fork.Tip.Index + 1, 0, fork.Tip.Proof)
+                        .Prove(_fx.Proposer).Proof,
                     ImmutableArray<EvidenceBase>.Empty);
                 fork.Append(b, CreateBlockCommit(b), render: true);
             }
@@ -1238,6 +1255,8 @@ namespace Libplanet.Tests.Blockchain
                     _fx.Proposer,
                     txs.ToImmutableList(),
                     CreateBlockCommit(chain.Tip),
+                    new LotMetadata(chain.Tip.Index + 1, 0, chain.Tip.Proof)
+                        .Prove(_fx.Proposer).Proof,
                     ImmutableArray<EvidenceBase>.Empty);
                 chain.Append(b, CreateBlockCommit(b));
             }
@@ -1530,6 +1549,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txsA.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
+                    .Prove(_fx.Proposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b1, CreateBlockCommit(b1));
 

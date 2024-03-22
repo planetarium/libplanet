@@ -70,6 +70,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: BlockContent.DeriveEvidenceHash(genEvidence)),
                 transactions: genTxs,
                 evidence: genEvidence);
@@ -136,6 +137,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidence)),
                 transactions: block1Transactions,
                 evidence: block1Evidence);
@@ -153,6 +155,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: null,
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: new List<Transaction>(),
                 evidence: new List<EvidenceBase>()); // Tweaked GenesisContent
@@ -167,6 +170,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidence)),
                 transactions: block1Transactions,
                 evidence: block1Evidence); // Tweaked Block1Content

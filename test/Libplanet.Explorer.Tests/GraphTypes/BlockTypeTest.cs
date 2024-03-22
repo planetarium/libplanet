@@ -43,6 +43,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     previousHash: lastBlockHash,
                     txHash: null,
                     lastCommit: lastBlockCommit,
+                    proof: new LotMetadata(2, 0, null).Prove(privateKey).Proof,
                     evidenceHash: null)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));

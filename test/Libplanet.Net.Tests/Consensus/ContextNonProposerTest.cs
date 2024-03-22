@@ -181,6 +181,7 @@ namespace Libplanet.Net.Tests.Consensus
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null)).Propose(),
                 key);
 
@@ -280,6 +281,7 @@ namespace Libplanet.Net.Tests.Consensus
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null)).Propose(),
                 TestUtils.PrivateKeys[1]);
 
@@ -429,6 +431,7 @@ namespace Libplanet.Net.Tests.Consensus
                 previousHash: blockChain.Genesis.Hash,
                 txHash: BlockContent.DeriveTxHash(txs),
                 lastCommit: null,
+                proof: null,
                 evidenceHash: null);
             var preEval = new PreEvaluationBlock(
                 preEvaluationBlockHeader: new PreEvaluationBlockHeader(

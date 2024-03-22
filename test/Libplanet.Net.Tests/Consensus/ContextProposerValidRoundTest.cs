@@ -182,6 +182,7 @@ namespace Libplanet.Net.Tests.Consensus
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
                         lastCommit: null,
+                        proof: null,
                         evidenceHash: null)).Propose(),
                 key);
 

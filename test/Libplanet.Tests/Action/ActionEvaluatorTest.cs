@@ -20,6 +20,7 @@ using Libplanet.Tests.Store;
 using Libplanet.Tests.Tx;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
@@ -105,6 +106,7 @@ namespace Libplanet.Tests.Action
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -357,6 +359,7 @@ namespace Libplanet.Tests.Action
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -662,6 +665,7 @@ namespace Libplanet.Tests.Action
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -779,6 +783,7 @@ namespace Libplanet.Tests.Action
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0),
+                    proof: new LotMetadata(123L, 0, null).Prove(GenesisProposer).Proof,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -987,6 +992,7 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(chain.Tip),
+                new LotMetadata(1L, 0, null).Prove(GenesisProposer).Proof,
                 ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);

@@ -179,6 +179,7 @@ public class GeneratedBlockChainFixture
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value),
+                    new LotMetadata(Chain.Tip.Index + 1, 0, Chain.Tip.Proof).Prove(proposer).Proof,
                     evidenceHash: null),
                 transactions,
                 evidence: Array.Empty<EvidenceBase>()).Propose(),

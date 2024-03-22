@@ -214,7 +214,7 @@ namespace Libplanet.Types.Blocks
                     : (BlockCommit?)null,
                 proof: marshaled.ContainsKey(ProofKey)
                     ? new Proof(marshaled[ProofKey])
-                    : (Proof?)null),
+                    : (Proof?)null,
                 evidenceHash: marshaled.TryGetValue(EvidenceHashKey, out IValue ehv)
                     ? new HashDigest<SHA256>(ehv)
                     : (HashDigest<SHA256>?)null);

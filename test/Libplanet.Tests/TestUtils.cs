@@ -448,6 +448,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: Array.Empty<EvidenceBase>());
@@ -488,6 +489,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             BlockCommit lastCommit = null,
+            Proof? proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             var txs = transactions is null
@@ -513,6 +515,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: lastCommit,
+                    proof: proof,
                     evidenceHash: evidenceHash),
                 transactions: txs,
                 evidence: Array.Empty<EvidenceBase>());
@@ -529,6 +532,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
             BlockCommit lastCommit = null,
+            Proof? proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             Skip.IfNot(
@@ -543,6 +547,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 blockInterval,
                 protocolVersion,
                 lastCommit,
+                proof,
                 evidence);
             return preEval.Sign(miner, stateRootHash);
         }
