@@ -8,6 +8,7 @@ projects=(
   "Libplanet.Common"
   "Libplanet.Crypto"
   "Libplanet.Crypto.Secp256k1"
+  "Libplanet.Mocks"
   "Libplanet.Net"
   "Libplanet.Store"
   "Libplanet.Store.Remote"
