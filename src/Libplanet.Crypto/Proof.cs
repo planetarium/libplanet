@@ -13,22 +13,25 @@ namespace Libplanet.Crypto
     /// Represents a proof that validators submits to be a proposer.
     /// Once decided, it can be a source of random seed.
     /// </summary>
-    public struct Proof : IBencodable, IEquatable<Proof>, IComparable<Proof>, IComparable
+    public readonly struct Proof : IBencodable, IEquatable<Proof>, IComparable<Proof>, IComparable
     {
         private readonly ImmutableArray<byte> _piBytes;
-        private ImmutableArray<byte>? _hash;
+        private readonly ImmutableArray<byte> _hash;
 
         public Proof(IReadOnlyList<byte> piBytes)
         {
-            if (piBytes.Count != 97)
+            try
             {
-                throw new ArgumentException(
-                    $"Proof byte length expected to be 97(gamma:33 + c:32 + s:32), " +
-                    $"but found {piBytes.Count}");
+                _hash = CryptoConfig.ConsensusCryptoBackend
+                    .ProofToHash(piBytes.ToArray()).ToImmutableArray();
+            }
+            catch (ArgumentException e)
+            {
+                throw new InvalidProofException(
+                    $"Bytes of Proof is invalid", e);
             }
 
             _piBytes = piBytes.ToImmutableArray();
-            _hash = null;
         }
 
         public Proof(IValue bencoded)
@@ -62,30 +65,7 @@ namespace Libplanet.Crypto
         /// Hash of the <see cref="Proof"/>.
         /// It can be used as a random hash that can be verified.
         /// </summary>
-        public ImmutableArray<byte> Hash
-        {
-            get
-            {
-                if (_hash is { } hash)
-                {
-                    return hash;
-                }
-                else
-                {
-                    try
-                    {
-                        _hash = CryptoConfig.ConsensusCryptoBackend
-                            .ProofToHash(ToByteArray()).ToImmutableArray();
-                        return (ImmutableArray<byte>)_hash;
-                    }
-                    catch (ArgumentException e)
-                    {
-                        throw new InvalidProofException(
-                            $"Bytes of Proof is invalid", e);
-                    }
-                }
-            }
-        }
+        public ImmutableArray<byte> Hash => _hash;
 
         /// <summary>
         /// Integer form of <see cref="Hash"/>.
