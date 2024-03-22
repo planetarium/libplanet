@@ -25,7 +25,7 @@ namespace Libplanet.Types.Consensus
         public LotMetadata(
             long height,
             int round,
-            Proof lastProof)
+            Proof? lastProof)
         {
             if (height < 0)
             {
@@ -68,7 +68,7 @@ namespace Libplanet.Types.Consensus
         public int Round { get; }
 
         /// <inheritdoc cref="ILotMetadata.LastProof"/>
-        public Proof LastProof { get; }
+        public Proof? LastProof { get; }
 
         /// <inheritdoc cref="IBencodable.Bencoded"/>
         [JsonIgnore]
@@ -78,8 +78,12 @@ namespace Libplanet.Types.Consensus
             {
                 Dictionary bencoded = Dictionary.Empty
                     .Add(HeightKey, Height)
-                    .Add(RoundKey, Round)
-                    .Add(LastProofKey, LastProof.ByteArray);
+                    .Add(RoundKey, Round);
+
+                if (LastProof is Proof lastProof)
+                {
+                    bencoded = bencoded.Add(LastProofKey, lastProof.ByteArray);
+                }
 
                 return bencoded;
             }
@@ -93,7 +97,7 @@ namespace Libplanet.Types.Consensus
         /// <returns>A <see cref="Lot"/> with a <see cref="Lot.Proof"/>.
         /// <seealso cref="Proof"/>
         /// </returns>
-        public Lot Sign(PrivateKey prover)
+        public Lot Prove(PrivateKey prover)
             => new Lot(this, prover.PublicKey, prover.Prove(_codec.Encode(Bencoded)));
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
