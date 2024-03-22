@@ -9,7 +9,7 @@ namespace Libplanet.Types.Consensus
     /// <summary>
     /// Metadata of the <see cref="Lot"/>.
     /// </summary>
-    public struct LotMetadata : ILotMetadata, IEquatable<LotMetadata>, IBencodable
+    public readonly struct LotMetadata : ILotMetadata, IEquatable<LotMetadata>, IBencodable
     {
         private static readonly Binary HeightKey =
             new Binary(new byte[] { 0x48 }); // 'H'
@@ -57,7 +57,7 @@ namespace Libplanet.Types.Consensus
             : this(
                   (Integer)bencoded[HeightKey],
                   (Integer)bencoded[RoundKey],
-                  new Proof(bencoded[LastProofKey]))
+                  bencoded.TryGetValue(LastProofKey, out IValue p) ? (Proof?)new Proof(p) : null)
         {
         }
 
