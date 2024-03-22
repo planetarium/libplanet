@@ -195,7 +195,7 @@ namespace Libplanet.Tests.Blockchain
                         }.ToPlainValues()),
                 }.ToImmutableList();
 
-                var block = blockChain.ProposeBlock(new PrivateKey(), txs, null);
+                var block = blockChain.ProposeBlock(new PrivateKey(), txs, null, null);
                 Assert.Throws<InvalidTxNonceException>(
                     () => blockChain.Append(block, CreateBlockCommit(block)));
             }

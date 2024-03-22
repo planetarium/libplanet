@@ -60,7 +60,8 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: GenesisKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: genTxs);
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
@@ -118,7 +119,8 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: Block1Key.PublicKey,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: block1Transactions);
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
@@ -133,7 +135,8 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: null,
                     previousHash: null,
                     txHash: null,
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: new List<Transaction>()); // Tweaked GenesisContent
             GenesisMetadataPv0 = new BlockMetadata(GenesisContentPv0);
             Block1ContentPv1 = new BlockContent(
@@ -145,7 +148,8 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: null,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: block1Transactions); // Tweaked Block1Content
             Block1MetadataPv1 = new BlockMetadata(Block1ContentPv1);
         }

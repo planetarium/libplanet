@@ -20,7 +20,8 @@ namespace Libplanet.Tests.Blocks
                 publicKey: publicKey,
                 previousHash: null,
                 txHash: null,
-                lastCommit: null);
+                lastCommit: null,
+                proof: null);
             Assert.Throws<InvalidBlockTimestampException>(() => metadata.ValidateTimestamp(now));
 
             // It's okay because 3 seconds later.

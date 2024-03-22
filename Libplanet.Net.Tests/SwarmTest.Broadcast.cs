@@ -21,6 +21,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Serilog;
 using Serilog.Events;
@@ -750,12 +751,16 @@ namespace Libplanet.Net.Tests
             Block block1 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[0] }.ToImmutableList(),
-                TestUtils.CreateBlockCommit(blockChain.Tip));
+                TestUtils.CreateBlockCommit(blockChain.Tip),
+                new LotMetadata(blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof)
+                    .Prove(GenesisProposer).Proof);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
             Block block2 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[1] }.ToImmutableList(),
-                CreateBlockCommit(blockChain.Tip));
+                CreateBlockCommit(blockChain.Tip),
+                new LotMetadata(blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof)
+                    .Prove(GenesisProposer).Proof);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
             try

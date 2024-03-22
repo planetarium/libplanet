@@ -442,7 +442,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: txs);
             return content.Propose();
         }
@@ -482,7 +483,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            Proof? proof = null)
         {
             var txs = transactions is null
                 ? new List<Transaction>()
@@ -498,7 +500,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: lastCommit),
+                    lastCommit: lastCommit,
+                    proof: proof),
                 transactions: txs);
             var preEval = content.Propose();
             preEval.ValidateTimestamp();
