@@ -135,15 +135,10 @@ namespace Libplanet.Crypto
                 ? gamma
                 : gamma.Multiply(_eCParams.H);
 
-            // On draft-irtf-cfrg-vrf-03, it's mentioned to use EC point encoding with compression,
-            // but as our logic targets 64-bytes system, adoped uncompressed form to get
-            // payload bytes larger than 64bytes.
-            // If we use compressed form, source domain would be smaller than target hash domain,
-            // so space of generated betaBytes would get sparse.
             byte[] payload
                 = SuiteBytes
                 .Concat(new byte[] { 3 })
-                .Concat(gammaMul.GetEncoded(false))
+                .Concat(gammaMul.GetEncoded(true))
                 .Concat(new byte[] { 0 }).ToArray();
 
             HashDigest<SHA512> betaHash = HashDigest<SHA512>.DeriveFrom(payload);
