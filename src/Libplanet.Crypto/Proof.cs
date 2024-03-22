@@ -20,6 +20,13 @@ namespace Libplanet.Crypto
 
         public Proof(IReadOnlyList<byte> piBytes)
         {
+            if (piBytes.Count != 97)
+            {
+                throw new ArgumentException(
+                    $"Proof byte length expected to be 97(gamma:33 + c:32 + s:32), " +
+                    $"but found {piBytes.Count}");
+            }
+
             _piBytes = piBytes.ToImmutableArray();
             _hash = null;
         }
