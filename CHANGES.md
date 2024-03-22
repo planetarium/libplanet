@@ -66,7 +66,8 @@ Released on March 8, 2024.
      -  Changed `blocks` parameter type of `Branch` class constructor from
         `IEnumerable<(Block, BlockCommit)>` to
         `IEnumerable<(Block, BlockCommit?)>`.
-     -  Changed `AppProtocolVersion.Extra` field type from `IValue` to `IValue?`.
+     -  Changed `AppProtocolVersion.Extra` field type from
+        `IValue` to `IValue?`.
      -  Changed `extra` parameter type of `AppProtocolVersion` class constructor
         from `IValue` to `IValue?`.
      -  Changed `extra` parameter type of `AppProtocolVersion.Sign` method
