@@ -88,7 +88,7 @@ Libplanet-backed games/apps too.</p>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">PrivateKey</span></div>
   </div>
   <div class="implements">
@@ -284,7 +284,7 @@ using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_Pr
   <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey__ctor_System_String_" data-uid="Libplanet.Crypto.PrivateKey.#ctor(System.String)">PrivateKey(String)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given hexadecimal
-<span class="xref">System.String</span> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -302,7 +302,7 @@ using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_Pr
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string of a private key's
 <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>.</p>
@@ -326,7 +326,7 @@ forge signatures.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
@@ -540,7 +540,7 @@ public byte[] Decrypt(byte[] ciphertext)</code></pre>
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <span class="xref">System.String</span>s.</p>
+are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>s.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -618,7 +618,7 @@ public ImmutableArray&lt;byte&gt; Decrypt(ImmutableArray&lt;byte&gt; ciphertext)
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <span class="xref">System.String</span>s.</p>
+are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>s.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -748,7 +748,7 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -878,7 +878,7 @@ public static PrivateKey FromString(string hex)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string of a private key's
 <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>.</p>
@@ -918,7 +918,7 @@ forge signatures.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
@@ -978,13 +978,13 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <h5 id="Libplanet_Crypto_PrivateKey_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
 must be kept secret, if they are exposed, an attacker will be able to
