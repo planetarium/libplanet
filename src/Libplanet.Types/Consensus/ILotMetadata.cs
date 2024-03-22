@@ -26,6 +26,6 @@ namespace Libplanet.Types.Consensus
         /// of the <see cref="Blocks.Block"/> proposing.
         /// <seealso cref="Blocks.BlockCommit.Round"/>
         /// </summary>
-        Proof LastProof { get; }
+        Proof? LastProof { get; }
     }
 }

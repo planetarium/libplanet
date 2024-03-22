@@ -58,7 +58,7 @@ namespace Libplanet.Types.Consensus
         public int Round => _metadata.Round;
 
         /// <inheritdoc cref="ILotMetadata.LastProof"/>
-        public Proof LastProof => _metadata.LastProof;
+        public Proof? LastProof => _metadata.LastProof;
 
         /// <inheritdoc cref="ILot.PublicKey"/>
         public PublicKey PublicKey { get; }
@@ -105,7 +105,7 @@ namespace Libplanet.Types.Consensus
                 { "public_key", PublicKey.ToString() },
                 { "height", Height },
                 { "round", Round },
-                { "lastProof", LastProof.ByteArray.Hex() },
+                { "lastProof", LastProof?.ByteArray.Hex() ?? "Empty" },
             };
             return JsonSerializer.Serialize(dict);
         }
