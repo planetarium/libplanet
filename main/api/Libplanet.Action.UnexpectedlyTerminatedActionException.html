@@ -80,7 +80,7 @@ is stored in the <span class="xref">System.Exception.InnerException</span> prope
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></div>
+    <div class="level1"><span class="xref">System.Exception</span></div>
     <div class="level2"><span class="xref">UnexpectedlyTerminatedActionException</span></div>
   </div>
   <div class="implements">
@@ -96,7 +96,7 @@ is stored in the <span class="xref">System.Exception.InnerException</span> prope
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.gettype#system-exception-gettype">Exception.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.tostring#system-exception-tostring">Exception.ToString()</a>
+      <span class="xref">System.Exception.ToString()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.data#system-exception-data">Exception.Data</a>
@@ -105,19 +105,19 @@ is stored in the <span class="xref">System.Exception.InnerException</span> prope
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.helplink#system-exception-helplink">Exception.HelpLink</a>
     </div>
     <div>
-      <span class="xref">System.Exception.HResult</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.hresult#system-exception-hresult">Exception.HResult</a>
     </div>
     <div>
       <span class="xref">System.Exception.InnerException</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.message#system-exception-message">Exception.Message</a>
+      <span class="xref">System.Exception.Message</span>
     </div>
     <div>
-      <span class="xref">System.Exception.Source</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.source#system-exception-source">Exception.Source</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.stacktrace#system-exception-stacktrace">Exception.StackTrace</a>
+      <span class="xref">System.Exception.StackTrace</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.targetsite#system-exception-targetsite">Exception.TargetSite</a>
@@ -177,9 +177,9 @@ public sealed class UnexpectedlyTerminatedActionException : Exception, ISerializ
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">message</span></td>
-        <td><p>Specifies a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.message#system-exception-message">Message</a>.</p>
+        <td><p>Specifies a <span class="xref">System.Exception.Message</span>.</p>
 </td>
       </tr>
       <tr>
@@ -190,14 +190,14 @@ public sealed class UnexpectedlyTerminatedActionException : Exception, ISerializ
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">blockIndex</span></td>
         <td><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>
 that <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</td>
         <td><span class="parametername">txid</span></td>
         <td><p>The <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a> of
 the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> that <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to.
@@ -206,7 +206,7 @@ a <see cref="!:IBlockPolicy.BlockAction"></see>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td><span class="parametername">previousStateRootHash</span></td>
         <td><p>The <see cref="!:ITrie.Hash"></see> of states until
 previous action execution.  This can be <span class="xref">null</span> if the chain which
@@ -220,7 +220,7 @@ executed the action, was not using <see cref="!:TrieStateStore"></see>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="xref">System.Exception</span></td>
         <td><span class="parametername">innerException</span></td>
         <td><p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw.</p>
 </td>
@@ -287,7 +287,7 @@ belongs to.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -352,7 +352,7 @@ is stored in the <span class="xref">System.Exception.InnerException</span> prope
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -386,7 +386,7 @@ if <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -427,7 +427,7 @@ is stored in the <span class="xref">System.Exception.InnerException</span> prope
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>

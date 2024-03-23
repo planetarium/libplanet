@@ -81,7 +81,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
     <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
@@ -90,7 +90,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
@@ -218,7 +218,7 @@ and its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.arra
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> is not
 the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> the hash algorithm
@@ -258,7 +258,7 @@ the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplan
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
         <td><p>An immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
 a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <span class="xref">null</span>, and its
@@ -277,9 +277,9 @@ a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;<
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1.length#system-collections-immutable-immutablearray-1-length">Length</a> is not
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <span class="xref">System.Collections.Immutable.ImmutableArray`1.Length</span> is not
 the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> the hash algorithm
 (i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>) requires.</p>
 </td>
@@ -303,7 +303,7 @@ the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplan
   <div class="markdown level1 summary"><p>The fixed, and valid <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> of
 a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of every digest.</p>
 <p>This varies depending upon what <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> is
-used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a> <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> is <code>20</code>,
+used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <span class="xref">System.Security.Cryptography.SHA1</span> <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> is <code>20</code>,
 and if <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a> it is <code>32</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -321,7 +321,7 @@ and if <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.secur
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -396,7 +396,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -496,7 +496,7 @@ public static HashDigest&lt;T&gt; DeriveFrom(ImmutableArray&lt;byte&gt; input)</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">input</span></td>
         <td><p>The bytes to compute its hash.</p>
 </td>
@@ -724,7 +724,7 @@ public static HashDigest&lt;T&gt; FromString(string hexDigest)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hexDigest</span></td>
         <td><p>A hexadecimal representation of
 a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
@@ -764,7 +764,7 @@ a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;<
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
 the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a>, the hash algorithm
@@ -808,7 +808,7 @@ public override readonly int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -854,7 +854,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -932,7 +932,7 @@ public override readonly string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A hexadecimal representation of a digest.</p>
 </td>
       </tr>
@@ -949,7 +949,7 @@ public override readonly string ToString()</code></pre>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <div>
       <span class="xref">Bencodex.IBencodable</span>
