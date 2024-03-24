@@ -312,6 +312,18 @@ namespace Libplanet.Blockchain
                 {
                     throw new InvalidBlockLastCommitException(ibce.Message);
                 }
+
+                if (block.Proof is { } && block.ProtocolVersion < 6)
+                {
+                    throw new InvalidBlockProofException(
+                        "Block of protocol version lower than 6 does not support proof.");
+                }
+
+                if (block.Proof is null && block.ProtocolVersion >= 6)
+                {
+                    throw new InvalidBlockProofException(
+                        "Block of protocol version higher than 5 must contain proof.");
+                }
             }
 
             foreach (var ev in block.Evidence)
