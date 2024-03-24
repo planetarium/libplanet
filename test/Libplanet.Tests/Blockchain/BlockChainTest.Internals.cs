@@ -10,7 +10,6 @@ using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Xunit;
@@ -114,8 +113,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
-                new LotMetadata(_blockChain.Tip.Index + 1, 0, _blockChain.Tip.Proof)
-                    .Prove(_fx.Proposer).Proof,
+                CreateZeroRoundProof(_blockChain.Tip, _fx.Proposer),
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(block1, CreateBlockCommit(block1), render: true);
 

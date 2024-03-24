@@ -37,7 +37,9 @@ namespace Libplanet.Tests.Blockchain
                     .GetState(default));
 
             var proposerA = new PrivateKey();
-            Block block = _blockChain.ProposeBlock(proposerA);
+            Block block = _blockChain.ProposeBlock(
+                proposerA,
+                proof: CreateZeroRoundProof(_blockChain.Tip, proposerA));
             _blockChain.Append(block, CreateBlockCommit(block));
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
@@ -55,8 +57,7 @@ namespace Libplanet.Tests.Blockchain
             Block anotherBlock = _blockChain.ProposeBlock(
                 proposerB,
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0),
-                new LotMetadata(_blockChain.Tip.Index, 0, _blockChain.Tip.Proof)
-                    .Prove(proposerB).Proof,
+                CreateZeroRoundProof(_blockChain.Tip, proposerB),
                 _blockChain.GetPendingEvidence());
             _blockChain.Append(anotherBlock, CreateBlockCommit(anotherBlock));
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
@@ -74,12 +75,11 @@ namespace Libplanet.Tests.Blockchain
                     .GetState(default)
             );
 
-            var proposerC = new PrivateKey();
+            var proposer = new PrivateKey();
             Block block3 = _blockChain.ProposeBlock(
-                proposerC,
+                proposer,
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0),
-                new LotMetadata(_blockChain.Tip.Index, 0, _blockChain.Tip.Proof)
-                    .Prove(proposerC).Proof,
+                CreateZeroRoundProof(_blockChain.Tip, proposer),
                 _blockChain.GetPendingEvidence());
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
@@ -116,12 +116,11 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.StageTransaction(heavyTx);
             }
 
-            var proposerD = new PrivateKey();
+            proposer = new PrivateKey();
             Block block4 = _blockChain.ProposeBlock(
-                proposerD,
+                proposer,
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0),
-                new LotMetadata(_blockChain.Tip.Index, 0, _blockChain.Tip.Proof)
-                    .Prove(proposerD).Proof,
+                CreateZeroRoundProof(_blockChain.Tip, proposer),
                 _blockChain.GetPendingEvidence());
             Assert.False(_blockChain.ContainsBlock(block4.Hash));
             _logger.Debug(
@@ -501,12 +500,8 @@ namespace Libplanet.Tests.Blockchain
             var proposer = new PrivateKey();
             Block block2 = _blockChain.ProposeBlock(
                 proposer,
-                CreateBlockCommit(
-                    _blockChain.Tip.Hash,
-                    _blockChain.Tip.Index,
-                    0),
-                new LotMetadata(_blockChain.Tip.Index, 0, _blockChain.Tip.Proof)
-                    .Prove(proposer).Proof,
+                CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0),
+                CreateZeroRoundProof(_blockChain.Tip, proposer),
                 _blockChain.GetPendingEvidence());
             _blockChain.Append(block2, CreateBlockCommit(block2));
 
@@ -571,8 +566,7 @@ namespace Libplanet.Tests.Blockchain
             block = blockChain.ProposeBlock(
                 privateKey1,
                 CreateBlockCommit(_blockChain.Tip),
-                new LotMetadata(_blockChain.Tip.Index, 0, _blockChain.Tip.Proof)
-                    .Prove(privateKey1).Proof,
+                CreateZeroRoundProof(_blockChain.Tip, privateKey1),
                 _blockChain.GetPendingEvidence());
             blockChain.Append(block, CreateBlockCommit(block));
 

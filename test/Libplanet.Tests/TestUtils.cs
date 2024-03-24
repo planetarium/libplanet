@@ -411,6 +411,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
+        public static Proof CreateZeroRoundProof(
+            Block tip,
+            PrivateKey proposerKey)
+            => new LotMetadata(tip.Index + 1, 0, tip.Proof).Prove(proposerKey).Proof;
+
         public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,

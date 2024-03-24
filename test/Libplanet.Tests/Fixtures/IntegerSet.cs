@@ -173,7 +173,9 @@ namespace Libplanet.Tests.Fixtures
             Sign(PrivateKeys[signerIndex], actions);
 
         public Block Propose() => Chain.ProposeBlock(
-            Miner, TestUtils.CreateBlockCommit(Chain.Tip));
+            Miner,
+            TestUtils.CreateBlockCommit(Chain.Tip),
+            TestUtils.CreateZeroRoundProof(Chain.Tip, Miner));
 
         public void Append(Block block) =>
             Chain.Append(block, TestUtils.CreateBlockCommit(block));

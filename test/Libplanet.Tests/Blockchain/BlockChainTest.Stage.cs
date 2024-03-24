@@ -102,8 +102,13 @@ namespace Libplanet.Tests.Blockchain
                 txIds.OrderBy(id => id),
                 _blockChain.GetStagedTransactionIds().OrderBy(id => id)
             );
-            block = _blockChain.ProposeBlock(key, TestUtils.CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            block = _blockChain.ProposeBlock(
+                key,
+                TestUtils.CreateBlockCommit(_blockChain.Tip),
+                TestUtils.CreateZeroRoundProof(_blockChain.Tip, key));
+            _blockChain.Append(
+                block,
+                TestUtils.CreateBlockCommit(block));
             // tx_0_1 and tx_1_x should be still staged, just filtered
             Assert.Empty(_blockChain.GetStagedTransactionIds());
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
