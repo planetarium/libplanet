@@ -31,8 +31,15 @@ To be released.
     [[#VRF]]
  -  Added `Lot` struct as a proved contents to be submitted as a lot of proposer
     sortition.  [[#VRF]]
+ -  `BlockMetadata.CurrentProtocolVersion` has been changed from 5 to 6.
+    [[#VRF]]
+ -  Added `IBlockMetadata.Proof` property.  [[#VRF]]
 
 ### Behavioral changes
+
+ -  `ActionEvaluator.EvaluateActions()` use `Proof.Seed` as a initial
+    random seed instead of `PreEvaluationHash`, `signature` combined seed.
+    [[#VRF]]
 
 ### Bug fixes
 
