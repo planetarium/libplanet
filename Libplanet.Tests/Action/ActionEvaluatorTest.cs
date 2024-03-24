@@ -152,7 +152,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
             chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
@@ -202,7 +204,10 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
-            Block block = chain.ProposeBlock(new PrivateKey());
+            var proposer = new PrivateKey();
+            Block block = chain.ProposeBlock(
+                proposer,
+                proof: CreateZeroRoundProof(chain.Tip, proposer));
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
@@ -840,7 +845,7 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(chain.Tip),
-                new LotMetadata(1L, 0, null).Prove(GenesisProposer).Proof);
+                CreateZeroRoundProof(chain.Tip, GenesisProposer));
 
             IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);
@@ -1023,7 +1028,7 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(chain.Tip),
-                new LotMetadata(chain.Tip.Index + 1, 0, null).Prove(GenesisProposer).Proof);
+                CreateZeroRoundProof(chain.Tip, GenesisProposer));
 
             var evals = actionEvaluator.EvaluateBlock(
                 block,
@@ -1104,7 +1109,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
@@ -1175,7 +1182,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
@@ -1249,7 +1258,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
@@ -1264,7 +1275,7 @@ namespace Libplanet.Tests.Action
          }
 
         [Fact]
-        public void GenerateRandomSeed()
+        public void GenerateLegacyRandomSeed()
         {
             byte[] preEvaluationHashBytes =
             {
@@ -1281,14 +1292,16 @@ namespace Libplanet.Tests.Action
                 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
 
-            int seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
+            int seed = ActionEvaluator.GenerateLegacyRandomSeed(
+                preEvaluationHashBytes, signature, 0);
             Assert.Equal(353767086, seed);
-            seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 1);
+            seed = ActionEvaluator.GenerateLegacyRandomSeed(
+                preEvaluationHashBytes, signature, 1);
             Assert.Equal(353767087, seed);
         }
 
         [Fact]
-        public void CheckRandomSeedInAction()
+        public void CheckLegacyRandomSeedInAction()
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
@@ -1312,7 +1325,7 @@ namespace Libplanet.Tests.Action
             byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
             int[] randomSeeds = Enumerable
                 .Range(0, txA.Actions.Count)
-                .Select(offset => ActionEvaluator.GenerateRandomSeed(
+                .Select(offset => ActionEvaluator.GenerateLegacyRandomSeed(
                     preEvaluationHashBytes,
                     txA.Signature,
                     offset))
@@ -1351,7 +1364,10 @@ namespace Libplanet.Tests.Action
             Assert.True(chain.GetWorldState().Legacy);
 
             // A block that doesn't touch any state does not migrate its state.
-            var block2 = chain.ProposeBlock(miner, blockCommit);
+            var block2 = chain.ProposeBlock(
+                miner,
+                blockCommit,
+                CreateZeroRoundProof(chain.Tip, miner));
             blockCommit = CreateBlockCommit(block2);
             chain.Append(block2, blockCommit);
             Log.Debug("Is World Legacy?");
@@ -1370,7 +1386,10 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
-            var block3 = chain.ProposeBlock(miner, blockCommit);
+            var block3 = chain.ProposeBlock(
+                miner,
+                blockCommit,
+                CreateZeroRoundProof(chain.Tip, miner));
             chain.Append(block3, CreateBlockCommit(block3));
             Assert.False(chain.GetWorldState().Legacy);
             var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)

@@ -58,7 +58,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ApplicationException>(() => _blockChain.EvaluateAndSign(
                 new BlockContent(
                     new BlockMetadata(
-                        protocolVersion: protocolVersion - 1,
+                        protocolVersion: BlockMetadata.LegacyStateVersion,
                         index: 2L,
                         timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
                         miner: _fx.Proposer.Address,
@@ -119,9 +119,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: prev.Hash,
                         txHash: null,
                         lastCommit: TestUtils.CreateBlockCommit(prev.Hash, prev.Index + 1, 0),
-                        proof: new LotMetadata(prev.Index + 1, 0, prev.Proof)
-                            .Prove(_fx.Proposer).Proof))
-                        .Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(prev, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(
@@ -147,8 +145,7 @@ namespace Libplanet.Tests.Blockchain
                         // ReSharper disable once PossibleInvalidOperationException
                         lastCommit: TestUtils.CreateBlockCommit(
                             _validNext.PreviousHash.Value, 1, 0),
-                        proof: new LotMetadata(_validNext.Index + 1, 0, _validNext.Proof)
-                            .Prove(_fx.Proposer).Proof)).Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(_validNext, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(
@@ -170,8 +167,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _validNext.Hash,
                         txHash: null,
                         lastCommit: TestUtils.CreateBlockCommit(_validNext),
-                        proof: new LotMetadata(_validNext.Index + 1, 0, _validNext.Proof)
-                            .Prove(_fx.Proposer).Proof)).Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(_validNext, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(
@@ -285,8 +281,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: blockCommit,
-                        proof: new LotMetadata(2L, 0, block1.Proof)
-                            .Prove(_fx.Proposer).Proof)).Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(block1, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(_blockChain.Tip, block2);
@@ -328,8 +323,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: blockCommit,
-                        proof: new LotMetadata(2L, 0, block1.Proof)
-                            .Prove(_fx.Proposer).Proof)).Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(block1, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
@@ -370,8 +364,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: blockCommit,
-                        proof: new LotMetadata(2L, 0, block1.Proof)
-                            .Prove(_fx.Proposer).Proof)).Propose(),
+                        proof: TestUtils.CreateZeroRoundProof(block1, _fx.Proposer))).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));

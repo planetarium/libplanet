@@ -73,7 +73,8 @@ namespace Libplanet.Tests.Action
                     new[] { tx },
                     miner: _keys[1].PublicKey,
                     protocolVersion: ProtocolVersion,
-                    lastCommit: TestUtils.CreateBlockCommit(chain.Tip)),
+                    lastCommit: TestUtils.CreateBlockCommit(chain.Tip),
+                    proof: TestUtils.CreateZeroRoundProof(chain.Tip, _keys[1])),
                 _keys[1]);
             chain.Append(
                 block,

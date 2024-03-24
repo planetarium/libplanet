@@ -406,6 +406,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
+        public static Proof CreateZeroRoundProof(
+            Block tip,
+            PrivateKey proposerKey)
+            => new LotMetadata(tip.Index + 1, 0, tip.Proof).Prove(proposerKey).Proof;
+
         public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,
@@ -515,7 +520,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            Proof? proof = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -528,7 +534,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 blockInterval,
                 protocolVersion,
-                lastCommit);
+                lastCommit,
+                proof);
             return preEval.Sign(miner, stateRootHash);
         }
 
