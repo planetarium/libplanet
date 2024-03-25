@@ -110,7 +110,10 @@ namespace Libplanet.Tests.Blockchain
             var genesis = _blockChain.Genesis;
 
             Block block1 = _blockChain.ProposeBlock(
-                _fx.Proposer, txs.ToImmutableList(), CreateBlockCommit(_blockChain.Tip));
+                _fx.Proposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(_blockChain.Tip),
+                CreateZeroRoundProof(_blockChain.Tip, _fx.Proposer));
             _blockChain.Append(block1, CreateBlockCommit(block1), render: true);
 
             var minerAddress = genesis.Miner;

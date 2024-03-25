@@ -139,9 +139,11 @@ public class TransactionQueryTest
 
         // staging txs of key2 does not increase nonce of key1
         Source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        var proposer = new PrivateKey();
         block = Source.BlockChain.ProposeBlock(
-            new PrivateKey(),
-            Libplanet.Tests.TestUtils.CreateBlockCommit(block));
+            proposer,
+            Libplanet.Tests.TestUtils.CreateBlockCommit(block),
+            Libplanet.Tests.TestUtils.CreateZeroRoundProof(block, proposer));
         Source.BlockChain.Append(block, Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         await AssertNextNonce(1, key2.Address);
         await AssertNextNonce(2, key1.Address);

@@ -58,7 +58,8 @@ namespace Libplanet.Blockchain
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
-                    lastCommit: null),
+                    lastCommit: null,
+                    proof: null),
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();
@@ -80,6 +81,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="proof">The <see cref="Proof"/> proved from proposer candidate.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
@@ -88,6 +90,7 @@ namespace Libplanet.Blockchain
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
+            Proof? proof = null,
             IComparer<Transaction> txPriority = null)
         {
             long index = Count;
@@ -113,7 +116,8 @@ namespace Libplanet.Blockchain
             var block = ProposeBlock(
                 proposer,
                 transactions,
-                lastCommit);
+                lastCommit,
+                proof);
             _logger.Debug(
                 "Proposed block #{Index} {Hash} with previous hash {PreviousHash}",
                 block.Index,
@@ -129,7 +133,8 @@ namespace Libplanet.Blockchain
         /// list of <see cref="Transaction"/>s.
         /// </para>
         /// <para>
-        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction})"/>,
+        /// Unlike
+        /// <see cref="ProposeBlock(PrivateKey, BlockCommit, Proof?, IComparer{Transaction})"/>,
         /// this may result in a <see cref="Block"/> that does not conform to the
         /// <see cref="Policy"/>.
         /// </para>
@@ -139,11 +144,13 @@ namespace Libplanet.Blockchain
         /// <param name="transactions">The list of <see cref="Transaction"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="proof">The <see cref="Proof"/> proved from proposer candidate.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
         internal Block ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
-            BlockCommit lastCommit)
+            BlockCommit lastCommit,
+            Proof? proof)
         {
             long index = Count;
             BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
@@ -160,7 +167,8 @@ namespace Libplanet.Blockchain
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),
-                    lastCommit: lastCommit),
+                    lastCommit: lastCommit,
+                    proof: proof),
                 transactions: orderedTransactions);
             var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval);

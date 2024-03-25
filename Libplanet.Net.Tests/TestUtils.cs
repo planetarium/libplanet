@@ -126,6 +126,9 @@ namespace Libplanet.Net.Tests
         public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round) =>
             Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);
 
+        public static Proof CreateZeroRoundProof(Block tip, PrivateKey proposerKey) =>
+            Libplanet.Tests.TestUtils.CreateZeroRoundProof(tip, proposerKey);
+
         public static void HandleFourPeersPreCommitMessages(
             ConsensusContext consensusContext,
             PrivateKey nodePrivateKey,

@@ -176,7 +176,8 @@ namespace Libplanet.Net.Tests.Consensus
                         publicKey: key.PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose(),
+                        lastCommit: null,
+                        proof: null)).Propose(),
                 key);
 
             context.Start();

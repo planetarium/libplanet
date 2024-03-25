@@ -42,7 +42,9 @@ public abstract class BlockChainIndexTest
         var forkedChain = ChainFx.Chain.Fork(ChainFx.Chain.Tip.PreviousHash!.Value);
         var divergentBlock = forkedChain.ProposeBlock(
             ChainFx.PrivateKeys[0],
-            forkedChain.GetBlockCommit(forkedChain.Tip.Hash));
+            forkedChain.GetBlockCommit(forkedChain.Tip.Hash),
+            new LotMetadata(forkedChain.Tip.Index + 1, 0, forkedChain.Tip.Proof)
+                .Prove(ChainFx.PrivateKeys[0]).Proof);
         forkedChain.Append(
             divergentBlock,
             new BlockCommit(
