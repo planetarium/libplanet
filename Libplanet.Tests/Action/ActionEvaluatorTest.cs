@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Action
                     actions: new[] { new RandomAction(txAddress), }.ToPlainValues()),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var noStateRootBlock = new BlockContent(
+            var noStateRootBlockWithoutProof = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: Block.CurrentProtocolVersion,
                     index: 0,
@@ -91,35 +91,94 @@ namespace Libplanet.Tests.Action
                 _ => null,
                 stateStore,
                 new SingleActionLoader(typeof(RandomAction)));
-            Block stateRootBlock = noStateRootBlock.Sign(
+            Block stateRootBlockWithoutProof = noStateRootBlockWithoutProof.Sign(
                 GenesisProposer,
                 BlockChain.DetermineGenesisStateRootHash(
                     actionEvaluator,
-                    noStateRootBlock,
-                    out IReadOnlyList<ICommittedActionEvaluation> evals));
-            var generatedRandomNumbers = new List<int>();
+                    noStateRootBlockWithoutProof,
+                    out IReadOnlyList<ICommittedActionEvaluation> evalsWithoutProof));
+            var generatedRandomNumbersWithoutProof = new List<int>();
 
-            AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
+            AssertPreEvaluationBlocksEqual(
+                stateRootBlockWithoutProof, noStateRootBlockWithoutProof);
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
-                generatedRandomNumbers.Add(
+                var actionEvaluations = actionEvaluator.Evaluate(
+                    noStateRootBlockWithoutProof, null);
+                generatedRandomNumbersWithoutProof.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
-                generatedRandomNumbers.Add(
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlockWithoutProof, null);
+                generatedRandomNumbersWithoutProof.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(txAddress));
             }
 
-            for (int i = 1; i < generatedRandomNumbers.Count; ++i)
+            for (int i = 1; i < generatedRandomNumbersWithoutProof.Count; ++i)
             {
-                Assert.Equal(generatedRandomNumbers[0], generatedRandomNumbers[i]);
+                Assert.Equal(
+                    generatedRandomNumbersWithoutProof[0],
+                    generatedRandomNumbersWithoutProof[i]);
+            }
+
+            var noStateRootBlockWithProof = new BlockContent(
+               new BlockMetadata(
+                   protocolVersion: Block.CurrentProtocolVersion,
+                   index: 0,
+                   timestamp: timestamp,
+                   miner: GenesisProposer.Address,
+                   publicKey: GenesisProposer.PublicKey,
+                   previousHash: null,
+                   txHash: BlockContent.DeriveTxHash(txs),
+                   lastCommit: null,
+                   proof: new LotMetadata(0, 0, null).Prove(GenesisProposer).Proof),
+               transactions: txs).Propose();
+
+            // Since there is no static method determine state root hash of common block,
+            // used method for genesis block instead.
+            var stateRootBlockWithProof = noStateRootBlockWithProof.Sign(
+                GenesisProposer,
+                BlockChain.DetermineGenesisStateRootHash(
+                    actionEvaluator,
+                    noStateRootBlockWithProof,
+                    out IReadOnlyList<ICommittedActionEvaluation> evalsWithProof));
+            var generatedRandomNumbersWithProof = new List<int>();
+
+            AssertPreEvaluationBlocksEqual(stateRootBlockWithProof, noStateRootBlockWithProof);
+
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlockWithProof, null);
+                generatedRandomNumbersWithProof.Add(
+                    (Integer)new WorldBaseState(
+                        stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
+                            .GetState(txAddress));
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlockWithProof, null);
+                generatedRandomNumbersWithProof.Add(
+                    (Integer)new WorldBaseState(
+                        stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
+                            .GetState(txAddress));
+            }
+
+            for (int i = 1; i < generatedRandomNumbersWithProof.Count; ++i)
+            {
+                Assert.Equal(
+                    generatedRandomNumbersWithProof[0],
+                    generatedRandomNumbersWithProof[i]);
+            }
+
+            for (int i = 0; i < repeatCount * 2; i++)
+            {
+                Assert.NotEqual(
+                    generatedRandomNumbersWithoutProof[i],
+                    generatedRandomNumbersWithProof[i]);
             }
         }
 
