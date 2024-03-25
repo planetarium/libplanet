@@ -20,11 +20,13 @@ namespace Libplanet.Crypto
     public class DefaultConsensusCryptoBackend : IConsensusCryptoBackend
     {
         private ECDomainParameters _eCParams;
+        private int _eCFieldBytesSize;
 
         public DefaultConsensusCryptoBackend()
         {
             X9ECParameters ps = ECNamedCurveTable.GetByName("secp256k1");
             _eCParams = new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
+            _eCFieldBytesSize = (_eCParams.Curve.FieldSize + 7) >> 3;
             SuiteBytes = new byte[] { 0 }.ToImmutableArray();
         }
 
@@ -77,10 +79,14 @@ namespace Libplanet.Crypto
             byte[] gammaBytes = dPointH.GetEncoded(true);
             byte[] cBytes = c.ToByteArrayUnsigned();
             byte[] sBytes = s.ToByteArrayUnsigned();
-            Array.Resize(ref cBytes, (_eCParams.Curve.FieldSize + 7) >> 3);
-            Array.Resize(ref sBytes, (_eCParams.Curve.FieldSize + 7) >> 3);
 
-            byte[] piBytes = gammaBytes.Concat(cBytes).Concat(sBytes).ToArray();
+            byte[] leftPadCBytes = new byte[_eCFieldBytesSize];
+            byte[] leftPadSBytes = new byte[_eCFieldBytesSize];
+
+            Array.Copy(cBytes, 0, leftPadCBytes, _eCFieldBytesSize - cBytes.Length, cBytes.Length);
+            Array.Copy(sBytes, 0, leftPadSBytes, _eCFieldBytesSize - sBytes.Length, sBytes.Length);
+
+            byte[] piBytes = gammaBytes.Concat(leftPadCBytes).Concat(leftPadSBytes).ToArray();
 
             return piBytes;
         }
@@ -225,9 +231,9 @@ namespace Libplanet.Crypto
         /// </returns>
         private (ECPoint, BigInteger, BigInteger) DecodeProof(byte[] piBytes)
         {
-            int gammaBytesLen = ((_eCParams.Curve.FieldSize + 7) >> 3) + 1;
-            int cBytesLen = (_eCParams.Curve.FieldSize + 7) >> 3;
-            int sBytesLen = (_eCParams.Curve.FieldSize + 7) >> 3;
+            int gammaBytesLen = _eCFieldBytesSize + 1;
+            int cBytesLen = _eCFieldBytesSize;
+            int sBytesLen = _eCFieldBytesSize;
             if (piBytes.Length != gammaBytesLen + cBytesLen + sBytesLen)
             {
                 throw new ArgumentException(
