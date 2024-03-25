@@ -9,7 +9,7 @@ namespace Libplanet.Net.Consensus
     public class ContextTimeoutOption
     {
         public ContextTimeoutOption(
-            int proposeSecondBase = 120,
+            int proposeSecondBase = 30,
             int preVoteSecondBase = 4,
             int preCommitSecondBase = 4,
             int proposeMultiplier = 4,
