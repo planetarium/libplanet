@@ -514,9 +514,14 @@ namespace Libplanet.Net.Tests
 
             BlockChain chainA = swarmA.BlockChain;
 
-            Block block1 = chainA.ProposeBlock(keyA);
+            Block block1 = chainA.ProposeBlock(
+                keyA,
+                proof: CreateZeroRoundProof(chainA.Tip, keyA));
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Block block2 = chainA.ProposeBlock(keyA, CreateBlockCommit(block1));
+            Block block2 = chainA.ProposeBlock(
+                keyA,
+                CreateBlockCommit(block1),
+                CreateZeroRoundProof(block1, keyA));
             chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             try
@@ -584,10 +589,14 @@ namespace Libplanet.Net.Tests
             BlockChain chainB = swarmB.BlockChain;
 
             Block block1 = chainA.ProposeBlock(
-                keyA, CreateBlockCommit(chainA.Tip));
+                keyA,
+                CreateBlockCommit(chainA.Tip),
+                CreateZeroRoundProof(chainA.Tip, keyA));
             chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
             Block block2 = chainA.ProposeBlock(
-                keyA, CreateBlockCommit(chainA.Tip));
+                keyA,
+                CreateBlockCommit(chainA.Tip),
+                CreateZeroRoundProof(chainA.Tip, keyA));
             chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             try
@@ -649,7 +658,9 @@ namespace Libplanet.Net.Tests
                 Array.Empty<DumbAction>().ToPlainValues()
             );
             chainB.StageTransaction(tx);
-            Block block = chainB.ProposeBlock(keyB);
+            Block block = chainB.ProposeBlock(
+                keyB,
+                proof: CreateZeroRoundProof(chainB.Tip, keyB));
             chainB.Append(block, TestUtils.CreateBlockCommit(block));
 
             try
@@ -834,7 +845,9 @@ namespace Libplanet.Net.Tests
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var block = seed.BlockChain.ProposeBlock(seedKey);
+                    var block = seed.BlockChain.ProposeBlock(
+                        seedKey,
+                        proof: CreateZeroRoundProof(seed.BlockChain.Tip, seedKey));
                     seed.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
                     seed.BroadcastBlock(block);
                     await Task.Delay(1000, cancellationToken);
@@ -911,17 +924,23 @@ namespace Libplanet.Net.Tests
 
             miner1.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             Block block1 = miner1.BlockChain.ProposeBlock(
-                key1, CreateBlockCommit(miner1.BlockChain.Tip));
+                key1,
+                CreateBlockCommit(miner1.BlockChain.Tip),
+                CreateZeroRoundProof(miner1.BlockChain.Tip, key1));
             miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             Block block2 = miner2.BlockChain.ProposeBlock(
-                key2, CreateBlockCommit(miner2.BlockChain.Tip));
+                key2,
+                CreateBlockCommit(miner2.BlockChain.Tip),
+                CreateZeroRoundProof(miner2.BlockChain.Tip, key2));
             miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
 
             miner2.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             var latest = miner2.BlockChain.ProposeBlock(
-                key2, CreateBlockCommit(miner2.BlockChain.Tip));
+                key2,
+                CreateBlockCommit(miner2.BlockChain.Tip),
+                CreateZeroRoundProof(miner2.BlockChain.Tip, key2));
             miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
 
             renderer.RenderEventHandler += (_, a) =>
@@ -985,7 +1004,8 @@ namespace Libplanet.Net.Tests
                     CreateBlockCommit(
                         miner1.BlockChain.Tip.Hash,
                         miner1.BlockChain.Tip.Index,
-                        0));
+                        0),
+                    CreateZeroRoundProof(miner1.BlockChain.Tip, key1));
                 miner1.BlockChain.Append(b, TestUtils.CreateBlockCommit(b));
                 miner2.BlockChain.Append(b, TestUtils.CreateBlockCommit(b));
             }
@@ -999,11 +1019,17 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(receiver, miner1.AsPeer);
 
                 var t = receiver.PreloadAsync();
-                Block block1 = miner1.BlockChain.ProposeBlock(key1);
+                Block block1 = miner1.BlockChain.ProposeBlock(
+                    key1,
+                    proof: CreateZeroRoundProof(miner1.BlockChain.Tip, key1));
                 miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-                Block block2 = miner2.BlockChain.ProposeBlock(key1);
+                Block block2 = miner2.BlockChain.ProposeBlock(
+                    key1,
+                    proof: CreateZeroRoundProof(miner2.BlockChain.Tip, key1));
                 miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
-                Block latest = miner2.BlockChain.ProposeBlock(key2);
+                Block latest = miner2.BlockChain.ProposeBlock(
+                    key2,
+                    proof: CreateZeroRoundProof(miner2.BlockChain.Tip, key2));
                 miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
                 miner2.BroadcastBlock(latest);
                 await t;
@@ -1055,13 +1081,19 @@ namespace Libplanet.Net.Tests
 
                 Log.Debug("Make minerB's chain longer than minerA's chain");
                 Block blockA = minerA.BlockChain.ProposeBlock(
-                    keyA, CreateBlockCommit(minerA.BlockChain.Tip));
+                    keyA,
+                    CreateBlockCommit(minerA.BlockChain.Tip),
+                    CreateZeroRoundProof(minerA.BlockChain.Tip, keyA));
                 minerA.BlockChain.Append(blockA, TestUtils.CreateBlockCommit(blockA));
                 Block blockB = minerB.BlockChain.ProposeBlock(
-                    keyB, CreateBlockCommit(minerB.BlockChain.Tip));
+                    keyB,
+                    CreateBlockCommit(minerB.BlockChain.Tip),
+                    CreateZeroRoundProof(minerB.BlockChain.Tip, keyB));
                 minerB.BlockChain.Append(blockB, TestUtils.CreateBlockCommit(blockB));
                 Block blockC = minerB.BlockChain.ProposeBlock(
-                    keyB, CreateBlockCommit(minerB.BlockChain.Tip));
+                    keyB,
+                    CreateBlockCommit(minerB.BlockChain.Tip),
+                    CreateZeroRoundProof(minerB.BlockChain.Tip, keyB));
                 minerB.BlockChain.Append(blockC, TestUtils.CreateBlockCommit(blockC));
 
                 Assert.Equal(
@@ -1107,7 +1139,9 @@ namespace Libplanet.Net.Tests
                     minerA.BlockChain.GetStagedTransactionIds().Contains(txA.Id));
 
                 Block block = minerA.BlockChain.ProposeBlock(
-                    keyA, CreateBlockCommit(minerA.BlockChain.Tip));
+                    keyA,
+                    CreateBlockCommit(minerA.BlockChain.Tip),
+                    CreateZeroRoundProof(minerA.BlockChain.Tip, keyA));
                 minerA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
                 minerA.BroadcastBlock(minerA.BlockChain.Tip);
                 await minerB.BlockAppended.WaitAsync();
@@ -1289,26 +1323,31 @@ namespace Libplanet.Net.Tests
             Block aBlock1 = ProposeNextBlock(
                 genesis,
                 keyA,
-                stateRootHash: nextSrh);
+                stateRootHash: nextSrh,
+                proof: CreateZeroRoundProof(genesis, keyA));
             Block aBlock2 = ProposeNextBlock(
                 aBlock1,
                 keyA,
                 stateRootHash: nextSrh,
-                lastCommit: CreateBlockCommit(aBlock1));
+                lastCommit: CreateBlockCommit(aBlock1),
+                proof: CreateZeroRoundProof(aBlock1, keyA));
             Block aBlock3 = ProposeNextBlock(
                 aBlock2,
                 keyA,
                 stateRootHash: nextSrh,
-                lastCommit: CreateBlockCommit(aBlock2));
+                lastCommit: CreateBlockCommit(aBlock2),
+                proof: CreateZeroRoundProof(aBlock2, keyA));
             Block bBlock1 = ProposeNextBlock(
                 genesis,
                 keyB,
-                stateRootHash: nextSrh);
+                stateRootHash: nextSrh,
+                proof: CreateZeroRoundProof(genesis, keyB));
             Block bBlock2 = ProposeNextBlock(
                 bBlock1,
                 keyB,
                 stateRootHash: nextSrh,
-                lastCommit: CreateBlockCommit(bBlock1));
+                lastCommit: CreateBlockCommit(bBlock1),
+                proof: CreateZeroRoundProof(bBlock1, keyB));
 
             policyA.BlockedMiners.Add(keyB.Address);
             policyB.BlockedMiners.Add(keyA.Address);
@@ -1437,7 +1476,9 @@ namespace Libplanet.Net.Tests
                 await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
                 await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
 
-                var block = swarmA.BlockChain.ProposeBlock(privateKeyA);
+                var block = swarmA.BlockChain.ProposeBlock(
+                    privateKeyA,
+                    proof: CreateZeroRoundProof(swarmA.BlockChain.Tip, privateKeyA));
                 swarmA.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
                 Task.WaitAll(new[]
@@ -1627,7 +1668,9 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
+                    ChainPrivateKey,
+                    CreateBlockCommit(chain.Tip),
+                    CreateZeroRoundProof(chain.Tip, ChainPrivateKey));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1667,7 +1710,9 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
+                    ChainPrivateKey,
+                    CreateBlockCommit(chain.Tip),
+                    CreateZeroRoundProof(chain.Tip, ChainPrivateKey));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1708,7 +1753,9 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, CreateBlockCommit(chain.Tip));
+                    ChainPrivateKey,
+                    CreateBlockCommit(chain.Tip),
+                    CreateZeroRoundProof(chain.Tip, ChainPrivateKey));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1782,7 +1829,9 @@ namespace Libplanet.Net.Tests
                     peerChainState.First()
                 );
 
-                Block block = swarm2.BlockChain.ProposeBlock(key2);
+                Block block = swarm2.BlockChain.ProposeBlock(
+                    key2,
+                    proof: CreateZeroRoundProof(swarm2.BlockChain.Tip, key2));
                 swarm2.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
