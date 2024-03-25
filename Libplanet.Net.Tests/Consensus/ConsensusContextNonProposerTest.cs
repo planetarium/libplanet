@@ -57,7 +57,9 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             consensusContext.NewHeight(1);
-            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block1 = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block1, TestUtils.PrivateKeys[1]));
             var expectedVotes = new Vote[4];
@@ -161,7 +163,9 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block block = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1]));
@@ -225,7 +229,8 @@ namespace Libplanet.Net.Tests.Consensus
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[3],
-                TestUtils.CreateBlockCommit(blockHeightTwo));
+                TestUtils.CreateBlockCommit(blockHeightTwo),
+                TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[3]));
 
             // Message from higher height
             consensusContext.HandleMessage(
@@ -266,7 +271,9 @@ namespace Libplanet.Net.Tests.Consensus
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block block = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             var createdLastCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, createdLastCommit);
 
@@ -309,7 +316,9 @@ namespace Libplanet.Net.Tests.Consensus
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 

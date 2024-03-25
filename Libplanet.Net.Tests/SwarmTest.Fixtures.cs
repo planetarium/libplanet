@@ -57,7 +57,9 @@ namespace Libplanet.Net.Tests
                         }
 
                         Block block = chain.ProposeBlock(
-                            miner, CreateBlockCommit(chain.Tip));
+                            miner,
+                            CreateBlockCommit(chain.Tip),
+                            CreateZeroRoundProof(chain.Tip, miner));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                         chain.Append(block, CreateBlockCommit(block));
                     }

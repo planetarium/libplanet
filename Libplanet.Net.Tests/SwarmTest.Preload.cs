@@ -934,7 +934,9 @@ namespace Libplanet.Net.Tests
             while (forked.Count <= minerChain.Count)
             {
                 Block block = forked.ProposeBlock(
-                    minerKey, CreateBlockCommit(forked.Tip));
+                    minerKey,
+                    CreateBlockCommit(forked.Tip),
+                    CreateZeroRoundProof(forked.Tip, minerKey));
                 forked.Append(block, CreateBlockCommit(block));
             }
 
@@ -1014,14 +1016,20 @@ namespace Libplanet.Net.Tests
             BlockChain receiverChain = receiverSwarm.BlockChain;
 
             Block block1 = minerChain1.ProposeBlock(
-                minerKey1, CreateBlockCommit(minerChain1.Tip));
+                minerKey1,
+                CreateBlockCommit(minerChain1.Tip),
+                CreateZeroRoundProof(minerChain1.Tip, minerKey1));
             minerChain1.Append(block1, CreateBlockCommit(block1));
             Block block2 = minerChain1.ProposeBlock(
-                minerKey1, CreateBlockCommit(minerChain1.Tip));
+                minerKey1,
+                CreateBlockCommit(minerChain1.Tip),
+                CreateZeroRoundProof(minerChain1.Tip, minerKey1));
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
             Block block = minerChain2.ProposeBlock(
-                ChainPrivateKey, CreateBlockCommit(minerChain2.Tip));
+                ChainPrivateKey,
+                CreateBlockCommit(minerChain2.Tip),
+                CreateZeroRoundProof(minerChain2.Tip, ChainPrivateKey));
             minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);
@@ -1085,14 +1093,18 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 10; i++)
             {
                 Block block = validSeedChain.ProposeBlock(
-                    key1, CreateBlockCommit(validSeedChain.Tip));
+                    key1,
+                    CreateBlockCommit(validSeedChain.Tip),
+                    CreateZeroRoundProof(validSeedChain.Tip, key1));
                 validSeedChain.Append(block, CreateBlockCommit(block));
             }
 
             for (int i = 0; i < 20; i++)
             {
                 Block block = invalidSeedChain.ProposeBlock(
-                    key1, CreateBlockCommit(invalidSeedChain.Tip));
+                    key1,
+                    CreateBlockCommit(invalidSeedChain.Tip),
+                    CreateZeroRoundProof(invalidSeedChain.Tip, key1));
                 invalidSeedChain.Append(block, CreateBlockCommit(block));
             }
 
@@ -1137,7 +1149,9 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 10; i++)
             {
                 var block = seedChain.ProposeBlock(
-                    seedKey, CreateBlockCommit(seedChain.Tip));
+                    seedKey,
+                    CreateBlockCommit(seedChain.Tip),
+                    CreateZeroRoundProof(seedChain.Tip, seedKey));
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
                 receiverChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
@@ -1147,7 +1161,9 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 10; i++)
             {
                 Block block = seedChain.ProposeBlock(
-                    seedKey, CreateBlockCommit(seedChain.Tip));
+                    seedKey,
+                    CreateBlockCommit(seedChain.Tip),
+                    CreateZeroRoundProof(seedChain.Tip, seedKey));
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1205,7 +1221,9 @@ namespace Libplanet.Net.Tests
                         new DumbAction(default, $"Item{i}"),
                     });
                 Block block = seedChain.ProposeBlock(
-                    seedKey, CreateBlockCommit(seedChain.Tip));
+                    seedKey,
+                    CreateBlockCommit(seedChain.Tip),
+                    CreateZeroRoundProof(seedChain.Tip, seedKey));
                 seedChain.Append(block, TestUtils.CreateBlockCommit(block));
                 transactions.Add(transaction);
             }
