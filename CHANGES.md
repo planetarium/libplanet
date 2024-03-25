@@ -1,6 +1,43 @@
 Libplanet changelog
 ===================
 
+Version DPoS
+-------------
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  (Libplanet) Removed `IBlockPolicy.BlockAction` property. [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.BeginBlockActions`. property. [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.EndBlockActions`. property. [[#3701]]
+ -  (Libplanet) `BlockPolicy` constructor requires `beginBlockActions` and
+    `endBlockActions` parameters instead of the `blockAction` parameter.
+    [[#3701]]
+ -  (Libplanet.Action) Renamed `PolicyBlockActionGetter` delegate to
+    `PolicyBlockActionGetter` and changed return type to
+    `ImmutableArray<IAction>`.  [[#3701]]
+ -  (Libplanet.Action) `ActionEvaluator` constructor requires
+    `policyBeginBlockActionGetter` and `policyEndBlockActionGetter`
+    parameters instead of the `policyBlockActionGetter` parameter.  [[#3701]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#3701]: https://github.com/planetarium/libplanet/pull/3701
+
+
 Version 4.1.0
 -------------
 
