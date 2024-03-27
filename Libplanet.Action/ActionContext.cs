@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -37,6 +38,8 @@ namespace Libplanet.Action
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
 
+        public Dictionary<Type, object> Services { get; set; } = new Dictionary<Type, object>();
+
         /// <inheritdoc cref="IActionContext.Signer"/>
         public Address Signer { get; }
 
@@ -53,7 +56,7 @@ namespace Libplanet.Action
         public int BlockProtocolVersion { get; }
 
         /// <inheritdoc cref="IActionContext.LastCommit"/>
-        public BlockCommit? LastCommit { get;  }
+        public BlockCommit? LastCommit { get; }
 
         /// <inheritdoc cref="IActionContext.PreviousState"/>
         public IWorld PreviousState { get; }
@@ -98,6 +101,16 @@ namespace Libplanet.Action
         public long GasLimit()
         {
             return _gasLimit;
+        }
+
+        object? IServiceProvider.GetService(Type serviceType)
+        {
+            if (Services.TryGetValue(serviceType, out var service))
+            {
+                return service;
+            }
+
+            return null;
         }
     }
 }

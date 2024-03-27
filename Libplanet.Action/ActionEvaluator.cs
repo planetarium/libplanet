@@ -137,8 +137,12 @@ namespace Libplanet.Action
                 if (_policyBeginBlockActionsGetter(block) is { } beginBlockActions &&
                     beginBlockActions.Length > 0)
                 {
+                    var services = new Dictionary<Type, object>
+                    {
+                        { typeof(IEvidenceContext), new EvidenceContext() },
+                    };
                     evaluations = evaluations.AddRange(EvaluatePolicyBeginBlockActions(
-                        block, previousState
+                        block, services, previousState
                     ));
                     previousState = evaluations.Last().OutputState;
                 }
@@ -150,11 +154,15 @@ namespace Libplanet.Action
                 if (_policyEndBlockActionsGetter(block) is { } endBlockActions &&
                     endBlockActions.Length > 0)
                 {
+                    var services = new Dictionary<Type, object>
+                    {
+                        { typeof(IValidatorContext), new ValidatorContext() },
+                    };
                     previousState = evaluations.Count > 0
                         ? evaluations.Last().OutputState
                         : previousState;
                     evaluations = evaluations.AddRange(EvaluatePolicyEndBlockActions(
-                        block, previousState
+                        block, services, previousState
                     ));
                 }
 
@@ -202,6 +210,8 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
+        /// /// <param name="services">The services to provide to the
+        /// <see cref="IActionContext"/>.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -213,12 +223,14 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
+            Dictionary<Type, object> services,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
                 IWorld prevState,
                 int randomSeed,
-                long actionGasLimit)
+                long actionGasLimit,
+                Dictionary<Type, object> services)
             {
                 return new ActionContext(
                     signer: tx?.Signer ?? blockHeader.Miner,
@@ -229,7 +241,10 @@ namespace Libplanet.Action
                     lastCommit: blockHeader.LastCommit,
                     previousState: prevState,
                     randomSeed: randomSeed,
-                    gasLimit: actionGasLimit);
+                    gasLimit: actionGasLimit)
+                    {
+                        Services = services,
+                    };
             }
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
@@ -241,13 +256,14 @@ namespace Libplanet.Action
             IWorld state = previousState;
             foreach (IAction action in actions)
             {
-                IActionContext context = CreateActionContext(state, seed, gasLimit);
+                IActionContext context = CreateActionContext(state, seed, gasLimit, services);
                 (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
                     blockHeader,
                     tx,
                     context,
                     action,
                     stateStore,
+                    services,
                     logger);
 
                 yield return result.Evaluation;
@@ -268,6 +284,7 @@ namespace Libplanet.Action
             IActionContext context,
             IAction action,
             IStateStore stateStore,
+            Dictionary<Type, object> services,
             ILogger? logger = null)
         {
             if (!context.PreviousState.Trie.Recorded)
@@ -293,7 +310,10 @@ namespace Libplanet.Action
                     lastCommit: inputContext.LastCommit,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
-                    gasLimit: inputContext.GasLimit());
+                    gasLimit: inputContext.GasLimit())
+                    {
+                        Services = services,
+                    };
             }
 
             try
@@ -499,6 +519,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
+                services: new Dictionary<Type, object>(),
                 logger: _logger);
         }
 
@@ -508,6 +529,8 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="services">The services to provide to the
+        /// <see cref="IActionContext"/>.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -516,6 +539,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyBeginBlockActions(
             IPreEvaluationBlockHeader blockHeader,
+            Dictionary<Type, object> services,
             IWorld previousState)
         {
             _logger.Information(
@@ -528,6 +552,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyBeginBlockActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                services: services,
                 logger: _logger).ToArray();
         }
 
@@ -537,6 +562,8 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="services">The services to provide to the
+        /// <see cref="IActionContext"/>.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -545,6 +572,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyEndBlockActions(
             IPreEvaluationBlockHeader blockHeader,
+            Dictionary<Type, object> services,
             IWorld previousState)
         {
             _logger.Information(
@@ -557,6 +585,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyEndBlockActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                services: services,
                 logger: _logger).ToArray();
         }
 

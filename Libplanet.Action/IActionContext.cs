@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -10,7 +11,7 @@ namespace Libplanet.Action
     /// Contextual data determined by a transaction and a block.
     /// Passed to <see cref="IAction.Execute(IActionContext)"/> method.
     /// </summary>
-    public interface IActionContext
+    public interface IActionContext : IServiceProvider
     {
         /// <summary>
         /// The <see cref="Transaction.Signer"/> of the <see cref="Transaction"/> that contains
