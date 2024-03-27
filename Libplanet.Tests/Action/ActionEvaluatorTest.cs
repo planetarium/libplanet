@@ -256,7 +256,7 @@ namespace Libplanet.Tests.Action
 
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
-                    blockHeader: block,
+                    block: block,
                     tx: tx,
                     previousState: previousState).ToList());
             Assert.Throws<OutOfMemoryException>(
@@ -577,7 +577,7 @@ namespace Libplanet.Tests.Action
 
             IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
             var evaluations = actionEvaluator.EvaluateTx(
-                blockHeader: block,
+                block: block,
                 tx: tx,
                 previousState: previousState).ToImmutableArray();
 
@@ -648,7 +648,7 @@ namespace Libplanet.Tests.Action
 
             previousState = actionEvaluator.PrepareInitialDelta(null);
             IWorld delta = actionEvaluator.EvaluateTx(
-                blockHeader: block,
+                block: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
             Assert.Empty(evaluations[3].OutputState.Trie.Diff(delta.Trie));
@@ -684,7 +684,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs).Propose();
             IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
             var nextState = actionEvaluator.EvaluateTx(
-                blockHeader: block,
+                block: block,
                 tx: tx,
                 previousState: previousState).Last().OutputState;
 
@@ -706,7 +706,7 @@ namespace Libplanet.Tests.Action
             Block blockA = fx.Propose();
             fx.Append(blockA);
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockHeader: blockA,
+                block: blockA,
                 tx: txA,
                 previousState: fx.CreateWorld(blockA.PreviousHash),
                 actions: txA.Actions
@@ -761,7 +761,7 @@ namespace Libplanet.Tests.Action
             Block blockB = fx.Propose();
             fx.Append(blockB);
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
-                blockHeader: blockB,
+                block: blockB,
                 tx: txB,
                 previousState: fx.CreateWorld(blockB.PreviousHash),
                 actions: txB.Actions
@@ -1280,7 +1280,7 @@ namespace Libplanet.Tests.Action
 
             Block blockA = fx.Propose();
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
-                blockHeader: blockA,
+                block: blockA,
                 tx: txA,
                 previousState: fx.CreateWorld(blockA.PreviousHash),
                 actions: txA.Actions
