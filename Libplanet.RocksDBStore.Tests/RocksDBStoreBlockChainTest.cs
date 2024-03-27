@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Store;
@@ -14,11 +15,15 @@ namespace Libplanet.RocksDBStore.Tests
         {
         }
 
-        protected override StoreFixture GetStoreFixture(IAction blockAction)
+        protected override StoreFixture GetStoreFixture(
+            ImmutableArray<IAction>? beginBlockActions = null,
+            ImmutableArray<IAction>? endBlockActions = null)
         {
             try
             {
-                return new RocksDBStoreFixture(blockAction: blockAction);
+                return new RocksDBStoreFixture(
+                    beginBlockActions: beginBlockActions,
+                    endBlockActions: endBlockActions);
             }
             catch (TypeInitializationException)
             {

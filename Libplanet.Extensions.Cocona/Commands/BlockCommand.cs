@@ -156,9 +156,11 @@ public class BlockCommand
                 }.Select(x => x.PlainValue)))
             .ToImmutableList();
 
-        var blockAction = blockPolicyParams.GetBlockAction();
+        var beginBlockActions = blockPolicyParams.GetBeginBlockActions();
+        var endBlockActions = blockPolicyParams.GetEndBlockActions();
         var actionEvaluator = new ActionEvaluator(
-            _ => blockAction,
+            _ => beginBlockActions,
+            _ => endBlockActions,
             new TrieStateStore(new DefaultKeyValueStore(null)),
             new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(

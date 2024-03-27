@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -31,10 +32,15 @@ namespace Libplanet.Tests.Blocks
         public void Evaluate()
         {
             Address address = _contents.Block1Tx0.Signer;
-            var blockAction = new SetStatesAtBlock(
-                address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0);
+            var beginBlockActions = ImmutableArray.Create<IAction>(
+            );
+            var endBlockActions = ImmutableArray.Create<IAction>(
+                 new SetStatesAtBlock(
+                    address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0)
+            );
             var policy = new BlockPolicy(
-                blockAction: blockAction,
+                beginBlockActions: beginBlockActions,
+                endBlockActions: endBlockActions,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy();
 
@@ -44,7 +50,8 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     fx.StateStore,
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
@@ -106,10 +113,15 @@ namespace Libplanet.Tests.Blocks
         public void DetermineStateRootHash()
         {
             Address address = _contents.Block1Tx0.Signer;
-            var blockAction = new SetStatesAtBlock(
-                address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0);
+            var beginBlockActions = ImmutableArray.Create<IAction>(
+            );
+            var endBlockActions = ImmutableArray.Create<IAction>(
+                new SetStatesAtBlock(
+                    address, (Bencodex.Types.Integer)123, ReservedAddresses.LegacyAccount, 0)
+            );
             var policy = new BlockPolicy(
-                blockAction: blockAction,
+                beginBlockActions,
+                endBlockActions,
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy();
 
@@ -118,7 +130,8 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BlockAction,
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash =

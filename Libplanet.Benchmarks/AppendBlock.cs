@@ -8,6 +8,7 @@ using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Tests;
 using Libplanet.Tests.Store;
+using System.Collections.Immutable;
 
 namespace Libplanet.Benchmarks
 {
@@ -29,7 +30,8 @@ namespace Libplanet.Benchmarks
                 fx.StateStore,
                 fx.GenesisBlock,
                 new ActionEvaluator(
-                    policyBlockActionGetter: _ => null,
+                    policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             _privateKey = new PrivateKey();
