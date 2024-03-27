@@ -67,21 +67,6 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorldState.GetTotalSupply"/>
-        public FungibleAssetValue GetTotalSupply(Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ToTotalSupplyKey(currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
-
         /// <inheritdoc cref="IWorldState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
@@ -118,7 +103,7 @@ namespace Libplanet.Action.State
 
             if (currency.TotalSupplyTrackable)
             {
-                var currentTotalSupply = GetTotalSupply(currency);
+                var currentTotalSupply = this.GetTotalSupply(currency);
                 if (currency.MaximumSupply < currentTotalSupply + value)
                 {
                     var msg = $"The amount {value} attempted to be minted added to the current"
@@ -171,7 +156,7 @@ namespace Libplanet.Action.State
             BigInteger rawBalance = (balance - value).RawValue;
             if (currency.TotalSupplyTrackable)
             {
-                var currentTotalSupply = GetTotalSupply(currency);
+                var currentTotalSupply = this.GetTotalSupply(currency);
                 return UpdateFungibleAssets(
                     owner,
                     currency,

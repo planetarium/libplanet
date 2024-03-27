@@ -28,5 +28,31 @@ namespace Libplanet.Action.State
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
         }
+
+        /// <summary>
+        /// Returns the total supply of a <paramref name="currency"/>.
+        /// </summary>
+        /// <param name="currency">The currency type to query.</param>
+        /// <returns>The total supply of the <paramref name="currency"/>.
+        /// </returns>
+        /// <exception cref="TotalSupplyNotTrackableException">Thrown when the total supply of the
+        /// given <paramref name="currency"/> is not trackable.</exception>
+        /// <seealso cref="Currency.MaximumSupply"/>
+        [Pure]
+        public static FungibleAssetValue GetTotalSupply(
+            this IWorldState worldState,
+            Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            IAccountState account = worldState.GetAccountState(ReservedAddresses.LegacyAccount);
+            IValue? value = account.Trie.Get(ToTotalSupplyKey(currency));
+            return value is Integer i
+                ? FungibleAssetValue.FromRawValue(currency, i)
+                : currency * 0;
+        }
     }
 }
