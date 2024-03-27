@@ -46,14 +46,6 @@ namespace Libplanet.Action.State
         IWorldDelta Delta { get; }
 
         /// <summary>
-        /// A set of <see cref="Address"/> and <see cref="Currency"/> pairs where
-        /// each pair has its asoociated <see cref="FungibleAssetValue"/> changed
-        /// since the previous <see cref="Block"/>'s output states.
-        /// </summary>
-        [Pure]
-        IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
-
-        /// <summary>
         /// Gets the <see cref="IAccount"/> of the given <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> referring
