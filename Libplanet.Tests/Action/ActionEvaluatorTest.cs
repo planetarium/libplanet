@@ -719,6 +719,7 @@ namespace Libplanet.Tests.Action
                 new Integer(15),
                 evalsA.Last().OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
+            Assert.All(evalsA, eval => Assert.Empty(eval.InputContext.Txs));
 
             for (int i = 0; i < evalsA.Length; i++)
             {
@@ -774,6 +775,7 @@ namespace Libplanet.Tests.Action
                 new Integer(6),
                 evalsB.Last().OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
+            Assert.All(evalsB, eval => Assert.Empty(eval.InputContext.Txs));
 
             for (int i = 0; i < evalsB.Length; i++)
             {
@@ -840,6 +842,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
+            Assert.Equal(genesis.Transactions, evaluation.InputContext.Txs);
 
             previousState = evaluation.OutputState;
             evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousState);
@@ -850,6 +853,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
+            Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
 
             chain.Append(block, CreateBlockCommit(block), render: true);
             previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
@@ -863,6 +867,7 @@ namespace Libplanet.Tests.Action
                 (Integer)2,
                 (Integer)evaluation.OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
+            Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
         }
 
         [Theory]
