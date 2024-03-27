@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -81,6 +82,14 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        /// <summary>
+        /// A list of <see cref="ITransaction"/>s that are included in a <see cref="Block"/> as
+        /// the <see cref="IAction"/> to be evaluated.  This information is provided only if
+        /// <see cref="BlockAction"/> is <see langword="true"/>, otherwise returns an empty set.
+        /// </summary>
+        [Pure]
+        IReadOnlyList<ITransaction> Txs { get; }
 
         /// <summary>
         /// Consumes the specified amount of gas.
