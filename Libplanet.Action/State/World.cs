@@ -67,16 +67,6 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorldState.GetValidatorSet"/>
-        public ValidatorSet GetValidatorSet()
-        {
-            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ValidatorSetKey);
-            return value is List list
-                ? new ValidatorSet(list)
-                : new ValidatorSet();
-        }
-
         /// <inheritdoc cref="IWorld.MintAsset"/>
         public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
         {
@@ -181,7 +171,7 @@ namespace Libplanet.Action.State
 
         /// <inheritdoc cref="IWorld.SetValidator"/>
         public IWorld SetValidator(Validator validator) =>
-            UpdateValidatorSet(GetValidatorSet().Update(validator));
+            UpdateValidatorSet(this.GetValidatorSet().Update(validator));
 
         private IWorld UpdateFungibleAssets(
             Address address,

@@ -48,15 +48,5 @@ namespace Libplanet.Action.State
                     : new AccountState(_stateStore.GetStateRoot(null));
             }
         }
-
-        /// <inheritdoc cref="IWorldState.GetValidatorSet"/>
-        public ValidatorSet GetValidatorSet()
-        {
-            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ValidatorSetKey);
-            return value is List list
-                ? new ValidatorSet(list)
-                : new ValidatorSet();
-        }
     }
 }

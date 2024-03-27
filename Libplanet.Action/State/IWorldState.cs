@@ -51,13 +51,5 @@ namespace Libplanet.Action.State
         /// instead.</returns>
         [Pure]
         IAccountState GetAccountState(Address address);
-
-        /// <summary>
-        /// Returns the validator set.
-        /// </summary>
-        /// <returns>The validator set of type <see cref="ValidatorSet"/>.
-        /// </returns>
-        [Pure]
-        ValidatorSet GetValidatorSet();
     }
 }
