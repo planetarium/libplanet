@@ -12,6 +12,8 @@ To be released.
 
  -  (Libplanet.Action) Added `Txs` property of
     type `IReadOnlyList<ITransaction>?` to `IActionContext`.  [[#3713]]
+ -  (Libplanet.Action) Removed `TotalFungibleAssets` property from
+    `IWorld`.  [[#3714]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +30,7 @@ To be released.
 ### CLI tools
 
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
+[#3714]: https://github.com/planetarium/libplanet/pull/3714
 
 
 Version 4.2.0
