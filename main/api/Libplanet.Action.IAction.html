@@ -335,7 +335,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface separately and
 attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
-<p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
+<p>For randomness, <em>never</em> use <span class="xref">System.Random</span>
 nor any other PRNGs provided by other than Libplanet.
 Use <see cref="!:IActionContext.Random"></see> instead.
 <see cref="!:IActionContext.Random"></see> guarantees the same action
@@ -355,7 +355,7 @@ things into strings and parse these strings back these can rely on
 so that the same action make different results on two differently
 configured systems like Thai language and French language.
 In order to make these types of conversions deterministic,
-you have to explicitly pass <span class="xref">System.Globalization.CultureInfo.InvariantCulture</span>.</p>
+you have to explicitly pass <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo.invariantculture#system-globalization-cultureinfo-invariantculture">InvariantCulture</a>.</p>
 <p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
 <p>Lastly, you can conduct static analysis on your code
 using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
