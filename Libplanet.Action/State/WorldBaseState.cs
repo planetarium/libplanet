@@ -49,16 +49,6 @@ namespace Libplanet.Action.State
             }
         }
 
-        /// <inheritdoc cref="IWorldState.GetBalance"/>
-        public FungibleAssetValue GetBalance(Address address, Currency currency)
-        {
-            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ToFungibleAssetKey(address, currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
-
         /// <inheritdoc cref="IWorldState.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency)
         {

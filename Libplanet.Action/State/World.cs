@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
@@ -68,16 +67,6 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorldState.GetBalance"/>
-        public FungibleAssetValue GetBalance(Address address, Currency currency)
-        {
-            IAccountState account = GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ToFungibleAssetKey(address, currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
-
         /// <inheritdoc cref="IWorldState.GetTotalSupply"/>
         public FungibleAssetValue GetTotalSupply(Currency currency)
         {
@@ -124,7 +113,7 @@ namespace Libplanet.Action.State
                 );
             }
 
-            FungibleAssetValue balance = GetBalance(recipient, currency);
+            FungibleAssetValue balance = this.GetBalance(recipient, currency);
             BigInteger rawBalance = (balance + value).RawValue;
 
             if (currency.TotalSupplyTrackable)
@@ -170,7 +159,7 @@ namespace Libplanet.Action.State
                 throw new CurrencyPermissionException(msg, context.Signer, currency);
             }
 
-            FungibleAssetValue balance = GetBalance(owner, currency);
+            FungibleAssetValue balance = this.GetBalance(owner, currency);
 
             if (balance < value)
             {
@@ -251,8 +240,8 @@ namespace Libplanet.Action.State
             }
 
             Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = GetBalance(sender, currency);
-            FungibleAssetValue recipientBalance = GetBalance(recipient, currency);
+            FungibleAssetValue senderBalance = this.GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = this.GetBalance(recipient, currency);
 
             if (!allowNegativeBalance && senderBalance < value)
             {
@@ -281,7 +270,7 @@ namespace Libplanet.Action.State
             }
 
             Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = GetBalance(sender, currency);
+            FungibleAssetValue senderBalance = this.GetBalance(sender, currency);
 
             if (!allowNegativeBalance && senderBalance < value)
             {

@@ -53,17 +53,6 @@ namespace Libplanet.Action.State
         IAccountState GetAccountState(Address address);
 
         /// <summary>
-        /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/>.
-        /// </summary>
-        /// <param name="address">The owner address to query.</param>
-        /// <param name="currency">The currency type to query.</param>
-        /// <returns>
-        /// The <paramref name="address"/>'s balance of the <paramref name="currency"/>.
-        /// </returns>
-        [Pure]
-        FungibleAssetValue GetBalance(Address address, Currency currency);
-
-        /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
