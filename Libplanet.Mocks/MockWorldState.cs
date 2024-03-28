@@ -97,24 +97,6 @@ namespace Libplanet.Mocks
                         ? _stateStore.GetStateRoot(new HashDigest<SHA256>(stateRootNotNull))
                         : _stateStore.GetStateRoot(null));
 
-        public FungibleAssetValue GetBalance(Address address, Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).Trie
-                .Get(ToFungibleAssetKey(address, currency)) is Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-
-        public FungibleAssetValue GetTotalSupply(Currency currency) =>
-            GetAccountState(ReservedAddresses.LegacyAccount).Trie
-                .Get(ToTotalSupplyKey(currency)) is Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-
-        public ValidatorSet GetValidatorSet() =>
-            GetAccountState(ReservedAddresses.LegacyAccount).Trie
-                .Get(ValidatorSetKey) is List l
-                    ? new ValidatorSet(l)
-                    : new ValidatorSet();
-
         /// <summary>
         /// Converts <see cref="MockWorldState"/> to "modern" if <see cref="Legacy"/>
         /// is <see langword="true"/>.  Otherwise, does nothing.
