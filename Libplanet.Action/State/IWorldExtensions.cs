@@ -14,6 +14,7 @@ namespace Libplanet.Action.State
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/>.
         /// </summary>
+        /// <param name="worldState">The <see cref="IWorldState"/> to read from.</param>
         /// <param name="address">The owner address to query.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>
@@ -36,6 +37,7 @@ namespace Libplanet.Action.State
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
         /// </summary>
+        /// <param name="world">The <see cref="IWorld"/> to manipulate.</param>
         /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
         /// executing this method.</param>
         /// <param name="recipient">The address who receives the minted asset.</param>
@@ -107,6 +109,7 @@ namespace Libplanet.Action.State
         /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
         /// <paramref name="owner"/>'s balance.
         /// </summary>
+        /// <param name="world">The <see cref="IWorld"/> to manipulate.</param>
         /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
         /// executing this method.</param>
         /// <param name="owner">The address who owns the fungible asset to burn.</param>
@@ -174,6 +177,7 @@ namespace Libplanet.Action.State
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
         /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
         /// </summary>
+        /// <param name="world">The <see cref="IWorld"/> to manipulate.</param>
         /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
         /// executing this method.</param>
         /// <param name="sender">The address who sends the fungible asset to
@@ -211,6 +215,7 @@ namespace Libplanet.Action.State
         /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
         /// </summary>
+        /// <param name="worldState">The <see cref="IWorldState"/> to read from.</param>
         /// <param name="currency">The currency type to query.</param>
         /// <returns>The total supply of the <paramref name="currency"/>.
         /// </returns>
@@ -237,6 +242,7 @@ namespace Libplanet.Action.State
         /// <summary>
         /// Returns the validator set.
         /// </summary>
+        /// <param name="worldState">The <see cref="IWorldState"/> to read from.</param>
         /// <returns>The validator set of type <see cref="ValidatorSet"/>.
         /// </returns>
         [Pure]
@@ -253,6 +259,7 @@ namespace Libplanet.Action.State
         /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
         /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
         /// </summary>
+        /// <param name="world">The <see cref="IWorld"/> to manipulate.</param>
         /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
         /// <returns>A new <see cref="IWorld"/> instance with
         /// <paramref name="validator"/> set.</returns>
