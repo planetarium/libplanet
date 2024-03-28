@@ -575,8 +575,7 @@ namespace Libplanet.Action
             return new World(
                 new WorldBaseState(
                     stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
-                    stateStore),
-                new WorldDelta());
+                    stateStore));
         }
 
         private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
@@ -590,8 +589,7 @@ namespace Libplanet.Action
             }
 
             return new World(
-                new WorldBaseState(stateStore.Commit(worldTrie), stateStore),
-                new WorldDelta());
+                new WorldBaseState(stateStore.Commit(worldTrie), stateStore));
         }
 
         [Pure]

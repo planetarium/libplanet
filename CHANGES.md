@@ -14,6 +14,10 @@ To be released.
     type `IReadOnlyList<ITransaction>?` to `IActionContext`.  [[#3713]]
  -  (Libplanet.Action) Removed `TotalFungibleAssets` property from
     `IWorld`.  [[#3714]]
+ -  (Libplanet.Action) Changed `GetBalance()`, `GetTotalSupply()`, and
+    `GetValidatorSet()` of `IWorldState` to extension methods.  [[#3715]]
+ -  (Libplanet.Action) Changed `MintAsset()`, `BurnAsset()`, `TransferAsset()`,
+    and `SetValidator()` of `IWorld` to extension methods.  [[#3715]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +35,7 @@ To be released.
 
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
 [#3714]: https://github.com/planetarium/libplanet/pull/3714
+[#3715]: https://github.com/planetarium/libplanet/pull/3715
 
 
 Version 4.2.0
