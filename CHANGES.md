@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Added `Txs` property of
+    type `IReadOnlyList<ITransaction>?` to `IActionContext`.  [[#3713]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3713]: https://github.com/planetarium/libplanet/pull/3713
 
 
 Version 4.2.0

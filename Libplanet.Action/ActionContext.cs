@@ -1,5 +1,6 @@
 using System;
-using System.Diagnostics.Contracts;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -13,6 +14,8 @@ namespace Libplanet.Action
 
         private readonly long _gasLimit;
 
+        private readonly IReadOnlyList<ITransaction> _txs;
+
         public ActionContext(
             Address signer,
             TxId? txid,
@@ -21,7 +24,8 @@ namespace Libplanet.Action
             int blockProtocolVersion,
             IWorld previousState,
             int randomSeed,
-            long gasLimit)
+            long gasLimit,
+            IReadOnlyList<ITransaction>? txs = null)
         {
             Signer = signer;
             TxId = txid;
@@ -31,6 +35,7 @@ namespace Libplanet.Action
             PreviousState = previousState;
             RandomSeed = randomSeed;
             _gasLimit = gasLimit;
+            _txs = txs ?? ImmutableList<Transaction>.Empty;
 
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
@@ -58,6 +63,11 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.BlockAction"/>
         public bool BlockAction => TxId is null;
+
+        /// <inheritdoc cref="IActionContext.Txs"/>
+        public IReadOnlyList<ITransaction> Txs => BlockAction
+            ? _txs
+            : ImmutableList<ITransaction>.Empty;
 
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
