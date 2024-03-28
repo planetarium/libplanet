@@ -249,6 +249,18 @@ namespace Libplanet.Action.State
                 : new ValidatorSet();
         }
 
+        /// <summary>
+        /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
+        /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
+        /// <returns>A new <see cref="IWorld"/> instance with
+        /// <paramref name="validator"/> set.</returns>
+        [Pure]
+        public static IWorld SetValidator(this IWorld world, Validator validator) =>
+            UpdateValidatorSet(world, world.GetValidatorSet().Update(validator));
+
+        [Pure]
         private static IWorld UpdateFungibleAssets(
             IWorld world,
             Address address,
@@ -268,6 +280,7 @@ namespace Libplanet.Action.State
             return world.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
 
+        [Pure]
         private static IWorld TransferAssetV0(
             IWorld world,
             Address sender,
@@ -332,6 +345,16 @@ namespace Libplanet.Action.State
             BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
 
             return UpdateFungibleAssets(intermediate, recipient, currency, recipientRawBalance);
+        }
+
+        [Pure]
+        private static IWorld UpdateValidatorSet(IWorld world, ValidatorSet validatorSet)
+        {
+            IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
+            return world.SetAccount(
+                ReservedAddresses.LegacyAccount,
+                new Account(new AccountState(
+                    account.Trie.Set(ValidatorSetKey, validatorSet.Bencoded))));
         }
     }
 }

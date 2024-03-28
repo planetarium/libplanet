@@ -1,12 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Numerics;
-using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
-using Libplanet.Types.Consensus;
-using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
 {
@@ -23,7 +18,7 @@ namespace Libplanet.Action.State
         {
         }
 
-        public World(IWorldState baseState, IWorldDelta delta)
+        private World(IWorldState baseState, IWorldDelta delta)
         {
             _baseState = baseState;
             Delta = delta;
@@ -65,19 +60,6 @@ namespace Libplanet.Action.State
             }
 
             return new World(_baseState, Delta.SetAccount(address, account));
-        }
-
-        /// <inheritdoc cref="IWorld.SetValidator"/>
-        public IWorld SetValidator(Validator validator) =>
-            UpdateValidatorSet(this.GetValidatorSet().Update(validator));
-
-        private IWorld UpdateValidatorSet(ValidatorSet validatorSet)
-        {
-            IAccount account = GetAccount(ReservedAddresses.LegacyAccount);
-            return SetAccount(
-                ReservedAddresses.LegacyAccount,
-                new Account(new AccountState(
-                    account.Trie.Set(ValidatorSetKey, validatorSet.Bencoded))));
         }
     }
 }

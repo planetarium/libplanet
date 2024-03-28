@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {
@@ -74,15 +73,5 @@ namespace Libplanet.Action.State
         /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);
-
-        /// <summary>
-        /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.
-        /// If 0 is given as its power, removes the validator from the <see cref="ValidatorSet"/>.
-        /// </summary>
-        /// <param name="validator">The <see cref="Validator"/> instance to write.</param>
-        /// <returns>A new <see cref="IWorld"/> instance with
-        /// <paramref name="validator"/> set.</returns>
-        [Pure]
-        IWorld SetValidator(Validator validator);
     }
 }
