@@ -78,26 +78,6 @@ namespace Libplanet.Action.State
         IWorld SetAccount(Address address, IAccount account);
 
         /// <summary>
-        /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
-        /// <paramref name="owner"/>'s balance.
-        /// </summary>
-        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
-        /// executing this method.</param>
-        /// <param name="owner">The address who owns the fungible asset to burn.</param>
-        /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
-        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
-        /// name="value"/> is subtracted from <paramref name="owner"/>'s balance.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
-        /// is less than or equal to zero.</exception>
-        /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
-        /// (or a miner in case of block actions) is not a member of the <see
-        /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
-        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
-        /// has insufficient balance than <paramref name="value"/> to burn.</exception>
-        [Pure]
-        IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value);
-
-        /// <summary>
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
         /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
         /// </summary>

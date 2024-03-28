@@ -67,51 +67,6 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorld.BurnAsset"/>
-        public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
-        {
-            string msg;
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to burn has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            if (!currency.AllowsToMint(context.Signer))
-            {
-                msg = $"The account {context.Signer} has no permission to burn assets of " +
-                      $"the currency {currency}.";
-                throw new CurrencyPermissionException(msg, context.Signer, currency);
-            }
-
-            FungibleAssetValue balance = this.GetBalance(owner, currency);
-
-            if (balance < value)
-            {
-                msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
-                      $"{balance} < {value}.";
-                throw new InsufficientBalanceException(msg, owner, balance);
-            }
-
-            BigInteger rawBalance = (balance - value).RawValue;
-            if (currency.TotalSupplyTrackable)
-            {
-                var currentTotalSupply = this.GetTotalSupply(currency);
-                return UpdateFungibleAssets(
-                    owner,
-                    currency,
-                    rawBalance,
-                    (currentTotalSupply - value).RawValue);
-            }
-            else
-            {
-                return UpdateFungibleAssets(owner, currency, rawBalance);
-            }
-        }
-
         /// <inheritdoc cref="IWorld.TransferAsset"/>
         public IWorld TransferAsset(
             IActionContext context,

@@ -104,6 +104,73 @@ namespace Libplanet.Action.State
         }
 
         /// <summary>
+        /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
+        /// <paramref name="owner"/>'s balance.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="owner">The address who owns the fungible asset to burn.</param>
+        /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/> is subtracted from <paramref name="owner"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
+        /// (or a miner in case of block actions) is not a member of the <see
+        /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
+        /// has insufficient balance than <paramref name="value"/> to burn.</exception>
+        [Pure]
+        public static IWorld BurnAsset(
+            this IWorld world,
+            IActionContext context,
+            Address owner,
+            FungibleAssetValue value)
+        {
+            string msg;
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to burn has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(context.Signer))
+            {
+                msg = $"The account {context.Signer} has no permission to burn assets of " +
+                      $"the currency {currency}.";
+                throw new CurrencyPermissionException(msg, context.Signer, currency);
+            }
+
+            FungibleAssetValue balance = world.GetBalance(owner, currency);
+
+            if (balance < value)
+            {
+                msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
+                      $"{balance} < {value}.";
+                throw new InsufficientBalanceException(msg, owner, balance);
+            }
+
+            BigInteger rawBalance = (balance - value).RawValue;
+            if (currency.TotalSupplyTrackable)
+            {
+                var currentTotalSupply = world.GetTotalSupply(currency);
+                return UpdateFungibleAssets(
+                    world,
+                    owner,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply - value).RawValue);
+            }
+            else
+            {
+                return UpdateFungibleAssets(world, owner, currency, rawBalance);
+            }
+        }
+
+        /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
