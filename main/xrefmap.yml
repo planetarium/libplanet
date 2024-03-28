@@ -794,6 +794,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.TxId
   nameWithType: IActionContext.TxId
+- uid: Libplanet.Action.IActionContext.Txs
+  name: Txs
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Txs
+  commentId: P:Libplanet.Action.IActionContext.Txs
+  fullName: Libplanet.Action.IActionContext.Txs
+  nameWithType: IActionContext.Txs
+- uid: Libplanet.Action.IActionContext.Txs*
+  name: Txs
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Txs_
+  commentId: Overload:Libplanet.Action.IActionContext.Txs
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.Txs
+  nameWithType: IActionContext.Txs
 - uid: Libplanet.Action.IActionContext.UseGas(System.Int64)
   name: UseGas(Int64)
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_UseGas_System_Int64_
