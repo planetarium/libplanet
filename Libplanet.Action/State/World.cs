@@ -20,25 +20,18 @@ namespace Libplanet.Action.State
         private readonly IWorldState _baseState;
 
         public World(IWorldState baseState)
-            : this(baseState, new WorldDelta(), ImmutableHashSet<(Address, Currency)>.Empty)
+            : this(baseState, new WorldDelta())
         {
         }
 
-        public World(
-            IWorldState baseState,
-            IWorldDelta delta,
-            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
+        public World(IWorldState baseState, IWorldDelta delta)
         {
             _baseState = baseState;
             Delta = delta;
-            TotalUpdatedFungibleAssets = totalUpdatedFungibleAssets;
         }
 
         /// <inheritdoc cref="IWorld.Delta"/>
         public IWorldDelta Delta { get; }
-
-        /// <inheritdoc/>
-        public IImmutableSet<(Address, Currency)> TotalUpdatedFungibleAssets { get; }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
         [Pure]
@@ -72,10 +65,7 @@ namespace Libplanet.Action.State
                     nameof(address));
             }
 
-            return new World(
-                _baseState,
-                Delta.SetAccount(address, account),
-                TotalUpdatedFungibleAssets);
+            return new World(_baseState, Delta.SetAccount(address, account));
         }
 
         /// <inheritdoc cref="IWorldState.GetBalance"/>
@@ -219,24 +209,6 @@ namespace Libplanet.Action.State
         public IWorld SetValidator(Validator validator) =>
             UpdateValidatorSet(GetValidatorSet().Update(validator));
 
-        private IWorld SetAccount(
-            Address address,
-            IAccount account,
-            IImmutableSet<(Address, Currency)> totalUpdatedFungibleAssets)
-        {
-            if (Legacy && !address.Equals(ReservedAddresses.LegacyAccount))
-            {
-                throw new ArgumentException(
-                    $"Cannot set a non-legacy account ({address}) to a legacy {nameof(IWorld)}.",
-                    nameof(address));
-            }
-
-            return new World(
-                _baseState,
-                Delta.SetAccount(address, account),
-                totalUpdatedFungibleAssets);
-        }
-
         private IWorld UpdateFungibleAssets(
             Address address,
             Currency currency,
@@ -252,10 +224,7 @@ namespace Libplanet.Action.State
                     GetAccount(ReservedAddresses.LegacyAccount).Trie
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
 
-            return SetAccount(
-                ReservedAddresses.LegacyAccount,
-                account,
-                TotalUpdatedFungibleAssets.Add((address, currency)));
+            return SetAccount(ReservedAddresses.LegacyAccount, account);
         }
 
         private IWorld UpdateValidatorSet(ValidatorSet validatorSet)
