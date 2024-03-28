@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
 {

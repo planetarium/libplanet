@@ -4,8 +4,6 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Types.Assets;
-using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State

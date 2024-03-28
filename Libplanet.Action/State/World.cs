@@ -67,37 +67,9 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorld.TransferAsset"/>
-        public IWorld TransferAsset(
-            IActionContext context,
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
-                ? TransferAssetV1(sender, recipient, value, allowNegativeBalance)
-                : TransferAssetV0(sender, recipient, value, allowNegativeBalance);
-
         /// <inheritdoc cref="IWorld.SetValidator"/>
         public IWorld SetValidator(Validator validator) =>
             UpdateValidatorSet(this.GetValidatorSet().Update(validator));
-
-        private IWorld UpdateFungibleAssets(
-            Address address,
-            Currency currency,
-            BigInteger amount,
-            BigInteger? supplyAmount = null)
-        {
-            IAccount account = supplyAmount is { } sa
-                ? new Account(new AccountState(
-                    GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
-                : new Account(new AccountState(
-                    GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
-
-            return SetAccount(ReservedAddresses.LegacyAccount, account);
-        }
 
         private IWorld UpdateValidatorSet(ValidatorSet validatorSet)
         {
@@ -106,69 +78,6 @@ namespace Libplanet.Action.State
                 ReservedAddresses.LegacyAccount,
                 new Account(new AccountState(
                     account.Trie.Set(ValidatorSetKey, validatorSet.Bencoded))));
-        }
-
-        private IWorld TransferAssetV0(
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = this.GetBalance(sender, currency);
-            FungibleAssetValue recipientBalance = this.GetBalance(recipient, currency);
-
-            if (!allowNegativeBalance && senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            return ((World)UpdateFungibleAssets(sender, currency, (senderBalance - value).RawValue))
-                .UpdateFungibleAssets(recipient, currency, (recipientBalance + value).RawValue);
-        }
-
-        [Pure]
-        private IWorld TransferAssetV1(
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = this.GetBalance(sender, currency);
-
-            if (!allowNegativeBalance && senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            BigInteger senderRawBalance = (senderBalance - value).RawValue;
-            IWorld intermediate = UpdateFungibleAssets(sender, currency, senderRawBalance);
-            FungibleAssetValue recipientBalance = intermediate.GetBalance(recipient, currency);
-            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
-
-            return ((World)intermediate).UpdateFungibleAssets(
-                recipient, currency, recipientRawBalance);
         }
     }
 }

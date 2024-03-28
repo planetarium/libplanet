@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Crypto;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Action.State
@@ -76,41 +74,6 @@ namespace Libplanet.Action.State
         /// </exception>
         [Pure]
         IWorld SetAccount(Address address, IAccount account);
-
-        /// <summary>
-        /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
-        /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
-        /// </summary>
-        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
-        /// executing this method.</param>
-        /// <param name="sender">The address who sends the fungible asset to
-        /// the <paramref name="recipient"/>.</param>
-        /// <param name="recipient">The address who receives the fungible asset from
-        /// the <paramref name="sender"/>.</param>
-        /// <param name="value">The asset value to transfer.</param>
-        /// <param name="allowNegativeBalance">Turn on to allow <paramref name="sender"/>'s balance
-        /// less than zero.  Turned off by default.</param>
-        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
-        /// name="value"/>  is subtracted from <paramref name="sender"/>'s balance and added to
-        /// <paramref name="recipient"/>'s balance.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
-        /// is less than or equal to zero.</exception>
-        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="sender"/>
-        /// has insufficient balance than <paramref name="value"/> to transfer and
-        /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
-        /// <remarks>
-        /// The behavior is different depending on <paramref name="context"/>'s
-        /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
-        /// where this may not act as intended.  Such behavior is left intact for backward
-        /// compatibility.
-        /// </remarks>
-        [Pure]
-        IWorld TransferAsset(
-            IActionContext context,
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false);
 
         /// <summary>
         /// Sets <paramref name="validator"/> to the stored <see cref="ValidatorSet"/>.

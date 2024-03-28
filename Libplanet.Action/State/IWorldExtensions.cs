@@ -171,6 +171,44 @@ namespace Libplanet.Action.State
         }
 
         /// <summary>
+        /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
+        /// from the <paramref name="sender"/> to the <paramref name="recipient"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="sender">The address who sends the fungible asset to
+        /// the <paramref name="recipient"/>.</param>
+        /// <param name="recipient">The address who receives the fungible asset from
+        /// the <paramref name="sender"/>.</param>
+        /// <param name="value">The asset value to transfer.</param>
+        /// <param name="allowNegativeBalance">Turn on to allow <paramref name="sender"/>'s balance
+        /// less than zero.  Turned off by default.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/>  is subtracted from <paramref name="sender"/>'s balance and added to
+        /// <paramref name="recipient"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
+        /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="sender"/>
+        /// has insufficient balance than <paramref name="value"/> to transfer and
+        /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
+        /// <remarks>
+        /// The behavior is different depending on <paramref name="context"/>'s
+        /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
+        /// where this may not act as intended.  Such behavior is left intact for backward
+        /// compatibility.
+        /// </remarks>
+        [Pure]
+        public static IWorld TransferAsset(
+            this IWorld world,
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(world, sender, recipient, value, allowNegativeBalance)
+                : TransferAssetV0(world, sender, recipient, value, allowNegativeBalance);
+
+        /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
@@ -228,6 +266,72 @@ namespace Libplanet.Action.State
                         .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
 
             return world.SetAccount(ReservedAddresses.LegacyAccount, account);
+        }
+
+        private static IWorld TransferAssetV0(
+            IWorld world,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
+            FungibleAssetValue recipientBalance = world.GetBalance(recipient, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            IWorld intermediate = UpdateFungibleAssets(
+                world, sender, currency, (senderBalance - value).RawValue);
+            return UpdateFungibleAssets(
+                intermediate, recipient, currency, (recipientBalance + value).RawValue);
+        }
+
+        [Pure]
+        private static IWorld TransferAssetV1(
+            IWorld world,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value,
+            bool allowNegativeBalance = false)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
+
+            if (!allowNegativeBalance && senderBalance < value)
+            {
+                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
+                          $"transfer: {senderBalance} < {value}.";
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
+            }
+
+            BigInteger senderRawBalance = (senderBalance - value).RawValue;
+            IWorld intermediate = UpdateFungibleAssets(world, sender, currency, senderRawBalance);
+            FungibleAssetValue recipientBalance = intermediate.GetBalance(recipient, currency);
+            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
+
+            return UpdateFungibleAssets(intermediate, recipient, currency, recipientRawBalance);
         }
     }
 }
