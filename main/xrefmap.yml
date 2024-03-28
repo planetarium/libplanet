@@ -2073,19 +2073,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorld.SetValidator
   nameWithType: IWorld.SetValidator
-- uid: Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TotalUpdatedFungibleAssets
-  commentId: P:Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
-  fullName: Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
-  nameWithType: IWorld.TotalUpdatedFungibleAssets
-- uid: Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets*
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TotalUpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorld.TotalUpdatedFungibleAssets
-  nameWithType: IWorld.TotalUpdatedFungibleAssets
 - uid: Libplanet.Action.State.IWorld.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
   name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
   href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
@@ -2348,15 +2335,12 @@ references:
   commentId: T:Libplanet.Action.State.World
   fullName: Libplanet.Action.State.World
   nameWithType: World
-- uid: Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta,System.Collections.Immutable.IImmutableSet{System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency}})
-  name: World(IWorldState, IWorldDelta, IImmutableSet<(Address, Currency)>)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_System_Collections_Immutable_IImmutableSet_System_ValueTuple_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency___
-  commentId: M:Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta,System.Collections.Immutable.IImmutableSet{System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency}})
-  name.vb: World(IWorldState, IWorldDelta, IImmutableSet(Of (Address, Currency)(Of Address, Currency)))
-  fullName: Libplanet.Action.State.World.World(Libplanet.Action.State.IWorldState, Libplanet.Action.State.IWorldDelta, System.Collections.Immutable.IImmutableSet<System.ValueTuple<Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency>>)
-  fullName.vb: Libplanet.Action.State.World.World(Libplanet.Action.State.IWorldState, Libplanet.Action.State.IWorldDelta, System.Collections.Immutable.IImmutableSet(Of System.ValueTuple(Of Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)))
-  nameWithType: World.World(IWorldState, IWorldDelta, IImmutableSet<(Address, Currency)>)
-  nameWithType.vb: World.World(IWorldState, IWorldDelta, IImmutableSet(Of (Address, Currency)(Of Address, Currency)))
+- uid: Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta)
+  name: World(IWorldState, IWorldDelta)
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_
+  commentId: M:Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta)
+  fullName: Libplanet.Action.State.World.World(Libplanet.Action.State.IWorldState, Libplanet.Action.State.IWorldDelta)
+  nameWithType: World.World(IWorldState, IWorldDelta)
 - uid: Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState)
   name: World(IWorldState)
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_
@@ -2513,19 +2497,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.SetValidator
   nameWithType: World.SetValidator
-- uid: Libplanet.Action.State.World.TotalUpdatedFungibleAssets
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TotalUpdatedFungibleAssets
-  commentId: P:Libplanet.Action.State.World.TotalUpdatedFungibleAssets
-  fullName: Libplanet.Action.State.World.TotalUpdatedFungibleAssets
-  nameWithType: World.TotalUpdatedFungibleAssets
-- uid: Libplanet.Action.State.World.TotalUpdatedFungibleAssets*
-  name: TotalUpdatedFungibleAssets
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TotalUpdatedFungibleAssets_
-  commentId: Overload:Libplanet.Action.State.World.TotalUpdatedFungibleAssets
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.TotalUpdatedFungibleAssets
-  nameWithType: World.TotalUpdatedFungibleAssets
 - uid: Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
   name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
