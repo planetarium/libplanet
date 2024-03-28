@@ -67,53 +67,6 @@ namespace Libplanet.Action.State
             return new World(_baseState, Delta.SetAccount(address, account));
         }
 
-        /// <inheritdoc cref="IWorld.MintAsset"/>
-        public IWorld MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to mint has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            if (!currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"The account {context.Signer} has no permission to mint currency {currency}.",
-                    context.Signer,
-                    currency
-                );
-            }
-
-            FungibleAssetValue balance = this.GetBalance(recipient, currency);
-            BigInteger rawBalance = (balance + value).RawValue;
-
-            if (currency.TotalSupplyTrackable)
-            {
-                var currentTotalSupply = this.GetTotalSupply(currency);
-                if (currency.MaximumSupply < currentTotalSupply + value)
-                {
-                    var msg = $"The amount {value} attempted to be minted added to the current"
-                              + $" total supply of {currentTotalSupply} exceeds the"
-                              + $" maximum allowed supply of {currency.MaximumSupply}.";
-                    throw new SupplyOverflowException(msg, value);
-                }
-
-                return UpdateFungibleAssets(
-                    recipient,
-                    currency,
-                    rawBalance,
-                    (currentTotalSupply + value).RawValue);
-            }
-            else
-            {
-                return UpdateFungibleAssets(recipient, currency, rawBalance);
-            }
-        }
-
         /// <inheritdoc cref="IWorld.BurnAsset"/>
         public IWorld BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)
         {

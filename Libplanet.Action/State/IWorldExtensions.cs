@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
@@ -28,6 +30,77 @@ namespace Libplanet.Action.State
             return value is Integer i
                 ? FungibleAssetValue.FromRawValue(currency, i)
                 : currency * 0;
+        }
+
+        /// <summary>
+        /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
+        /// and give it to the <paramref name="recipient"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="IActionContext"/> of the <see cref="IAction"/>
+        /// executing this method.</param>
+        /// <param name="recipient">The address who receives the minted asset.</param>
+        /// <param name="value">The asset value to mint.</param>
+        /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
+        /// name="value"/> is added to <paramref name="recipient"/>'s balance.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to 0.</exception>
+        /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
+        /// (or a miner in case of block actions) is not a member of the <see
+        /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="SupplyOverflowException">Thrown when the sum of the
+        /// <paramref name="value"/> to be minted and the current total supply amount of the
+        /// <see cref="FungibleAssetValue.Currency"/> exceeds the
+        /// <see cref="Currency.MaximumSupply"/>.</exception>
+        [Pure]
+        public static IWorld MintAsset(
+            this IWorld world,
+            IActionContext context,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to mint has to be greater than zero."
+                );
+            }
+
+            Currency currency = value.Currency;
+            if (!currency.AllowsToMint(context.Signer))
+            {
+                throw new CurrencyPermissionException(
+                    $"The account {context.Signer} has no permission to mint currency {currency}.",
+                    context.Signer,
+                    currency
+                );
+            }
+
+            FungibleAssetValue balance = GetBalance(world, recipient, currency);
+            BigInteger rawBalance = (balance + value).RawValue;
+
+            if (currency.TotalSupplyTrackable)
+            {
+                var currentTotalSupply = GetTotalSupply(world, currency);
+                if (currency.MaximumSupply < currentTotalSupply + value)
+                {
+                    var msg = $"The amount {value} attempted to be minted added to the current"
+                              + $" total supply of {currentTotalSupply} exceeds the"
+                              + $" maximum allowed supply of {currency.MaximumSupply}.";
+                    throw new SupplyOverflowException(msg, value);
+                }
+
+                return UpdateFungibleAssets(
+                    world,
+                    recipient,
+                    currency,
+                    rawBalance,
+                    (currentTotalSupply + value).RawValue);
+            }
+            else
+            {
+                return UpdateFungibleAssets(world, recipient, currency, rawBalance);
+            }
         }
 
         /// <summary>
@@ -69,6 +142,25 @@ namespace Libplanet.Action.State
             return value is List list
                 ? new ValidatorSet(list)
                 : new ValidatorSet();
+        }
+
+        private static IWorld UpdateFungibleAssets(
+            IWorld world,
+            Address address,
+            Currency currency,
+            BigInteger amount,
+            BigInteger? supplyAmount = null)
+        {
+            IAccount account = supplyAmount is { } sa
+                ? new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
+                : new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
+
+            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
     }
 }
