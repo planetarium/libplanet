@@ -177,6 +177,10 @@ namespace Libplanet.Tests.Fixtures
             TestUtils.CreateBlockCommit(Chain.Tip),
             TestUtils.CreateZeroRoundProof(Chain.Tip, Miner));
 
+        public Block ProposeEmptyProof() => Chain.ProposeBlock(
+            Miner,
+            TestUtils.CreateBlockCommit(Chain.Tip));
+
         public void Append(Block block) =>
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
