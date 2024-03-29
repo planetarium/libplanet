@@ -70,14 +70,11 @@ namespace Libplanet.Action.Tests.Common
             get
             {
                 var plainValue = Bencodex.Types.Dictionary.Empty;
-                if (!(Item is null))
+                if (Item is { })
                 {
-                    plainValue = new Bencodex.Types.Dictionary(
-                        new Dictionary<string, IValue>
-                        {
-                            ["item"] = (Text)Item,
-                            ["target_address"] = TargetAddress.Bencoded,
-                        });
+                    plainValue = plainValue
+                        .Add("item", Item)
+                        .Add("target_address", TargetAddress.Bencoded);
                 }
 
                 if (RecordRandom)
@@ -87,7 +84,7 @@ namespace Libplanet.Action.Tests.Common
                     plainValue = plainValue.Add("record_random", true);
                 }
 
-                if (!(Transfer is null))
+                if (Transfer is { })
                 {
                     plainValue = plainValue
                         .Add("transfer_from", Transfer.Item1.Bencoded)
@@ -95,7 +92,7 @@ namespace Libplanet.Action.Tests.Common
                         .Add("transfer_amount", Transfer.Item3);
                 }
 
-                if (!(Validators is null))
+                if (Validators is { })
                 {
                     plainValue = plainValue
                         .Add("validators", new List(Validators.Select(p => p.Format(false))));
@@ -126,13 +123,7 @@ namespace Libplanet.Action.Tests.Common
                 );
             }
 
-            if (Item.Equals("D"))
-            {
-                Item = Item.ToUpperInvariant();
-            }
-
             account = account.SetState(TargetAddress, (Text)items);
-
             world = world.SetAccount(DumbModernAddress, account);
 
             if (!(Validators is null))
