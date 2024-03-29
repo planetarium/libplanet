@@ -1242,7 +1242,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 actionLoader,
-                new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) });
+                new[] { new DumbAction(_fx.Address1, "item0.0") });
             Assert.Equal(
                 "item0.0",
                 (Text)chain
