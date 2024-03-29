@@ -1995,19 +1995,6 @@ references:
   commentId: T:Libplanet.Action.State.IWorld
   fullName: Libplanet.Action.State.IWorld
   nameWithType: IWorld
-- uid: Libplanet.Action.State.IWorld.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.IWorld.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.IWorld.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: IWorld.BurnAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.IWorld.BurnAsset*
-  name: BurnAsset
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_BurnAsset_
-  commentId: Overload:Libplanet.Action.State.IWorld.BurnAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorld.BurnAsset
-  nameWithType: IWorld.BurnAsset
 - uid: Libplanet.Action.State.IWorld.Delta
   name: Delta
   href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_Delta
@@ -2034,19 +2021,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorld.GetAccount
   nameWithType: IWorld.GetAccount
-- uid: Libplanet.Action.State.IWorld.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: MintAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.IWorld.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.IWorld.MintAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: IWorld.MintAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.IWorld.MintAsset*
-  name: MintAsset
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_MintAsset_
-  commentId: Overload:Libplanet.Action.State.IWorld.MintAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorld.MintAsset
-  nameWithType: IWorld.MintAsset
 - uid: Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
   name: SetAccount(Address, IAccount)
   href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
@@ -2060,32 +2034,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorld.SetAccount
   nameWithType: IWorld.SetAccount
-- uid: Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetValidator_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.IWorld.SetValidator(Libplanet.Types.Consensus.Validator)
-  nameWithType: IWorld.SetValidator(Validator)
-- uid: Libplanet.Action.State.IWorld.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetValidator_
-  commentId: Overload:Libplanet.Action.State.IWorld.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorld.SetValidator
-  nameWithType: IWorld.SetValidator
-- uid: Libplanet.Action.State.IWorld.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.Action.State.IWorld.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.Action.State.IWorld.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: IWorld.TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-- uid: Libplanet.Action.State.IWorld.TransferAsset*
-  name: TransferAsset
-  href: api/Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_TransferAsset_
-  commentId: Overload:Libplanet.Action.State.IWorld.TransferAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorld.TransferAsset
-  nameWithType: IWorld.TransferAsset
 - uid: Libplanet.Action.State.IWorldDelta
   name: IWorldDelta
   href: api/Libplanet.Action.State.IWorldDelta.html
@@ -2118,6 +2066,103 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldDelta.SetAccount
   nameWithType: IWorldDelta.SetAccount
+- uid: Libplanet.Action.State.IWorldExtensions
+  name: IWorldExtensions
+  href: api/Libplanet.Action.State.IWorldExtensions.html
+  commentId: T:Libplanet.Action.State.IWorldExtensions
+  fullName: Libplanet.Action.State.IWorldExtensions
+  nameWithType: IWorldExtensions
+- uid: Libplanet.Action.State.IWorldExtensions.BurnAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: BurnAsset(IWorld, IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_BurnAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.BurnAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.IWorldExtensions.BurnAsset(Libplanet.Action.State.IWorld, Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: IWorldExtensions.BurnAsset(IWorld, IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.IWorldExtensions.BurnAsset*
+  name: BurnAsset
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_BurnAsset_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.BurnAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.BurnAsset
+  nameWithType: IWorldExtensions.BurnAsset
+- uid: Libplanet.Action.State.IWorldExtensions.GetBalance(Libplanet.Action.State.IWorldState,Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  name: GetBalance(IWorldState, Address, Currency)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetBalance_Libplanet_Action_State_IWorldState_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.GetBalance(Libplanet.Action.State.IWorldState,Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.IWorldExtensions.GetBalance(Libplanet.Action.State.IWorldState, Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
+  nameWithType: IWorldExtensions.GetBalance(IWorldState, Address, Currency)
+- uid: Libplanet.Action.State.IWorldExtensions.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetBalance_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.GetBalance
+  nameWithType: IWorldExtensions.GetBalance
+- uid: Libplanet.Action.State.IWorldExtensions.GetTotalSupply(Libplanet.Action.State.IWorldState,Libplanet.Types.Assets.Currency)
+  name: GetTotalSupply(IWorldState, Currency)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetTotalSupply_Libplanet_Action_State_IWorldState_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.GetTotalSupply(Libplanet.Action.State.IWorldState,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.IWorldExtensions.GetTotalSupply(Libplanet.Action.State.IWorldState, Libplanet.Types.Assets.Currency)
+  nameWithType: IWorldExtensions.GetTotalSupply(IWorldState, Currency)
+- uid: Libplanet.Action.State.IWorldExtensions.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetTotalSupply_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.GetTotalSupply
+  nameWithType: IWorldExtensions.GetTotalSupply
+- uid: Libplanet.Action.State.IWorldExtensions.GetValidatorSet(Libplanet.Action.State.IWorldState)
+  name: GetValidatorSet(IWorldState)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetValidatorSet_Libplanet_Action_State_IWorldState_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.GetValidatorSet(Libplanet.Action.State.IWorldState)
+  fullName: Libplanet.Action.State.IWorldExtensions.GetValidatorSet(Libplanet.Action.State.IWorldState)
+  nameWithType: IWorldExtensions.GetValidatorSet(IWorldState)
+- uid: Libplanet.Action.State.IWorldExtensions.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.GetValidatorSet
+  nameWithType: IWorldExtensions.GetValidatorSet
+- uid: Libplanet.Action.State.IWorldExtensions.MintAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: MintAsset(IWorld, IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_MintAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.MintAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.IWorldExtensions.MintAsset(Libplanet.Action.State.IWorld, Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: IWorldExtensions.MintAsset(IWorld, IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.IWorldExtensions.MintAsset*
+  name: MintAsset
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_MintAsset_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.MintAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.MintAsset
+  nameWithType: IWorldExtensions.MintAsset
+- uid: Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.Validator)
+  name: SetValidator(IWorld, Validator)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidator_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_Validator_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.Validator)
+  fullName: Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld, Libplanet.Types.Consensus.Validator)
+  nameWithType: IWorldExtensions.SetValidator(IWorld, Validator)
+- uid: Libplanet.Action.State.IWorldExtensions.SetValidator*
+  name: SetValidator
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidator_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.SetValidator
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.SetValidator
+  nameWithType: IWorldExtensions.SetValidator
+- uid: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
+  name: TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue, Boolean)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
+  fullName: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld, Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
+  nameWithType: IWorldExtensions.TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue, Boolean)
+- uid: Libplanet.Action.State.IWorldExtensions.TransferAsset*
+  name: TransferAsset
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.TransferAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldExtensions.TransferAsset
+  nameWithType: IWorldExtensions.TransferAsset
 - uid: Libplanet.Action.State.IWorldState
   name: IWorldState
   href: api/Libplanet.Action.State.IWorldState.html
@@ -2137,45 +2182,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldState.GetAccountState
   nameWithType: IWorldState.GetAccountState
-- uid: Libplanet.Action.State.IWorldState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.IWorldState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.IWorldState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
-  nameWithType: IWorldState.GetBalance(Address, Currency)
-- uid: Libplanet.Action.State.IWorldState.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetBalance_
-  commentId: Overload:Libplanet.Action.State.IWorldState.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldState.GetBalance
-  nameWithType: IWorldState.GetBalance
-- uid: Libplanet.Action.State.IWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetTotalSupply_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.IWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.IWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  nameWithType: IWorldState.GetTotalSupply(Currency)
-- uid: Libplanet.Action.State.IWorldState.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetTotalSupply_
-  commentId: Overload:Libplanet.Action.State.IWorldState.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldState.GetTotalSupply
-  nameWithType: IWorldState.GetTotalSupply
-- uid: Libplanet.Action.State.IWorldState.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetValidatorSet
-  commentId: M:Libplanet.Action.State.IWorldState.GetValidatorSet
-  fullName: Libplanet.Action.State.IWorldState.GetValidatorSet()
-  nameWithType: IWorldState.GetValidatorSet()
-- uid: Libplanet.Action.State.IWorldState.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.IWorldState.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldState.GetValidatorSet
-  nameWithType: IWorldState.GetValidatorSet
 - uid: Libplanet.Action.State.IWorldState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Legacy
@@ -2335,12 +2341,6 @@ references:
   commentId: T:Libplanet.Action.State.World
   fullName: Libplanet.Action.State.World
   nameWithType: World
-- uid: Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta)
-  name: World(IWorldState, IWorldDelta)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_Libplanet_Action_State_IWorldDelta_
-  commentId: M:Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState,Libplanet.Action.State.IWorldDelta)
-  fullName: Libplanet.Action.State.World.World(Libplanet.Action.State.IWorldState, Libplanet.Action.State.IWorldDelta)
-  nameWithType: World.World(IWorldState, IWorldDelta)
 - uid: Libplanet.Action.State.World.#ctor(Libplanet.Action.State.IWorldState)
   name: World(IWorldState)
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World__ctor_Libplanet_Action_State_IWorldState_
@@ -2354,19 +2354,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.World
   nameWithType: World.World
-- uid: Libplanet.Action.State.World.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.World.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.World.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: World.BurnAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.World.BurnAsset*
-  name: BurnAsset
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_BurnAsset_
-  commentId: Overload:Libplanet.Action.State.World.BurnAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.BurnAsset
-  nameWithType: World.BurnAsset
 - uid: Libplanet.Action.State.World.Delta
   name: Delta
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Delta
@@ -2406,45 +2393,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.GetAccountState
   nameWithType: World.GetAccountState
-- uid: Libplanet.Action.State.World.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.World.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.World.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
-  nameWithType: World.GetBalance(Address, Currency)
-- uid: Libplanet.Action.State.World.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetBalance_
-  commentId: Overload:Libplanet.Action.State.World.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.GetBalance
-  nameWithType: World.GetBalance
-- uid: Libplanet.Action.State.World.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetTotalSupply_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.World.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.World.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  nameWithType: World.GetTotalSupply(Currency)
-- uid: Libplanet.Action.State.World.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetTotalSupply_
-  commentId: Overload:Libplanet.Action.State.World.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.GetTotalSupply
-  nameWithType: World.GetTotalSupply
-- uid: Libplanet.Action.State.World.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetValidatorSet
-  commentId: M:Libplanet.Action.State.World.GetValidatorSet
-  fullName: Libplanet.Action.State.World.GetValidatorSet()
-  nameWithType: World.GetValidatorSet()
-- uid: Libplanet.Action.State.World.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.World.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.GetValidatorSet
-  nameWithType: World.GetValidatorSet
 - uid: Libplanet.Action.State.World.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Legacy
@@ -2458,19 +2406,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.Legacy
   nameWithType: World.Legacy
-- uid: Libplanet.Action.State.World.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  name: MintAsset(IActionContext, Address, FungibleAssetValue)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Action.State.World.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Action.State.World.MintAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: World.MintAsset(IActionContext, Address, FungibleAssetValue)
-- uid: Libplanet.Action.State.World.MintAsset*
-  name: MintAsset
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_MintAsset_
-  commentId: Overload:Libplanet.Action.State.World.MintAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.MintAsset
-  nameWithType: World.MintAsset
 - uid: Libplanet.Action.State.World.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)
   name: SetAccount(Address, IAccount)
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_
@@ -2484,32 +2419,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.SetAccount
   nameWithType: World.SetAccount
-- uid: Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
-  name: SetValidator(Validator)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_SetValidator_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.World.SetValidator(Libplanet.Types.Consensus.Validator)
-  nameWithType: World.SetValidator(Validator)
-- uid: Libplanet.Action.State.World.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_SetValidator_
-  commentId: Overload:Libplanet.Action.State.World.SetValidator
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.SetValidator
-  nameWithType: World.SetValidator
-- uid: Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.Action.State.World.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: World.TransferAsset(IActionContext, Address, Address, FungibleAssetValue, Boolean)
-- uid: Libplanet.Action.State.World.TransferAsset*
-  name: TransferAsset
-  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_TransferAsset_
-  commentId: Overload:Libplanet.Action.State.World.TransferAsset
-  isSpec: "True"
-  fullName: Libplanet.Action.State.World.TransferAsset
-  nameWithType: World.TransferAsset
 - uid: Libplanet.Action.State.World.Trie
   name: Trie
   href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Trie
@@ -2555,45 +2464,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.GetAccountState
   nameWithType: WorldBaseState.GetAccountState
-- uid: Libplanet.Action.State.WorldBaseState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.WorldBaseState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.WorldBaseState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
-  nameWithType: WorldBaseState.GetBalance(Address, Currency)
-- uid: Libplanet.Action.State.WorldBaseState.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetBalance_
-  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldBaseState.GetBalance
-  nameWithType: WorldBaseState.GetBalance
-- uid: Libplanet.Action.State.WorldBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetTotalSupply_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Action.State.WorldBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Action.State.WorldBaseState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  nameWithType: WorldBaseState.GetTotalSupply(Currency)
-- uid: Libplanet.Action.State.WorldBaseState.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetTotalSupply_
-  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldBaseState.GetTotalSupply
-  nameWithType: WorldBaseState.GetTotalSupply
-- uid: Libplanet.Action.State.WorldBaseState.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetValidatorSet
-  commentId: M:Libplanet.Action.State.WorldBaseState.GetValidatorSet
-  fullName: Libplanet.Action.State.WorldBaseState.GetValidatorSet()
-  nameWithType: WorldBaseState.GetValidatorSet()
-- uid: Libplanet.Action.State.WorldBaseState.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_GetValidatorSet_
-  commentId: Overload:Libplanet.Action.State.WorldBaseState.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Action.State.WorldBaseState.GetValidatorSet
-  nameWithType: WorldBaseState.GetValidatorSet
 - uid: Libplanet.Action.State.WorldBaseState.Legacy
   name: Legacy
   href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Legacy
@@ -10994,45 +10864,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockWorldState.GetAccountState
   nameWithType: MockWorldState.GetAccountState
-- uid: Libplanet.Mocks.MockWorldState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Mocks.MockWorldState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Mocks.MockWorldState.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
-  nameWithType: MockWorldState.GetBalance(Address, Currency)
-- uid: Libplanet.Mocks.MockWorldState.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetBalance_
-  commentId: Overload:Libplanet.Mocks.MockWorldState.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockWorldState.GetBalance
-  nameWithType: MockWorldState.GetBalance
-- uid: Libplanet.Mocks.MockWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  name: GetTotalSupply(Currency)
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetTotalSupply_Libplanet_Types_Assets_Currency_
-  commentId: M:Libplanet.Mocks.MockWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  fullName: Libplanet.Mocks.MockWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)
-  nameWithType: MockWorldState.GetTotalSupply(Currency)
-- uid: Libplanet.Mocks.MockWorldState.GetTotalSupply*
-  name: GetTotalSupply
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetTotalSupply_
-  commentId: Overload:Libplanet.Mocks.MockWorldState.GetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockWorldState.GetTotalSupply
-  nameWithType: MockWorldState.GetTotalSupply
-- uid: Libplanet.Mocks.MockWorldState.GetValidatorSet
-  name: GetValidatorSet()
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetValidatorSet
-  commentId: M:Libplanet.Mocks.MockWorldState.GetValidatorSet
-  fullName: Libplanet.Mocks.MockWorldState.GetValidatorSet()
-  nameWithType: MockWorldState.GetValidatorSet()
-- uid: Libplanet.Mocks.MockWorldState.GetValidatorSet*
-  name: GetValidatorSet
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_GetValidatorSet_
-  commentId: Overload:Libplanet.Mocks.MockWorldState.GetValidatorSet
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockWorldState.GetValidatorSet
-  nameWithType: MockWorldState.GetValidatorSet
 - uid: Libplanet.Mocks.MockWorldState.Legacy
   name: Legacy
   href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_Legacy

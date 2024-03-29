@@ -89,7 +89,7 @@ instead.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">MockWorldState</span></div>
   </div>
   <div class="implements">
@@ -108,16 +108,16 @@ instead.
       <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Mocks.html">Libplanet.Mocks</a></h6>
@@ -154,7 +154,7 @@ instead.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -353,178 +353,10 @@ instead.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.GetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L100">View Source</a>
-  </span>
-  <a id="Libplanet_Mocks_MockWorldState_GetBalance_" data-uid="Libplanet.Mocks.MockWorldState.GetBalance*"></a>
-  <h4 id="Libplanet_Mocks_MockWorldState_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Mocks.MockWorldState.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)">GetBalance(Address, Currency)</h4>
-  <div class="markdown level1 summary"><p>
-A mock implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with various methods for
-setting up a semi-valid <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> for testing.
-</p>
-<p>
-For ease of use, any mutating method automatically commits the resulting
-<a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> to the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> that the instance is tied to.
-</p>
-<p>
-If simply an empty disposable <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is needed, use
-<a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockLegacyWorldState">MockLegacyWorldState</a> or <a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockModernWorldState">MockModernWorldState</a>
-instead.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetBalance(Address address, Currency currency)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_GetTotalSupply_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L106">View Source</a>
-  </span>
-  <a id="Libplanet_Mocks_MockWorldState_GetTotalSupply_" data-uid="Libplanet.Mocks.MockWorldState.GetTotalSupply*"></a>
-  <h4 id="Libplanet_Mocks_MockWorldState_GetTotalSupply_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Mocks.MockWorldState.GetTotalSupply(Libplanet.Types.Assets.Currency)">GetTotalSupply(Currency)</h4>
-  <div class="markdown level1 summary"><p>
-A mock implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with various methods for
-setting up a semi-valid <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> for testing.
-</p>
-<p>
-For ease of use, any mutating method automatically commits the resulting
-<a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> to the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> that the instance is tied to.
-</p>
-<p>
-If simply an empty disposable <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is needed, use
-<a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockLegacyWorldState">MockLegacyWorldState</a> or <a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockModernWorldState">MockModernWorldState</a>
-instead.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FungibleAssetValue GetTotalSupply(Currency currency)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_GetValidatorSet.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.GetValidatorSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L112">View Source</a>
-  </span>
-  <a id="Libplanet_Mocks_MockWorldState_GetValidatorSet_" data-uid="Libplanet.Mocks.MockWorldState.GetValidatorSet*"></a>
-  <h4 id="Libplanet_Mocks_MockWorldState_GetValidatorSet" data-uid="Libplanet.Mocks.MockWorldState.GetValidatorSet">GetValidatorSet()</h4>
-  <div class="markdown level1 summary"><p>
-A mock implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with various methods for
-setting up a semi-valid <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> for testing.
-</p>
-<p>
-For ease of use, any mutating method automatically commits the resulting
-<a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> to the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> that the instance is tied to.
-</p>
-<p>
-If simply an empty disposable <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is needed, use
-<a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockLegacyWorldState">MockLegacyWorldState</a> or <a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockModernWorldState">MockModernWorldState</a>
-instead.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ValidatorSet GetValidatorSet()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccountState_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccountState)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L158">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L140">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetAccount_" data-uid="Libplanet.Mocks.MockWorldState.SetAccount*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccountState_" data-uid="Libplanet.Mocks.MockWorldState.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccountState)">SetAccount(Address, IAccountState)</h4>
@@ -585,7 +417,7 @@ has a committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%2CBencodex.Types.Integer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L206">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetBalance_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency,Bencodex.Types.Integer)">SetBalance(Address, Currency, Integer)</h4>
@@ -651,7 +483,7 @@ to set.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L190">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L172">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetBalance_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">SetBalance(Address, FungibleAssetValue)</h4>
@@ -709,7 +541,7 @@ This bypasses all checks (minter authority, total supply, etc.).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.Currency%2CBencodex.Types.Integer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L241">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L223">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetTotalSupply_" data-uid="Libplanet.Mocks.MockWorldState.SetTotalSupply*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_" data-uid="Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.Currency,Bencodex.Types.Integer)">SetTotalSupply(Currency, Integer)</h4>
@@ -768,7 +600,7 @@ and <code data-dev-comment-type="paramref" class="paramref">rawValue</code>.  Th
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L222">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L204">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetTotalSupply_" data-uid="Libplanet.Mocks.MockWorldState.SetTotalSupply*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.FungibleAssetValue)">SetTotalSupply(FungibleAssetValue)</h4>
@@ -820,7 +652,7 @@ and <code data-dev-comment-type="paramref" class="paramref">rawValue</code>.  Th
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L249">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L231">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_SetValidatorSet_" data-uid="Libplanet.Mocks.MockWorldState.SetValidatorSet*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_" data-uid="Libplanet.Mocks.MockWorldState.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)">SetValidatorSet(ValidatorSet)</h4>
@@ -880,7 +712,7 @@ instead.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_ToModern.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.ToModern%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L126">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Mocks/MockWorldState.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Mocks_MockWorldState_ToModern_" data-uid="Libplanet.Mocks.MockWorldState.ToModern*"></a>
   <h4 id="Libplanet_Mocks_MockWorldState_ToModern" data-uid="Libplanet.Mocks.MockWorldState.ToModern">ToModern()</h4>
