@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
@@ -33,10 +32,8 @@ namespace Libplanet.Action.Tests.Common
             Address targetAddress,
             string item,
             bool recordRandom = false,
-            bool idempotent = false,
             Tuple<Address, Address, BigInteger> transfer = null)
         {
-            Idempotent = idempotent;
             TargetAddress = targetAddress;
             Item = item;
             RecordRandom = recordRandom;
@@ -49,16 +46,12 @@ namespace Libplanet.Action.Tests.Common
             Address transferFrom,
             Address transferTo,
             BigInteger transferAmount,
-            bool recordRandom = false,
-            bool idempotent = false
-        )
+            bool recordRandom = false)
             : this(
                 targetAddress,
                 item,
                 recordRandom,
-                idempotent,
-                Tuple.Create(transferFrom, transferTo, transferAmount)
-            )
+                Tuple.Create(transferFrom, transferTo, transferAmount))
         {
         }
 
@@ -67,8 +60,6 @@ namespace Libplanet.Action.Tests.Common
         public string Item { get; private set; }
 
         public bool RecordRandom { get; private set; }
-
-        public bool Idempotent { get; private set; }
 
         public Tuple<Address, Address, BigInteger> Transfer { get; private set; }
 
@@ -85,7 +76,7 @@ namespace Libplanet.Action.Tests.Common
                         new Dictionary<string, IValue>
                         {
                             ["item"] = (Text)Item,
-                            ["target_address"] = new Binary(TargetAddress.ByteArray),
+                            ["target_address"] = TargetAddress.Bencoded,
                         });
                 }
 
@@ -96,16 +87,11 @@ namespace Libplanet.Action.Tests.Common
                     plainValue = plainValue.Add("record_random", true);
                 }
 
-                if (Idempotent)
-                {
-                    plainValue = plainValue.Add("idempotent", Idempotent);
-                }
-
                 if (!(Transfer is null))
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", Transfer.Item1.ByteArray)
-                        .Add("transfer_to", Transfer.Item2.ByteArray)
+                        .Add("transfer_from", Transfer.Item1.Bencoded)
+                        .Add("transfer_to", Transfer.Item2.Bencoded)
                         .Add("transfer_amount", Transfer.Item3);
                 }
 
@@ -130,24 +116,7 @@ namespace Libplanet.Action.Tests.Common
             IAccount account = world.GetAccount(DumbModernAddress);
             string items = (Text?)account.GetState(TargetAddress);
 
-            if (Idempotent)
-            {
-                var splitItems = items is null ? new[] { Item } : (items + "," + Item).Split(',');
-                items = string.Join(
-                    ",",
-                    splitItems.OrderBy(x =>
-                        float.Parse(
-                            x.Substring(4),
-                            NumberStyles.Float,
-                            CultureInfo.InvariantCulture
-                        )
-                    )
-                );
-            }
-            else
-            {
-                items = items is null ? Item : $"{items},{Item}";
-            }
+            items = items is null ? Item : $"{items},{Item}";
 
             if (RecordRandom)
             {
@@ -194,17 +163,12 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
+            Item = (Text)plainValue["item"];
+            TargetAddress = new Address(plainValue["target_address"]);
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
                 r.Value;
-
-            if (plainValue.ContainsKey((IKey)(Text)"idempotent"))
-            {
-                Idempotent = plainValue.GetValue<Boolean>("idempotent");
-            }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
                 plainValue.TryGetValue((Text)"transfer_to", out IValue to) &&
@@ -216,7 +180,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"validators"))
             {
-                Validators = plainValue.GetValue<List>("validators")
+                Validators = ((List)plainValue["validators"])
                     .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
         }
@@ -226,8 +190,7 @@ namespace Libplanet.Action.Tests.Common
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
                     TargetAddress.Equals(other.TargetAddress) &&
-                    string.Equals(Item, other.Item)
-                )
+                    string.Equals(Item, other.Item))
             );
         }
 
@@ -244,8 +207,7 @@ namespace Libplanet.Action.Tests.Common
             unchecked
             {
                 int hashCode = TargetAddress.GetHashCode();
-                hashCode = (hashCode * 397) ^
-                    (Item != null ? Item.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
                 return hashCode;
             }
         }
@@ -265,7 +227,6 @@ namespace Libplanet.Action.Tests.Common
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
-                $"{nameof(Idempotent)} = {(Idempotent ? T : F)}, " +
                 $"{nameof(Transfer)} = {transfer} " +
                 $"{nameof(Validators)} = {validators} " +
                 "}";
