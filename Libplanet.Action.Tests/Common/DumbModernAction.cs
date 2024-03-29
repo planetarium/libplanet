@@ -85,7 +85,7 @@ namespace Libplanet.Action.Tests.Common
                         new Dictionary<string, IValue>
                         {
                             ["item"] = (Text)Item,
-                            ["target_address"] = new Binary(TargetAddress.ByteArray),
+                            ["target_address"] = TargetAddress.Bencoded,
                         });
                 }
 
@@ -104,8 +104,8 @@ namespace Libplanet.Action.Tests.Common
                 if (!(Transfer is null))
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", Transfer.Item1.ByteArray)
-                        .Add("transfer_to", Transfer.Item2.ByteArray)
+                        .Add("transfer_from", Transfer.Item1.Bencoded)
+                        .Add("transfer_to", Transfer.Item2.Bencoded)
                         .Add("transfer_amount", Transfer.Item3);
                 }
 
@@ -194,8 +194,8 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Item = plainValue.GetValue<Text>("item");
-            TargetAddress = new Address(plainValue.GetValue<IValue>("target_address"));
+            Item = (Text)plainValue["item"];
+            TargetAddress = new Address(plainValue["target_address"]);
             RecordRandom =
                 plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
@@ -203,7 +203,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"idempotent"))
             {
-                Idempotent = plainValue.GetValue<Boolean>("idempotent");
+                Idempotent = (Boolean)plainValue["idempotent"];
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
@@ -216,7 +216,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.ContainsKey((IKey)(Text)"validators"))
             {
-                Validators = plainValue.GetValue<List>("validators")
+                Validators = ((List)plainValue["validators"])
                     .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
         }
@@ -226,8 +226,7 @@ namespace Libplanet.Action.Tests.Common
             return !(other is null) && (
                 ReferenceEquals(this, other) || (
                     TargetAddress.Equals(other.TargetAddress) &&
-                    string.Equals(Item, other.Item)
-                )
+                    string.Equals(Item, other.Item))
             );
         }
 
@@ -244,8 +243,7 @@ namespace Libplanet.Action.Tests.Common
             unchecked
             {
                 int hashCode = TargetAddress.GetHashCode();
-                hashCode = (hashCode * 397) ^
-                    (Item != null ? Item.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
                 return hashCode;
             }
         }
