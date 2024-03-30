@@ -274,8 +274,8 @@ namespace Libplanet.Tests.Action
                     item: identifier.ToString(),
                     recordRandom: true,
                     transfer: transferTo is Address to
-                        ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
-                        : null);
+                        ? (address, to, 5)
+                        : ((Address, Address, BigInteger)?)null);
             }
 
             Address[] addresses =
@@ -455,9 +455,7 @@ namespace Libplanet.Tests.Action
                                 new DumbAction(
                                     addresses[4],
                                     "RecordRehearsal",
-                                    transferFrom: addresses[0],
-                                    transferTo: addresses[4],
-                                    transferAmount: 8,
+                                    transfer: (addresses[0], addresses[4], 8),
                                     recordRandom: true),
                             }.ToPlainValues()),
                             maxGasPrice: null,
@@ -538,23 +536,17 @@ namespace Libplanet.Tests.Action
                 new DumbAction(
                     targetAddress: addresses[0],
                     item: "0",
-                    transferFrom: addresses[0],
-                    transferTo: addresses[1],
-                    transferAmount: 5,
+                    transfer: (addresses[0], addresses[1], 5),
                     recordRandom: true),
                 new DumbAction(
                     targetAddress: addresses[1],
                     item: "1",
-                    transferFrom: addresses[2],
-                    transferTo: addresses[1],
-                    transferAmount: 10,
+                    transfer: (addresses[2], addresses[1], 10),
                     recordRandom: true),
                 new DumbAction(
                     targetAddress: addresses[0],
                     item: "2",
-                    transferFrom: addresses[1],
-                    transferTo: addresses[0],
-                    transferAmount: 10,
+                    transfer: (addresses[1], addresses[0], 10),
                     recordRandom: true),
                 new DumbAction(addresses[2], "R", recordRandom: true),
             };

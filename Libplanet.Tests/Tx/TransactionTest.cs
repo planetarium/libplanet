@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 new[]
                 {
-                    new DumbAction(stateStore, "RecordRehearsal", false),
+                    new DumbAction(stateStore, "RecordRehearsal", recordRandom: false),
                 }.Select(x => x.PlainValue),
                 null,
                 null,

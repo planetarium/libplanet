@@ -219,8 +219,8 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx1Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.Address, "foo", pk.Address, addresses[1], 10),
-                    new DumbAction(addresses[0], "bar", pk.Address, addresses[2], 20),
+                    new DumbAction(pk.Address, "foo", (pk.Address, addresses[1], 10)),
+                    new DumbAction(addresses[0], "bar", (pk.Address, addresses[2], 20)),
                 },
                 nonce: 0,
                 privateKey: pk
@@ -230,7 +230,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     // As it tries to transfer a negative value, it throws
                     // ArgumentOutOfRangeException:
-                    new DumbAction(pk.Address, "foo", addresses[0], addresses[1], -5),
+                    new DumbAction(pk.Address, "foo", (addresses[0], addresses[1], -5)),
                 },
                 nonce: 1,
                 privateKey: pk
@@ -238,7 +238,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx3Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.Address, "foo", pk.Address, addresses[1], 5),
+                    new DumbAction(pk.Address, "foo", (pk.Address, addresses[1], 5)),
                 },
                 nonce: 2,
                 privateKey: pk
@@ -679,7 +679,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.Address, "foo", dummy.Address, dummy.Address, 10),
+                            dummy.Address, "foo", (dummy.Address, dummy.Address, 10)),
                     }.ToPlainValues()),
                 txA1 = Transaction.Create(
                     1,
@@ -688,7 +688,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.Address, "bar", dummy.Address, dummy.Address, 20),
+                            dummy.Address, "bar", (dummy.Address, dummy.Address, 20)),
                     }.ToPlainValues());
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);

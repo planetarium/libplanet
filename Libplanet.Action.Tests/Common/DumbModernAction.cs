@@ -8,7 +8,7 @@ using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Action.Tests.Common
 {
-    public sealed class DumbModernAction : IAction, IEquatable<DumbModernAction>
+    public sealed class DumbModernAction : IAction
     {
         public static readonly Address DumbModernAddress =
             new Address("0123456789abcdef0123456789abcdef12345678");
@@ -31,28 +31,13 @@ namespace Libplanet.Action.Tests.Common
         public DumbModernAction(
             Address targetAddress,
             string item,
-            bool recordRandom = false,
-            Tuple<Address, Address, BigInteger> transfer = null)
+            (Address From, Address To, BigInteger Amount)? transfer = null,
+            bool recordRandom = false)
         {
             TargetAddress = targetAddress;
             Item = item;
             RecordRandom = recordRandom;
             Transfer = transfer;
-        }
-
-        public DumbModernAction(
-            Address targetAddress,
-            string item,
-            Address transferFrom,
-            Address transferTo,
-            BigInteger transferAmount,
-            bool recordRandom = false)
-            : this(
-                targetAddress,
-                item,
-                recordRandom,
-                Tuple.Create(transferFrom, transferTo, transferAmount))
-        {
         }
 
         public Address TargetAddress { get; private set; }
@@ -61,7 +46,7 @@ namespace Libplanet.Action.Tests.Common
 
         public bool RecordRandom { get; private set; }
 
-        public Tuple<Address, Address, BigInteger> Transfer { get; private set; }
+        public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
         public IEnumerable<PublicKey> Validators { get; private set; }
 
@@ -69,7 +54,7 @@ namespace Libplanet.Action.Tests.Common
         {
             get
             {
-                var plainValue = Bencodex.Types.Dictionary.Empty;
+                var plainValue = Dictionary.Empty;
                 if (Item is { })
                 {
                     plainValue = plainValue
@@ -84,18 +69,18 @@ namespace Libplanet.Action.Tests.Common
                     plainValue = plainValue.Add("record_random", true);
                 }
 
-                if (Transfer is { })
+                if (Transfer is { } transfer)
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", Transfer.Item1.Bencoded)
-                        .Add("transfer_to", Transfer.Item2.Bencoded)
-                        .Add("transfer_amount", Transfer.Item3);
+                        .Add("transfer_from", transfer.From.Bencoded)
+                        .Add("transfer_to", transfer.To.Bencoded)
+                        .Add("transfer_amount", transfer.Amount);
                 }
 
-                if (Validators is { })
+                if (Validators is { } validators)
                 {
                     plainValue = plainValue
-                        .Add("validators", new List(Validators.Select(p => p.Format(false))));
+                        .Add("validators", new List(validators.Select(p => p.Format(false))));
                 }
 
                 return plainValue;
@@ -126,21 +111,21 @@ namespace Libplanet.Action.Tests.Common
             account = account.SetState(TargetAddress, (Text)items);
             world = world.SetAccount(DumbModernAddress, account);
 
-            if (!(Validators is null))
+            if (Validators is { } validators)
             {
-                world = Validators.Aggregate(
+                world = validators.Aggregate(
                     world,
                     (current, validator) =>
                         current.SetValidator(new Validator(validator, BigInteger.One)));
             }
 
-            if (!(Transfer is null))
+            if (Transfer is { } transfer)
             {
                 world = world.TransferAsset(
                     context,
-                    sender: Transfer.Item1,
-                    recipient: Transfer.Item2,
-                    value: FungibleAssetValue.FromRawValue(DumbCurrency, Transfer.Item3),
+                    sender: transfer.From,
+                    recipient: transfer.To,
+                    value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount),
                     allowNegativeBalance: true);
             }
 
@@ -166,7 +151,7 @@ namespace Libplanet.Action.Tests.Common
                 plainValue.TryGetValue((Text)"transfer_amount", out IValue a) &&
                 a is Integer amount)
             {
-                Transfer = Tuple.Create(new Address(from), new Address(to), amount.Value);
+                Transfer = (new Address(from), new Address(to), amount.Value);
             }
 
             if (plainValue.ContainsKey((IKey)(Text)"validators"))
@@ -176,44 +161,17 @@ namespace Libplanet.Action.Tests.Common
             }
         }
 
-        public bool Equals(DumbModernAction other)
-        {
-            return !(other is null) && (
-                ReferenceEquals(this, other) || (
-                    TargetAddress.Equals(other.TargetAddress) &&
-                    string.Equals(Item, other.Item))
-            );
-        }
-
-        public override bool Equals(object obj)
-        {
-            return !(obj is null) && (
-                ReferenceEquals(this, obj) ||
-                (obj is DumbModernAction other && Equals(other))
-            );
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = TargetAddress.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Item != null ? Item.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
         public override string ToString()
         {
             const string T = "true", F = "false";
-            string transfer = Transfer is Tuple<Address, Address, BigInteger> t
-                ? $"({t.Item1}, {t.Item2}, {t.Item3})"
+            string transfer = Transfer is { } t
+                ? $"({t.From}, {t.To}, {t.Amount})"
                 : "null";
-            string validators = Validators is null
-                ? "none"
-                : Validators
+            string validators = Validators is { } vs
+                ? vs
                     .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
-                    .TrimEnd(',', ' ');
+                    .TrimEnd(',', ' ')
+                : "none";
             return $"{nameof(DumbModernAction)} {{ " +
                 $"{nameof(TargetAddress)} = {TargetAddress}, " +
                 $"{nameof(Item)} = {Item ?? string.Empty}, " +

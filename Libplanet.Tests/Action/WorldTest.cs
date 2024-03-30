@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey
             );
 
-            DumbAction action = new DumbAction(_addr[0], "a", _addr[1], _addr[0], 5);
+            DumbAction action = new DumbAction(_addr[0], "a", (_addr[1], _addr[0], 5));
             Transaction tx = Transaction.Create(
                 0,
                 _keys[0],

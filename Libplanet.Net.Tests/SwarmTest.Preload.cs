@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -84,7 +83,7 @@ namespace Libplanet.Net.Tests
             var action = new DumbAction(
                 address1,
                 "foo",
-                transfer: Tuple.Create<Address, Address, BigInteger>(address1, address2, 10));
+                transfer: (address1, address2, 10));
 
             minerChain.MakeTransaction(key, new[] { action });
             var block = minerChain.ProposeBlock(

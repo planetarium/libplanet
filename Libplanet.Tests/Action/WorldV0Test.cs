@@ -54,7 +54,7 @@ namespace Libplanet.Tests.Action
         {
             BlockChain chain = base.TransferAssetInBlock();
 
-            DumbAction action = new DumbAction(_addr[0], "a", _addr[0], _addr[0], 1);
+            DumbAction action = new DumbAction(_addr[0], "a", (_addr[0], _addr[0], 1));
             Transaction tx = Transaction.Create(
                 chain.GetNextTxNonce(_addr[0]),
                 _keys[0],
