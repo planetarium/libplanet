@@ -90,26 +90,24 @@ namespace Libplanet.Action.Tests.Common
         public IWorld Execute(IActionContext context)
         {
             IWorld world = context.PreviousState;
-            if (Item is null)
+
+            if (Item is { } item)
             {
-                return world;
+                IAccount account = world.GetAccount(DumbModernAddress);
+                string items = (Text?)account.GetState(TargetAddress);
+                items = items is null ? Item : $"{items},{item}";
+                account = account.SetState(TargetAddress, (Text)items);
+                world = world.SetAccount(DumbModernAddress, account);
             }
-
-            IAccount account = world.GetAccount(DumbModernAddress);
-            string items = (Text?)account.GetState(TargetAddress);
-
-            items = items is null ? Item : $"{items},{Item}";
 
             if (RecordRandom)
             {
+                IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
                 account = account.SetState(
                     RandomRecordsAddress,
-                    (Integer)context.GetRandom().Next()
-                );
+                    (Integer)context.GetRandom().Next());
+                world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
             }
-
-            account = account.SetState(TargetAddress, (Text)items);
-            world = world.SetAccount(DumbModernAddress, account);
 
             if (Validators is { } validators)
             {
