@@ -72,13 +72,13 @@
 
   <h1 id="Libplanet_Common_Nonce" data-uid="Libplanet.Common.Nonce" class="text-break">Struct Nonce
 </h1>
-  <div class="markdown level0 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level0 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -86,10 +86,10 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
@@ -110,7 +110,7 @@ public struct Nonce : IEquatable&lt;Nonce&gt;</code></pre>
   </span>
   <a id="Libplanet_Common_Nonce__ctor_" data-uid="Libplanet.Common.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Common_Nonce__ctor_System_Byte___" data-uid="Libplanet.Common.Nonce.#ctor(System.Byte[])">Nonce(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>
+  <div class="markdown level1 summary"><p>Converts a <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>
 value.</p>
 <p>This constructor is an inverse function of
 <a class="xref" href="Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ToByteArray">ToByteArray()</a> method.</p>
@@ -131,9 +131,9 @@ value.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">nonce</span></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array to convert to
+        <td><p>A <span class="xref">System.Byte</span> array to convert to
 a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> object.  It must not be <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -169,7 +169,7 @@ a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> object.  It must 
   </span>
   <a id="Libplanet_Common_Nonce__ctor_" data-uid="Libplanet.Common.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Common_Nonce__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Common.Nonce.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">Nonce(in ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Converts an immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
+  <div class="markdown level1 summary"><p>Converts an immutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
 <p>This constructor is inverse of <a class="xref" href="Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ByteArray">ByteArray</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -188,9 +188,9 @@ a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> object.  It must 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">nonce</span></td>
-        <td><p>An immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array to convert to
+        <td><p>An immutable <span class="xref">System.Byte</span> array to convert to
 a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
 </td>
       </tr>
@@ -211,7 +211,7 @@ a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
   </span>
   <a id="Libplanet_Common_Nonce_ByteArray_" data-uid="Libplanet.Common.Nonce.ByteArray*"></a>
   <h4 id="Libplanet_Common_Nonce_ByteArray" data-uid="Libplanet.Common.Nonce.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
+  <div class="markdown level1 summary"><p>A bare immutable <span class="xref">System.Byte</span> array of the nonce.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -228,7 +228,7 @@ a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -252,7 +252,7 @@ a <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> instance.</p>
   </span>
   <a id="Libplanet_Common_Nonce_Equals_" data-uid="Libplanet.Common.Nonce.Equals*"></a>
   <h4 id="Libplanet_Common_Nonce_Equals_Libplanet_Common_Nonce_" data-uid="Libplanet.Common.Nonce.Equals(Libplanet.Common.Nonce)">Equals(Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level1 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -287,7 +287,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -301,7 +301,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
   </span>
   <a id="Libplanet_Common_Nonce_Equals_" data-uid="Libplanet.Common.Nonce.Equals*"></a>
   <h4 id="Libplanet_Common_Nonce_Equals_System_Object_" data-uid="Libplanet.Common.Nonce.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level1 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -336,7 +336,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -352,7 +352,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
   </span>
   <a id="Libplanet_Common_Nonce_GetHashCode_" data-uid="Libplanet.Common.Nonce.GetHashCode*"></a>
   <h4 id="Libplanet_Common_Nonce_GetHashCode" data-uid="Libplanet.Common.Nonce.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level1 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -376,7 +376,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_Nonce_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Common.Nonce.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -386,7 +386,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
   </span>
   <a id="Libplanet_Common_Nonce_ToByteArray_" data-uid="Libplanet.Common.Nonce.ToByteArray*"></a>
   <h4 id="Libplanet_Common_Nonce_ToByteArray" data-uid="Libplanet.Common.Nonce.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <span class="xref">System.Byte</span> array of the nonce.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -404,8 +404,8 @@ public byte[] ToByteArray()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A new mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A new mutable <span class="xref">System.Byte</span> array of the nonce.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to
 the <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a> object.</p>
@@ -451,7 +451,7 @@ public override string ToString()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
+  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h3 id="operators">Operators
 </h3>
   <span class="small pull-right mobile-hide">
@@ -463,7 +463,7 @@ public override string ToString()</code></pre>
   </span>
   <a id="Libplanet_Common_Nonce_op_Equality_" data-uid="Libplanet.Common.Nonce.op_Equality*"></a>
   <h4 id="Libplanet_Common_Nonce_op_Equality_Libplanet_Common_Nonce_Libplanet_Common_Nonce_" data-uid="Libplanet.Common.Nonce.op_Equality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)">Equality(Nonce, Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level1 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -503,7 +503,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -517,7 +517,7 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
   </span>
   <a id="Libplanet_Common_Nonce_op_Inequality_" data-uid="Libplanet.Common.Nonce.op_Inequality*"></a>
   <h4 id="Libplanet_Common_Nonce_op_Inequality_Libplanet_Common_Nonce_Libplanet_Common_Nonce_" data-uid="Libplanet.Common.Nonce.op_Inequality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)">Inequality(Nonce, Nonce)</h4>
-  <div class="markdown level1 summary"><p>An arbitrary <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s that is used as salt for
+  <div class="markdown level1 summary"><p>An arbitrary <span class="xref">System.Byte</span>s that is used as salt for
 deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -557,14 +557,14 @@ deriving <see cref="!:PreEvaluationBlock.PreEvaluationHash"></see> from its cont
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
 </article>
           </div>
