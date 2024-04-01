@@ -27,8 +27,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction(AddressA, "foo"),
-                new DumbAction(AddressB, "bar"),
+                new DumbAction((AddressA, "foo")),
+                new DumbAction((AddressB, "bar")),
             }.Select(x => x.PlainValue));
             var invoice = new TxInvoice(
                 genesisHash,

@@ -52,7 +52,7 @@ namespace Libplanet.Net.Tests
                         {
                             chain.MakeTransaction(
                                 signer,
-                                new[] { new DumbAction(address, $"Item{i}.{j}") }
+                                new[] { new DumbAction((address, $"Item{i}.{j}")) }
                             );
                         }
 
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests
 
             var action = new DumbAction();
             action.LoadPlainValue(blocks[1].Transactions.First().Actions.First());
-            return (action.TargetAddress, blocks);
+            return (action.Set is { } s ? s.At : throw new NullReferenceException(), blocks);
         }
 
         private Task<Swarm> CreateConsensusSwarm(

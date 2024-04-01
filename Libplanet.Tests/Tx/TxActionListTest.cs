@@ -38,8 +38,8 @@ namespace Libplanet.Tests.Tx
 
             IAction[] actions =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(default, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((default, "bar")),
             };
             var list = new TxActionList(actions.ToPlainValues());
             Assert.Equal(2, list.Count);
@@ -55,8 +55,8 @@ namespace Libplanet.Tests.Tx
 
             IAction[] actions =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(default, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((default, "bar")),
             };
             var list = new TxActionList(actions.ToPlainValues());
             Assert.Throws<ArgumentOutOfRangeException>(() => list[-1]);
@@ -70,18 +70,18 @@ namespace Libplanet.Tests.Tx
         {
             IAction[] actions1 =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(AddressA, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((AddressA, "bar")),
             };
             IAction[] actions2 =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(AddressA, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((AddressA, "bar")),
             };
             IAction[] actions3 =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(AddressA, "baz"),
+                new DumbAction((default, "foo")),
+                new DumbAction((AddressA, "baz")),
             };
 
             AssertEquality(
@@ -106,8 +106,8 @@ namespace Libplanet.Tests.Tx
 
             IAction[] actions =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(default, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((default, "bar")),
             };
             var list = new TxActionList(actions.ToPlainValues());
             Assert.Equal<IEnumerable<IValue>>(actions.Select(action => action.PlainValue), list);
@@ -124,8 +124,8 @@ namespace Libplanet.Tests.Tx
             // TODO: We should introduce snapshot testing.
             IAction[] actions =
             {
-                new DumbAction(default, "foo"),
-                new DumbAction(default, "bar"),
+                new DumbAction((default, "foo")),
+                new DumbAction((default, "bar")),
             };
             var actionList = new TxActionList(actions.ToPlainValues());
             var expected = new List(actions.Select(action => action.PlainValue));
@@ -144,8 +144,8 @@ namespace Libplanet.Tests.Tx
             var actionList = new TxActionList(
                 new IAction[]
                 {
-                    new DumbAction(default, "foo"),
-                    new DumbAction(AddressA, "bar"),
+                    new DumbAction((default, "foo")),
+                    new DumbAction((AddressA, "bar")),
                 }.ToPlainValues());
             var emptyActionList = new TxActionList(Array.Empty<IAction>().ToPlainValues());
             const string actionListJson = @"

@@ -270,8 +270,7 @@ namespace Libplanet.Tests.Action
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
             {
                 return new DumbAction(
-                    targetAddress: address,
-                    item: identifier.ToString(),
+                    set: (address, identifier.ToString()),
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? (address, to, 5)
@@ -453,8 +452,7 @@ namespace Libplanet.Tests.Action
                             actions: new TxActionList(new[]
                             {
                                 new DumbAction(
-                                    addresses[4],
-                                    "RecordRehearsal",
+                                    (addresses[4], "RecordRehearsal"),
                                     transfer: (addresses[0], addresses[4], 8),
                                     recordRandom: true),
                             }.ToPlainValues()),
@@ -534,21 +532,18 @@ namespace Libplanet.Tests.Action
             DumbAction[] actions =
             {
                 new DumbAction(
-                    targetAddress: addresses[0],
-                    item: "0",
+                    set: (addresses[0], "0"),
                     transfer: (addresses[0], addresses[1], 5),
                     recordRandom: true),
                 new DumbAction(
-                    targetAddress: addresses[1],
-                    item: "1",
+                    set: (addresses[1], "1"),
                     transfer: (addresses[2], addresses[1], 10),
                     recordRandom: true),
                 new DumbAction(
-                    targetAddress: addresses[0],
-                    item: "2",
+                    set: (addresses[0], "2"),
                     transfer: (addresses[1], addresses[0], 10),
                     recordRandom: true),
-                new DumbAction(addresses[2], "R", recordRandom: true),
+                new DumbAction((addresses[2], "R"), recordRandom: true),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
@@ -1305,8 +1300,8 @@ namespace Libplanet.Tests.Action
                 _storeFx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction(addresses[0], "foo"),
-                        new DumbAction(addresses[1], "bar"),
+                        new DumbAction((addresses[0], "foo")),
+                        new DumbAction((addresses[1], "bar")),
                     },
                     timestamp: epoch,
                     nonce: 0,
@@ -1314,8 +1309,8 @@ namespace Libplanet.Tests.Action
                 _storeFx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction(addresses[2], "baz"),
-                        new DumbAction(addresses[3], "qux"),
+                        new DumbAction((addresses[2], "baz")),
+                        new DumbAction((addresses[3], "qux")),
                     },
                     timestamp: epoch.AddSeconds(5),
                     nonce: 1,

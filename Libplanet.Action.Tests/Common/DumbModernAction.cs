@@ -29,44 +29,33 @@ namespace Libplanet.Action.Tests.Common
         }
 
         public DumbModernAction(
-            Address targetAddress,
-            string item,
+            (Address At, string Item) set,
             (Address From, Address To, BigInteger Amount)? transfer = null,
             bool recordRandom = false)
         {
-            TargetAddress = targetAddress;
-            Item = item;
-            RecordRandom = recordRandom;
+            Set = set;
             Transfer = transfer;
+            RecordRandom = recordRandom;
         }
 
-        public Address TargetAddress { get; private set; }
-
-        public string Item { get; private set; }
-
-        public bool RecordRandom { get; private set; }
+        public (Address At, string Item)? Set { get; private set; }
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
         public IEnumerable<PublicKey> Validators { get; private set; }
+
+        public bool RecordRandom { get; private set; }
 
         public IValue PlainValue
         {
             get
             {
                 var plainValue = Dictionary.Empty;
-                if (Item is { })
+                if (Set is { } set)
                 {
                     plainValue = plainValue
-                        .Add("item", Item)
-                        .Add("target_address", TargetAddress.Bencoded);
-                }
-
-                if (RecordRandom)
-                {
-                    // In order to avoid changing tx signatures in many test
-                    // fixtures, adds field only if RecordRandom = true.
-                    plainValue = plainValue.Add("record_random", true);
+                        .Add("target_address", set.At.Bencoded)
+                        .Add("item", set.Item);
                 }
 
                 if (Transfer is { } transfer)
@@ -83,6 +72,13 @@ namespace Libplanet.Action.Tests.Common
                         .Add("validators", new List(validators.Select(p => p.Format(false))));
                 }
 
+                if (RecordRandom)
+                {
+                    // In order to avoid changing tx signatures in many test
+                    // fixtures, adds field only if RecordRandom = true.
+                    plainValue = plainValue.Add("record_random", true);
+                }
+
                 return plainValue;
             }
         }
@@ -91,30 +87,13 @@ namespace Libplanet.Action.Tests.Common
         {
             IWorld world = context.PreviousState;
 
-            if (Item is { } item)
+            if (Set is { } set)
             {
                 IAccount account = world.GetAccount(DumbModernAddress);
-                string items = (Text?)account.GetState(TargetAddress);
-                items = items is null ? Item : $"{items},{item}";
-                account = account.SetState(TargetAddress, (Text)items);
+                string items = (Text?)account.GetState(set.At);
+                items = items is null ? set.Item : $"{items},{set.Item}";
+                account = account.SetState(set.At, (Text)items);
                 world = world.SetAccount(DumbModernAddress, account);
-            }
-
-            if (RecordRandom)
-            {
-                IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
-                account = account.SetState(
-                    RandomRecordsAddress,
-                    (Integer)context.GetRandom().Next());
-                world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
-            }
-
-            if (Validators is { } validators)
-            {
-                world = validators.Aggregate(
-                    world,
-                    (current, validator) =>
-                        current.SetValidator(new Validator(validator, BigInteger.One)));
             }
 
             if (Transfer is { } transfer)
@@ -127,22 +106,42 @@ namespace Libplanet.Action.Tests.Common
                     allowNegativeBalance: true);
             }
 
+            if (Validators is { } validators)
+            {
+                world = validators.Aggregate(
+                    world,
+                    (current, validator) =>
+                        current.SetValidator(new Validator(validator, BigInteger.One)));
+            }
+
+            if (RecordRandom)
+            {
+                IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
+                account = account.SetState(
+                    RandomRecordsAddress,
+                    (Integer)context.GetRandom().Next());
+                world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
+            }
+
             return world;
         }
 
-        public void LoadPlainValue(IValue plainValue)
-        {
-            LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
-        }
+        public void LoadPlainValue(IValue plainValue) => LoadPlainValue((Dictionary)plainValue);
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Item = (Text)plainValue["item"];
-            TargetAddress = new Address(plainValue["target_address"]);
-            RecordRandom =
-                plainValue.ContainsKey((IKey)(Text)"record_random") &&
-                plainValue["record_random"] is Boolean r &&
-                r.Value;
+            // FIXME: Temporary measure for backwards test compatibility.
+            if (plainValue.TryGetValue((Text)"target_address", out IValue at) &&
+                plainValue.TryGetValue((Text)"item", out IValue item) &&
+                item is Text t)
+            {
+                Set = (new Address(at), t);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"An invalid form of {nameof(plainValue)} was given: {plainValue}");
+            }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
                 plainValue.TryGetValue((Text)"transfer_to", out IValue to) &&
@@ -152,16 +151,24 @@ namespace Libplanet.Action.Tests.Common
                 Transfer = (new Address(from), new Address(to), amount.Value);
             }
 
-            if (plainValue.ContainsKey((IKey)(Text)"validators"))
+            if (plainValue.ContainsKey((Text)"validators"))
             {
                 Validators = ((List)plainValue["validators"])
                     .Select(value => new PublicKey(((Binary)value).ByteArray));
             }
+
+            RecordRandom =
+                plainValue.ContainsKey((Text)"record_random") &&
+                plainValue["record_random"] is Boolean r &&
+                r.Value;
         }
 
         public override string ToString()
         {
             const string T = "true", F = "false";
+            string set = Set is { } s
+                ? $"({s.At}, {s.Item})"
+                : "null";
             string transfer = Transfer is { } t
                 ? $"({t.From}, {t.To}, {t.Amount})"
                 : "null";
@@ -171,11 +178,10 @@ namespace Libplanet.Action.Tests.Common
                     .TrimEnd(',', ' ')
                 : "none";
             return $"{nameof(DumbModernAction)} {{ " +
-                $"{nameof(TargetAddress)} = {TargetAddress}, " +
-                $"{nameof(Item)} = {Item ?? string.Empty}, " +
-                $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
+                $"{nameof(Set)} = {set}, " +
                 $"{nameof(Transfer)} = {transfer} " +
                 $"{nameof(Validators)} = {validators} " +
+                $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
                 "}";
         }
     }

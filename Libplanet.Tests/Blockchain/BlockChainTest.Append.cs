@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Blockchain
             DumbAction[] actions = renders.Select(r => TestUtils.ToDumbAction(r.Action)).ToArray();
             Assert.Equal(4, renders.Length);
             Assert.True(renders.All(r => r.Render));
-            Assert.Equal("foo", actions[0].Item);
+            Assert.Equal("foo", actions[0].Set?.Item);
             Assert.Equal(2, renders[0].Context.BlockIndex);
             Assert.Equal(
                 new IValue[] { null, null, null, null, (Integer)1 },
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blockchain
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState)
             );
-            Assert.Equal("bar", actions[1].Item);
+            Assert.Equal("bar", actions[1].Set?.Item);
             Assert.Equal(2, renders[1].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(_blockChain
@@ -112,7 +112,7 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.GetWorldState(renders[1].NextState)
                         .GetAccountState(ReservedAddresses.LegacyAccount).GetState)
             );
-            Assert.Equal("baz", actions[2].Item);
+            Assert.Equal("baz", actions[2].Set?.Item);
             Assert.Equal(2, renders[2].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState)
             );
-            Assert.Equal("qux", actions[3].Item);
+            Assert.Equal("qux", actions[3].Set?.Item);
             Assert.Equal(2, renders[3].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(
@@ -219,8 +219,8 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx1Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.Address, "foo", (pk.Address, addresses[1], 10)),
-                    new DumbAction(addresses[0], "bar", (pk.Address, addresses[2], 20)),
+                    new DumbAction((pk.Address, "foo"), (pk.Address, addresses[1], 10)),
+                    new DumbAction((addresses[0], "bar"), (pk.Address, addresses[2], 20)),
                 },
                 nonce: 0,
                 privateKey: pk
@@ -230,7 +230,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     // As it tries to transfer a negative value, it throws
                     // ArgumentOutOfRangeException:
-                    new DumbAction(pk.Address, "foo", (addresses[0], addresses[1], -5)),
+                    new DumbAction((pk.Address, "foo"), (addresses[0], addresses[1], -5)),
                 },
                 nonce: 1,
                 privateKey: pk
@@ -238,7 +238,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx3Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    new DumbAction(pk.Address, "foo", (pk.Address, addresses[1], 5)),
+                    new DumbAction((pk.Address, "foo"), (pk.Address, addresses[1], 5)),
                 },
                 nonce: 2,
                 privateKey: pk
@@ -313,8 +313,8 @@ namespace Libplanet.Tests.Blockchain
             var address1 = new Address(TestUtils.GetRandomBytes(20));
             var address2 = new Address(TestUtils.GetRandomBytes(20));
             var miner = new PrivateKey();
-            var action1 = new DumbModernAction(address1, "foo");
-            var action2 = new DumbModernAction(address2, "bar");
+            var action1 = new DumbModernAction((address1, "foo"));
+            var action2 = new DumbModernAction((address2, "bar"));
             var tx1 = Transaction.Create(0, miner, genesis.Hash, new[] { action1 }.ToPlainValues());
             var tx2 = Transaction.Create(1, miner, genesis.Hash, new[] { action2 }.ToPlainValues());
             var block1 = _blockChain.ProposeBlock(
@@ -344,7 +344,7 @@ namespace Libplanet.Tests.Blockchain
         public void AppendFailDueToInvalidBytesLength()
         {
             DumbAction[] manyActions =
-                Enumerable.Repeat(new DumbAction(default, "_"), 200).ToArray();
+                Enumerable.Repeat(new DumbAction((default, "_")), 200).ToArray();
             PrivateKey signer = null;
             int nonce = 0;
             var heavyTxs = new List<Transaction>();
@@ -511,7 +511,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
 
             // Two txs with nonce 1 are staged.
-            var actions = new[] { new DumbAction(addresses[0], "foobar") };
+            var actions = new[] { new DumbAction((addresses[0], "foobar")) };
             Transaction[] txs2 =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
@@ -679,7 +679,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.Address, "foo", (dummy.Address, dummy.Address, 10)),
+                            (dummy.Address, "foo"), (dummy.Address, dummy.Address, 10)),
                     }.ToPlainValues()),
                 txA1 = Transaction.Create(
                     1,
@@ -688,7 +688,7 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[]
                     {
                         new DumbAction(
-                            dummy.Address, "bar", (dummy.Address, dummy.Address, 20)),
+                            (dummy.Address, "bar"), (dummy.Address, dummy.Address, 20)),
                     }.ToPlainValues());
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);

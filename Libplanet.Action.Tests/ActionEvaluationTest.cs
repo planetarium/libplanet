@@ -34,7 +34,7 @@ namespace Libplanet.Action.Tests
                 ReservedAddresses.LegacyAccount,
                 world.GetAccount(ReservedAddresses.LegacyAccount).SetState(address, (Text)"item"));
             var evaluation = new ActionEvaluation(
-                new DumbAction(address, "item"),
+                new DumbAction((address, "item")),
                 new ActionContext(
                     address,
                     txid,
@@ -47,8 +47,8 @@ namespace Libplanet.Action.Tests
                 world);
             var action = (DumbAction)evaluation.Action;
 
-            Assert.Equal(address, action.TargetAddress);
-            Assert.Equal("item", action.Item);
+            Assert.Equal(address, action.Set?.At);
+            Assert.Equal("item", action.Set?.Item);
             Assert.Equal(address, evaluation.InputContext.Signer);
             Assert.Equal(txid, evaluation.InputContext.TxId);
             Assert.Equal(address, evaluation.InputContext.Miner);
