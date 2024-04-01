@@ -109,15 +109,8 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CreateWithCustomActions()
         {
-            var privateKey = new PrivateKey(
-                new byte[]
-                {
-                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
-                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
-                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
-                    0x7b, 0x76,
-                }
-            );
+            var privateKey = new PrivateKey(ByteUtil.ParseHex(
+                "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"));
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             Address stateStore = new Address(
@@ -133,7 +126,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 new[]
                 {
-                    new DumbAction((stateStore, "RecordRehearsal"), recordRandom: false),
+                    new DumbAction((stateStore, "F"), recordRandom: false),
                 }.Select(x => x.PlainValue),
                 null,
                 null,
@@ -147,13 +140,13 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
-                "3044022021c18886e332cd8c683e4b262a0822210767942664169443d47e8487868133" +
-                "ab0220755f9239f6bb110e8a23ce5a34b888e1a986fad5c0ce3352c84a6dab8c85ec15",
+                "3045022100c489671a0c97a0033c3273b15bb90bdff96e47bfaf475a1914ad5441bac32" +
+                "d6e022066ed765bbfead057a5cb12fa3ad4188833f1ea139f80383d062ffd315213289d",
                 tx.Signature
             );
             AssertBytesEqual(
                 new TxId(ByteUtil.ParseHex(
-                    "1adb99aea501f28751717e31c3f6e6a9a51e6f9f04bf7165eef64ffac12f9d0e")),
+                    "201ff302e08e0a3a6ce62415265dff6ec7c4439673f5079ceaeb2572fe05f632")),
                 tx.Id
             );
         }
