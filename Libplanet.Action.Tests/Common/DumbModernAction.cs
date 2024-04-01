@@ -31,7 +31,7 @@ namespace Libplanet.Action.Tests.Common
         }
 
         public DumbModernAction(
-            (Address At, string Item) set,
+            (Address At, string Item)? set,
             (Address From, Address To, BigInteger Amount)? transfer = null,
             bool recordRandom = false)
         {
@@ -133,17 +133,17 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            // FIXME: Temporary measure for backwards test compatibility.
+            if (!plainValue["type_id"].Equals(TypeId))
+            {
+                throw new ArgumentException(
+                    $"An invalid form of {nameof(plainValue)} was given: {plainValue}");
+            }
+
             if (plainValue.TryGetValue((Text)"target_address", out IValue at) &&
                 plainValue.TryGetValue((Text)"item", out IValue item) &&
                 item is Text t)
             {
                 Set = (new Address(at), t);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"An invalid form of {nameof(plainValue)} was given: {plainValue}");
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
