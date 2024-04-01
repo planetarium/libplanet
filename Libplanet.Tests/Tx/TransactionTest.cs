@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Tx
                 () => new Transaction(_fx.Tx, wrongSig));
             TestUtils.AssertBytesEqual(
                 "d4e3e4db802ef1b19c4bc74dd8fae5da60108414a6772b060752825034cb7f1b",
-                e.TxId);
+                e.TxId.ByteArray);
         }
 
         [Fact]

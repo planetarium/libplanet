@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blocks
             var block = new Block(preEval, (stateRootHash, signature, hash));
             AssertPreEvaluationBlocksEqual(preEval, block);
             AssertBytesEqual(stateRootHash, block.StateRootHash);
-            AssertBytesEqual(signature, block.Signature);
+            AssertBytesEqual(signature, block.Signature?.ToArray());
         }
 
         [Fact]
