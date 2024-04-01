@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Blockchain
             DumbAction[] actions = renders.Select(r => TestUtils.ToDumbAction(r.Action)).ToArray();
             Assert.Equal(4, renders.Length);
             Assert.True(renders.All(r => r.Render));
-            Assert.Equal("foo", actions[0].Set?.Item);
+            Assert.Equal("foo", actions[0].Append?.Item);
             Assert.Equal(2, renders[0].Context.BlockIndex);
             Assert.Equal(
                 new IValue[] { null, null, null, null, (Integer)1 },
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Blockchain
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState)
             );
-            Assert.Equal("bar", actions[1].Set?.Item);
+            Assert.Equal("bar", actions[1].Append?.Item);
             Assert.Equal(2, renders[1].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(_blockChain
@@ -112,7 +112,7 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.GetWorldState(renders[1].NextState)
                         .GetAccountState(ReservedAddresses.LegacyAccount).GetState)
             );
-            Assert.Equal("baz", actions[2].Set?.Item);
+            Assert.Equal("baz", actions[2].Append?.Item);
             Assert.Equal(2, renders[2].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState)
             );
-            Assert.Equal("qux", actions[3].Set?.Item);
+            Assert.Equal("qux", actions[3].Append?.Item);
             Assert.Equal(2, renders[3].Context.BlockIndex);
             Assert.Equal(
                 addresses.Select(

@@ -47,8 +47,8 @@ namespace Libplanet.Action.Tests
                 world);
             var action = (DumbAction)evaluation.Action;
 
-            Assert.Equal(address, action.Set?.At);
-            Assert.Equal("item", action.Set?.Item);
+            Assert.Equal(address, action.Append?.At);
+            Assert.Equal("item", action.Append?.Item);
             Assert.Equal(address, evaluation.InputContext.Signer);
             Assert.Equal(txid, evaluation.InputContext.TxId);
             Assert.Equal(address, evaluation.InputContext.Miner);

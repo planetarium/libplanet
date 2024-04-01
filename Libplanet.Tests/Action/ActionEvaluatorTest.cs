@@ -270,7 +270,7 @@ namespace Libplanet.Tests.Action
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
             {
                 return new DumbAction(
-                    set: (address, identifier.ToString()),
+                    append: (address, identifier.ToString()),
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? (address, to, 5)
@@ -532,15 +532,15 @@ namespace Libplanet.Tests.Action
             DumbAction[] actions =
             {
                 new DumbAction(
-                    set: (addresses[0], "0"),
+                    append: (addresses[0], "0"),
                     transfer: (addresses[0], addresses[1], 5),
                     recordRandom: true),
                 new DumbAction(
-                    set: (addresses[1], "1"),
+                    append: (addresses[1], "1"),
                     transfer: (addresses[2], addresses[1], 10),
                     recordRandom: true),
                 new DumbAction(
-                    set: (addresses[0], "2"),
+                    append: (addresses[0], "2"),
                     transfer: (addresses[1], addresses[0], 10),
                     recordRandom: true),
                 new DumbAction((addresses[2], "R"), recordRandom: true),

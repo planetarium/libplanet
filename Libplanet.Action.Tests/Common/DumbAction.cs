@@ -24,18 +24,18 @@ namespace Libplanet.Action.Tests.Common
         }
 
         public DumbAction(
-            (Address At, string Item)? set,
+            (Address At, string Item)? append,
             (Address From, Address To, BigInteger Amount)? transfer = null,
             IEnumerable<PublicKey>? validators = null,
             bool recordRandom = false)
         {
-            Set = set;
+            Append = append;
             Transfer = transfer;
             Validators = validators;
             RecordRandom = recordRandom;
         }
 
-        public (Address At, string Item)? Set { get; private set; }
+        public (Address At, string Item)? Append { get; private set; }
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
@@ -49,7 +49,7 @@ namespace Libplanet.Action.Tests.Common
             {
                 var plainValue = Dictionary.Empty
                     .Add("type_id", TypeId);
-                if (Set is { } set)
+                if (Append is { } set)
                 {
                     plainValue = plainValue
                         .Add("target_address", set.At.Bencoded)
@@ -85,12 +85,12 @@ namespace Libplanet.Action.Tests.Common
         {
             IWorld world = context.PreviousState;
 
-            if (Set is { } set)
+            if (Append is { } append)
             {
                 IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
-                string? items = (Text?)account.GetState(set.At);
-                items = items is null ? set.Item : $"{items},{set.Item}";
-                account = account.SetState(set.At, (Text)items!);
+                string? items = (Text?)account.GetState(append.At);
+                items = items is null ? append.Item : $"{items},{append.Item}";
+                account = account.SetState(append.At, (Text)items!);
                 world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
             }
 
@@ -138,7 +138,7 @@ namespace Libplanet.Action.Tests.Common
                 plainValue.TryGetValue((Text)"item", out IValue item) &&
                 item is Text t)
             {
-                Set = (new Address(at), t);
+                Append = (new Address(at), t);
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
@@ -164,8 +164,8 @@ namespace Libplanet.Action.Tests.Common
         public override string ToString()
         {
             const string T = "true", F = "false";
-            string set = Set is { } s
-                ? $"({s.At}, {s.Item})"
+            string append = Append is { } a
+                ? $"({a.At}, {a.Item})"
                 : "null";
             string transfer = Transfer is { } t
                 ? $"({t.From}, {t.To}, {t.Amount})"
@@ -176,7 +176,7 @@ namespace Libplanet.Action.Tests.Common
                     .TrimEnd(',', ' ')
                 : "none";
             return $"{nameof(DumbAction)} {{ " +
-                $"{nameof(Set)} = {set}, " +
+                $"{nameof(Append)} = {append}, " +
                 $"{nameof(Transfer)} = {transfer}, " +
                 $"{nameof(Validators)} = {validators}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
