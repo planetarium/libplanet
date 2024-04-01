@@ -109,15 +109,8 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CreateWithCustomActions()
         {
-            var privateKey = new PrivateKey(
-                new byte[]
-                {
-                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
-                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
-                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
-                    0x7b, 0x76,
-                }
-            );
+            var privateKey = new PrivateKey(ByteUtil.ParseHex(
+                "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"));
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             Address stateStore = new Address(
@@ -133,7 +126,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 new[]
                 {
-                    new DumbAction((stateStore, "RecordRehearsal"), recordRandom: false),
+                    new DumbAction((stateStore, "F"), recordRandom: false),
                 }.Select(x => x.PlainValue),
                 null,
                 null,
@@ -147,26 +140,13 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
-                new byte[]
-                {
-                    0x30, 0x45, 0x02, 0x21, 0x00, 0xf7, 0xc7, 0xa6, 0xd7, 0x48, 0x8b, 0x18, 0x25,
-                    0x4d, 0x80, 0x9a, 0x6e, 0x08, 0x3e, 0xd9, 0x9c, 0xa0, 0xb0, 0x90, 0x00, 0x00,
-                    0xa7, 0x9e, 0x0e, 0x53, 0x6f, 0x1d, 0x11, 0x4b, 0xc6, 0x88, 0xfd, 0x02, 0x20,
-                    0x39, 0xbf, 0x80, 0x76, 0xc1, 0x61, 0x98, 0x50, 0x71, 0x99, 0x13, 0xa6, 0xe5,
-                    0x4c, 0xb5, 0x79, 0x17, 0x28, 0xe3, 0x3e, 0x38, 0xc5, 0xbe, 0x09, 0x41, 0xfc,
-                    0x29, 0x8d, 0x25, 0x5a, 0x39, 0x6c,
-                },
+                "3045022100c489671a0c97a0033c3273b15bb90bdff96e47bfaf475a1914ad5441bac32" +
+                "d6e022066ed765bbfead057a5cb12fa3ad4188833f1ea139f80383d062ffd315213289d",
                 tx.Signature
             );
             AssertBytesEqual(
-                new TxId(
-                    new byte[]
-                    {
-                        0x8d, 0xae, 0xb2, 0x56, 0xfa, 0xf0, 0x26, 0x1c, 0x60, 0x86, 0x27, 0xb5,
-                        0xe4, 0x06, 0xb5, 0x29, 0x2f, 0x2b, 0x17, 0xf7, 0x23, 0xe0, 0x40, 0x61,
-                        0x88, 0x87, 0xdf, 0xba, 0x3c, 0xd9, 0x19, 0x24,
-                    }
-                ),
+                new TxId(ByteUtil.ParseHex(
+                    "201ff302e08e0a3a6ce62415265dff6ec7c4439673f5079ceaeb2572fe05f632")),
                 tx.Id
             );
         }
@@ -332,8 +312,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
-                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
+                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
+                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
             var tx = new Transaction(unsignedTx, signature: signature);
 
             Assert.Equal<ITxInvoice>(invoice, tx);
@@ -412,8 +392,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
-                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
+                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
+                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
             var tx = new Transaction(unsignedTx, signature: signature);
 
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
@@ -421,22 +401,24 @@ namespace Libplanet.Tests.Tx
                 tx,
                 @"
                     {
-                      ""id"": ""b4ce04152a4d197917c3b29eb4620d8e8d02dbe496f844965ee586ff343c3c77"",
+                      ""id"": ""926c8ee03479bfe29ee78ab71e81684badca177cee9c63bcc1a8f3bdf6ad4d45"",
                       ""nonce"": 123,
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
                       ""updatedAddresses"": [
                         ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
-                      ""signature"": ""MEUCIQDk3zIro14OXtlgQ7HCFOSg8jc0p0kbXbTEqIg00/R0igIgaRsJcmQah1mskhtzHldQwgUF8F/Zk9RbJOuYneMwGLA="",
+                      ""signature"": ""MEMCIFAtpAAlz1N9BRehEbsgeLBOxCF1V0MXfgutdf9H3PBmAh8VS7VR7H5ekijevNRL7uWnTbgklnDgbyxbNV9WcwYn"",
                       ""actions"": [
                         {
                           ""\uFEFFitem"": ""\uFEFFfoo"",
-                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9"",
+                          ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                         },
                         {
                           ""\uFEFFitem"": ""\uFEFFbar"",
-                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab"",
+                          ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                         }
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",

@@ -121,7 +121,7 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.True(
                 block4.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block4.Index));
-            Assert.Equal(4, block4.Transactions.Count());
+            Assert.Equal(3, block4.Transactions.Count());
             expected = new Text(
                 $"{GenesisProposer.Address},{proposerA.Address},{proposerB.Address}");
             AssertBencodexEqual(

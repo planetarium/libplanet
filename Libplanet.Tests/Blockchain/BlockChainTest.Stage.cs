@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
@@ -58,22 +59,22 @@ namespace Libplanet.Tests.Blockchain
             var key = new PrivateKey();
 
             Transaction tx_0_0 = _fx.MakeTransaction(
-                new DumbAction[0],
+                Array.Empty<DumbAction>(),
                 nonce: 0,
                 privateKey: key
             );
             Transaction tx_0_1 = _fx.MakeTransaction(
-                new DumbAction[0],
+                Array.Empty<DumbAction>(),
                 nonce: 0,
                 privateKey: key
             );
             Transaction tx_1_0 = _fx.MakeTransaction(
-                new DumbAction[0],
+                Array.Empty<DumbAction>(),
                 nonce: 1,
                 privateKey: key
             );
             Transaction tx_1_1 = _fx.MakeTransaction(
-                new DumbAction[0],
+                Array.Empty<DumbAction>(),
                 nonce: 1,
                 privateKey: key
             );

@@ -1,3 +1,4 @@
+#nullable enable
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
@@ -10,6 +11,8 @@ namespace Libplanet.Action.Tests.Common
 {
     public sealed class DumbModernAction : IAction
     {
+        public static readonly Text TypeId = new Text(nameof(DumbAction));
+
         public static readonly Address DumbModernAddress =
             new Address("0123456789abcdef0123456789abcdef12345678");
 
@@ -23,26 +26,23 @@ namespace Libplanet.Action.Tests.Common
         {
         }
 
-        public DumbModernAction(IEnumerable<PublicKey> validators)
-        {
-            Validators = validators;
-        }
-
         public DumbModernAction(
-            (Address At, string Item) set,
+            (Address At, string Item)? append,
             (Address From, Address To, BigInteger Amount)? transfer = null,
+            IEnumerable<PublicKey>? validators = null,
             bool recordRandom = false)
         {
-            Set = set;
+            Append = append;
             Transfer = transfer;
+            Validators = validators;
             RecordRandom = recordRandom;
         }
 
-        public (Address At, string Item)? Set { get; private set; }
+        public (Address At, string Item)? Append { get; private set; }
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
-        public IEnumerable<PublicKey> Validators { get; private set; }
+        public IEnumerable<PublicKey>? Validators { get; private set; }
 
         public bool RecordRandom { get; private set; }
 
@@ -50,8 +50,9 @@ namespace Libplanet.Action.Tests.Common
         {
             get
             {
-                var plainValue = Dictionary.Empty;
-                if (Set is { } set)
+                var plainValue = Dictionary.Empty
+                    .Add("type_id", TypeId);
+                if (Append is { } set)
                 {
                     plainValue = plainValue
                         .Add("target_address", set.At.Bencoded)
@@ -87,12 +88,12 @@ namespace Libplanet.Action.Tests.Common
         {
             IWorld world = context.PreviousState;
 
-            if (Set is { } set)
+            if (Append is { } append)
             {
                 IAccount account = world.GetAccount(DumbModernAddress);
-                string items = (Text?)account.GetState(set.At);
-                items = items is null ? set.Item : $"{items},{set.Item}";
-                account = account.SetState(set.At, (Text)items);
+                string? items = (Text?)account.GetState(append.At);
+                items = items is null ? append.Item : $"{items},{append.Item}";
+                account = account.SetState(append.At, (Text)items!);
                 world = world.SetAccount(DumbModernAddress, account);
             }
 
@@ -130,17 +131,17 @@ namespace Libplanet.Action.Tests.Common
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            // FIXME: Temporary measure for backwards test compatibility.
+            if (!plainValue["type_id"].Equals(TypeId))
+            {
+                throw new ArgumentException(
+                    $"An invalid form of {nameof(plainValue)} was given: {plainValue}");
+            }
+
             if (plainValue.TryGetValue((Text)"target_address", out IValue at) &&
                 plainValue.TryGetValue((Text)"item", out IValue item) &&
                 item is Text t)
             {
-                Set = (new Address(at), t);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"An invalid form of {nameof(plainValue)} was given: {plainValue}");
+                Append = (new Address(at), t);
             }
 
             if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
@@ -166,8 +167,8 @@ namespace Libplanet.Action.Tests.Common
         public override string ToString()
         {
             const string T = "true", F = "false";
-            string set = Set is { } s
-                ? $"({s.At}, {s.Item})"
+            string append = Append is { } a
+                ? $"({a.At}, {a.Item})"
                 : "null";
             string transfer = Transfer is { } t
                 ? $"({t.From}, {t.To}, {t.Amount})"
@@ -178,11 +179,11 @@ namespace Libplanet.Action.Tests.Common
                     .TrimEnd(',', ' ')
                 : "none";
             return $"{nameof(DumbModernAction)} {{ " +
-                $"{nameof(Set)} = {set}, " +
-                $"{nameof(Transfer)} = {transfer} " +
-                $"{nameof(Validators)} = {validators} " +
+                $"{nameof(Append)} = {append}, " +
+                $"{nameof(Transfer)} = {transfer}, " +
+                $"{nameof(Validators)} = {validators}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
-                "}";
+                $"}}";
         }
     }
 }

@@ -270,7 +270,7 @@ namespace Libplanet.Tests.Action
             DumbAction MakeAction(Address address, char identifier, Address? transferTo = null)
             {
                 return new DumbAction(
-                    set: (address, identifier.ToString()),
+                    append: (address, identifier.ToString()),
                     recordRandom: true,
                     transfer: transferTo is Address to
                         ? (address, to, 5)
@@ -452,7 +452,7 @@ namespace Libplanet.Tests.Action
                             actions: new TxActionList(new[]
                             {
                                 new DumbAction(
-                                    (addresses[4], "RecordRehearsal"),
+                                    (addresses[4], "F"),
                                     transfer: (addresses[0], addresses[4], 8),
                                     recordRandom: true),
                             }.ToPlainValues()),
@@ -483,11 +483,11 @@ namespace Libplanet.Tests.Action
 
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
-            expectations = new[]
+            expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
                 (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal" }, _txFx.Address3),
+                (2, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -499,7 +499,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.UpdatedStates, updatedStates);
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
-                    block2Txs[expect.TxIdx].Actions[expect.Item2],
+                    block2Txs[expect.TxIdx].Actions[expect.ActionIdx],
                     eval.Action.PlainValue);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
@@ -520,7 +520,7 @@ namespace Libplanet.Tests.Action
                 .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
             Assert.Equal((Text)"A,D", dirty2[ToStateKey(addresses[0])]);
             Assert.Equal((Text)"E", dirty2[ToStateKey(addresses[3])]);
-            Assert.Equal((Text)"RecordRehearsal", dirty2[ToStateKey(addresses[4])]);
+            Assert.Equal((Text)"F", dirty2[ToStateKey(addresses[4])]);
             Assert.Equal((Integer)randomValue, dirty2[ToStateKey(DumbAction.RandomRecordsAddress)]);
         }
 
@@ -532,15 +532,15 @@ namespace Libplanet.Tests.Action
             DumbAction[] actions =
             {
                 new DumbAction(
-                    set: (addresses[0], "0"),
+                    append: (addresses[0], "0"),
                     transfer: (addresses[0], addresses[1], 5),
                     recordRandom: true),
                 new DumbAction(
-                    set: (addresses[1], "1"),
+                    append: (addresses[1], "1"),
                     transfer: (addresses[2], addresses[1], 10),
                     recordRandom: true),
                 new DumbAction(
-                    set: (addresses[0], "2"),
+                    append: (addresses[0], "2"),
                     transfer: (addresses[1], addresses[0], 10),
                     recordRandom: true),
                 new DumbAction((addresses[2], "R"), recordRandom: true),

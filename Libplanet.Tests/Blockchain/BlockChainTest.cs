@@ -928,9 +928,9 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(0, actionRenders.Count(r => r.Unrender));
                 Assert.True(actionRenders.All(r => r.Render));
 
-                Assert.Equal("fork-foo", actions[0].Set?.Item);
-                Assert.Equal("fork-bar", actions[1].Set?.Item);
-                Assert.Equal("fork-baz", actions[2].Set?.Item);
+                Assert.Equal("fork-foo", actions[0].Append?.Item);
+                Assert.Equal("fork-bar", actions[1].Append?.Item);
+                Assert.Equal("fork-baz", actions[2].Append?.Item);
 
                 RenderRecord.ActionBase[] blockActionRenders = _renderer.ActionRecords
                     .Where(r => IsMinerReward(r.Action))

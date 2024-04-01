@@ -767,17 +767,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static bool IsDumbAction(IValue action)
         {
             return action is Dictionary dictionary &&
-                dictionary.Keys.ToHashSet().IsSubsetOf(new IKey[]
-                {
-                    (Text)"item",
-                    (Text)"target_address",
-                    (Text)"record_random",
-                    (Text)"idempotent",
-                    (Text)"transfer_from",
-                    (Text)"transfer_to",
-                    (Text)"transfer_amount",
-                    (Text)"validators",
-                }.ToHashSet());
+                dictionary.TryGetValue(new Text("type_id"), out var typeId) &&
+                typeId.Equals(new Text(nameof(DumbAction)));
         }
 
         public static bool IsMinerReward(IValue action)
