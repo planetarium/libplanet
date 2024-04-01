@@ -81,8 +81,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = DateTimeOffset.UtcNow;
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction(random.NextAddress(), "foo"),
-                new DumbAction(random.NextAddress(), "bar"),
+                new DumbAction((random.NextAddress(), "foo")),
+                new DumbAction((random.NextAddress(), "bar")),
             }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
@@ -121,8 +121,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = DateTimeOffset.UtcNow;
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction(random.NextAddress(), "foo"),
-                new DumbAction(random.NextAddress(), "bar"),
+                new DumbAction((random.NextAddress(), "foo")),
+                new DumbAction((random.NextAddress(), "bar")),
             }.ToPlainValues());
             var original = new TxInvoice(
                 genesisHash,
@@ -156,8 +156,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction(AddressA, "foo"),
-                new DumbAction(AddressB, "bar"),
+                new DumbAction((AddressA, "foo")),
+                new DumbAction((AddressB, "bar")),
             }.ToPlainValues());
             var invoice1 = new TxInvoice(
                 genesisHash,
@@ -213,8 +213,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction(AddressA, "foo"),
-                new DumbAction(AddressB, "bar"),
+                new DumbAction((AddressA, "foo")),
+                new DumbAction((AddressB, "bar")),
             }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
@@ -281,8 +281,8 @@ namespace Libplanet.Tests.Tx
 
             public TxActionList Actions => new TxActionList(new IAction[]
             {
-                new DumbAction(AddressA, "foo"),
-                new DumbAction(AddressB, "bar"),
+                new DumbAction((AddressA, "foo")),
+                new DumbAction((AddressB, "bar")),
             }.ToPlainValues());
 
             public FungibleAssetValue? MaxGasPrice => null;

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -82,21 +81,20 @@ namespace Libplanet.Net.Tests
             var address2 = new PrivateKey().Address;
 
             var action = new DumbAction(
-                address1,
-                "foo",
-                transfer: Tuple.Create<Address, Address, BigInteger>(address1, address2, 10));
+                (address1, "foo"),
+                transfer: (address1, address2, 10));
 
             minerChain.MakeTransaction(key, new[] { action });
             var block = minerChain.ProposeBlock(
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "bar") });
+            minerChain.MakeTransaction(key, new[] { new DumbAction((address1, "bar")) });
             block = minerChain.ProposeBlock(
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "baz") });
+            minerChain.MakeTransaction(key, new[] { new DumbAction((address1, "baz")) });
             block = minerChain.ProposeBlock(
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -410,7 +408,7 @@ namespace Libplanet.Net.Tests
             const int iteration = 3;
             for (var i = 0; i < iteration; i++)
             {
-                sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+                sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction((addr, item)) });
                 Block block = sender.BlockChain.ProposeBlock(
                     senderKey, CreateBlockCommit(sender.BlockChain.Tip));
                 sender.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -1167,7 +1165,7 @@ namespace Libplanet.Net.Tests
                     new PrivateKey(),
                     new[]
                     {
-                        new DumbAction(default, $"Item{i}"),
+                        new DumbAction((default, $"Item{i}")),
                     });
                 Block block = seedChain.ProposeBlock(
                     seedKey, CreateBlockCommit(seedChain.Tip));

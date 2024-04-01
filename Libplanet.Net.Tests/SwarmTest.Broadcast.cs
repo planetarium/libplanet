@@ -355,7 +355,7 @@ namespace Libplanet.Net.Tests
             var txs = Enumerable.Range(0, txCount).Select(_ =>
                     chainA.MakeTransaction(
                         new PrivateKey(),
-                        new[] { new DumbAction(address, "foo") }))
+                        new[] { new DumbAction((address, "foo")) }))
                 .ToArray();
 
             try
@@ -730,8 +730,8 @@ namespace Libplanet.Net.Tests
                 fx1.MakeTransaction(
                     new[]
                     {
-                        new DumbAction(fx1.Address2, "foo"),
-                        new DumbAction(fx1.Address2, "bar"),
+                        new DumbAction((fx1.Address2, "foo")),
+                        new DumbAction((fx1.Address2, "bar")),
                     },
                     timestamp: DateTimeOffset.MinValue,
                     nonce: 0,
@@ -739,8 +739,8 @@ namespace Libplanet.Net.Tests
                 fx1.MakeTransaction(
                     new[]
                     {
-                        new DumbAction(fx1.Address2, "baz"),
-                        new DumbAction(fx1.Address2, "qux"),
+                        new DumbAction((fx1.Address2, "baz")),
+                        new DumbAction((fx1.Address2, "qux")),
                     },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(5),
                     nonce: 1,
@@ -951,21 +951,21 @@ namespace Libplanet.Net.Tests
 
             var tx1 = swarm2.BlockChain.MakeTransaction(
                 privateKey,
-                new[] { new DumbAction(address, "foo") });
+                new[] { new DumbAction((address, "foo")) });
 
             var tx2 = swarm2.BlockChain.MakeTransaction(
                 privateKey,
-                new[] { new DumbAction(address, "bar") });
+                new[] { new DumbAction((address, "bar")) });
 
             var tx3 = swarm2.BlockChain.MakeTransaction(
                 privateKey,
-                new[] { new DumbAction(address, "quz") });
+                new[] { new DumbAction((address, "quz")) });
 
             var tx4 = Transaction.Create(
                 4,
                 privateKey,
                 swarm1.BlockChain.Genesis.Hash,
-                new[] { new DumbAction(address, "qux") }.ToPlainValues());
+                new[] { new DumbAction((address, "qux")) }.ToPlainValues());
 
             try
             {
