@@ -1,3 +1,4 @@
+#nullable enable
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
@@ -22,18 +23,15 @@ namespace Libplanet.Action.Tests.Common
         {
         }
 
-        public DumbAction(IEnumerable<PublicKey> validators)
-        {
-            Validators = validators;
-        }
-
         public DumbAction(
             (Address At, string Item)? set,
             (Address From, Address To, BigInteger Amount)? transfer = null,
+            IEnumerable<PublicKey>? validators = null,
             bool recordRandom = false)
         {
             Set = set;
             Transfer = transfer;
+            Validators = validators;
             RecordRandom = recordRandom;
         }
 
@@ -41,7 +39,7 @@ namespace Libplanet.Action.Tests.Common
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
-        public IEnumerable<PublicKey> Validators { get; private set; }
+        public IEnumerable<PublicKey>? Validators { get; private set; }
 
         public bool RecordRandom { get; private set; }
 
@@ -90,9 +88,9 @@ namespace Libplanet.Action.Tests.Common
             if (Set is { } set)
             {
                 IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
-                string items = (Text?)account.GetState(set.At);
+                string? items = (Text?)account.GetState(set.At);
                 items = items is null ? set.Item : $"{items},{set.Item}";
-                account = account.SetState(set.At, (Text)items);
+                account = account.SetState(set.At, (Text)items!);
                 world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
             }
 
