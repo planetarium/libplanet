@@ -10,6 +10,8 @@ namespace Libplanet.Action.Tests.Common
 {
     public sealed class DumbAction : IAction
     {
+        public static readonly Text TypeId = new Text(nameof(DumbAction));
+
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
@@ -47,7 +49,8 @@ namespace Libplanet.Action.Tests.Common
         {
             get
             {
-                var plainValue = Dictionary.Empty;
+                var plainValue = Dictionary.Empty
+                    .Add("type_id", TypeId);
                 if (Set is { } set)
                 {
                     plainValue = plainValue
@@ -176,10 +179,10 @@ namespace Libplanet.Action.Tests.Common
                 : "none";
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(Set)} = {set}, " +
-                $"{nameof(Transfer)} = {transfer} " +
-                $"{nameof(Validators)} = {validators} " +
+                $"{nameof(Transfer)} = {transfer}, " +
+                $"{nameof(Validators)} = {validators}, " +
                 $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
-                "}";
+                $"}}";
         }
     }
 }

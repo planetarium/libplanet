@@ -94,8 +94,8 @@ namespace Libplanet.Tests.Tx
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             var signature = ByteUtil.ParseHexToImmutable(
-                "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
-                "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b0");
+                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
+                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
             var wrongSignature = ByteUtil.ParseHexToImmutable(
                 "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
                 "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b1");
@@ -166,11 +166,13 @@ namespace Libplanet.Tests.Tx
                       ""actions"": [
                         {
                           ""\uFEFFitem"": ""\uFEFFfoo"",
-                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                          ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9"",
+                          ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                         },
                         {
                           ""\uFEFFitem"": ""\uFEFFbar"",
-                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab""
+                          ""\uFEFFtarget_address"": ""0xb61ce2ce6d28237c1bc6e114616616762f1a12ab"",
+                          ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                         }
                       ],
                       ""nonce"": 123,

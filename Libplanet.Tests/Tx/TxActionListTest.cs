@@ -152,11 +152,13 @@ namespace Libplanet.Tests.Tx
                 [
                   {
                     ""\uFEFFitem"": ""\uFEFFfoo"",
-                    ""\uFEFFtarget_address"": ""0x0000000000000000000000000000000000000000""
+                    ""\uFEFFtarget_address"": ""0x0000000000000000000000000000000000000000"",
+                    ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                   },
                   {
                     ""\uFEFFitem"": ""\uFEFFbar"",
-                    ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9""
+                    ""\uFEFFtarget_address"": ""0xd6d639da5a58a78a564c2cd3db55fa7cebe244a9"",
+                    ""\uFEFFtype_id"": ""\uFEFFDumbAction""
                   }
                 ]";
             TestUtils.AssertJsonSerializable<TxActionList>(
