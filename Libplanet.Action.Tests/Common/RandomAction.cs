@@ -15,17 +15,14 @@ namespace Libplanet.Action.Tests.Common
             Address = address;
         }
 
-        // FIXME: Should be encoded in bencodex binary, not text.  Left as is for
-        // old unit test spec compliance.
-        public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("address", Address.ToHex());
+        public IValue PlainValue => Dictionary.Empty
+            .Add("address", Address.Bencoded);
 
         private Address Address { get; set; }
 
         public void LoadPlainValue(IValue plainValue)
         {
-            var dictionary = (Bencodex.Types.Dictionary)plainValue;
-            Address = new Address((string)(Text)dictionary["address"]);
+            Address = new Address(((Dictionary)plainValue)["address"]);
         }
 
         public IWorld Execute(IActionContext context)
