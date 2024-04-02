@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Immutable;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
@@ -29,12 +30,12 @@ namespace Libplanet.Action.Tests.Common
         public DumbModernAction(
             (Address At, string Item)? append,
             (Address From, Address To, BigInteger Amount)? transfer = null,
-            IEnumerable<PublicKey>? validators = null,
+            IEnumerable<Validator>? validators = null,
             bool recordRandom = false)
         {
             Append = append;
             Transfer = transfer;
-            Validators = validators;
+            Validators = validators?.ToImmutableList();
             RecordRandom = recordRandom;
         }
 
@@ -42,7 +43,7 @@ namespace Libplanet.Action.Tests.Common
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
 
-        public IEnumerable<PublicKey>? Validators { get; private set; }
+        public ImmutableList<Validator>? Validators { get; private set; }
 
         public bool RecordRandom { get; private set; }
 
@@ -70,7 +71,7 @@ namespace Libplanet.Action.Tests.Common
                 if (Validators is { } validators)
                 {
                     plainValue = plainValue
-                        .Add("validators", new List(validators.Select(p => p.Format(false))));
+                        .Add("validators", new List(validators.Select(v => v.Bencoded)));
                 }
 
                 if (RecordRandom)
@@ -111,8 +112,7 @@ namespace Libplanet.Action.Tests.Common
             {
                 world = validators.Aggregate(
                     world,
-                    (current, validator) =>
-                        current.SetValidator(new Validator(validator, BigInteger.One)));
+                    (current, validator) => current.SetValidator(validator));
             }
 
             if (RecordRandom)
@@ -155,7 +155,8 @@ namespace Libplanet.Action.Tests.Common
             if (plainValue.ContainsKey((Text)"validators"))
             {
                 Validators = ((List)plainValue["validators"])
-                    .Select(value => new PublicKey(((Binary)value).ByteArray));
+                    .Select(value => new Validator(value))
+                    .ToImmutableList();
             }
 
             RecordRandom =
@@ -173,10 +174,8 @@ namespace Libplanet.Action.Tests.Common
             string transfer = Transfer is { } t
                 ? $"({t.From}, {t.To}, {t.Amount})"
                 : "null";
-            string validators = Validators is { } vs
-                ? vs
-                    .Aggregate(string.Empty, (s, key) => s + key.Format(false) + ", ")
-                    .TrimEnd(',', ' ')
+            string validators = Validators is { } vs && vs.Any()
+                ? string.Join(",", vs.Select(v => v.OperatorAddress))
                 : "none";
             return $"{nameof(DumbModernAction)} {{ " +
                 $"{nameof(Append)} = {append}, " +
