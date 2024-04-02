@@ -71,7 +71,8 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
-                    actions: new[] { new RandomAction(txAddress), }.ToPlainValues()),
+                    actions: new[] { new ContextRecordingAction(txAddress, new Text("Foo")), }
+                        .ToPlainValues()),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent(
@@ -88,7 +89,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 stateStore,
-                new SingleActionLoader(typeof(RandomAction)));
+                new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain.DetermineGenesisStateRootHash(
@@ -106,13 +107,13 @@ namespace Libplanet.Tests.Action
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
             }
 
             for (int i = 1; i < generatedRandomNumbers.Count; ++i)
@@ -126,14 +127,7 @@ namespace Libplanet.Tests.Action
         {
             var privateKey = new PrivateKey();
             var address = privateKey.Address;
-            long blockIndex = 1;
-
-            var action = new EvaluateTestAction()
-            {
-                BlockIndexKey = new PrivateKey().Address,
-                MinerKey = new PrivateKey().Address,
-                SignerKey = new PrivateKey().Address,
-            };
+            var value = new Text("Foo");
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -141,7 +135,8 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy(),
                 store: store,
                 stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(EvaluateTestAction)));
+                actionLoader: new SingleActionLoader(typeof(ContextRecordingAction)));
+            var action = new ContextRecordingAction(address, value);
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -163,19 +158,32 @@ namespace Libplanet.Tests.Action
                 chain
                     .GetWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(action.SignerKey),
-                (Text)address.ToHex());
+                    .GetState(address),
+                value);
             Assert.Equal(
                 chain
                     .GetWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(action.MinerKey),
-                (Text)miner.Address.ToHex());
-            var state = chain
-                .GetWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
-                .GetState(action.BlockIndexKey);
-            Assert.Equal((long)(Integer)state, blockIndex);
+                    .GetState(ContextRecordingAction.MinerRecordAddress),
+                block.Miner.Bencoded);
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.SignerRecordAddress),
+                tx.Signer.Bencoded);
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.BlockIndexRecordAddress),
+                new Integer(block.Index));
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.RandomRecordAddress),
+                new Integer(evaluations.Single().InputContext.GetRandom().Next()));
         }
 
         [Fact]
@@ -271,7 +279,6 @@ namespace Libplanet.Tests.Action
             {
                 return DumbAction.Create(
                     append: (address, identifier.ToString()),
-                    recordRandom: true,
                     transfer: transferTo is Address to
                         ? (address, to, 5)
                         : ((Address, Address, BigInteger)?)null);
@@ -353,14 +360,13 @@ namespace Libplanet.Tests.Action
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
-            int randomValue = 0;
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
-                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),
+                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
+                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
+                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -372,12 +378,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
-                randomValue = eval.InputContext.GetRandom().Next();
-                Assert.Equal(
-                    (Integer)eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
-                        .GetState(DumbAction.RandomRecordsAddress),
-                    (Integer)randomValue);
                 Assert.Equal(
                     expect.UpdatedStates,
                     addresses.Select(
@@ -394,9 +394,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal((Text)"A", dirty1[ToStateKey(addresses[0])]);
             Assert.Equal((Text)"B", dirty1[ToStateKey(addresses[1])]);
             Assert.Equal((Text)"C", dirty1[ToStateKey(addresses[2])]);
-            Assert.Equal(
-                (Integer)randomValue,
-                dirty1[ToStateKey(DumbAction.RandomRecordsAddress)]);
             Assert.Equal(
                 (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0).RawValue,
                 dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency)]);
@@ -453,8 +450,7 @@ namespace Libplanet.Tests.Action
                             {
                                 DumbAction.Create(
                                     (addresses[4], "F"),
-                                    transfer: (addresses[0], addresses[4], 8),
-                                    recordRandom: true),
+                                    transfer: (addresses[0], addresses[4], 8)),
                             }.ToPlainValues()),
                             maxGasPrice: null,
                             gasLimit: null),
@@ -485,8 +481,8 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (2, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address3),
+                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),
+                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),
                 (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
             };
             Assert.Equal(expectations.Length, evals.Length);
@@ -505,12 +501,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.Null(eval.Exception);
-                randomValue = eval.InputContext.GetRandom().Next();
-                Assert.Equal(
-                    eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
-                        .GetState(DumbAction.RandomRecordsAddress),
-                    (Integer)randomValue);
             }
 
             previousState = evals1.Last().OutputState;
@@ -521,7 +511,6 @@ namespace Libplanet.Tests.Action
             Assert.Equal((Text)"A,D", dirty2[ToStateKey(addresses[0])]);
             Assert.Equal((Text)"E", dirty2[ToStateKey(addresses[3])]);
             Assert.Equal((Text)"F", dirty2[ToStateKey(addresses[4])]);
-            Assert.Equal((Integer)randomValue, dirty2[ToStateKey(DumbAction.RandomRecordsAddress)]);
         }
 
         [Fact]
@@ -533,17 +522,14 @@ namespace Libplanet.Tests.Action
             {
                 DumbAction.Create(
                     append: (addresses[0], "0"),
-                    transfer: (addresses[0], addresses[1], 5),
-                    recordRandom: true),
+                    transfer: (addresses[0], addresses[1], 5)),
                 DumbAction.Create(
                     append: (addresses[1], "1"),
-                    transfer: (addresses[2], addresses[1], 10),
-                    recordRandom: true),
+                    transfer: (addresses[2], addresses[1], 10)),
                 DumbAction.Create(
                     append: (addresses[0], "2"),
-                    transfer: (addresses[1], addresses[0], 10),
-                    recordRandom: true),
-                DumbAction.Create((addresses[2], "R"), recordRandom: true),
+                    transfer: (addresses[1], addresses[0], 10)),
+                DumbAction.Create((addresses[2], "R")),
             };
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
@@ -595,11 +581,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(tx.Id, eval.InputContext.TxId);
                 Assert.Equal(addresses[0], eval.InputContext.Miner);
                 Assert.Equal(1, eval.InputContext.BlockIndex);
-                Assert.Equal(
-                    (Integer)eval.OutputState
-                        .GetAccount(ReservedAddresses.LegacyAccount)
-                        .GetState(DumbAction.RandomRecordsAddress),
-                    (Integer)eval.InputContext.GetRandom().Next());
                 IActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                 Assert.Equal(
                     prevEval is null
@@ -900,7 +881,9 @@ namespace Libplanet.Tests.Action
                                     timestamp: epoch,
                                     actions: new TxActionList(new[]
                                     {
-                                        new RandomAction(signerNoncePair.signer.Address),
+                                        new ContextRecordingAction(
+                                            signerNoncePair.signer.Address,
+                                            new Integer(signerNoncePair.nonce)),
                                     }.ToPlainValues()),
                                     maxGasPrice: null,
                                     gasLimit: null),
@@ -1320,37 +1303,6 @@ namespace Libplanet.Tests.Action
             return (addresses, txs);
         }
 
-        private sealed class EvaluateTestAction : IAction
-        {
-            public Address SignerKey { get; set; }
-
-            public Address MinerKey { get; set; }
-
-            public Address BlockIndexKey { get; set; }
-
-            public IValue PlainValue => new List(
-                SignerKey.Bencoded,
-                MinerKey.Bencoded,
-                BlockIndexKey.Bencoded);
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-                 var asList = (List)plainValue;
-                 SignerKey = new Address(asList[0]);
-                 MinerKey = new Address(asList[1]);
-                 BlockIndexKey = new Address(asList[2]);
-            }
-
-            public IWorld Execute(IActionContext context) =>
-                context.PreviousState
-                    .SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
-                            .SetState(SignerKey, (Text)context.Signer.ToHex())
-                            .SetState(MinerKey, (Text)context.Miner.ToHex())
-                            .SetState(BlockIndexKey, (Integer)context.BlockIndex));
-        }
-
         private sealed class ModernAction : IAction
         {
             public static readonly Address AccountAddress
@@ -1446,11 +1398,11 @@ namespace Libplanet.Tests.Action
         // Spec for protocol version < 3.
         public List<string> OrderedAddressesV0 = new List<string>
         {
-            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
             "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
             "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
             "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
         };
 
         // Spec for protocol version >= 3.

@@ -13,7 +13,7 @@ namespace Libplanet.Action.Tests.Loader
         {
             var loader1 = new SingleActionLoader(typeof(DumbAction));
             var loader2 = new SingleActionLoader(typeof(Attack));
-            var loader3 = new SingleActionLoader(typeof(RandomAction));
+            var loader3 = new SingleActionLoader(typeof(ContextRecordingAction));
 
             // Works fine with single loader
             var indexedLoader = new IndexedActionLoader(
@@ -38,7 +38,7 @@ namespace Libplanet.Action.Tests.Loader
         {
             var loader1 = new SingleActionLoader(typeof(DumbAction));
             var loader2 = new SingleActionLoader(typeof(Attack));
-            var loader3 = new SingleActionLoader(typeof(RandomAction));
+            var loader3 = new SingleActionLoader(typeof(ContextRecordingAction));
             var action1 = DumbAction.Create((new PrivateKey().Address, "foo"));
             var action2 = new Attack();
             action2.LoadPlainValue(Dictionary.Empty
@@ -47,7 +47,7 @@ namespace Libplanet.Action.Tests.Loader
                     .Add("weapon", "sword")
                     .Add("target", "dummy")
                     .Add("target_address", new PrivateKey().Address.Bencoded)));
-            var action3 = new RandomAction(new PrivateKey().Address);
+            var action3 = new ContextRecordingAction(new PrivateKey().Address, new Text("Foo"));
 
             var loader = new IndexedActionLoader(
                 new List<(long, IActionLoader)>
