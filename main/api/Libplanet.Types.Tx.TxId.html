@@ -75,7 +75,7 @@
   <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -83,21 +83,21 @@ and 64 characters in hexadecimal.
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
-    <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
     <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
@@ -139,7 +139,7 @@ public readonly struct TxId : ISerializable, IEquatable&lt;TxId&gt;, IComparable
       <tr>
         <td><span class="xref">Bencodex.Types.IValue</span></td>
         <td><span class="parametername">bencoded</span></td>
-        <td><p>A Bencodex <span class="xref">Bencodex.Types.Binary</span> of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s which
+        <td><p>A Bencodex <span class="xref">Bencodex.Types.Binary</span> of 32 <span class="xref">System.Byte</span>s which
 represents an <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </td>
       </tr>
@@ -175,7 +175,7 @@ is not of type <span class="xref">Bencodex.Types.Binary</span>.</p>
   </span>
   <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Types_Tx_TxId__ctor_System_Byte___" data-uid="Libplanet.Types.Tx.TxId.#ctor(System.Byte[])">TxId(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
+  <div class="markdown level1 summary"><p>Converts a mutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -193,9 +193,9 @@ is not of type <span class="xref">Bencodex.Types.Binary</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">txid</span></td>
-        <td><p>A mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
+        <td><p>A mutable <span class="xref">System.Byte</span> array that encodes
 a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.  It must not be <span class="xref">null</span>,
 and its <span class="xref">System.Array.Length</span> must be the same to
 <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a>.</p>
@@ -213,7 +213,7 @@ and its <span class="xref">System.Array.Length</span> must be the same to
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">txid</code>'s <span class="xref">System.Array.Length</span> is not
 the same to the required <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a>.</p>
@@ -234,7 +234,7 @@ the same to the required <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libp
   </span>
   <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Types_Tx_TxId__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Types.Tx.TxId.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">TxId(in ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Converts an immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
+  <div class="markdown level1 summary"><p>Converts an immutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -252,9 +252,9 @@ the same to the required <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libp
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">txid</span></td>
-        <td><p>An immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
+        <td><p>An immutable <span class="xref">System.Byte</span> array that encodes
 a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.  It must not be <span class="xref">null</span>, and its
 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1.length#system-collections-immutable-immutablearray-1-length">Length</a> must be the same to <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a>.</p>
 </td>
@@ -271,7 +271,7 @@ a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.  It must not be 
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">txid</code>'s <span class="xref">System.Array.Length</span> is not the same to the required
 <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a>.</p>
@@ -295,7 +295,7 @@ a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.  It must not be 
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -315,12 +315,12 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -340,8 +340,8 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Types/Tx/TxId.cs/#L34">View Source</a>
   </span>
   <h4 id="Libplanet_Types_Tx_TxId_Size" data-uid="Libplanet.Types.Tx.TxId.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> takes.</p>
-<p>As a txid is a SHA-256 digest, it is 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s.
+  <div class="markdown level1 summary"><p>The <span class="xref">System.Byte</span>s size that each <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> takes.</p>
+<p>As a txid is a SHA-256 digest, it is 32 <span class="xref">System.Byte</span>s.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -359,7 +359,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -382,7 +382,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -419,7 +419,7 @@ and 64 characters in hexadecimal.
   </span>
   <a id="Libplanet_Types_Tx_TxId_ByteArray_" data-uid="Libplanet.Types.Tx.TxId.ByteArray*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ByteArray" data-uid="Libplanet.Types.Tx.TxId.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+  <div class="markdown level1 summary"><p>A bare immutable <span class="xref">System.Byte</span> array of
 this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -437,7 +437,7 @@ this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -464,7 +464,7 @@ this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -500,7 +500,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -521,7 +521,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -557,7 +557,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -578,7 +578,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -614,7 +614,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -635,7 +635,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -671,13 +671,13 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
+  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
   <h5 id="Libplanet_Types_Tx_TxId_Equals_System_Object__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a></div>
@@ -709,7 +709,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string which encodes a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.
 This has to contain 64 hexadecimal digits and must not be <span class="xref">null</span>
@@ -744,13 +744,13 @@ This is usually made by <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libpl
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> is shorter or longer than 64 characters.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
 not a valid hexadecimal string.</p>
 </td>
@@ -773,7 +773,7 @@ not a valid hexadecimal string.</p>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -792,13 +792,13 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <h5 id="Libplanet_Types_Tx_TxId_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a></div>
@@ -815,7 +815,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -835,12 +835,12 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -859,7 +859,7 @@ and 64 characters in hexadecimal.
   </span>
   <a id="Libplanet_Types_Tx_TxId_ToByteArray_" data-uid="Libplanet.Types.Tx.TxId.ToByteArray*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ToByteArray" data-uid="Libplanet.Types.Tx.TxId.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+  <div class="markdown level1 summary"><p>Gets a bare mutable <span class="xref">System.Byte</span> array of
 this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -878,8 +878,8 @@ public readonly byte[] ToByteArray()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A new mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A new mutable <span class="xref">System.Byte</span> array of
 this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to
@@ -919,7 +919,7 @@ public readonly string ToHex()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>64 hexadecimal characters.</p>
 </td>
       </tr>
@@ -956,14 +956,14 @@ public override readonly string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A string which represents this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
   <h5 id="Libplanet_Types_Tx_TxId_ToString_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a></div>
@@ -982,7 +982,7 @@ public override readonly string ToString()</code></pre>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -1023,7 +1023,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1044,7 +1044,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
@@ -1085,7 +1085,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1099,10 +1099,10 @@ and 64 characters in hexadecimal.
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IComparable&lt;T&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
