@@ -80,10 +80,10 @@ namespace Libplanet.Benchmarks
             var address = privateKey.Address;
             var actions = new[]
             {
-                new DumbAction((address, "foo")),
-                new DumbAction((address, "bar")),
-                new DumbAction((address, "baz")),
-                new DumbAction((address, "qux")),
+                DumbAction.Create((address, "foo")),
+                DumbAction.Create((address, "bar")),
+                DumbAction.Create((address, "baz")),
+                DumbAction.Create((address, "qux")),
             };
             _blockChain.MakeTransaction(privateKey, actions);
             PreparePropose();
@@ -98,10 +98,10 @@ namespace Libplanet.Benchmarks
                 var address = privateKey.Address;
                 var actions = new[]
                 {
-                    new DumbAction((address, "foo")),
-                    new DumbAction((address, "bar")),
-                    new DumbAction((address, "baz")),
-                    new DumbAction((address, "qux")),
+                    DumbAction.Create((address, "foo")),
+                    DumbAction.Create((address, "bar")),
+                    DumbAction.Create((address, "baz")),
+                    DumbAction.Create((address, "qux")),
                 };
                 _blockChain.MakeTransaction(privateKey, actions);
             }

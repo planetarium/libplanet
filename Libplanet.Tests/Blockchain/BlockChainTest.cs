@@ -337,7 +337,7 @@ namespace Libplanet.Tests.Blockchain
                 renderers: renderers
             );
             var privateKey = new PrivateKey();
-            var action = new DumbAction((default, string.Empty));
+            var action = DumbAction.Create((default, string.Empty));
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
             Block block = blockChain.ProposeBlock(new PrivateKey());
@@ -362,7 +362,7 @@ namespace Libplanet.Tests.Blockchain
                 policy, store, stateStore, actionLoader, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
-            var action = new DumbAction((default, string.Empty));
+            var action = DumbAction.Create((default, string.Empty));
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
             recordingRenderer.ResetRecords();
@@ -410,7 +410,7 @@ namespace Libplanet.Tests.Blockchain
                 policy, store, stateStore, actionLoader, renderers: new[] { renderer });
             var privateKey = new PrivateKey();
 
-            var action = new DumbAction((default, string.Empty));
+            var action = DumbAction.Create((default, string.Empty));
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
             Block block = blockChain.ProposeBlock(new PrivateKey());
@@ -574,8 +574,8 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var signer = new PrivateKey();
             var address = signer.Address;
-            var actions1 = new[] { new DumbAction((address, "foo")) };
-            var actions2 = new[] { new DumbAction((address, "bar")) };
+            var actions1 = new[] { DumbAction.Create((address, "foo")) };
+            var actions2 = new[] { DumbAction.Create((address, "bar")) };
 
             _blockChain.MakeTransaction(signer, actions1);
             var b1 = _blockChain.ProposeBlock(miner);
@@ -611,7 +611,7 @@ namespace Libplanet.Tests.Blockchain
         public void ForkShouldSkipExecuteAndRenderGenesis()
         {
             var miner = new PrivateKey();
-            var action = new DumbAction((_fx.Address1, "genesis"));
+            var action = DumbAction.Create((_fx.Address1, "genesis"));
 
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
@@ -679,7 +679,7 @@ namespace Libplanet.Tests.Blockchain
         public void DetectInvalidTxNonce()
         {
             var privateKey = new PrivateKey();
-            var actions = new[] { new DumbAction((_fx.Address1, "foo")) };
+            var actions = new[] { DumbAction.Create((_fx.Address1, "foo")) };
 
             var genesis = _blockChain.Genesis;
 
@@ -721,7 +721,7 @@ namespace Libplanet.Tests.Blockchain
             var lessActivePrivateKey = new PrivateKey();
             Address lessActiveAddress = lessActivePrivateKey.Address;
 
-            var actions = new[] { new DumbAction((address, "foo")) };
+            var actions = new[] { DumbAction.Create((address, "foo")) };
 
             var genesis = _blockChain.Genesis;
 
@@ -821,7 +821,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            new DumbAction((addresses[0], "foo")),
+                            DumbAction.Create((addresses[0], "foo")),
                         },
                         timestamp: DateTimeOffset.MinValue,
                         nonce: 2,
@@ -829,7 +829,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            new DumbAction((addresses[1], "bar")),
+                            DumbAction.Create((addresses[1], "bar")),
                         },
                         timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                         nonce: 3,
@@ -840,7 +840,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            new DumbAction((addresses[2], "baz")),
+                            DumbAction.Create((addresses[2], "baz")),
                         },
                         timestamp: DateTimeOffset.MinValue,
                         nonce: 4,
@@ -848,7 +848,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            new DumbAction((addresses[3], "qux")),
+                            DumbAction.Create((addresses[3], "qux")),
                         },
                         timestamp: DateTimeOffset.MinValue.AddSeconds(4),
                         nonce: 5,
@@ -869,7 +869,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction((addresses[0], "fork-foo")),
+                        DumbAction.Create((addresses[0], "fork-foo")),
                     },
                     timestamp: DateTimeOffset.MinValue,
                     nonce: 2,
@@ -877,8 +877,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction((addresses[1], "fork-bar")),
-                        new DumbAction((addresses[2], "fork-baz")),
+                        DumbAction.Create((addresses[1], "fork-bar")),
+                        DumbAction.Create((addresses[2], "fork-baz")),
                     },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2),
                     nonce: 3,
@@ -1156,8 +1156,8 @@ namespace Libplanet.Tests.Blockchain
                 addresses[i] = address;
                 DumbAction[] actions =
                 {
-                    new DumbAction((address, "foo")),
-                    new DumbAction((i < 1 ? address : addresses[i - 1], "bar")),
+                    DumbAction.Create((address, "foo")),
+                    DumbAction.Create((i < 1 ? address : addresses[i - 1], "bar")),
                 };
                 Transaction[] txs =
                 {
@@ -1242,7 +1242,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 stateStore,
                 actionLoader,
-                new[] { new DumbAction((_fx.Address1, "item0.0")) });
+                new[] { DumbAction.Create((_fx.Address1, "item0.0")) });
             Assert.Equal(
                 "item0.0",
                 (Text)chain
@@ -1252,7 +1252,7 @@ namespace Libplanet.Tests.Blockchain
 
             chain.MakeTransaction(
                 privateKey,
-                new[] { new DumbAction((_fx.Address1, "item1.0")), }
+                new[] { DumbAction.Create((_fx.Address1, "item1.0")), }
             );
             Block block = chain.ProposeBlock(new PrivateKey());
 
@@ -1324,7 +1324,7 @@ namespace Libplanet.Tests.Blockchain
             var privateKeysAndAddresses10 = privateKeys.Zip(addresses, (k, a) => (k, a));
             foreach (var (key, address) in privateKeysAndAddresses10)
             {
-                chain.MakeTransaction(key, new[] { new DumbAction((address, "1")) });
+                chain.MakeTransaction(key, new[] { DumbAction.Create((address, "1")) });
             }
 
             Block block1 = chain.ProposeBlock(
@@ -1348,7 +1348,7 @@ namespace Libplanet.Tests.Blockchain
                         .GetState(address));
             }
 
-            chain.MakeTransaction(privateKeys[0], new[] { new DumbAction((addresses[0], "2")) });
+            chain.MakeTransaction(privateKeys[0], new[] { DumbAction.Create((addresses[0], "2")) });
             Block block2 = chain.ProposeBlock(
                 privateKeys[0], lastCommit: CreateBlockCommit(chain.Tip));
             chain.Append(block2, CreateBlockCommit(block2));
@@ -1442,7 +1442,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.Address;
-            var actions = new[] { new DumbAction((_fx.Address1, "foo")) };
+            var actions = new[] { DumbAction.Create((_fx.Address1, "foo")) };
             var genesis = _blockChain.Genesis;
 
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
@@ -1511,7 +1511,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKey = new PrivateKey();
             var address = privateKey.Address;
-            var actions = new[] { new DumbAction((address, "foo")) };
+            var actions = new[] { DumbAction.Create((address, "foo")) };
 
             Transaction[] txs =
             {
@@ -1543,7 +1543,7 @@ namespace Libplanet.Tests.Blockchain
         public void ValidateTxNonces()
         {
             var privateKey = new PrivateKey();
-            var actions = new[] { new DumbAction((_fx.Address1, string.Empty)) };
+            var actions = new[] { DumbAction.Create((_fx.Address1, string.Empty)) };
 
             var genesis = _blockChain.Genesis;
 
@@ -1633,7 +1633,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.Address;
-            var actions = new[] { new DumbAction((address, "foo")) };
+            var actions = new[] { DumbAction.Create((address, "foo")) };
 
             _blockChain.MakeTransaction(privateKey, actions);
             _blockChain.MakeTransaction(privateKey, actions);
@@ -1661,7 +1661,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.Address;
-            var actions = new[] { new DumbAction((address, "foo")) };
+            var actions = new[] { DumbAction.Create((address, "foo")) };
 
             var tasks = Enumerable.Range(0, 10)
                 .Select(_ => Task.Run(() => _blockChain.MakeTransaction(privateKey, actions)));
@@ -1812,7 +1812,8 @@ namespace Libplanet.Tests.Blockchain
                         store.GetTxNonce(chain.Id, signer),
                         privateKey,
                         chain.Genesis.Hash,
-                        new[] { new DumbAction((addresses[j], index.ToString())) }.ToPlainValues()
+                        new[] { DumbAction.Create((addresses[j], index.ToString())) }
+                            .ToPlainValues()
                     );
                     b = chain.EvaluateAndSign(
                         ProposeNext(
@@ -1902,8 +1903,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction((addresses[0], "foo")),
-                        new DumbAction((addresses[1], "bar")),
+                        DumbAction.Create((addresses[0], "foo")),
+                        DumbAction.Create((addresses[1], "bar")),
                     },
                     timestamp: epoch,
                     nonce: 0,
@@ -1911,8 +1912,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        new DumbAction((addresses[2], "baz")),
-                        new DumbAction((addresses[3], "qux")),
+                        DumbAction.Create((addresses[2], "baz")),
+                        DumbAction.Create((addresses[3], "qux")),
                     },
                     timestamp: epoch.AddSeconds(5),
                     nonce: 1,
@@ -1976,7 +1977,7 @@ namespace Libplanet.Tests.Blockchain
 
             var customActions =
                 addresses
-                    .Select((address, index) => new DumbAction((address, index.ToString())))
+                    .Select((address, index) => DumbAction.Create((address, index.ToString())))
                     .ToArray();
 
             var systemTxs = systemActions

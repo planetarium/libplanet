@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Tx
                 null,
                 new[]
                 {
-                    new DumbAction((stateStore, "F"), recordRandom: false),
+                    DumbAction.Create((stateStore, "F"), recordRandom: false),
                 }.Select(x => x.PlainValue),
                 null,
                 null,
@@ -296,8 +296,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction((addressA, "foo")),
-                new DumbAction((addressB, "bar")),
+                DumbAction.Create((addressA, "foo")),
+                DumbAction.Create((addressB, "bar")),
             }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,
@@ -376,8 +376,8 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
             var actions = new TxActionList(new IAction[]
             {
-                new DumbAction((addressA, "foo")),
-                new DumbAction((addressB, "bar")),
+                DumbAction.Create((addressA, "foo")),
+                DumbAction.Create((addressB, "bar")),
             }.ToPlainValues());
             var invoice = new TxInvoice(
                 genesisHash,

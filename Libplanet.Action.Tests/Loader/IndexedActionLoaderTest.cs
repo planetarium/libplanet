@@ -39,7 +39,7 @@ namespace Libplanet.Action.Tests.Loader
             var loader1 = new SingleActionLoader(typeof(DumbAction));
             var loader2 = new SingleActionLoader(typeof(Attack));
             var loader3 = new SingleActionLoader(typeof(RandomAction));
-            var action1 = new DumbAction((new PrivateKey().Address, "foo"));
+            var action1 = DumbAction.Create((new PrivateKey().Address, "foo"));
             var action2 = new Attack();
             action2.LoadPlainValue(Dictionary.Empty
                 .Add("type_id", "attack")

@@ -29,18 +29,6 @@ namespace Libplanet.Action.Tests.Common
         {
         }
 
-        public DumbModernAction(
-            (Address At, string Item)? append,
-            (Address From, Address To, BigInteger Amount)? transfer = null,
-            IEnumerable<Validator>? validators = null,
-            bool recordRandom = false)
-        {
-            Append = append;
-            Transfer = transfer;
-            Validators = validators?.ToImmutableList();
-            RecordRandom = recordRandom;
-        }
-
         public (Address At, string Item)? Append { get; private set; }
 
         public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }

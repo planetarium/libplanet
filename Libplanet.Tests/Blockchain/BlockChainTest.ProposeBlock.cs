@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Blockchain
             // Tests if ProposeBlock() method automatically fits the number of transactions
             // according to the right size.
             DumbAction[] manyActions =
-                Enumerable.Repeat(new DumbAction((default, "_")), 200).ToArray();
+                Enumerable.Repeat(DumbAction.Create((default, "_")), 200).ToArray();
             PrivateKey signer = null;
             int nonce = 0;
             for (int i = 0; i < 100; i++)
@@ -154,7 +154,7 @@ namespace Libplanet.Tests.Blockchain
                             null,
                             actions: new[]
                             {
-                                new DumbAction((new PrivateKey().Address, "foo")),
+                                DumbAction.Create((new PrivateKey().Address, "foo")),
                             }.ToPlainValues()),
                     }.ToImmutableList());
                 Assert.Throws<InvalidTxNonceException>(() => BlockChain.Create(
@@ -191,7 +191,7 @@ namespace Libplanet.Tests.Blockchain
                         _blockChain.Genesis.Hash,
                         new[]
                         {
-                            new DumbAction((new PrivateKey().Address, "foo")),
+                            DumbAction.Create((new PrivateKey().Address, "foo")),
                         }.ToPlainValues()),
                 }.ToImmutableList();
 
@@ -224,8 +224,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrA, "1a")),
-                        new DumbAction((addrB, "1b")),
+                        DumbAction.Create((addrA, "1a")),
+                        DumbAction.Create((addrB, "1b")),
                     }.ToPlainValues()
                 ),
                 Transaction.Create(
@@ -234,8 +234,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrC, "2a")),
-                        new DumbAction((addrD, "2b")),
+                        DumbAction.Create((addrC, "2a")),
+                        DumbAction.Create((addrD, "2b")),
                     }.ToPlainValues()
                 ),
 
@@ -246,8 +246,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrE, "3a")),
-                        new DumbAction((addrA, "3b")),
+                        DumbAction.Create((addrE, "3a")),
+                        DumbAction.Create((addrA, "3b")),
                     }.ToPlainValues()
                 ),
                 Transaction.Create(
@@ -256,8 +256,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrB, "4a")),
-                        new DumbAction((addrC, "4b")),
+                        DumbAction.Create((addrB, "4a")),
+                        DumbAction.Create((addrC, "4b")),
                     }.ToPlainValues()
                 ),
 
@@ -268,8 +268,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrD, "5a")),
-                        new DumbAction((addrE, "5b")),
+                        DumbAction.Create((addrD, "5a")),
+                        DumbAction.Create((addrE, "5b")),
                     }.ToPlainValues()
                 ),
                 Transaction.Create(
@@ -278,8 +278,8 @@ namespace Libplanet.Tests.Blockchain
                     _blockChain.Genesis.Hash,
                     new[]
                     {
-                        new DumbAction((addrA, "6a")),
-                        new DumbAction((addrB, "6b")),
+                        DumbAction.Create((addrA, "6a")),
+                        DumbAction.Create((addrB, "6b")),
                     }.ToPlainValues()
                 ),
             };
@@ -504,7 +504,7 @@ namespace Libplanet.Tests.Blockchain
             var privateKey2 = new PrivateKey();
             var address2 = privateKey2.Address;
 
-            var blockAction = new DumbAction((address1, "foo"));
+            var blockAction = DumbAction.Create((address1, "foo"));
             var policy = new BlockPolicy(blockAction);
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
@@ -520,7 +520,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
-            blockChain.MakeTransaction(privateKey2, new[] { new DumbAction((address2, "baz")) });
+            blockChain.MakeTransaction(privateKey2, new[] { DumbAction.Create((address2, "baz")) });
             var block = blockChain.ProposeBlock(privateKey1, CreateBlockCommit(_blockChain.Tip));
             blockChain.Append(block, CreateBlockCommit(block));
 
@@ -538,7 +538,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"foo", state1);
             Assert.Equal((Text)"baz", state2);
 
-            blockChain.MakeTransaction(privateKey1, new[] { new DumbAction((address1, "bar")) });
+            blockChain.MakeTransaction(privateKey1, new[] { DumbAction.Create((address1, "bar")) });
             block = blockChain.ProposeBlock(privateKey1, CreateBlockCommit(_blockChain.Tip));
             blockChain.Append(block, CreateBlockCommit(block));
 

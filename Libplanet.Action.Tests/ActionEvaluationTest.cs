@@ -34,7 +34,7 @@ namespace Libplanet.Action.Tests
                 ReservedAddresses.LegacyAccount,
                 world.GetAccount(ReservedAddresses.LegacyAccount).SetState(address, (Text)"item"));
             var evaluation = new ActionEvaluation(
-                new DumbAction((address, "item")),
+                DumbAction.Create((address, "item")),
                 new ActionContext(
                     address,
                     txid,
