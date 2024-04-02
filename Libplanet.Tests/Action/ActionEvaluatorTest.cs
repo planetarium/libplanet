@@ -71,7 +71,8 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
-                    actions: new[] { new RandomAction(txAddress), }.ToPlainValues()),
+                    actions: new[] { new ContextRecordingAction(txAddress, new Text("Foo")), }
+                        .ToPlainValues()),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent(
@@ -88,7 +89,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 stateStore,
-                new SingleActionLoader(typeof(RandomAction)));
+                new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
                 BlockChain.DetermineGenesisStateRootHash(
@@ -106,13 +107,13 @@ namespace Libplanet.Tests.Action
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
             }
 
             for (int i = 1; i < generatedRandomNumbers.Count; ++i)
@@ -126,14 +127,7 @@ namespace Libplanet.Tests.Action
         {
             var privateKey = new PrivateKey();
             var address = privateKey.Address;
-            long blockIndex = 1;
-
-            var action = new EvaluateTestAction()
-            {
-                BlockIndexKey = new PrivateKey().Address,
-                MinerKey = new PrivateKey().Address,
-                SignerKey = new PrivateKey().Address,
-            };
+            var value = new Text("Foo");
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -141,7 +135,8 @@ namespace Libplanet.Tests.Action
                 policy: new BlockPolicy(),
                 store: store,
                 stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(EvaluateTestAction)));
+                actionLoader: new SingleActionLoader(typeof(ContextRecordingAction)));
+            var action = new ContextRecordingAction(address, value);
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -163,19 +158,32 @@ namespace Libplanet.Tests.Action
                 chain
                     .GetWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(action.SignerKey),
-                (Text)address.ToHex());
+                    .GetState(address),
+                value);
             Assert.Equal(
                 chain
                     .GetWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(action.MinerKey),
-                (Text)miner.Address.ToHex());
-            var state = chain
-                .GetWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
-                .GetState(action.BlockIndexKey);
-            Assert.Equal((long)(Integer)state, blockIndex);
+                    .GetState(ContextRecordingAction.MinerRecordAddress),
+                block.Miner.Bencoded);
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.SignerRecordAddress),
+                tx.Signer.Bencoded);
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.BlockIndexRecordAddress),
+                new Integer(block.Index));
+            Assert.Equal(
+                chain
+                    .GetWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(ContextRecordingAction.RandomRecordAddress),
+                new Integer(evaluations.Single().InputContext.GetRandom().Next()));
         }
 
         [Fact]
@@ -900,7 +908,9 @@ namespace Libplanet.Tests.Action
                                     timestamp: epoch,
                                     actions: new TxActionList(new[]
                                     {
-                                        new RandomAction(signerNoncePair.signer.Address),
+                                        new ContextRecordingAction(
+                                            signerNoncePair.signer.Address,
+                                            new Integer(signerNoncePair.nonce)),
                                     }.ToPlainValues()),
                                     maxGasPrice: null,
                                     gasLimit: null),
@@ -1320,37 +1330,6 @@ namespace Libplanet.Tests.Action
             return (addresses, txs);
         }
 
-        private sealed class EvaluateTestAction : IAction
-        {
-            public Address SignerKey { get; set; }
-
-            public Address MinerKey { get; set; }
-
-            public Address BlockIndexKey { get; set; }
-
-            public IValue PlainValue => new List(
-                SignerKey.Bencoded,
-                MinerKey.Bencoded,
-                BlockIndexKey.Bencoded);
-
-            public void LoadPlainValue(IValue plainValue)
-            {
-                 var asList = (List)plainValue;
-                 SignerKey = new Address(asList[0]);
-                 MinerKey = new Address(asList[1]);
-                 BlockIndexKey = new Address(asList[2]);
-            }
-
-            public IWorld Execute(IActionContext context) =>
-                context.PreviousState
-                    .SetAccount(
-                        ReservedAddresses.LegacyAccount,
-                        context.PreviousState.GetAccount(ReservedAddresses.LegacyAccount)
-                            .SetState(SignerKey, (Text)context.Signer.ToHex())
-                            .SetState(MinerKey, (Text)context.Miner.ToHex())
-                            .SetState(BlockIndexKey, (Integer)context.BlockIndex));
-        }
-
         private sealed class ModernAction : IAction
         {
             public static readonly Address AccountAddress
@@ -1446,11 +1425,11 @@ namespace Libplanet.Tests.Action
         // Spec for protocol version < 3.
         public List<string> OrderedAddressesV0 = new List<string>
         {
-            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
             "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
             "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
             "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
         };
 
         // Spec for protocol version >= 3.

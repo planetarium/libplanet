@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Crypto;
@@ -68,7 +69,7 @@ namespace Libplanet.Tests.Blocks
                     null,
                     new[]
                     {
-                        new RandomAction(signer.Address),
+                        new ContextRecordingAction(signer.Address, new Text("Foo")),
                     }.ToPlainValues())).ToImmutableArray();
             var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
             var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
