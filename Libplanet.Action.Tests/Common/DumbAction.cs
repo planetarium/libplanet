@@ -16,9 +16,6 @@ namespace Libplanet.Action.Tests.Common
 
         public static readonly Text TypeId = new Text(nameof(DumbAction));
 
-        public static readonly Address RandomRecordsAddress =
-            new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
-
         public static readonly Currency DumbCurrency =
             Currency.Uncapped("DUMB", 0, null);
 
@@ -31,8 +28,6 @@ namespace Libplanet.Action.Tests.Common
         public (Address? From, Address? To, BigInteger Amount)? Transfer { get; private set; }
 
         public ImmutableList<Validator>? Validators { get; private set; }
-
-        public bool RecordRandom { get; private set; }
 
         public IValue PlainValue
         {
@@ -61,13 +56,6 @@ namespace Libplanet.Action.Tests.Common
                         .Add("validators", new List(validators.Select(v => v.Bencoded)));
                 }
 
-                if (RecordRandom)
-                {
-                    // In order to avoid changing tx signatures in many test
-                    // fixtures, adds field only if RecordRandom = true.
-                    plainValue = plainValue.Add("record_random", true);
-                }
-
                 return plainValue;
             }
         }
@@ -90,7 +78,6 @@ namespace Libplanet.Action.Tests.Common
                 Append = append,
                 Transfer = transfer,
                 Validators = validators?.ToImmutableList(),
-                RecordRandom = recordRandom,
             };
         }
 
@@ -137,15 +124,6 @@ namespace Libplanet.Action.Tests.Common
                     (current, validator) => current.SetValidator(validator));
             }
 
-            if (RecordRandom)
-            {
-                IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
-                account = account.SetState(
-                    RandomRecordsAddress,
-                    (Integer)context.GetRandom().Next());
-                world = world.SetAccount(ReservedAddresses.LegacyAccount, account);
-            }
-
             return world;
         }
 
@@ -182,16 +160,10 @@ namespace Libplanet.Action.Tests.Common
                     .Select(value => new Validator(value))
                     .ToImmutableList();
             }
-
-            RecordRandom =
-                plainValue.ContainsKey((Text)"record_random") &&
-                plainValue["record_random"] is Boolean r &&
-                r.Value;
         }
 
         public override string ToString()
         {
-            const string T = "true", F = "false";
             const string N = "null";
             const string E = "empty";
             string append = Append is { } a
@@ -206,8 +178,7 @@ namespace Libplanet.Action.Tests.Common
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(Append)} = {append}, " +
                 $"{nameof(Transfer)} = {transfer}, " +
-                $"{nameof(Validators)} = {validators}, " +
-                $"{nameof(RecordRandom)} = {(RecordRandom ? T : F)}, " +
+                $"{nameof(Validators)} = {validators} " +
                 $"}}";
         }
     }
