@@ -12,6 +12,8 @@ namespace Libplanet.Action.Tests.Common
 {
     public sealed class DumbModernAction : IAction
     {
+        public static readonly DumbModernAction NoOp = DumbModernAction.Create();
+
         public static readonly Text TypeId = new Text(nameof(DumbAction));
 
         public static readonly Address DumbModernAddress =
@@ -83,6 +85,21 @@ namespace Libplanet.Action.Tests.Common
 
                 return plainValue;
             }
+        }
+
+        public static DumbModernAction Create(
+            (Address At, string Item)? append = null,
+            (Address From, Address To, BigInteger Amount)? transfer = null,
+            IEnumerable<Validator>? validators = null,
+            bool recordRandom = false)
+        {
+            return new DumbModernAction()
+            {
+                Append = append,
+                Transfer = transfer,
+                Validators = validators?.ToImmutableList(),
+                RecordRandom = recordRandom,
+            };
         }
 
         public IWorld Execute(IActionContext context)
