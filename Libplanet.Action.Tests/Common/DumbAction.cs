@@ -28,7 +28,7 @@ namespace Libplanet.Action.Tests.Common
 
         public (Address At, string Item)? Append { get; private set; }
 
-        public (Address From, Address To, BigInteger Amount)? Transfer { get; private set; }
+        public (Address? From, Address? To, BigInteger Amount)? Transfer { get; private set; }
 
         public ImmutableList<Validator>? Validators { get; private set; }
 
@@ -50,8 +50,8 @@ namespace Libplanet.Action.Tests.Common
                 if (Transfer is { } transfer)
                 {
                     plainValue = plainValue
-                        .Add("transfer_from", transfer.From.Bencoded)
-                        .Add("transfer_to", transfer.To.Bencoded)
+                        .Add("transfer_from", transfer.From?.Bencoded ?? Null.Value)
+                        .Add("transfer_to", transfer.To?.Bencoded ?? Null.Value)
                         .Add("transfer_amount", transfer.Amount);
                 }
 
@@ -74,10 +74,17 @@ namespace Libplanet.Action.Tests.Common
 
         public static DumbAction Create(
             (Address At, string Item)? append = null,
-            (Address From, Address To, BigInteger Amount)? transfer = null,
+            (Address? From, Address? To, BigInteger Amount)? transfer = null,
             IEnumerable<Validator>? validators = null,
             bool recordRandom = false)
         {
+            if (transfer is { } t && t.From is null && t.To is null)
+            {
+                throw new ArgumentException(
+                    $"From and To of {nameof(transfer)} cannot both be null when " +
+                    $"{nameof(transfer)} is not null: {transfer}");
+            }
+
             return new DumbAction()
             {
                 Append = append,
@@ -102,12 +109,25 @@ namespace Libplanet.Action.Tests.Common
 
             if (Transfer is { } transfer)
             {
-                world = world.TransferAsset(
-                    context,
-                    sender: transfer.From,
-                    recipient: transfer.To,
-                    value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount),
-                    allowNegativeBalance: true);
+                world = (transfer.From, transfer.To) switch
+                {
+                    (Address from, Address to) => world.TransferAsset(
+                        context,
+                        sender: from,
+                        recipient: to,
+                        value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount),
+                        allowNegativeBalance: true),
+                    (null, Address to) => world.MintAsset(
+                        context,
+                        recipient: to,
+                        value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount)),
+                    (Address from, null) => world.BurnAsset(
+                        context,
+                        owner: from,
+                        value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount)),
+                    _ => throw new ArgumentException(
+                        $"Both From and To cannot be null for {transfer}"),
+                };
             }
 
             if (Validators is { } validators)
@@ -141,17 +161,19 @@ namespace Libplanet.Action.Tests.Common
 
             if (plainValue.TryGetValue((Text)"target_address", out IValue at) &&
                 plainValue.TryGetValue((Text)"item", out IValue item) &&
-                item is Text t)
+                item is Text i)
             {
-                Append = (new Address(at), t);
+                Append = (new Address(at), i);
             }
 
-            if (plainValue.TryGetValue((Text)"transfer_from", out IValue from) &&
-                plainValue.TryGetValue((Text)"transfer_to", out IValue to) &&
+            if (plainValue.TryGetValue((Text)"transfer_from", out IValue f) &&
+                plainValue.TryGetValue((Text)"transfer_to", out IValue t) &&
                 plainValue.TryGetValue((Text)"transfer_amount", out IValue a) &&
                 a is Integer amount)
             {
-                Transfer = (new Address(from), new Address(to), amount.Value);
+                Address? from = f is Null ? null : new Address(f);
+                Address? to = t is Null ? null : new Address(t);
+                Transfer = (from, to, amount.Value);
             }
 
             if (plainValue.ContainsKey((Text)"validators"))
@@ -170,15 +192,17 @@ namespace Libplanet.Action.Tests.Common
         public override string ToString()
         {
             const string T = "true", F = "false";
+            const string N = "null";
+            const string E = "empty";
             string append = Append is { } a
                 ? $"({a.At}, {a.Item})"
-                : "null";
+                : N;
             string transfer = Transfer is { } t
-                ? $"({t.From}, {t.To}, {t.Amount})"
-                : "null";
+                ? $"({t.From?.ToString() ?? N}, {t.To?.ToString() ?? N}, {t.Amount})"
+                : N;
             string validators = Validators is { } vs && vs.Any()
                 ? string.Join(",", vs.Select(v => v.OperatorAddress))
-                : "none";
+                : E;
             return $"{nameof(DumbAction)} {{ " +
                 $"{nameof(Append)} = {append}, " +
                 $"{nameof(Transfer)} = {transfer}, " +
