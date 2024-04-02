@@ -907,17 +907,17 @@ namespace Libplanet.Net.Tests
             var addr = miner1.Address;
             var item = "foo";
 
-            miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction((addr, item)) });
+            miner1.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             Block block1 = miner1.BlockChain.ProposeBlock(
                 key1, CreateBlockCommit(miner1.BlockChain.Tip));
             miner1.BlockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-            miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction((addr, item)) });
+            miner2.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             Block block2 = miner2.BlockChain.ProposeBlock(
                 key2, CreateBlockCommit(miner2.BlockChain.Tip));
             miner2.BlockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
 
-            miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction((addr, item)) });
+            miner2.BlockChain.MakeTransaction(privKey, new[] { DumbAction.Create((addr, item)) });
             var latest = miner2.BlockChain.ProposeBlock(
                 key2, CreateBlockCommit(miner2.BlockChain.Tip));
             miner2.BlockChain.Append(latest, TestUtils.CreateBlockCommit(latest));
@@ -1039,10 +1039,10 @@ namespace Libplanet.Net.Tests
                 const string dumbItem = "item0.0";
                 var txA = minerA.BlockChain.MakeTransaction(
                     privateKeyA,
-                    new[] { new DumbAction((targetAddress1, dumbItem)), });
+                    new[] { DumbAction.Create((targetAddress1, dumbItem)), });
                 var txB = minerB.BlockChain.MakeTransaction(
                     privateKeyB,
-                    new[] { new DumbAction((targetAddress2, dumbItem)), });
+                    new[] { DumbAction.Create((targetAddress2, dumbItem)), });
 
                 if (!restage)
                 {
@@ -1386,8 +1386,8 @@ namespace Libplanet.Net.Tests
 
             var signerAddress = new PrivateKey().Address;
 
-            var actionsA = new[] { new DumbAction((signerAddress, "1")) };
-            var actionsB = new[] { new DumbAction((signerAddress, "2")) };
+            var actionsA = new[] { DumbAction.Create((signerAddress, "1")) };
+            var actionsB = new[] { DumbAction.Create((signerAddress, "2")) };
 
             var genesisChainA = MakeBlockChain(
                 new BlockPolicy(),

@@ -97,7 +97,7 @@ namespace Libplanet.Action.Tests.Sys
             var random = new System.Random();
             Address addr = random.NextAddress();
             Assert.True(Registry.IsSystemAction(new Initialize(_validatorSet, _states)));
-            Assert.False(Registry.IsSystemAction(new DumbAction((addr, "foo"))));
+            Assert.False(Registry.IsSystemAction(DumbAction.Create((addr, "foo"))));
 
             Assert.True(Registry.IsSystemAction(Dictionary.Empty
                 .Add("type_id", new Integer(2))));

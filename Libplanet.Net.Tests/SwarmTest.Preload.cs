@@ -80,7 +80,7 @@ namespace Libplanet.Net.Tests
             var address1 = key.Address;
             var address2 = new PrivateKey().Address;
 
-            var action = new DumbAction(
+            var action = DumbAction.Create(
                 (address1, "foo"),
                 transfer: (address1, address2, 10));
 
@@ -89,12 +89,12 @@ namespace Libplanet.Net.Tests
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction((address1, "bar")) });
+            minerChain.MakeTransaction(key, new[] { DumbAction.Create((address1, "bar")) });
             block = minerChain.ProposeBlock(
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction((address1, "baz")) });
+            minerChain.MakeTransaction(key, new[] { DumbAction.Create((address1, "baz")) });
             block = minerChain.ProposeBlock(
                 minerKey, CreateBlockCommit(minerChain.Tip));
             minerChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -408,7 +408,8 @@ namespace Libplanet.Net.Tests
             const int iteration = 3;
             for (var i = 0; i < iteration; i++)
             {
-                sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction((addr, item)) });
+                sender.BlockChain.MakeTransaction(
+                    privKey, new[] { DumbAction.Create((addr, item)) });
                 Block block = sender.BlockChain.ProposeBlock(
                     senderKey, CreateBlockCommit(sender.BlockChain.Tip));
                 sender.BlockChain.Append(block, TestUtils.CreateBlockCommit(block));
@@ -1165,7 +1166,7 @@ namespace Libplanet.Net.Tests
                     new PrivateKey(),
                     new[]
                     {
-                        new DumbAction((default, $"Item{i}")),
+                        DumbAction.Create((default, $"Item{i}")),
                     });
                 Block block = seedChain.ProposeBlock(
                     seedKey, CreateBlockCommit(seedChain.Tip));
