@@ -170,28 +170,18 @@ namespace Libplanet.Tests.Action
         [Fact]
         public virtual void FungibleAssets()
         {
-            IWorld a = _initWorld.TransferAsset(
-                _initContext, _addr[1], _addr[2], Value(2, 5));
-            Assert.Equal(Value(3, 15), a.GetBalance(_addr[1], _currencies[3]));
-            Assert.Equal(Value(3, 5), a.GetBalance(_addr[2], _currencies[3]));
-            Assert.Equal(Value(0, 5), a.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(2, 10), a.GetBalance(_addr[0], _currencies[2]));
-            Assert.Equal(Value(3, 0), a.GetBalance(_addr[0], _currencies[3]));
-            Assert.Equal(Value(0, 0), a.GetBalance(_addr[1], _currencies[0]));
-            Assert.Equal(Value(2, 15), a.GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(Value(0, 0), a.GetBalance(_addr[2], _currencies[0]));
-            Assert.Equal(Value(2, 0), a.GetBalance(_addr[2], _currencies[2]));
+            IWorld world = _initWorld.TransferAsset(
+                _initContext, _addr[1], _addr[2], Value(3, 5));
+            Assert.Equal(Value(0, 5), world.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(2, 10), world.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Value(4, 5), world.GetBalance(_addr[0], _currencies[4]));
+            Assert.Equal(Value(2, 15), world.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(3, 15), world.GetBalance(_addr[1], _currencies[3]));
+            Assert.Equal(Value(3, 5), world.GetBalance(_addr[2], _currencies[3]));
 
-            var trieDiff = a.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                .Diff(_initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie)
-                .ToList();
-            Assert.Single(trieDiff.Where(elem =>
-                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[1], _currencies[2]))));
-            Assert.Single(trieDiff.Where(elem =>
-                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[2], _currencies[2]))));
             var accountDiff = AccountDiff.Create(
                 _initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie,
-                a.GetAccount(ReservedAddresses.LegacyAccount).Trie);
+                world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Empty(accountDiff.StateDiffs);
         }
 
@@ -275,85 +265,80 @@ namespace Libplanet.Tests.Action
         public void MintAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.MintAsset(_initContext, _addr[0], Value(0, 0))
-            );
+                _initWorld.MintAsset(_initContext, _addr[0], Value(0, 0)));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.MintAsset(_initContext, _addr[0], Value(0, -1))
-            );
+                _initWorld.MintAsset(_initContext, _addr[0], Value(0, -1)));
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (C0L) allows only _addr[0] to mint
-            delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
-            Assert.Equal(Value(0, 15), delta0.GetBalance(_addr[0], _currencies[0]));
+            // currencies[0] (AAA) allows everyone to mint
+            delta0 = delta0.MintAsset(context0, _addr[2], Value(0, 10));
+            Assert.Equal(Value(0, 10), delta0.GetBalance(_addr[2], _currencies[0]));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
-            delta0 = delta0.MintAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 25), delta0.GetBalance(_addr[1], _currencies[1]));
+            // currencies[2] (CCC) allows only _addr[0] to mint
+            delta0 = delta0.MintAsset(context0, _addr[0], Value(2, 10));
+            Assert.Equal(Value(2, 20), delta0.GetBalance(_addr[0], _currencies[2]));
 
-            // currencies[2] (C2L) allows everyone to mint
-            delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to mint
+            delta0 = delta0.MintAsset(context0, _addr[1], Value(3, 10));
+            Assert.Equal(Value(3, 30), delta0.GetBalance(_addr[1], _currencies[3]));
+
+            // currencies[5] (FFF) has a cap of 100
+            Assert.Throws<SupplyOverflowException>(
+                () => _initWorld.MintAsset(_initContext, _addr[0], Value(5, 200)));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (C0L) disallows _addr[1] to mint
+            // currencies[0] (DDD) allows everyone to mint
+            delta1 = delta1.MintAsset(context1, _addr[2], Value(0, 10));
+            Assert.Equal(Value(0, 10), delta1.GetBalance(_addr[2], _currencies[0]));
+
+            // currencies[2] (CCC) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.MintAsset(context1, _addr[1], Value(0, 10)));
+                delta1.MintAsset(context1, _addr[1], Value(2, 10)));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
-            delta1 = delta1.MintAsset(context1, _addr[0], Value(1, 20));
-            Assert.Equal(Value(1, 30), delta1.GetBalance(_addr[0], _currencies[1]));
-
-            // currencies[2] (C2L) allows everyone to mint
-            delta1 = delta1.MintAsset(context1, _addr[2], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[2], _currencies[2]));
-
-            // currencies[4] (C4C) has a cap of 100
-            Assert.Throws<SupplyOverflowException>(
-                () => _initWorld.MintAsset(_initContext, _addr[0], Value(4, 200)));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to mint
+            delta1 = delta1.MintAsset(context1, _addr[0], Value(3, 20));
+            Assert.Equal(Value(3, 20), delta1.GetBalance(_addr[0], _currencies[3]));
         }
 
         [Fact]
         public virtual void BurnAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 0))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 0)));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, -1))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, -1)));
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 6))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 6)));
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (C0L) allows only _addr[0] to burn
-            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
-            Assert.Equal(Value(0, 1), delta0.GetBalance(_addr[0], _currencies[0]));
+            // currencies[0] (AAA) allows everyone to burn
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 3), delta0.GetBalance(_addr[0], _currencies[0]));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
-            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 5), delta0.GetBalance(_addr[1], _currencies[1]));
+            // currencies[2] (CCC) allows only _addr[0] to burn
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(2, 4));
+            Assert.Equal(Value(2, 6), delta0.GetBalance(_addr[0], _currencies[2]));
 
-            // currencies[2] (C2L) allows everyone to burn
-            delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to burn
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(3, 8));
+            Assert.Equal(Value(3, 12), delta0.GetBalance(_addr[1], _currencies[3]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (C0L) disallows _addr[1] to burn
+            // currencies[0] (AAA) allows everyone to burn
+            delta1 = delta1.BurnAsset(context1, _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 3), delta1.GetBalance(_addr[0], _currencies[0]));
+
+            // currencies[2] (CCC) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.BurnAsset(context1, _addr[0], Value(0, 5)));
+                delta1.BurnAsset(context1, _addr[0], Value(2, 4)));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
-            delta1 = delta1.BurnAsset(context1, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 5), delta1.GetBalance(_addr[1], _currencies[1]));
-
-            // currencies[2] (C2L) allows everyone to burn
-            delta1 = delta1.BurnAsset(context1, _addr[1], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to burn
+            delta1 = delta1.BurnAsset(context1, _addr[1], Value(3, 8));
+            Assert.Equal(Value(3, 12), delta1.GetBalance(_addr[1], _currencies[3]));
         }
 
         [Fact]
