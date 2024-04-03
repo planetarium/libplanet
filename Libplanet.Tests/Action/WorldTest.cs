@@ -202,9 +202,7 @@ namespace Libplanet.Tests.Action
                 _initContext,
                 _addr[0],
                 _addr[1],
-                Value(0, 6),
-                allowNegativeBalance: true
-            );
+                Value(0, 6));
             Assert.Equal(Value(0, -1), a.GetBalance(_addr[0], _currencies[0]));
             Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }

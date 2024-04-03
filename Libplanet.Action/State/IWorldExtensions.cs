@@ -185,16 +185,13 @@ namespace Libplanet.Action.State
         /// <param name="recipient">The address who receives the fungible asset from
         /// the <paramref name="sender"/>.</param>
         /// <param name="value">The asset value to transfer.</param>
-        /// <param name="allowNegativeBalance">Turn on to allow <paramref name="sender"/>'s balance
-        /// less than zero.  Turned off by default.</param>
         /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
         /// name="value"/>  is subtracted from <paramref name="sender"/>'s balance and added to
         /// <paramref name="recipient"/>'s balance.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
         /// is less than or equal to zero.</exception>
         /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="sender"/>
-        /// has insufficient balance than <paramref name="value"/> to transfer and
-        /// the <paramref name="allowNegativeBalance"/> option is turned off.</exception>
+        /// has insufficient balance than <paramref name="value"/> to transfer.</exception>
         /// <remarks>
         /// The behavior is different depending on <paramref name="context"/>'s
         /// <see cref="IActionContext.BlockProtocolVersion"/>.  There is a bug for version 0
@@ -207,10 +204,9 @@ namespace Libplanet.Action.State
             IActionContext context,
             Address sender,
             Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false) => context.BlockProtocolVersion > 0
-                ? TransferAssetV1(world, sender, recipient, value, allowNegativeBalance)
-                : TransferAssetV0(world, sender, recipient, value, allowNegativeBalance);
+            FungibleAssetValue value) => context.BlockProtocolVersion > 0
+                ? TransferAssetV1(world, sender, recipient, value)
+                : TransferAssetV0(world, sender, recipient, value);
 
         /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
@@ -292,8 +288,7 @@ namespace Libplanet.Action.State
             IWorld world,
             Address sender,
             Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false)
+            FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -307,7 +302,7 @@ namespace Libplanet.Action.State
             FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
             FungibleAssetValue recipientBalance = world.GetBalance(recipient, currency);
 
-            if (!allowNegativeBalance && senderBalance < value)
+            if (senderBalance < value)
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
                           $"transfer: {senderBalance} < {value}.";
@@ -325,8 +320,7 @@ namespace Libplanet.Action.State
             IWorld world,
             Address sender,
             Address recipient,
-            FungibleAssetValue value,
-            bool allowNegativeBalance = false)
+            FungibleAssetValue value)
         {
             if (value.Sign <= 0)
             {
@@ -339,7 +333,7 @@ namespace Libplanet.Action.State
             Currency currency = value.Currency;
             FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
 
-            if (!allowNegativeBalance && senderBalance < value)
+            if (senderBalance < value)
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
                           $"transfer: {senderBalance} < {value}.";
