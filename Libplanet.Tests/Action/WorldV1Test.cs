@@ -108,14 +108,5 @@ namespace Libplanet.Tests.Action
                 Value(4, 5),
                 world.GetTotalSupply(_currencies[4]));
         }
-
-        [Fact]
-        public override void MintAsset()
-        {
-            base.MintAsset();
-
-            Assert.Throws<SupplyOverflowException>(
-                () => _initWorld.MintAsset(_initContext, _addr[0], Value(4, 200)));
-        }
     }
 }

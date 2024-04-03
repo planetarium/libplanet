@@ -24,8 +24,50 @@ namespace Libplanet.Tests.Action
     public abstract class WorldTest
     {
         protected readonly PrivateKey[] _keys;
+
+        /// <summary>
+        /// A list of <see cref="Address"/>es used for testing derived from <c>_keys</c>.
+        /// </summary>
         protected readonly Address[] _addr;
+
+        /// <summary>
+        /// A list of <see cref="Currency"><c>Currencies</c></see> used for testing:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         <c>_currencies[0]</c>: Legacy C0L with <c>_addresses[0]</c> as its minter.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_currencies[1]</c>: Legacy C1L with <c>_addresses[0]</c> and
+        ///         <c>_addresses[1]</c> as its minters.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_currencies[2]</c>: Legacy C2L with no minters.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_currencies[3]</c>: Uncapped C3U with <c>_addresses[0]</c> as its minter.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_currencies[4]</c>: Capped C4C with <c>_addresses[0]</c> as its minter.
+        ///     </description></item>
+        /// </list>
+        /// Each <see cref="Currency"/> has zero decimal places.
+        /// </summary>
         protected readonly Currency[] _currencies;
+
+        /// <summary>
+        /// An initial <see cref="IWorld"/> state set up for testing:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         <c>_addresses[0]</c>: Has 5 C0L, 10 C1L, 5 C3U.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_addresses[1]</c>: Has 15 C1L, 20 C2L.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Validators: Each address is a validator of power 1.
+        ///     </description></item>
+        /// </list>
+        /// </summary>
         protected readonly IWorld _initWorld;
         protected readonly IActionContext _initContext;
 
@@ -36,6 +78,7 @@ namespace Libplanet.Tests.Action
                 new PrivateKey(),
                 new PrivateKey(),
                 new PrivateKey(),
+                new PrivateKey(),
             };
 
             _addr = _keys.Select(key => key.Address).ToArray();
@@ -43,12 +86,12 @@ namespace Libplanet.Tests.Action
             _currencies = new[]
             {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Legacy("FOO", 0, _addr[0]),
-                Currency.Legacy("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
-                Currency.Legacy("BAZ", 0, null),
+                Currency.Legacy("C0L", 0, _addr[0]),
+                Currency.Legacy("C1L", 0, _addr.Take(2).ToImmutableHashSet()),
+                Currency.Legacy("C2L", 0, null),
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Uncapped("QUX", 0, minter: _addr[0]),
-                Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
+                Currency.Uncapped("C3U", 0, minter: _addr[0]),
+                Currency.Capped("C4C", 0, (100, 0), minter: _addr[0]),
             };
 
             // FIXME: Should be tested on both legacy and modern.
@@ -62,7 +105,7 @@ namespace Libplanet.Tests.Action
                     .Select(key => new Validator(key.PublicKey, 1))
                     .ToList())));
 
-            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State  Validators", "Address");
+            output.WriteLine("Fixtures  {0,-42}  C0L  C1L  C2L  C3U  State  Validators", "Address");
             int i = 0;
             foreach (Address a in _addr)
             {
@@ -199,7 +242,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public virtual void MintAsset()
+        public void MintAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 _initWorld.MintAsset(_initContext, _addr[0], Zero(0))
@@ -210,31 +253,35 @@ namespace Libplanet.Tests.Action
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (FOO) allows only _addr[0] to mint
+            // currencies[0] (C0L) allows only _addr[0] to mint
             delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
             Assert.Equal(Value(0, 15), delta0.GetBalance(_addr[0], _currencies[0]));
 
-            // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
+            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
             delta0 = delta0.MintAsset(context0, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 25), delta0.GetBalance(_addr[1], _currencies[1]));
 
-            // currencies[2] (BAZ) allows everyone to mint
+            // currencies[2] (C2L) allows everyone to mint
             delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (FOO) disallows _addr[1] to mint
+            // currencies[0] (C0L) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.MintAsset(context1, _addr[1], Value(0, 10)));
 
-            // currencies[1] (BAR) allows _addr[0] & _addr[1] to mint
+            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
             delta1 = delta1.MintAsset(context1, _addr[0], Value(1, 20));
             Assert.Equal(Value(1, 30), delta1.GetBalance(_addr[0], _currencies[1]));
 
-            // currencies[2] (BAZ) allows everyone to mint
+            // currencies[2] (C2L) allows everyone to mint
             delta1 = delta1.MintAsset(context1, _addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[2], _currencies[2]));
+
+            // currencies[4] (C4C) has a cap of 100
+            Assert.Throws<SupplyOverflowException>(
+                () => _initWorld.MintAsset(_initContext, _addr[0], Value(4, 200)));
         }
 
         [Fact]
@@ -252,29 +299,29 @@ namespace Libplanet.Tests.Action
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (FOO) allows only _addr[0] to burn
+            // currencies[0] (C0L) allows only _addr[0] to burn
             delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
             Assert.Equal(Value(0, 1), delta0.GetBalance(_addr[0], _currencies[0]));
 
-            // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
+            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 5), delta0.GetBalance(_addr[1], _currencies[1]));
 
-            // currencies[2] (BAZ) allows everyone to burn
+            // currencies[2] (C2L) allows everyone to burn
             delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (FOO) disallows _addr[1] to burn
+            // currencies[0] (C0L) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.BurnAsset(context1, _addr[0], Value(0, 5)));
 
-            // currencies[1] (BAR) allows _addr[0] & _addr[1] to burn
+            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
             delta1 = delta1.BurnAsset(context1, _addr[1], Value(1, 10));
             Assert.Equal(Value(1, 5), delta1.GetBalance(_addr[1], _currencies[1]));
 
-            // currencies[2] (BAZ) allows everyone to burn
+            // currencies[2] (C2L) allows everyone to burn
             delta1 = delta1.BurnAsset(context1, _addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
         }
