@@ -14,6 +14,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Blocks;
@@ -293,10 +294,21 @@ namespace Libplanet.Tests.Action
                 _txFx.Address5,
             };
 
-            Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IWorld world = new World(MockWorldState.CreateLegacy(stateStore)
+                .SetBalance(addresses[0], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[1], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[2], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[3], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[4], DumbAction.DumbCurrency * 100));
+            ITrie trie = stateStore.Commit(world.Trie);
+
+            Block genesis = ProposeGenesisBlock(
+                TestUtils.GenesisProposer,
+                stateRootHash: trie.Hash);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
+                stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
             Transaction[] block1Txs =
@@ -356,7 +368,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 GenesisProposer,
                 block1Txs);
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
+            IWorld previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
@@ -385,27 +397,31 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            previousState = actionEvaluator.PrepareInitialDelta(null);
+            previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
-            var dirty1 = evals1.Last().OutputState.Trie
-                .Diff(evals1.First().InputContext.PreviousState.Trie)
-                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
-            Assert.Equal((Text)"A", dirty1[ToStateKey(addresses[0])]);
-            Assert.Equal((Text)"B", dirty1[ToStateKey(addresses[1])]);
-            Assert.Equal((Text)"C", dirty1[ToStateKey(addresses[2])]);
+            var output1 = new WorldBaseState(evals1.Last().OutputState.Trie, stateStore);
             Assert.Equal(
-                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, -5, 0).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[0], DumbAction.DumbCurrency)]);
+                (Text)"A",
+                output1.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[0]));
             Assert.Equal(
-                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[1], DumbAction.DumbCurrency)]);
+                (Text)"B",
+                output1.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[1]));
             Assert.Equal(
-                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[2], DumbAction.DumbCurrency)]);
+                (Text)"C",
+                output1.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[2]));
             Assert.Equal(
-                (Integer)new FungibleAssetValue(DumbAction.DumbCurrency, 5, 0).RawValue,
-                dirty1[ToFungibleAssetKey(addresses[3], DumbAction.DumbCurrency)]);
+                new FungibleAssetValue(DumbAction.DumbCurrency, 95, 0),
+                output1.GetBalance(addresses[0], DumbAction.DumbCurrency));
+            Assert.Equal(
+                new FungibleAssetValue(DumbAction.DumbCurrency, 100, 0),
+                output1.GetBalance(addresses[1], DumbAction.DumbCurrency));
+            Assert.Equal(
+                new FungibleAssetValue(DumbAction.DumbCurrency, 100, 0),
+                output1.GetBalance(addresses[2], DumbAction.DumbCurrency));
+            Assert.Equal(
+                new FungibleAssetValue(DumbAction.DumbCurrency, 105, 0),
+                output1.GetBalance(addresses[3], DumbAction.DumbCurrency));
 
             Transaction[] block2Txs =
             {
@@ -481,9 +497,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -505,12 +521,16 @@ namespace Libplanet.Tests.Action
 
             previousState = evals1.Last().OutputState;
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
-            var dirty2 = evals2.Last().OutputState.Trie
-                .Diff(evals2.First().InputContext.PreviousState.Trie)
-                .ToDictionary(kv => kv.Path, kv => kv.SourceValue);
-            Assert.Equal((Text)"A,D", dirty2[ToStateKey(addresses[0])]);
-            Assert.Equal((Text)"E", dirty2[ToStateKey(addresses[3])]);
-            Assert.Equal((Text)"F", dirty2[ToStateKey(addresses[4])]);
+            var output2 = new WorldBaseState(evals2.Last().OutputState.Trie, stateStore);
+            Assert.Equal(
+                (Text)"A,D",
+                output2.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[0]));
+            Assert.Equal(
+                (Text)"E",
+                output2.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[3]));
+            Assert.Equal(
+                (Text)"F",
+                output2.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[4]));
         }
 
         [Fact]
@@ -543,12 +563,18 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IWorld world = new World(MockWorldState.CreateLegacy(stateStore)
+                .SetBalance(addresses[0], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[1], DumbAction.DumbCurrency * 100)
+                .SetBalance(addresses[2], DumbAction.DumbCurrency * 100));
+            ITrie initTrie = stateStore.Commit(world.Trie);
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
+                stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
+            IWorld previousState = actionEvaluator.PrepareInitialDelta(initTrie.Hash);
             var evaluations = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
@@ -564,15 +590,15 @@ namespace Libplanet.Tests.Action
             };
             BigInteger[][] expectedBalances =
             {
-                new BigInteger[] { -5, 5, 0 },
-                new BigInteger[] { -5, 15, -10 },
-                new BigInteger[] { 5, 5, -10 },
-                new BigInteger[] { 5, 5, -10 },
+                new BigInteger[] { 95, 105, 100 },
+                new BigInteger[] { 95, 115, 90 },
+                new BigInteger[] { 105, 105, 90 },
+                new BigInteger[] { 105, 105, 90 },
             };
 
             Currency currency = DumbAction.DumbCurrency;
             IValue[] initStates = new IValue[3];
-            BigInteger[] initBalances = new BigInteger[3];
+            BigInteger[] initBalances = new BigInteger[] { 100, 100, 100 };
             for (int i = 0; i < evaluations.Length; i++)
             {
                 IActionEvaluation eval = evaluations[i];
@@ -614,7 +640,7 @@ namespace Libplanet.Tests.Action
                         .GetBalance(a, currency).RawValue));
             }
 
-            previousState = actionEvaluator.PrepareInitialDelta(null);
+            previousState = actionEvaluator.PrepareInitialDelta(initTrie.Hash);
             IWorld delta = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
