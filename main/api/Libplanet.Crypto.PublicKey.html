@@ -107,7 +107,7 @@ Libplanet-backed games/apps too.</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
@@ -153,7 +153,7 @@ ECDSA</a> public key.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">publicKey</span></td>
         <td><p>A valid <span class="xref">System.Byte</span> array that
 encodes an ECDSA public key.  It can be either compressed or
@@ -655,13 +655,13 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <h5 id="Libplanet_Crypto_PublicKey_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Every <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object is immutable.</p>
 </div>
@@ -873,7 +873,7 @@ public bool Verify(IReadOnlyList&lt;byte&gt; message, IReadOnlyList&lt;byte&gt; 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">message</span></td>
         <td><p>A original plaintext message that the <code data-dev-comment-type="paramref" class="paramref">signature</code>
 tries to prove its authenticity.  I.e., an argument data passed to
@@ -881,7 +881,7 @@ tries to prove its authenticity.  I.e., an argument data passed to
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">signature</span></td>
         <td><p>A signature which tries to authenticity of
 <code data-dev-comment-type="paramref" class="paramref">message</code>.  I.e., a data that <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Sign_System_Byte___">Sign(Byte[])</a> or

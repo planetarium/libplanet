@@ -89,7 +89,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetHashCode()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
@@ -98,7 +98,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
@@ -123,7 +123,7 @@
   <h4 id="Libplanet_Common_ByteUtil_CalculateHashCode_System_Byte___" data-uid="Libplanet.Common.ByteUtil.CalculateHashCode(System.Byte[])">CalculateHashCode(Byte[])</h4>
   <div class="markdown level1 summary"><p>Calculates a deterministic hash code from a given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  It is mostly used to implement
-<span class="xref">System.Object.GetHashCode()</span> method.</p>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">GetHashCode()</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -160,7 +160,7 @@ determines (or encodes) an object, to calculate a hash code.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>A hash code determined from the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  For equivalent <code data-dev-comment-type="paramref" class="paramref">bytes</code>,
 the same hash code is returned.  It must not be <span class="xref">null</span>.</p>
@@ -178,7 +178,7 @@ the same hash code is returned.  It must not be <span class="xref">null</span>.<
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code> is <span class="xref">null</span>.</p>
 </td>
@@ -448,7 +448,7 @@ represented in hexadecimal.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
@@ -501,13 +501,13 @@ public static bool Satisfies(IReadOnlyList&lt;byte&gt; hashDigest, long difficul
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
         <td><p>A hash digest to test.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="xref">System.Int64</span></td>
         <td><span class="parametername">difficulty</span></td>
         <td><p>The difficulty to compute target number.</p>
 </td>
@@ -560,13 +560,13 @@ public static bool TimingSafelyCompare(IReadOnlyList&lt;byte&gt; left, IReadOnly
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">left</span></td>
         <td><p>A byte array.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">right</span></td>
         <td><p>Another byte array.</p>
 </td>
