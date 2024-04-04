@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
+using Libplanet.Action.Tests;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -34,23 +34,26 @@ namespace Libplanet.Tests.Action
         /// A list of <see cref="Currency"><c>Currencies</c></see> used for testing:
         /// <list type="bullet">
         ///     <item><description>
-        ///         <c>_currencies[0]</c>: Legacy C0L with <c>_addresses[0]</c> as its minter.
+        ///         <c>_currencies[0]</c>: Legacy AAA with no minters.
         ///     </description></item>
         ///     <item><description>
-        ///         <c>_currencies[1]</c>: Legacy C1L with <c>_addresses[0]</c> and
-        ///         <c>_addresses[1]</c> as its minters.
+        ///         <c>_currencies[1]</c>: Legacy BBB with two decimal places and no minters.
         ///     </description></item>
         ///     <item><description>
-        ///         <c>_currencies[2]</c>: Legacy C2L with no minters.
+        ///         <c>_currencies[2]</c>: Legacy CCC with <c>_addresses[0]</c> as its minter.
         ///     </description></item>
         ///     <item><description>
-        ///         <c>_currencies[3]</c>: Uncapped C3U with <c>_addresses[0]</c> as its minter.
+        ///         <c>_currencies[3]</c>: Legacy DDD with <c>_addresses[0]</c>
+        ///         and <c>_addresses[1]</c> as its minters.
         ///     </description></item>
         ///     <item><description>
-        ///         <c>_currencies[4]</c>: Capped C4C with <c>_addresses[0]</c> as its minter.
+        ///         <c>_currencies[3]</c>: Uncapped EEE with <c>_addresses[0]</c> as its minter.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <c>_currencies[4]</c>: Capped FFF with <c>_addresses[0]</c> as its minter.
         ///     </description></item>
         /// </list>
-        /// Each <see cref="Currency"/> has zero decimal places.
+        /// Unless explicitly specified, each <see cref="Currency"/> has zero decimal places.
         /// </summary>
         protected readonly Currency[] _currencies;
 
@@ -58,10 +61,10 @@ namespace Libplanet.Tests.Action
         /// An initial <see cref="IWorld"/> state set up for testing:
         /// <list type="bullet">
         ///     <item><description>
-        ///         <c>_addresses[0]</c>: Has 5 C0L, 10 C1L, 5 C3U.
+        ///         <c>_addresses[0]</c>: Has 5 AAA, 10 CCC, 5 EEE.
         ///     </description></item>
         ///     <item><description>
-        ///         <c>_addresses[1]</c>: Has 15 C1L, 20 C2L.
+        ///         <c>_addresses[1]</c>: Has 15 CCC, 20 DDD.
         ///     </description></item>
         ///     <item><description>
         ///         Validators: Each address is a validator of power 1.
@@ -75,8 +78,8 @@ namespace Libplanet.Tests.Action
         {
             _keys = new[]
             {
-                new PrivateKey(),
-                new PrivateKey(),
+                Currencies.MinterAKey,
+                Currencies.MinterBKey,
                 new PrivateKey(),
                 new PrivateKey(),
             };
@@ -85,40 +88,42 @@ namespace Libplanet.Tests.Action
 
             _currencies = new[]
             {
-#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Legacy("C0L", 0, _addr[0]),
-                Currency.Legacy("C1L", 0, _addr.Take(2).ToImmutableHashSet()),
-                Currency.Legacy("C2L", 0, null),
-#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Uncapped("C3U", 0, minter: _addr[0]),
-                Currency.Capped("C4C", 0, (100, 0), minter: _addr[0]),
+                Currencies.CurrencyA,
+                Currencies.CurrencyB,
+                Currencies.CurrencyC,
+                Currencies.CurrencyD,
+                Currencies.CurrencyE,
+                Currencies.CurrencyF,
             };
 
             // FIXME: Should be tested on both legacy and modern.
             _initWorld = new World(MockWorldState.CreateLegacy()
                 .SetBalance(_addr[0], _currencies[0], 5)
-                .SetBalance(_addr[0], _currencies[1], 10)
-                .SetBalance(_addr[0], _currencies[3], 5)
-                .SetBalance(_addr[1], _currencies[1], 15)
-                .SetBalance(_addr[1], _currencies[2], 20)
+                .SetBalance(_addr[0], _currencies[2], 10)
+                .SetBalance(_addr[0], _currencies[4], 5)
+                .SetBalance(_addr[1], _currencies[2], 15)
+                .SetBalance(_addr[1], _currencies[3], 20)
                 .SetValidatorSet(new ValidatorSet(_keys
                     .Select(key => new Validator(key.PublicKey, 1))
                     .ToList())));
 
-            output.WriteLine("Fixtures  {0,-42}  C0L  C1L  C2L  C3U  State  Validators", "Address");
+            output.WriteLine("Fixtures  {0,-42}  AAA  BBB  CCC  DDD  EEE  FFF", "Address");
             int i = 0;
-            foreach (Address a in _addr)
+            foreach (Address address in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}  {6}",
+                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}  {6,3},  {7,3}",
                     i++,
-                    a,
-                    _initWorld.GetBalance(a, _currencies[0]),
-                    _initWorld.GetBalance(a, _currencies[1]),
-                    _initWorld.GetBalance(a, _currencies[2]),
-                    _initWorld.GetBalance(a, _currencies[3]),
-                    _initWorld.GetValidatorSet());
+                    address,
+                    _initWorld.GetBalance(address, _currencies[0]),
+                    _initWorld.GetBalance(address, _currencies[1]),
+                    _initWorld.GetBalance(address, _currencies[2]),
+                    _initWorld.GetBalance(address, _currencies[3]),
+                    _initWorld.GetBalance(address, _currencies[4]),
+                    _initWorld.GetBalance(address, _currencies[5]));
             }
+
+            output.WriteLine("Validators: {0}", _initWorld.GetValidatorSet());
 
             _initContext = CreateContext(_initWorld, _addr[0]);
         }
@@ -130,38 +135,53 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void InitialSetup()
         {
-            Assert.Equal(Value(2, 20), _initWorld.GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(Value(2, 0), _initWorld.GetBalance(_addr[2], _currencies[2]));
+            // All non-zero balances.
             Assert.Equal(Value(0, 5), _initWorld.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(1, 10), _initWorld.GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(Zero(2), _initWorld.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Value(2, 10), _initWorld.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Value(4, 5), _initWorld.GetBalance(_addr[0], _currencies[4]));
+            Assert.Equal(Value(2, 15), _initWorld.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(3, 20), _initWorld.GetBalance(_addr[1], _currencies[3]));
+
+            // Exhaustive check for the rest.
+            Assert.Equal(Value(1, 0), _initWorld.GetBalance(_addr[0], _currencies[1]));
+            Assert.Equal(Value(3, 0), _initWorld.GetBalance(_addr[0], _currencies[3]));
+            Assert.Equal(Value(5, 0), _initWorld.GetBalance(_addr[0], _currencies[5]));
+
+            Assert.Equal(Value(0, 0), _initWorld.GetBalance(_addr[1], _currencies[0]));
+            Assert.Equal(Value(1, 0), _initWorld.GetBalance(_addr[1], _currencies[1]));
+            Assert.Equal(Value(4, 0), _initWorld.GetBalance(_addr[1], _currencies[4]));
+            Assert.Equal(Value(5, 0), _initWorld.GetBalance(_addr[1], _currencies[5]));
+
+            Assert.Equal(Value(0, 0), _initWorld.GetBalance(_addr[2], _currencies[0]));
+            Assert.Equal(Value(1, 0), _initWorld.GetBalance(_addr[2], _currencies[1]));
+            Assert.Equal(Value(2, 0), _initWorld.GetBalance(_addr[2], _currencies[2]));
+            Assert.Equal(Value(3, 0), _initWorld.GetBalance(_addr[2], _currencies[3]));
+            Assert.Equal(Value(4, 0), _initWorld.GetBalance(_addr[2], _currencies[4]));
+            Assert.Equal(Value(5, 0), _initWorld.GetBalance(_addr[2], _currencies[5]));
+
+            Assert.Equal(Value(0, 0), _initWorld.GetBalance(_addr[3], _currencies[0]));
+            Assert.Equal(Value(1, 0), _initWorld.GetBalance(_addr[3], _currencies[1]));
+            Assert.Equal(Value(2, 0), _initWorld.GetBalance(_addr[3], _currencies[2]));
+            Assert.Equal(Value(3, 0), _initWorld.GetBalance(_addr[3], _currencies[3]));
+            Assert.Equal(Value(4, 0), _initWorld.GetBalance(_addr[3], _currencies[4]));
+            Assert.Equal(Value(5, 0), _initWorld.GetBalance(_addr[3], _currencies[5]));
         }
 
         [Fact]
         public virtual void FungibleAssets()
         {
-            IWorld a = _initWorld.TransferAsset(
-                _initContext, _addr[1], _addr[2], Value(2, 5));
-            Assert.Equal(Value(2, 15), a.GetBalance(_addr[1], _currencies[2]));
-            Assert.Equal(Value(2, 5), a.GetBalance(_addr[2], _currencies[2]));
-            Assert.Equal(Value(0, 5), a.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(1, 10), a.GetBalance(_addr[0], _currencies[1]));
-            Assert.Equal(Zero(2), a.GetBalance(_addr[0], _currencies[2]));
-            Assert.Equal(Zero(0), a.GetBalance(_addr[1], _currencies[0]));
-            Assert.Equal(Value(1, 15), a.GetBalance(_addr[1], _currencies[1]));
-            Assert.Equal(Zero(0), a.GetBalance(_addr[2], _currencies[0]));
-            Assert.Equal(Zero(1), a.GetBalance(_addr[2], _currencies[1]));
+            IWorld world = _initWorld.TransferAsset(
+                _initContext, _addr[1], _addr[2], Value(3, 5));
+            Assert.Equal(Value(0, 5), world.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(2, 10), world.GetBalance(_addr[0], _currencies[2]));
+            Assert.Equal(Value(4, 5), world.GetBalance(_addr[0], _currencies[4]));
+            Assert.Equal(Value(2, 15), world.GetBalance(_addr[1], _currencies[2]));
+            Assert.Equal(Value(3, 15), world.GetBalance(_addr[1], _currencies[3]));
+            Assert.Equal(Value(3, 5), world.GetBalance(_addr[2], _currencies[3]));
 
-            var trieDiff = a.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                .Diff(_initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie)
-                .ToList();
-            Assert.Single(trieDiff.Where(elem =>
-                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[1], _currencies[2]))));
-            Assert.Single(trieDiff.Where(elem =>
-                elem.Path.Equals(KeyConverters.ToFungibleAssetKey(_addr[2], _currencies[2]))));
             var accountDiff = AccountDiff.Create(
                 _initContext.PreviousState.GetAccount(ReservedAddresses.LegacyAccount).Trie,
-                a.GetAccount(ReservedAddresses.LegacyAccount).Trie);
+                world.GetAccount(ReservedAddresses.LegacyAccount).Trie);
             Assert.Empty(accountDiff.StateDiffs);
         }
 
@@ -169,7 +189,7 @@ namespace Libplanet.Tests.Action
         public virtual void TransferAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Zero(0))
+                _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 0))
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, -1))
@@ -245,85 +265,80 @@ namespace Libplanet.Tests.Action
         public void MintAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.MintAsset(_initContext, _addr[0], Zero(0))
-            );
+                _initWorld.MintAsset(_initContext, _addr[0], Value(0, 0)));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.MintAsset(_initContext, _addr[0], Value(0, -1))
-            );
+                _initWorld.MintAsset(_initContext, _addr[0], Value(0, -1)));
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (C0L) allows only _addr[0] to mint
-            delta0 = delta0.MintAsset(context0, _addr[0], Value(0, 10));
-            Assert.Equal(Value(0, 15), delta0.GetBalance(_addr[0], _currencies[0]));
+            // currencies[0] (AAA) allows everyone to mint
+            delta0 = delta0.MintAsset(context0, _addr[2], Value(0, 10));
+            Assert.Equal(Value(0, 10), delta0.GetBalance(_addr[2], _currencies[0]));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
-            delta0 = delta0.MintAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 25), delta0.GetBalance(_addr[1], _currencies[1]));
+            // currencies[2] (CCC) allows only _addr[0] to mint
+            delta0 = delta0.MintAsset(context0, _addr[0], Value(2, 10));
+            Assert.Equal(Value(2, 20), delta0.GetBalance(_addr[0], _currencies[2]));
 
-            // currencies[2] (C2L) allows everyone to mint
-            delta0 = delta0.MintAsset(context0, _addr[2], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to mint
+            delta0 = delta0.MintAsset(context0, _addr[1], Value(3, 10));
+            Assert.Equal(Value(3, 30), delta0.GetBalance(_addr[1], _currencies[3]));
+
+            // currencies[5] (FFF) has a cap of 100
+            Assert.Throws<SupplyOverflowException>(
+                () => _initWorld.MintAsset(_initContext, _addr[0], Value(5, 200)));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (C0L) disallows _addr[1] to mint
+            // currencies[0] (DDD) allows everyone to mint
+            delta1 = delta1.MintAsset(context1, _addr[2], Value(0, 10));
+            Assert.Equal(Value(0, 10), delta1.GetBalance(_addr[2], _currencies[0]));
+
+            // currencies[2] (CCC) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.MintAsset(context1, _addr[1], Value(0, 10)));
+                delta1.MintAsset(context1, _addr[1], Value(2, 10)));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to mint
-            delta1 = delta1.MintAsset(context1, _addr[0], Value(1, 20));
-            Assert.Equal(Value(1, 30), delta1.GetBalance(_addr[0], _currencies[1]));
-
-            // currencies[2] (C2L) allows everyone to mint
-            delta1 = delta1.MintAsset(context1, _addr[2], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[2], _currencies[2]));
-
-            // currencies[4] (C4C) has a cap of 100
-            Assert.Throws<SupplyOverflowException>(
-                () => _initWorld.MintAsset(_initContext, _addr[0], Value(4, 200)));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to mint
+            delta1 = delta1.MintAsset(context1, _addr[0], Value(3, 20));
+            Assert.Equal(Value(3, 20), delta1.GetBalance(_addr[0], _currencies[3]));
         }
 
         [Fact]
         public virtual void BurnAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Zero(0))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 0)));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, -1))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, -1)));
             Assert.Throws<InsufficientBalanceException>(() =>
-                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 6))
-            );
+                _initWorld.BurnAsset(_initContext, _addr[0], Value(0, 6)));
 
             IWorld delta0 = _initWorld;
             IActionContext context0 = _initContext;
-            // currencies[0] (C0L) allows only _addr[0] to burn
-            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 4));
-            Assert.Equal(Value(0, 1), delta0.GetBalance(_addr[0], _currencies[0]));
+            // currencies[0] (AAA) allows everyone to burn
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 3), delta0.GetBalance(_addr[0], _currencies[0]));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
-            delta0 = delta0.BurnAsset(context0, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 5), delta0.GetBalance(_addr[1], _currencies[1]));
+            // currencies[2] (CCC) allows only _addr[0] to burn
+            delta0 = delta0.BurnAsset(context0, _addr[0], Value(2, 4));
+            Assert.Equal(Value(2, 6), delta0.GetBalance(_addr[0], _currencies[2]));
 
-            // currencies[2] (C2L) allows everyone to burn
-            delta0 = delta0.BurnAsset(context0, _addr[1], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to burn
+            delta0 = delta0.BurnAsset(context0, _addr[1], Value(3, 8));
+            Assert.Equal(Value(3, 12), delta0.GetBalance(_addr[1], _currencies[3]));
 
             IWorld delta1 = _initWorld;
             IActionContext context1 = CreateContext(delta1, _addr[1]);
-            // currencies[0] (C0L) disallows _addr[1] to burn
+            // currencies[0] (AAA) allows everyone to burn
+            delta1 = delta1.BurnAsset(context1, _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 3), delta1.GetBalance(_addr[0], _currencies[0]));
+
+            // currencies[2] (CCC) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
-                delta1.BurnAsset(context1, _addr[0], Value(0, 5)));
+                delta1.BurnAsset(context1, _addr[0], Value(2, 4)));
 
-            // currencies[1] (C1L) allows _addr[0] & _addr[1] to burn
-            delta1 = delta1.BurnAsset(context1, _addr[1], Value(1, 10));
-            Assert.Equal(Value(1, 5), delta1.GetBalance(_addr[1], _currencies[1]));
-
-            // currencies[2] (C2L) allows everyone to burn
-            delta1 = delta1.BurnAsset(context1, _addr[1], Value(2, 10));
-            Assert.Equal(Value(2, 10), delta1.GetBalance(_addr[1], _currencies[2]));
+            // currencies[3] (DDD) allows _addr[0] & _addr[1] to burn
+            delta1 = delta1.BurnAsset(context1, _addr[1], Value(3, 8));
+            Assert.Equal(Value(3, 12), delta1.GetBalance(_addr[1], _currencies[3]));
         }
 
         [Fact]
@@ -380,7 +395,5 @@ namespace Libplanet.Tests.Action
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
-
-        protected FungibleAssetValue Zero(int currencyIndex) => Value(currencyIndex, 0);
     }
 }
