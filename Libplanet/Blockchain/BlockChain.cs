@@ -385,8 +385,9 @@ namespace Libplanet.Blockchain
             if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
             {
                 throw new InvalidBlockStateRootHashException(
-                    "Given block #{Index} {Hash} has a state root hash {ExpectedStateRootHash} " +
-                    "that is different from the calculated state root hash {ActualStateRootHash}",
+                    $"Given block #{genesisBlock.Index} {genesisBlock.Hash} has " +
+                    $"a state root hash {genesisBlock.StateRootHash} that is different " +
+                    $"from the calculated state root hash {computedStateRootHash}",
                     genesisBlock.StateRootHash,
                     computedStateRootHash);
             }
