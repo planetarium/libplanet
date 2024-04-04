@@ -21,6 +21,7 @@ namespace Libplanet.Types.Blocks
 
         // Block fields:
         private static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 }); // 'H'
+        private static readonly Binary PreEvalHeaderKey = new Binary(new byte[] { 0x45 }); // 'E'
         private static readonly Binary TransactionsKey = new Binary(new byte[] { 0x54 }); // 'T'
         private static readonly Binary EvidenceKey = new Binary(new byte[] { 0x56 }); // 'V'
 
@@ -174,6 +175,27 @@ namespace Libplanet.Types.Blocks
                 MarshalTransactions(block.Transactions),
                 MarshalEvidence(block.Evidence));
 
+        public static Dictionary MarshalPreEvaluationBlock(
+            Dictionary marshaledPreEvaluationBlockHeader,
+            List marshaledTransactions
+        )
+        {
+            Dictionary dict = Dictionary.Empty
+                .Add(PreEvalHeaderKey, marshaledPreEvaluationBlockHeader);
+            if (marshaledTransactions.Any())
+            {
+                dict = dict.Add(TransactionsKey, marshaledTransactions);
+            }
+
+            return dict;
+        }
+
+        public static Dictionary MarshalPreEvaluationBlock(
+            this PreEvaluationBlock preEvaluationBlock) =>
+            MarshalPreEvaluationBlock(
+                MarshalPreEvaluationBlockHeader(preEvaluationBlock.Header),
+                MarshalTransactions(preEvaluationBlock.Transactions));
+
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             (Integer)marshaledMetadata[IndexKey];
 
@@ -290,6 +312,14 @@ namespace Libplanet.Types.Blocks
             IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
             IReadOnlyList<EvidenceBase> evidence = UnmarshalBlockEvidence(marshaled);
             return new Block(header, txs, evidence);
+        }
+
+        public static PreEvaluationBlock UnmarshalPreEvaluationBlock(Dictionary marshaled)
+        {
+            PreEvaluationBlockHeader header
+                = UnmarshalPreEvaluationBlockHeader((Dictionary)marshaled[PreEvalHeaderKey]);
+            IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
+            return new PreEvaluationBlock(header, txs);
         }
     }
 }
