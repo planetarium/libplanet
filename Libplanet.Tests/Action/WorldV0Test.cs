@@ -41,11 +41,11 @@ namespace Libplanet.Tests.Action
                 _initContext,
                 _addr[0],
                 _addr[1],
-                Value(0, 6));
-            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
+                Value(0, 4));
+            Assert.Equal(Value(0, 4), a.GetBalance(_addr[1], _currencies[0]));
             IActionContext c = CreateContext(a, _addr[0]);
-            a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 5));
-            Assert.Equal(Value(0, 11), a.GetBalance(_addr[1], _currencies[0]));
+            a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 2));
+            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]

@@ -198,13 +198,13 @@ namespace Libplanet.Tests.Action
                 _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 6))
             );
 
-            IWorld a = _initWorld.TransferAsset(
+            IWorld world = _initWorld.TransferAsset(
                 _initContext,
                 _addr[0],
                 _addr[1],
-                Value(0, 6));
-            Assert.Equal(Value(0, -1), a.GetBalance(_addr[0], _currencies[0]));
-            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
+                Value(0, 4));
+            Assert.Equal(Value(0, 1), world.GetBalance(_addr[0], _currencies[0]));
+            Assert.Equal(Value(0, 4), world.GetBalance(_addr[1], _currencies[0]));
         }
 
         [Fact]
@@ -222,39 +222,69 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey
             );
 
-            DumbAction action = DumbAction.Create((_addr[0], "a"), (_addr[1], _addr[0], 5));
+            DumbAction action = DumbAction.Create(null, (null, _addr[1], 20));
             Transaction tx = Transaction.Create(
                 0,
                 _keys[0],
                 chain.Genesis.Hash,
                 new[] { action }.ToPlainValues()
             );
-            var preEvalBlock = TestUtils.ProposeNext(
+
+            var block1PreEval = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
-            var stateRootHash = chain.DetermineBlockStateRootHash(preEvalBlock, out _);
-            var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
-            Block block = ProtocolVersion < 2
-                ? new Block(preEvalBlock, (stateRootHash, null, hash))
-                : chain.EvaluateAndSign(preEvalBlock, privateKey);
+            var stateRootHash = chain.DetermineBlockStateRootHash(block1PreEval, out _);
+            var hash = block1PreEval.Header.DeriveBlockHash(stateRootHash, null);
+            Block block1 = ProtocolVersion < 2
+                ? new Block(block1PreEval, (stateRootHash, null, hash))
+                : chain.EvaluateAndSign(block1PreEval, privateKey);
             chain.Append(
-                block,
-                TestUtils.CreateBlockCommit(block)
+                block1,
+                TestUtils.CreateBlockCommit(block1));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 0,
+                chain
+                    .GetWorldState()
+                    .GetBalance(_addr[0], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 20,
+                chain
+                    .GetWorldState()
+                    .GetBalance(_addr[1], DumbAction.DumbCurrency));
+
+            action = DumbAction.Create(null, (_addr[1], _addr[0], 5));
+            tx = Transaction.Create(
+                1,
+                _keys[0],
+                chain.Genesis.Hash,
+                new[] { action }.ToPlainValues()
             );
+            var block2PreEval = TestUtils.ProposeNext(
+                chain.Tip,
+                new[] { tx },
+                miner: privateKey.PublicKey,
+                protocolVersion: ProtocolVersion,
+                lastCommit: chain.GetBlockCommit(chain.Tip.Index));
+            stateRootHash = chain.DetermineBlockStateRootHash(block2PreEval, out _);
+            hash = block2PreEval.Header.DeriveBlockHash(stateRootHash, null);
+            Block block2 = ProtocolVersion < 2
+                ? new Block(block2PreEval, (stateRootHash, null, hash))
+                : chain.EvaluateAndSign(block2PreEval, privateKey);
+            chain.Append(
+                block2,
+                TestUtils.CreateBlockCommit(block2));
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
                 chain
                     .GetWorldState()
-                    .GetBalance(_addr[0], DumbAction.DumbCurrency)
-            );
+                    .GetBalance(_addr[0], DumbAction.DumbCurrency));
             Assert.Equal(
-                DumbAction.DumbCurrency * -5,
+                DumbAction.DumbCurrency * 15,
                 chain
                     .GetWorldState()
-                    .GetBalance(_addr[1], DumbAction.DumbCurrency)
-            );
+                    .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
             return chain;
         }
