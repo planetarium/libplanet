@@ -36,36 +36,19 @@ namespace Libplanet.Store
     /// <para>The following query string parameters are supported:</para>
     /// <list type="table">
     /// <item>
-    /// <term><c>journal</c></term>
-    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
-    /// parameter.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>index-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
-    /// <c>indexCacheSize</c> parameter.  50000 by default.</description>
-    /// </item>
-    /// <item>
     /// <term><c>block-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to <see cref="DefaultStore(string, int, int, bool)"/>'s
     /// <c>blockCacheSize</c> parameter.  512 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>tx-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to <see cref="DefaultStore(string, int, int, bool)"/>'s
     /// <c>txCacheSize</c> parameter.  1024 by default.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>flush</c></term>
-    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
-    /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
     /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
+    /// <see cref="DefaultStore(string, int, int, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
     /// <item>
@@ -123,13 +106,9 @@ namespace Libplanet.Store
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
             string path,
-            bool journal = true,
-            int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            bool flush = true,
-            bool readOnly = false
-        )
+            bool readOnly = false)
         {
             _logger = Log.ForContext<DefaultStore>();
 
@@ -741,20 +720,14 @@ namespace Libplanet.Store
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
-            bool journal = query.GetBoolean("journal", true);
-            int indexCacheSize = query.GetInt32("index-cache", 50000);
             int blockCacheSize = query.GetInt32("block-cache", 512);
             int txCacheSize = query.GetInt32("tx-cache", 1024);
-            bool flush = query.GetBoolean("flush", true);
             bool readOnly = query.GetBoolean("readonly");
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
             var store = new DefaultStore(
                 storeUri.LocalPath,
-                journal,
-                indexCacheSize,
                 blockCacheSize,
                 txCacheSize,
-                flush,
                 readOnly);
             var stateStore = new TrieStateStore(
                 new DefaultKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)));
