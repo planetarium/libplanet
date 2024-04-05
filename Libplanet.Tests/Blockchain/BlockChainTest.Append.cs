@@ -202,25 +202,39 @@ namespace Libplanet.Tests.Blockchain
                 Assert.False(e.Fail);
                 Assert.Equal(block2.Hash, e.BlockHash);
                 Assert.Equal(tx.Id, e.TxId);
-                var inputAccount = _blockChain
-                    .GetWorldState(Assert.IsType<HashDigest<SHA256>>(e.InputState))
-                    .GetAccountState(ReservedAddresses.LegacyAccount);
-                var outputAccount = _blockChain
-                    .GetWorldState(Assert.IsType<HashDigest<SHA256>>(e.OutputState))
-                    .GetAccountState(ReservedAddresses.LegacyAccount);
-
-                var trieDiff = outputAccount.Trie.Diff(inputAccount.Trie).ToList();
-                const byte underScore = 95;  // '_'
-                Assert.Empty(trieDiff.Where(
-                    elem => elem.Path.ByteArray.First() == underScore));
             }
+
+            TxExecution txe = getTxExecution(block2.Hash, txs[0].Id);
+            var outputWorld = _blockChain
+                .GetWorldState(Assert.IsType<HashDigest<SHA256>>(txe.OutputState));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 100,
+                outputWorld.GetBalance(addresses[0], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 100,
+                outputWorld.GetBalance(addresses[1], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 200,
+                outputWorld.GetTotalSupply(DumbAction.DumbCurrency));
+            txe = getTxExecution(block2.Hash, txs[1].Id);
+            outputWorld = _blockChain
+                .GetWorldState(Assert.IsType<HashDigest<SHA256>>(txe.OutputState));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 100,
+                outputWorld.GetBalance(addresses[2], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 100,
+                outputWorld.GetBalance(addresses[3], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 400,
+                outputWorld.GetTotalSupply(DumbAction.DumbCurrency));
 
             var pk = new PrivateKey();
             Transaction tx1Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    DumbAction.Create((pk.Address, "foo"), (pk.Address, addresses[1], 10)),
-                    DumbAction.Create((addresses[0], "bar"), (pk.Address, addresses[2], 20)),
+                    DumbAction.Create((pk.Address, "foo"), (addresses[0], addresses[1], 10)),
+                    DumbAction.Create((addresses[0], "bar"), (addresses[0], addresses[2], 20)),
                 },
                 nonce: 0,
                 privateKey: pk
@@ -238,7 +252,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction tx3Transfer = _fx.MakeTransaction(
                 new[]
                 {
-                    DumbAction.Create((pk.Address, "foo"), (pk.Address, addresses[1], 5)),
+                    DumbAction.Create((pk.Address, "foo"), (addresses[0], addresses[1], 5)),
                 },
                 nonce: 2,
                 privateKey: pk
@@ -270,13 +284,16 @@ namespace Libplanet.Tests.Blockchain
                 new Text("foo,bar"),
                 outputAccount1.GetState(addresses[0]));
             Assert.Equal(
-                DumbAction.DumbCurrency * -30,
+                DumbAction.DumbCurrency * 0,
                 outputWorld1.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
-                DumbAction.DumbCurrency * 10,
+                DumbAction.DumbCurrency * 70,
+                outputWorld1.GetBalance(addresses[0], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 110,
                 outputWorld1.GetBalance(addresses[1], DumbAction.DumbCurrency));
             Assert.Equal(
-                DumbAction.DumbCurrency * 20,
+                DumbAction.DumbCurrency * 120,
                 outputWorld1.GetBalance(addresses[2], DumbAction.DumbCurrency));
 
             var txExecution2 = getTxExecution(block3.Hash, tx2Error.Id);
@@ -294,10 +311,13 @@ namespace Libplanet.Tests.Blockchain
             var outputWorld3 = _blockChain.GetWorldState(
                 Assert.IsType<HashDigest<SHA256>>(txExecution3.OutputState));
             Assert.Equal(
-                DumbAction.DumbCurrency * -35,
+                DumbAction.DumbCurrency * 0,
                 outputWorld3.GetBalance(pk.Address, DumbAction.DumbCurrency));
             Assert.Equal(
-                DumbAction.DumbCurrency * 15,
+                DumbAction.DumbCurrency * 65,
+                outputWorld3.GetBalance(addresses[0], DumbAction.DumbCurrency));
+            Assert.Equal(
+                DumbAction.DumbCurrency * 115,
                 outputWorld3.GetBalance(addresses[1], DumbAction.DumbCurrency));
         }
 

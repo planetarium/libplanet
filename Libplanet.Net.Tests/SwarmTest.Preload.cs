@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests
 
             var action = DumbAction.Create(
                 (address1, "foo"),
-                transfer: (address1, address2, 10));
+                transfer: (null, address2, 10));
 
             minerChain.MakeTransaction(key, new[] { action });
             var block = minerChain.ProposeBlock(
