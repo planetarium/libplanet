@@ -2150,12 +2150,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldExtensions.SetValidator
   nameWithType: IWorldExtensions.SetValidator
-- uid: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  name: TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue, Boolean)
-  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_System_Boolean_
-  commentId: M:Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue,System.Boolean)
-  fullName: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld, Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue, System.Boolean)
-  nameWithType: IWorldExtensions.TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue, Boolean)
+- uid: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld, Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: IWorldExtensions.TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue)
 - uid: Libplanet.Action.State.IWorldExtensions.TransferAsset*
   name: TransferAsset
   href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_
