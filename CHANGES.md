@@ -20,6 +20,8 @@ Version DPoS
  -  (Libplanet.Action) `ActionEvaluator` constructor requires
     `policyBeginBlockActionGetter` and `policyEndBlockActionGetter`
     parameters instead of the `policyBlockActionGetter` parameter.  [[#3701]]
+ -  (Libplanet.Action) Added `SetValidatorSet` method to `IAccount` interface
+    and its implementations.  [[#3730]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,6 +38,7 @@ Version DPoS
 ### CLI tools
 
 [#3701]: https://github.com/planetarium/libplanet/pull/3701
+[#3730]: https://github.com/planetarium/libplanet/pull/3730
 
 
 Version Sloth
