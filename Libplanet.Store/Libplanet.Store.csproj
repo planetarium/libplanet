@@ -24,7 +24,7 @@
     <PackageReference Include="Bencodex" Version="0.16.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
-    <PackageReference Include="LiteDB" Version="5.0.19" />
+    <PackageReference Include="LiteDB" Version="5.0.15" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Zio" Version="0.7.4" />
