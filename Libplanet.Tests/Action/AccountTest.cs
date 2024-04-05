@@ -399,6 +399,42 @@ namespace Libplanet.Tests.Action
             Assert.Equal(0, delta.GetValidatorSet().TotalCount);
         }
 
+        [Fact]
+        public virtual void SetValidatorSet()
+        {
+            var initCount = _keys.Length;
+            var key3 = new PrivateKey().PublicKey;
+            var key4 = new PrivateKey().PublicKey;
+
+            IAccount delta = _initAccount;
+            // delta already has 3 validators
+            Assert.Equal(initCount, delta.GetValidatorSet().TotalCount);
+
+            // remove on validator, add two validators
+            var validators = delta.GetValidatorSet().Validators.ToList();
+            var removedValidator = validators[0];
+            validators.Remove(validators[0]);
+            validators.Add(new Validator(key3, 1));
+            validators.Add(new Validator(key4, 1));
+            delta = delta.SetValidatorSet(new ValidatorSet(validators));
+            Assert.Equal(4, delta.GetValidatorSet().TotalCount);
+            Assert.Contains(
+                delta.GetValidatorSet().Validators,
+                v => v.PublicKey.Equals(validators[0].PublicKey));
+            Assert.Contains(
+                delta.GetValidatorSet().Validators,
+                v => v.PublicKey.Equals(validators[1].PublicKey));
+            Assert.Contains(
+                delta.GetValidatorSet().Validators,
+                v => v.PublicKey.Equals(key3));
+            Assert.Contains(
+                delta.GetValidatorSet().Validators,
+                v => v.PublicKey.Equals(key4));
+            Assert.DoesNotContain(
+                delta.GetValidatorSet().Validators,
+                v => v.PublicKey.Equals(removedValidator.PublicKey));
+        }
+
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
 

@@ -173,5 +173,16 @@ namespace Libplanet.Action.State
         /// <paramref name="validator"/> set.</returns>
         [Pure]
         IAccount SetValidator(Validator validator);
+
+        /// <summary>
+        /// Sets the <see cref="ValidatorSet"/> with the given <paramref name="validatorSet"/>.
+        /// </summary>
+        /// <param name="validatorSet">
+        /// A new <see cref="ValidatorSet"/> instance to update.
+        /// </param>
+        /// <returns>A new <see cref="IAccount"/> instance with the updated
+        /// <paramref name="validatorSet"/>.</returns>
+        [Pure]
+        IAccount SetValidatorSet(ValidatorSet validatorSet);
     }
 }

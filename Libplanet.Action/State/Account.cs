@@ -183,6 +183,11 @@ namespace Libplanet.Action.State
         public IAccount SetValidator(Validator validator) =>
             UpdateValidatorSet(GetValidatorSet().Update(validator));
 
+        /// <inheritdoc/>
+        [Pure]
+        public IAccount SetValidatorSet(ValidatorSet validatorSet) =>
+            UpdateValidatorSet(validatorSet);
+
         [Pure]
         private Account UpdateState(
             Address address,
