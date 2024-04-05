@@ -104,8 +104,7 @@ namespace Libplanet.Action.Tests.Common
                         context,
                         sender: from,
                         recipient: to,
-                        value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount),
-                        allowNegativeBalance: true),
+                        value: FungibleAssetValue.FromRawValue(DumbCurrency, transfer.Amount)),
                     (null, Address to) => world.MintAsset(
                         context,
                         recipient: to,

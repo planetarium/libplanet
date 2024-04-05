@@ -1903,8 +1903,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        DumbAction.Create((addresses[0], "foo")),
-                        DumbAction.Create((addresses[1], "bar")),
+                        DumbAction.Create((addresses[0], "foo"), (null, addresses[0], 100)),
+                        DumbAction.Create((addresses[1], "bar"), (null, addresses[1], 100)),
                     },
                     timestamp: epoch,
                     nonce: 0,
@@ -1912,8 +1912,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(
                     new[]
                     {
-                        DumbAction.Create((addresses[2], "baz")),
-                        DumbAction.Create((addresses[3], "qux")),
+                        DumbAction.Create((addresses[2], "baz"), (null, addresses[2], 100)),
+                        DumbAction.Create((addresses[3], "qux"), (null, addresses[3], 100)),
                     },
                     timestamp: epoch.AddSeconds(5),
                     nonce: 1,

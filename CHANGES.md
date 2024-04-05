@@ -6,6 +6,11 @@ Version 4.3.0
 
 To be released.
 
+Due to changes in #3728, a network ran with a prior version may not be
+compatible with this version, specifically those that ran with
+`IAction`s that has allowed negative balances through `TransferAssets()`
+with `allowNegativeBalance` as `true`.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -18,6 +23,8 @@ To be released.
     `GetValidatorSet()` of `IWorldState` to extension methods.  [[#3715]]
  -  (Libplanet.Action) Changed `MintAsset()`, `BurnAsset()`, `TransferAsset()`,
     and `SetValidator()` of `IWorld` to extension methods.  [[#3715]]
+ -  (Libplanet.Action) Removed `allowNegativeBalance` parameter from
+    `IWorld.TransferAsset()` extension method.  [[#3725], [#3728]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,6 +43,8 @@ To be released.
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
 [#3714]: https://github.com/planetarium/libplanet/pull/3714
 [#3715]: https://github.com/planetarium/libplanet/pull/3715
+[#3725]: https://github.com/planetarium/libplanet/issues/3725
+[#3728]: https://github.com/planetarium/libplanet/pull/3728
 
 
 Version 4.2.0

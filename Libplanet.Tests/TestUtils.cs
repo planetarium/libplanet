@@ -539,7 +539,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockChain"/> instance.
+        /// Creates a <see cref="BlockChain"/> instance containing
+        /// only a genesis <see cref="Block"/>.
         /// </summary>
         /// <param name="policy">A <see cref="BlockPolicy"/> of the chain.</param>
         /// <param name="store">An <see cref="IStore"/> instance to store blocks and txs.</param>
