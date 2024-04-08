@@ -18,7 +18,6 @@ using LruCacheNet;
 using Serilog;
 using Zio;
 using Zio.FileSystems;
-using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Store
 {
@@ -37,36 +36,19 @@ namespace Libplanet.Store
     /// <para>The following query string parameters are supported:</para>
     /// <list type="table">
     /// <item>
-    /// <term><c>journal</c></term>
-    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
-    /// parameter.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>index-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
-    /// <c>indexCacheSize</c> parameter.  50000 by default.</description>
-    /// </item>
-    /// <item>
     /// <term><c>block-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to <see cref="DefaultStore(string, int, int, bool)"/>'s
     /// <c>blockCacheSize</c> parameter.  512 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>tx-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to <see cref="DefaultStore(string, int, int, bool)"/>'s
     /// <c>txCacheSize</c> parameter.  1024 by default.</description>
-    /// </item>
-    /// <item>
-    /// <term><c>flush</c></term>
-    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
-    /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
     /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
+    /// <see cref="DefaultStore(string, int, int, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
     /// <item>
@@ -124,20 +106,16 @@ namespace Libplanet.Store
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
             string path,
-            bool journal = true,
-            int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            bool flush = true,
-            bool readOnly = false
-        )
+            bool readOnly = false)
         {
             _logger = Log.ForContext<DefaultStore>();
 
             if (path is null)
             {
                 _root = new MemoryFileSystem();
-                _db = new LiteDatabase(new MemoryStream(), disposeStream: true);
+                _db = new LiteDatabase(new MemoryStream());
             }
             else
             {
@@ -158,20 +136,22 @@ namespace Libplanet.Store
                 var connectionString = new ConnectionString
                 {
                     Filename = Path.Combine(path, "index.ldb"),
-                    Journal = journal,
-                    CacheSize = indexCacheSize,
-                    Flush = flush,
                 };
 
-                if (readOnly)
-                {
-                    connectionString.Mode = FileMode.ReadOnly;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
                     Type.GetType("Mono.Runtime") is null)
                 {
                     // macOS + .NETCore doesn't support shared lock.
-                    connectionString.Mode = FileMode.Exclusive;
+                    connectionString.Connection = ConnectionType.Direct;
+                }
+                else
+                {
+                    connectionString.Connection = ConnectionType.Shared;
+                }
+
+                if (readOnly)
+                {
+                    connectionString.ReadOnly = true;
                 }
 
                 _db = new LiteDatabase(connectionString);
@@ -232,7 +212,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override Guid? GetCanonicalChainId()
         {
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            ILiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
             BsonDocument doc = collection.FindById(docId);
             if (doc is null)
@@ -248,7 +228,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void SetCanonicalChainId(Guid chainId)
         {
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            ILiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
             byte[] idBytes = chainId.ToByteArray();
             collection.Upsert(docId, new BsonDocument() { ["chainId"] = new BsonValue(idBytes) });
@@ -298,8 +278,8 @@ namespace Libplanet.Store
             Guid destinationChainId,
             BlockHash branchpoint)
         {
-            LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
-            LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
+            ILiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
+            ILiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
             BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1)
                 .Cast<BlockHash?>()
@@ -310,8 +290,8 @@ namespace Libplanet.Store
                 return;
             }
 
-            destColl.Delete(Query.All());
-            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchpoint)));
+            destColl.DeleteAll();
+            destColl.Insert(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchpoint)));
 
             AppendIndex(destinationChainId, branchpoint);
         }
@@ -561,7 +541,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
+            ILiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             foreach (BsonDocument doc in collection.FindAll())
             {
                 if (doc.TryGetValue("_id", out BsonValue id) && id.IsBinary)
@@ -578,7 +558,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
+            ILiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
 
@@ -594,7 +574,7 @@ namespace Libplanet.Store
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
             long nextNonce = GetTxNonce(chainId, signer) + delta;
-            LiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
+            ILiteCollection<BsonDocument> collection = TxNonceCollection(chainId);
             var docId = new BsonValue(signer.ToByteArray());
             collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
         }
@@ -602,8 +582,8 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
-            LiteCollection<BsonDocument> srcColl = TxNonceCollection(sourceChainId);
-            LiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
+            ILiteCollection<BsonDocument> srcColl = TxNonceCollection(sourceChainId);
+            ILiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
             destColl.InsertBulk(srcColl.FindAll());
         }
 
@@ -630,7 +610,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override BlockCommit? GetChainBlockCommit(Guid chainId)
         {
-            LiteCollection<BsonDocument> collection = CommitCollection(chainId);
+            ILiteCollection<BsonDocument> collection = CommitCollection(chainId);
             var docId = new BsonValue("c");
             BsonDocument doc = collection.FindById(docId);
             return doc is { } d && d.TryGetValue("v", out BsonValue v)
@@ -641,7 +621,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void PutChainBlockCommit(Guid chainId, BlockCommit blockCommit)
         {
-            LiteCollection<BsonDocument> collection = CommitCollection(chainId);
+            ILiteCollection<BsonDocument> collection = CommitCollection(chainId);
             var docId = new BsonValue("c");
             BsonDocument doc = collection.FindById(docId);
             collection.Upsert(
@@ -740,20 +720,14 @@ namespace Libplanet.Store
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
-            bool journal = query.GetBoolean("journal", true);
-            int indexCacheSize = query.GetInt32("index-cache", 50000);
             int blockCacheSize = query.GetInt32("block-cache", 512);
             int txCacheSize = query.GetInt32("tx-cache", 1024);
-            bool flush = query.GetBoolean("flush", true);
             bool readOnly = query.GetBoolean("readonly");
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
             var store = new DefaultStore(
                 storeUri.LocalPath,
-                journal,
-                indexCacheSize,
                 blockCacheSize,
                 txCacheSize,
-                flush,
                 readOnly);
             var stateStore = new TrieStateStore(
                 new DefaultKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)));
@@ -843,13 +817,13 @@ namespace Libplanet.Store
         private UPath TxIdBlockHashIndexPath(in TxId txid, in BlockHash blockHash) =>
             TxPath(txid) / blockHash.ToString();
 
-        private LiteCollection<HashDoc> IndexCollection(in Guid chainId) =>
+        private ILiteCollection<HashDoc> IndexCollection(in Guid chainId) =>
             _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
 
-        private LiteCollection<BsonDocument> TxNonceCollection(Guid chainId) =>
+        private ILiteCollection<BsonDocument> TxNonceCollection(Guid chainId) =>
             _db.GetCollection<BsonDocument>($"{TxNonceIdPrefix}{FormatChainId(chainId)}");
 
-        private LiteCollection<BsonDocument> CommitCollection(in Guid chainId) =>
+        private ILiteCollection<BsonDocument> CommitCollection(in Guid chainId) =>
             _db.GetCollection<BsonDocument>($"{CommitColPrefix}{FormatChainId(chainId)}");
 
         private class HashDoc
