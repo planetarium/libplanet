@@ -4,14 +4,12 @@ Libplanet changelog
 Version 4.3.0
 -------------
 
-To be released.
+Released on April 8, 2024.
 
 Due to changes in #3728, a network ran with a prior version may not be
 compatible with this version, specifically those that ran with
 `IAction`s that has allowed negative balances through `TransferAssets()`
 with `allowNegativeBalance` as `true`.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -28,22 +26,10 @@ with `allowNegativeBalance` as `true`.
  -  (Libplanet.Store) Removed `journal`, `indexCacheSize`, and `flush`
     parameters from `DefaultStore`'s constructor.  [[#3729]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
 ### Dependencies
 
  -  Upgraded *LiteDB* from [4.1.4][LiteDB 4.1.4] to
     [5.0.15][LiteDB 5.0.15].  [[#3729]]
-
-### CLI tools
 
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
 [#3714]: https://github.com/planetarium/libplanet/pull/3714
