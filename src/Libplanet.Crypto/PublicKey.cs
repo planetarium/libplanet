@@ -232,8 +232,9 @@ namespace Libplanet.Crypto
         /// <returns><c>true</c> if the <paramref name="proof"/> proves authenticity of
         /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
         /// Otherwise <c>false</c>.</returns>
-        public bool VerifyProof(byte[] message, Proof proof)
-            => CryptoConfig.ConsensusCryptoBackend.VerifyProof(message, proof.ToByteArray(), this);
+        public bool VerifyProof(IReadOnlyList<byte> message, Proof proof)
+            => CryptoConfig.ConsensusCryptoBackend.VerifyProof(
+                message.ToArray(), proof.ToByteArray(), this);
 
         /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
