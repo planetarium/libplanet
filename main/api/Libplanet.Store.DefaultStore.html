@@ -80,15 +80,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -102,7 +97,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -122,22 +117,22 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_Bencodex_Types_IValue_Serilog_ILogger_">BaseStore.DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)</a>
     </div>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
@@ -153,19 +148,19 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.%23ctor(System.String%2CSystem.Boolean%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.%23ctor(System.String%2CSystem.Int32%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore__ctor_" data-uid="Libplanet.Store.DefaultStore.#ctor*"></a>
-  <h4 id="Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_" data-uid="Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</h4>
+  <h4 id="Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_" data-uid="Libplanet.Store.DefaultStore.#ctor(System.String,System.Int32,System.Int32,System.Boolean)">DefaultStore(String, Int32, Int32, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultStore(string path, bool journal = true, int indexCacheSize = 50000, int blockCacheSize = 512, int txCacheSize = 1024, bool flush = true, bool readOnly = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultStore(string path, int blockCacheSize = 512, int txCacheSize = 1024, bool readOnly = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -185,18 +180,6 @@ If the path is <span class="xref">null</span>, the database is created in memory
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">journal</span></td>
-        <td><p>Enables or disables double write check to ensure durability.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">indexCacheSize</span></td>
-        <td><p>Max number of pages in the index cache.</p>
-</td>
-      </tr>
-      <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">blockCacheSize</span></td>
         <td><p>The capacity of the block cache.</p>
@@ -210,19 +193,13 @@ If the path is <span class="xref">null</span>, the database is created in memory
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">flush</span></td>
-        <td><p>Writes data direct to disk avoiding OS cache.  Turned on by default.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">readOnly</span></td>
         <td><p>Opens database readonly mode. Turned off by default.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean__seealso">See Also</h5>
+  <h5 id="Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
   </div>
@@ -233,7 +210,7 @@ If the path is <span class="xref">null</span>, the database is created in memory
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_AppendIndex_System_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.AppendIndex(System.Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L290">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L270">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_AppendIndex_" data-uid="Libplanet.Store.DefaultStore.AppendIndex*"></a>
   <h4 id="Libplanet_Store_DefaultStore_AppendIndex_System_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.AppendIndex(System.Guid,Libplanet.Types.Blocks.BlockHash)">AppendIndex(Guid, BlockHash)</h4>
@@ -296,7 +273,7 @@ into the store.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L477">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L457">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ContainsBlock_" data-uid="Libplanet.Store.DefaultStore.ContainsBlock*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Types.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
@@ -355,7 +332,7 @@ the specified <code data-dev-comment-type="paramref" class="paramref">blockHash<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L369">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L349">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ContainsTransaction_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Types.Tx.TxId)">ContainsTransaction(TxId)</h4>
@@ -414,7 +391,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountBlocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L713">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L693">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_CountBlocks_" data-uid="Libplanet.Store.DefaultStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_DefaultStore_CountBlocks" data-uid="Libplanet.Store.DefaultStore.CountBlocks">CountBlocks()</h4>
@@ -426,15 +403,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -469,7 +441,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountIndex_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountIndex(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L258">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L238">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_CountIndex_" data-uid="Libplanet.Store.DefaultStore.CountIndex*"></a>
   <h4 id="Libplanet_Store_DefaultStore_CountIndex_System_Guid_" data-uid="Libplanet.Store.DefaultStore.CountIndex(System.Guid)">CountIndex(Guid)</h4>
@@ -481,15 +453,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -541,7 +508,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L463">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L443">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_DeleteBlock_" data-uid="Libplanet.Store.DefaultStore.DeleteBlock*"></a>
   <h4 id="Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Types.Blocks.BlockHash)">DeleteBlock(BlockHash)</h4>
@@ -598,7 +565,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L687">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L667">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_DeleteBlockCommit_" data-uid="Libplanet.Store.DefaultStore.DeleteBlockCommit*"></a>
   <h4 id="Libplanet_Store_DefaultStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)">DeleteBlockCommit(BlockHash)</h4>
@@ -639,7 +606,7 @@ to delete.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L225">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_DeleteChainId_" data-uid="Libplanet.Store.DefaultStore.DeleteChainId*"></a>
   <h4 id="Libplanet_Store_DefaultStore_DeleteChainId_System_Guid_" data-uid="Libplanet.Store.DefaultStore.DeleteChainId(System.Guid)">DeleteChainId(Guid)</h4>
@@ -686,7 +653,7 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L552">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L532">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -733,7 +700,7 @@ of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L723">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L703">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_Dispose_" data-uid="Libplanet.Store.DefaultStore.Dispose*"></a>
   <h4 id="Libplanet_Store_DefaultStore_Dispose" data-uid="Libplanet.Store.DefaultStore.Dispose">Dispose()</h4>
@@ -745,15 +712,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -773,7 +735,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid%2CSystem.Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L296">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L276">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ForkBlockIndexes_" data-uid="Libplanet.Store.DefaultStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Types.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
@@ -830,7 +792,7 @@ block indexes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ForkTxNonces_System_Guid_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid%2CSystem.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L603">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L583">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ForkTxNonces_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces(System.Guid,System.Guid)">ForkTxNonces(Guid, Guid)</h4>
@@ -880,7 +842,7 @@ block indexes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L652">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L632">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetBlockCommit_" data-uid="Libplanet.Store.DefaultStore.GetBlockCommit*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -892,15 +854,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -952,7 +909,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockCommitHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockCommitHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L699">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L679">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetBlockCommitHashes_" data-uid="Libplanet.Store.DefaultStore.GetBlockCommitHashes*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetBlockCommitHashes" data-uid="Libplanet.Store.DefaultStore.GetBlockCommitHashes">GetBlockCommitHashes()</h4>
@@ -991,7 +948,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L411">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L391">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetBlockDigest_" data-uid="Libplanet.Store.DefaultStore.GetBlockDigest*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Types.Blocks.BlockHash)">GetBlockDigest(BlockHash)</h4>
@@ -1049,7 +1006,7 @@ having such <code data-dev-comment-type="paramref" class="paramref">blockHash</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetCanonicalChainId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L233">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L213">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetCanonicalChainId_" data-uid="Libplanet.Store.DefaultStore.GetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetCanonicalChainId" data-uid="Libplanet.Store.DefaultStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
@@ -1087,7 +1044,7 @@ having such <code data-dev-comment-type="paramref" class="paramref">blockHash</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetChainBlockCommit_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetChainBlockCommit(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L631">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L611">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetChainBlockCommit_" data-uid="Libplanet.Store.DefaultStore.GetChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetChainBlockCommit_System_Guid_" data-uid="Libplanet.Store.DefaultStore.GetChainBlockCommit(System.Guid)">GetChainBlockCommit(Guid)</h4>
@@ -1146,7 +1103,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L320">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L300">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTransaction_" data-uid="Libplanet.Store.DefaultStore.GetTransaction*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTransaction(Libplanet.Types.Tx.TxId)">GetTransaction(TxId)</h4>
@@ -1158,15 +1115,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -1218,7 +1170,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L500">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L480">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTxExecution_" data-uid="Libplanet.Store.DefaultStore.GetTxExecution*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
@@ -1283,7 +1235,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTxNonce(System.Guid%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L579">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L559">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetTxNonce_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce(System.Guid,Libplanet.Crypto.Address)">GetTxNonce(Guid, Address)</h4>
@@ -1348,7 +1300,7 @@ previous <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IncreaseTxNonce_System_Guid_Libplanet_Crypto_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IncreaseTxNonce(System.Guid%2CLibplanet.Crypto.Address%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L594">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L574">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IncreaseTxNonce_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IncreaseTxNonce_System_Guid_Libplanet_Crypto_Address_System_Int64_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce(System.Guid,Libplanet.Crypto.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1403,7 +1355,7 @@ the counter.  1 by default.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IndexBlockHash_System_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IndexBlockHash(System.Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L272">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L252">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IndexBlockHash_" data-uid="Libplanet.Store.DefaultStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IndexBlockHash_System_Guid_System_Int64_" data-uid="Libplanet.Store.DefaultStore.IndexBlockHash(System.Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
@@ -1467,7 +1419,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateBlockHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L380">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L360">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IterateBlockHashes_" data-uid="Libplanet.Store.DefaultStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IterateBlockHashes" data-uid="Libplanet.Store.DefaultStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1505,7 +1457,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateIndexes(System.Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L264">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L244">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IterateIndexes_" data-uid="Libplanet.Store.DefaultStore.IterateIndexes*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.DefaultStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1575,7 +1527,7 @@ order; the genesis block goes first, and the tip block goes last.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L537">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L517">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
@@ -1587,15 +1539,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -1647,7 +1594,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ListChainIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L217">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L197">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ListChainIds_" data-uid="Libplanet.Store.DefaultStore.ListChainIds*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ListChainIds" data-uid="Libplanet.Store.DefaultStore.ListChainIds">ListChainIds()</h4>
@@ -1685,7 +1632,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ListTxNonces(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L562">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L542">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_ListTxNonces_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces*"></a>
   <h4 id="Libplanet_Store_DefaultStore_ListTxNonces_System_Guid_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
@@ -1744,7 +1691,7 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PruneOutdatedChains_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PruneOutdatedChains(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L611">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L591">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PruneOutdatedChains_" data-uid="Libplanet.Store.DefaultStore.PruneOutdatedChains*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PruneOutdatedChains_System_Boolean_" data-uid="Libplanet.Store.DefaultStore.PruneOutdatedChains(System.Boolean)">PruneOutdatedChains(Boolean)</h4>
@@ -1806,7 +1753,7 @@ there is no canonical chain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutBlock_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutBlock(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L439">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L419">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutBlock_" data-uid="Libplanet.Store.DefaultStore.PutBlock*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutBlock_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Store.DefaultStore.PutBlock(Libplanet.Types.Blocks.Block)">PutBlock(Block)</h4>
@@ -1847,7 +1794,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L675">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L655">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutBlockCommit_" data-uid="Libplanet.Store.DefaultStore.PutBlockCommit*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.DefaultStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)">PutBlockCommit(BlockCommit)</h4>
@@ -1887,7 +1834,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutChainBlockCommit_System_Guid_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutChainBlockCommit(System.Guid%2CLibplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L642">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L622">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutChainBlockCommit_" data-uid="Libplanet.Store.DefaultStore.PutChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutChainBlockCommit_System_Guid_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.DefaultStore.PutChainBlockCommit(System.Guid,Libplanet.Types.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
@@ -1937,7 +1884,7 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTransaction_Libplanet_Types_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTransaction(Libplanet.Types.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L357">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L337">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutTransaction_" data-uid="Libplanet.Store.DefaultStore.PutTransaction*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutTransaction_Libplanet_Types_Tx_Transaction_" data-uid="Libplanet.Store.DefaultStore.PutTransaction(Libplanet.Types.Tx.Transaction)">PutTransaction(Transaction)</h4>
@@ -1949,15 +1896,10 @@ for some complex indices.</p>
 using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
-parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
-<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Int32_System_Int32_System_Boolean_">DefaultStore(String, Int32, Int32, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
@@ -1994,7 +1936,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L489">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L469">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutTxExecution_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)">PutTxExecution(TxExecution)</h4>
@@ -2056,7 +1998,7 @@ and <a class="xref" href="Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L529">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L509">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -2104,7 +2046,7 @@ it overwrites the record silently.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.SetCanonicalChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L249">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L229">View Source</a>
   </span>
   <a id="Libplanet_Store_DefaultStore_SetCanonicalChainId_" data-uid="Libplanet.Store.DefaultStore.SetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_DefaultStore_SetCanonicalChainId_System_Guid_" data-uid="Libplanet.Store.DefaultStore.SetCanonicalChainId(System.Guid)">SetCanonicalChainId(Guid)</h4>
@@ -2144,7 +2086,7 @@ it overwrites the record silently.</p>
       <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">System.IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -2168,7 +2110,7 @@ it overwrites the record silently.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DefaultStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L80" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Store/DefaultStore.cs/#L62" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

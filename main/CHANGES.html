@@ -80,6 +80,8 @@ type <code>IReadOnlyList&lt;ITransaction&gt;?</code> to <code>IActionContext</co
 and <code>SetValidator()</code> of <code>IWorld</code> to extension methods.  [<a href="https://github.com/planetarium/libplanet/pull/3715">#3715</a>]</li>
 <li>(Libplanet.Action) Removed <code>allowNegativeBalance</code> parameter from
 <code>IWorld.TransferAsset()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/issues/3725">#3725</a>, <a href="https://github.com/planetarium/libplanet/pull/3728">#3728</a>]</li>
+<li>(Libplanet.Store) Removed <code>journal</code>, <code>indexCacheSize</code>, and <code>flush</code>
+parameters from <code>DefaultStore</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -87,6 +89,10 @@ and <code>SetValidator()</code> of <code>IWorld</code> to extension methods.  [<
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Upgraded <em>LiteDB</em> from <a href="https://www.nuget.org/packages/LiteDB/4.1.4">4.1.4</a> to
+<a href="https://www.nuget.org/packages/LiteDB/5.0.15">5.0.15</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-420">Version 4.2.0</h2>
 <p>Released on March 22, 2024.</p>
