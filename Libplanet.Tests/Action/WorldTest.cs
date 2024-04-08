@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
@@ -419,6 +420,26 @@ namespace Libplanet.Tests.Action
             delta = delta.SetValidator(new Validator(key3, 0));
             delta = delta.SetValidator(new Validator(key4, 0));
             Assert.Equal(0, delta.GetValidatorSet().TotalCount);
+        }
+
+        [Fact]
+        public void SetValidatorSet()
+        {
+            const int newValidatorCount = 6;
+            var world = _initWorld;
+            var keys = Enumerable
+                .Range(0, newValidatorCount)
+                .Select(i => new PrivateKey())
+                .ToList();
+            var validatorSet = new ValidatorSet(
+                keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
+            world = world.SetValidatorSet(validatorSet);
+
+            Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
+            Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
+
+            world = world.SetValidatorSet(new ValidatorSet());
+            Assert.Equal(0, world.GetValidatorSet().TotalCount);
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
