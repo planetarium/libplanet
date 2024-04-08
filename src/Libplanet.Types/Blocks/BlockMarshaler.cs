@@ -234,9 +234,7 @@ namespace Libplanet.Types.Blocks
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
                     ? new BlockCommit(marshaled[LastCommitKey])
                     : (BlockCommit?)null,
-                proof: marshaled.ContainsKey(ProofKey)
-                    ? new Proof(marshaled[ProofKey])
-                    : (Proof?)null,
+                proof: UnmarshalProof(marshaled),
                 evidenceHash: marshaled.TryGetValue(EvidenceHashKey, out IValue ehv)
                     ? new HashDigest<SHA256>(ehv)
                     : (HashDigest<SHA256>?)null);
@@ -321,5 +319,11 @@ namespace Libplanet.Types.Blocks
             IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
             return new PreEvaluationBlock(header, txs);
         }
+
+        public static Proof? UnmarshalProof(Dictionary marshaled) =>
+            marshaled.ContainsKey(ProofKey)
+                ? new Proof(marshaled[ProofKey])
+                : (Proof?)null;
+
     }
 }
