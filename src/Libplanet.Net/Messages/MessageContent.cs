@@ -137,6 +137,11 @@ namespace Libplanet.Net.Messages
             ConsensusProposalClaimMsg = 0x55,
 
             /// <summary>
+            /// Consensus pre-proposal message.
+            /// </summary>
+            ConsensusPreProposal = 0x56,
+
+            /// <summary>
             /// Inventory to transfer evidence.
             /// </summary>
             EvidenceIds = 0x56,
