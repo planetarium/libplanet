@@ -77,13 +77,13 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NetMQTransport</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -228,7 +228,7 @@ a <em>trusted party</em>, that is, one of
   </span>
   <a id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp_" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp*"></a>
   <h4 id="Libplanet_Net_Transports_NetMQTransport_LastMessageTimestamp" data-uid="Libplanet.Net.Transports.NetMQTransport.LastMessageTimestamp">LastMessageTimestamp</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> of the last message received.</p>
+  <div class="markdown level1 summary"><p>The <span class="xref">System.DateTimeOffset</span> of the last message received.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -245,7 +245,7 @@ a <em>trusted party</em>, that is, one of
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">System.DateTimeOffset</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -410,7 +410,7 @@ empty set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -465,9 +465,9 @@ to the network.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">messageTimestampBuffer</span></td>
-        <td><p>The amount in <span class="xref">System.TimeSpan</span>
+        <td><p>The amount in <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>
 that is allowed for the timestamp of a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to differ from
 the current time of a local node.  Every <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with its timestamp
 differing greater than <code data-dev-comment-type="paramref" class="paramref">messageTimestampBuffer</code> will be ignored.
@@ -486,7 +486,7 @@ If <span class="xref">null</span>, any timestamp is accepted.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a>&gt;</td>
         <td><p>An awaitable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> returning a <a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a>
 when awaited that is ready to send request <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s and
 receive reply <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.</p>
@@ -543,7 +543,7 @@ receive reply <a class="xref" href="Libplanet.Net.Messages.Message.html">Message
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">identity</span></td>
         <td><p>The byte array that represents identification of the
 <a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a> to respond.</p>
@@ -584,7 +584,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance is already disposed.</p>
 </td>
       </tr>
@@ -630,7 +630,7 @@ and waits for its multiple replies.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
@@ -667,7 +667,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">content</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
@@ -690,7 +690,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -737,7 +737,7 @@ and waits for its single reply.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
@@ -761,7 +761,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">content</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
@@ -784,7 +784,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -852,7 +852,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when the instance is already disposed.</p>
 </td>
       </tr>
@@ -885,9 +885,9 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
         <td><span class="parametername">waitFor</span></td>
-        <td><p>The <span class="xref">System.TimeSpan</span> to delay before actual stopping.</p>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> to delay before actual stopping.</p>
 </td>
       </tr>
       <tr>
@@ -925,7 +925,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
         <td><p>Thrown when the instance is already disposed.</p>
 </td>
       </tr>
@@ -969,7 +969,7 @@ property becomes <span class="xref">true</span>.</p>
       <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">System.IDisposable</span>
   </div>
 </article>
           </div>
