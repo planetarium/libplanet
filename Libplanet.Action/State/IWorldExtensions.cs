@@ -263,6 +263,17 @@ namespace Libplanet.Action.State
         public static IWorld SetValidator(this IWorld world, Validator validator) =>
             UpdateValidatorSet(world, world.GetValidatorSet().Update(validator));
 
+        /// <summary>
+        /// Sets <paramref name="validatorSet"/> to the stored <see cref="ValidatorSet"/>.
+        /// </summary>
+        /// <param name="world">The <see cref="IWorld"/> to manipulate.</param>
+        /// <param name="validatorSet">The <see cref="ValidatorSet"/> instance to write.</param>
+        /// <returns>A new <see cref="IWorld"/> instance with
+        /// <paramref name="validator"/> set.</returns>
+        [Pure]
+        public static IWorld SetValidatorSet(this IWorld world, ValidatorSet validatorSet) =>
+            UpdateValidatorSet(world, validatorSet);
+
         [Pure]
         private static IWorld UpdateFungibleAssets(
             IWorld world,
