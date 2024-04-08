@@ -135,6 +135,11 @@ namespace Libplanet.Net.Messages
             /// Consensus message that informs vote sets that the peer received new maj23 block.
             /// </summary>
             ConsensusProposalClaimMsg = 0x55,
+
+            /// <summary>
+            /// Consensus pre-proposal message.
+            /// </summary>
+            ConsensusPreProposal = 0x56,
         }
 
         /// <summary>
