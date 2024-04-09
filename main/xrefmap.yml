@@ -2137,19 +2137,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldExtensions.MintAsset
   nameWithType: IWorldExtensions.MintAsset
-- uid: Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.Validator)
-  name: SetValidator(IWorld, Validator)
-  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidator_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_Validator_
-  commentId: M:Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.Validator)
-  fullName: Libplanet.Action.State.IWorldExtensions.SetValidator(Libplanet.Action.State.IWorld, Libplanet.Types.Consensus.Validator)
-  nameWithType: IWorldExtensions.SetValidator(IWorld, Validator)
-- uid: Libplanet.Action.State.IWorldExtensions.SetValidator*
-  name: SetValidator
-  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidator_
-  commentId: Overload:Libplanet.Action.State.IWorldExtensions.SetValidator
+- uid: Libplanet.Action.State.IWorldExtensions.SetValidatorSet(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.ValidatorSet)
+  name: SetValidatorSet(IWorld, ValidatorSet)
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidatorSet_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Action.State.IWorldExtensions.SetValidatorSet(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.ValidatorSet)
+  fullName: Libplanet.Action.State.IWorldExtensions.SetValidatorSet(Libplanet.Action.State.IWorld, Libplanet.Types.Consensus.ValidatorSet)
+  nameWithType: IWorldExtensions.SetValidatorSet(IWorld, ValidatorSet)
+- uid: Libplanet.Action.State.IWorldExtensions.SetValidatorSet*
+  name: SetValidatorSet
+  href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.IWorldExtensions.SetValidatorSet
   isSpec: "True"
-  fullName: Libplanet.Action.State.IWorldExtensions.SetValidator
-  nameWithType: IWorldExtensions.SetValidator
+  fullName: Libplanet.Action.State.IWorldExtensions.SetValidatorSet
+  nameWithType: IWorldExtensions.SetValidatorSet
 - uid: Libplanet.Action.State.IWorldExtensions.TransferAsset(Libplanet.Action.State.IWorld,Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
   name: TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue)
   href: api/Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_

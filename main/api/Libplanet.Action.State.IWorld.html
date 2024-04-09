@@ -78,7 +78,7 @@ maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_A
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> account cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -299,7 +299,7 @@ a new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> insta
       <a class="xref" href="Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_MintAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_">IWorldExtensions.MintAsset(IWorld, IActionContext, Address, FungibleAssetValue)</a>
   </div>
   <div>
-      <a class="xref" href="Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidator_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_Validator_">IWorldExtensions.SetValidator(IWorld, Validator)</a>
+      <a class="xref" href="Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_SetValidatorSet_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_ValidatorSet_">IWorldExtensions.SetValidatorSet(IWorld, ValidatorSet)</a>
   </div>
   <div>
       <a class="xref" href="Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_TransferAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_">IWorldExtensions.TransferAsset(IWorld, IActionContext, Address, Address, FungibleAssetValue)</a>
