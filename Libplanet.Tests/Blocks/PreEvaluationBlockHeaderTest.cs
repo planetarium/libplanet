@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blocks
         public void ValidatePreEvaluationHash()
         {
             BlockMetadata metadataPv1 = new BlockMetadata(_contents.Block1ContentPv1);
-            Assert.True(metadataPv1.ProtocolVersion <= BlockMetadata.PoWProtocolVersion);
+            Assert.True(metadataPv1.ProtocolVersion < BlockMetadata.PBFTProtocolVersion);
 
             // Should be fine.
             var preEvaluationBlockHeaderPv1 = new PreEvaluationBlockHeader(
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blocks
                 metadataPv1.DerivePreEvaluationHash(new Nonce(TestUtils.GetRandomBytes(4))));
 
             BlockMetadata metadata = new BlockMetadata(_contents.Block1Content);
-            Assert.False(metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion);
+            Assert.False(metadata.ProtocolVersion < BlockMetadata.PBFTProtocolVersion);
             var preEvaluationBlockHeader = new PreEvaluationBlockHeader(
                 metadata,
                 metadata.DerivePreEvaluationHash(default));

@@ -44,7 +44,7 @@ namespace Libplanet.Store
                     );
                 }
 
-                if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+                if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
                 {
                     // Skip verifying BlockHash of PoW blocks due to change of the block structure.
                     // If verification is required, use older version of LibPlanet(<0.43).

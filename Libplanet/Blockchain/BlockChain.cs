@@ -845,7 +845,7 @@ namespace Libplanet.Blockchain
         {
             Block block = this[index];
 
-            if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {
                 return null;
             }

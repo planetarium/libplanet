@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Types) Renamed `BlockMetadata.PoWProtocolVersion` to
+    `BlockMetadata.PBFTProtocolVersion` and `BlockMetadata.LegacyStateVersion`
+    to `BlockMetadata.WorldStateProtocolVersion` while increasing each value
+    by 1.  [[#3376]]
  -  (Libplanet.Action) Removed `IWorld.SetValidator()` extension method.
     Use `IWorld.SetValidatorSet()` extension method instead.  [[#3735]]
 
@@ -28,6 +32,7 @@ To be released.
 ### CLI tools
 
 [#3735]: https://github.com/planetarium/libplanet/pull/3735
+[#3376]: https://github.com/planetarium/libplanet/pull/3736
 
 
 Version 4.3.0

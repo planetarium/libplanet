@@ -97,7 +97,7 @@ namespace Libplanet.Types.Blocks
         {
             BlockHash expectedHash =
                 preEvaluationBlockHeader.DeriveBlockHash(proof.StateRootHash, proof.Signature);
-            if (preEvaluationBlockHeader.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            if (preEvaluationBlockHeader.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {
                 // Skip verifying signature for PoW blocks due to change of the block structure.
                 // If verification is required, use older version of LibPlanet(<0.43).
