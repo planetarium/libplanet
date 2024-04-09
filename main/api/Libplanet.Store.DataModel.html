@@ -113,10 +113,10 @@ and <code>string</code>.
     and <code>ImmutableList&lt;int?></code>are not allowed.
 </li><li>
     Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
-    result in an <span class="xref">System.Exception</span> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+    result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
 </li><li>
     Trying to assign <span class="xref">null</span> to any property or to a part of
-    a collection will result in an <span class="xref">System.Exception</span> when
+    a collection will result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when
 <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Dictionary)</a> is called.
 </li></ul>
 
@@ -142,10 +142,10 @@ and <code>string</code>.
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -295,10 +295,10 @@ and <code>string</code>.
     and <code>ImmutableList&lt;int?></code>are not allowed.
 </li><li>
     Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
-    result in an <span class="xref">System.Exception</span> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+    result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
 </li><li>
     Trying to assign <span class="xref">null</span> to any property or to a part of
-    a collection will result in an <span class="xref">System.Exception</span> when
+    a collection will result in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a> when
 <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Dictionary)</a> is called.
 </li></ul>
 
@@ -468,7 +468,7 @@ encountered while decoding.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullreferenceexception">NullReferenceException</a></td>
+        <td><span class="xref">System.NullReferenceException</span></td>
         <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">encoded</code> is
 <span class="xref">null</span> or <span class="xref">null</span> reference is returned by inner
 instantiation.</p>

@@ -78,9 +78,9 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
-    <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
     <div><span class="xref">System.IComparable</span></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -91,7 +91,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Assets.html">Libplanet.Types.Assets</a></h6>
@@ -178,7 +178,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">sign</span></td>
         <td><p>Indicates the sign (negative, positive, or zero) of the value.
 <code>-1</code> indicates negative, <code>1</code> indicates positive, and <code>0</code> indicates
@@ -522,7 +522,7 @@ public readonly int Sign { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td><p>A number that indicates the sign of the fungible asset value, as shown in the following
 table:</p>
 <table><thead><tr><th>Number</th><th>Description</th></tr></thead><tbody><tr><td>-1</td><td>The value is negative.</td></tr><tr><td>0</td><td>The value is zero.</td></tr><tr><td>1</td><td>The value is positive.</td></tr></tbody></table>
@@ -618,7 +618,7 @@ public readonly int CompareTo(FungibleAssetValue other)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -671,7 +671,7 @@ public readonly int CompareTo(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1044,7 +1044,7 @@ public readonly bool Equals(FungibleAssetValue other)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1097,7 +1097,7 @@ public override readonly bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1199,13 +1199,13 @@ public override readonly int GetHashCode()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
+  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
 to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
@@ -1219,7 +1219,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_GetQuantityString_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.GetQuantityString*"></a>
   <h4 id="Libplanet_Types_Assets_FungibleAssetValue_GetQuantityString_System_Boolean_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.GetQuantityString(System.Boolean)">GetQuantityString(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Gets the value quantity without its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> in <span class="xref">System.String</span>.</p>
+  <div class="markdown level1 summary"><p>Gets the value quantity without its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> in <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1238,7 +1238,7 @@ public readonly string GetQuantityString(bool minorUnit = false)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">minorUnit</span></td>
         <td><p>Whether to show all possible decimal places even
 if they are zeros.</p>
@@ -1256,7 +1256,7 @@ if they are zeros.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><p>A quantity string in decimal system.  Consists of an optional sign (minus),
 digits and an optional decimal separator (period).</p>
 </td>
@@ -1300,7 +1300,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">value</span></td>
         <td><p>A numeric string to parse.  Can consist of digits, plus (+),
 minus (-), and decimal separator (.).</p>
@@ -1338,7 +1338,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">value</code> is not
 a valid numeric string.</p>
 </td>
@@ -1407,7 +1407,7 @@ public override readonly string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1549,7 +1549,7 @@ public static bool operator ==(FungibleAssetValue obj, FungibleAssetValue other)
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span> if two values are equal.
 Otherwise <span class="xref">false</span>.</p>
 </td>
@@ -1612,7 +1612,7 @@ public static bool operator&gt;(FungibleAssetValue obj, FungibleAssetValue other
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span>
 if the left operand (<code data-dev-comment-type="paramref" class="paramref">obj</code>) is greater than
 the right operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).  Otherwise (even if two operands are
@@ -1677,7 +1677,7 @@ public static bool operator &gt;=(FungibleAssetValue obj, FungibleAssetValue oth
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span>
 if the left operand (<code data-dev-comment-type="paramref" class="paramref">obj</code>) is greater than or
 equal to the right operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).
@@ -1741,7 +1741,7 @@ public static bool operator !=(FungibleAssetValue obj, FungibleAssetValue other)
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">false</span> if two values are equal.
 Otherwise <span class="xref">true</span>.</p>
 </td>
@@ -1804,7 +1804,7 @@ public static bool operator &lt;(FungibleAssetValue obj, FungibleAssetValue othe
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span>
 if the left operand (<code data-dev-comment-type="paramref" class="paramref">obj</code>) is less than the right
 operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).  Otherwise (even if two operands are equal)
@@ -1869,7 +1869,7 @@ public static bool operator &lt;=(FungibleAssetValue obj, FungibleAssetValue oth
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span>
 if the left operand (<code data-dev-comment-type="paramref" class="paramref">obj</code>) is less than or equal
 to the right operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).  Otherwise <span class="xref">false</span>.</p>
@@ -2335,7 +2335,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
@@ -2355,13 +2355,13 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
-      <span class="xref">System.IComparable&lt;T&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
   </div>
   <div>
       <span class="xref">System.IComparable</span>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+      <span class="xref">System.Runtime.Serialization.ISerializable</span>
   </div>
 </article>
           </div>
