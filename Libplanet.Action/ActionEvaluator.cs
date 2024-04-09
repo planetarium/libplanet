@@ -112,13 +112,13 @@ namespace Libplanet.Action
             {
                 IWorld previousState = PrepareInitialDelta(baseStateRootHash);
                 if (previousState.Legacy &&
-                    block.ProtocolVersion > BlockMetadata.LegacyStateVersion)
+                    block.ProtocolVersion >= BlockMetadata.WorldStateProtocolVersion)
                 {
                     previousState = MigrateLegacyStates(previousState, block.ProtocolVersion);
                     baseStateRootHash = previousState.Trie.Hash;
                 }
                 else if (!previousState.Legacy &&
-                         block.ProtocolVersion <= BlockMetadata.LegacyStateVersion)
+                         block.ProtocolVersion < BlockMetadata.WorldStateProtocolVersion)
                 {
                     throw new ApplicationException("World cannot be mutated from modern to legacy");
                 }

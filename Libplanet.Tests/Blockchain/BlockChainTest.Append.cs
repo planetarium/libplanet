@@ -802,7 +802,7 @@ namespace Libplanet.Tests.Blockchain
             };
             PreEvaluationBlock preEvalGenesis = new BlockContent(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.LegacyStateVersion,
+                    protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1,
                     index: 0L,
                     timestamp: DateTimeOffset.UtcNow,
                     miner: fx.Proposer.Address,

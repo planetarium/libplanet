@@ -1238,13 +1238,13 @@ namespace Libplanet.Tests.Action
                 store: store,
                 stateStore: stateStore,
                 actionLoader: new SingleActionLoader(typeof(ModernAction)),
-                protocolVersion: BlockMetadata.LegacyStateVersion);
+                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
             Assert.True(chain.GetWorldState().Legacy);
             var miner = new PrivateKey();
             var preEval1 = TestUtils.ProposeNext(
                 chain.Tip,
                 miner: miner.PublicKey,
-                protocolVersion: BlockMetadata.LegacyStateVersion);
+                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
             var block1 = chain.EvaluateAndSign(preEval1, miner);
             var blockCommit = CreateBlockCommit(block1);
             chain.Append(block1, blockCommit);

@@ -27,9 +27,10 @@ namespace Libplanet.Types.Blocks
         public const int PoWProtocolVersion = 3;
 
         /// <summary>
-        /// The last protocol version with union state model.
+        /// The starting protocol version where the world state model gets used instead of
+        /// the legacy state model.  Prior to this version, the legacy state model is used.
         /// </summary>
-        public const int LegacyStateVersion = 4;
+        public const int WorldStateProtocolVersion = 5;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
