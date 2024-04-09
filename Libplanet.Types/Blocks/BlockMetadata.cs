@@ -22,12 +22,13 @@ namespace Libplanet.Types.Blocks
         public const int CurrentProtocolVersion = 5;
 
         /// <summary>
-        /// The last PoW protocol version.
+        /// The starting protocol version where PBFT validation is used instead of
+        /// PoW validation.  Prior to this version, PoW validation is used.
         /// </summary>
-        public const int PoWProtocolVersion = 3;
+        public const int PBFTProtocolVersion = 4;
 
         /// <summary>
-        /// The starting protocol version where the world state model gets used instead of
+        /// The starting protocol version where the world state model is used instead of
         /// the legacy state model.  Prior to this version, the legacy state model is used.
         /// </summary>
         public const int WorldStateProtocolVersion = 5;

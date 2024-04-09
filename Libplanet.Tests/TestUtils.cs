@@ -385,7 +385,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Block block,
             bool deterministicTimestamp = false) =>
                 block.Index > 0 &&
-                block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
+                block.ProtocolVersion >= BlockMetadata.PBFTProtocolVersion
                     ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
                     : null;
 

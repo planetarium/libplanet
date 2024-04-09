@@ -226,7 +226,7 @@ namespace Libplanet.Types.Blocks
             BlockMetadata metadata,
             in HashDigest<SHA256> preEvaluationHash)
         {
-            if (metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            if (metadata.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {
                 return preEvaluationHash;
             }

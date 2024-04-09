@@ -87,7 +87,7 @@ namespace Libplanet.Blockchain
             Block block,
             BlockCommit blockCommit)
         {
-            if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {
                 if (blockCommit is { })
                 {
@@ -270,7 +270,7 @@ namespace Libplanet.Blockchain
                 // Any block after a PoW block should not have a last commit regardless of
                 // the protocol version.  As we have the target block index > 2, if it is a PoW
                 // block, the previous block would be a PoW block and is covered by this case.
-                if (lastBlock?.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+                if (lastBlock?.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
                 {
                     if (block.LastCommit is { })
                     {
