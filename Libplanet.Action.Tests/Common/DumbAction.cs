@@ -117,9 +117,7 @@ namespace Libplanet.Action.Tests.Common
 
             if (Validators is { } validators)
             {
-                world = validators.Aggregate(
-                    world,
-                    (current, validator) => current.SetValidator(validator));
+                world = world.SetValidatorSet(new ValidatorSet(validators.ToList()));
             }
 
             return world;

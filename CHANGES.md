@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Removed `IWorld.SetValidator()` extension method.
+    Use `IWorld.SetValidatorSet()` extension method instead.  [[#3735]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3735]: https://github.com/planetarium/libplanet/pull/3735
 
 
 Version 4.3.0

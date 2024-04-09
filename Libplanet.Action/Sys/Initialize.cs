@@ -76,10 +76,13 @@ namespace Libplanet.Action.Sys
 
             if (ValidatorSet is { } vs)
             {
+                var validatorSet = world.GetValidatorSet();
                 foreach (Validator v in vs.Validators)
                 {
-                    world = world.SetValidator(v);
+                    validatorSet = validatorSet.Update(v);
                 }
+
+                world = world.SetValidatorSet(validatorSet);
             }
 
             IAccount legacyAccount = world.GetAccount(ReservedAddresses.LegacyAccount);

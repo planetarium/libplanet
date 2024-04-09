@@ -37,8 +37,11 @@ namespace Libplanet.Action.Tests.Common
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
-        public IWorld Execute(IActionContext context) =>
-            context.PreviousState.SetValidator(Validator);
+        public IWorld Execute(IActionContext context)
+        {
+            IWorld world = context.PreviousState;
+            return world.SetValidatorSet(world.GetValidatorSet().Update(Validator));
+        }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(SetValidator other) =>
