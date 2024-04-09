@@ -66,6 +66,10 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>(Libplanet.Types) Renamed <code>BlockMetadata.PoWProtocolVersion</code> to
+<code>BlockMetadata.PBFTProtocolVersion</code> and <code>BlockMetadata.LegacyStateVersion</code>
+to <code>BlockMetadata.WorldStateProtocolVersion</code> while increasing each value
+by 1.  [<a href="https://github.com/planetarium/libplanet/pull/3736">#3376</a>]</li>
 <li>(Libplanet.Action) Removed <code>IWorld.SetValidator()</code> extension method.
 Use <code>IWorld.SetValidatorSet()</code> extension method instead.  [<a href="https://github.com/planetarium/libplanet/pull/3735">#3735</a>]</li>
 </ul>

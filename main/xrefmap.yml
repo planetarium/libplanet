@@ -32311,12 +32311,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.LastCommit
   nameWithType: BlockMetadata.LastCommit
-- uid: Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
-  name: LegacyStateVersion
-  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_LegacyStateVersion
-  commentId: F:Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
-  fullName: Libplanet.Types.Blocks.BlockMetadata.LegacyStateVersion
-  nameWithType: BlockMetadata.LegacyStateVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Common.Nonce)
   name: MakeCandidateData(Nonce)
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_MakeCandidateData_Libplanet_Common_Nonce_
@@ -32343,12 +32337,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.Miner
   nameWithType: BlockMetadata.Miner
-- uid: Libplanet.Types.Blocks.BlockMetadata.PoWProtocolVersion
-  name: PoWProtocolVersion
-  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_PoWProtocolVersion
-  commentId: F:Libplanet.Types.Blocks.BlockMetadata.PoWProtocolVersion
-  fullName: Libplanet.Types.Blocks.BlockMetadata.PoWProtocolVersion
-  nameWithType: BlockMetadata.PoWProtocolVersion
+- uid: Libplanet.Types.Blocks.BlockMetadata.PBFTProtocolVersion
+  name: PBFTProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_PBFTProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.PBFTProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.PBFTProtocolVersion
+  nameWithType: BlockMetadata.PBFTProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.PreviousHash
   name: PreviousHash
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_PreviousHash
@@ -32414,6 +32408,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.TxHash
   nameWithType: BlockMetadata.TxHash
+- uid: Libplanet.Types.Blocks.BlockMetadata.WorldStateProtocolVersion
+  name: WorldStateProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.WorldStateProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.WorldStateProtocolVersion
+  nameWithType: BlockMetadata.WorldStateProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockPolicyViolationException
   name: BlockPolicyViolationException
   href: api/Libplanet.Types.Blocks.BlockPolicyViolationException.html
