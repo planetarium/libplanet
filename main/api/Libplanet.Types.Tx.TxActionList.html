@@ -84,18 +84,18 @@
     <h5>Implements</h5>
     <div><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
-    <div><span class="xref">System.Collections.IEnumerable</span></div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Tx.TxActionList.html">TxActionList</a>&gt;</div>
     <div><span class="xref">Bencodex.IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
@@ -177,7 +177,7 @@ public sealed class TxActionList : IReadOnlyList&lt;IValue&gt;, IReadOnlyCollect
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
         <td><span class="parametername">actions</span></td>
         <td><p>The list of <see cref="!:IAction"></see>s to be executed in a
 transaction.</p>
@@ -380,7 +380,7 @@ public IValue this[int index] { get; }</code></pre>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.IndexOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">index</code> is greater than or equal to <a class="xref" href="Libplanet.Types.Tx.TxActionList.html#Libplanet_Types_Tx_TxActionList_Count">Count</a>.</p>
 </td>
@@ -433,7 +433,7 @@ public bool Equals(TxActionList other)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -482,7 +482,7 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -584,7 +584,7 @@ IEnumerator IEnumerable.GetEnumerator()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerator">IEnumerator</a></td>
+        <td><span class="xref">System.Collections.IEnumerator</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -597,10 +597,10 @@ IEnumerator IEnumerable.GetEnumerator()</code></pre>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</a>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">System.Collections.Generic.IEnumerable&lt;T&gt;</a>
+      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
   </div>
   <div>
-      <span class="xref">System.Collections.IEnumerable</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
