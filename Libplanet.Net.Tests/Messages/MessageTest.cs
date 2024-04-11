@@ -115,7 +115,7 @@ namespace Libplanet.Net.Tests.Messages
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             Assert.Equal(
                 new MessageId(ByteUtil.ParseHex(
-                    "b679318b18ec1efb98ac53beecc811aaef97718ebd30996080bb33305f84dc69")),
+                    "a087b6a3a5c8697d4e4c289db2c35be7277efac170faf3eed250f758d2aa230f")),
                 message.Id);
         }
 
@@ -126,6 +126,7 @@ namespace Libplanet.Net.Tests.Messages
 
             var preVote = TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0],
+                TestUtils.ValidatorSet[0].Power,
                 1,
                 0,
                 blockHash,
@@ -133,6 +134,7 @@ namespace Libplanet.Net.Tests.Messages
 
             var preCommit = TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0],
+                TestUtils.ValidatorSet[0].Power,
                 1,
                 0,
                 blockHash,
