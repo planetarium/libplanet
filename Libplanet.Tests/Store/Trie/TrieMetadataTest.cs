@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Xunit;
-using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Store.Trie
 {
