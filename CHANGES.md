@@ -20,6 +20,8 @@ To be released.
     `BigInteger` to `int`.  [[#3738]]
  -  (Libplanet.Store) Changed `TrieMetadata` to throw an `ArgumentException`
     when trying to create an instance with an invalid version.  [[#3738]]
+ -  (Libplanet.Action) Added `IWorldState.Version` interface property.
+    [[#3739]]
 
 ### Backward-incompatible network protocol changes
 
@@ -38,6 +40,7 @@ To be released.
 [#3735]: https://github.com/planetarium/libplanet/pull/3735
 [#3736]: https://github.com/planetarium/libplanet/pull/3736
 [#3738]: https://github.com/planetarium/libplanet/pull/3738
+[#3739]: https://github.com/planetarium/libplanet/pull/3739
 
 
 Version 4.3.0
