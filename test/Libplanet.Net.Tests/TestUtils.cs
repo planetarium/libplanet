@@ -35,7 +35,7 @@ namespace Libplanet.Net.Tests
             BlockHash.FromString(
                 "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
 
-        public static readonly List<PrivateKey> PrivateKeys =
+        public static readonly ImmutableList<PrivateKey> PrivateKeys =
             Libplanet.Tests.TestUtils.ValidatorPrivateKeys;
 
         public static readonly List<BoundPeer> Peers = new List<BoundPeer>()

@@ -929,7 +929,7 @@ namespace Libplanet.Tests.Action
                 stateStore: _storeFx.StateStore,
                 actionLoader: new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: _storeFx.GenesisBlock,
-                privateKey: ChainPrivateKey);
+                privateKey: GenesisProposer);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(

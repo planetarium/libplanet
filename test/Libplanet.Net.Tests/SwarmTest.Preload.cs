@@ -136,9 +136,9 @@ namespace Libplanet.Net.Tests
                 Block block = minerChain.EvaluateAndSign(
                     ProposeNext(
                         previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                        miner: ChainPrivateKey.PublicKey,
+                        miner: GenesisProposer.PublicKey,
                         lastCommit: CreateBlockCommit(minerChain.Tip)),
-                    ChainPrivateKey);
+                    GenesisProposer);
                 blocks.Add(block);
                 if (i != 11)
                 {
@@ -428,7 +428,7 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow);
 
                 Block block = minerChain.ProposeBlock(
-                    ChainPrivateKey,
+                    GenesisProposer,
                     new[] { tx }.ToImmutableList(),
                     CreateBlockCommit(minerChain.Tip),
                     ImmutableArray<EvidenceBase>.Empty);
