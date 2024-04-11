@@ -35,6 +35,10 @@ namespace Libplanet.Action.State
         [Pure]
         public bool Legacy => _baseState.Legacy;
 
+        /// <inheritdoc cref="IWorldState.Version/>
+        [Pure]
+        public int Version => _baseState.Version;
+
         /// <inheritdoc cref="IWorld.GetAccount"/>
         [Pure]
         public IAccount GetAccount(Address address)
