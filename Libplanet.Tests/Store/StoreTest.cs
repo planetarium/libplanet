@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -1087,6 +1088,7 @@ namespace Libplanet.Tests.Store
                     hash,
                     DateTimeOffset.UtcNow,
                     validator.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(validator)).ToImmutableArray();
 
                 BlockCommit commit = new BlockCommit(height, round, hash, votes);
@@ -1110,6 +1112,7 @@ namespace Libplanet.Tests.Store
                         fx.Block1.Hash,
                         DateTimeOffset.UtcNow,
                         fx.Proposer.PublicKey,
+                        fx.ProposerPower,
                         VoteFlag.PreCommit).Sign(fx.Proposer));
                 var votesTwo = ImmutableArray<Vote>.Empty
                     .Add(new VoteMetadata(
@@ -1118,6 +1121,7 @@ namespace Libplanet.Tests.Store
                         fx.Block2.Hash,
                         DateTimeOffset.UtcNow,
                         fx.Proposer.PublicKey,
+                        fx.ProposerPower,
                         VoteFlag.PreCommit).Sign(fx.Proposer));
 
                 BlockCommit[] blockCommits =
@@ -1160,6 +1164,7 @@ namespace Libplanet.Tests.Store
                                 Fx.GenesisBlock.Hash,
                                 DateTimeOffset.UtcNow,
                                 validatorPrivateKey.PublicKey,
+                                BigInteger.One,
                                 VoteFlag.PreCommit).Sign(validatorPrivateKey)));
 
                 fx.Store.PutBlockCommit(blockCommit);

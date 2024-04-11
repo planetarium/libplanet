@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -41,6 +42,7 @@ namespace Libplanet.Net.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]);
 
             Assert.Throws<InvalidVoteException>(() => _heightVoteSet.AddVote(preVote));
@@ -51,7 +53,13 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var key = new PrivateKey();
             var preVote = new VoteMetadata(
-                2, 0, default, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote).Sign(key);
+                2,
+                0,
+                default,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                BigInteger.One,
+                VoteFlag.PreVote).Sign(key);
 
             Assert.Throws<InvalidVoteException>(() => _heightVoteSet.AddVote(preVote));
         }
@@ -66,6 +74,7 @@ namespace Libplanet.Net.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]);
             var preVote1 = new VoteMetadata(
                 2,
@@ -73,6 +82,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]);
             var preCommit0 = new VoteMetadata(
                 2,
@@ -80,6 +90,7 @@ namespace Libplanet.Net.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]);
             var preCommit1 = new VoteMetadata(
                 2,
@@ -87,6 +98,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]);
 
             _heightVoteSet.AddVote(preVote0);
@@ -99,19 +111,27 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void GetCount()
         {
-            var preVotes = TestUtils.PrivateKeys.Select(key =>
-                new VoteMetadata(
-                    2, 0, default, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote)
-                    .Sign(key)).ToList();
-            var privateKey = TestUtils.PrivateKeys[0];
+            var preVotes = Enumerable.Range(0, TestUtils.PrivateKeys.Count)
+                .Select(
+                    index => new VoteMetadata(
+                            2,
+                            0,
+                            default,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.PrivateKeys[index].PublicKey,
+                            TestUtils.ValidatorSet[index].Power,
+                            VoteFlag.PreVote)
+                        .Sign(TestUtils.PrivateKeys[index]))
+                .ToList();
             var preCommit = new VoteMetadata(
                     2,
                     0,
                     default,
                     DateTimeOffset.UtcNow,
-                    privateKey.PublicKey,
+                    TestUtils.PrivateKeys[0].PublicKey,
+                    TestUtils.ValidatorSet[0].Power,
                     VoteFlag.PreCommit)
-                .Sign(privateKey);
+                .Sign(TestUtils.PrivateKeys[0]);
 
             foreach (var preVote in preVotes)
             {

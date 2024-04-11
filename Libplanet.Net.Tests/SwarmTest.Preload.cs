@@ -135,9 +135,9 @@ namespace Libplanet.Net.Tests
                 Block block = minerChain.EvaluateAndSign(
                     ProposeNext(
                         previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                        miner: ChainPrivateKey.PublicKey,
+                        miner: GenesisProposer.PublicKey,
                         lastCommit: CreateBlockCommit(minerChain.Tip)),
-                    ChainPrivateKey);
+                    GenesisProposer);
                 blocks.Add(block);
                 if (i != 11)
                 {
@@ -319,6 +319,7 @@ namespace Libplanet.Net.Tests
                         specialBlock.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.PrivateKeys[0].PublicKey,
+                        TestUtils.ValidatorSet[0].Power,
                         VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0])));
             var validBlockCommit = TestUtils.CreateBlockCommit(specialBlock);
             chainB.Append(specialBlock, invalidBlockCommit);
@@ -484,7 +485,7 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow);
 
                 Block block = minerChain.ProposeBlock(
-                    ChainPrivateKey,
+                    GenesisProposer,
                     new[] { tx }.ToImmutableList(),
                     CreateBlockCommit(minerChain.Tip));
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
@@ -1001,7 +1002,7 @@ namespace Libplanet.Net.Tests
             minerChain1.Append(block2, CreateBlockCommit(block2));
 
             Block block = minerChain2.ProposeBlock(
-                ChainPrivateKey, CreateBlockCommit(minerChain2.Tip));
+                GenesisProposer, CreateBlockCommit(minerChain2.Tip));
             minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);
