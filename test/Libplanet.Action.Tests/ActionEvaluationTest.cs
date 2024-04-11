@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
@@ -46,6 +47,7 @@ namespace Libplanet.Action.Tests
                         hash,
                         DateTimeOffset.UtcNow,
                         key.PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit).Sign(key),
                 }.ToImmutableArray());
             IWorld world = new World(MockWorldState.CreateModern());

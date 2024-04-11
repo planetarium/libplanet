@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Numerics;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
@@ -35,6 +36,7 @@ namespace Libplanet.Action.Tests
                         hash,
                         DateTimeOffset.UtcNow,
                         key.PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit).Sign(key),
                 }.ToImmutableArray());
         }

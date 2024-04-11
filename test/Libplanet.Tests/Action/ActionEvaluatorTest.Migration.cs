@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;

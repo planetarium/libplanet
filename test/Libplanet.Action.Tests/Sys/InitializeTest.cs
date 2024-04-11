@@ -90,6 +90,7 @@ namespace Libplanet.Action.Tests.Sys
                         hash,
                         DateTimeOffset.UtcNow,
                         key.PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit).Sign(key),
                 }.ToImmutableArray());
             var context = new ActionContext(
