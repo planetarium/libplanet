@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using GraphQL;
 using GraphQL.Types;
 using GraphQL.Execution;
@@ -28,6 +29,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 blockHash,
                 DateTimeOffset.Now,
                 privateKey.PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit).Sign(privateKey);
             var blockCommit = new BlockCommit(1, 0, blockHash, ImmutableArray.Create(vote));
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -99,6 +100,7 @@ namespace Libplanet.Tests.Store
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var stateRootHashes = new Dictionary<BlockHash, HashDigest<SHA256>>();
             Proposer = TestUtils.GenesisProposer;
+            ProposerPower = TestUtils.ValidatorSet[0].Power;
             var preEval = TestUtils.ProposeGenesis(
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
@@ -170,6 +172,8 @@ namespace Libplanet.Tests.Store
         public BlockHash Hash3 { get; }
 
         public PrivateKey Proposer { get; }
+
+        public BigInteger ProposerPower { get; }
 
         public Block GenesisBlock { get; }
 
