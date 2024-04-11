@@ -10,12 +10,16 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Removed `IWorld.SetValidator()` extension method.
+    Use `IWorld.SetValidatorSet()` extension method instead.  [[#3735]]
  -  (Libplanet.Types) Renamed `BlockMetadata.PoWProtocolVersion` to
     `BlockMetadata.PBFTProtocolVersion` and `BlockMetadata.LegacyStateVersion`
     to `BlockMetadata.WorldStateProtocolVersion` while increasing each value
     by 1.  [[#3376]]
- -  (Libplanet.Action) Removed `IWorld.SetValidator()` extension method.
-    Use `IWorld.SetValidatorSet()` extension method instead.  [[#3735]]
+ -  (Libplanet.Store) Changed the type of `TrieMetadata.Version` from
+    `BigInteger` to `int`.  [[#3378]]
+ -  (Libplanet.Store) Changed `TrieMetadata` to throw an `ArgumentException`
+    when trying to create an instance with an invalid version.  [[#3378]]
 
 ### Backward-incompatible network protocol changes
 
@@ -33,6 +37,7 @@ To be released.
 
 [#3735]: https://github.com/planetarium/libplanet/pull/3735
 [#3376]: https://github.com/planetarium/libplanet/pull/3736
+[#3378]: https://github.com/planetarium/libplanet/pull/3738
 
 
 Version 4.3.0
