@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -194,6 +195,7 @@ public class GeneratedBlockChainFixture
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         pk.PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit).Sign(pk)).ToImmutableArray()));
         MinedBlocks = MinedBlocks
             .SetItem(

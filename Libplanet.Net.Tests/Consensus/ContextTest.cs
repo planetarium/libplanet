@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bencodex;
@@ -189,6 +190,7 @@ namespace Libplanet.Net.Tests.Consensus
                     proposedBlock!.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.PrivateKeys[i].PublicKey,
+                    TestUtils.ValidatorSet[i].Power,
                     VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
             }
 
@@ -201,6 +203,7 @@ namespace Libplanet.Net.Tests.Consensus
                     proposedBlock!.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.PrivateKeys[i].PublicKey,
+                    TestUtils.ValidatorSet[i].Power,
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
@@ -217,6 +220,7 @@ namespace Libplanet.Net.Tests.Consensus
                 proposedBlock!.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[3].PublicKey,
+                TestUtils.ValidatorSet[3].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[3])));
 
             await Task.Delay(100);  // Wait for the new message to be added to the message log.
@@ -271,6 +275,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2],
+                        TestUtils.ValidatorSet[2].Power,
                         2,
                         0,
                         block.Hash,
@@ -387,6 +392,7 @@ namespace Libplanet.Net.Tests.Consensus
                             block.Hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.PrivateKeys[i].PublicKey,
+                            TestUtils.ValidatorSet[i].Power,
                             VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
             }
 
@@ -400,6 +406,7 @@ namespace Libplanet.Net.Tests.Consensus
                             block.Hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.PrivateKeys[i].PublicKey,
+                            TestUtils.ValidatorSet[i].Power,
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
@@ -463,6 +470,9 @@ namespace Libplanet.Net.Tests.Consensus
             var proposer = privateKeys[1];
             var key1 = privateKeys[2];
             var key2 = privateKeys[3];
+            BigInteger proposerPower = TestUtils.ValidatorSet[1].Power;
+            BigInteger power1 = TestUtils.ValidatorSet[2].Power;
+            BigInteger power2 = TestUtils.ValidatorSet[3].Power;
             var stepChanged = new AsyncAutoResetEvent();
             var proposalModified = new AsyncAutoResetEvent();
             var prevStep = ConsensusStep.Default;
@@ -517,6 +527,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockA.Hash,
                     DateTimeOffset.UtcNow,
                     key2.PublicKey,
+                    power2,
                     VoteFlag.PreVote).Sign(key2));
             var proposalB = new ProposalMetadata(
                 1,
@@ -554,6 +565,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockB.Hash,
                     DateTimeOffset.UtcNow,
                     proposer.PublicKey,
+                    proposerPower,
                     VoteFlag.PreVote).Sign(proposer));
             var preVoteB1 = new ConsensusPreVoteMsg(
                 new VoteMetadata(
@@ -562,6 +574,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockB.Hash,
                     DateTimeOffset.UtcNow,
                     key1.PublicKey,
+                    power1,
                     VoteFlag.PreVote).Sign(key1));
             var preVoteB2 = new ConsensusPreVoteMsg(
                 new VoteMetadata(
@@ -570,6 +583,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockB.Hash,
                     DateTimeOffset.UtcNow,
                     key2.PublicKey,
+                    power2,
                     VoteFlag.PreVote).Sign(key2));
             context.ProduceMessage(preVoteB0);
             context.ProduceMessage(preVoteB1);

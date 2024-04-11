@@ -40,13 +40,7 @@ namespace Libplanet.Tests
 {
     public static class TestUtils
     {
-        public static readonly PrivateKey GenesisProposer = PrivateKey.FromString(
-            "2a15e7deaac09ce631e1faa184efadb175b6b90989cf1faed9dfc321ad1db5ac");
-
-        public static readonly PrivateKey ChainPrivateKey = PrivateKey.FromString(
-            "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76");
-
-        public static readonly List<PrivateKey> ValidatorPrivateKeys = new List<PrivateKey>
+        public static readonly ImmutableList<PrivateKey> ValidatorPrivateKeys = new List<PrivateKey>
         {
             PrivateKey.FromString(
                 "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"),
@@ -56,7 +50,7 @@ namespace Libplanet.Tests
                 "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"),
             PrivateKey.FromString(
                 "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"),
-        };  // The ordering here should match the ordering by address.
+        }.ToImmutableList();  // The ordering here should match the ordering by address.
 
         public static readonly ValidatorSet ValidatorSet = new ValidatorSet(
             ValidatorPrivateKeys.Select(
@@ -139,6 +133,8 @@ namespace Libplanet.Tests
         };
 
         private static readonly Random _random = new Random();
+
+        public static PrivateKey GenesisProposer => ValidatorPrivateKeys[0];
 
         public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
@@ -403,6 +399,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 blockHash,
                 deterministicTimestamp ? DateTimeOffset.UnixEpoch : DateTimeOffset.UtcNow,
                 key.PublicKey,
+                ValidatorSet.GetValidator(key.PublicKey).Power,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
             return new BlockCommit(
@@ -410,7 +407,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static PreEvaluationBlock ProposeGenesis(
-            PublicKey proposer = null,
+            PublicKey proposer,
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
@@ -418,7 +415,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
         {
             var txs = transactions?.ToList() ?? new List<Transaction>();
-            long nonce = 0;
+            long nonce = txs.Count(tx => tx.Signer.Equals(GenesisProposer.Address));
             validatorSet = validatorSet ?? ValidatorSet;
             txs.AddRange(
                 validatorSet.Validators.Select(
@@ -599,7 +596,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
         {
             actions = actions ?? ImmutableArray<IAction>.Empty;
-            privateKey = privateKey ?? ChainPrivateKey;
+            privateKey = privateKey ?? GenesisProposer;
 
             var txs = new[]
             {
@@ -621,7 +618,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             if (genesisBlock is null)
             {
                 var preEval = ProposeGenesis(
-                    GenesisProposer.PublicKey,
+                    privateKey.PublicKey,
                     txs,
                     validatorSet,
                     timestamp,
@@ -636,7 +633,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             preEval.Header.DeriveBlockHash(evaluatedSrh, null)
                         ))
                     : protocolVersion < BlockMetadata.SlothProtocolVersion
-                    ? preEval.Sign(GenesisProposer, evaluatedSrh)
+                    ? preEval.Sign(privateKey, evaluatedSrh)
                     : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
             }
 

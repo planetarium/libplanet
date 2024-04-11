@@ -54,6 +54,7 @@ namespace Libplanet.Tests.Blocks
                             Next.Hash,
                             Next.Timestamp,
                             Miner.PublicKey,
+                            TestUtils.ValidatorSet.GetValidator(Miner.PublicKey).Power,
                             VoteFlag.PreCommit).Sign(Miner),
                     }.ToImmutableArray())
             );

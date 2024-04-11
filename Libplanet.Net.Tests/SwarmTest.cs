@@ -1633,7 +1633,7 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
+                    GenesisProposer, TestUtils.CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1673,7 +1673,7 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, TestUtils.CreateBlockCommit(chain.Tip));
+                    GenesisProposer, TestUtils.CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -1714,7 +1714,7 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 6; i++)
             {
                 Block block = chain.ProposeBlock(
-                    ChainPrivateKey, CreateBlockCommit(chain.Tip));
+                    GenesisProposer, CreateBlockCommit(chain.Tip));
                 chain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
