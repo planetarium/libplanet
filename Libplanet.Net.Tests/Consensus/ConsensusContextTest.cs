@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Consensus;
@@ -91,12 +92,33 @@ namespace Libplanet.Net.Tests.Consensus
             await proposalMessageSent.WaitAsync();
             BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
-            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[0], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
-            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[1], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
-            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[2], 3, hash: proposedblockHash, flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(
+                new ConsensusPreCommitMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[0],
+                        TestUtils.ValidatorSet[0].Power,
+                        3,
+                        0,
+                        hash: proposedblockHash,
+                        flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(
+                new ConsensusPreCommitMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[1],
+                        TestUtils.ValidatorSet[1].Power,
+                        3,
+                        0,
+                        hash: proposedblockHash,
+                        flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(
+                new ConsensusPreCommitMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2],
+                        TestUtils.ValidatorSet[2].Power,
+                        3,
+                        0,
+                        hash: proposedblockHash,
+                        flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
@@ -228,12 +250,14 @@ namespace Libplanet.Net.Tests.Consensus
 
             votes.Add(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0],
+                TestUtils.ValidatorSet[0].Power,
                 1,
                 0,
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 VoteFlag.PreCommit));
             votes.AddRange(Enumerable.Range(1, 3).Select(x => TestUtils.CreateVote(
                 TestUtils.PrivateKeys[x],
+                TestUtils.ValidatorSet[x].Power,
                 1,
                 0,
                 proposedblockHash,
@@ -265,6 +289,7 @@ namespace Libplanet.Net.Tests.Consensus
         public async void GetVoteSetBits()
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
+            BigInteger proposerPower = TestUtils.ValidatorSet[1].Power;
             AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
             AsyncAutoResetEvent committed = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
@@ -287,6 +312,7 @@ namespace Libplanet.Net.Tests.Consensus
                 block.Hash,
                 DateTimeOffset.UtcNow,
                 proposer.PublicKey,
+                proposerPower,
                 VoteFlag.PreVote).Sign(proposer);
             var preVote2 = new VoteMetadata(
                 1,
@@ -294,6 +320,7 @@ namespace Libplanet.Net.Tests.Consensus
                 block.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[2].PublicKey,
+                TestUtils.ValidatorSet[2].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[2]);
             var preVote3 = new VoteMetadata(
                 1,
@@ -301,6 +328,7 @@ namespace Libplanet.Net.Tests.Consensus
                 block.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[3].PublicKey,
+                TestUtils.ValidatorSet[3].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3]);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -338,6 +366,7 @@ namespace Libplanet.Net.Tests.Consensus
         public async void HandleVoteSetBits()
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
+            BigInteger proposerPower = TestUtils.ValidatorSet[1].Power;
             ConsensusStep step = ConsensusStep.Default;
             var stepChanged = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
@@ -368,6 +397,7 @@ namespace Libplanet.Net.Tests.Consensus
                 block.Hash,
                 DateTimeOffset.UtcNow,
                 proposer.PublicKey,
+                proposerPower,
                 VoteFlag.PreVote).Sign(proposer);
             var preVote2 = new VoteMetadata(
                 1,
@@ -375,6 +405,7 @@ namespace Libplanet.Net.Tests.Consensus
                 block.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.PrivateKeys[2].PublicKey,
+                TestUtils.ValidatorSet[2].Power,
                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[2]);
             consensusContext.HandleMessage(new ConsensusProposalMsg(proposal));
             consensusContext.HandleMessage(new ConsensusPreVoteMsg(preVote1));
