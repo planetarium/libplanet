@@ -156,7 +156,7 @@ namespace Libplanet.Types.Blocks
             }
             else if (!privateKey.PublicKey.Equals(PublicKey))
             {
-                string m = "The given private key does not match to the miner's public key." +
+                string m = "The given private key does not match to the proposer's public key." +
                     $"Block's public key: {PublicKey}\n" +
                     $"Derived public key: {privateKey.PublicKey}\n";
                 throw new ArgumentException(m, nameof(privateKey));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action.Loader;
@@ -62,16 +63,18 @@ namespace Libplanet.Net.Tests
 
         public static Vote CreateVote(
             PrivateKey privateKey,
-            long height = 0,
-            int round = 0,
-            BlockHash hash = default,
-            VoteFlag flag = VoteFlag.Null) =>
+            BigInteger power,
+            long height,
+            int round,
+            BlockHash hash,
+            VoteFlag flag) =>
             new VoteMetadata(
                 height,
                 round,
                 hash,
                 DateTimeOffset.Now,
                 privateKey.PublicKey,
+                power,
                 flag).Sign(privateKey);
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
@@ -134,8 +137,10 @@ namespace Libplanet.Net.Tests
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
-            foreach ((PrivateKey privateKey, BoundPeer peer)
-                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            foreach ((PrivateKey privateKey, BigInteger power)
+                     in PrivateKeys.Zip(
+                         ValidatorSet.Validators.Select(v => v.Power),
+                         (first, second) => (first, second)))
             {
                 if (privateKey == nodePrivateKey)
                 {
@@ -150,6 +155,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreCommit).Sign(privateKey)));
             }
         }
@@ -159,8 +165,10 @@ namespace Libplanet.Net.Tests
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
-            foreach ((PrivateKey privateKey, BoundPeer peer)
-                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            foreach ((PrivateKey privateKey, BigInteger power)
+                     in PrivateKeys.Zip(
+                         ValidatorSet.Validators.Select(v => v.Power),
+                         (first, second) => (first, second)))
             {
                 if (privateKey == nodePrivateKey)
                 {
@@ -175,6 +183,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreCommit).Sign(privateKey)));
             }
         }
@@ -184,8 +193,10 @@ namespace Libplanet.Net.Tests
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
-            foreach ((PrivateKey privateKey, BoundPeer peer)
-                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            foreach ((PrivateKey privateKey, BigInteger power)
+                     in PrivateKeys.Zip(
+                         ValidatorSet.Validators.Select(v => v.Power),
+                         (first, second) => (first, second)))
             {
                 if (privateKey == nodePrivateKey)
                 {
@@ -200,6 +211,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreVote).Sign(privateKey)));
             }
         }
@@ -209,7 +221,10 @@ namespace Libplanet.Net.Tests
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
-            foreach (PrivateKey privateKey in PrivateKeys)
+            foreach ((PrivateKey privateKey, BigInteger power)
+                     in PrivateKeys.Zip(
+                         ValidatorSet.Validators.Select(v => v.Power),
+                         (first, second) => (first, second)))
             {
                 if (privateKey == nodePrivateKey)
                 {
@@ -224,6 +239,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreVote).Sign(privateKey)));
             }
         }

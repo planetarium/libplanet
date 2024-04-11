@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -256,6 +257,7 @@ namespace Libplanet.Tests.Blocks
                         blockHash,
                         timestamp,
                         validatorB.PublicKey,
+                        BigInteger.One,
                         VoteFlag.Null).Sign(null),
                 }.ToImmutableArray());
             var validMetadata = new BlockMetadata(
@@ -273,7 +275,7 @@ namespace Libplanet.Tests.Blocks
         {
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
-                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, flag);
+                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, BigInteger.One, flag);
             return flag == VoteFlag.PreVote || flag == VoteFlag.PreCommit
                 ? voteMetadata.Sign(key)
                 : voteMetadata.Sign(null);

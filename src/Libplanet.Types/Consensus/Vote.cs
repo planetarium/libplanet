@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -100,6 +101,9 @@ namespace Libplanet.Types.Consensus
 
         /// <inheritdoc/>
         public PublicKey ValidatorPublicKey => _metadata.ValidatorPublicKey;
+
+        /// <inheritdoc/>
+        public BigInteger ValidatorPower => _metadata.ValidatorPower;
 
         /// <inheritdoc/>
         public VoteFlag Flag => _metadata.Flag;

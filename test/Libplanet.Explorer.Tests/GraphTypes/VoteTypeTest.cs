@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using GraphQL;
 using GraphQL.Types;
 using GraphQL.Execution;
@@ -27,6 +28,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 blockHash,
                 DateTimeOffset.Now,
                 privateKey.PublicKey,
+                123,
                 VoteFlag.PreCommit).Sign(privateKey);
 
             var query =
@@ -36,6 +38,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     blockHash
                     timestamp
                     validatorPublicKey
+                    validatorPower
                     flag
                     signature
                 }";
@@ -54,6 +57,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(vote.BlockHash.ToString(), resultData["blockHash"]);
             Assert.Equal(new DateTimeOffsetGraphType().Serialize(vote.Timestamp), resultData["timestamp"]);
             Assert.Equal(vote.ValidatorPublicKey.ToString(), resultData["validatorPublicKey"]);
+            Assert.Equal(vote.ValidatorPower, resultData["validatorPower"]);
             Assert.Equal(vote.Flag.ToString(), resultData["flag"]);
             Assert.Equal(ByteUtil.Hex(vote.Signature), resultData["signature"]);
         }

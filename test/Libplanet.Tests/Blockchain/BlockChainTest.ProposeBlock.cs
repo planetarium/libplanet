@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -605,6 +606,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Tip.Hash,
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
             var blockCommit = new BlockCommit(
                 _blockChain.Tip.Index, 0, _blockChain.Tip.Hash, votes);
