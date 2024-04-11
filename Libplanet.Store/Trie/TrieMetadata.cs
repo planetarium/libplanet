@@ -39,10 +39,11 @@ namespace Libplanet.Store.Trie
         /// under evaluation.</param>
         /// <exception cref="ArgumentException">Thrown when either <paramref name="version"/>
         /// is less than <see cref="BlockMetadata.WorldStateProtocolVersion"/> or
-        /// greater than <see cref="IBlockMetadata.CurentProtocolVersion"/>.</exception>
+        /// greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>.</exception>
         public TrieMetadata(int version)
         {
-            if (version < BlockMetadata.WorldStateProtocolVersion)
+            if (version < BlockMetadata.WorldStateProtocolVersion ||
+                version > BlockMetadata.CurrentProtocolVersion)
             {
                 throw new ArgumentException(
                     $"Given {nameof(version)} cannot be less than " +
