@@ -39,9 +39,9 @@ namespace Libplanet.Net.Tests
         public static readonly List<BoundPeer> Peers = new List<BoundPeer>()
         {
             new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.0", 1000)),
-            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.1", 1001)),
-            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.2", 1002)),
-            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.3", 1003)),
+            new BoundPeer(PrivateKeys[1].PublicKey, new DnsEndPoint("1.0.0.1", 1001)),
+            new BoundPeer(PrivateKeys[2].PublicKey, new DnsEndPoint("1.0.0.2", 1002)),
+            new BoundPeer(PrivateKeys[3].PublicKey, new DnsEndPoint("1.0.0.3", 1003)),
         };
 
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
