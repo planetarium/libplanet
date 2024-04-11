@@ -265,26 +265,6 @@ namespace Libplanet.Action.State
             UpdateValidatorSet(world, validatorSet);
 
         [Pure]
-        private static IWorld UpdateFungibleAssets(
-            IWorld world,
-            Address address,
-            Currency currency,
-            BigInteger amount,
-            BigInteger? supplyAmount = null)
-        {
-            IAccount account = supplyAmount is { } sa
-                ? new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
-                : new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
-
-            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
-        }
-
-        [Pure]
         private static IWorld TransferAssetV0(
             IWorld world,
             Address sender,
@@ -347,6 +327,26 @@ namespace Libplanet.Action.State
             BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
 
             return UpdateFungibleAssets(intermediate, recipient, currency, recipientRawBalance);
+        }
+
+        [Pure]
+        private static IWorld UpdateFungibleAssets(
+            IWorld world,
+            Address address,
+            Currency currency,
+            BigInteger amount,
+            BigInteger? supplyAmount = null)
+        {
+            IAccount account = supplyAmount is { } sa
+                ? new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
+                : new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
+
+            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
 
         [Pure]

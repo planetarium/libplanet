@@ -54,6 +54,8 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         public const int WorldStateProtocolVersion = 5;
 
+        public const int ValidatorSetAccountProtocolVersion = 6;
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
 
