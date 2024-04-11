@@ -54,7 +54,9 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2],
+                        TestUtils.ValidatorSet[2].Power,
                         1,
+                        0,
                         hash: default,
                         flag: VoteFlag.PreVote)));
 
@@ -62,7 +64,9 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreVoteMsg(
                     vote: TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3],
+                        TestUtils.ValidatorSet[3].Power,
                         1,
+                        0,
                         hash: default,
                         flag: VoteFlag.PreVote)));
 
@@ -72,7 +76,9 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2],
+                        TestUtils.ValidatorSet[2].Power,
                         1,
+                        0,
                         hash: default,
                         flag: VoteFlag.PreCommit)));
 
@@ -80,7 +86,9 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusPreCommitMsg(
                     vote: TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3],
+                        TestUtils.ValidatorSet[3].Power,
                         1,
+                        0,
                         hash: default,
                         flag: VoteFlag.PreCommit)));
 

@@ -539,6 +539,7 @@ namespace Libplanet.Net.Consensus
                 hash,
                 DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
+                _validatorSet.GetValidator(_privateKey.PublicKey).Power,
                 flag).Sign(_privateKey);
         }
 

@@ -131,14 +131,26 @@ namespace Libplanet.Tests.Consensus
             var validatorSet = new ValidatorSet(unorderedPrivateKeys.Select(
                 key => new Validator(key.PublicKey, BigInteger.One)).ToList());
             var unorderedVotes = unorderedPrivateKeys
-                .Select(key => new VoteMetadata(
-                    height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
-                        .Sign(key))
+                .Select(
+                    key => new VoteMetadata(
+                        height,
+                        round,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        BigInteger.One,
+                        VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
             var orderedVotes = orderedPrivateKeys
-                .Select(key => new VoteMetadata(
-                    height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
-                        .Sign(key))
+                .Select(
+                    key => new VoteMetadata(
+                        height,
+                        round,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        BigInteger.One,
+                        VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
 
             var blockCommitWithUnorderedVotes =
