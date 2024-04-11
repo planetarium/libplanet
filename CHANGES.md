@@ -15,11 +15,11 @@ To be released.
  -  (Libplanet.Types) Renamed `BlockMetadata.PoWProtocolVersion` to
     `BlockMetadata.PBFTProtocolVersion` and `BlockMetadata.LegacyStateVersion`
     to `BlockMetadata.WorldStateProtocolVersion` while increasing each value
-    by 1.  [[#3376]]
+    by 1.  [[#3736]]
  -  (Libplanet.Store) Changed the type of `TrieMetadata.Version` from
-    `BigInteger` to `int`.  [[#3378]]
+    `BigInteger` to `int`.  [[#3738]]
  -  (Libplanet.Store) Changed `TrieMetadata` to throw an `ArgumentException`
-    when trying to create an instance with an invalid version.  [[#3378]]
+    when trying to create an instance with an invalid version.  [[#3738]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,8 +36,8 @@ To be released.
 ### CLI tools
 
 [#3735]: https://github.com/planetarium/libplanet/pull/3735
-[#3376]: https://github.com/planetarium/libplanet/pull/3736
-[#3378]: https://github.com/planetarium/libplanet/pull/3738
+[#3736]: https://github.com/planetarium/libplanet/pull/3736
+[#3738]: https://github.com/planetarium/libplanet/pull/3738
 
 
 Version 4.3.0
