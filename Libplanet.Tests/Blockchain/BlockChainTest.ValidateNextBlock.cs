@@ -56,7 +56,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ApplicationException>(() => _blockChain.EvaluateAndSign(
                 new BlockContent(
                     new BlockMetadata(
-                        protocolVersion: protocolVersion - 1,
+                        protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1,
                         index: 2L,
                         timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
                         miner: _fx.Proposer.Address,
