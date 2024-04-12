@@ -2208,6 +2208,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldState.Trie
   nameWithType: IWorldState.Trie
+- uid: Libplanet.Action.State.IWorldState.Version
+  name: Version
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version
+  commentId: P:Libplanet.Action.State.IWorldState.Version
+  fullName: Libplanet.Action.State.IWorldState.Version
+  nameWithType: IWorldState.Version
+- uid: Libplanet.Action.State.IWorldState.Version*
+  name: Version
+  href: api/Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version_
+  commentId: Overload:Libplanet.Action.State.IWorldState.Version
+  isSpec: "True"
+  fullName: Libplanet.Action.State.IWorldState.Version
+  nameWithType: IWorldState.Version
 - uid: Libplanet.Action.State.ReservedAddresses
   name: ReservedAddresses
   href: api/Libplanet.Action.State.ReservedAddresses.html
@@ -2432,6 +2445,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.World.Trie
   nameWithType: World.Trie
+- uid: Libplanet.Action.State.World.Version
+  name: Version
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Version
+  commentId: P:Libplanet.Action.State.World.Version
+  fullName: Libplanet.Action.State.World.Version
+  nameWithType: World.Version
+- uid: Libplanet.Action.State.World.Version*
+  name: Version
+  href: api/Libplanet.Action.State.World.html#Libplanet_Action_State_World_Version_
+  commentId: Overload:Libplanet.Action.State.World.Version
+  isSpec: "True"
+  fullName: Libplanet.Action.State.World.Version
+  nameWithType: World.Version
 - uid: Libplanet.Action.State.WorldBaseState
   name: WorldBaseState
   href: api/Libplanet.Action.State.WorldBaseState.html
@@ -2490,6 +2516,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.WorldBaseState.Trie
   nameWithType: WorldBaseState.Trie
+- uid: Libplanet.Action.State.WorldBaseState.Version
+  name: Version
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Version
+  commentId: P:Libplanet.Action.State.WorldBaseState.Version
+  fullName: Libplanet.Action.State.WorldBaseState.Version
+  nameWithType: WorldBaseState.Version
+- uid: Libplanet.Action.State.WorldBaseState.Version*
+  name: Version
+  href: api/Libplanet.Action.State.WorldBaseState.html#Libplanet_Action_State_WorldBaseState_Version_
+  commentId: Overload:Libplanet.Action.State.WorldBaseState.Version
+  isSpec: "True"
+  fullName: Libplanet.Action.State.WorldBaseState.Version
+  nameWithType: WorldBaseState.Version
 - uid: Libplanet.Action.State.WorldDelta
   name: WorldDelta
   href: api/Libplanet.Action.State.WorldDelta.html
@@ -10838,12 +10877,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockWorldState.CreateLegacy
   nameWithType: MockWorldState.CreateLegacy
-- uid: Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore)
-  name: CreateModern(IStateStore)
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_CreateModern_Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore)
-  fullName: Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore)
-  nameWithType: MockWorldState.CreateModern(IStateStore)
+- uid: Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore,System.Int32)
+  name: CreateModern(IStateStore, Int32)
+  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_CreateModern_Libplanet_Store_IStateStore_System_Int32_
+  commentId: M:Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore,System.Int32)
+  fullName: Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore, System.Int32)
+  nameWithType: MockWorldState.CreateModern(IStateStore, Int32)
 - uid: Libplanet.Mocks.MockWorldState.CreateModern*
   name: CreateModern
   href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_CreateModern_
@@ -10967,6 +11006,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockWorldState.Trie
   nameWithType: MockWorldState.Trie
+- uid: Libplanet.Mocks.MockWorldState.Version
+  name: Version
+  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_Version
+  commentId: P:Libplanet.Mocks.MockWorldState.Version
+  fullName: Libplanet.Mocks.MockWorldState.Version
+  nameWithType: MockWorldState.Version
+- uid: Libplanet.Mocks.MockWorldState.Version*
+  name: Version
+  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_Version_
+  commentId: Overload:Libplanet.Mocks.MockWorldState.Version
+  isSpec: "True"
+  fullName: Libplanet.Mocks.MockWorldState.Version
+  nameWithType: MockWorldState.Version
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html
