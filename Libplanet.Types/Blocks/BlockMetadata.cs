@@ -19,7 +19,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 5;
+        public const int CurrentProtocolVersion = 6;
 
         /// <summary>
         /// The starting protocol version where PBFT validation is used instead of
