@@ -22,6 +22,9 @@ Version DPoS
     parameters instead of the `policyBlockActionGetter` parameter.  [[#3701]]
  -  (Libplanet.Action) Added `SetValidatorSet` method to `IAccount` interface
     and its implementations.  [[#3730]]
+ -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.  [[#3737]]
+ -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
+    interface and its implementations.  [[#3737]]
 
 ### Backward-incompatible network protocol changes
 
@@ -39,6 +42,7 @@ Version DPoS
 
 [#3701]: https://github.com/planetarium/libplanet/pull/3701
 [#3730]: https://github.com/planetarium/libplanet/pull/3730
+[#3737]: https://github.com/planetarium/libplanet/pull/3737
 
 
 Version 4.4.1
