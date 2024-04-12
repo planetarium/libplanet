@@ -65,6 +65,21 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact]
+        public void CannotAddValidatorWithInvalidPower()
+        {
+            var preVote = new VoteMetadata(
+                2,
+                0,
+                default,
+                DateTimeOffset.UtcNow,
+                TestUtils.ValidatorSet[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power + 1,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]);
+
+            Assert.Throws<InvalidVoteException>(() => _heightVoteSet.AddVote(preVote));
+        }
+
+        [Fact]
         public void CannotAddMultipleVotesPerRoundPerValidator()
         {
             Random random = new Random();
