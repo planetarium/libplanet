@@ -4,6 +4,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Blocks;
 using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
@@ -20,14 +21,19 @@ namespace Libplanet.Action.State
         {
             Trie = trie;
             _stateStore = stateStore;
-            Legacy = trie.GetMetadata() is null;
+            Version = trie.GetMetadata() is { } value
+                ? value.Version
+                : 0;
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
         public ITrie Trie { get; }
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
-        public bool Legacy { get; private set; }
+        public bool Legacy => Version < BlockMetadata.WorldStateProtocolVersion;
+
+        /// <inheritdoc cref="IWorldState.Version"/>
+        public int Version { get; }
 
         /// <inheritdoc cref="IWorldState.GetAccountState"/>
         public IAccountState GetAccountState(Address address)

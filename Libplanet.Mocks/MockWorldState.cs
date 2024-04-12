@@ -48,14 +48,19 @@ namespace Libplanet.Mocks
         {
             Trie = trie;
             _stateStore = stateStore;
-            Legacy = Trie.GetMetadata() is null;
+            Version = trie.GetMetadata() is { } value
+                ? value.Version
+                : 0;
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
         public ITrie Trie { get; }
 
         /// <inheritdoc cref="IWorldState.Legacy"/>
-        public bool Legacy { get; }
+        public bool Legacy => Version < BlockMetadata.WorldStateProtocolVersion;
+
+        /// <inheritdoc cref="IWorldState.Version"/>
+        public int Version { get; }
 
         /// <summary>
         /// Creates a new manipulable empty legacy <see cref="IWorldState"/>
@@ -78,12 +83,17 @@ namespace Libplanet.Mocks
         /// <param name="stateStore">The <see cref="IStateStore"/> to use
         /// as the new instance's backend storage.  If <see langword="null"/>,
         /// uses an ephemeral on-memory <see cref="IStateStore"/>.</param>
+        /// <param name="version">The version of the backing <see cref="ITrie"/>
+        /// to use.  If not specified, defaults to
+        /// <see cref="BlockMetadata.CurrentProtocolVersion"/>.</param>
         /// <returns>A new empty modern <see cref="IWorldState"/>.</returns>
-        public static MockWorldState CreateModern(IStateStore? stateStore = null)
+        public static MockWorldState CreateModern(
+            IStateStore? stateStore = null,
+            int version = BlockMetadata.CurrentProtocolVersion)
         {
             stateStore ??= new TrieStateStore(new MemoryKeyValueStore());
             ITrie trie = stateStore.GetStateRoot(null);
-            trie = trie.SetMetadata(new TrieMetadata(Block.CurrentProtocolVersion));
+            trie = trie.SetMetadata(new TrieMetadata(version));
             trie = stateStore.Commit(trie);
             return new MockWorldState(trie, stateStore);
         }
