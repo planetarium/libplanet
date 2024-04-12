@@ -10,19 +10,19 @@ namespace Libplanet.Action.State
         public static readonly Address ValidatorSetAddress =
             new Address("1000000000000000000000000000000000000000");
 
-        public ValidatorSetAccount(ITrie trie, int worldTrieVersion)
+        public ValidatorSetAccount(ITrie trie, int worldVersion)
         {
             Trie = trie;
-            WorldTrieVersion = worldTrieVersion;
+            WorldVersion = worldVersion;
         }
 
         public ITrie Trie { get; }
 
-        public int WorldTrieVersion { get; }
+        public int WorldVersion { get; }
 
         public ValidatorSet GetValidatorSet()
         {
-            if (WorldTrieVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
+            if (WorldVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
                 return Trie.Get(KeyConverters.ToStateKey(ValidatorSetAddress)) is { } value
                     ? new ValidatorSet(value)
@@ -38,17 +38,17 @@ namespace Libplanet.Action.State
 
         public ValidatorSetAccount SetValidatorSet(ValidatorSet validatorSet)
         {
-            if (WorldTrieVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
+            if (WorldVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
                 return new ValidatorSetAccount(
                     Trie.Set(KeyConverters.ToStateKey(ValidatorSetAddress), validatorSet.Bencoded),
-                    WorldTrieVersion);
+                    WorldVersion);
             }
             else
             {
                 return new ValidatorSetAccount(
                     Trie.Set(KeyConverters.ValidatorSetKey, validatorSet.Bencoded),
-                    WorldTrieVersion);
+                    WorldVersion);
             }
         }
 
