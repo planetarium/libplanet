@@ -249,15 +249,19 @@ namespace Libplanet.Types.Consensus
 
         /// <summary>
         /// Checks whether <see cref="BlockCommit.Votes"/> is ordered
-        /// by <see cref="Address"/> of each <see cref="Vote.ValidatorPublicKey"/>.
+        /// by <see cref="Address"/> of each <see cref="Vote.ValidatorPublicKey"/>,
+        /// and <see cref="Vote.ValidatorPower"/> equals to the one recorded in the chain states.
         /// </summary>
         /// <param name="blockCommit">The <see cref="BlockCommit"/> to check.</param>
         /// <returns><see langword="true"/> if the <see cref="BlockCommit.Votes"/> is
         /// ordered, <see langword="false"/> otherwise.</returns>
         public bool ValidateBlockCommitValidators(BlockCommit blockCommit)
         {
-            return Validators.Select(validator => validator.PublicKey).SequenceEqual(
-                blockCommit.Votes.Select(vote => vote.ValidatorPublicKey).ToList());
+            return Validators.Select(validator => validator.PublicKey)
+                       .SequenceEqual(
+                           blockCommit.Votes.Select(vote => vote.ValidatorPublicKey).ToList()) &&
+                   blockCommit.Votes.All(
+                       v => v.ValidatorPower == GetValidator(v.ValidatorPublicKey).Power);
         }
     }
 }

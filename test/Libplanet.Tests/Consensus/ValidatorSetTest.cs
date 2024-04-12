@@ -152,8 +152,21 @@ namespace Libplanet.Tests.Consensus
                         BigInteger.One,
                         VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
+            var invalidPowerVotes = orderedPrivateKeys
+                .Select(
+                    key => new VoteMetadata(
+                        height,
+                        round,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        2,
+                        VoteFlag.PreCommit).Sign(key))
+                .ToImmutableArray();
 
             var blockCommitWithUnorderedVotes =
+                new BlockCommit(height, round, hash, unorderedVotes);
+            var blockCommitWithInvalidPowerVotes =
                 new BlockCommit(height, round, hash, unorderedVotes);
             var blockCommitWithInsufficientVotes =
                 new BlockCommit(height, round, hash, orderedVotes.Take(5).ToImmutableArray());
@@ -161,6 +174,8 @@ namespace Libplanet.Tests.Consensus
 
             Assert.False(
                 validatorSet.ValidateBlockCommitValidators(blockCommitWithUnorderedVotes));
+            Assert.False(
+                validatorSet.ValidateBlockCommitValidators(blockCommitWithInvalidPowerVotes));
             Assert.False(
                 validatorSet.ValidateBlockCommitValidators(blockCommitWithInsufficientVotes));
             Assert.True(validatorSet.ValidateBlockCommitValidators(validBlockCommit));
