@@ -105,8 +105,9 @@ namespace Libplanet.Tests.Store
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
-                _ => beginBlockActions ?? ImmutableArray<IAction>.Empty,
-                _ => endBlockActions ?? ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    _ => beginBlockActions ?? ImmutableArray<IAction>.Empty,
+                    _ => endBlockActions ?? ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
