@@ -26,37 +26,28 @@ namespace Libplanet.Action
     public class ActionEvaluator : IActionEvaluator
     {
         private readonly ILogger _logger;
-        private readonly PolicyBlockActionsGetter _policyBeginBlockActionsGetter;
-        private readonly PolicyBlockActionsGetter _policyEndBlockActionsGetter;
+        private readonly PolicyActionsGetterCollection _policyActionsGetterCollection;
         private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator"/>.
         /// </summary>
-        /// <param name="policyBeginBlockActionsGetter">A delegator to get policy block actions to
-        /// evaluate at the beginning for each <see cref="IPreEvaluationBlock"/>
-        /// that gets evaluated.
-        /// Note the order of the returned list determines the execution order.
-        /// </param>
-        /// <param name="policyEndBlockActionsGetter">A delegator to get policy block actions to
-        /// evaluate at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.
-        /// Note the order of the returned list determines the execution order.
+        /// <param name="policyActionsGetterCollection">A <see cref="PolicyActionsGetterCollection"/> containing delegators
+        /// to get policy actions to evaluate at each situation.
         /// </param>
         /// <param name="stateStore">The <see cref="IStateStore"/> to use to retrieve
         /// the states for a provided <see cref="HashDigest{SHA256}"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
-            PolicyBlockActionsGetter policyBeginBlockActionsGetter,
-            PolicyBlockActionsGetter policyEndBlockActionsGetter,
+            PolicyActionsGetterCollection policyActionsGetterCollection,
             IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
-            _policyBeginBlockActionsGetter = policyBeginBlockActionsGetter;
-            _policyEndBlockActionsGetter = policyEndBlockActionsGetter;
+            _policyActionsGetterCollection = policyActionsGetterCollection;
             _stateStore = stateStore;
             _actionLoader = actionTypeLoader;
         }
@@ -124,7 +115,7 @@ namespace Libplanet.Action
                 previousState = MigrateWorld(previousState, block.ProtocolVersion);
 
                 var evaluations = ImmutableList<ActionEvaluation>.Empty;
-                if (_policyBeginBlockActionsGetter(block) is { } beginBlockActions &&
+                if (_policyActionsGetterCollection.BeginBlockActionsGetter(block) is { } beginBlockActions &&
                     beginBlockActions.Length > 0)
                 {
                     evaluations = evaluations.AddRange(EvaluatePolicyBeginBlockActions(
@@ -137,7 +128,7 @@ namespace Libplanet.Action
                     EvaluateBlock(block, previousState).ToImmutableList()
                 );
 
-                if (_policyEndBlockActionsGetter(block) is { } endBlockActions &&
+                if (_policyActionsGetterCollection.EndBlockActionsGetter(block) is { } endBlockActions &&
                     endBlockActions.Length > 0)
                 {
                     previousState = evaluations.Count > 0
@@ -517,7 +508,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: null,
                 previousState: previousState,
-                actions: _policyBeginBlockActionsGetter(block),
+                actions: _policyActionsGetterCollection.BeginBlockActionsGetter(block),
                 stateStore: _stateStore,
                 logger: _logger).ToArray();
         }
@@ -546,7 +537,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: null,
                 previousState: previousState,
-                actions: _policyEndBlockActionsGetter(block),
+                actions: _policyActionsGetterCollection.EndBlockActionsGetter(block),
                 stateStore: _stateStore,
                 logger: _logger).ToArray();
         }

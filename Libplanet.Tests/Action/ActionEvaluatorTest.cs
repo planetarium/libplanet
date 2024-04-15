@@ -93,8 +93,9 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                _ => ImmutableArray<IAction>.Empty,
-                _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
@@ -310,8 +311,9 @@ namespace Libplanet.Tests.Action
                 TestUtils.GenesisProposer,
                 stateRootHash: trie.Hash);
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -574,8 +576,9 @@ namespace Libplanet.Tests.Action
                 .SetBalance(addresses[2], DumbAction.DumbCurrency * 100));
             ITrie initTrie = stateStore.Commit(world.Trie);
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -668,8 +671,9 @@ namespace Libplanet.Tests.Action
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: new TrieStateStore(new MemoryKeyValueStore()),
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
