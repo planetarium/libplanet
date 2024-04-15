@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Action
         {
         }
 
-        public override int ProtocolVersion { get; } = Block.CurrentProtocolVersion;
+        public override int ProtocolVersion { get; } = BlockMetadata.CurrentProtocolVersion;
 
         public override IActionContext CreateContext(IWorld world, Address signer)
         {
@@ -37,15 +37,8 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IWorld world = _initWorld.TransferAsset(
-                _initContext,
-                _addr[0],
-                _addr[1],
-                Value(0, 4));
-            Assert.Equal(Value(0, 4), world.GetBalance(_addr[1], _currencies[0]));
-            IActionContext c = CreateContext(world, _addr[0]);
-            world = world.TransferAsset(c, _addr[1], _addr[1], Value(0, 2));
-            Assert.Equal(Value(0, 4), world.GetBalance(_addr[1], _currencies[0]));
+            IWorld world = _initWorld.TransferAsset(_initContext, _addr[0], _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 5), world.GetBalance(_addr[0], _currencies[0]));
         }
 
         [Fact]

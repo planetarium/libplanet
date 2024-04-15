@@ -19,14 +19,20 @@ namespace Libplanet.Types.Blocks
         HashDigest<SHA256> StateRootHash { get; }
 
         /// <summary>
+        /// <para>
         /// The digital signature of the whole block content (except for
         /// <see cref="IBlockExcerpt.Hash"/>, which is derived from the signature and other
         /// contents).  This is made by the <see cref="IBlockMetadata.Miner"/>'s
         /// <see cref="PrivateKey"/>.
-        /// <para>As the block signature is introduced since the protocol version 2, it is
-        /// <see langword="null"/> for blocks with earlier protocol versions than 2.  Although
-        /// the property is type-wise, the block signature is mandatory since the protocol
-        /// version 2.</para>
+        /// </para>
+        /// <para>
+        /// As the block signature is introduced since
+        /// <see cref="BlockMetadata.SignatureProtocolVersion"/>, it is
+        /// <see langword="null"/> for blocks with earlier protocol versions than
+        /// <see cref="BlockMetadata.SignatureProtocolVersion"/>.  Although
+        /// the property is type-wise, the block signature is mandatory since
+        /// <see cref="BlockMetadata.SignatureProtocolVersion"/>.
+        /// </para>
         /// </summary>
         ImmutableArray<byte>? Signature { get; }
     }

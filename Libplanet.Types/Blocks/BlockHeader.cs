@@ -106,10 +106,13 @@ namespace Libplanet.Types.Blocks
                 !preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
             {
                 long idx = preEvaluationBlockHeader.Index;
-                string msg = preEvaluationBlockHeader.ProtocolVersion >= 2
-                    ? $"The block #{idx} #{proof.Hash}'s signature is invalid."
-                    : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
-                      $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
+                string msg = preEvaluationBlockHeader.ProtocolVersion >=
+                    BlockMetadata.SignatureProtocolVersion
+                        ? $"The block #{idx} #{proof.Hash}'s signature is invalid."
+                        : $"The block #{idx} #{proof.Hash} cannot be signed as its " +
+                          $"protocol version is less than " +
+                          $"{BlockMetadata.SignatureProtocolVersion}: " +
+                          $"{preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(
                     msg,
                     preEvaluationBlockHeader.PublicKey,
