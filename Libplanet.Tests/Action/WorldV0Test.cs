@@ -57,8 +57,7 @@ namespace Libplanet.Tests.Action
                 chain.Tip,
                 new[] { tx },
                 miner: _keys[1].PublicKey,
-                protocolVersion: ProtocolVersion
-            );
+                protocolVersion: ProtocolVersion);
             var stateRootHash = chain.DetermineBlockStateRootHash(preEval, out _);
             var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             Block block = new Block(preEval, (stateRootHash, null, hash));

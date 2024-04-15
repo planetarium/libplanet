@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Action
         {
         }
 
-        public override int ProtocolVersion { get; } = BlockMetadata.CurrentProtocolVersion;
+        public override int ProtocolVersion { get; } = BlockMetadata.TransferFixProtocolVersion;
 
         public override IActionContext CreateContext(IWorld world, Address signer)
         {
@@ -53,52 +53,20 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }.ToPlainValues()
             );
-            Block block = chain.EvaluateAndSign(
-                TestUtils.ProposeNext(
+            PreEvaluationBlock preEval = TestUtils.ProposeNext(
                     chain.Tip,
                     new[] { tx },
                     miner: _keys[1].PublicKey,
-                    protocolVersion: ProtocolVersion,
-                    lastCommit: TestUtils.CreateBlockCommit(chain.Tip)),
-                _keys[1]);
-            chain.Append(
-                block,
-                TestUtils.CreateBlockCommit(block)
-            );
+                    protocolVersion: ProtocolVersion);
+            var stateRootHash = chain.DetermineBlockStateRootHash(preEval, out _);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
+            Block block = new Block(preEval, (stateRootHash, null, hash));
+            chain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency)
-            );
+                chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
 
             return chain;
-        }
-
-        [Fact]
-        public void TotalSupplyTracking()
-        {
-            IWorld world = _initWorld;
-            IActionContext context = _initContext;
-
-            Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                world.GetTotalSupply(_currencies[0]));
-
-            Assert.Equal(
-                Value(4, 0),
-                _initWorld.GetTotalSupply(_currencies[4]));
-
-            world = world.MintAsset(context, _addr[0], Value(0, 10));
-            Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                world.GetTotalSupply(_currencies[0]));
-
-            world = world.MintAsset(context, _addr[0], Value(4, 10));
-            Assert.Equal(
-                Value(4, 10),
-                world.GetTotalSupply(_currencies[4]));
-
-            world = world.BurnAsset(context, _addr[0], Value(4, 5));
-            Assert.Equal(
-                Value(4, 5),
-                world.GetTotalSupply(_currencies[4]));
         }
     }
 }

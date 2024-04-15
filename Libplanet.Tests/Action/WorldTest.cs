@@ -366,21 +366,58 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void SetValidatorSet()
         {
-            const int newValidatorCount = 6;
-            var world = _initWorld;
-            var keys = Enumerable
-                .Range(0, newValidatorCount)
-                .Select(i => new PrivateKey())
-                .ToList();
-            var validatorSet = new ValidatorSet(
-                keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
-            world = world.SetValidatorSet(validatorSet);
+            if (ProtocolVersion > BlockMetadata.PBFTProtocolVersion)
+            {
+                const int newValidatorCount = 6;
+                var world = _initWorld;
+                var keys = Enumerable
+                    .Range(0, newValidatorCount)
+                    .Select(i => new PrivateKey())
+                    .ToList();
+                var validatorSet = new ValidatorSet(
+                    keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
+                world = world.SetValidatorSet(validatorSet);
 
-            Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
-            Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
+                Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
+                Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
 
-            world = world.SetValidatorSet(new ValidatorSet());
-            Assert.Equal(0, world.GetValidatorSet().TotalCount);
+                world = world.SetValidatorSet(new ValidatorSet());
+                Assert.Equal(0, world.GetValidatorSet().TotalCount);
+            }
+        }
+
+        [Fact]
+        public void TotalSupplyTracking()
+        {
+            // While not specifically tied to a protocol version,
+            // Total supply tracking was introduced while the block protocol version
+            // was at 4.
+            if (ProtocolVersion > BlockMetadata.PBFTProtocolVersion)
+            {
+                IWorld world = _initWorld;
+                IActionContext context = _initContext;
+
+                Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                    world.GetTotalSupply(_currencies[0]));
+
+                Assert.Equal(
+                    Value(4, 0),
+                    _initWorld.GetTotalSupply(_currencies[4]));
+
+                world = world.MintAsset(context, _addr[0], Value(0, 10));
+                Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                    world.GetTotalSupply(_currencies[0]));
+
+                world = world.MintAsset(context, _addr[0], Value(4, 10));
+                Assert.Equal(
+                    Value(4, 10),
+                    world.GetTotalSupply(_currencies[4]));
+
+                world = world.BurnAsset(context, _addr[0], Value(4, 5));
+                Assert.Equal(
+                    Value(4, 5),
+                    world.GetTotalSupply(_currencies[4]));
+            }
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
