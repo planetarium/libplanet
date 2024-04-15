@@ -196,7 +196,9 @@ If omitted (default) explorer only the local blockchain store.")]
                         new ActionEvaluator(
                             new PolicyActionsGetterCollection(
                                 _ => policy.BeginBlockActions,
-                                _ => policy.EndBlockActions),
+                                _ => policy.EndBlockActions,
+                                _ => policy.BeginTxActions,
+                                _ => policy.EndTxActions),
                             stateStore,
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
@@ -384,6 +386,10 @@ If omitted (default) explorer only the local blockchain store.")]
             public ImmutableArray<IAction> BeginBlockActions => _impl.BeginBlockActions;
 
             public ImmutableArray<IAction> EndBlockActions => _impl.EndBlockActions;
+
+            public ImmutableArray<IAction> BeginTxActions => _impl.BeginTxActions;
+
+            public ImmutableArray<IAction> EndTxActions => _impl.EndTxActions;
 
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
