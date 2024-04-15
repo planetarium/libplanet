@@ -482,7 +482,9 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         new PolicyActionsGetterCollection(
                             _ => policy.BeginBlockActions,
-                            _ => policy.EndBlockActions),
+                            _ => policy.EndBlockActions,
+                            _ => policy.BeginTxActions,
+                            _ => policy.EndTxActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -614,7 +616,9 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
@@ -750,7 +754,9 @@ namespace Libplanet.Tests.Blockchain
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions),
+                    _ => policy.EndBlockActions,
+                    _ => policy.BeginTxActions,
+                    _ => policy.EndTxActions),
                 stateStore: fx.StateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 

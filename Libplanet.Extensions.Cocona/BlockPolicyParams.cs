@@ -77,6 +77,12 @@ public class BlockPolicyParams : ICommandParameterSet
     public ImmutableArray<IAction> GetEndBlockActions() =>
         GetEndBlockActions(LoadAssemblies());
 
+    public ImmutableArray<IAction> GetBeginTxActions() =>
+        GetBeginTxActions(LoadAssemblies());
+
+    public ImmutableArray<IAction> GetEndTxActions() =>
+        GetEndTxActions(LoadAssemblies());
+
     [SuppressMessage(
         "Major Code Smell",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, " +
@@ -180,8 +186,8 @@ public class BlockPolicyParams : ICommandParameterSet
         if (propertyInfo is null)
         {
             var message = $"The policy type "
-                + $"'{policy.GetType().FullName}' does not have a "
-                + $"'{nameof(IBlockPolicy.EndBlockActions)}' property.";
+                          + $"'{policy.GetType().FullName}' does not have a "
+                          + $"'{nameof(IBlockPolicy.EndBlockActions)}' property.";
             throw new InvalidOperationException(message);
         }
 
@@ -189,8 +195,70 @@ public class BlockPolicyParams : ICommandParameterSet
         if (value is null)
         {
             var message = $"The value of property "
-                + $"'{nameof(IBlockPolicy.EndBlockActions)}' of type "
-                + $"'{policy.GetType().FullName}' cannot be null.";
+                          + $"'{nameof(IBlockPolicy.EndBlockActions)}' of type "
+                          + $"'{policy.GetType().FullName}' cannot be null.";
+            throw new InvalidOperationException(message);
+        }
+
+        return (ImmutableArray<IAction>)value;
+    }
+
+    internal ImmutableArray<IAction> GetBeginTxActions(Assembly[] assemblies)
+    {
+        object? policy = GetBlockPolicy(assemblies);
+        if (policy is null)
+        {
+            return ImmutableArray<IAction>.Empty;
+        }
+
+        PropertyInfo? propertyInfo = policy
+            .GetType()
+            .GetProperty(nameof(IBlockPolicy.BeginTxActions));
+        if (propertyInfo is null)
+        {
+            var message = $"The policy type "
+                          + $"'{policy.GetType().FullName}' does not have a "
+                          + $"'{nameof(IBlockPolicy.BeginTxActions)}' property.";
+            throw new InvalidOperationException(message);
+        }
+
+        var value = propertyInfo.GetValue(policy);
+        if (value is null)
+        {
+            var message = $"The value of property "
+                          + $"'{nameof(IBlockPolicy.BeginTxActions)}' of type "
+                          + $"'{policy.GetType().FullName}' cannot be null.";
+            throw new InvalidOperationException(message);
+        }
+
+        return (ImmutableArray<IAction>)value;
+    }
+
+    internal ImmutableArray<IAction> GetEndTxActions(Assembly[] assemblies)
+    {
+        object? policy = GetBlockPolicy(assemblies);
+        if (policy is null)
+        {
+            return ImmutableArray<IAction>.Empty;
+        }
+
+        PropertyInfo? propertyInfo = policy
+            .GetType()
+            .GetProperty(nameof(IBlockPolicy.EndTxActions));
+        if (propertyInfo is null)
+        {
+            var message = $"The policy type "
+                          + $"'{policy.GetType().FullName}' does not have a "
+                          + $"'{nameof(IBlockPolicy.EndTxActions)}' property.";
+            throw new InvalidOperationException(message);
+        }
+
+        var value = propertyInfo.GetValue(policy);
+        if (value is null)
+        {
+            var message = $"The value of property "
+                          + $"'{nameof(IBlockPolicy.EndTxActions)}' of type "
+                          + $"'{policy.GetType().FullName}' cannot be null.";
             throw new InvalidOperationException(message);
         }
 

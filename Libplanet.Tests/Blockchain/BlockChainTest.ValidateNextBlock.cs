@@ -241,7 +241,9 @@ namespace Libplanet.Tests.Blockchain
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions),
+                    _ => policy.EndBlockActions,
+                    _ => policy.BeginTxActions,
+                    _ => policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
@@ -278,7 +280,7 @@ namespace Libplanet.Tests.Blockchain
             var policyWithBlockAction = new BlockPolicy(
                 beginActions,
                 endActions,
-                policy.BlockInterval
+                blockInterval: policy.BlockInterval
             );
             var blockChainStates = new BlockChainStates(store, stateStore);
             var chain2 = new BlockChain(
@@ -291,7 +293,9 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policyWithBlockAction.BeginBlockActions,
-                        _ => policyWithBlockAction.EndBlockActions),
+                        _ => policyWithBlockAction.EndBlockActions,
+                        _ => policyWithBlockAction.BeginTxActions,
+                        _ => policyWithBlockAction.EndTxActions),
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 

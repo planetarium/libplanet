@@ -53,7 +53,9 @@ namespace Libplanet.Tests.Blocks
                 var actionEvaluator = new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     fx.StateStore,
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
@@ -128,7 +130,9 @@ namespace Libplanet.Tests.Blocks
                 var actionEvaluator = new ActionEvaluator(
                     policyActionsGetterCollection: new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
                 HashDigest<SHA256> genesisStateRootHash = MerkleTrie.EmptyRootHash;
