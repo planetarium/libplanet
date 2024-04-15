@@ -620,7 +620,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions),
+                    _ => policy.EndBlockActions,
+                    _ => policy.BeginTxActions,
+                    _ => policy.EndTxActions),
                 stateStore: stateStore,
                 actionTypeLoader: actionLoader);
 
