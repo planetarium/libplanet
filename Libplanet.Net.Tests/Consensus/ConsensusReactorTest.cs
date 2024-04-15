@@ -69,8 +69,9 @@ namespace Libplanet.Net.Tests.Consensus
                     stateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        policyBeginBlockActionsGetter: _ => TestUtils.Policy.BeginBlockActions,
-                        policyEndBlockActionsGetter: _ => TestUtils.Policy.EndBlockActions,
+                        policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                            beginBlockActionsGetter: _ => TestUtils.Policy.BeginBlockActions,
+                            endBlockActionsGetter: _ => TestUtils.Policy.EndBlockActions),
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             }
