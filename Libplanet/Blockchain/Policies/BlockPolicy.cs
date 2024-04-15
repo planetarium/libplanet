@@ -35,12 +35,24 @@ namespace Libplanet.Blockchain.Policies
         /// description for more detail.
         /// </para>
         /// </summary>
-        /// <param name="beginBlockActions">Array of <see cref="IAction"/> to executed for
-        /// every <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
+        /// <param name="beginBlockActions">
+        /// Array of <see cref="IAction"/> to executed for the beginning of every
+        /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
-        /// <param name="endBlockActions">A <see cref="IAction"/> to executed for
-        /// every <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
+        /// <param name="endBlockActions">
+        /// Array of <see cref="IAction"/> to executed for the end of every
+        /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
+        /// in no additional execution other than those included in <see cref="Transaction"/>s.
+        /// </param>
+        /// <param name="beginTxActions">
+        /// Array of <see cref="IAction"/> to executed for the beginning of every
+        /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
+        /// in no additional execution other than those included in <see cref="Transaction"/>s.
+        /// </param>
+        /// <param name="endTxActions">
+        /// Array of <see cref="IAction"/> to executed for the end of every
+        /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
@@ -73,6 +85,8 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             ImmutableArray<IAction>? beginBlockActions = null,
             ImmutableArray<IAction>? endBlockActions = null,
+            ImmutableArray<IAction>? beginTxActions = null,
+            ImmutableArray<IAction>? endTxActions = null,
             TimeSpan? blockInterval = null,
             Func<BlockChain, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
@@ -85,6 +99,8 @@ namespace Libplanet.Blockchain.Policies
         {
             BeginBlockActions = beginBlockActions ?? ImmutableArray<IAction>.Empty;
             EndBlockActions = endBlockActions ?? ImmutableArray<IAction>.Empty;
+            BeginTxActions = beginTxActions ?? ImmutableArray<IAction>.Empty;
+            EndTxActions = endTxActions ?? ImmutableArray<IAction>.Empty;
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             _getMaxTransactionsBytes = getMaxTransactionsBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
@@ -163,6 +179,12 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public ImmutableArray<IAction> EndBlockActions { get; }
+
+        /// <inheritdoc/>
+        public ImmutableArray<IAction> BeginTxActions { get; }
+
+        /// <inheritdoc/>
+        public ImmutableArray<IAction> EndTxActions { get; }
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block"/>s.
