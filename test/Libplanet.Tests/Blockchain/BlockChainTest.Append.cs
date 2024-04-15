@@ -774,7 +774,7 @@ namespace Libplanet.Tests.Blockchain
                         new Initialize(
                             validatorSet: TestUtils.ValidatorSet,
                             states: ImmutableDictionary.Create<Address, IValue>()),
-                    }.ToPlailues(),
+                    }.ToPlainValues(),
                     timestamp: DateTimeOffset.UtcNow),
             };
             var evs = Array.Empty<EvidenceBase>();
@@ -785,7 +785,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.UtcNow,
                     miner: fx.Proposer.Address,
                     publicKey: fx.Proposer.PublicKey,
-                    previounVasHash: null,
+                    previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
                     evidenceHash: null),

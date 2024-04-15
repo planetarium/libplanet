@@ -490,11 +490,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
 
-            if (protocolVersion >= 5)
-            {
-                evidence = evidence ?? ImmutableArray<EvidenceBase>.Empty;
-            }
-
             var evidenceHash = evidence != null
                 ? BlockContent.DeriveEvidenceHash(evidence)
                 : null;

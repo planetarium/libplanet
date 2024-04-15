@@ -169,7 +169,6 @@ namespace Libplanet.Types.Consensus
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                     .Add(ValidatorPublicKeyKey, ValidatorPublicKey.Format(compress: true))
-                    .Add(ValidatorPowerKey, ValidatorPower)
                     .Add(FlagKey, (long)Flag);
 
                 if (BlockHash is { } blockHash)
