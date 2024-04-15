@@ -422,15 +422,49 @@ namespace Libplanet.Tests.Action
                     .Range(0, newValidatorCount)
                     .Select(i => new PrivateKey())
                     .ToList();
+
                 var validatorSet = new ValidatorSet(
                     keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
                 world = world.SetValidatorSet(validatorSet);
-
                 Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
                 Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
+                var oldValidatorSetRawValue = world
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ValidatorSetKey);
+                var newValidatorSetRawValue = world
+                    .GetAccountState(ReservedAddresses.ValidatorSetAccount)
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+                if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
+                {
+                    Assert.Null(oldValidatorSetRawValue);
+                    Assert.NotNull(newValidatorSetRawValue);
+                }
+                else
+                {
+                    Assert.NotNull(oldValidatorSetRawValue);
+                    Assert.Null(newValidatorSetRawValue);
+                }
 
                 world = world.SetValidatorSet(new ValidatorSet());
                 Assert.Equal(0, world.GetValidatorSet().TotalCount);
+                oldValidatorSetRawValue =
+                    world.GetAccountState(ReservedAddresses.LegacyAccount).Trie.Get(
+                        KeyConverters.ValidatorSetKey);
+                newValidatorSetRawValue =
+                    world.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie.Get(
+                        KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+                if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
+                {
+                    Assert.Null(oldValidatorSetRawValue);
+                    Assert.NotNull(newValidatorSetRawValue);
+                }
+                else
+                {
+                    Assert.NotNull(oldValidatorSetRawValue);
+                    Assert.Null(newValidatorSetRawValue);
+                }
             }
         }
 
