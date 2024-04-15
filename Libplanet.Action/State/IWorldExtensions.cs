@@ -4,6 +4,7 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using static Libplanet.Action.State.KeyConverters;
 
@@ -204,9 +205,10 @@ namespace Libplanet.Action.State
             IActionContext context,
             Address sender,
             Address recipient,
-            FungibleAssetValue value) => context.BlockProtocolVersion > 0
-                ? TransferAssetV1(world, sender, recipient, value)
-                : TransferAssetV0(world, sender, recipient, value);
+            FungibleAssetValue value) =>
+                context.BlockProtocolVersion >= BlockMetadata.TransferFixProtocolVersion
+                    ? TransferAssetV1(world, sender, recipient, value)
+                    : TransferAssetV0(world, sender, recipient, value);
 
         /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.

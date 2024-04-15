@@ -5,6 +5,7 @@ using Bencodex;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
 {
@@ -28,6 +29,18 @@ namespace Libplanet.Types.Blocks
         /// <see cref="FungibleAssetValue"/>.
         /// </summary>
         public const int TransferFixProtocolVersion = 1;
+
+        /// <summary>
+        /// The starting protocol version where <see cref="IBlockHeader.Signature"/> was added.
+        /// Prior to this version, <see cref="Block"/>s had no signature.
+        /// </summary>
+        public const int SignatureProtocolVersion = 2;
+
+        /// <summary>
+        /// The starting protocol version where a more secure <see cref="Transaction"/> shuffling
+        /// scheme is used.
+        /// </summary>
+        public const int TransactionOrderingFixProtocolVersion = 3;
 
         /// <summary>
         /// The starting protocol version where PBFT validation is used instead of

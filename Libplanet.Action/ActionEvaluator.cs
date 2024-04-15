@@ -398,7 +398,7 @@ namespace Libplanet.Action
             IEnumerable<ITransaction> txs,
             ImmutableArray<byte> preEvaluationHashBytes)
         {
-            return protocolVersion >= 3
+            return protocolVersion >= BlockMetadata.TransactionOrderingFixProtocolVersion
                 ? OrderTxsForEvaluationV3(txs, preEvaluationHashBytes)
                 : OrderTxsForEvaluationV0(txs, preEvaluationHashBytes);
         }
