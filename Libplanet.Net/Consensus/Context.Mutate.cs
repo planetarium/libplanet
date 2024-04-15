@@ -1,6 +1,5 @@
 using System;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -28,6 +27,7 @@ namespace Libplanet.Net.Consensus
             _consensusMessageCommunicator.OnStartRound(round);
 
             Round = round;
+            _heightPreProposalSet.SetRound(round);
             _heightVoteSet.SetRound(round);
 
             Proposal = null;
@@ -97,6 +97,35 @@ namespace Libplanet.Net.Consensus
                     throw new InvalidConsensusMessageException(
                         $"Given message's validator {message.ValidatorPublicKey} is invalid",
                         message);
+                }
+
+                if (message is ConsensusPreProposalMsg preProposalMsg)
+                {
+                    AddPreProposal(preProposalMsg.PreProposal);
+                }
+
+                if (message is ConsensusPreEvaluationBlockVoteMsg preEvaluationBlockVoteMsg)
+                {
+                    switch (preEvaluationBlockVoteMsg)
+                    {
+                        case ConsensusPreEvaluationBlockPreVoteMsg preVote:
+                        {
+                            _heightPreProposalSet.AddVote(preVote.PreVote);
+                            var args = (preVote.Round, VoteFlag.PreVote,
+                                _heightPreProposalSet.PreVotes(preVote.Round).GetAllVotes());
+                            PreEvaluationBlockVoteSetModified?.Invoke(this, args);
+                            break;
+                        }
+
+                        case ConsensusPreEvaluationBlockPreCommitMsg preCommit:
+                        {
+                            _heightPreProposalSet.AddVote(preCommit.PreCommit);
+                            var args = (preCommit.Round, VoteFlag.PreVote,
+                                _heightPreProposalSet.PreCommits(preCommit.Round).GetAllVotes());
+                            PreEvaluationBlockVoteSetModified?.Invoke(this, args);
+                            break;
+                        }
+                    }
                 }
 
                 if (message is ConsensusProposalMsg proposal)
@@ -175,6 +204,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        private void AddPreProposal(PreProposal preProposal)
+        {
+            _heightPreProposalSet.AddPreProposal(preProposal);
+        }
+
         private void AddProposal(Proposal proposal)
         {
             if (!_validatorSet.GetProposer(Height, Round)
@@ -235,6 +269,22 @@ namespace Libplanet.Net.Consensus
             {
                 _logger.Debug("Operation will not run in {Step} step", Step);
                 return;
+            }
+
+            if (Step == ConsensusStep.PrePropose)
+            {
+                PreProposeAfterTimeout();
+                _ = OnTimeoutPrePropose(Round);
+            }
+
+            if (Step == ConsensusStep.PreProposeVote)
+            {
+                _ = OnTimeoutPreProposeVote();
+            }
+
+            if (Step == ConsensusStep.PreProposeVote)
+            {
+                _ = OnTimeoutPreProposeCommit();
             }
 
             (Block Block, int ValidRound)? propose = GetProposal();

@@ -86,7 +86,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
-        private readonly PreProposalSet _preProposalSet;
+        private readonly HeightPreProposalSet _heightPreProposalSet;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -109,6 +109,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private Proof? _lastProof;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -187,6 +188,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
+            _heightPreProposalSet = new HeightPreProposalSet(height, validators);
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();

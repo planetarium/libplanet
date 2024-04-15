@@ -140,6 +140,31 @@ namespace Libplanet.Net.Messages
             /// Consensus pre-proposal message.
             /// </summary>
             ConsensusPreProposal = 0x56,
+
+            /// <summary>
+            /// todo.
+            /// </summary>
+            ConsensusPreEvaluationBlockVote = 0x57,
+
+            /// <summary>
+            /// todo.
+            /// </summary>
+            ConsensusPreEvaluationBlockCommit = 0x58,
+
+            /// <summary>
+            /// todo.
+            /// </summary>
+            ConsensusPreEvaluationBlockMaj23Msg = 0x59,
+
+            /// <summary>
+            /// todo.
+            /// </summary>
+            ConsensusPreEvaluationBlockVoteSetBitsMsg = 0x60,
+
+            /// <summary>
+            /// todo.
+            /// </summary>
+            ConsensusPreEvaluationBlockClaimMsg = 0x61,
         }
 
         /// <summary>

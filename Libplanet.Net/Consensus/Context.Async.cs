@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 
@@ -13,13 +14,15 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
         /// </param>
-        public void Start(BlockCommit? lastCommit = null)
+        /// <param name="lastProof">A <see cref="Proof"/> from previous round.</param>
+        public void Start(BlockCommit? lastCommit = null, Proof? lastProof = null)
         {
             _logger.Information(
                 "Starting context for height #{Height}, LastCommit: {LastCommit}",
                 Height,
                 lastCommit);
             _lastCommit = lastCommit;
+            _lastProof = lastProof;
             _consensusMessageCommunicator.OnStartHeight(Height);
             ProduceMutation(() => StartRound(0));
 

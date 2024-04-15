@@ -51,5 +51,9 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal event EventHandler<(int Round, VoteFlag Flag, IEnumerable<Vote> Votes)>?
             VoteSetModified;
+
+        internal event EventHandler
+            <(int Round, VoteFlag Flag, IEnumerable<PreEvaluationBlockVote> Votes)>?
+            PreEvaluationBlockVoteSetModified;
     }
 }

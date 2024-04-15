@@ -170,12 +170,14 @@ namespace Libplanet.Consensus
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode()
-        {
-            return HashCode.Combine(
+            => HashCode.Combine(
                 Height,
                 Round,
                 LastProof);
-        }
+
+        public override string ToString()
+            => $"{nameof(ConsensusInformation)} " +
+            $": Height {Height}, Round {Round}, LastProof {LastProof}";
 
         private ImmutableArray<byte> Encode()
         {

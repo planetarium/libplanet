@@ -1,50 +1,53 @@
 using System;
 using System.Runtime.Serialization;
-using Libplanet.Consensus;
+using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// An exception thrown when a received <see cref="Proposal"/> is invalid.  In particular,
-    /// this is thrown pre-emptively before a <see cref="Proposal"/> is processed, i.e.
+    /// An exception thrown when a received <see cref="PreEvaluationBlockVote"/> is invalid.
+    /// In particular, this is thrown pre-emptively before a <see cref="PreEvaluationBlockVote"/>
+    /// is processed, i.e.
     /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
     [Serializable]
-    public class InvalidProposalException : Exception
+    public class InvalidPreEvaluationBlockVoteException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidProposalException"/> class.
+        /// Initializes a new instance of <see cref="InvalidPreEvaluationBlockVoteException"/>
+        /// class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
-        /// <param name="proposal">The <see cref="Proposal"/> that caused this exception.
+        /// <param name="vote">The <see cref="Vote"/> that caused this exception.
         /// </param>
         /// <param name="innerException">The exception that is the cause of the current exception.
         /// </param>
-        public InvalidProposalException(
+        public InvalidPreEvaluationBlockVoteException(
             string message,
-            Proposal proposal,
+            PreEvaluationBlockVote vote,
             Exception innerException)
             : base(message, innerException)
         {
-            Proposal = proposal;
+            Vote = vote;
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidProposalException"/> class.
+        /// Initializes a new instance of <see cref="InvalidPreEvaluationBlockVoteException"/>
+        /// class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
-        /// <param name="proposal">The <see cref="Proposal"/> that caused this exception.
+        /// <param name="vote">The <see cref="Vote"/> that caused this exception.
         /// </param>
-        public InvalidProposalException(string message, Proposal proposal)
+        public InvalidPreEvaluationBlockVoteException(string message, PreEvaluationBlockVote vote)
             : base(message)
         {
-            Proposal = proposal;
+            Vote = vote;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidProposalException"/>
+        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
         /// class with serialized data.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/>
@@ -53,21 +56,23 @@ namespace Libplanet.Net.Consensus
         /// <param name="context">The <see cref="StreamingContext"/>
         /// that contains contextual information about the source or destination.
         /// </param>
-        protected InvalidProposalException(SerializationInfo info, StreamingContext context)
+        protected InvalidPreEvaluationBlockVoteException(
+            SerializationInfo info, StreamingContext context)
         {
-            Proposal =
-                info.GetValue(nameof(Proposal), typeof(Proposal)) as Proposal ??
+            Vote =
+                info.GetValue(nameof(Vote), typeof(PreEvaluationBlockVote))
+                as PreEvaluationBlockVote ??
                 throw new SerializationException(
-                    $"{nameof(Proposal)} is expected to be a non-null {nameof(Proposal)}.");
+                    $"{nameof(Vote)} is expected to be a non-null {nameof(Vote)}.");
         }
 
-        public Proposal Proposal { get; }
+        public PreEvaluationBlockVote Vote { get; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Proposal), Proposal);
+            info.AddValue(nameof(Vote), Vote);
         }
     }
 }

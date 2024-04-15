@@ -120,11 +120,6 @@ namespace Libplanet.Net.Consensus
 
                 PublicKey validatorKey = vote.ValidatorPublicKey;
 
-                if (validatorKey is null)
-                {
-                    throw new InvalidVoteException("ValidatorKey of the vote cannot be null", vote);
-                }
-
                 if (!_validatorSet.ContainsPublicKey(validatorKey))
                 {
                     throw new InvalidVoteException(
@@ -137,13 +132,6 @@ namespace Libplanet.Net.Consensus
                 {
                     throw new InvalidVoteException(
                         $"VoteFlag should be either {VoteFlag.PreVote} or {VoteFlag.PreCommit}",
-                        vote);
-                }
-
-                if (!vote.Verify())
-                {
-                    throw new InvalidVoteException(
-                        "Received vote's signature is invalid",
                         vote);
                 }
 
