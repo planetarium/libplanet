@@ -143,7 +143,9 @@ namespace Libplanet.Tests.Blockchain
                 var actionEvaluator = new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
@@ -185,7 +187,9 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         new PolicyActionsGetterCollection(
                             _ => policy.BeginBlockActions,
-                            _ => policy.EndBlockActions),
+                            _ => policy.EndBlockActions,
+                            _ => policy.BeginTxActions,
+                            _ => policy.EndTxActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
@@ -411,7 +415,9 @@ namespace Libplanet.Tests.Blockchain
                     new ActionEvaluator(
                         new PolicyActionsGetterCollection(
                             _ => policy.BeginBlockActions,
-                            _ => policy.EndBlockActions),
+                            _ => policy.EndBlockActions,
+                            _ => policy.BeginTxActions,
+                            _ => policy.EndTxActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -533,7 +539,9 @@ namespace Libplanet.Tests.Blockchain
                 new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 

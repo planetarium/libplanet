@@ -73,7 +73,9 @@ public class GeneratedBlockChainFixture
         var actionEvaluator = new ActionEvaluator(
             new PolicyActionsGetterCollection(
                 _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions),
+                _ => policy.EndBlockActions,
+                _ => policy.BeginTxActions,
+                _ => policy.EndTxActions),
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
         Block genesisBlock = BlockChain.ProposeGenesisBlock(
