@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
@@ -97,8 +96,11 @@ namespace Libplanet.Tests.Action
                 Currencies.CurrencyF,
             };
 
-            // FIXME: Should be tested on both legacy and modern.
-            _initWorld = new World(MockWorldState.CreateLegacy()
+            MockWorldState initMockWorldState =
+                ProtocolVersion >= BlockMetadata.WorldStateProtocolVersion
+                    ? MockWorldState.CreateModern(version: ProtocolVersion)
+                    : MockWorldState.CreateLegacy();
+            _initWorld = new World(initMockWorldState
                 .SetBalance(_addr[0], _currencies[0], 5)
                 .SetBalance(_addr[0], _currencies[2], 10)
                 .SetBalance(_addr[0], _currencies[4], 5)
@@ -131,7 +133,18 @@ namespace Libplanet.Tests.Action
 
         public abstract int ProtocolVersion { get; }
 
-        public abstract IActionContext CreateContext(IWorld world, Address signer);
+        public IActionContext CreateContext(IWorld world, Address signer)
+        {
+            return new ActionContext(
+                signer,
+                null,
+                signer,
+                0,
+                ProtocolVersion,
+                world,
+                0,
+                0);
+        }
 
         [Fact]
         public void InitialSetup()
@@ -187,7 +200,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public virtual void TransferAsset()
+        public void TransferAsset()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 0)));
@@ -199,10 +212,20 @@ namespace Libplanet.Tests.Action
             IWorld world = _initWorld.TransferAsset(_initContext, _addr[0], _addr[1], Value(0, 4));
             Assert.Equal(Value(0, 1), world.GetBalance(_addr[0], _currencies[0]));
             Assert.Equal(Value(0, 4), world.GetBalance(_addr[1], _currencies[0]));
+
+            world = _initWorld.TransferAsset(_initContext, _addr[0], _addr[0], Value(0, 2));
+            if (ProtocolVersion >= BlockMetadata.TransferFixProtocolVersion)
+            {
+                Assert.Equal(Value(0, 5), world.GetBalance(_addr[0], _currencies[0]));
+            }
+            else
+            {
+                Assert.Equal(Value(0, 7), world.GetBalance(_addr[0], _currencies[0]));
+            }
         }
 
         [Fact]
-        public virtual BlockChain TransferAssetInBlock()
+        public void TransferAssetInBlock()
         {
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -216,14 +239,13 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey
             );
 
+            // Mint
             DumbAction action = DumbAction.Create(null, (null, _addr[1], 20));
             Transaction tx = Transaction.Create(
                 0,
                 _keys[0],
                 chain.Genesis.Hash,
-                new[] { action }.ToPlainValues()
-            );
-
+                new[] { action }.ToPlainValues());
             var block1PreEval = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
@@ -231,12 +253,10 @@ namespace Libplanet.Tests.Action
                 protocolVersion: ProtocolVersion);
             var stateRootHash = chain.DetermineBlockStateRootHash(block1PreEval, out _);
             var hash = block1PreEval.Header.DeriveBlockHash(stateRootHash, null);
-            Block block1 = ProtocolVersion < 2
-                ? new Block(block1PreEval, (stateRootHash, null, hash))
-                : chain.EvaluateAndSign(block1PreEval, privateKey);
-            chain.Append(
-                block1,
-                TestUtils.CreateBlockCommit(block1));
+            Block block1 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
+                ? chain.EvaluateAndSign(block1PreEval, privateKey)
+                : new Block(block1PreEval, (stateRootHash, null, hash));
+            chain.Append(block1, TestUtils.CreateBlockCommit(block1));
             Assert.Equal(
                 DumbAction.DumbCurrency * 0,
                 chain
@@ -248,13 +268,13 @@ namespace Libplanet.Tests.Action
                     .GetWorldState()
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
+            // Transfer
             action = DumbAction.Create(null, (_addr[1], _addr[0], 5));
             tx = Transaction.Create(
                 1,
                 _keys[0],
                 chain.Genesis.Hash,
-                new[] { action }.ToPlainValues()
-            );
+                new[] { action }.ToPlainValues());
             var block2PreEval = TestUtils.ProposeNext(
                 chain.Tip,
                 new[] { tx },
@@ -263,12 +283,10 @@ namespace Libplanet.Tests.Action
                 lastCommit: chain.GetBlockCommit(chain.Tip.Index));
             stateRootHash = chain.DetermineBlockStateRootHash(block2PreEval, out _);
             hash = block2PreEval.Header.DeriveBlockHash(stateRootHash, null);
-            Block block2 = ProtocolVersion < 2
-                ? new Block(block2PreEval, (stateRootHash, null, hash))
-                : chain.EvaluateAndSign(block2PreEval, privateKey);
-            chain.Append(
-                block2,
-                TestUtils.CreateBlockCommit(block2));
+            Block block2 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
+                ? chain.EvaluateAndSign(block2PreEval, privateKey)
+                : new Block(block2PreEval, (stateRootHash, null, hash));
+            chain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
                 chain
@@ -280,7 +298,37 @@ namespace Libplanet.Tests.Action
                     .GetWorldState()
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
-            return chain;
+            // Transfer bugged
+            action = DumbAction.Create((_addr[0], "a"), (_addr[0], _addr[0], 1));
+            tx = Transaction.Create(
+                chain.GetNextTxNonce(_addr[0]),
+                _keys[0],
+                chain.Genesis.Hash,
+                new[] { action }.ToPlainValues());
+            var block3PreEval = TestUtils.ProposeNext(
+                chain.Tip,
+                new[] { tx },
+                miner: _keys[1].PublicKey,
+                protocolVersion: ProtocolVersion,
+                lastCommit: chain.GetBlockCommit(chain.Tip.Index));
+            stateRootHash = chain.DetermineBlockStateRootHash(block3PreEval, out _);
+            hash = block3PreEval.Header.DeriveBlockHash(stateRootHash, null);
+            Block block3 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
+                ? chain.EvaluateAndSign(block3PreEval, _keys[1])
+                : new Block(block3PreEval, (stateRootHash, null, hash));
+            chain.Append(block3, TestUtils.CreateBlockCommit(block3));
+            if (ProtocolVersion >= BlockMetadata.TransferFixProtocolVersion)
+            {
+                Assert.Equal(
+                    DumbAction.DumbCurrency * 5,
+                    chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
+            }
+            else
+            {
+                Assert.Equal(
+                    DumbAction.DumbCurrency * 6,
+                    chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
+            }
         }
 
         [Fact]
