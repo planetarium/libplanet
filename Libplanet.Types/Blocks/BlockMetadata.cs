@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 
 namespace Libplanet.Types.Blocks
 {
@@ -20,6 +21,13 @@ namespace Libplanet.Types.Blocks
         /// The latest protocol version.
         /// </summary>
         public const int CurrentProtocolVersion = 6;
+
+        /// <summary>
+        /// The starting protocol version where a bug in transferring asset was fixed.
+        /// Prior to this version, it was possible to duplicate
+        /// <see cref="FungibleAssetValue"/>.
+        /// </summary>
+        public const int TransferFixProtocolVersion = 1;
 
         /// <summary>
         /// The starting protocol version where PBFT validation is used instead of
