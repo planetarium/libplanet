@@ -489,8 +489,9 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
+                        new PolicyActionsGetterCollection(
+                            _ => policy.BeginBlockActions,
+                            _ => policy.EndBlockActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -626,8 +627,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
+                    new PolicyActionsGetterCollection(
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<BlockPolicyViolationException>(
@@ -764,8 +766,9 @@ namespace Libplanet.Tests.Blockchain
                 policy.EndBlockActions);
             var renderer = new ValidatingActionRenderer();
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions),
                 stateStore: fx.StateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -830,8 +833,9 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions),
                 stateStore,
                 actionLoader);
 

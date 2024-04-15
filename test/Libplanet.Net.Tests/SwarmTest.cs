@@ -1289,8 +1289,9 @@ namespace Libplanet.Net.Tests
             var policyB = new NullBlockPolicy();
             var fx = new DefaultStoreFixture();
             var aev = new ActionEvaluator(
-                _ => ImmutableArray<IAction>.Empty,
-                _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty),
                 fx.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesis = fx.GenesisBlock;

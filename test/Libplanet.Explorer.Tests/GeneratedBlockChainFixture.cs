@@ -72,8 +72,9 @@ public class GeneratedBlockChainFixture
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);
         var actionEvaluator = new ActionEvaluator(
-            _ => policy.BeginBlockActions,
-            _ => policy.EndBlockActions,
+            new PolicyActionsGetterCollection(
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions),
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
         Block genesisBlock = BlockChain.ProposeGenesisBlock(

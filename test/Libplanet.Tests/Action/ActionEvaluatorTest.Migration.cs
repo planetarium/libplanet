@@ -29,8 +29,9 @@ namespace Libplanet.Tests.Action
         {
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                _ => ImmutableArray<IAction>.Empty,
-                _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
 #pragma warning disable CS0618

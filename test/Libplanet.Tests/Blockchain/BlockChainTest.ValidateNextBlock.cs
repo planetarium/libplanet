@@ -187,8 +187,9 @@ namespace Libplanet.Tests.Blockchain
             var stateStore1 = new TrieStateStore(new MemoryKeyValueStore());
             IStore store1 = new MemoryStore();
             var actionEvaluator1 = new ActionEvaluator(
-                _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions),
                 stateStore1,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
@@ -210,8 +211,9 @@ namespace Libplanet.Tests.Blockchain
             var stateStore2 = new TrieStateStore(new MemoryKeyValueStore());
             IStore store2 = new MemoryStore();
             var actionEvaluator2 = new ActionEvaluator(
-                _ => policyWithBlockAction.BeginBlockActions,
-                _ => policyWithBlockAction.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policyWithBlockAction.BeginBlockActions,
+                    _ => policyWithBlockAction.EndBlockActions),
                 stateStore2,
                 new SingleActionLoader(typeof(DumbAction)));
             var chain2 = BlockChain.Create(
@@ -252,8 +254,9 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
@@ -302,8 +305,9 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policyWithBlockAction.BeginBlockActions,
-                    _ => policyWithBlockAction.EndBlockActions,
+                    new PolicyActionsGetterCollection(
+                        _ => policyWithBlockAction.BeginBlockActions,
+                        _ => policyWithBlockAction.EndBlockActions),
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -325,8 +329,9 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BeginBlockActions,
-                _ => policy.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
@@ -753,8 +758,9 @@ namespace Libplanet.Tests.Blockchain
                     new SetStatesAtBlock(default, (Text)"foo", default, 0)));
 
             var actionEvaluator = new ActionEvaluator(
-                _ => policyWithBlockAction.BeginBlockActions,
-                _ => policyWithBlockAction.EndBlockActions,
+                new PolicyActionsGetterCollection(
+                    _ => policyWithBlockAction.BeginBlockActions,
+                    _ => policyWithBlockAction.EndBlockActions),
                 _blockChain.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
 

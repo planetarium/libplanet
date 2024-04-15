@@ -145,8 +145,9 @@ namespace Libplanet.Tests.Blockchain
             {
                 var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
+                    new PolicyActionsGetterCollection(
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions),
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
@@ -186,8 +187,9 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
+                        new PolicyActionsGetterCollection(
+                            _ => policy.BeginBlockActions,
+                            _ => policy.EndBlockActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
@@ -412,8 +414,9 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
+                        new PolicyActionsGetterCollection(
+                            _ => policy.BeginBlockActions,
+                            _ => policy.EndBlockActions),
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -537,8 +540,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
+                    new PolicyActionsGetterCollection(
+                        _ => policy.BeginBlockActions,
+                        _ => policy.EndBlockActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 

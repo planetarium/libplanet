@@ -98,8 +98,9 @@ namespace Libplanet.Tests.Action
                 transactions: txs,
                 evidence: evs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                _ => ImmutableArray<IAction>.Empty,
-                _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
@@ -318,8 +319,9 @@ namespace Libplanet.Tests.Action
                 TestUtils.GenesisProposer,
                 stateRootHash: trie.Hash);
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -585,8 +587,9 @@ namespace Libplanet.Tests.Action
                 .SetBalance(addresses[2], DumbAction.DumbCurrency * 100));
             ITrie initTrie = stateStore.Commit(world.Trie);
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -681,8 +684,9 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
@@ -1319,8 +1323,9 @@ namespace Libplanet.Tests.Action
         {
             Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
-                _ => ImmutableArray<IAction>.Empty,
-                _ => ImmutableArray<IAction>.Empty,
+                new PolicyActionsGetterCollection(
+                    _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(DumbAction)));
             Assert.Throws<BlockProtocolVersionNotSupportedException>(
