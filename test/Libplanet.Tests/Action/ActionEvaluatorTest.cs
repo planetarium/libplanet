@@ -100,7 +100,9 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
@@ -321,7 +323,9 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -589,7 +593,9 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -686,7 +692,9 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
@@ -1324,6 +1332,8 @@ namespace Libplanet.Tests.Action
             Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
+                    _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty,
                     _ => ImmutableArray<IAction>.Empty,
                     _ => ImmutableArray<IAction>.Empty),
                 new TrieStateStore(new MemoryKeyValueStore()),

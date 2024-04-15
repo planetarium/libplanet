@@ -1012,7 +1012,9 @@ namespace Libplanet.Tests.Store
                 var actionEvaluator = new ActionEvaluator(
                     new PolicyActionsGetterCollection(
                         _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions),
+                        _ => policy.EndBlockActions,
+                        _ => policy.BeginTxActions,
+                        _ => policy.EndTxActions),
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = preEval.Sign(

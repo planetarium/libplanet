@@ -25,6 +25,10 @@ namespace Libplanet.Blockchain.Policies
 
         public ImmutableArray<IAction> EndBlockActions => ImmutableArray<IAction>.Empty;
 
+        public ImmutableArray<IAction> BeginTxActions => ImmutableArray<IAction>.Empty;
+
+        public ImmutableArray<IAction> EndTxActions => ImmutableArray<IAction>.Empty;
+
         public int GetMinTransactionsPerBlock(long index) => 0;
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;

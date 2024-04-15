@@ -1291,6 +1291,8 @@ namespace Libplanet.Net.Tests
             var aev = new ActionEvaluator(
                 new PolicyActionsGetterCollection(
                     _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty,
+                    _ => ImmutableArray<IAction>.Empty,
                     _ => ImmutableArray<IAction>.Empty),
                 fx.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
