@@ -93,7 +93,7 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
@@ -250,7 +250,7 @@ and correctly derived <code data-dev-comment-type="paramref" class="paramref">pr
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;, <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-3">(T1 Item1, T2 Item2, T3 Item3)</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;, <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">proof</span></td>
         <td><p>A triple of the state root hash, the block signature,
 and the block hash.</p>
@@ -387,7 +387,7 @@ public BlockHeader Header { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -524,7 +524,7 @@ this must be <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -631,14 +631,20 @@ the previous protocol versions, the type of this is nullable.
   </span>
   <a id="Libplanet_Types_Blocks_Block_Signature_" data-uid="Libplanet.Types.Blocks.Block.Signature*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Signature" data-uid="Libplanet.Types.Blocks.Block.Signature">Signature</h4>
-  <div class="markdown level1 summary"><p>The digital signature of the whole block content (except for
+  <div class="markdown level1 summary"><p>
+The digital signature of the whole block content (except for
 <a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html#Libplanet_Types_Blocks_IBlockExcerpt_Hash">Hash</a>, which is derived from the signature and other
-contents).  This is made by the <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Miner">Miner</a>'s
-<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
-<p>As the block signature is introduced since the protocol version 2, it is
-<span class="xref">null</span> for blocks with earlier protocol versions than 2.  Although
-the property is type-wise, the block signature is mandatory since the protocol
-version 2.</p>
+contents).  This is made by the <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Miner">Miner</a>&apos;s
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.
+</p>
+<p>
+As the block signature is introduced since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>, it is
+<span class="xref">null</span> for blocks with earlier protocol versions than
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>.  Although
+the property is type-wise, the block signature is mandatory since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>.
+</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -657,7 +663,7 @@ public ImmutableArray&lt;byte&gt;? Signature { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -786,7 +792,7 @@ has no transactions.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -923,7 +929,7 @@ has no transactions.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>

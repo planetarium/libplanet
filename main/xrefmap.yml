@@ -32434,6 +32434,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.PublicKey
   nameWithType: BlockMetadata.PublicKey
+- uid: Libplanet.Types.Blocks.BlockMetadata.SignatureProtocolVersion
+  name: SignatureProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.SignatureProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.SignatureProtocolVersion
+  nameWithType: BlockMetadata.SignatureProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.Timestamp
   name: Timestamp
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_Timestamp
@@ -32447,6 +32453,18 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.Timestamp
   nameWithType: BlockMetadata.Timestamp
+- uid: Libplanet.Types.Blocks.BlockMetadata.TransactionOrderingFixProtocolVersion
+  name: TransactionOrderingFixProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_TransactionOrderingFixProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.TransactionOrderingFixProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.TransactionOrderingFixProtocolVersion
+  nameWithType: BlockMetadata.TransactionOrderingFixProtocolVersion
+- uid: Libplanet.Types.Blocks.BlockMetadata.TransferFixProtocolVersion
+  name: TransferFixProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_TransferFixProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.TransferFixProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.TransferFixProtocolVersion
+  nameWithType: BlockMetadata.TransferFixProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.TxHash
   name: TxHash
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_TxHash
