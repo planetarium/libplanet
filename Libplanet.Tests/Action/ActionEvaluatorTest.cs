@@ -376,13 +376,18 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),  // Adds "C"
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "A"
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "B"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
+                Assert.Equal(
+                    expect.UpdatedStates,
+                    addresses.Select(
+                        eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                        .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(block1Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(
                     block1Txs[expect.TxIdx].Actions[expect.ActionIdx],
@@ -390,11 +395,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisProposer.Address, eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
-                Assert.Equal(
-                    expect.UpdatedStates,
-                    addresses.Select(
-                        eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
-                        .Select(x => x is Text t ? t.Value : null));
             }
 
             previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
@@ -497,9 +497,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),  // Adds "D"
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),   // Adds "E"
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),    // Adds "F"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))

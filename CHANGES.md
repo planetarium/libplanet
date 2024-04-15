@@ -22,6 +22,8 @@ To be released.
     when trying to create an instance with an invalid version.  [[#3738]]
  -  (Libplanet.Action) Added `IWorldState.Version` interface property.
     [[#3739]]
+ -  (Libplanet.Types) Updated `BlockMetadata.CurrentProtocolVersion`
+    from 5 to 6.  [[#3741]]
 
 ### Backward-incompatible network protocol changes
 
@@ -41,6 +43,7 @@ To be released.
 [#3736]: https://github.com/planetarium/libplanet/pull/3736
 [#3738]: https://github.com/planetarium/libplanet/pull/3738
 [#3739]: https://github.com/planetarium/libplanet/pull/3739
+[#3741]: https://github.com/planetarium/libplanet/pull/3741
 
 
 Version 4.3.0
