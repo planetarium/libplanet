@@ -37,15 +37,8 @@ namespace Libplanet.Tests.Action
         {
             base.TransferAsset();
 
-            IWorld a = _initWorld.TransferAsset(
-                _initContext,
-                _addr[0],
-                _addr[1],
-                Value(0, 4));
-            Assert.Equal(Value(0, 4), a.GetBalance(_addr[1], _currencies[0]));
-            IActionContext c = CreateContext(a, _addr[0]);
-            a = a.TransferAsset(c, _addr[1], _addr[1], Value(0, 2));
-            Assert.Equal(Value(0, 6), a.GetBalance(_addr[1], _currencies[0]));
+            IWorld world = _initWorld.TransferAsset(_initContext, _addr[0], _addr[0], Value(0, 2));
+            Assert.Equal(Value(0, 7), world.GetBalance(_addr[0], _currencies[0]));
         }
 
         [Fact]
