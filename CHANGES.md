@@ -24,6 +24,10 @@ To be released.
     [[#3739]]
  -  (Libplanet.Types) Updated `BlockMetadata.CurrentProtocolVersion`
     from 5 to 6.  [[#3741]]
+ -  (Libplanet.Types) Added `BlockMetadata.TransferFixProtocolVersion`,
+    `BlockMetadata.SignatureProtocolVersion`, and
+    `BlockMetadata.TransactionOrderingFixProtocolVersion` constants.  [[#3742]]
+
 
 ### Backward-incompatible network protocol changes
 
@@ -44,6 +48,7 @@ To be released.
 [#3738]: https://github.com/planetarium/libplanet/pull/3738
 [#3739]: https://github.com/planetarium/libplanet/pull/3739
 [#3741]: https://github.com/planetarium/libplanet/pull/3741
+[#3742]: https://github.com/planetarium/libplanet/pull/3742
 
 
 Version 4.3.0
