@@ -279,10 +279,10 @@ namespace Libplanet.Action
                     miner: inputContext.Miner,
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
-                    txs: inputContext.Txs,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
                     gasLimit: inputContext.GasLimit(),
+                    txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
             }
 
@@ -473,27 +473,48 @@ namespace Libplanet.Action
             ITransaction tx,
             IWorld previousState)
         {
+            var evaluations = ImmutableList<ActionEvaluation>.Empty;
+            if (_policyActionsGetterCollection.BeginTxActionsGetter(block) is { } beginTxActions &&
+                beginTxActions.Length > 0)
+            {
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyBeginTxActions(block, previousState));
+                previousState = evaluations.Last().OutputState;
+            }
+
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(block.Index, tx));
-            return EvaluateActions(
+            evaluations = evaluations.AddRange(EvaluateActions(
                 block: block,
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
-                logger: _logger);
+                logger: _logger));
+
+            if (_policyActionsGetterCollection.EndTxActionsGetter(block) is { } endTxActions &&
+                endTxActions.Length > 0)
+            {
+                previousState = evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : previousState;
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyEndTxActions(block, previousState));
+            }
+
+            return evaluations;
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.BeginBlockActions"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
         /// <param name="previousState">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance
         /// for the <paramref name="block"/>.</returns>
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyBeginBlockActions(
@@ -514,16 +535,16 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.EndBlockActions"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
         /// <param name="previousState">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
-        /// for the <paramref name="blockHeader"/>.</returns>
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyEndBlockActions(
             IPreEvaluationBlock block,
@@ -538,6 +559,64 @@ namespace Libplanet.Action
                 tx: null,
                 previousState: previousState,
                 actions: _policyActionsGetterCollection.EndBlockActionsGetter(block),
+                stateStore: _stateStore,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyBeginTxActions(
+            IPreEvaluationBlock block,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy begin tx actions for block #{block.Index} " +
+                $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                block: block,
+                tx: null,
+                previousState: previousState,
+                actions: _policyActionsGetterCollection.BeginTxActionsGetter(block),
+                stateStore: _stateStore,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyEndTxActions(
+            IPreEvaluationBlock block,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy end tx actions for block #{block.Index} " +
+                $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                block: block,
+                tx: null,
+                previousState: previousState,
+                actions: _policyActionsGetterCollection.EndTxActionsGetter(block),
                 stateStore: _stateStore,
                 logger: _logger).ToArray();
         }
