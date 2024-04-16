@@ -482,27 +482,48 @@ namespace Libplanet.Action
             ITransaction tx,
             IWorld previousState)
         {
+            var evaluations = ImmutableList<ActionEvaluation>.Empty;
+            if (_policyActionsGetterCollection.BeginTxActionsGetter(blockHeader) is { } beginTxActions &&
+                beginTxActions.Length > 0)
+            {
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyBeginTxActions(blockHeader, previousState));
+                previousState = evaluations.Last().OutputState;
+            }
+
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(blockHeader.Index, tx));
-            return EvaluateActions(
+            evaluations = evaluations.AddRange(EvaluateActions(
                 blockHeader: blockHeader,
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
-                logger: _logger);
+                logger: _logger));
+
+            if (_policyActionsGetterCollection.EndTxActionsGetter(blockHeader) is { } endTxActions &&
+                endTxActions.Length > 0)
+            {
+                previousState = evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : previousState;
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyEndTxActions(blockHeader, previousState));
+            }
+
+            return evaluations;
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.BeginBlockActions"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousState">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance
         /// for the <paramref name="blockHeader"/>.</returns>
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyBeginBlockActions(
@@ -523,15 +544,15 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.EndBlockActions"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousState">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance
         /// for the <paramref name="blockHeader"/>.</returns>
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyEndBlockActions(
@@ -547,6 +568,64 @@ namespace Libplanet.Action
                 tx: null,
                 previousState: previousState,
                 actions: _policyActionsGetterCollection.EndBlockActionsGetter(blockHeader),
+                stateStore: _stateStore,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="blockHeader"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyBeginTxActions(
+            IPreEvaluationBlockHeader blockHeader,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy begin tx actions for block #{blockHeader.Index} " +
+                $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                blockHeader: blockHeader,
+                tx: null,
+                previousState: previousState,
+                actions: _policyActionsGetterCollection.BeginTxActionsGetter(blockHeader),
+                stateStore: _stateStore,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="blockHeader"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyEndTxActions(
+            IPreEvaluationBlockHeader blockHeader,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy end tx actions for block #{blockHeader.Index} " +
+                $"{ByteUtil.Hex(blockHeader.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                blockHeader: blockHeader,
+                tx: null,
+                previousState: previousState,
+                actions: _policyActionsGetterCollection.EndTxActionsGetter(blockHeader),
                 stateStore: _stateStore,
                 logger: _logger).ToArray();
         }
