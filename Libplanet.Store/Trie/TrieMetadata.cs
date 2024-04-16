@@ -48,7 +48,7 @@ namespace Libplanet.Store.Trie
                 throw new ArgumentException(
                     $"Given {nameof(version)} cannot be less than " +
                     $"{BlockMetadata.WorldStateProtocolVersion} or greater than " +
-                    $"{BlockMetadata.CurrentProtocolVersion}.",
+                    $"{BlockMetadata.CurrentProtocolVersion}: {version}",
                     nameof(version));
             }
 
