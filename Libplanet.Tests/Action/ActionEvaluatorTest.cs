@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -12,7 +11,6 @@ using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
 using Libplanet.Store;
@@ -32,7 +30,7 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Action
 {
-    public class ActionEvaluatorTest
+    public partial class ActionEvaluatorTest
     {
         private readonly ILogger _logger;
         private readonly ITestOutputHelper _output;
@@ -1225,62 +1223,6 @@ namespace Libplanet.Tests.Action
                 IActionContext context = eval.InputContext;
                 Assert.Equal(randomSeeds[i], context.RandomSeed);
             }
-        }
-
-        [Fact]
-        public void MigrateStates()
-        {
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Log.Debug("Test Start.");
-            var chain = MakeBlockChain(
-                policy: new BlockPolicy(),
-                store: store,
-                stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(ModernAction)),
-                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
-            Assert.True(chain.GetWorldState().Legacy);
-            var miner = new PrivateKey();
-            var preEval1 = TestUtils.ProposeNext(
-                chain.Tip,
-                miner: miner.PublicKey,
-                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
-            var block1 = chain.EvaluateAndSign(preEval1, miner);
-            var blockCommit = CreateBlockCommit(block1);
-            chain.Append(block1, blockCommit);
-            Log.Debug("Is World Legacy?");
-            Assert.True(chain.GetWorldState().Legacy);
-
-            // A block that doesn't touch any state does not migrate its state.
-            var block2 = chain.ProposeBlock(miner, blockCommit);
-            blockCommit = CreateBlockCommit(block2);
-            chain.Append(block2, blockCommit);
-            Log.Debug("Is World Legacy?");
-            Assert.True(chain.GetWorldState().Legacy);
-
-            // Check if after migration, accounts can be created correctly.
-            var action = new ModernAction()
-            {
-                Memo = "foo",
-            };
-
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: miner,
-                genesisHash: chain.Genesis.Hash,
-                actions: new[] { action }.ToPlainValues());
-
-            chain.StageTransaction(tx);
-            var block3 = chain.ProposeBlock(miner, blockCommit);
-            chain.Append(block3, CreateBlockCommit(block3));
-            Assert.False(chain.GetWorldState().Legacy);
-            var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
-                .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
-            Assert.NotNull(accountStateRoot);
-            var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
-            Assert.Equal(
-                (Text)"foo",
-                accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
         }
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
