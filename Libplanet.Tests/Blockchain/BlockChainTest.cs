@@ -2211,8 +2211,10 @@ namespace Libplanet.Tests.Blockchain
                 .Add(storeFixture.Address2)
                 .Add(storeFixture.Address3);
 
-            var newValidatorPrivKey = new PrivateKey();
-            var newValidators = ValidatorPrivateKeys.Append(newValidatorPrivKey);
+            var newValidatorPrivateKey = new PrivateKey();
+            var newValidators = ValidatorPrivateKeys.Append(newValidatorPrivateKey).ToArray();
+            var newValidatorPowers = TestUtils.ValidatorSet.Validators.Select(v => v.Power)
+                .Append(BigInteger.One).ToArray();
             var initialValidatorSet = new ValidatorSet(
                 ValidatorPrivateKeys.Select(
                     pk => new Validator(pk.PublicKey, BigInteger.One)
@@ -2255,7 +2257,8 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 new[]
                 {
-                    new SetValidator(new Validator(newValidatorPrivKey.PublicKey, BigInteger.One)),
+                    new SetValidator(
+                        new Validator(newValidatorPrivateKey.PublicKey, BigInteger.One)),
                 }
             );
             var newBlock = blockChain.ProposeBlock(new PrivateKey());
@@ -2267,6 +2270,7 @@ namespace Libplanet.Tests.Blockchain
                         newBlock.Hash,
                         DateTimeOffset.UtcNow,
                         pk.PublicKey,
+                        TestUtils.ValidatorSet.GetValidator(pk.PublicKey).Power,
                         VoteFlag.PreCommit).Sign(pk))
                 .OrderBy(vote => vote.ValidatorPublicKey.Address)
                 .ToImmutableArray());
@@ -2282,16 +2286,21 @@ namespace Libplanet.Tests.Blockchain
             var nextBlock = blockChain.ProposeBlock(
                 new PrivateKey(), lastCommit: newBlockCommit);
             var nextBlockCommit = new BlockCommit(
-                nextBlock.Index, 0, nextBlock.Hash, newValidators.Select(
-                    pk => new VoteMetadata(
-                        nextBlock.Index,
-                        0,
-                        nextBlock.Hash,
-                        DateTimeOffset.UtcNow,
-                        pk.PublicKey,
-                        VoteFlag.PreCommit).Sign(pk))
-                .OrderBy(vote => vote.ValidatorPublicKey.Address)
-                .ToImmutableArray());
+                nextBlock.Index,
+                0,
+                nextBlock.Hash,
+                Enumerable.Range(0, newValidators.Length)
+                    .Select(
+                        index => new VoteMetadata(
+                            nextBlock.Index,
+                            0,
+                            nextBlock.Hash,
+                            DateTimeOffset.UtcNow,
+                            newValidators[index].PublicKey,
+                            newValidatorPowers[index],
+                            VoteFlag.PreCommit).Sign(newValidators[index]))
+                    .OrderBy(vote => vote.ValidatorPublicKey.Address)
+                    .ToImmutableArray());
             blockChain.Append(nextBlock, nextBlockCommit);
 
             blockChain.MakeTransaction(
@@ -2308,14 +2317,20 @@ namespace Libplanet.Tests.Blockchain
                 () => blockChain.Append(
                     invalidCommitBlock,
                     new BlockCommit(
-                        invalidCommitBlock.Index, 0, invalidCommitBlock.Hash, newValidators.Select(
-                            pk => new VoteMetadata(
-                                invalidCommitBlock.Index,
-                                0,
-                                invalidCommitBlock.Hash,
-                                DateTimeOffset.UtcNow,
-                                pk.PublicKey,
-                                VoteFlag.PreCommit).Sign(pk)).ToImmutableArray())));
+                        invalidCommitBlock.Index,
+                        0,
+                        invalidCommitBlock.Hash,
+                        Enumerable.Range(0, newValidators.Length)
+                            .Select(
+                                index => new VoteMetadata(
+                                    invalidCommitBlock.Index,
+                                    0,
+                                    invalidCommitBlock.Hash,
+                                    DateTimeOffset.UtcNow,
+                                    newValidators[index].PublicKey,
+                                    newValidatorPowers[index],
+                                    VoteFlag.PreCommit).Sign(newValidators[index]))
+                            .ToImmutableArray())));
 
             Assert.Equal(
                 blockChain
