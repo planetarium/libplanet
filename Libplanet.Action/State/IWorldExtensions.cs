@@ -261,7 +261,7 @@ namespace Libplanet.Action.State
                 world.GetValidatorSetAccount().SetValidatorSet(validatorSet));
 
         [Pure]
-        public static ValidatorSetAccount GetValidatorSetAccount(this IWorldState worldState) =>
+        internal static ValidatorSetAccount GetValidatorSetAccount(this IWorldState worldState) =>
             worldState.Version >= BlockMetadata.ValidatorSetAccountProtocolVersion
                 ? new ValidatorSetAccount(
                     worldState.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie,
@@ -271,7 +271,7 @@ namespace Libplanet.Action.State
                     worldState.Version);
 
         [Pure]
-        public static IWorld SetValidatorSetAccount(
+        internal static IWorld SetValidatorSetAccount(
             this IWorld world,
             ValidatorSetAccount validatorSetAccount) =>
                 world.Version == validatorSetAccount.WorldVersion
