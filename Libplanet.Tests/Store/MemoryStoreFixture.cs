@@ -9,8 +9,10 @@ namespace Libplanet.Tests.Store
     {
         public MemoryStoreFixture(
             ImmutableArray<IAction>? beginBlockActions = null,
-            ImmutableArray<IAction>? endBlockActions = null)
-            : base(beginBlockActions, endBlockActions)
+            ImmutableArray<IAction>? endBlockActions = null,
+            ImmutableArray<IAction>? beginTxActions = null,
+            ImmutableArray<IAction>? endTxActions = null)
+            : base(beginBlockActions, endBlockActions, beginTxActions, endTxActions)
         {
             Store = new MemoryStore();
             StateStore = new TrieStateStore(new MemoryKeyValueStore());
