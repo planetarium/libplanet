@@ -40,6 +40,7 @@ To be released.
 ### Added APIs
 
  -  (Libplanet.Action) Added `ValidatorSetAccount` class.  [[#3745]]
+ -  (Libplanet.Explorer) Added `WorldState.version` field.  [[#3746]]
 
 ### Behavioral changes
 
@@ -56,6 +57,7 @@ To be released.
 [#3741]: https://github.com/planetarium/libplanet/pull/3741
 [#3742]: https://github.com/planetarium/libplanet/pull/3742
 [#3745]: https://github.com/planetarium/libplanet/pull/3745
+[#3746]: https://github.com/planetarium/libplanet/pull/3746
 
 
 Version 4.3.0
