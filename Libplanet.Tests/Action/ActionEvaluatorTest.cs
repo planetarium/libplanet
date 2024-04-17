@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -405,7 +405,7 @@ namespace Libplanet.Tests.Action
 
             Block genesis = ProposeGenesisBlock(TestUtils.GenesisProposer);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -691,7 +691,7 @@ namespace Libplanet.Tests.Action
                     lastCommit: null),
                 transactions: txs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -796,7 +796,7 @@ namespace Libplanet.Tests.Action
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,

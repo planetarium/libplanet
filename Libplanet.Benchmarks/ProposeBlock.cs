@@ -28,7 +28,7 @@ namespace Libplanet.Benchmarks
                 fx.StateStore,
                 fx.GenesisBlock,
                 new ActionEvaluator(
-                    policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                    policyActionsRegistry: new PolicyActionsRegistry(
                         beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                         endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                         beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,

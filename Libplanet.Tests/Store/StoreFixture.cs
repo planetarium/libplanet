@@ -107,7 +107,7 @@ namespace Libplanet.Tests.Store
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => beginBlockActions ?? ImmutableArray<IAction>.Empty,
                     _ => endBlockActions ?? ImmutableArray<IAction>.Empty,
                     _ => beginTxActions ?? ImmutableArray<IAction>.Empty,

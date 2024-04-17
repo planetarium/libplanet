@@ -50,7 +50,7 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
-                    new PolicyActionsGetterCollection(
+                    new PolicyActionsRegistry(
                         _ => policy.BeginBlockActions,
                         _ => policy.EndBlockActions,
                         _ => policy.BeginTxActions,
@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Blocks
             using (var fx = new MemoryStoreFixture())
             {
                 var actionEvaluator = new ActionEvaluator(
-                    policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                    policyActionsRegistry: new PolicyActionsRegistry(
                         _ => policy.BeginBlockActions,
                         _ => policy.EndBlockActions,
                         _ => policy.BeginTxActions,
