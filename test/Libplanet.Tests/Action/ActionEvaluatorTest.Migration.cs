@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Action
         {
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,

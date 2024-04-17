@@ -472,7 +472,7 @@ namespace Libplanet.Net.Tests
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock,
                     new ActionEvaluator(
-                        policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                        policyActionsRegistry: new PolicyActionsRegistry(
                             beginBlockActionsGetter: _ => policy.BeginBlockActions,
                             endBlockActionsGetter: _ => policy.EndBlockActions,
                             beginTxActionsGetter: _ => policy.BeginTxActions,

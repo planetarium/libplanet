@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs,
                 evidence: evs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -429,7 +429,7 @@ namespace Libplanet.Tests.Action
                 TestUtils.GenesisProposer,
                 stateRootHash: trie.Hash);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -699,7 +699,7 @@ namespace Libplanet.Tests.Action
                 .SetBalance(addresses[2], DumbAction.DumbCurrency * 100));
             ITrie initTrie = stateStore.Commit(world.Trie);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -798,7 +798,7 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                     beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
@@ -1476,7 +1476,7 @@ namespace Libplanet.Tests.Action
         {
             Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => ImmutableArray<IAction>.Empty,
                     _ => ImmutableArray<IAction>.Empty,
                     _ => ImmutableArray<IAction>.Empty,

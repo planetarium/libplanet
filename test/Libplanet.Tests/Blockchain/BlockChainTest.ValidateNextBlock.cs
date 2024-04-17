@@ -187,7 +187,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore1 = new TrieStateStore(new MemoryKeyValueStore());
             IStore store1 = new MemoryStore();
             var actionEvaluator1 = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policy.BeginBlockActions,
                     _ => policy.EndBlockActions,
                     _ => policy.BeginTxActions,
@@ -213,7 +213,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore2 = new TrieStateStore(new MemoryKeyValueStore());
             IStore store2 = new MemoryStore();
             var actionEvaluator2 = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policyWithBlockAction.BeginBlockActions,
                     _ => policyWithBlockAction.EndBlockActions,
                     _ => policyWithBlockAction.BeginTxActions,
@@ -258,7 +258,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policy.BeginBlockActions,
                     _ => policy.EndBlockActions,
                     _ => policy.BeginTxActions,
@@ -311,7 +311,7 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    new PolicyActionsGetterCollection(
+                    new PolicyActionsRegistry(
                         _ => policyWithBlockAction.BeginBlockActions,
                         _ => policyWithBlockAction.EndBlockActions,
                         _ => policyWithBlockAction.BeginTxActions,
@@ -337,7 +337,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policy.BeginBlockActions,
                     _ => policy.EndBlockActions,
                     _ => policy.BeginTxActions,
@@ -768,7 +768,7 @@ namespace Libplanet.Tests.Blockchain
                     new SetStatesAtBlock(default, (Text)"foo", default, 0)));
 
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policyWithBlockAction.BeginBlockActions,
                     _ => policyWithBlockAction.EndBlockActions,
                     _ => policyWithBlockAction.BeginTxActions,
