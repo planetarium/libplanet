@@ -480,7 +480,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        new PolicyActionsGetterCollection(
+                        new PolicyActionsRegistry(
                             _ => policy.BeginBlockActions,
                             _ => policy.EndBlockActions,
                             _ => policy.BeginTxActions,
@@ -614,7 +614,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    new PolicyActionsGetterCollection(
+                    new PolicyActionsRegistry(
                         _ => policy.BeginBlockActions,
                         _ => policy.EndBlockActions,
                         _ => policy.BeginTxActions,
@@ -793,7 +793,7 @@ namespace Libplanet.Tests.Blockchain
                 policy.EndBlockActions);
             var renderer = new ValidatingActionRenderer();
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsGetterCollection(
+                new PolicyActionsRegistry(
                     _ => policy.BeginBlockActions,
                     _ => policy.EndBlockActions,
                     _ => policy.BeginTxActions,

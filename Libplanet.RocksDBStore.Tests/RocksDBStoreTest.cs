@@ -87,7 +87,7 @@ namespace Libplanet.RocksDBStore.Tests
                     stateStore,
                     Fx.GenesisBlock,
                     new ActionEvaluator(
-                        policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                        policyActionsRegistry: new PolicyActionsRegistry(
                             beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                             endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
                             beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
