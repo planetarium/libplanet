@@ -11,15 +11,18 @@ Version DPoS
  -  (Libplanet) Removed `IBlockPolicy.BlockAction` property. [[#3701]]
  -  (Libplanet) Added `IBlockPolicy.BeginBlockActions`. property. [[#3701]]
  -  (Libplanet) Added `IBlockPolicy.EndBlockActions`. property. [[#3701]]
- -  (Libplanet) `BlockPolicy` constructor requires `beginBlockActions` and
-    `endBlockActions` parameters instead of the `blockAction` parameter.
-    [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.BeginTxActions`. property. [[#3748]]
+ -  (Libplanet) Added `IBlockPolicy.EndTxActions`. property. [[#3748]]
+ -  (Libplanet) `BlockPolicy` constructor requires `beginBlockActions`,
+    `endBlockActions`, `beginTxActions` and `endTxActions` parameters
+    instead of the `blockAction` parameter.
+    [[#3701], [#3748]]
  -  (Libplanet.Action) Renamed `PolicyBlockActionGetter` delegate to
-    `PolicyBlockActionGetter` and changed return type to
-    `ImmutableArray<IAction>`.  [[#3701]]
+    `PolicyActionsGetter` and changed return type to
+    `ImmutableArray<IAction>`.  [[#3701], [#3748]]
  -  (Libplanet.Action) `ActionEvaluator` constructor requires
-    `policyBeginBlockActionGetter` and `policyEndBlockActionGetter`
-    parameters instead of the `policyBlockActionGetter` parameter.  [[#3701]]
+    `PolicyActionsRegistry` parameter instead of the
+    `policyBlockActionGetter` parameter.  [[#3701], [#3748]]
  -  (Libplanet.Action) Added `SetValidatorSet` method to `IAccount` interface
     and its implementations.  [[#3730]]
  -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.  [[#3737]]
@@ -32,6 +35,8 @@ Version DPoS
 
 ### Added APIs
 
+ -  (Libplanet.Action) Added `PolicyActionsRegistry` class.  [[#3748]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -43,6 +48,7 @@ Version DPoS
 [#3701]: https://github.com/planetarium/libplanet/pull/3701
 [#3730]: https://github.com/planetarium/libplanet/pull/3730
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
+[#3748]: https://github.com/planetarium/libplanet/pull/3748
 
 
 Version 4.1.0
