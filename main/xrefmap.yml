@@ -2227,24 +2227,18 @@ references:
   commentId: T:Libplanet.Action.State.ReservedAddresses
   fullName: Libplanet.Action.State.ReservedAddresses
   nameWithType: ReservedAddresses
-- uid: Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  name: FungibleAssetsAccount
-  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_FungibleAssetsAccount
-  commentId: F:Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  fullName: Libplanet.Action.State.ReservedAddresses.FungibleAssetsAccount
-  nameWithType: ReservedAddresses.FungibleAssetsAccount
 - uid: Libplanet.Action.State.ReservedAddresses.LegacyAccount
   name: LegacyAccount
   href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount
   commentId: F:Libplanet.Action.State.ReservedAddresses.LegacyAccount
   fullName: Libplanet.Action.State.ReservedAddresses.LegacyAccount
   nameWithType: ReservedAddresses.LegacyAccount
-- uid: Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  name: ValidatorSetAddress
-  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_ValidatorSetAddress
-  commentId: F:Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  fullName: Libplanet.Action.State.ReservedAddresses.ValidatorSetAddress
-  nameWithType: ReservedAddresses.ValidatorSetAddress
+- uid: Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_ValidatorSetAccount
+  commentId: F:Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  fullName: Libplanet.Action.State.ReservedAddresses.ValidatorSetAccount
+  nameWithType: ReservedAddresses.ValidatorSetAccount
 - uid: Libplanet.Action.State.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.Action.State.SupplyOverflowException.html
@@ -2348,6 +2342,96 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.TotalSupplyNotTrackableException.WithDefaultMessage
   nameWithType: TotalSupplyNotTrackableException.WithDefaultMessage
+- uid: Libplanet.Action.State.ValidatorSetAccount
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html
+  commentId: T:Libplanet.Action.State.ValidatorSetAccount
+  fullName: Libplanet.Action.State.ValidatorSetAccount
+  nameWithType: ValidatorSetAccount
+- uid: Libplanet.Action.State.ValidatorSetAccount.#ctor(Libplanet.Store.Trie.ITrie,System.Int32)
+  name: ValidatorSetAccount(ITrie, Int32)
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount__ctor_Libplanet_Store_Trie_ITrie_System_Int32_
+  commentId: M:Libplanet.Action.State.ValidatorSetAccount.#ctor(Libplanet.Store.Trie.ITrie,System.Int32)
+  fullName: Libplanet.Action.State.ValidatorSetAccount.ValidatorSetAccount(Libplanet.Store.Trie.ITrie, System.Int32)
+  nameWithType: ValidatorSetAccount.ValidatorSetAccount(ITrie, Int32)
+- uid: Libplanet.Action.State.ValidatorSetAccount.#ctor*
+  name: ValidatorSetAccount
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount__ctor_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.ValidatorSetAccount
+  nameWithType: ValidatorSetAccount.ValidatorSetAccount
+- uid: Libplanet.Action.State.ValidatorSetAccount.AsAccount
+  name: AsAccount()
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_AsAccount
+  commentId: M:Libplanet.Action.State.ValidatorSetAccount.AsAccount
+  fullName: Libplanet.Action.State.ValidatorSetAccount.AsAccount()
+  nameWithType: ValidatorSetAccount.AsAccount()
+- uid: Libplanet.Action.State.ValidatorSetAccount.AsAccount*
+  name: AsAccount
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_AsAccount_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.AsAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.AsAccount
+  nameWithType: ValidatorSetAccount.AsAccount
+- uid: Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet
+  name: GetValidatorSet()
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_GetValidatorSet
+  commentId: M:Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet
+  fullName: Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet()
+  nameWithType: ValidatorSetAccount.GetValidatorSet()
+- uid: Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet*
+  name: GetValidatorSet
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_GetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.GetValidatorSet
+  nameWithType: ValidatorSetAccount.GetValidatorSet
+- uid: Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)
+  name: SetValidatorSet(ValidatorSet)
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_
+  commentId: M:Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)
+  fullName: Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)
+  nameWithType: ValidatorSetAccount.SetValidatorSet(ValidatorSet)
+- uid: Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet*
+  name: SetValidatorSet
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_SetValidatorSet_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.SetValidatorSet
+  nameWithType: ValidatorSetAccount.SetValidatorSet
+- uid: Libplanet.Action.State.ValidatorSetAccount.Trie
+  name: Trie
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_Trie
+  commentId: P:Libplanet.Action.State.ValidatorSetAccount.Trie
+  fullName: Libplanet.Action.State.ValidatorSetAccount.Trie
+  nameWithType: ValidatorSetAccount.Trie
+- uid: Libplanet.Action.State.ValidatorSetAccount.Trie*
+  name: Trie
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_Trie_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.Trie
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.Trie
+  nameWithType: ValidatorSetAccount.Trie
+- uid: Libplanet.Action.State.ValidatorSetAccount.ValidatorSetAddress
+  name: ValidatorSetAddress
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_ValidatorSetAddress
+  commentId: F:Libplanet.Action.State.ValidatorSetAccount.ValidatorSetAddress
+  fullName: Libplanet.Action.State.ValidatorSetAccount.ValidatorSetAddress
+  nameWithType: ValidatorSetAccount.ValidatorSetAddress
+- uid: Libplanet.Action.State.ValidatorSetAccount.WorldVersion
+  name: WorldVersion
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_WorldVersion
+  commentId: P:Libplanet.Action.State.ValidatorSetAccount.WorldVersion
+  fullName: Libplanet.Action.State.ValidatorSetAccount.WorldVersion
+  nameWithType: ValidatorSetAccount.WorldVersion
+- uid: Libplanet.Action.State.ValidatorSetAccount.WorldVersion*
+  name: WorldVersion
+  href: api/Libplanet.Action.State.ValidatorSetAccount.html#Libplanet_Action_State_ValidatorSetAccount_WorldVersion_
+  commentId: Overload:Libplanet.Action.State.ValidatorSetAccount.WorldVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.State.ValidatorSetAccount.WorldVersion
+  nameWithType: ValidatorSetAccount.WorldVersion
 - uid: Libplanet.Action.State.World
   name: World
   href: api/Libplanet.Action.State.World.html
@@ -32478,6 +32562,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.TxHash
   nameWithType: BlockMetadata.TxHash
+- uid: Libplanet.Types.Blocks.BlockMetadata.ValidatorSetAccountProtocolVersion
+  name: ValidatorSetAccountProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_ValidatorSetAccountProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.ValidatorSetAccountProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.ValidatorSetAccountProtocolVersion
+  nameWithType: BlockMetadata.ValidatorSetAccountProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.WorldStateProtocolVersion
   name: WorldStateProtocolVersion
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion
