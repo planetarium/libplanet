@@ -80,13 +80,13 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
@@ -206,7 +206,7 @@ public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, 
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td></td>
       </tr>
@@ -268,7 +268,7 @@ public readonly byte DecimalPlaces</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -602,7 +602,7 @@ following.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -660,7 +660,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string, or when either the Major or the Minor values of
 <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
@@ -707,7 +707,7 @@ the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -764,7 +764,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string, or when either the Major or the Minor values of
 <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
@@ -873,7 +873,7 @@ public override readonly bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -944,7 +944,7 @@ public override readonly int GetHashCode()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
   <h5 id="Libplanet_Types_Assets_Currency_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
@@ -995,7 +995,7 @@ public static Currency Legacy(string ticker, byte decimalPlaces, Address minter)
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -1045,7 +1045,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1094,7 +1094,7 @@ public static Currency Legacy(string ticker, byte decimalPlaces, IImmutableSet&l
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -1143,7 +1143,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1235,7 +1235,7 @@ public override readonly string ToString()</code></pre>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
+  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h5 id="Libplanet_Types_Assets_Currency_ToString_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
@@ -1281,7 +1281,7 @@ following.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -1331,7 +1331,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1375,7 +1375,7 @@ is an empty string.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a></td>
         <td><span class="parametername">decimalPlaces</span></td>
         <td><p>The number of digits to treat as <a href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
 units (i.e., exponent)</a>.</p>
@@ -1424,7 +1424,7 @@ following.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
 is an empty string.</p>
 </td>
@@ -1610,7 +1610,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -1630,7 +1630,7 @@ following.</p>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
