@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
-                    new PolicyActionsGetterCollection(
+                    new PolicyActionsRegistry(
                         _ => _policy.BeginBlockActions,
                         _ => _policy.EndBlockActions,
                         _ => _policy.BeginTxActions,
