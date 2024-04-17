@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -244,14 +245,8 @@ namespace Libplanet.Action.State
         /// <returns>The validator set of type <see cref="ValidatorSet"/>.
         /// </returns>
         [Pure]
-        public static ValidatorSet GetValidatorSet(this IWorldState worldState)
-        {
-            IAccountState account = worldState.GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ValidatorSetKey);
-            return value is List list
-                ? new ValidatorSet(list)
-                : new ValidatorSet();
-        }
+        public static ValidatorSet GetValidatorSet(this IWorldState worldState) =>
+            worldState.GetValidatorSetAccount().GetValidatorSet();
 
         /// <summary>
         /// Sets <paramref name="validatorSet"/> to the stored <see cref="ValidatorSet"/>.
@@ -262,27 +257,36 @@ namespace Libplanet.Action.State
         /// <paramref name="validator"/> set.</returns>
         [Pure]
         public static IWorld SetValidatorSet(this IWorld world, ValidatorSet validatorSet) =>
-            UpdateValidatorSet(world, validatorSet);
+            world.SetValidatorSetAccount(
+                world.GetValidatorSetAccount().SetValidatorSet(validatorSet));
 
         [Pure]
-        private static IWorld UpdateFungibleAssets(
-            IWorld world,
-            Address address,
-            Currency currency,
-            BigInteger amount,
-            BigInteger? supplyAmount = null)
-        {
-            IAccount account = supplyAmount is { } sa
-                ? new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
-                : new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
+        internal static ValidatorSetAccount GetValidatorSetAccount(this IWorldState worldState) =>
+            worldState.Version >= BlockMetadata.ValidatorSetAccountProtocolVersion
+                ? new ValidatorSetAccount(
+                    worldState.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie,
+                    worldState.Version)
+                : new ValidatorSetAccount(
+                    worldState.GetAccountState(ReservedAddresses.LegacyAccount).Trie,
+                    worldState.Version);
 
-            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
-        }
+        [Pure]
+        internal static IWorld SetValidatorSetAccount(
+            this IWorld world,
+            ValidatorSetAccount validatorSetAccount) =>
+                world.Version == validatorSetAccount.WorldVersion
+                    ? world.Version >= BlockMetadata.ValidatorSetAccountProtocolVersion
+                        ? world.SetAccount(
+                            ReservedAddresses.ValidatorSetAccount,
+                            validatorSetAccount.AsAccount())
+                        : world.SetAccount(
+                            ReservedAddresses.LegacyAccount,
+                            validatorSetAccount.AsAccount())
+                    : throw new ArgumentException(
+                        $"Given {nameof(validatorSetAccount)} must have the same version as " +
+                        $"the version of the world {world.Version}: " +
+                        $"{validatorSetAccount.WorldVersion}",
+                        nameof(validatorSetAccount));
 
         [Pure]
         private static IWorld TransferAssetV0(
@@ -350,13 +354,23 @@ namespace Libplanet.Action.State
         }
 
         [Pure]
-        private static IWorld UpdateValidatorSet(IWorld world, ValidatorSet validatorSet)
+        private static IWorld UpdateFungibleAssets(
+            IWorld world,
+            Address address,
+            Currency currency,
+            BigInteger amount,
+            BigInteger? supplyAmount = null)
         {
-            IAccount account = world.GetAccount(ReservedAddresses.LegacyAccount);
-            return world.SetAccount(
-                ReservedAddresses.LegacyAccount,
-                new Account(new AccountState(
-                    account.Trie.Set(ValidatorSetKey, validatorSet.Bencoded))));
+            IAccount account = supplyAmount is { } sa
+                ? new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
+                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
+                : new Account(new AccountState(
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
+                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
+
+            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
     }
 }

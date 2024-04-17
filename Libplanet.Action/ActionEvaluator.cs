@@ -111,17 +111,7 @@ namespace Libplanet.Action
             try
             {
                 IWorld previousState = PrepareInitialDelta(baseStateRootHash);
-                if (previousState.Legacy &&
-                    block.ProtocolVersion >= BlockMetadata.WorldStateProtocolVersion)
-                {
-                    previousState = MigrateLegacyStates(previousState, block.ProtocolVersion);
-                    baseStateRootHash = previousState.Trie.Hash;
-                }
-                else if (!previousState.Legacy &&
-                         block.ProtocolVersion < BlockMetadata.WorldStateProtocolVersion)
-                {
-                    throw new ApplicationException("World cannot be mutated from modern to legacy");
-                }
+                previousState = MigrateWorld(previousState, block.ProtocolVersion);
 
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
@@ -559,14 +549,81 @@ namespace Libplanet.Action
             return committedEvaluations;
         }
 
-        internal IWorld MigrateLegacyStates(IWorld prevWorld, int version)
+        internal IWorld MigrateWorld(IWorld originalWorld, int targetVersion)
         {
-            var worldTrie = _stateStore.GetStateRoot(null).Set(
-                ToStateKey(ReservedAddresses.LegacyAccount),
-                new Binary(prevWorld.Trie.Hash.ByteArray));
-            worldTrie = worldTrie.SetMetadata(new TrieMetadata(version));
-            worldTrie = _stateStore.Commit(worldTrie);
-            var world = new World(new WorldBaseState(worldTrie, _stateStore));
+            if (originalWorld.Version > targetVersion)
+            {
+                throw new ApplicationException(
+                    $"Given {nameof(originalWorld)} with version {originalWorld.Version} " +
+                    $"cannot be migrated to a lower version {targetVersion}.");
+            }
+
+            IWorld world = originalWorld;
+
+            // Migrate up to BlockMetadata.WorldStateProtocolVersion
+            // if conditions are met.
+            if (targetVersion >= BlockMetadata.WorldStateProtocolVersion &&
+                world.Version < BlockMetadata.WorldStateProtocolVersion)
+            {
+                var worldTrie = _stateStore.GetStateRoot(null);
+                worldTrie = worldTrie.SetMetadata(
+                    new TrieMetadata(BlockMetadata.WorldStateProtocolVersion));
+                worldTrie = worldTrie.Set(
+                    ToStateKey(ReservedAddresses.LegacyAccount),
+                    new Binary(world.Trie.Hash.ByteArray));
+                worldTrie = _stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, _stateStore));
+            }
+
+            // Migrate up to BlockMetadata.ValidatorSetAccountProtocolVersion
+            // if conditions are met.
+            if (targetVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion &&
+                world.Version < BlockMetadata.ValidatorSetAccountProtocolVersion)
+            {
+                var worldTrie = world.Trie;
+                worldTrie = worldTrie.SetMetadata(
+                    new TrieMetadata(BlockMetadata.ValidatorSetAccountProtocolVersion));
+                worldTrie = _stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, _stateStore));
+
+                var legacyAccountTrie =
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
+                IValue? rawValidatorSet = legacyAccountTrie.Get(ValidatorSetKey);
+
+                // Move encoded validator set only if it already exists.
+                if (rawValidatorSet is { } rawValue)
+                {
+                    legacyAccountTrie = legacyAccountTrie.Remove(ValidatorSetKey);
+                    legacyAccountTrie = _stateStore.Commit(legacyAccountTrie);
+
+                    var validatorSetAccountTrie =
+                        world.GetAccount(ReservedAddresses.ValidatorSetAccount).Trie;
+                    validatorSetAccountTrie = validatorSetAccountTrie.Set(
+                        ToStateKey(ValidatorSetAccount.ValidatorSetAddress),
+                        rawValue);
+                    validatorSetAccountTrie = _stateStore.Commit(validatorSetAccountTrie);
+
+                    worldTrie = worldTrie.Set(
+                        ToStateKey(ReservedAddresses.LegacyAccount),
+                        new Binary(legacyAccountTrie.Hash.ByteArray));
+                    worldTrie = worldTrie.Set(
+                        ToStateKey(ReservedAddresses.ValidatorSetAccount),
+                        new Binary(validatorSetAccountTrie.Hash.ByteArray));
+                    worldTrie = _stateStore.Commit(worldTrie);
+                    world = new World(new WorldBaseState(worldTrie, _stateStore));
+                }
+            }
+
+            // Migrate up to target version if conditions are met.
+            if (targetVersion >= BlockMetadata.WorldStateProtocolVersion &&
+                world.Version < targetVersion)
+            {
+                var worldTrie = world.Trie;
+                worldTrie = worldTrie.SetMetadata(new TrieMetadata(targetVersion));
+                worldTrie = _stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, _stateStore));
+            }
+
             return world;
         }
 

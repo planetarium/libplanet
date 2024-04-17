@@ -240,9 +240,11 @@ namespace Libplanet.Mocks
 
         public MockWorldState SetValidatorSet(ValidatorSet validatorSet)
         {
-            IAccountState accountState = GetAccountState(ReservedAddresses.LegacyAccount);
-            ITrie trie = accountState.Trie.Set(ValidatorSetKey, validatorSet.Bencoded);
-            return SetAccount(ReservedAddresses.LegacyAccount, new AccountState(trie));
+            var validatorSetAccount = this.GetValidatorSetAccount();
+            validatorSetAccount = validatorSetAccount.SetValidatorSet(validatorSet);
+            return Version >= BlockMetadata.ValidatorSetAccountProtocolVersion
+                ? SetAccount(ReservedAddresses.ValidatorSetAccount, validatorSetAccount.AsAccount())
+                : SetAccount(ReservedAddresses.LegacyAccount, validatorSetAccount.AsAccount());
         }
     }
 }

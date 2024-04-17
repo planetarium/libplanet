@@ -828,7 +828,10 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableList<Transaction>.Empty,
                 TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(emptyBlock, TestUtils.CreateBlockCommit(emptyBlock));
-            Assert.True(blockChain.GetWorldState().Legacy);
+            Assert.True(blockChain.GetWorldState(emptyBlock.StateRootHash).Legacy);
+            Assert.Equal(
+                blockChain.GetWorldState(genesis.StateRootHash).Trie.Hash.ByteArray,
+                blockChain.GetWorldState(emptyBlock.StateRootHash).Trie.Hash.ByteArray);
         }
     }
 }

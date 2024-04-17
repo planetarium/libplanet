@@ -27,13 +27,19 @@ To be released.
  -  (Libplanet.Types) Added `BlockMetadata.TransferFixProtocolVersion`,
     `BlockMetadata.SignatureProtocolVersion`, and
     `BlockMetadata.TransactionOrderingFixProtocolVersion` constants.  [[#3742]]
-
+ -  (Libplanet.Action) Removed `ReservedAddresses.FungibleAssetAccount`.
+    [[#3745]]
+ -  (Libplanet.Action) Changed `ReservedAddresses.ValidatorSetAccount`'s value
+    from `0x1000000000000000000000000000000000000002`
+    to `0x100000000000000000000000000000000000001`.  [[#3745]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Action) Added `ValidatorSetAccount` class.  [[#3745]]
 
 ### Behavioral changes
 
@@ -49,6 +55,7 @@ To be released.
 [#3739]: https://github.com/planetarium/libplanet/pull/3739
 [#3741]: https://github.com/planetarium/libplanet/pull/3741
 [#3742]: https://github.com/planetarium/libplanet/pull/3742
+[#3745]: https://github.com/planetarium/libplanet/pull/3745
 
 
 Version 4.3.0
