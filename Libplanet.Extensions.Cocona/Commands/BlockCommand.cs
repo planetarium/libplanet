@@ -158,10 +158,10 @@ public class BlockCommand
 
         var beginBlockActions = blockPolicyParams.GetBeginBlockActions();
         var endBlockActions = blockPolicyParams.GetEndBlockActions();
-        var beginTxActions = blockPolicyParams.GetEndBlockActions();
-        var endTxActions = blockPolicyParams.GetEndBlockActions();
+        var beginTxActions = blockPolicyParams.GetBeginTxActions();
+        var endTxActions = blockPolicyParams.GetEndTxActions();
         var actionEvaluator = new ActionEvaluator(
-            new PolicyActionsGetterCollection(
+            new PolicyActionsRegistry(
                 _ => beginBlockActions,
                 _ => endBlockActions,
                 _ => beginTxActions,

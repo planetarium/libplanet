@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        policyActionsGetterCollection: new PolicyActionsGetterCollection(
+                        policyActionsRegistry: new PolicyActionsRegistry(
                             beginBlockActionsGetter: _ => TestUtils.Policy.BeginBlockActions,
                             endBlockActionsGetter: _ => TestUtils.Policy.EndBlockActions,
                             beginTxActionsGetter: _ => TestUtils.Policy.BeginTxActions,
