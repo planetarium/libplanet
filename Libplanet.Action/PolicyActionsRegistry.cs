@@ -3,7 +3,7 @@ using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
-    public class PolicyActionsGetterCollection
+    public class PolicyActionsRegistry
     {
         /// <summary>
         /// A class containing delegators
@@ -26,7 +26,7 @@ namespace Libplanet.Action
         /// evaluate at the end for each <see cref="Transaction"/> that gets evaluated.
         /// Note the order of the returned list determines the execution order.
         /// </param>
-        public PolicyActionsGetterCollection(
+        public PolicyActionsRegistry(
             PolicyActionsGetter beginBlockActionsGetter,
             PolicyActionsGetter endBlockActionsGetter,
             PolicyActionsGetter beginTxActionsGetter,
