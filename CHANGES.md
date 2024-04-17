@@ -4,9 +4,7 @@ Libplanet changelog
 Version 4.4.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on April 17, 2024.
 
 ### Backward-incompatible API changes
 
@@ -33,22 +31,10 @@ To be released.
     from `0x1000000000000000000000000000000000000002`
     to `0x100000000000000000000000000000000000001`.  [[#3745]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Action) Added `ValidatorSetAccount` class.  [[#3745]]
  -  (Libplanet.Explorer) Added `WorldState.version` field.  [[#3746]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3735]: https://github.com/planetarium/libplanet/pull/3735
 [#3736]: https://github.com/planetarium/libplanet/pull/3736
