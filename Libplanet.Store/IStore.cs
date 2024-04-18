@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -347,5 +348,33 @@ namespace Libplanet.Store
         /// <returns>Returns an <see cref="IEnumerable{T}"/> of <see cref="BlockHash"/>es
         /// of all <see cref="BlockCommit"/>s.</returns>
         IEnumerable<BlockHash> GetBlockCommitHashes();
+
+        /// <summary>
+        /// Gets the next state root hash for given <paramref name="blockHash"/> from the store.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block"/>
+        /// to retrieve next state root hash.</param>
+        /// <returns>Returns <see cref="HashDigest{SHA256}"/> if next state root hash of given
+        /// <paramref name="blockHash"/> is stored and available,
+        /// otherwise returns <see langword="null"/>.</returns>
+        HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash);
+
+        /// <summary>
+        /// Puts a next state root hash of <see cref="Block"/> corresponding to the
+        /// <paramref name="blockHash"/> to the store.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of the <see cref="Block"/>
+        /// where <paramref name="nextStateRootHash"/> evaluated.</param>
+        /// <param name="nextStateRootHash">The <see cref="HashDigest{SHA256}"/> that represents
+        /// state root hash of the next state.</param>
+        void PutNextStateRootHash(BlockHash blockHash, HashDigest<SHA256> nextStateRootHash);
+
+        /// <summary>
+        /// Deletes the next state root hash of <see cref="Block"/> corresponding to the given
+        /// <paramref name="blockHash"/> from the store.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="BlockHash"/> of a next state root hash
+        /// to delete.</param>
+        void DeleteNextStateRootHash(BlockHash blockHash);
     }
 }
