@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using ImmutableTrie;
 using Libplanet.Common;
@@ -50,6 +51,9 @@ namespace Libplanet.Store
 
         private readonly ConcurrentDictionary<BlockHash, BlockCommit> _blockCommits =
             new ConcurrentDictionary<BlockHash, BlockCommit>();
+
+        private readonly ConcurrentDictionary<BlockHash, HashDigest<SHA256>> _nextStateRootHashes =
+            new ConcurrentDictionary<BlockHash, HashDigest<SHA256>>();
 
         private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
             new ConcurrentDictionary<Guid, BlockCommit>();
@@ -296,6 +300,20 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
+
+        /// <inheritdoc />
+        public HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash)
+            => _nextStateRootHashes.TryGetValue(blockHash, out var nextStateRootHash)
+                ? (HashDigest<SHA256>?)nextStateRootHash
+                : null;
+
+        /// <inheritdoc />
+        public void PutNextStateRootHash(BlockHash blockHash, HashDigest<SHA256> nextStateRootHash)
+            => _nextStateRootHashes[blockHash] = nextStateRootHash;
+
+        /// <inheritdoc />
+        public void DeleteNextStateRootHash(BlockHash blockHash)
+            => _nextStateRootHashes.TryRemove(blockHash, out _);
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
