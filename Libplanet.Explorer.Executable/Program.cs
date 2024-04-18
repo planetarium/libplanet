@@ -325,6 +325,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 case "default":
                     return new DefaultStore(
                         options.StorePath,
+                        flush: false,
                         readOnly: readOnlyMode);
                 default:
                     // FIXME: give available store type as argument hint without code duplication.
