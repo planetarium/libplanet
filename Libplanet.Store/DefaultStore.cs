@@ -72,6 +72,7 @@ namespace Libplanet.Store
         private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
         private static readonly UPath BlockCommitRootPath = UPath.Root / "blockcommit";
+        private static readonly UPath NextStateRootHashRootPath = UPath.Root / "nextstateroothash";
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -83,6 +84,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
         private readonly SubFileSystem _blockCommits;
+        private readonly SubFileSystem _nextStateRootHashes;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
@@ -188,6 +190,9 @@ namespace Libplanet.Store
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
             _root.CreateDirectory(BlockCommitRootPath);
             _blockCommits = new SubFileSystem(_root, BlockCommitRootPath, owned: false);
+            _root.CreateDirectory(NextStateRootHashRootPath);
+            _nextStateRootHashes =
+                new SubFileSystem(_root, NextStateRootHashRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
@@ -690,6 +695,55 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash)
+        {
+            UPath path = NextStateRootHashPath(blockHash);
+            if (!_nextStateRootHashes.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
+            try
+            {
+                bytes = _nextStateRootHashes.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            HashDigest<SHA256> nextStateRootHash = new HashDigest<SHA256>(bytes);
+            return nextStateRootHash;
+        }
+
+        /// <inheritdoc/>
+        public override void PutNextStateRootHash(
+            BlockHash blockHash, HashDigest<SHA256> nextStateRootHash)
+        {
+            UPath path = NextStateRootHashPath(blockHash);
+            if (_nextStateRootHashes.FileExists(path))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(
+                _nextStateRootHashes, path, nextStateRootHash.ToByteArray());
+        }
+
+        /// <inheritdoc />
+        public override void DeleteNextStateRootHash(BlockHash blockHash)
+        {
+            UPath path = NextStateRootHashPath(blockHash);
+            if (!_nextStateRootHashes.FileExists(path))
+            {
+                return;
+            }
+
+            _nextStateRootHashes.DeleteFile(path);
+        }
+
+        /// <inheritdoc/>
         public override long CountBlocks()
         {
             // FIXME: This implementation is too inefficient.  Fortunately, this method seems
@@ -806,6 +860,11 @@ namespace Libplanet.Store
         private UPath BlockCommitPath(in BlockHash blockHash)
         {
             return UPath.Combine(UPath.Root, blockHash.ToString());
+        }
+
+        private UPath NextStateRootHashPath(in BlockHash blockHash)
+        {
+            return UPath.Root / blockHash.ToString();
         }
 
         private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>

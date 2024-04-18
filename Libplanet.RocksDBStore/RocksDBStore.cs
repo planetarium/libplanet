@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
 using Bencodex;
@@ -94,6 +95,7 @@ namespace Libplanet.RocksDBStore
         private const string ChainDbName = "chain";
         private const string StatesKvPathDefault = "states";
         private const string BlockCommitDbName = "blockcommit";
+        private const string NextStateRootHashName = "nextstateroothash";
         private const int ForkWriteBatchSize = 100000;
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
@@ -111,6 +113,7 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ChainIdKeyPrefix = { (byte)'h' };
         private static readonly byte[] ChainBlockCommitKeyPrefix = { (byte)'M' };
         private static readonly byte[] BlockCommitKeyPrefix = { (byte)'m' };
+        private static readonly byte[] NextStateRootHashKeyPrefix = { (byte)'s' };
 
         private static readonly Codec Codec = new Codec();
 
@@ -135,10 +138,12 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _txIdBlockHashIndexDb;
         private readonly RocksDb _chainDb;
         private readonly RocksDb _blockCommitDb;
+        private readonly RocksDb _nextStateRootHashDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
         private readonly ReaderWriterLockSlim _rwBlockLock;
         private readonly ReaderWriterLockSlim _rwBlockCommitLock;
+        private readonly ReaderWriterLockSlim _rwNextStateRootHashLock;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
         private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
@@ -245,6 +250,9 @@ namespace Libplanet.RocksDBStore
             _blockCommitDb =
                 RocksDBUtils.OpenRocksDb(
                     _options, RocksDbPath(BlockCommitDbName), type: _instanceType);
+            _nextStateRootHashDb =
+                RocksDBUtils.OpenRocksDb(
+                    _options, RocksDbPath(NextStateRootHashName), type: _instanceType);
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -255,6 +263,8 @@ namespace Libplanet.RocksDBStore
             _rwTxLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwBlockCommitLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            _rwNextStateRootHashLock =
+                new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _blockDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _blockDbCache.SetPreRemoveDataMethod(db =>
@@ -1362,6 +1372,87 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc />
+        public override HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash)
+        {
+            _rwNextStateRootHashLock.EnterReadLock();
+
+            try
+            {
+                byte[] key = NextStateRootHashKey(blockHash);
+                byte[] bytes = _nextStateRootHashDb.Get(key);
+                if (bytes is null)
+                {
+                    return null;
+                }
+
+                return new HashDigest<SHA256>(bytes);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetNextStateRootHash), e);
+            }
+            finally
+            {
+                _rwNextStateRootHashLock.ExitReadLock();
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public override void PutNextStateRootHash(
+            BlockHash blockHash, HashDigest<SHA256> nextStateRootHash)
+        {
+            byte[] key = NextStateRootHashKey(blockHash);
+
+            if (_nextStateRootHashDb.Get(key) is { })
+            {
+                return;
+            }
+
+            _rwNextStateRootHashLock.EnterWriteLock();
+            try
+            {
+                _nextStateRootHashDb.Put(key, nextStateRootHash.ToByteArray());
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutNextStateRootHash), e);
+                throw;
+            }
+            finally
+            {
+                _rwNextStateRootHashLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void DeleteNextStateRootHash(BlockHash blockHash)
+        {
+            byte[] key = NextStateRootHashKey(blockHash);
+
+            if (!(_nextStateRootHashDb.Get(key) is { }))
+            {
+                return;
+            }
+
+            _rwNextStateRootHashLock.EnterWriteLock();
+            try
+            {
+                _nextStateRootHashDb.Remove(key);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeleteNextStateRootHash), e);
+                throw;
+            }
+            finally
+            {
+                _rwNextStateRootHashLock.ExitWriteLock();
+            }
+        }
+
         [StoreLoader("rocksdb+file")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
@@ -1456,6 +1547,9 @@ namespace Libplanet.RocksDBStore
 
         private static byte[] BlockCommitKey(in BlockHash blockHash) =>
             Concat(BlockCommitKeyPrefix, blockHash.ByteArray);
+
+        private static byte[] NextStateRootHashKey(in BlockHash blockHash) =>
+            Concat(NextStateRootHashKeyPrefix, blockHash.ByteArray);
 
         private static byte[] Concat(byte[] first, byte[] second)
         {
