@@ -2,7 +2,6 @@ using BenchmarkDotNet.Attributes;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -29,8 +28,11 @@ namespace Libplanet.Benchmarks
                 fx.StateStore,
                 fx.GenesisBlock,
                 new ActionEvaluator(
-                    policyBeginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    policyEndBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    policyActionsRegistry: new PolicyActionsRegistry(
+                        beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                        endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                        beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                        endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             _privateKey = new PrivateKey();

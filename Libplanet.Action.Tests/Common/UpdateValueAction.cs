@@ -6,25 +6,27 @@ namespace Libplanet.Action.Tests.Common
 {
     public sealed class UpdateValueAction : IAction
     {
-        public static readonly Address ValueAddress =
-            new Address("0000000000000000000000000000000000000123");
-
         public UpdateValueAction()
         {
         }
 
-        public UpdateValueAction(int increment)
+        public UpdateValueAction(Address address, int increment)
         {
+            Address = address;
             Increment = increment;
         }
+
+        public Address Address { get; set; }
 
         public int Increment { get; set; }
 
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
+            .Add("address", Address.Bencoded)
             .Add("value", new Bencodex.Types.Integer(Increment));
 
         public void LoadPlainValue(IValue plainValue)
         {
+            Address = new Address(((Dictionary)plainValue)["address"]);
             Increment = (int)(Bencodex.Types.Integer)((Dictionary)plainValue)["value"];
         }
 
@@ -35,12 +37,16 @@ namespace Libplanet.Action.Tests.Common
             int value = 0;
             int increment = Increment;
 
-            if (account.GetState(ValueAddress) is Integer integer)
+            if (account.GetState(Address) is Integer integer)
             {
                 value = (int)integer.Value + increment;
             }
+            else
+            {
+                value = increment;
+            }
 
-            account = account.SetState(ValueAddress, new Integer(value));
+            account = account.SetState(Address, new Integer(value));
             return states.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
     }

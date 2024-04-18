@@ -470,8 +470,11 @@ namespace Libplanet.Net.Tests
                     fxs[i].StateStore,
                     fxs[i].GenesisBlock,
                     new ActionEvaluator(
-                        policyBeginBlockActionsGetter: _ => policy.BeginBlockActions,
-                        policyEndBlockActionsGetter_ => policy.EndBlockActions,
+                        policyActionsRegistry: new PolicyActionsRegistry(
+                            beginBlockActionsGetter: _ => policy.BeginBlockActions,
+                            endBlockActionsGetter: _ => policy.EndBlockActions,
+                            beginTxActionsGetter: _ => policy.BeginTxActions,
+                            endTxActionsGetter: _ => policy.EndTxActions),
                         stateStore: fxs[i].StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 swarms[i] = await CreateSwarm(blockChains[i]).ConfigureAwait(false);

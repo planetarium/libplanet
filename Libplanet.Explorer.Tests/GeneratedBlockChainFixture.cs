@@ -5,7 +5,6 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -72,8 +71,11 @@ public class GeneratedBlockChainFixture
             getMaxTransactionsPerBlock: _ => int.MaxValue,
             getMaxTransactionsBytes: _ => long.MaxValue);
         var actionEvaluator = new ActionEvaluator(
-            _ => policy.BeginBlockActions,
-            _ => policy.EndBlockActions,
+            new PolicyActionsRegistry(
+                _ => policy.BeginBlockActions,
+                _ => policy.EndBlockActions,
+                _ => policy.BeginTxActions,
+                _ => policy.EndTxActions),
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
         Block genesisBlock = BlockChain.ProposeGenesisBlock(

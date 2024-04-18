@@ -20,7 +20,9 @@ namespace Libplanet.Tests.Store
     {
         protected StoreFixture(
             ImmutableArray<IAction>? beginBlockActions = null,
-            ImmutableArray<IAction>? endBlockActions = null
+            ImmutableArray<IAction>? endBlockActions = null,
+            ImmutableArray<IAction>? beginTxActions = null,
+            ImmutableArray<IAction>? endTxActions = null
         )
         {
             Path = null;
@@ -105,8 +107,11 @@ namespace Libplanet.Tests.Store
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
-                _ => beginBlockActions ?? ImmutableArray<IAction>.Empty,
-                _ => endBlockActions ?? ImmutableArray<IAction>.Empty,
+                new PolicyActionsRegistry(
+                    _ => beginBlockActions ?? ImmutableArray<IAction>.Empty,
+                    _ => endBlockActions ?? ImmutableArray<IAction>.Empty,
+                    _ => beginTxActions ?? ImmutableArray<IAction>.Empty,
+                    _ => endTxActions ?? ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
