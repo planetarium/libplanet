@@ -1,6 +1,39 @@
 Libplanet changelog
 ===================
 
+Version NextStateRootHash
+-------------------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  (Libplanet.Store) Added `IStore.GetNextStateRootHash()` method.
+    [[#NextStateRootHash]]
+ -  (Libplanet.Store) Added `IStore.PutNextStateRootHash()` method.
+    [[#NextStateRootHash]]
+ -  (Libplanet.Store) Added `IStore.DeleteNextStateRootHash()` method.
+    [[#NextStateRootHash]]
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#NextStateRootHash]: https://github.com/planetarium/libplanet/pull/TBD
+
+
 Version 4.6.0
 -------------
 
@@ -129,8 +162,6 @@ Released on April 29, 2024.
  -  (Libplanet.Explorer) Added `RawStateQuery`.  [[#3763]]
 
 [#3763]: https://github.com/planetarium/libplanet/pull/3763
-
-
 Version 4.4.1
 -------------
 
