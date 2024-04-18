@@ -29,17 +29,22 @@ with `allowNegativeBalance` as `true`.
     and `SetValidator()` of `IWorld` to extension methods.  [[#3715]]
  -  (Libplanet.Action) Removed `allowNegativeBalance` parameter from
     `IWorld.TransferAsset()` extension method.  [[#3725], [#3728]]
+ -  (Libplanet.Store) Removed `journal`, `indexCacheSize`, and `flush`
+    parameters from `DefaultStore`'s constructor.  [[#3729]]
 
 ### Dependencies
 
  -  Upgraded *LiteDB* from [4.1.4][LiteDB 4.1.4] to
-    [5.0.19][LiteDB 5.0.19].  [[#3729]]
+    [5.0.15][LiteDB 5.0.15].  [[#3729]]
 
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
 [#3714]: https://github.com/planetarium/libplanet/pull/3714
 [#3715]: https://github.com/planetarium/libplanet/pull/3715
 [#3725]: https://github.com/planetarium/libplanet/issues/3725
 [#3728]: https://github.com/planetarium/libplanet/pull/3728
+[#3729]: https://github.com/planetarium/libplanet/pull/3729
+[LiteDB 4.1.4]: https://www.nuget.org/packages/LiteDB/4.1.4
+[LiteDB 5.0.15]: https://www.nuget.org/packages/LiteDB/5.0.15
 
 
 Version 4.2.0
