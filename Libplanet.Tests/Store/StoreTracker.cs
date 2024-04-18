@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -228,6 +230,24 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(GetBlockCommitHashes));
             return _store.GetBlockCommitHashes();
+        }
+
+        public HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash)
+        {
+            Log(nameof(GetNextStateRootHash));
+            return _store.GetNextStateRootHash(blockHash);
+        }
+
+        public void PutNextStateRootHash(BlockHash blockHash, HashDigest<SHA256> nextStateRootHash)
+        {
+            Log(nameof(PutNextStateRootHash));
+            _store.PutNextStateRootHash(blockHash, nextStateRootHash);
+        }
+
+        public void DeleteNextStateRootHash(BlockHash blockHash)
+        {
+            Log(nameof(DeleteNextStateRootHash));
+            _store.DeleteNextStateRootHash(blockHash);
         }
 
         public Guid? GetCanonicalChainId()
