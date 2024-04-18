@@ -52,6 +52,17 @@ Released on April 17, 2024.
 [#3746]: https://github.com/planetarium/libplanet/pull/3746
 
 
+Version 4.3.1
+-------------
+
+Released on April 18, 2024.
+
+ -  Downgraded *LiteDB* from [5.0.15][LiteDB 5.0.15] to
+    [4.1.4][LiteDB 4.1.4].  [[#3753]]
+
+[#3753]: https://github.com/planetarium/libplanet/pull/3753
+
+
 Version 4.3.0
 -------------
 
