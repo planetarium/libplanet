@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -174,6 +176,16 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> GetBlockCommitHashes();
+
+        /// <inheritdoc/>
+        public abstract HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash);
+
+        /// <inheritdoc/>
+        public abstract void PutNextStateRootHash(
+            BlockHash blockHash, HashDigest<SHA256> nextStateRootHash);
+
+        /// <inheritdoc/>
+        public abstract void DeleteNextStateRootHash(BlockHash blockHash);
 
         protected static IValue SerializeTxExecution(TxExecution txExecution)
         {
