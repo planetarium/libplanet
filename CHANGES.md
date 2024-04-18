@@ -35,7 +35,7 @@ with `allowNegativeBalance` as `true`.
 ### Dependencies
 
  -  Upgraded *LiteDB* from [4.1.4][LiteDB 4.1.4] to
-    [5.0.15][LiteDB 5.0.15].  [[#3729]]
+    [5.0.19][LiteDB 5.0.19].  [[#3729]]
 
 [#3713]: https://github.com/planetarium/libplanet/pull/3713
 [#3714]: https://github.com/planetarium/libplanet/pull/3714
@@ -44,7 +44,7 @@ with `allowNegativeBalance` as `true`.
 [#3728]: https://github.com/planetarium/libplanet/pull/3728
 [#3729]: https://github.com/planetarium/libplanet/pull/3729
 [LiteDB 4.1.4]: https://www.nuget.org/packages/LiteDB/4.1.4
-[LiteDB 5.0.15]: https://www.nuget.org/packages/LiteDB/5.0.15
+[LiteDB 5.0.19]: https://www.nuget.org/packages/LiteDB/5.0.19
 
 
 Version 4.2.0
