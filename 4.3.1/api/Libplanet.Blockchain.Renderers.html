@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.Blockchain.Renderers
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.Blockchain.Renderers
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Renderers">
+
+  <h1 id="Libplanet_Blockchain_Renderers" data-uid="Libplanet.Blockchain.Renderers" class="text-break">Namespace Libplanet.Blockchain.Renderers
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousActionRenderer.html">AnonymousActionRenderer</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> that invokes its callbacks.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer.html">AnonymousRenderer</a>.</p>
+<p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
+anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AnonymousRenderer.html">AnonymousRenderer</a></h4>
+      <section><p>A renderer that invokes its callbacks.</p>
+<p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
+anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer.html">AtomicActionRenderer</a></h4>
+      <section><p>A middleware to make action render events to satisfy transactions' atomicity.</p>
+<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance and filters out render events
+made by unsuccessful transactions (i.e., transactions with one or more exception-throwing
+actions).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> so that all event messages are logged.
+In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> version of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a>.</p>
+<p>Every single event message causes two log messages: one is logged <em>before</em>
+rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
+it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a></h4>
+      <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
+<p>Every single event message causes two log messages: one is logged <em>before</em>
+rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
+it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a></h4>
+      <section><p>Listens state changes of every step of actions, besides blocks,
+on a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>.
+If you need more fine-grained events than <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+implement this interface instead.</p>
+<p>The invocation order of methods for each <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> are:</p>
+<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)
+</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__">RenderAction(IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;)</a>
+&amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_">RenderActionError(IValue, ICommittedActionContext, Exception)</a> (zero or more
+times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderBlockEnd_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_">RenderBlockEnd(Block, Block)</a> (one time)</li></ol>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></h4>
+      <section><p>Listens state changes on a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>.</p>
+<p>Usually, implementations of this interface purpose to update the in-memory game states
+(if exist), or send a signal to the UI thread (usually the main thread) so that the graphics
+on the display is redrawn.</p>
+<p>The invocation order of methods for each <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> are:</p>
+<ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)</li></ol>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
