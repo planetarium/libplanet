@@ -93,7 +93,7 @@ Libplanet-backed games/apps too.</p>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</div>
+    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -101,7 +101,7 @@ Libplanet-backed games/apps too.</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
@@ -133,7 +133,7 @@ public class PublicKey : IEquatable&lt;PublicKey&gt;</code></pre>
   <a id="Libplanet_Crypto_PublicKey__ctor_" data-uid="Libplanet.Crypto.PublicKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})">PublicKey(IReadOnlyList&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance from the given
-<span class="xref">System.Byte</span> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
 which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
 ECDSA</a> public key.</p>
 </div>
@@ -153,9 +153,9 @@ ECDSA</a> public key.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A valid <span class="xref">System.Byte</span> array that
+        <td><p>A valid <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that
 encodes an ECDSA public key.  It can be either compressed or
 not.</p>
 </td>
@@ -163,7 +163,7 @@ not.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <span class="xref">System.Byte</span> array for
+  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array for
 a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> can be encoded using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a> method.</p>
 </div>
@@ -242,7 +242,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">message</span></td>
         <td><p>A binary data to encrypt.</p>
 </td>
@@ -259,7 +259,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><p>A ciphertext that was encrypted from the original <code data-dev-comment-type="paramref" class="paramref">message</code>.
 This can be decrypted with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
 </td>
@@ -268,8 +268,8 @@ This can be decrypted with the corresponding <a class="xref" href="Libplanet.Cry
   </table>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the word “ciphertext” has the word “text”,
-a returned ciphertext is not a Unicode <span class="xref">System.String</span>, but a mutable
-<span class="xref">System.Byte</span> array.</p>
+a returned ciphertext is not a Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>, but a mutable
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
 </div>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte____seealso">See Also</h5>
   <div class="seealso">
@@ -303,7 +303,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">message</span></td>
         <td><p>A binary data to encrypt.</p>
 </td>
@@ -320,7 +320,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><p>A ciphertext that was encrypted from the original <code data-dev-comment-type="paramref" class="paramref">message</code>.
 This can be decrypted with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
 </td>
@@ -329,8 +329,8 @@ This can be decrypted with the corresponding <a class="xref" href="Libplanet.Cry
   </table>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Collections_Immutable_ImmutableArray_System_Byte___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the word “ciphertext” has the word “text”,
-a returned ciphertext is not a Unicode <span class="xref">System.String</span>, but a mutable
-<span class="xref">System.Byte</span> array.</p>
+a returned ciphertext is not a Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>, but a mutable
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
 </div>
   <h5 id="Libplanet_Crypto_PublicKey_Encrypt_System_Collections_Immutable_ImmutableArray_System_Byte___seealso">See Also</h5>
   <div class="seealso">
@@ -481,7 +481,7 @@ Libplanet-backed games/apps too.</p>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Format_" data-uid="Libplanet.Crypto.PublicKey.Format*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Format_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.Format(System.Boolean)">Format(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Encodes this public key into a mutable <span class="xref">System.Byte</span> array representation.</p>
+  <div class="markdown level1 summary"><p>Encodes this public key into a mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.</p>
 <p>To get an immutable one, use <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_">ToImmutableArray(Boolean)</a> method
 instead.</p>
 </div>
@@ -520,8 +520,8 @@ public byte[] Format(bool compress)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>An encoded mutable <span class="xref">System.Byte</span> array representation.  It can be
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>An encoded mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.  It can be
 recovered to a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance again using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
 or not.</p>
@@ -564,7 +564,7 @@ or not.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
         <td><p>The hexadecimal representation of the public key to load.
 Case insensitive, and accepts either compressed or uncompressed.</p>
@@ -661,7 +661,7 @@ Libplanet-backed games/apps too.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a></div>
   <h5 id="Libplanet_Crypto_PublicKey_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Every <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object is immutable.</p>
 </div>
@@ -715,7 +715,7 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><p>The hexadecimal string of the public key's compressed bytes.</p>
 </td>
       </tr>
@@ -737,7 +737,7 @@ Libplanet-backed games/apps too.</p>
   </span>
   <a id="Libplanet_Crypto_PublicKey_ToImmutableArray_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)">ToImmutableArray(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Encodes this public key into a immutable <span class="xref">System.Byte</span> array representation.</p>
+  <div class="markdown level1 summary"><p>Encodes this public key into a immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.</p>
 <p>To get an mutable one, use <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a> method instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -775,8 +775,8 @@ public ImmutableArray&lt;byte&gt; ToImmutableArray(bool compress)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><p>An encoded immutable <span class="xref">System.Byte</span> array representation.  It can be
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><p>An encoded immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.  It can be
 recovered to a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance again using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
 or not.</p>
@@ -829,7 +829,7 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -873,7 +873,7 @@ public bool Verify(IReadOnlyList&lt;byte&gt; message, IReadOnlyList&lt;byte&gt; 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">message</span></td>
         <td><p>A original plaintext message that the <code data-dev-comment-type="paramref" class="paramref">signature</code>
 tries to prove its authenticity.  I.e., an argument data passed to
@@ -881,7 +881,7 @@ tries to prove its authenticity.  I.e., an argument data passed to
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">signature</span></td>
         <td><p>A signature which tries to authenticity of
 <code data-dev-comment-type="paramref" class="paramref">message</code>.  I.e., a data that <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Sign_System_Byte___">Sign(Byte[])</a> or
@@ -1064,7 +1064,7 @@ Libplanet-backed games/apps too.</p>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

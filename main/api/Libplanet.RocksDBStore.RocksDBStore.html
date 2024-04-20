@@ -103,7 +103,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -189,10 +189,10 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetHashCode()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
@@ -239,7 +239,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
         <td><p>The path of the directory where the storage files will be saved.</p>
 </td>
@@ -257,21 +257,21 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">maxTotalWalSize</span></td>
         <td><p>The number to configure <code>max_total_wal_size</code> RocksDB
 option.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">keepLogFileNum</span></td>
         <td><p>The number to configure <code>keep_log_file_num</code> RocksDB
 option.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">maxLogFileSize</span></td>
         <td><p>The number to configure <code>max_log_file_size</code>
 RocksDB option.</p>
@@ -1149,8 +1149,8 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
-        <td><p>Returns an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><p>Returns an <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
 of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>s.</p>
 </td>
       </tr>
@@ -1709,7 +1709,7 @@ it returns <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td><p>All block hashes in the store.</p>
 </td>
       </tr>
@@ -1778,7 +1778,7 @@ iterate.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td><p>Block hashes in the index of the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, in ascending
 order; the genesis block goes first, and the tip block goes last.</p>
 </td>
@@ -1853,7 +1853,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1888,7 +1888,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
         <td><p>Chain IDs with at least a single block.</p>
 </td>
       </tr>
@@ -1946,7 +1946,7 @@ and their corresponding <a class="xref" href="Libplanet.Types.Tx.Transaction.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<span class="xref">Address</span>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">Address</span>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
         <td><p>Pairs of an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> and its tx nonce.  All nonces are greater
 than 0.  (If there are underlying entries having zero nonces these must be hidden.)</p>
 </td>
@@ -2005,7 +2005,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
         <td></td>
       </tr>
@@ -2063,7 +2063,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 when the canonical chain is not assigned.  <span class="xref">false</span> by default.
 If it set to <span class="xref">true</span>, does not throw exception when
 there is no canonical chain.
-Otherwise, throws <span class="xref">System.InvalidOperationException</span> when
+Otherwise, throws <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> when
 there is no canonical chain.</p>
 </td>
       </tr>
@@ -2081,7 +2081,7 @@ there is no canonical chain.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
         <td><p>Thrown when there is no canonical chain and
 <code data-dev-comment-type="paramref" class="paramref">noopWithoutCanon</code> is false.</p>
 </td>
@@ -2368,7 +2368,7 @@ and <a class="xref" href="Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
         <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">txExecution</code> is
 <span class="xref">null</span>.</p>
 </td>
@@ -2485,7 +2485,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
