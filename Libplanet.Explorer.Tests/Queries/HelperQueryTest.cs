@@ -60,4 +60,49 @@ public class HelperQueryTest
         Assert.Equal("\"\\uFEFFhello world!\"", json);
         Assert.Equal("\"hello world!\"", inspection);
     }
+
+    [Fact]
+    public async Task KeyHex()
+    {
+        ExecutionResult result = await ExecuteQueryAsync<HelperQuery>(@"
+        {
+            keyHex (value: """")
+        }
+        ");
+
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        string hex = Assert.IsAssignableFrom<string>(resultDict["keyHex"]);
+        Assert.Equal(string.Empty, hex);
+
+        result = await ExecuteQueryAsync<HelperQuery>(@"
+        {
+            keyHex (value: ""___"")
+        }
+        ");
+
+        Assert.Null(result.Errors);
+        resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        hex = Assert.IsAssignableFrom<string>(resultDict["keyHex"]);
+        Assert.Equal("5f5f5f", hex);
+
+        result = await ExecuteQueryAsync<HelperQuery>(@"
+        {
+            keyHex (value: ""bc6c73abbe7652f5f73bd48b951437bde868ba65"")
+        }
+        ");
+
+        Assert.Null(result.Errors);
+        resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        hex = Assert.IsAssignableFrom<string>(resultDict["keyHex"]);
+        Assert.Equal(
+            "62633663373361626265373635326635663733626434386239353134333762646538363862613635",
+            hex);
+    }
 }
