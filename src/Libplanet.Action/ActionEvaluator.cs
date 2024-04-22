@@ -192,6 +192,8 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
+        /// <param name="blockAction">
+        /// Flag indicates that whether the action is a block action.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -203,6 +205,7 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
+            bool blockAction,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -218,6 +221,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: block.ProtocolVersion,
                     txs: block.Transactions,
                     previousState: prevState,
+                    blockAction: blockAction,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
                     evidence: block.Evidence);
@@ -239,6 +243,7 @@ namespace Libplanet.Action
                     context,
                     action,
                     stateStore,
+                    blockAction,
                     logger);
 
                 yield return result.Evaluation;
@@ -259,6 +264,7 @@ namespace Libplanet.Action
             IActionContext context,
             IAction action,
             IStateStore stateStore,
+            bool blockAction,
             ILogger? logger = null)
         {
             if (!context.PreviousState.Trie.Recorded)
@@ -283,6 +289,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
+                    blockAction: blockAction,
                     gasLimit: inputContext.GasLimit(),
                     txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
@@ -493,6 +500,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
+                blockAction: false,
                 logger: _logger));
 
             if (_policyActionsRegistry.EndTxActionsGetter(block) is
@@ -535,6 +543,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginBlockActionsGetter(block),
                 stateStore: _stateStore,
+                blockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -564,6 +573,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndBlockActionsGetter(block),
                 stateStore: _stateStore,
+                blockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -593,6 +603,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginTxActionsGetter(block),
                 stateStore: _stateStore,
+                blockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -622,6 +633,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndTxActionsGetter(block),
                 stateStore: _stateStore,
+                blockAction: true,
                 logger: _logger).ToArray();
         }
 
