@@ -496,7 +496,7 @@ namespace Libplanet.Action
                 beginTxActions.Length > 0)
             {
                 evaluations = evaluations.AddRange(
-                    EvaluatePolicyBeginTxActions(blockHeader, previousState));
+                    EvaluatePolicyBeginTxActions(blockHeader, tx, previousState));
                 previousState = evaluations.Last().OutputState;
             }
 
@@ -519,7 +519,7 @@ namespace Libplanet.Action
                     ? evaluations.Last().OutputState
                     : previousState;
                 evaluations = evaluations.AddRange(
-                    EvaluatePolicyEndTxActions(blockHeader, previousState));
+                    EvaluatePolicyEndTxActions(blockHeader, tx, previousState));
             }
 
             return evaluations;
@@ -591,6 +591,7 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -599,6 +600,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyBeginTxActions(
             IPreEvaluationBlockHeader blockHeader,
+            ITransaction transaction,
             IWorld previousState)
         {
             _logger.Information(
@@ -607,10 +609,11 @@ namespace Libplanet.Action
 
             return EvaluateActions(
                 blockHeader: blockHeader,
-                tx: null,
+                tx: transaction,
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginTxActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                blockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -620,6 +623,7 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -628,6 +632,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyEndTxActions(
             IPreEvaluationBlockHeader blockHeader,
+            ITransaction transaction,
             IWorld previousState)
         {
             _logger.Information(
@@ -636,7 +641,7 @@ namespace Libplanet.Action
 
             return EvaluateActions(
                 blockHeader: blockHeader,
-                tx: null,
+                tx: transaction,
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndTxActionsGetter(blockHeader),
                 stateStore: _stateStore,
