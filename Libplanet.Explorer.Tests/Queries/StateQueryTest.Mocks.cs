@@ -11,12 +11,13 @@ using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Mocks;
+using Xunit;
 
 namespace Libplanet.Explorer.Tests.Queries;
 
 public partial class StateQueryTest
 {
-    private class MockChainStates : IBlockChainStates
+    public class MockChainStates : IBlockChainStates
     {
         private static readonly Address _address;
 
