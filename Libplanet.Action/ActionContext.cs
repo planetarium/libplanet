@@ -26,6 +26,7 @@ namespace Libplanet.Action
             BlockCommit? lastCommit,
             IWorld previousState,
             int randomSeed,
+            bool blockAction,
             long gasLimit,
             IReadOnlyList<ITransaction>? txs = null)
         {
@@ -37,6 +38,7 @@ namespace Libplanet.Action
             LastCommit = lastCommit;
             PreviousState = previousState;
             RandomSeed = randomSeed;
+            BlockAction = blockAction;
             _gasLimit = gasLimit;
             _txs = txs ?? ImmutableList<Transaction>.Empty;
 
@@ -68,7 +70,7 @@ namespace Libplanet.Action
         public int RandomSeed { get; }
 
         /// <inheritdoc cref="IActionContext.BlockAction"/>
-        public bool BlockAction => TxId is null;
+        public bool BlockAction { get; }
 
         /// <inheritdoc cref="IActionContext.Txs"/>
         public IReadOnlyList<ITransaction> Txs => BlockAction
