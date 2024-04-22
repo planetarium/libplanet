@@ -75,6 +75,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     null,
                     _world,
                     default,
+                    false,
                     0));
             Exception actionError = new Exception();
             IActionRenderer actionRenderer;

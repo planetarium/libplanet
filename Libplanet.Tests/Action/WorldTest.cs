@@ -144,6 +144,7 @@ namespace Libplanet.Tests.Action
                 null,
                 world,
                 0,
+                false,
                 0);
         }
 

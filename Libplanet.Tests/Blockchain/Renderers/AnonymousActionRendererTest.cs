@@ -28,6 +28,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 null,
                 _world,
                 default,
+                false,
                 0));
 
         private static Exception _exception = new Exception();
