@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
@@ -29,6 +31,7 @@ namespace Libplanet.Action
             int randomSeed,
             bool isPolicyAction,
             long gasLimit,
+            FungibleAssetValue? maxGasPrice,
             IReadOnlyList<ITransaction>? txs = null,
             IReadOnlyList<EvidenceBase>? evidence = null)
         {
@@ -42,6 +45,7 @@ namespace Libplanet.Action
             RandomSeed = randomSeed;
             IsPolicyAction = isPolicyAction;
             _gasLimit = gasLimit;
+            MaxGasPrice = maxGasPrice;
             _txs = txs ?? ImmutableList<Transaction>.Empty;
             Evidence = evidence ?? ImmutableList<EvidenceBase>.Empty;
 
@@ -74,6 +78,10 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.IsPolicyAction"/>
         public bool IsPolicyAction { get; }
+
+        /// <inheritdoc cref="IActionContext.MaxGasPrice"/>
+        [Pure]
+        public FungibleAssetValue? MaxGasPrice { get; }
 
         /// <inheritdoc cref="IActionContext.Txs"/>
         public IReadOnlyList<ITransaction> Txs => IsPolicyAction

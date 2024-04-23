@@ -222,6 +222,7 @@ namespace Libplanet.Action
                     isPolicyAction: isPolicyAction,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
+                    maxGasPrice: tx?.MaxGasPrice,
                     evidence: block.Evidence);
             }
 
@@ -290,6 +291,7 @@ namespace Libplanet.Action
                     randomSeed: inputContext.RandomSeed,
                     isPolicyAction: isPolicyAction,
                     gasLimit: inputContext.GasLimit(),
+                    maxGasPrice: tx?.MaxGasPrice,
                     txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
             }
