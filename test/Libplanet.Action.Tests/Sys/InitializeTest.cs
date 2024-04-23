@@ -55,7 +55,8 @@ namespace Libplanet.Action.Tests.Sys
                 previousState: prevState,
                 randomSeed: 123,
                 isPolicyAction: false,
-                gasLimit: 0);
+                gasLimit: 0,
+                maxGasPrice: null);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
@@ -103,7 +104,8 @@ namespace Libplanet.Action.Tests.Sys
                 previousState: prevState,
                 randomSeed: 123,
                 isPolicyAction: false,
-                gasLimit: long.MaxValue);
+                gasLimit: long.MaxValue,
+                maxGasPrice: null);
             var initialize = new Initialize(
                 states: _states,
                 validatorSet: _validatorSet
