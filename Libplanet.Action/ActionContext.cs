@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -28,6 +30,7 @@ namespace Libplanet.Action
             int randomSeed,
             bool isBlockAction,
             long gasLimit,
+            FungibleAssetValue? maxGasPrice,
             IReadOnlyList<ITransaction>? txs = null)
         {
             Signer = signer;
@@ -40,6 +43,7 @@ namespace Libplanet.Action
             RandomSeed = randomSeed;
             IsBlockAction = isBlockAction;
             _gasLimit = gasLimit;
+            MaxGasPrice = maxGasPrice;
             _txs = txs ?? ImmutableList<Transaction>.Empty;
 
             GetGasMeter.Value = new GasMeter(_gasLimit);
@@ -71,6 +75,10 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.IsBlockAction"/>
         public bool IsBlockAction { get; }
+
+        /// <inheritdoc cref="IActionContext.MaxGasPrice"/>
+        [Pure]
+        public FungibleAssetValue? MaxGasPrice { get; }
 
         /// <inheritdoc cref="IActionContext.Txs"/>
         public IReadOnlyList<ITransaction> Txs => IsBlockAction

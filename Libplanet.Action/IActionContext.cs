@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -89,6 +90,13 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool IsBlockAction { get; }
+
+        /// <summary>
+        /// Max gas price set by the transaction.
+        /// <see langword="null"/> if the action does not belongs to a transaction.
+        /// </summary>
+        [Pure]
+        FungibleAssetValue? MaxGasPrice { get; }
 
         /// <summary>
         /// A list of <see cref="ITransaction"/>s that are included in a <see cref="Block"/> as
