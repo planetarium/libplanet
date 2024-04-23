@@ -145,7 +145,8 @@ namespace Libplanet.Tests.Action
                 world,
                 0,
                 false,
-                0);
+                0,
+                null);
         }
 
         [Fact]

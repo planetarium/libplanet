@@ -224,7 +224,8 @@ namespace Libplanet.Action
                     previousState: prevState,
                     randomSeed: randomSeed,
                     isBlockAction: isBlockAction,
-                    gasLimit: actionGasLimit);
+                    gasLimit: actionGasLimit,
+                    maxGasPrice: tx?.MaxGasPrice);
             }
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
