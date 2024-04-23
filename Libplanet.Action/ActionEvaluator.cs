@@ -192,7 +192,7 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
-        /// <param name="blockAction">
+        /// <param name="isBlockAction">
         /// Flag indicates that whether the action is a block action.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
@@ -205,7 +205,7 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
-            bool blockAction,
+            bool isBlockAction,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -223,7 +223,7 @@ namespace Libplanet.Action
                     txs: block.Transactions,
                     previousState: prevState,
                     randomSeed: randomSeed,
-                    blockAction: blockAction,
+                    isBlockAction: isBlockAction,
                     gasLimit: actionGasLimit);
             }
 
@@ -243,7 +243,7 @@ namespace Libplanet.Action
                     context,
                     action,
                     stateStore,
-                    blockAction,
+                    isBlockAction,
                     logger);
 
                 yield return result.Evaluation;
@@ -264,7 +264,7 @@ namespace Libplanet.Action
             IActionContext context,
             IAction action,
             IStateStore stateStore,
-            bool blockAction,
+            bool isBlockAction,
             ILogger? logger = null)
         {
             if (!context.PreviousState.Trie.Recorded)
@@ -501,7 +501,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
-                blockAction: false,
+                isBlockAction: false,
                 logger: _logger));
 
             if (_policyActionsRegistry.EndTxActionsGetter(block) is
@@ -544,7 +544,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginBlockActionsGetter(block),
                 stateStore: _stateStore,
-                blockAction: true,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -574,7 +574,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndBlockActionsGetter(block),
                 stateStore: _stateStore,
-                blockAction: true,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -606,7 +606,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginTxActionsGetter(block),
                 stateStore: _stateStore,
-                blockAction: true,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -638,7 +638,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndTxActionsGetter(block),
                 stateStore: _stateStore,
-                blockAction: true,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -667,7 +667,7 @@ namespace Libplanet.Action
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
-                        blockAction: evaluation.InputContext.BlockAction),
+                        isBlockAction: evaluation.InputContext.IsBlockAction),
                     outputState: evaluation.OutputState.Trie.Recorded
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),
