@@ -84,7 +84,7 @@ and 64 characters in hexadecimal.
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
     <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><span class="xref">System.IComparable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -138,7 +138,7 @@ public struct MessageId : ISerializable, IComparable&lt;MessageId&gt;, IComparab
         <td><span class="parametername">messageId</span></td>
         <td><p>A <span class="xref">System.Byte</span> array that encodes
 a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.  It must not be <span class="xref">null</span>,
-and its <span class="xref">System.Array.Length</span> must be the same to
+and its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> must be the same to
 <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
 </td>
       </tr>
@@ -154,9 +154,9 @@ and its <span class="xref">System.Array.Length</span> must be the same to
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">messageId</code>'s <span class="xref">System.Array.Length</span> is not
+<code data-dev-comment-type="paramref" class="paramref">messageId</code>'s <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.length#system-array-length">Length</a> is not
 the same to the required <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
 </td>
       </tr>
@@ -203,7 +203,7 @@ and 64 characters in hexadecimal.
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -242,7 +242,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -280,7 +280,7 @@ this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -343,7 +343,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -400,7 +400,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -520,7 +520,7 @@ and 64 characters in hexadecimal.
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
+  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
   <h5 id="Libplanet_Net_Messages_MessageId_Equals_System_Object__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
@@ -552,7 +552,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string which encodes a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
 This has to contain 64 hexadecimal digits and must not be <span class="xref">null</span>
@@ -587,19 +587,19 @@ This is usually made by <a class="xref" href="Libplanet.Net.Messages.MessageId.h
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
         <td><p>Thrown when the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> is shorter or longer than 64 characters.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
 not a valid hexadecimal string.</p>
 </td>
@@ -641,7 +641,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -689,7 +689,7 @@ and 64 characters in hexadecimal.
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -768,7 +768,7 @@ public string ToHex()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>64 hexadecimal characters.</p>
 </td>
       </tr>
@@ -805,14 +805,14 @@ public override string ToString()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><p>A string which represents this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
   <h5 id="Libplanet_Net_Messages_MessageId_ToString_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
@@ -951,7 +951,7 @@ and 64 characters in hexadecimal.
       <span class="xref">System.IComparable&lt;T&gt;</span>
   </div>
   <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+      <span class="xref">System.IComparable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
