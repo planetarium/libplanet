@@ -73,7 +73,7 @@ namespace Libplanet.Action
         /// <see langword="false"/> if it belongs to a transaction.
         /// </summary>
         [Pure]
-        bool BlockAction { get; }
+        bool IsBlockAction { get; }
 
         /// <summary>
         /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>

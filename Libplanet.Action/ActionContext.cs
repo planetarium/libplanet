@@ -22,7 +22,7 @@ namespace Libplanet.Action
             BlockCommit? lastCommit,
             IWorld previousState,
             int randomSeed,
-            bool blockAction,
+            bool isBlockAction,
             long gasLimit)
         {
             Signer = signer;
@@ -33,7 +33,7 @@ namespace Libplanet.Action
             LastCommit = lastCommit;
             PreviousState = previousState;
             RandomSeed = randomSeed;
-            BlockAction = blockAction;
+            IsBlockAction = isBlockAction;
             _gasLimit = gasLimit;
 
             GetGasMeter.Value = new GasMeter(_gasLimit);
@@ -63,8 +63,8 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.RandomSeed"/>
         public int RandomSeed { get; }
 
-        /// <inheritdoc cref="IActionContext.BlockAction"/>
-        public bool BlockAction { get; }
+        /// <inheritdoc cref="IActionContext.IsBlockAction"/>
+        public bool IsBlockAction { get; }
 
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
