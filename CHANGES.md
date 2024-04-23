@@ -6,6 +6,11 @@ Version 4.4.2
 
 To be released.
 
+ -  (Libplanet.Explorer) Added `KeyBytesType` and `TrieType`.  [[#3763]]
+ -  (Libplanet.Explorer) Added `RawStateQuery`.  [[#3763]]
+
+[#3763]: https://github.com/planetarium/libplanet/pull/3763
+
 
 Version 4.4.1
 -------------
