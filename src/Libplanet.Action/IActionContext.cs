@@ -83,12 +83,12 @@ namespace Libplanet.Action
         /// <see langword="false"/> if it belongs to a transaction.
         /// </summary>
         [Pure]
-        bool BlockAction { get; }
+        bool IsBlockAction { get; }
 
         /// <summary>
         /// A list of <see cref="ITransaction"/>s that are included in a <see cref="Block"/> as
         /// the <see cref="IAction"/> to be evaluated.  This information is provided only if
-        /// <see cref="BlockAction"/> is <see langword="true"/>, otherwise returns an empty set.
+        /// <see cref="IsBlockAction"/> is <see langword="true"/>, otherwise returns an empty set.
         /// </summary>
         [Pure]
         IReadOnlyList<ITransaction> Txs { get; }
