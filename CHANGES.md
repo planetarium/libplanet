@@ -27,6 +27,8 @@ Version DPoS
     `IActionContext.IsBlockAction`.  [[#3764]]
  -  (Libplanet.Action) Added `SetValidatorSet` method to `IAccount` interface
     and its implementations.  [[#3730]]
+ -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
+    interface and its implementations.  [[#3762]]
  -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.  [[#3737]]
  -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
     interface and its implementations.  [[#3737]]
@@ -51,6 +53,7 @@ Version DPoS
 [#3730]: https://github.com/planetarium/libplanet/pull/3730
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
 [#3748]: https://github.com/planetarium/libplanet/pull/3748
+[#3762]: https://github.com/planetarium/libplanet/pull/3762
 [#3764]: https://github.com/planetarium/libplanet/pull/3764
 
 
