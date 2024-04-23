@@ -225,7 +225,8 @@ namespace Libplanet.Action
                     previousState: prevState,
                     randomSeed: randomSeed,
                     isBlockAction: isBlockAction,
-                    gasLimit: actionGasLimit);
+                    gasLimit: actionGasLimit,
+                    maxGasPrice: tx?.MaxGasPrice);
             }
 
             long gasLimit = tx?.GasLimit ?? long.MaxValue;
@@ -292,7 +293,8 @@ namespace Libplanet.Action
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
                     isBlockAction: isBlockAction,
-                    gasLimit: inputContext.GasLimit());
+                    gasLimit: inputContext.GasLimit(),
+                    tx?.MaxGasPrice);
             }
 
             try
