@@ -23,6 +23,8 @@ Version DPoS
  -  (Libplanet.Action) `ActionEvaluator` constructor requires
     `PolicyActionsRegistry` parameter instead of the
     `policyBlockActionGetter` parameter.  [[#3701], [#3748]]
+ -  (Libplanet.Action) Renamed `IActionContext.BlockAction` property to
+    `IActionContext.IsBlockAction`.  [[#3764]]
  -  (Libplanet.Action) Added `SetValidatorSet` method to `IAccount` interface
     and its implementations.  [[#3730]]
  -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.  [[#3737]]
@@ -49,6 +51,7 @@ Version DPoS
 [#3730]: https://github.com/planetarium/libplanet/pull/3730
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
 [#3748]: https://github.com/planetarium/libplanet/pull/3748
+[#3764]: https://github.com/planetarium/libplanet/pull/3764
 
 
 Version 4.4.1
