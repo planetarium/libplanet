@@ -284,6 +284,55 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void EvaluateWithPolicyActionsWithException()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var policyWithExceptions = new BlockPolicy(
+                beginBlockActions: new IAction[]
+                {
+                    new UpdateValueAction(_beginBlockValueAddress, 1),
+                    new ThrowException { ThrowOnExecution = true },
+                }.ToImmutableArray(),
+                endBlockActions: new IAction[]
+                {
+                    new UpdateValueAction(_endBlockValueAddress, 1),
+                    new ThrowException { ThrowOnExecution = true },
+                }.ToImmutableArray(),
+                beginTxActions: new IAction[]
+                {
+                    new UpdateValueAction(_beginTxValueAddress, 1),
+                    new ThrowException { ThrowOnExecution = true },
+                }.ToImmutableArray(),
+                endTxActions: new IAction[]
+                {
+                    new UpdateValueAction(_endTxValueAddress, 1),
+                    new ThrowException { ThrowOnExecution = true },
+                }.ToImmutableArray());
+
+            var (chain, actionEvaluator) =
+                TestUtils.MakeBlockChainAndActionEvaluator(
+                    policy: policyWithExceptions,
+                    store: store,
+                    stateStore: stateStore,
+                    actionLoader: new SingleActionLoader(typeof(DumbAction)));
+
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var block = chain.ProposeBlock(
+                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+            var evaluations = actionEvaluator.Evaluate(
+                block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
+
+            // BeginBlockAction + (BeginTxAction + #Action + EndTxAction) * #Tx + EndBlockAction
+            Assert.Equal(
+                4 + txs.Length * 4 + txs.Sum(tx => tx.Actions.Count),
+                evaluations.Length);
+            Assert.Equal(
+                2 + txs.Length * 2,
+                evaluations.Count(e => e.Exception != null));
+        }
+
+        [Fact]
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
