@@ -191,7 +191,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -328,7 +328,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.IsType<UnexpectedlyTerminatedActionException>(
@@ -833,7 +833,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 stateStore: fx.StateStore,
-                blockAction: false).ToArray();
+                isBlockAction: false).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             Assert.Equal(
@@ -856,7 +856,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(txA.Signer, context.Signer);
-                Assert.False(context.BlockAction);
+                Assert.False(context.IsBlockAction);
                 Assert.Equal(
                     (Integer)deltaA[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
@@ -890,7 +890,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 stateStore: fx.StateStore,
-                blockAction: false).ToArray();
+                isBlockAction: false).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
             Assert.Equal(
@@ -914,7 +914,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(txB.Signer, context.Signer);
-                Assert.False(context.BlockAction);
+                Assert.False(context.IsBlockAction);
                 Assert.Equal(
                     (Integer)deltaB[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
@@ -969,7 +969,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluations[0].OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
 
             previousState = evaluations[0].OutputState;
             evaluations = actionEvaluator.EvaluatePolicyBeginBlockActions(
@@ -985,7 +985,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluations[0].OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
         }
 
         [Fact]
@@ -1017,7 +1017,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluations[0].OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
             Assert.Equal(genesis.Transactions, evaluations[0].InputContext.Txs);
 
             previousState = evaluations[0].OutputState;
@@ -1034,7 +1034,7 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluations[0].OutputState
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
         }
 
         [Fact]
@@ -1068,7 +1068,7 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(txs[0].Signer, evaluations[0].InputContext.Signer);
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
 
             previousState = evaluations[0].OutputState;
             evaluations = actionEvaluator.EvaluatePolicyBeginTxActions(
@@ -1086,7 +1086,7 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(txs[1].Signer, evaluations[0].InputContext.Signer);
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
         }
 
         [Fact]
@@ -1120,7 +1120,7 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
             Assert.Equal(txs[0].Signer, evaluations[0].InputContext.Signer);
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
 
             previousState = evaluations[0].OutputState;
             evaluations = actionEvaluator.EvaluatePolicyEndTxActions(
@@ -1138,7 +1138,7 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
             Assert.Equal(txs[1].Signer, evaluations[0].InputContext.Signer);
-            Assert.True(evaluations[0].InputContext.BlockAction);
+            Assert.True(evaluations[0].InputContext.IsBlockAction);
             Assert.Equal(block.Transactions, evaluations[0].InputContext.Txs);
         }
 
@@ -1292,7 +1292,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -1362,7 +1362,7 @@ namespace Libplanet.Tests.Action
                 block,
                 chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
@@ -1433,7 +1433,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
@@ -1487,7 +1487,7 @@ namespace Libplanet.Tests.Action
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
                 stateStore: fx.StateStore,
-                blockAction: false).ToArray();
+                isBlockAction: false).ToArray();
 
             byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
             int[] randomSeeds = Enumerable
