@@ -194,6 +194,8 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
+        /// <param name="isBlockAction">
+        /// Flag indicates that whether the action is a block action.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -205,6 +207,7 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
+            bool isBlockAction,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -221,6 +224,7 @@ namespace Libplanet.Action
                     lastCommit: blockHeader.LastCommit,
                     previousState: prevState,
                     randomSeed: randomSeed,
+                    isBlockAction: isBlockAction,
                     gasLimit: actionGasLimit);
             }
 
@@ -240,6 +244,7 @@ namespace Libplanet.Action
                     context,
                     action,
                     stateStore,
+                    isBlockAction,
                     logger);
 
                 yield return result.Evaluation;
@@ -260,6 +265,7 @@ namespace Libplanet.Action
             IActionContext context,
             IAction action,
             IStateStore stateStore,
+            bool isBlockAction,
             ILogger? logger = null)
         {
             if (!context.PreviousState.Trie.Recorded)
@@ -285,6 +291,7 @@ namespace Libplanet.Action
                     lastCommit: inputContext.LastCommit,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
+                    isBlockAction: isBlockAction,
                     gasLimit: inputContext.GasLimit());
             }
 
@@ -489,7 +496,7 @@ namespace Libplanet.Action
                 beginTxActions.Length > 0)
             {
                 evaluations = evaluations.AddRange(
-                    EvaluatePolicyBeginTxActions(blockHeader, previousState));
+                    EvaluatePolicyBeginTxActions(blockHeader, tx, previousState));
                 previousState = evaluations.Last().OutputState;
             }
 
@@ -501,6 +508,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
+                isBlockAction: false,
                 logger: _logger));
 
             if (_policyActionsRegistry.EndTxActionsGetter(blockHeader) is
@@ -511,7 +519,7 @@ namespace Libplanet.Action
                     ? evaluations.Last().OutputState
                     : previousState;
                 evaluations = evaluations.AddRange(
-                    EvaluatePolicyEndTxActions(blockHeader, previousState));
+                    EvaluatePolicyEndTxActions(blockHeader, tx, previousState));
             }
 
             return evaluations;
@@ -543,6 +551,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginBlockActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -572,6 +581,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndBlockActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -581,6 +591,7 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -589,6 +600,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyBeginTxActions(
             IPreEvaluationBlockHeader blockHeader,
+            ITransaction transaction,
             IWorld previousState)
         {
             _logger.Information(
@@ -597,10 +609,11 @@ namespace Libplanet.Action
 
             return EvaluateActions(
                 blockHeader: blockHeader,
-                tx: null,
+                tx: transaction,
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginTxActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -610,6 +623,7 @@ namespace Libplanet.Action
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
         /// <param name="previousState">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
@@ -618,6 +632,7 @@ namespace Libplanet.Action
         [Pure]
         internal ActionEvaluation[] EvaluatePolicyEndTxActions(
             IPreEvaluationBlockHeader blockHeader,
+            ITransaction transaction,
             IWorld previousState)
         {
             _logger.Information(
@@ -626,10 +641,11 @@ namespace Libplanet.Action
 
             return EvaluateActions(
                 blockHeader: blockHeader,
-                tx: null,
+                tx: transaction,
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndTxActionsGetter(blockHeader),
                 stateStore: _stateStore,
+                isBlockAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -666,7 +682,7 @@ namespace Libplanet.Action
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
-                        blockAction: evaluation.InputContext.BlockAction),
+                        isBlockAction: evaluation.InputContext.IsBlockAction),
                     outputState: evaluation.OutputState.Trie.Recorded
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),

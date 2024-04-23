@@ -35,6 +35,7 @@ namespace Libplanet.Tests.Action
                 null,
                 world,
                 0,
+                true,
                 0);
         }
 

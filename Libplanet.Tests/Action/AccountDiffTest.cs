@@ -154,6 +154,7 @@ namespace Libplanet.Tests.Action
                         trie,
                         new TrieStateStore(new MemoryKeyValueStore()))),
                 0,
+                true,
                 0);
     }
 }

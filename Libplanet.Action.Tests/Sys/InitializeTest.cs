@@ -54,6 +54,7 @@ namespace Libplanet.Action.Tests.Sys
                 lastCommit: null,
                 previousState: prevState,
                 randomSeed: 123,
+                isBlockAction: false,
                 gasLimit: 0);
             var initialize = new Initialize(
                 states: _states,
@@ -103,6 +104,7 @@ namespace Libplanet.Action.Tests.Sys
                 lastCommit: lastCommit,
                 previousState: prevState,
                 randomSeed: 123,
+                isBlockAction: false,
                 gasLimit: long.MaxValue);
             var initialize = new Initialize(
                 states: _states,
