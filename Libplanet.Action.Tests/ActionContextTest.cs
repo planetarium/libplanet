@@ -61,7 +61,8 @@ namespace Libplanet.Action.Tests
                     previousState: new World(new MockWorldState()),
                     randomSeed: seed,
                     isBlockAction: false,
-                    gasLimit: 0
+                    gasLimit: 0,
+                    maxGasPrice: null
                 );
                 IRandom random = context.GetRandom();
                 Assert.Equal(expected, random.Next());
@@ -81,7 +82,8 @@ namespace Libplanet.Action.Tests
                 previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 isBlockAction: false,
-                gasLimit: 0
+                gasLimit: 0,
+                maxGasPrice: null
             );
 
             var context2 = new ActionContext(
@@ -94,7 +96,8 @@ namespace Libplanet.Action.Tests
                 previousState: new World(new MockWorldState()),
                 randomSeed: 0,
                 isBlockAction: false,
-                gasLimit: 0
+                gasLimit: 0,
+                maxGasPrice: null
             );
 
             var context3 = new ActionContext(
@@ -107,7 +110,8 @@ namespace Libplanet.Action.Tests
                 previousState: new World(new MockWorldState()),
                 randomSeed: 1,
                 isBlockAction: false,
-                gasLimit: 0
+                gasLimit: 0,
+                maxGasPrice: null
             );
 
             (Guid Expected, Guid Diff)[] testCases =
@@ -148,7 +152,8 @@ namespace Libplanet.Action.Tests
                     previousState: new World(new MockWorldState()),
                     randomSeed: i,
                     isBlockAction: false,
-                    gasLimit: 0
+                    gasLimit: 0,
+                    maxGasPrice: null
                 );
                 var guid = context.GetRandom().GenerateRandomGuid().ToString();
 

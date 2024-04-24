@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -23,7 +25,8 @@ namespace Libplanet.Action
             IWorld previousState,
             int randomSeed,
             bool isBlockAction,
-            long gasLimit)
+            long gasLimit,
+            FungibleAssetValue? maxGasPrice)
         {
             Signer = signer;
             TxId = txid;
@@ -35,6 +38,7 @@ namespace Libplanet.Action
             RandomSeed = randomSeed;
             IsBlockAction = isBlockAction;
             _gasLimit = gasLimit;
+            MaxGasPrice = maxGasPrice;
 
             GetGasMeter.Value = new GasMeter(_gasLimit);
         }
@@ -65,6 +69,10 @@ namespace Libplanet.Action
 
         /// <inheritdoc cref="IActionContext.IsBlockAction"/>
         public bool IsBlockAction { get; }
+
+        /// <inheritdoc cref="IActionContext.MaxGasPrice"/>
+        [Pure]
+        public FungibleAssetValue? MaxGasPrice { get; }
 
         /// <inheritdoc cref="IActionContext.UseGas(long)"/>
         public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
