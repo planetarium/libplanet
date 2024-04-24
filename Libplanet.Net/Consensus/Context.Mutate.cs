@@ -426,7 +426,7 @@ namespace Libplanet.Net.Consensus
 
                     IsValid(block4, out var evaluatedActions);
 
-                    _blockChain.Append(
+                    _blockChain.AppendStateRootHashPreceded(
                         block4,
                         GetBlockCommit(),
                         true,

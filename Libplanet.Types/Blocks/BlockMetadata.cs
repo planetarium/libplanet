@@ -22,7 +22,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 7;
+        public const int CurrentProtocolVersion = 8;
 
         /// <summary>
         /// <para>
@@ -81,6 +81,8 @@ namespace Libplanet.Types.Blocks
         /// regardless of <see cref="Currency.TotalSupplyTrackable"/>.
         /// </summary>
         public const int CurrencyAccountProtocolVersion = 7;
+
+        public const int StateRootHashPostponeProtocolVersion = 8;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();

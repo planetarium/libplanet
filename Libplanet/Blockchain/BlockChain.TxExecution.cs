@@ -47,7 +47,7 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            ITrie trie = GetWorldState(block.PreviousHash).Trie;
+            ITrie trie = GetWorldState(block.StateRootHash).Trie;
 
             int count = 0;
             foreach (var group in groupedEvals)
