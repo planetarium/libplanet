@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -137,7 +139,7 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            var validators = GetWorldState(block.PreviousHash ?? Genesis.Hash)
+            var validators = GetWorldState(block.StateRootHash)
                 .GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
@@ -301,7 +303,48 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Validates a result obtained from <see cref="EvaluateBlock"/> by
-        /// comparing the state root hash calculated using <see cref="DetermineBlockStateRootHash"/>
+        /// comparing the state root hash from <see cref="GetNextStateRootHash"/>
+        /// which stores state root hash from <see cref="DetermineNextBlockStateRootHash"/>,
+        /// to the one in <paramref name="block"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block"/> to validate against.</param>
+        /// <param name="validationInterval">The interval for fetching calculated state root hash
+        /// from <see cref="Append(Block, BlockCommit)"/>.</param>
+        /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
+        /// calculated by committing to the <see cref="IStateStore"/> does not match
+        /// the <paramref name="block"/>'s <see cref="Block.StateRootHash"/>.</exception>
+        /// <seealso cref="EvaluateBlock"/>
+        /// <seealso cref="DetermineNextBlockStateRootHash"/>
+        internal void ValidateBlockStateRootHash(Block block, TimeSpan validationInterval = default)
+        {
+            // NOTE: Since previous hash validation is on block validation,
+            // assume block is genesis if previous hash is null.
+            if (!(block.PreviousHash is BlockHash previousHash))
+            {
+                return;
+            }
+
+            HashDigest<SHA256> stateRootHash =
+                _blocks[previousHash].ProtocolVersion <
+                BlockMetadata.StateRootHashPostponeProtocolVersion
+                    ? _blocks[previousHash].StateRootHash
+                    : (HashDigest<SHA256>)GetNextStateRootHash(previousHash, validationInterval);
+
+            if (!stateRootHash.Equals(block.StateRootHash))
+            {
+                var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
+                    $"is {block.StateRootHash}, but the execution result is {stateRootHash}.";
+                throw new InvalidBlockStateRootHashException(
+                    message,
+                    block.StateRootHash,
+                    stateRootHash);
+            }
+        }
+
+        /// <summary>
+        /// Validates a result obtained from <see cref="EvaluatePreEvaluationBlock"/> by
+        /// comparing the state root hash calculated using
+        /// <see cref="DeterminePreEvaluationBlockStateRootHash"/>
         /// to the one in <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block"/> to validate against.</param>
@@ -317,12 +360,12 @@ namespace Libplanet.Blockchain
         /// obdatined through committing to the <see cref="IStateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
-        /// <seealso cref="EvaluateBlock"/>
-        /// <seealso cref="DetermineBlockStateRootHash"/>
-        internal void ValidateBlockStateRootHash(
+        /// <seealso cref="EvaluatePreEvaluationBlock"/>
+        /// <seealso cref="DeterminePreEvaluationBlockStateRootHash"/>
+        internal void ValidateBlockPrecededStateRootHash(
             Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
-            var rootHash = DetermineBlockStateRootHash(block, out evaluations);
+            var rootHash = DeterminePreEvaluationBlockStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))
             {
                 var message = $"Block #{block.Index} {block.Hash}'s state root hash " +

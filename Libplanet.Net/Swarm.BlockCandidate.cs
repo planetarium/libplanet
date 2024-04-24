@@ -196,7 +196,7 @@ namespace Libplanet.Net
 
                 foreach (var (block, commit) in blocks)
                 {
-                    workspace.Append(block, commit, render: render && !forked);
+                    workspace.AppendStateRootHashPreceded(block, commit, render: render && !forked);
                     actionExecutionState.ExecutedBlockCount += 1;
                     actionExecutionState.ExecutedBlockHash = block.Hash;
                     IEnumerable<Transaction>
