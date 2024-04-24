@@ -143,7 +143,7 @@ namespace Libplanet.Blockchain
             var validators =
                 block.ProtocolVersion <
                 BlockMetadata.SlothProtocolVersion
-                    ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
+                    ? GetWorldState(block.StateRootHash).GetValidatorSet()
                     : GetWorldState(block.StateRootHash).GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {

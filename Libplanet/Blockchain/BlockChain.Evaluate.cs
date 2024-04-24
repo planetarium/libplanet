@@ -46,7 +46,7 @@ namespace Libplanet.Blockchain
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                evaluations = EvaluateBlock(block);
+                evaluations = EvaluatePreEvaluationBlock(block);
 
                 _logger.Debug(
                     "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
