@@ -21,7 +21,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 6;
+        public const int CurrentProtocolVersion = 8;
 
         /// <summary>
         /// The starting protocol version where a bug in transferring asset was fixed.
@@ -55,6 +55,8 @@ namespace Libplanet.Types.Blocks
         public const int WorldStateProtocolVersion = 5;
 
         public const int ValidatorSetAccountProtocolVersion = 6;
+
+        public const int StateRootHashPostponeProtocolVersion = 8;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -373,25 +374,6 @@ namespace Libplanet.Blockchain
                     nameof(store));
             }
 
-            // Extract pre-evaluation block and re-evaluate through
-            // determine-state-root-hash method with an ephemeral state store
-            // to check the state root hash validity
-            var preEval = new PreEvaluationBlock(
-                genesisBlock.Header, genesisBlock.Transactions);
-            var computedStateRootHash = DetermineGenesisStateRootHash(
-                actionEvaluator,
-                preEval,
-                out var _);
-            if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
-            {
-                throw new InvalidBlockStateRootHashException(
-                    $"Given block #{genesisBlock.Index} {genesisBlock.Hash} has " +
-                    $"a state root hash {genesisBlock.StateRootHash} that is different " +
-                    $"from the calculated state root hash {computedStateRootHash}",
-                    genesisBlock.StateRootHash,
-                    computedStateRootHash);
-            }
-
             var id = Guid.NewGuid();
 
             ValidateGenesis(genesisBlock);
@@ -414,7 +396,7 @@ namespace Libplanet.Blockchain
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
 
-            return new BlockChain(
+            var blockChain = new BlockChain(
                 policy,
                 stagePolicy,
                 store,
@@ -424,6 +406,18 @@ namespace Libplanet.Blockchain
                 blockChainStates,
                 actionEvaluator,
                 renderers);
+
+            if (genesisBlock.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            {
+                return blockChain;
+            }
+
+            HashDigest<SHA256> nextStateRootHash =
+                blockChain.DetermineNextBlockStateRootHash(genesisBlock, out _);
+
+            blockChain.Store.PutNextStateRootHash(genesisBlock.Hash, nextStateRootHash);
+
+            return blockChain;
         }
 
         /// <summary>
@@ -527,9 +521,16 @@ namespace Libplanet.Blockchain
         /// <paramref name="block"/> and <paramref name="blockCommit"/> is invalid.</exception>
         public void Append(
             Block block,
-            BlockCommit blockCommit
-        ) =>
+            BlockCommit blockCommit)
+        {
+            if (block.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            {
+                AppendStateRootHashPreceded(block, blockCommit, render: true);
+                return;
+            }
+
             Append(block, blockCommit, render: true);
+        }
 
         /// <summary>
         /// Adds <paramref name="transaction"/> to the pending list so that a next
@@ -875,6 +876,185 @@ namespace Libplanet.Blockchain
         internal void Append(
             Block block,
             BlockCommit blockCommit,
+            bool render)
+        {
+            if (Count == 0)
+            {
+                throw new ArgumentException(
+                    "Cannot append a block to an empty chain.");
+            }
+            else if (block.Index == 0)
+            {
+                throw new ArgumentException(
+                    $"Cannot append genesis block #{block.Index} {block.Hash} to a chain.",
+                    nameof(block));
+            }
+
+            _logger.Information(
+                "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
+
+            block.ValidateTimestamp();
+
+            _rwlock.EnterUpgradeableReadLock();
+            Block prevTip = Tip;
+            try
+            {
+                ValidateBlock(block);
+                ValidateBlockCommit(block, blockCommit);
+
+                var nonceDeltas = ValidateBlockNonces(
+                    block.Transactions
+                        .Select(tx => tx.Signer)
+                        .Distinct()
+                        .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
+                    block);
+
+                if (Policy.ValidateNextBlock(this, block) is { } bpve)
+                {
+                    throw bpve;
+                }
+
+                foreach (Transaction tx in block.Transactions)
+                {
+                    if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
+                    {
+                        throw new TxPolicyViolationException(
+                            "According to BlockPolicy, this transaction is not valid.",
+                            tx.Id,
+                            tpve);
+                    }
+                }
+
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    ValidateBlockStateRootHash(block);
+
+                    // FIXME: Using evaluateActions as a proxy flag for preloading status.
+                    const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .ForContext("Subtag", "BlockAppendTimestamp")
+                        .Information(
+                            "Block #{BlockIndex} {BlockHash} with " +
+                            "timestamp {BlockTimestamp} appended at {AppendTimestamp}",
+                            block.Index,
+                            block.Hash,
+                            block.Timestamp.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture),
+                            DateTimeOffset.UtcNow.ToString(
+                                TimestampFormat, CultureInfo.InvariantCulture));
+
+                    _blocks[block.Hash] = block;
+
+                    foreach (KeyValuePair<Address, long> pair in nonceDeltas)
+                    {
+                        Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
+                    }
+
+                    foreach (var tx in block.Transactions)
+                    {
+                        Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
+                    }
+
+                    if (block.Index != 0 && blockCommit is { })
+                    {
+                        Store.PutChainBlockCommit(Id, blockCommit);
+                    }
+
+                    Store.AppendIndex(Id, block.Hash);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+
+                if (IsCanonical)
+                {
+                    _logger.Information(
+                        "Unstaging {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
+                        block.Transactions.Count(),
+                        block.Index,
+                        block.Hash);
+                    foreach (Transaction tx in block.Transactions)
+                    {
+                        UnstageTransaction(tx);
+                    }
+
+                    _logger.Information(
+                        "Unstaged {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
+                        block.Transactions.Count(),
+                        block.Index,
+                        block.Hash);
+                }
+                else
+                {
+                    _logger.Information(
+                        "Skipping unstaging transactions from block #{BlockIndex} {BlockHash} " +
+                        "for non-canonical chain {ChainID}",
+                        block.Index,
+                        block.Hash,
+                        Id);
+                }
+
+                TipChanged?.Invoke(this, (prevTip, block));
+                _logger.Information(
+                    "Appended the block #{BlockIndex} {BlockHash}",
+                    block.Index,
+                    block.Hash);
+
+                HashDigest<SHA256> nextStateRootHash =
+                    DetermineNextBlockStateRootHash(block, out var actionEvaluations);
+
+                Store.PutNextStateRootHash(block.Hash, nextStateRootHash);
+
+                IEnumerable<TxExecution> txExecutions =
+                    MakeTxExecutions(block, actionEvaluations);
+                UpdateTxExecutions(txExecutions);
+
+                if (render)
+                {
+                    _logger.Information(
+                        "Invoking {RendererCount} renderers and " +
+                        "{ActionRendererCount} action renderers for #{BlockIndex} {BlockHash}",
+                        Renderers.Count,
+                        ActionRenderers.Count,
+                        block.Index,
+                        block.Hash);
+                    foreach (IRenderer renderer in Renderers)
+                    {
+                        renderer.RenderBlock(oldTip: prevTip ?? Genesis, newTip: block);
+                    }
+
+                    if (ActionRenderers.Any())
+                    {
+                        RenderActions(evaluations: actionEvaluations, block: block);
+                        foreach (IActionRenderer renderer in ActionRenderers)
+                        {
+                            renderer.RenderBlockEnd(oldTip: prevTip ?? Genesis, newTip: block);
+                        }
+                    }
+
+                    _logger.Information(
+                        "Invoked {RendererCount} renderers and " +
+                        "{ActionRendererCount} action renderers for #{BlockIndex} {BlockHash}",
+                        Renderers.Count,
+                        ActionRenderers.Count,
+                        block.Index,
+                        block.Hash);
+                }
+            }
+            finally
+            {
+                _rwlock.ExitUpgradeableReadLock();
+            }
+        }
+#pragma warning restore MEN003
+
+#pragma warning disable MEN003
+        internal void AppendStateRootHashPreceded(
+            Block block,
+            BlockCommit blockCommit,
             bool render,
             IReadOnlyList<ICommittedActionEvaluation> actionEvaluations = null
         )
@@ -935,7 +1115,7 @@ namespace Libplanet.Blockchain
                             "Executing actions in block #{BlockIndex} {BlockHash}...",
                             block.Index,
                             block.Hash);
-                        ValidateBlockStateRootHash(block, out actionEvaluations);
+                        ValidateBlockPrecededStateRootHash(block, out actionEvaluations);
                         _logger.Information(
                             "Executed actions in block #{BlockIndex} {BlockHash}",
                             block.Index,
@@ -1198,6 +1378,28 @@ namespace Libplanet.Blockchain
                 if (Store.GetBlockCommit(hash) is { } commit && commit.Height < limit)
                 {
                     Store.DeleteBlockCommit(hash);
+                }
+            }
+        }
+
+        internal HashDigest<SHA256>? GetNextStateRootHash(
+            BlockHash blockHash,
+            TimeSpan? fetchInterval = null)
+        {
+            while (true)
+            {
+                if (Store.GetNextStateRootHash(blockHash) is HashDigest<SHA256> srh)
+                {
+                    return srh;
+                }
+
+                if (fetchInterval is TimeSpan interval)
+                {
+                    Thread.Sleep(interval);
+                }
+                else
+                {
+                    return null;
                 }
             }
         }

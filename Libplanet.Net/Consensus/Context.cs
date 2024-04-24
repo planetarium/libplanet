@@ -506,7 +506,7 @@ namespace Libplanet.Net.Consensus
                         }
                     }
 
-                    _blockChain.ValidateBlockStateRootHash(block, out actionEvaluations);
+                    _blockChain.ValidateBlockPrecededStateRootHash(block, out actionEvaluations);
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||
