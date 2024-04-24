@@ -22,13 +22,19 @@ namespace Libplanet.Blockchain
             _stateStore = stateStore;
         }
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)"/>
-        public IWorldState GetWorldState(BlockHash? offset)
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash)"/>
+        public IWorldState GetWorldState(BlockHash offset)
             => new WorldBaseState(GetTrie(offset), _stateStore);
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
+
+        /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)"/>
+        public IWorldState? GetNextWorldState(BlockHash offset)
+            => _store.GetNextStateRootHash(offset) is HashDigest<SHA256> nextSrh
+                ? new WorldBaseState(GetTrie(nextSrh), _stateStore)
+                : null;
 
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
@@ -54,20 +60,16 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// An <see cref="ITrie"/> returned by this method is read-only.
         /// </remarks>
-        private ITrie GetTrie(BlockHash? offset)
+        private ITrie GetTrie(BlockHash offset)
         {
-            if (!(offset is { } hash))
-            {
-                return _stateStore.GetStateRoot(null);
-            }
-            else if (_store.GetStateRootHash(hash) is { } stateRootHash)
+            if (_store.GetStateRootHash(offset) is { } stateRootHash)
             {
                 return GetTrie(stateRootHash);
             }
             else
             {
                 throw new ArgumentException(
-                    $"Could not find block hash {hash} in {nameof(IStore)}.",
+                    $"Could not find block hash {offset} in {nameof(IStore)}.",
                     nameof(offset));
             }
         }

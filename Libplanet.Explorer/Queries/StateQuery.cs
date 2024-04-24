@@ -85,7 +85,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                     "Either blockHash or stateRootHash must be specified."
                 );
             case (blockhash: not null, _):
-                return context.Source.GetWorldState(blockHash);
+                return context.Source.GetWorldState((BlockHash)blockHash);
             case (_, srh: not null):
                 return context.Source.GetWorldState(stateRootHash);
         }
@@ -114,7 +114,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             case (blockhash: not null, _):
             {
                 return context.Source
-                    .GetWorldState(offsetBlockHash)
+                    .GetWorldState((BlockHash)offsetBlockHash)
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetStates(addresses);
             }
@@ -151,7 +151,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             case (blockhash: not null, _):
             {
                 return context.Source
-                    .GetWorldState(offsetBlockHash)
+                    .GetWorldState((BlockHash)offsetBlockHash)
                     .GetBalance(owner, currency);
             }
 
@@ -193,7 +193,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 );
             case (blockhash: not null, _):
                 return context.Source
-                    .GetWorldState(offsetBlockHash)
+                    .GetWorldState((BlockHash)offsetBlockHash)
                     .GetTotalSupply(currency);
             case (_, srh: not null):
                 return context.Source
@@ -223,7 +223,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                 );
             case (blockhash: not null, _):
                 return context.Source
-                    .GetWorldState(offsetBlockHash)
+                    .GetWorldState((BlockHash)offsetBlockHash)
                     .GetValidatorSet().Validators;
             case (_, srh: not null):
                 return context.Source
