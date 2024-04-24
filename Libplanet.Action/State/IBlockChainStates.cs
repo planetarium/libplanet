@@ -8,22 +8,22 @@ using Libplanet.Types.Blocks;
 namespace Libplanet.Action.State
 {
     /// <summary>
-    /// A minimal interface to get states from a <see cref="BlockChain"/>.
-    /// <para>Note that <see cref="BlockChain"/> implements this interface.</para>
+    /// A minimal interface to get states from a BlockChain.
+    /// <para>Note that BlockChain implements this interface.</para>
     /// </summary>
     public interface IBlockChainStates
     {
         /// <summary>
-        /// Returns the <see cref="IWorldState"/> in the <see cref="BlockChain"/>
-        /// at <paramref name="offset"/>.
+        /// Returns the <see cref="IWorldState"/> in the BlockChain at <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
         /// for which to create an <see cref="IWorldState"/>.</param>
         /// <returns>
-        /// The <see cref="IWorldState"/> at <paramref name="offset"/>.
+        /// The <see cref="IWorldState"/> at <paramref name="offset"/>, which is the identical
+        /// to what <see cref="Block.StateRootHash"/> of <paramref name="offset"/> indicates.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/> is not
-        /// <see langword="null"/> and one of the following is true.
+        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/>
+        /// one of the following is true.
         /// <list type="bullet">
         ///     <item><description>
         ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
@@ -35,21 +35,38 @@ namespace Libplanet.Action.State
         /// </list>
         /// </exception>
         /// <seealso cref="IWorldState"/>
-        IWorldState GetWorldState(BlockHash? offset);
+        IWorldState GetWorldState(BlockHash offset);
 
         /// <summary>
-        /// Returns the <see cref="IWorldState"/> in the <see cref="BlockChain"/>'s state storage
+        /// Returns the <see cref="IWorldState"/> in the BlockChain's state storage
         /// with <paramref name="stateRootHash"/>.
         /// </summary>
         /// <param name="stateRootHash">The state root hash for which to create
         /// an <see cref="IWorldState"/>.</param>
         /// <returns>
         /// The <see cref="IWorldState"/> with <paramref name="stateRootHash"/>.
+        /// If <paramref name="stateRootHash"/> is <see langword="null"/>,
+        /// returns the hash of the empty state root.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when no <see cref="ITrie"/> with
         /// <paramref name="hash"/> as its state root hash is found.
         /// </exception>
         /// <seealso cref="IWorldState"/>
         IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
+
+        /// <summary>
+        /// Returns the <see cref="IWorldState"/> in the BlockChain at <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
+        /// for which to create an <see cref="IWorldState"/>.</param>
+        /// <returns>
+        /// The <see cref="IWorldState"/> at <paramref name="offset"/>.
+        /// Returns <see langword="null"/> if next state root hash does not exists.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when next state root hash exists,
+        /// but corresponding state root is not found in the <see cref="IStateStore"/>.
+        /// </exception>
+        /// <seealso cref="IWorldState"/>
+        IWorldState? GetNextWorldState(BlockHash offset);
     }
 }
