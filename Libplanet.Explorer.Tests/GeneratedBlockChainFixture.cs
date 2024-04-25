@@ -4,7 +4,6 @@ using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
-using Libplanet.Action.State;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -75,7 +74,6 @@ public class GeneratedBlockChainFixture
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
         Block genesisBlock = BlockChain.ProposeGenesisBlock(
-            actionEvaluator,
             transactions: PrivateKeys
                 .OrderBy(pk => pk.Address.ToHex())
                 .Select(

@@ -163,7 +163,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 (Integer)2,
                 (Integer)_blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(minerAddress));
             Assert.Equal(2, blockRenders.Length);
@@ -343,7 +343,7 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.CreateBlockCommit(_blockChain.Tip));
             var commit1 = TestUtils.CreateBlockCommit(block1);
             _blockChain.Append(block1, commit1);
-            var world1 = _blockChain.GetWorldState();
+            var world1 = _blockChain.GetNextWorldState();
             Assert.False(world1.Legacy);
             Assert.Equal(
                 (Text)"foo",
@@ -353,7 +353,7 @@ namespace Libplanet.Tests.Blockchain
                 new[] { tx2 }.ToImmutableList(),
                 commit1);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
-            var world2 = _blockChain.GetWorldState();
+            var world2 = _blockChain.GetNextWorldState();
             Assert.False(world2.Legacy);
             Assert.Equal(
                 (Text)"bar",
@@ -685,48 +685,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void CachedActionEvaluationWrittenOnAppend()
-        {
-            var signer = new PrivateKey();
-            var miner = new PrivateKey();
-            var dummy = new PrivateKey();
-            BlockHash genesis = _blockChain.Genesis.Hash;
-            Transaction
-                txA0 = Transaction.Create(
-                    0,
-                    signer,
-                    genesis,
-                    new DumbAction[]
-                    {
-                        DumbAction.Create(
-                            (dummy.Address, "foo"), (dummy.Address, dummy.Address, 10)),
-                    }.ToPlainValues()),
-                txA1 = Transaction.Create(
-                    1,
-                    signer,
-                    genesis,
-                    new DumbAction[]
-                    {
-                        DumbAction.Create(
-                            (dummy.Address, "bar"), (dummy.Address, dummy.Address, 20)),
-                    }.ToPlainValues());
-            _blockChain.StageTransaction(txA0);
-            _blockChain.StageTransaction(txA1);
-            Block block = _blockChain.ProposeBlock(miner);
-            IReadOnlyList<ICommittedActionEvaluation> actionEvaluations =
-                _blockChain.EvaluateBlock(block);
-            Assert.Equal(0L, _blockChain.Tip.Index);
-            _blockChain.Append(
-                block,
-                TestUtils.CreateBlockCommit(block),
-                render: true,
-                actionEvaluations: actionEvaluations);
-            Assert.Equal(1L, _blockChain.Tip.Index);
-            Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA0.Id));
-            Assert.NotNull(_blockChain.GetTxExecution(block.Hash, txA1.Id));
-        }
-
-        [SkippableFact]
         public void CannotAppendBlockWithInvalidActions()
         {
             var txSigner = new PrivateKey();
@@ -765,7 +723,8 @@ namespace Libplanet.Tests.Blockchain
                     metadata, metadata.DerivePreEvaluationHash(default)),
                 txs);
             var block = preEval.Sign(
-                _fx.Proposer, HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(1024)));
+                _fx.Proposer,
+                (HashDigest<SHA256>)_blockChain.GetNextStateRootHash(_blockChain.Tip.Hash));
 
             Assert.Throws<InvalidActionException>(
                 () => _blockChain.Append(block, TestUtils.CreateBlockCommit(block)));
@@ -813,7 +772,7 @@ namespace Libplanet.Tests.Blockchain
                 transactions: txs).Propose();
             var genesis = preEvalGenesis.Sign(
                 fx.Proposer,
-                BlockChain.DetermineGenesisStateRootHash(actionEvaluator, preEvalGenesis, out _));
+                actionEvaluator.Evaluate(preEvalGenesis, null).Last().OutputState);
             var blockChain = BlockChain.Create(
                 policy,
                 stagePolicy,
@@ -828,10 +787,10 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableList<Transaction>.Empty,
                 TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(emptyBlock, TestUtils.CreateBlockCommit(emptyBlock));
-            Assert.True(blockChain.GetWorldState(emptyBlock.StateRootHash).Legacy);
-            Assert.Equal(
+            Assert.True(blockChain.GetNextWorldState(emptyBlock.Hash).Legacy);
+            Assert.Equal<byte>(
                 blockChain.GetWorldState(genesis.StateRootHash).Trie.Hash.ByteArray,
-                blockChain.GetWorldState(emptyBlock.StateRootHash).Trie.Hash.ByteArray);
+                blockChain.GetNextWorldState(emptyBlock.Hash).Trie.Hash.ByteArray);
         }
     }
 }

@@ -147,8 +147,8 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             var block3 = chain.ProposeBlock(miner, blockCommit);
             chain.Append(block3, CreateBlockCommit(block3));
-            Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetWorldState().Version);
-            var accountStateRoot = stateStore.GetStateRoot(block3.StateRootHash)
+            Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
+            var accountStateRoot = stateStore.GetStateRoot(store.GetNextStateRootHash(block3.Hash))
                 .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
             Assert.NotNull(accountStateRoot);
             var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
