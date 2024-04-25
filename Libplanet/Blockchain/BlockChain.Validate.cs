@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Common;
@@ -194,6 +195,17 @@ namespace Libplanet.Blockchain
             }
 
             return nonceDeltas;
+        }
+
+        internal void ValidateBlockLoadActions(Block block)
+        {
+            foreach (Transaction tx in block.Transactions)
+            {
+                foreach (IValue rawAction in tx.Actions)
+                {
+                    _ = ActionEvaluator.ActionLoader.LoadAction(block.Index, rawAction);
+                }
+            }
         }
 
         internal void ValidateBlock(Block block)
