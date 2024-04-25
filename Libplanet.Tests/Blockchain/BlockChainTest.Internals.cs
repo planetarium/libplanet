@@ -125,7 +125,8 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{minerAddress},{minerAddress}" },
             };
 
-            IValue legacyStateRootRaw = _fx.StateStore.GetStateRoot(block1.StateRootHash)
+            IValue legacyStateRootRaw =
+                _fx.StateStore.GetStateRoot(_fx.Store.GetNextStateRootHash(block1.Hash))
                 .Get(ToStateKey(ReservedAddresses.LegacyAccount));
             Assert.NotNull(legacyStateRootRaw);
             var legacyStateRoot =

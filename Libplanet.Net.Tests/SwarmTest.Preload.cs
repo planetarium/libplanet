@@ -106,7 +106,7 @@ namespace Libplanet.Net.Tests
 
                 await receiverSwarm.PreloadAsync();
                 var state = receiverChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(address1);
 
@@ -752,7 +752,7 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     (Text)string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
                     receiverChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(address)
                 );
@@ -768,7 +768,7 @@ namespace Libplanet.Net.Tests
                         )
                     ),
                     receiverChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(address)
                 );

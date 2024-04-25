@@ -64,8 +64,10 @@ public partial class StateQueryTest
             BlockHash.Equals(blockHash)
                 ? StateRootHash
                 : null;
+        public IWorldState? GetWorldState(BlockHash blockHash) =>
+            blockHash is { } bh && bh.Equals(BlockHash) ? _nonEmpty : _empty;
 
-        public IWorldState GetWorldState(BlockHash? blockHash) =>
+        public IWorldState? GetNextWorldState(BlockHash blockHash) =>
             blockHash is { } bh && bh.Equals(BlockHash) ? _nonEmpty : _empty;
 
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash) =>
