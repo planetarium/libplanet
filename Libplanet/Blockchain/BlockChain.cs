@@ -375,6 +375,24 @@ namespace Libplanet.Blockchain
 
             var id = Guid.NewGuid();
 
+            if (genesisBlock.ProtocolVersion <
+                BlockMetadata.StateRootHashPostponeProtocolVersion)
+            {
+                var preEval = new PreEvaluationBlock(
+                    genesisBlock.Header, genesisBlock.Transactions);
+                var computedStateRootHash =
+                    actionEvaluator.Evaluate(preEval, null).Last().OutputState;
+                if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
+                {
+                    throw new InvalidBlockStateRootHashException(
+                        $"Given block #{genesisBlock.Index} {genesisBlock.Hash} has " +
+                        $"a state root hash {genesisBlock.StateRootHash} that is different " +
+                        $"from the calculated state root hash {computedStateRootHash}",
+                        genesisBlock.StateRootHash,
+                        computedStateRootHash);
+                }
+            }
+
             ValidateGenesis(genesisBlock);
             var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 

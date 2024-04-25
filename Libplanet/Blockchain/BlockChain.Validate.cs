@@ -140,8 +140,11 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            var validators = GetWorldState(block.StateRootHash)
-                .GetValidatorSet();
+            var validators =
+                block.ProtocolVersion <
+                BlockMetadata.StateRootHashPostponeProtocolVersion
+                    ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
+                    : GetWorldState(block.StateRootHash).GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 throw new InvalidBlockCommitException(
@@ -354,9 +357,9 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Validates a result obtained from <see cref="EvaluatePreEvaluationBlock"/> by
+        /// Validates a result obtained from <see cref="EvaluateBlockPrecededStateRootHash"/> by
         /// comparing the state root hash calculated using
-        /// <see cref="DeterminePreEvaluationBlockStateRootHash"/>
+        /// <see cref="DetermineBlockPrecededStateRootHash"/>
         /// to the one in <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block"/> to validate against.</param>
@@ -372,12 +375,12 @@ namespace Libplanet.Blockchain
         /// obdatined through committing to the <see cref="IStateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
-        /// <seealso cref="EvaluatePreEvaluationBlock"/>
-        /// <seealso cref="DeterminePreEvaluationBlockStateRootHash"/>
+        /// <seealso cref="EvaluateBlockPrecededStateRootHash"/>
+        /// <seealso cref="DetermineBlockPrecededStateRootHash"/>
         internal void ValidateBlockPrecededStateRootHash(
             Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
-            var rootHash = DeterminePreEvaluationBlockStateRootHash(block, out evaluations);
+            var rootHash = DetermineBlockPrecededStateRootHash(block, out evaluations);
             if (!rootHash.Equals(block.StateRootHash))
             {
                 var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
