@@ -14,6 +14,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
@@ -1012,7 +1013,7 @@ namespace Libplanet.Tests.Store
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = preEval.Sign(
                     GenesisProposer,
-                    BlockChain.DetermineGenesisStateRootHash(actionEvaluator, preEval, out _));
+                    MerkleTrie.EmptyRootHash);
                 var blocks = BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),

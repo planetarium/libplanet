@@ -251,7 +251,8 @@ namespace Libplanet.Tests.Action
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion);
-            var stateRootHash = chain.DetermineBlockStateRootHash(block1PreEval, out _);
+            var stateRootHash =
+                chain.DetermineBlockPrecededStateRootHash(block1PreEval, out _);
             var hash = block1PreEval.Header.DeriveBlockHash(stateRootHash, null);
             Block block1 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
                 ? chain.EvaluateAndSign(block1PreEval, privateKey)
@@ -259,13 +260,11 @@ namespace Libplanet.Tests.Action
             chain.Append(block1, TestUtils.CreateBlockCommit(block1));
             Assert.Equal(
                 DumbAction.DumbCurrency * 0,
-                chain
-                    .GetWorldState()
+                GetLatestWorldState(chain)
                     .GetBalance(_addr[0], DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 20,
-                chain
-                    .GetWorldState()
+                GetLatestWorldState(chain)
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
             // Transfer
@@ -281,7 +280,7 @@ namespace Libplanet.Tests.Action
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion,
                 lastCommit: chain.GetBlockCommit(chain.Tip.Index));
-            stateRootHash = chain.DetermineBlockStateRootHash(block2PreEval, out _);
+            stateRootHash = chain.DetermineBlockPrecededStateRootHash(block2PreEval, out _);
             hash = block2PreEval.Header.DeriveBlockHash(stateRootHash, null);
             Block block2 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
                 ? chain.EvaluateAndSign(block2PreEval, privateKey)
@@ -289,13 +288,11 @@ namespace Libplanet.Tests.Action
             chain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                chain
-                    .GetWorldState()
+                GetLatestWorldState(chain)
                     .GetBalance(_addr[0], DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 15,
-                chain
-                    .GetWorldState()
+                GetLatestWorldState(chain)
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
             // Transfer bugged
@@ -311,7 +308,7 @@ namespace Libplanet.Tests.Action
                 miner: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion,
                 lastCommit: chain.GetBlockCommit(chain.Tip.Index));
-            stateRootHash = chain.DetermineBlockStateRootHash(block3PreEval, out _);
+            stateRootHash = chain.DetermineBlockPrecededStateRootHash(block3PreEval, out _);
             hash = block3PreEval.Header.DeriveBlockHash(stateRootHash, null);
             Block block3 = ProtocolVersion >= BlockMetadata.SignatureProtocolVersion
                 ? chain.EvaluateAndSign(block3PreEval, _keys[1])
@@ -506,6 +503,11 @@ namespace Libplanet.Tests.Action
                 Value(4, 10),
                 world.GetTotalSupply(_currencies[4]));
         }
+
+        protected static IWorldState GetLatestWorldState(BlockChain blockChain) =>
+            blockChain.Tip.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
+                ? blockChain.GetWorldState()
+                : blockChain.GetNextWorldState();
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);

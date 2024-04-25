@@ -171,30 +171,43 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ValidateNextBlockInvalidStateRootHash()
         {
-            IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
             var policy = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
-            var stateStore = new TrieStateStore(stateKeyValueStore);
-            IStore store = new MemoryStore();
-            var actionEvaluator = new ActionEvaluator(
+            var stateStore1 = new TrieStateStore(new MemoryKeyValueStore());
+            IStore store1 = new MemoryStore();
+            var actionEvaluator1 = new ActionEvaluator(
                 _ => policy.BlockAction,
-                stateStore,
+                stateStore1,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
-                actionEvaluator,
                 TestUtils.ProposeGenesis(TestUtils.GenesisProposer.PublicKey),
                 TestUtils.GenesisProposer);
-            store.PutBlock(genesisBlock);
-            Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
-
             var chain1 = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
-                store,
-                stateStore,
+                store1,
+                stateStore1,
                 genesisBlock,
-                actionEvaluator);
+                actionEvaluator1);
+
+            var policyWithBlockAction = new BlockPolicy(
+                new SetStatesAtBlock(default, (Text)"foo", default, 0),
+                policy.BlockInterval
+            );
+            var stateStore2 = new TrieStateStore(new MemoryKeyValueStore());
+            IStore store2 = new MemoryStore();
+            var actionEvaluator2 = new ActionEvaluator(
+                _ => policyWithBlockAction.BlockAction,
+                stateStore2,
+                new SingleActionLoader(typeof(DumbAction)));
+            var chain2 = BlockChain.Create(
+                policyWithBlockAction,
+                new VolatileStagePolicy(),
+                store2,
+                stateStore2,
+                genesisBlock,
+                actionEvaluator2);
 
             Block block1 = chain1.EvaluateAndSign(
                 new BlockContent(
@@ -209,22 +222,6 @@ namespace Libplanet.Tests.Blockchain
                         lastCommit: null)).Propose(),
                 TestUtils.GenesisProposer);
 
-            var policyWithBlockAction = new BlockPolicy(
-                new SetStatesAtBlock(default, (Text)"foo", default, 1),
-                policy.BlockInterval
-            );
-            var blockChainStates = new BlockChainStates(store, stateStore);
-            var chain2 = new BlockChain(
-                policyWithBlockAction,
-                new VolatileStagePolicy(),
-                store,
-                stateStore,
-                genesisBlock,
-                blockChainStates,
-                new ActionEvaluator(
-                    _ => policyWithBlockAction.BlockAction,
-                    stateStore,
-                    new SingleActionLoader(typeof(DumbAction))));
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
         }

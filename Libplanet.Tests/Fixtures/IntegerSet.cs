@@ -75,7 +75,6 @@ namespace Libplanet.Tests.Fixtures
                 StateStore,
                 new SingleActionLoader(typeof(Arithmetic)));
             Genesis = TestUtils.ProposeGenesisBlock(
-                actionEvaluator,
                 TestUtils.ProposeGenesis(
                     Miner.PublicKey,
                     Txs,
@@ -108,7 +107,7 @@ namespace Libplanet.Tests.Fixtures
             long nonce = Chain.GetNextTxNonce(signerAddress);
             Transaction tx =
                 Transaction.Create(nonce, signer, Genesis.Hash, actions.ToPlainValues());
-            BigInteger prevState = Chain.GetWorldState().GetAccountState(
+            BigInteger prevState = Chain.GetNextWorldState().GetAccountState(
                 ReservedAddresses.LegacyAccount).GetState(signerAddress) is Bencodex.Types.Integer i
                     ? i.Value
                     : 0;
@@ -180,7 +179,7 @@ namespace Libplanet.Tests.Fixtures
             Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IWorld CreateWorld(BlockHash? offset = null)
-            => new World(Chain.GetWorldState(offset ?? Tip.Hash));
+            => new World(Chain.GetNextWorldState(offset ?? Tip.Hash));
 
         public ITrie GetTrie(BlockHash? blockHash)
         {

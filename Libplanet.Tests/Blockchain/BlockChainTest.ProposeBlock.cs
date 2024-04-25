@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual(
                 (Text)$"{GenesisProposer.Address}",
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(default));
 
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual(
                 (Text)$"{GenesisProposer.Address},{proposerA.Address}",
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(default)
             );
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual(
                 expected,
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(default)
             );
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual(
                 expected,
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(default)
             );
@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual(
                 expected,
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(default)
             );
@@ -144,8 +144,8 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
-                    actionEvaluator,
                     new PrivateKey(),
+                    null,
                     new[]
                     {
                         Transaction.Create(
@@ -287,23 +287,23 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(txs);
 
             Assert.Null(_blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(addrA));
             Assert.Null(_blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(addrB));
             Assert.Null(_blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(addrC));
             Assert.Null(_blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(addrD));
             Assert.Null(_blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(addrE));
 
@@ -329,37 +329,37 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 new Integer(1),
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrA));
             Assert.Equal(
                 new Text("1b"),
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrB));
             Assert.Equal(
                 new Text("2a"),
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrC));
             Assert.IsType<Text>(
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrD));
             Assert.Equal(
                 new HashSet<string> { "2b", "5a" },
                 ((string)(Text)_blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrD)).Split(new[] { ',' }).ToHashSet()
             );
             Assert.Equal(
                 new Text("5b"),
                 _blockChain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(addrE));
 
@@ -525,11 +525,11 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(block, CreateBlockCommit(block));
 
             var state1 = blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address1);
             var state2 = blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address2);
 
@@ -543,11 +543,11 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(block, CreateBlockCommit(block));
 
             state1 = blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address1);
             state2 = blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address2);
 
