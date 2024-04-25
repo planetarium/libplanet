@@ -509,6 +509,11 @@ namespace Libplanet.Tests.Action
                 ? blockChain.GetWorldState()
                 : blockChain.GetNextWorldState();
 
+        protected static IWorldState GetLatestWorldState(BlockChain blockChain) =>
+            blockChain.Tip.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
+                ? blockChain.GetWorldState()
+                : blockChain.GetNextWorldState();
+
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
     }
