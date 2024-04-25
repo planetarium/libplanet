@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain
         /// obdatined through committing to <see cref="StateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
-        /// <seealso cref="EvaluatePreEvaluationBlock"/>
+        /// <seealso cref="EvaluateBlockPrecededStateRootHash"/>
         /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
         public HashDigest<SHA256> DetermineNextBlockStateRootHash(
             Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
@@ -93,9 +93,9 @@ namespace Libplanet.Blockchain
         /// obdatined through committing to <see cref="StateStore"/>
         /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
         /// </remarks>
-        /// <seealso cref="EvaluatePreEvaluationBlock"/>
+        /// <seealso cref="EvaluateBlockPrecededStateRootHash"/>
         /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
-        public HashDigest<SHA256> DeterminePreEvaluationBlockStateRootHash(
+        public HashDigest<SHA256> DetermineBlockPrecededStateRootHash(
             IPreEvaluationBlock block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
         {
             _rwlock.EnterWriteLock();
@@ -103,7 +103,7 @@ namespace Libplanet.Blockchain
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                evaluations = EvaluatePreEvaluationBlock(block);
+                evaluations = EvaluateBlockPrecededStateRootHash(block);
 
                 _logger.Debug(
                     "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
@@ -157,7 +157,7 @@ namespace Libplanet.Blockchain
         /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
         [Pure]
-        public IReadOnlyList<ICommittedActionEvaluation> EvaluatePreEvaluationBlock(
+        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlockPrecededStateRootHash(
             IPreEvaluationBlock preEvaluationBlock) =>
             ActionEvaluator.Evaluate(
                 preEvaluationBlock,
@@ -203,7 +203,7 @@ namespace Libplanet.Blockchain
             {
                 return preEvaluationBlock.Sign(
                     privateKey,
-                    DeterminePreEvaluationBlockStateRootHash(preEvaluationBlock, out _));
+                    DetermineBlockPrecededStateRootHash(preEvaluationBlock, out _));
             }
 
             if (!(preEvaluationBlock.PreviousHash is BlockHash previousHash))
