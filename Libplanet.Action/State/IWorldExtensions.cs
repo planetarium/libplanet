@@ -26,14 +26,8 @@ namespace Libplanet.Action.State
         public static FungibleAssetValue GetBalance(
             this IWorldState worldState,
             Address address,
-            Currency currency)
-        {
-            IAccountState account = worldState.GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ToFungibleAssetKey(address, currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
+            Currency currency) =>
+                worldState.GetCurrencyAccount(currency).GetBalance(address, currency);
 
         /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
@@ -60,52 +54,9 @@ namespace Libplanet.Action.State
             this IWorld world,
             IActionContext context,
             Address recipient,
-            FungibleAssetValue value)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to mint has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            if (!currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"The account {context.Signer} has no permission to mint currency {currency}.",
-                    context.Signer,
-                    currency
-                );
-            }
-
-            FungibleAssetValue balance = GetBalance(world, recipient, currency);
-            BigInteger rawBalance = (balance + value).RawValue;
-
-            if (currency.TotalSupplyTrackable)
-            {
-                var currentTotalSupply = GetTotalSupply(world, currency);
-                if (currency.MaximumSupply < currentTotalSupply + value)
-                {
-                    var msg = $"The amount {value} attempted to be minted added to the current"
-                              + $" total supply of {currentTotalSupply} exceeds the"
-                              + $" maximum allowed supply of {currency.MaximumSupply}.";
-                    throw new SupplyOverflowException(msg, value);
-                }
-
-                return UpdateFungibleAssets(
-                    world,
-                    recipient,
-                    currency,
-                    rawBalance,
-                    (currentTotalSupply + value).RawValue);
-            }
-            else
-            {
-                return UpdateFungibleAssets(world, recipient, currency, rawBalance);
-            }
-        }
+            FungibleAssetValue value) =>
+                world.SetCurrencyAccount(
+                    world.GetCurrencyAccount(value.Currency).MintAsset(context, recipient, value));
 
         /// <summary>
         /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
@@ -130,50 +81,9 @@ namespace Libplanet.Action.State
             this IWorld world,
             IActionContext context,
             Address owner,
-            FungibleAssetValue value)
-        {
-            string msg;
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to burn has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            if (!currency.AllowsToMint(context.Signer))
-            {
-                msg = $"The account {context.Signer} has no permission to burn assets of " +
-                      $"the currency {currency}.";
-                throw new CurrencyPermissionException(msg, context.Signer, currency);
-            }
-
-            FungibleAssetValue balance = world.GetBalance(owner, currency);
-
-            if (balance < value)
-            {
-                msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
-                      $"{balance} < {value}.";
-                throw new InsufficientBalanceException(msg, owner, balance);
-            }
-
-            BigInteger rawBalance = (balance - value).RawValue;
-            if (currency.TotalSupplyTrackable)
-            {
-                var currentTotalSupply = world.GetTotalSupply(currency);
-                return UpdateFungibleAssets(
-                    world,
-                    owner,
-                    currency,
-                    rawBalance,
-                    (currentTotalSupply - value).RawValue);
-            }
-            else
-            {
-                return UpdateFungibleAssets(world, owner, currency, rawBalance);
-            }
-        }
+            FungibleAssetValue value) =>
+                world.SetCurrencyAccount(
+                    world.GetCurrencyAccount(value.Currency).BurnAsset(context, owner, value));
 
         /// <summary>
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
@@ -224,19 +134,8 @@ namespace Libplanet.Action.State
         [Pure]
         public static FungibleAssetValue GetTotalSupply(
             this IWorldState worldState,
-            Currency currency)
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            IAccountState account = worldState.GetAccountState(ReservedAddresses.LegacyAccount);
-            IValue? value = account.Trie.Get(ToTotalSupplyKey(currency));
-            return value is Integer i
-                ? FungibleAssetValue.FromRawValue(currency, i)
-                : currency * 0;
-        }
+            Currency currency) =>
+                worldState.GetCurrencyAccount(currency).GetTotalSupply(currency);
 
         /// <summary>
         /// Returns the validator set.
@@ -269,6 +168,38 @@ namespace Libplanet.Action.State
                 : new ValidatorSetAccount(
                     worldState.GetAccountState(ReservedAddresses.LegacyAccount).Trie,
                     worldState.Version);
+
+        [Pure]
+        internal static CurrencyAccount GetCurrencyAccount(
+            this IWorldState worldState,
+            Currency currency) =>
+            worldState.Version >= BlockMetadata.CurrencyAccountProtocolVersion
+                ? new CurrencyAccount(
+                    worldState.GetAccountState(new Address(currency.Hash.ByteArray)).Trie,
+                    worldState.Version,
+                    currency)
+                : new CurrencyAccount(
+                    worldState.GetAccountState(ReservedAddresses.LegacyAccount).Trie,
+                    worldState.Version,
+                    currency);
+
+        [Pure]
+        internal static IWorld SetCurrencyAccount(
+            this IWorld world,
+            CurrencyAccount currencyAccount) =>
+                world.Version == currencyAccount.WorldVersion
+                    ? world.Version >= BlockMetadata.CurrencyAccountProtocolVersion
+                        ? world.SetAccount(
+                            new Address(currencyAccount.Currency.Hash.ByteArray),
+                            currencyAccount.AsAccount())
+                        : world.SetAccount(
+                            ReservedAddresses.LegacyAccount,
+                            currencyAccount.AsAccount())
+                    : throw new ArgumentException(
+                        $"Given {nameof(currencyAccount)} must have the same version as " +
+                        $"the version of the world {world.Version}: " +
+                        $"{currencyAccount.WorldVersion}",
+                        nameof(currencyAccount));
 
         [Pure]
         internal static IWorld SetValidatorSetAccount(
