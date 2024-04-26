@@ -1,14 +1,33 @@
 Libplanet changelog
 ===================
 
-Version NextStateRootHash
+Version Sloth
 -------------------------
 
 To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet) `BlockChain.DetermineGenesisStateRootHash()`
+    has been removed.  [[#Sloth]]
+ -  (Libplanet) `BlockChain.EvaluateGenesis()` has been removed.
+    [[#Sloth]]
+ -  (Libplanet) `BlockChain.DetermineBlockStateRootHash()`
+    has been removed.  [[#Sloth]]
+
 ### Backward-incompatible API changes
+
+ -  (Libplanet.Action) `IBlockChainStates.GetWorldState(BlockHash?)`
+    does not accept null parameter any more.  [[#Sloth]]
+ -  Bumped `BlockMetadata.CurrentProtocolVersion` to 8.  [[#Sloth]]
+ -  (Libplanet) `BlockChain.EvaluateBlock()` accepts `Block`
+    instead of `IPreEvaluationBlock`.  [[#Sloth]]
+ -  (Libplanet) `BlockChain.ProposeGenesisBlock()` receives parameter
+    `HashDigest<SHA256>? stateRootHash`.  [[#Sloth]]
+ -  (Libplanet) `BlockChain.ProposeGenesisBlock()` does not receive
+    parameter `IActionEvaluator actionEvaluator` any more.  [[#Sloth]]
+ -  (Libplanet) `BlockChain.ProposeBlock()` receives parameter
+    `HashDigest<SHA256> stateRootHash`.  [[#Sloth]]
 
 ### Backward-incompatible network protocol changes
 
@@ -17,13 +36,23 @@ To be released.
 ### Added APIs
 
  -  (Libplanet.Store) Added `IStore.GetNextStateRootHash()` method.
-    [[#NextStateRootHash]]
+    [[#Sloth]]
  -  (Libplanet.Store) Added `IStore.PutNextStateRootHash()` method.
-    [[#NextStateRootHash]]
+    [[#Sloth]]
  -  (Libplanet.Store) Added `IStore.DeleteNextStateRootHash()` method.
-    [[#NextStateRootHash]]
+    [[#Sloth]]
+ -  (Libplanet.Action) Added
+    `IBlockChainStates.GetNextWorldState()` method.  [[#Sloth]]
+ -  (Libplanet) Added `BlockChain.DetermineNextBlockStateRootHash()`
+    method.  [[#Sloth]]
 
 ### Behavioral changes
+
+ -  `BlockHeader.StateRootHash` now means state root hash calculated by
+    `BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)`.
+    [[#Sloth]]
+ -  `IBlockChainStates.GetWorldState(BlockHash)` now means the `IWorldState`
+    before state transition from the `Block`.  [[#Sloth]]
 
 ### Bug fixes
 
@@ -31,7 +60,7 @@ To be released.
 
 ### CLI tools
 
-[#NextStateRootHash]: https://github.com/planetarium/libplanet/pull/TBD
+[#Sloth]: https://github.com/planetarium/libplanet/pull/TBD
 
 
 Version 4.4.1
