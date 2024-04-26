@@ -792,5 +792,78 @@ namespace Libplanet.Tests.Blockchain
                 blockChain.GetWorldState(genesis.StateRootHash).Trie.Hash.ByteArray,
                 blockChain.GetNextWorldState(emptyBlock.Hash).Trie.Hash.ByteArray);
         }
+
+        [Fact]
+        public void AppendSRHPostponeBPVBump()
+        {
+            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var policy = new NullBlockPolicy();
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var actionLoader = new SingleActionLoader(typeof(DumbAction));
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction, stateStore, actionLoader);
+
+            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var genesis = preGenesis.Sign(
+                TestUtils.GenesisProposer,
+                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+            Assert.Equal(beforePostponeBPV, genesis.ProtocolVersion);
+
+            var blockChain = TestUtils.MakeBlockChain(
+                policy,
+                store,
+                stateStore,
+                actionLoader,
+                genesisBlock: genesis);
+
+            // Append block before state root hash postpone
+            var miner = new PrivateKey();
+            var action = DumbAction.Create((new Address(TestUtils.GetRandomBytes(20)), "foo"));
+            var tx = Transaction.Create(0, miner, genesis.Hash, new[] { action }.ToPlainValues());
+            var preBlockBeforeBump = TestUtils.ProposeNext(
+                genesis,
+                new[] { tx }.ToImmutableList(),
+                miner.PublicKey,
+                protocolVersion: beforePostponeBPV);
+            var blockBeforeBump = preBlockBeforeBump.Sign(
+                miner,
+                actionEvaluator.Evaluate(
+                    preBlockBeforeBump, genesis.StateRootHash).Last().OutputState);
+            Assert.Equal(beforePostponeBPV, blockBeforeBump.ProtocolVersion);
+            var commitBeforeBump = TestUtils.CreateBlockCommit(blockBeforeBump);
+            blockChain.Append(blockBeforeBump, commitBeforeBump);
+
+            // Append block after state root hash postpone - previous block is not bumped
+            action = DumbAction.Create((new Address(TestUtils.GetRandomBytes(20)), "bar"));
+            tx = Transaction.Create(1, miner, genesis.Hash, new[] { action }.ToPlainValues());
+            var blockAfterBump1 = blockChain.ProposeBlock(
+                miner,
+                new[] { tx }.ToImmutableList(),
+                commitBeforeBump);
+            Assert.Equal(
+                BlockMetadata.StateRootHashPostponeProtocolVersion,
+                blockAfterBump1.ProtocolVersion);
+            var commitAfterBump1 = TestUtils.CreateBlockCommit(blockAfterBump1);
+            blockChain.Append(blockAfterBump1, commitAfterBump1);
+            Assert.Equal(blockBeforeBump.StateRootHash, blockAfterBump1.StateRootHash);
+
+            // Append block after state root hash postpone - previous block is bumped
+            action = DumbAction.Create((new Address(TestUtils.GetRandomBytes(20)), "baz"));
+            tx = Transaction.Create(2, miner, genesis.Hash, new[] { action }.ToPlainValues());
+            var blockAfterBump2 = blockChain.ProposeBlock(
+                miner,
+                new[] { tx }.ToImmutableList(),
+                commitAfterBump1);
+            Assert.Equal(
+                BlockMetadata.StateRootHashPostponeProtocolVersion,
+                blockAfterBump2.ProtocolVersion);
+            var commitAfterBump2 = TestUtils.CreateBlockCommit(blockAfterBump2);
+            blockChain.Append(blockAfterBump2, commitAfterBump2);
+            Assert.Equal(
+                actionEvaluator.Evaluate(
+                    blockAfterBump1, blockAfterBump1.StateRootHash).Last().OutputState,
+                blockAfterBump2.StateRootHash);
+        }
     }
 }
