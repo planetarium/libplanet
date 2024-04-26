@@ -74,63 +74,6 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Determines the state root hash given <paramref name="block"/> and
-        /// <paramref name="evaluations"/>.
-        /// </summary>
-        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute for
-        /// <paramref name="evaluations"/>.</param>
-        /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
-        /// from which to extract the states to commit.</param>
-        /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
-        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
-        /// <returns>The state root hash given <paramref name="block"/> and
-        /// its <paramref name="evaluations"/>.
-        /// </returns>
-        /// <remarks>
-        /// Since the state root hash can only be calculated by making a commit
-        /// to an <see cref="IStateStore"/>, this always has a side-effect to
-        /// <see cref="StateStore"/> regardless of whether the state root hash
-        /// obdatined through committing to <see cref="StateStore"/>
-        /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
-        /// </remarks>
-        /// <seealso cref="EvaluateBlockPrecededStateRootHash"/>
-        /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
-        public HashDigest<SHA256> DetermineBlockPrecededStateRootHash(
-            IPreEvaluationBlock block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
-        {
-            _rwlock.EnterWriteLock();
-            try
-            {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                evaluations = EvaluateBlockPrecededStateRootHash(block);
-
-                _logger.Debug(
-                    "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
-                    "pre-evaluation hash {PreEvaluationHash} with {Count} action evaluations",
-                    stopwatch.ElapsedMilliseconds,
-                    block.Index,
-                    block.PreEvaluationHash,
-                    evaluations.Count);
-
-                if (evaluations.Count > 0)
-                {
-                    return evaluations.Last().OutputState;
-                }
-                else
-                {
-                    return Store.GetStateRootHash(block.PreviousHash) is { } prevStateRootHash
-                        ? prevStateRootHash
-                        : StateStore.GetStateRoot(null).Hash;
-                }
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
         /// Evaluates the <see cref="IAction"/>s in given <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute.</param>
@@ -144,24 +87,6 @@ namespace Libplanet.Blockchain
             => ActionEvaluator.Evaluate(
                 block,
                 Store.GetStateRootHash(block.Hash));
-
-        /// <summary>
-        /// Evaluates the <see cref="IAction"/>s in given <paramref name="preEvaluationBlock"/>.
-        /// </summary>
-        /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to execute.
-        /// </param>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ICommittedActionEvaluation"/>s
-        /// for given <paramref name="preEvaluationBlock"/>.</returns>
-        /// <exception cref="InvalidActionException">Thrown when given
-        /// <paramref name="preEvaluationBlock"/>
-        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
-        /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
-        [Pure]
-        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlockPrecededStateRootHash(
-            IPreEvaluationBlock preEvaluationBlock) =>
-            ActionEvaluator.Evaluate(
-                preEvaluationBlock,
-                Store.GetStateRootHash(preEvaluationBlock.PreviousHash));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and
@@ -227,5 +152,80 @@ namespace Libplanet.Blockchain
 
             return preEvaluationBlock.Sign(privateKey, stateRootHash);
         }
+
+        /// <summary>
+        /// Determines the state root hash given <paramref name="block"/> and
+        /// <paramref name="evaluations"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to execute for
+        /// <paramref name="evaluations"/>.</param>
+        /// <param name="evaluations">The list of <see cref="IActionEvaluation"/>s
+        /// from which to extract the states to commit.</param>
+        /// <exception cref="InvalidActionException">Thrown when given <paramref name="block"/>
+        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
+        /// <returns>The state root hash given <paramref name="block"/> and
+        /// its <paramref name="evaluations"/>.
+        /// </returns>
+        /// <remarks>
+        /// Since the state root hash can only be calculated by making a commit
+        /// to an <see cref="IStateStore"/>, this always has a side-effect to
+        /// <see cref="StateStore"/> regardless of whether the state root hash
+        /// obdatined through committing to <see cref="StateStore"/>
+        /// matches the <paramref name="block"/>'s <see cref="Block.StateRootHash"/> or not.
+        /// </remarks>
+        /// <seealso cref="EvaluateBlockPrecededStateRootHash"/>
+        /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
+        internal HashDigest<SHA256> DetermineBlockPrecededStateRootHash(
+            IPreEvaluationBlock block, out IReadOnlyList<ICommittedActionEvaluation> evaluations)
+        {
+            _rwlock.EnterWriteLock();
+            try
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                evaluations = EvaluateBlockPrecededStateRootHash(block);
+
+                _logger.Debug(
+                    "Took {DurationMs} ms to evaluate block #{BlockIndex} " +
+                    "pre-evaluation hash {PreEvaluationHash} with {Count} action evaluations",
+                    stopwatch.ElapsedMilliseconds,
+                    block.Index,
+                    block.PreEvaluationHash,
+                    evaluations.Count);
+
+                if (evaluations.Count > 0)
+                {
+                    return evaluations.Last().OutputState;
+                }
+                else
+                {
+                    return Store.GetStateRootHash(block.PreviousHash) is { } prevStateRootHash
+                        ? prevStateRootHash
+                        : StateStore.GetStateRoot(null).Hash;
+                }
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IAction"/>s in given <paramref name="preEvaluationBlock"/>.
+        /// </summary>
+        /// <param name="preEvaluationBlock">The <see cref="IPreEvaluationBlock"/> to execute.
+        /// </param>
+        /// <returns>An <see cref="IReadOnlyList{T}"/> of <ses cref="ICommittedActionEvaluation"/>s
+        /// for given <paramref name="preEvaluationBlock"/>.</returns>
+        /// <exception cref="InvalidActionException">Thrown when given
+        /// <paramref name="preEvaluationBlock"/>
+        /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
+        /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
+        [Pure]
+        internal IReadOnlyList<ICommittedActionEvaluation> EvaluateBlockPrecededStateRootHash(
+            IPreEvaluationBlock preEvaluationBlock) =>
+            ActionEvaluator.Evaluate(
+                preEvaluationBlock,
+                Store.GetStateRootHash(preEvaluationBlock.PreviousHash));
     }
 }
