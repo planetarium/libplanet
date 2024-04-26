@@ -224,6 +224,120 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Throws<InvalidBlockStateRootHashException>(() =>
                 chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
+
+            chain1.Append(block1, TestUtils.CreateBlockCommit(block1));
+        }
+
+        [Fact]
+        public void ValidateNextBlockInvalidStateRootHashBeforePostpone()
+        {
+            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var policy = new BlockPolicy(
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
+            );
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IStore store = new MemoryStore();
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                stateStore,
+                new SingleActionLoader(typeof(DumbAction)));
+            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var genesisBlock = preGenesis.Sign(
+                TestUtils.GenesisProposer,
+                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+            var chain1 = BlockChain.Create(
+                policy,
+                new VolatileStagePolicy(),
+                store,
+                stateStore,
+                genesisBlock,
+                actionEvaluator);
+
+            Block block1 = chain1.EvaluateAndSign(
+                new BlockContent(
+                    new BlockMetadata(
+                        protocolVersion: beforePostponeBPV,
+                        index: 1,
+                        timestamp: genesisBlock.Timestamp.AddSeconds(1),
+                        miner: TestUtils.GenesisProposer.Address,
+                        publicKey: TestUtils.GenesisProposer.PublicKey,
+                        previousHash: genesisBlock.Hash,
+                        txHash: null,
+                        lastCommit: null)).Propose(),
+                TestUtils.GenesisProposer);
+
+            var policyWithBlockAction = new BlockPolicy(
+                new SetStatesAtBlock(default, (Text)"foo", default, 1),
+                policy.BlockInterval
+            );
+            var blockChainStates = new BlockChainStates(store, stateStore);
+            var chain2 = new BlockChain(
+                policyWithBlockAction,
+                new VolatileStagePolicy(),
+                store,
+                stateStore,
+                genesisBlock,
+                blockChainStates,
+                new ActionEvaluator(
+                    _ => policyWithBlockAction.BlockAction,
+                    stateStore,
+                    new SingleActionLoader(typeof(DumbAction))));
+
+            Assert.Throws<InvalidBlockStateRootHashException>(() =>
+                chain2.Append(block1, TestUtils.CreateBlockCommit(block1)));
+
+            chain1.Append(block1, TestUtils.CreateBlockCommit(block1));
+        }
+
+        [Fact]
+        public void ValidateNextBlockInvalidStateRootHashOnPostpone()
+        {
+            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var policy = new BlockPolicy(
+                new SetStatesAtBlock(default, (Text)"foo", default, 1),
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
+            );
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IStore store = new MemoryStore();
+            var actionEvaluator = new ActionEvaluator(
+                _ => policy.BlockAction,
+                stateStore,
+                new SingleActionLoader(typeof(DumbAction)));
+            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var genesisBlock = preGenesis.Sign(
+                TestUtils.GenesisProposer,
+                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+            var chain = BlockChain.Create(
+                policy,
+                new VolatileStagePolicy(),
+                store,
+                stateStore,
+                genesisBlock,
+                actionEvaluator);
+
+            PreEvaluationBlock preBlock1 = new BlockContent(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.StateRootHashPostponeProtocolVersion,
+                    index: 1,
+                    timestamp: genesisBlock.Timestamp.AddSeconds(1),
+                    miner: TestUtils.GenesisProposer.Address,
+                    publicKey: TestUtils.GenesisProposer.PublicKey,
+                    previousHash: genesisBlock.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose();
+            Block block1 = chain.EvaluateAndSign(
+                preBlock1,
+                TestUtils.GenesisProposer);
+            Assert.Equal(genesisBlock.StateRootHash, block1.StateRootHash);
+
+            Block block2 = preBlock1.Sign(
+                TestUtils.GenesisProposer,
+                actionEvaluator.Evaluate(preBlock1, genesisBlock.StateRootHash).Last().OutputState);
+
+            Assert.Throws<InvalidBlockStateRootHashException>(() =>
+                chain.Append(block2, TestUtils.CreateBlockCommit(block2)));
+
+            chain.Append(block1, TestUtils.CreateBlockCommit(block1));
         }
 
         [SkippableFact]
