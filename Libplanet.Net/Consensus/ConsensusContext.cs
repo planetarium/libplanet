@@ -440,7 +440,9 @@ namespace Libplanet.Net.Consensus
                 height,
                 _privateKey,
                 _blockChain
-                    .GetNextWorldState(_blockChain[Height - 1].Hash)!
+                    .GetWorldState(
+                        _blockChain.GetNextStateRootHash(
+                            _blockChain[Height - 1].Hash, TimeSpan.Zero))
                     .GetValidatorSet(),
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);
