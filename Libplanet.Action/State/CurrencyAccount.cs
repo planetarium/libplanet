@@ -120,7 +120,29 @@ namespace Libplanet.Action.State
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
                 ? BurnAssetV7(context, owner, value)
                 : BurnAssetV0(context, owner, value);
+        }
 
+        public CurrencyAccount TransferAsset(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            if (!Currency.Equals(value.Currency))
+            {
+                throw new ArgumentException();
+            }
+
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    "The value to transfer has to be greater than zero.");
+            }
+
+            return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
+                ? TransferAssetV7(context, sender, recipient, value)
+                : TransferAssetV0(context, sender, recipient, value);
         }
 
         public IAccount AsAccount()
@@ -202,6 +224,61 @@ namespace Libplanet.Action.State
             currencyAccount = currencyAccount.WriteBalanceV7(owner, newAmount);
             BigInteger prevTotalSupply = currencyAccount.GetRawTotalSupplyV7();
             currencyAccount = currencyAccount.WriteTotalSupplyV7(prevTotalSupply - value.RawValue);
+
+            return currencyAccount;
+        }
+
+        private CurrencyAccount TransferAssetV7(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            CurrencyAccount currencyAccount = this;
+
+            BigInteger senderBalance = currencyAccount.GetRawBalanceV7(sender);
+            currencyAccount = currencyAccount.WriteBalanceV7(
+                sender,
+                senderBalance - value.RawValue);
+            BigInteger recipientBalance = currencyAccount.GetRawBalanceV7(recipient);
+            currencyAccount = currencyAccount.WriteBalanceV7(
+                recipient,
+                recipientBalance + value.RawValue);
+            return currencyAccount;
+        }
+
+        private CurrencyAccount TransferAssetV0(
+            IActionContext context,
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            CurrencyAccount currencyAccount = this;
+
+            // NOTE: For backward compatibility with the bugged behavior before
+            // protocol version 1.
+            if (context.BlockProtocolVersion == 0)
+            {
+                BigInteger senderBalance = currencyAccount.GetRawBalanceV0(sender);
+                BigInteger recipientBalance = currencyAccount.GetRawBalanceV0(recipient);
+                currencyAccount = currencyAccount.WriteBalanceV0(
+                    sender,
+                    senderBalance - value.RawValue);
+                currencyAccount = currencyAccount.WriteBalanceV0(
+                    recipient,
+                    recipientBalance + value.RawValue);
+            }
+            else
+            {
+                BigInteger senderBalance = currencyAccount.GetRawBalanceV0(sender);
+                currencyAccount = currencyAccount.WriteBalanceV0(
+                    sender,
+                    senderBalance - value.RawValue);
+                BigInteger recipientBalance = currencyAccount.GetRawBalanceV0(recipient);
+                currencyAccount = currencyAccount.WriteBalanceV0(
+                    recipient,
+                    recipientBalance + value.RawValue);
+            }
 
             return currencyAccount;
         }

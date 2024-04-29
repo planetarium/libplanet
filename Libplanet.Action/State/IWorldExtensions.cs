@@ -117,9 +117,10 @@ namespace Libplanet.Action.State
             Address sender,
             Address recipient,
             FungibleAssetValue value) =>
-                context.BlockProtocolVersion >= BlockMetadata.TransferFixProtocolVersion
-                    ? TransferAssetV1(world, sender, recipient, value)
-                    : TransferAssetV0(world, sender, recipient, value);
+                world.SetCurrencyAccount(
+                    world
+                        .GetCurrencyAccount(value.Currency)
+                        .TransferAsset(context, sender, recipient, value));
 
         /// <summary>
         /// Returns the total supply of a <paramref name="currency"/>.
@@ -218,90 +219,5 @@ namespace Libplanet.Action.State
                         $"the version of the world {world.Version}: " +
                         $"{validatorSetAccount.WorldVersion}",
                         nameof(validatorSetAccount));
-
-        [Pure]
-        private static IWorld TransferAssetV0(
-            IWorld world,
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
-            FungibleAssetValue recipientBalance = world.GetBalance(recipient, currency);
-
-            if (senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            IWorld intermediate = UpdateFungibleAssets(
-                world, sender, currency, (senderBalance - value).RawValue);
-            return UpdateFungibleAssets(
-                intermediate, recipient, currency, (recipientBalance + value).RawValue);
-        }
-
-        [Pure]
-        private static IWorld TransferAssetV1(
-            IWorld world,
-            Address sender,
-            Address recipient,
-            FungibleAssetValue value)
-        {
-            if (value.Sign <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    "The value to transfer has to be greater than zero."
-                );
-            }
-
-            Currency currency = value.Currency;
-            FungibleAssetValue senderBalance = world.GetBalance(sender, currency);
-
-            if (senderBalance < value)
-            {
-                var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
-                          $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(msg, sender, senderBalance);
-            }
-
-            BigInteger senderRawBalance = (senderBalance - value).RawValue;
-            IWorld intermediate = UpdateFungibleAssets(world, sender, currency, senderRawBalance);
-            FungibleAssetValue recipientBalance = intermediate.GetBalance(recipient, currency);
-            BigInteger recipientRawBalance = (recipientBalance + value).RawValue;
-
-            return UpdateFungibleAssets(intermediate, recipient, currency, recipientRawBalance);
-        }
-
-        [Pure]
-        private static IWorld UpdateFungibleAssets(
-            IWorld world,
-            Address address,
-            Currency currency,
-            BigInteger amount,
-            BigInteger? supplyAmount = null)
-        {
-            IAccount account = supplyAmount is { } sa
-                ? new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))
-                        .Set(ToTotalSupplyKey(currency), new Integer(sa))))
-                : new Account(new AccountState(
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie
-                        .Set(ToFungibleAssetKey(address, currency), new Integer(amount))));
-
-            return world.SetAccount(ReservedAddresses.LegacyAccount, account);
-        }
     }
 }
