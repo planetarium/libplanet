@@ -239,13 +239,13 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("c1fca9caf552248ba596ff0a8c30e3ead91e0de298c802b98d0cde318931ddd1"),
+                FromHex("db037e64000f3f672288e62a7f9a646cc9f636256a91d40559ebbffb53340948"),
                 hash.ByteArray);
 
             hash = Block1Metadata.DerivePreEvaluationHash(
                 new Nonce(FromHex("e7c1adf92c65d35aaae5")));
             AssertBytesEqual(
-                FromHex("676e767c34b77795c807ef0b90a3e5d15d3412cb921d62e8e705133dc63c1305"),
+                FromHex("e1fb185006f05b18d8c264622c2e86d231fc7fbb6a777ae86629c41b37dac0d2"),
                 hash.ByteArray);
         }
 

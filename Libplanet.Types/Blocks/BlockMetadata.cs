@@ -21,7 +21,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 6;
+        public const int CurrentProtocolVersion = 7;
 
         /// <summary>
         /// The starting protocol version where a bug in transferring asset was fixed.
