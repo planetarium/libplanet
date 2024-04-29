@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.4.2
 -------------
 
-To be released.
+Released on April 29, 2024.
 
  -  (Libplanet.Explorer) Added `KeyBytesType` and `TrieType`.  [[#3763]]
  -  (Libplanet.Explorer) Added `RawStateQuery`.  [[#3763]]
