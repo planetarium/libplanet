@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Types) Updated `BlockMetadata.CurrentProtocolVersion`
+    from 6 to 7.  [[#3769]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3769]: https://github.com/planetarium/libplanet/pull/3769
 
 
 Version 4.4.0
