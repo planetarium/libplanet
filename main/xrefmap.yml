@@ -32402,6 +32402,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.BlockMetadata
   nameWithType: BlockMetadata.BlockMetadata
+- uid: Libplanet.Types.Blocks.BlockMetadata.CurrencyAccountProtocolVersion
+  name: CurrencyAccountProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.CurrencyAccountProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.CurrencyAccountProtocolVersion
+  nameWithType: BlockMetadata.CurrencyAccountProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.CurrentProtocolVersion
   name: CurrentProtocolVersion
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrentProtocolVersion
