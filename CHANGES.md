@@ -12,6 +12,8 @@ To be released.
 
  -  (Libplanet.Types) Updated `BlockMetadata.CurrentProtocolVersion`
     from 6 to 7.  [[#3769]]
+ -  (Libplanet.Store) Added `IterateSubTrieValues(KeyBytes)` and
+    `IterateSubTrieNodes(KeyBytes)` methods to `MerkleTrie`.  [[#3774]]
  -  (Libplanet.Types) Added `BlockMetadata.CurrencyAccountProtocolVersion`.
     [[#3775]]
 
@@ -30,6 +32,7 @@ To be released.
 ### CLI tools
 
 [#3769]: https://github.com/planetarium/libplanet/pull/3769
+[#3774]: https://github.com/planetarium/libplanet/pull/3774
 [#3775]: https://github.com/planetarium/libplanet/pull/3775
 
 
