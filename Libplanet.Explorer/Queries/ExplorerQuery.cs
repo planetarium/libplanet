@@ -24,11 +24,9 @@ namespace Libplanet.Explorer.Queries
             Field<BlockQuery>("blockQuery", resolve: context => new { });
             Field<TransactionQuery>("transactionQuery", resolve: context => new { });
             Field<StateQuery>("stateQuery", resolve: context => chainContext.BlockChain);
-            Field<NonNullGraphType<NodeStateType>>(
-                "nodeState",
-                resolve: context => chainContext
-            );
+            Field<NonNullGraphType<NodeStateType>>("nodeState", resolve: context => chainContext);
             Field<HelperQuery>("helperQuery", resolve: context => new { });
+            Field<RawStateQuery>("rawStateQuery", resolve: context => chainContext.BlockChain);
 
             Name = "ExplorerQuery";
         }
