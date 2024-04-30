@@ -12,6 +12,8 @@ To be released.
 
  -  (Libplanet.Types) Updated `BlockMetadata.CurrentProtocolVersion`
     from 6 to 7.  [[#3769]]
+ -  (Libplanet.Types) Added `BlockMetadata.CurrencyAccountProtocolVersion`.
+    [[#3775]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +30,7 @@ To be released.
 ### CLI tools
 
 [#3769]: https://github.com/planetarium/libplanet/pull/3769
+[#3775]: https://github.com/planetarium/libplanet/pull/3775
 
 
 Version 4.4.2
