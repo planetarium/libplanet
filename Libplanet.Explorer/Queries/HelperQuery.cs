@@ -1,9 +1,11 @@
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Common;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 
 namespace Libplanet.Explorer.Queries
@@ -42,6 +44,20 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                     _codec.Decode(ByteUtil.ParseHex(context.GetArgument<string>("hex")))
+            );
+
+            Field<NonNullGraphType<KeyBytesType>>(
+                name: "keyHex",
+                description: "Converts string to key hex representation",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>
+                    {
+                        Name = "value",
+                        Description = "The string value to convert to key hex.",
+                    }
+                ),
+                resolve: context =>
+                    new KeyBytes(Encoding.ASCII.GetBytes(context.GetArgument<string>("value")))
             );
         }
     }
