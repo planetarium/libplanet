@@ -30,6 +30,17 @@ To be released.
 [#3769]: https://github.com/planetarium/libplanet/pull/3769
 
 
+Version 4.4.1
+-------------
+
+Released on April 18, 2024.
+
+ -  Ported changes from [Libplanet 4.3.1] release.  [[#3757]]
+
+[#3757]: https://github.com/planetarium/libplanet/pull/3757
+[Libplanet 4.3.1]: https://www.nuget.org/packages/Libplanet/4.3.1
+
+
 Version 4.4.0
 -------------
 
@@ -73,6 +84,17 @@ Released on April 17, 2024.
 [#3742]: https://github.com/planetarium/libplanet/pull/3742
 [#3745]: https://github.com/planetarium/libplanet/pull/3745
 [#3746]: https://github.com/planetarium/libplanet/pull/3746
+
+
+Version 4.3.1
+-------------
+
+Released on April 18, 2024.
+
+ -  Downgraded *LiteDB* from [5.0.15][LiteDB 5.0.15] to
+    [4.1.4][LiteDB 4.1.4].  [[#3753]]
+
+[#3753]: https://github.com/planetarium/libplanet/pull/3753
 
 
 Version 4.3.0
