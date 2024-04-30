@@ -54,7 +54,21 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         public const int WorldStateProtocolVersion = 5;
 
+        /// <summary>
+        /// The starting protocol version where the validator set is stored in a separate
+        /// account instead of the legacy account.  Prior to this version, the validator set is
+        /// stored in the legacy account.
+        /// </summary>
         public const int ValidatorSetAccountProtocolVersion = 6;
+
+        /// <summary>
+        /// The starting protocol version where fungible assets are stored in resepctive
+        /// currency accounts instead of the legacy account.  Prior to this version,
+        /// all fungible assets are stored in the legacy account.
+        /// Moreover, starting with this version, every total supply of each currency is trackable
+        /// regardless of <see cref="Currency.TotalSupplyTrackable"/>.
+        /// </summary>
+        public const int CurrencyAccountProtocolVersion = 7;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
