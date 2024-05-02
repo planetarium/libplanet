@@ -92,6 +92,51 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Theory]
+        [InlineData(true, "_")]
+        [InlineData(false, "_")]
+        [InlineData(true, "_1ab3_639e")]
+        [InlineData(false, "_1ab3_639e")]
+        public void IterateSubTrie(bool commit, string extraKey)
+        {
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
+
+            string prefix = "_";
+            string[] keys =
+            {
+                "1b418c98",
+                "__3b8a",
+                "___",
+            };
+
+            foreach (var key in keys)
+            {
+                trie = trie.Set(new KeyBytes(Encoding.ASCII.GetBytes(key)), new Text(key));
+            }
+
+            trie = commit ? stateStore.Commit(trie) : trie;
+            Assert.Empty(
+                ((MerkleTrie)trie)
+                    .IterateSubTrieNodes(new KeyBytes(Encoding.ASCII.GetBytes(prefix))));
+            Assert.Empty(
+                ((MerkleTrie)trie)
+                    .IterateSubTrieValues(new KeyBytes(Encoding.ASCII.GetBytes(prefix))));
+
+            trie = trie.Set(new KeyBytes(Encoding.ASCII.GetBytes(extraKey)), new Text(extraKey));
+            trie = commit ? stateStore.Commit(trie) : trie;
+            Assert.Equal(
+                3,
+                ((MerkleTrie)trie)
+                    .IterateSubTrieNodes(new KeyBytes(Encoding.ASCII.GetBytes(prefix)))
+                    .Count(pair => pair.Node is ValueNode));
+            Assert.Equal(
+                3,
+                ((MerkleTrie)trie)
+                    .IterateSubTrieValues(new KeyBytes(Encoding.ASCII.GetBytes(prefix)))
+                    .Count());
+        }
+
+        [Theory]
         [InlineData(true)]
         [InlineData(false)]
         public void Set(bool commit)

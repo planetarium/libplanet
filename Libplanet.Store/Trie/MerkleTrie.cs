@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
@@ -129,50 +130,62 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc cref="ITrie.IterateNodes"/>
-        public IEnumerable<(Nibbles Path, INode Node)> IterateNodes()
+        public IEnumerable<(Nibbles Path, INode Node)> IterateNodes() =>
+            IterateSubTrieNodes(new KeyBytes(ImmutableArray<byte>.Empty));
+
+        /// <summary>
+        /// Iterates all values that can be reached from a sub-<see cref="ITrie"/> with
+        /// <see cref="INode"/> at <paramref name="rootPath"/> as its root.
+        /// </summary>
+        /// <param name="rootPath">The <see cref="KeyBytes"/> path of an <see cref="INode"/>
+        /// to use as the root of traversal.</param>
+        /// <returns>All <see cref="IValue"/>s together with its <em>full</em>
+        /// <see cref="KeyBytes"/> paths.</returns>
+        /// <remarks>
+        /// This requires an <see cref="INode"/> to exist at <paramref name="rootPath"/>.
+        /// As such, this does not necessarily return all <see cref="INode"/> with paths starting
+        /// with <paramref name="rootPath"/>.  In particular, if there doesn't exist
+        /// an <see cref="INode"/> at <paramref name="rootPath"/>, this returns nothing.
+        /// </remarks>
+        public IEnumerable<(KeyBytes Path, IValue Value)> IterateSubTrieValues(KeyBytes rootPath)
         {
-            if (Root is null)
+            foreach ((var path, var node) in IterateSubTrieNodes(rootPath))
+            {
+                if (node is ValueNode valueNode)
+                {
+                    yield return (path.ToKeyBytes(), valueNode.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Iterates all sub-nodes from a sub-<see cref="ITrie"/> with <see cref="INode"/> at
+        /// <paramref name="rootPath"/> as its root.
+        /// </summary>
+        /// <param name="rootPath">The <see cref="KeyBytes"/> path of an <see cref="INode"/>
+        /// to use as the root of traversal.</param>
+        /// <returns>All <see cref="INode"/>s together with its <em>full</em>
+        /// <see cref="Nibbles"/> paths.</returns>
+        /// <remarks>
+        /// This requires an <see cref="INode"/> to exist at <paramref name="rootPath"/>.
+        /// As such, this does not necessarily return all <see cref="INode"/> with paths starting
+        /// with <paramref name="rootPath"/>.  In particular, if there doesn't exist
+        /// an <see cref="INode"/> at <paramref name="rootPath"/>, this returns nothing.
+        /// </remarks>
+        public IEnumerable<(Nibbles Path, INode Node)> IterateSubTrieNodes(KeyBytes rootPath)
+        {
+            Nibbles rootPrefix = Nibbles.FromKeyBytes(rootPath);
+            INode? root = GetNode(rootPrefix);
+            if (root is { } node)
+            {
+                foreach (var pair in IterateNodes(rootPrefix, node))
+                {
+                    yield return pair;
+                }
+            }
+            else
             {
                 yield break;
-            }
-
-            var stack = new Stack<(Nibbles, INode)>();
-            stack.Push((Nibbles.Empty, Root));
-
-            while (stack.Count > 0)
-            {
-                (Nibbles path, INode node) = stack.Pop();
-                yield return (path, node);
-                switch (node)
-                {
-                    case FullNode fullNode:
-                        foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
-                        {
-                            if (fullNode.Children[index] is { } childNode)
-                            {
-                                stack.Push((path.Add((byte)index), childNode));
-                            }
-                        }
-
-                        if (fullNode.Value is { } fullNodeValue)
-                        {
-                            stack.Push((path, fullNodeValue));
-                        }
-
-                        break;
-
-                    case ShortNode shortNode:
-                        if (shortNode.Value is { } shortNodeValue)
-                        {
-                            stack.Push((path.AddRange(shortNode.Key), shortNodeValue));
-                        }
-
-                        break;
-
-                    case HashNode hashNode:
-                        stack.Push((path, UnhashNode(hashNode)));
-                        break;
-                }
             }
         }
 
@@ -244,6 +257,51 @@ namespace Libplanet.Store.Trie
 
                     case HashNode _:
                         throw new InvalidOperationException();
+                }
+            }
+        }
+
+        private IEnumerable<(Nibbles Path, INode Node)> IterateNodes(
+            Nibbles rootPrefix,
+            INode root)
+        {
+            var stack = new Stack<(Nibbles, INode)>();
+            stack.Push((rootPrefix, root));
+
+            while (stack.Count > 0)
+            {
+                (Nibbles path, INode node) = stack.Pop();
+                yield return (path, node);
+                switch (node)
+                {
+                    case FullNode fullNode:
+                        foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
+                        {
+                            INode? child = fullNode.Children[index];
+                            if (!(child is null))
+                            {
+                                stack.Push((path.Add((byte)index), child));
+                            }
+                        }
+
+                        if (!(fullNode.Value is null))
+                        {
+                            stack.Push((path, fullNode.Value));
+                        }
+
+                        break;
+
+                    case ShortNode shortNode:
+                        if (!(shortNode.Value is null))
+                        {
+                            stack.Push((path.AddRange(shortNode.Key), shortNode.Value));
+                        }
+
+                        break;
+
+                    case HashNode hashNode:
+                        stack.Push((path, UnhashNode(hashNode)));
+                        break;
                 }
             }
         }
