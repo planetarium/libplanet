@@ -26704,6 +26704,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.IterateNodes
   nameWithType: MerkleTrie.IterateNodes
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes(Libplanet.Store.Trie.KeyBytes)
+  name: IterateSubTrieNodes(KeyBytes)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateSubTrieNodes_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes(Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes(Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MerkleTrie.IterateSubTrieNodes(KeyBytes)
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes*
+  name: IterateSubTrieNodes
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateSubTrieNodes_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieNodes
+  nameWithType: MerkleTrie.IterateSubTrieNodes
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues(Libplanet.Store.Trie.KeyBytes)
+  name: IterateSubTrieValues(KeyBytes)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateSubTrieValues_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues(Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues(Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MerkleTrie.IterateSubTrieValues(KeyBytes)
+- uid: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues*
+  name: IterateSubTrieValues
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateSubTrieValues_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.IterateSubTrieValues
+  nameWithType: MerkleTrie.IterateSubTrieValues
 - uid: Libplanet.Store.Trie.MerkleTrie.IterateValues
   name: IterateValues()
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_IterateValues
