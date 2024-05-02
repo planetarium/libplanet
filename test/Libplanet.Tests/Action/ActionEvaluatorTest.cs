@@ -524,9 +524,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "C"
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "A"
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "B"
+                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "A"
+                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "B"
+                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "C"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -581,7 +581,7 @@ namespace Libplanet.Tests.Action
                         new TxInvoice(
                             genesisHash: genesis.Hash,
                             updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                            timestamp: DateTimeOffset.MinValue.AddSeconds(1),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                             actions: new TxActionList(new[]
                             {
                                 MakeAction(addresses[0], 'D'),
