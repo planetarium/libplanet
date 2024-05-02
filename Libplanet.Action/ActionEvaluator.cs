@@ -496,12 +496,6 @@ namespace Libplanet.Action
                 logger: _logger).Single();
         }
 
-        internal IWorld PrepareInitialDelta(HashDigest<SHA256>? stateRootHash)
-        {
-            return new World(
-                new WorldBaseState(_stateStore.GetStateRoot(stateRootHash), _stateStore));
-        }
-
         internal IReadOnlyList<ICommittedActionEvaluation>
             ToCommittedEvaluation(
                 IPreEvaluationBlock block,
