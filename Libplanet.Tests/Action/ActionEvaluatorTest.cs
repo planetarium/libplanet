@@ -598,7 +598,7 @@ namespace Libplanet.Tests.Action
                         new TxInvoice(
                             genesisHash: genesis.Hash,
                             updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                            timestamp: DateTimeOffset.MinValue.AddSeconds(1),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                             actions: new TxActionList(new[]
                             {
                                 MakeAction(addresses[0], 'D'),
