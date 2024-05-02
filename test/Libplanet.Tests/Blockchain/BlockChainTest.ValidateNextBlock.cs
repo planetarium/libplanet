@@ -201,6 +201,10 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock,
                 actionEvaluator1);
 
+            var endBlockActions = new IAction[]
+            {
+                new SetStatesAtBlock(default, (Text)"foo", default, 0),
+            }.ToImmutableArray();
             var policyWithBlockAction = new BlockPolicy(
                 new PolicyActionsRegistry(
                     endBlockActions: ImmutableArray.Create<IAction>(
@@ -253,7 +257,9 @@ namespace Libplanet.Tests.Blockchain
                 policy.PolicyActionsRegistry,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
-            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var preGenesis = TestUtils.ProposeGenesis(
+                proposer: TestUtils.GenesisProposer.PublicKey,
+                protocolVersion: beforePostponeBPV);
             var genesisBlock = preGenesis.Sign(
                 TestUtils.GenesisProposer,
                 actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
@@ -319,7 +325,9 @@ namespace Libplanet.Tests.Blockchain
                 policy.PolicyActionsRegistry,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
-            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var preGenesis = TestUtils.ProposeGenesis(
+                proposer: TestUtils.GenesisProposer.PublicKey,
+                protocolVersion: beforePostponeBPV);
             var genesisBlock = preGenesis.Sign(
                 TestUtils.GenesisProposer,
                 actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);

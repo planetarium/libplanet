@@ -828,7 +828,9 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 actionLoader);
 
-            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var preGenesis = TestUtils.ProposeGenesis(
+                proposer: TestUtils.GenesisProposer.PublicKey,
+                protocolVersion: beforePostponeBPV);
             var genesis = preGenesis.Sign(
                 TestUtils.GenesisProposer,
                 actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
