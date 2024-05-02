@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Action
             trie0 = stateStore.Commit(trie0);
             var world0 = new World(new WorldBaseState(trie0, stateStore));
 
-            var world4 = actionEvaluator.MigrateWorld(
+            var world4 = stateStore.MigrateWorld(
                 world0, BlockMetadata.PBFTProtocolVersion);
             Assert.True(world4.Trie.Recorded);
             Assert.Equal(0, world4.Version);
@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Action
                 validatorSet,
                 world4.GetValidatorSet());
 
-            var world5 = actionEvaluator.MigrateWorld(
+            var world5 = stateStore.MigrateWorld(
                 world0, BlockMetadata.WorldStateProtocolVersion);
             Assert.True(world5.Trie.Recorded);
             Assert.Equal(5, world5.Version);
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Action
                     .Get(KeyConverters.ValidatorSetKey));
             Assert.Equal(validatorSet, world5.GetValidatorSet());
 
-            var world6 = actionEvaluator.MigrateWorld(
+            var world6 = stateStore.MigrateWorld(
                 world0, BlockMetadata.ValidatorSetAccountProtocolVersion);
             Assert.True(world6.Trie.Recorded);
             Assert.Equal(6, world6.Version);

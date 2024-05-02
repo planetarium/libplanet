@@ -10,13 +10,11 @@ using Bencodex.Types;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
-using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action
 {
@@ -110,8 +108,8 @@ namespace Libplanet.Action
             stopwatch.Start();
             try
             {
-                IWorld previousState = PrepareInitialDelta(baseStateRootHash);
-                previousState = MigrateWorld(previousState, block.ProtocolVersion);
+                IWorld previousState = _stateStore.GetWorld(baseStateRootHash);
+                previousState = _stateStore.MigrateWorld(previousState, block.ProtocolVersion);
 
                 ImmutableList<ActionEvaluation> evaluations =
                     EvaluateBlock(block, previousState).ToImmutableList();
@@ -333,15 +331,7 @@ namespace Libplanet.Action
 
             state = feeCollector.Refund(state);
             state = feeCollector.Reward(state);
-
-            if (state.Legacy)
-            {
-                state = CommitLegacyWorld(state, stateStore);
-            }
-            else
-            {
-                state = CommitWorld(state, stateStore);
-            }
+            state = stateStore.CommitWorld(state);
 
             if (!state.Trie.Recorded)
             {
@@ -547,106 +537,6 @@ namespace Libplanet.Action
             }
 
             return committedEvaluations;
-        }
-
-        internal IWorld MigrateWorld(IWorld originalWorld, int targetVersion)
-        {
-            if (originalWorld.Version > targetVersion)
-            {
-                throw new ApplicationException(
-                    $"Given {nameof(originalWorld)} with version {originalWorld.Version} " +
-                    $"cannot be migrated to a lower version {targetVersion}.");
-            }
-
-            IWorld world = originalWorld;
-
-            // Migrate up to BlockMetadata.WorldStateProtocolVersion
-            // if conditions are met.
-            if (targetVersion >= BlockMetadata.WorldStateProtocolVersion &&
-                world.Version < BlockMetadata.WorldStateProtocolVersion)
-            {
-                var worldTrie = _stateStore.GetStateRoot(null);
-                worldTrie = worldTrie.SetMetadata(
-                    new TrieMetadata(BlockMetadata.WorldStateProtocolVersion));
-                worldTrie = worldTrie.Set(
-                    ToStateKey(ReservedAddresses.LegacyAccount),
-                    new Binary(world.Trie.Hash.ByteArray));
-                worldTrie = _stateStore.Commit(worldTrie);
-                world = new World(new WorldBaseState(worldTrie, _stateStore));
-            }
-
-            // Migrate up to BlockMetadata.ValidatorSetAccountProtocolVersion
-            // if conditions are met.
-            if (targetVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion &&
-                world.Version < BlockMetadata.ValidatorSetAccountProtocolVersion)
-            {
-                var worldTrie = world.Trie;
-                worldTrie = worldTrie.SetMetadata(
-                    new TrieMetadata(BlockMetadata.ValidatorSetAccountProtocolVersion));
-                worldTrie = _stateStore.Commit(worldTrie);
-                world = new World(new WorldBaseState(worldTrie, _stateStore));
-
-                var legacyAccountTrie =
-                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
-                IValue? rawValidatorSet = legacyAccountTrie.Get(ValidatorSetKey);
-
-                // Move encoded validator set only if it already exists.
-                if (rawValidatorSet is { } rawValue)
-                {
-                    legacyAccountTrie = legacyAccountTrie.Remove(ValidatorSetKey);
-                    legacyAccountTrie = _stateStore.Commit(legacyAccountTrie);
-
-                    var validatorSetAccountTrie =
-                        world.GetAccount(ReservedAddresses.ValidatorSetAccount).Trie;
-                    validatorSetAccountTrie = validatorSetAccountTrie.Set(
-                        ToStateKey(ValidatorSetAccount.ValidatorSetAddress),
-                        rawValue);
-                    validatorSetAccountTrie = _stateStore.Commit(validatorSetAccountTrie);
-
-                    worldTrie = worldTrie.Set(
-                        ToStateKey(ReservedAddresses.LegacyAccount),
-                        new Binary(legacyAccountTrie.Hash.ByteArray));
-                    worldTrie = worldTrie.Set(
-                        ToStateKey(ReservedAddresses.ValidatorSetAccount),
-                        new Binary(validatorSetAccountTrie.Hash.ByteArray));
-                    worldTrie = _stateStore.Commit(worldTrie);
-                    world = new World(new WorldBaseState(worldTrie, _stateStore));
-                }
-            }
-
-            // Migrate up to target version if conditions are met.
-            if (targetVersion >= BlockMetadata.WorldStateProtocolVersion &&
-                world.Version < targetVersion)
-            {
-                var worldTrie = world.Trie;
-                worldTrie = worldTrie.SetMetadata(new TrieMetadata(targetVersion));
-                worldTrie = _stateStore.Commit(worldTrie);
-                world = new World(new WorldBaseState(worldTrie, _stateStore));
-            }
-
-            return world;
-        }
-
-        private static IWorld CommitLegacyWorld(IWorld prevWorld, IStateStore stateStore)
-        {
-            return new World(
-                new WorldBaseState(
-                    stateStore.Commit(prevWorld.GetAccount(ReservedAddresses.LegacyAccount).Trie),
-                    stateStore));
-        }
-
-        private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
-        {
-            var worldTrie = prevWorld.Trie;
-            foreach (var account in prevWorld.Delta.Accounts)
-            {
-                var accountTrie = stateStore.Commit(account.Value.Trie);
-                worldTrie = worldTrie.Set(
-                    ToStateKey(account.Key), new Binary(accountTrie.Hash.ByteArray));
-            }
-
-            return new World(
-                new WorldBaseState(stateStore.Commit(worldTrie), stateStore));
         }
 
         [Pure]
