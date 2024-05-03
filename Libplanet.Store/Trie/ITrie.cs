@@ -58,7 +58,8 @@ namespace Libplanet.Store.Trie
 
         /// <summary>
         /// Removes the value at the path corresponding to given <paramref name="key"/>
-        /// <em>in memory</em>.
+        /// <em>in memory</em>.  If there is no <see cref="IValue"/> at <paramref name="key"/>,
+        /// this does nothing.
         /// </summary>
         /// <param name="key">The unique key to associate with the <paramref name="value"/>.</param>
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
