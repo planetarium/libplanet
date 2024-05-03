@@ -259,7 +259,7 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null),
                 transactions: txs).Propose();
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
 
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
@@ -366,7 +366,7 @@ namespace Libplanet.Tests.Action
                 genesis,
                 GenesisProposer,
                 block1Txs);
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
             }
 
-            previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            previousState = stateStore.GetWorld(genesis.StateRootHash);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
             var output1 = new WorldBaseState(evals1.Last().OutputState.Trie, stateStore);
@@ -572,7 +572,7 @@ namespace Libplanet.Tests.Action
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(initTrie.Hash);
+            IWorld previousState = stateStore.GetWorld(initTrie.Hash);
             var evaluations = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
@@ -638,7 +638,7 @@ namespace Libplanet.Tests.Action
                         .GetBalance(a, currency).RawValue));
             }
 
-            previousState = actionEvaluator.PrepareInitialDelta(initTrie.Hash);
+            previousState = stateStore.GetWorld(initTrie.Hash);
             IWorld delta = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
@@ -660,9 +660,10 @@ namespace Libplanet.Tests.Action
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
                 policyBlockActionGetter: _ => null,
-                stateStore: new TrieStateStore(new MemoryKeyValueStore()),
+                stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
             var block = new BlockContent(
@@ -674,7 +675,7 @@ namespace Libplanet.Tests.Action
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0)),
                 transactions: txs).Propose();
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
+            IWorld previousState = stateStore.GetWorld(null);
             var nextState = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
@@ -825,7 +826,7 @@ namespace Libplanet.Tests.Action
             var block = chain.ProposeBlock(
                 GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
 
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(null);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);
 
             Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
@@ -848,7 +849,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
 
             chain.Append(block, CreateBlockCommit(block), render: true);
-            previousState = actionEvaluator.PrepareInitialDelta(genesis.StateRootHash);
+            previousState = _storeFx.StateStore.GetWorld(genesis.StateRootHash);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousState).ToList();
