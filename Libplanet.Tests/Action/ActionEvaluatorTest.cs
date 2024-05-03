@@ -236,28 +236,26 @@ namespace Libplanet.Tests.Action
                     stateStore: stateStore,
                     actionLoader: new SingleActionLoader(typeof(DumbAction)));
 
+            var nextWorldState = chain.GetNextWorldState();
+            Assert.NotNull(nextWorldState);
             Assert.Equal(
                 (Integer)1,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
             Assert.Equal(
                 (Integer)1,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
             Assert.Equal(
                 (Integer)chain.Genesis.Transactions.Count,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(
                 (Integer)chain.Genesis.Transactions.Count,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
 
@@ -273,28 +271,26 @@ namespace Libplanet.Tests.Action
                 evaluations.Length);
 
             chain.Append(block, CreateBlockCommit(block));
+            nextWorldState = chain.GetNextWorldState();
+            Assert.NotNull(nextWorldState);
             Assert.Equal(
                 (Integer)2,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
             Assert.Equal(
                 (Integer)2,
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
             Assert.Equal(
                 (Integer)(chain.Genesis.Transactions.Count + txs.Length),
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(
                 (Integer)(chain.Genesis.Transactions.Count + txs.Length),
-                chain
-                    .GetWorldState()
+                nextWorldState
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
         }
@@ -541,9 +537,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),  // Adds "C"
-                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "A"
-                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "B"
+                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "A"
+                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "B"
+                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "C"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))

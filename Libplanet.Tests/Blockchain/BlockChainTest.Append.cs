@@ -816,9 +816,17 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var actionEvaluator = new ActionEvaluator(
-                _ => policy.BlockAction, stateStore, actionLoader);
+                new PolicyActionsRegistry(
+                    _ => policy.BeginBlockActions,
+                    _ => policy.EndBlockActions,
+                    _ => policy.BeginTxActions,
+                    _ => policy.EndTxActions),
+                stateStore,
+                actionLoader);
 
-            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var preGenesis = TestUtils.ProposeGenesis(
+                proposer: TestUtils.GenesisProposer.PublicKey,
+                protocolVersion: beforePostponeBPV);
             var genesis = preGenesis.Sign(
                 TestUtils.GenesisProposer,
                 actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);

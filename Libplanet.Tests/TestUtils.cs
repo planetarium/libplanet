@@ -637,7 +637,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         ))
                     : protocolVersion < BlockMetadata.SlothProtocolVersion
                     ? preEval.Sign(privateKey, evaluatedSrh)
-                    : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
+                    : preEval.Sign(privateKey, MerkleTrie.EmptyRootHash);
             }
 
             ValidatingActionRenderer validator = null;
