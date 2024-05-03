@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex.Types;
 using Libplanet.Common;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
@@ -147,6 +152,103 @@ namespace Libplanet.Action.State
                     worldTrie = worldTrie.Set(
                         KeyConverters.ToStateKey(ReservedAddresses.ValidatorSetAccount),
                         new Binary(validatorSetAccountTrie.Hash.ByteArray));
+                    worldTrie = stateStore.Commit(worldTrie);
+                    world = new World(new WorldBaseState(worldTrie, stateStore));
+                }
+            }
+
+            // Migrate up to BlockMetadata.ValidatorSetAccountProtocolVersion
+            // if conditions are met.
+            if (targetVersion >= BlockMetadata.CurrencyAccountProtocolVersion &&
+                world.Version < BlockMetadata.CurrencyAccountProtocolVersion)
+            {
+                var worldTrie = world.Trie;
+                worldTrie = worldTrie.SetMetadata(
+                    new TrieMetadata(BlockMetadata.CurrencyAccountProtocolVersion));
+                worldTrie = stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, stateStore));
+
+                // Remove all total supply tracking.
+                const int totalSupplyKeyLength = 42;
+                var subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("__"));
+                var legacyAccountTrie =
+                    world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
+                var tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
+                foreach (var pair in tempTrie.IterateSubTrieValues(subRootPath))
+                {
+                    if (pair.Path.Length == totalSupplyKeyLength)
+                    {
+                        legacyAccountTrie = legacyAccountTrie.Remove(pair.Path);
+                    }
+                }
+
+                legacyAccountTrie = stateStore.Commit(legacyAccountTrie);
+                worldTrie = worldTrie.Set(
+                    KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                    new Binary(legacyAccountTrie.Hash.ByteArray));
+                worldTrie = stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, stateStore));
+
+                // Remove all fungible assets
+                const int fungibleAssetKeyLength = 82;
+                subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("_"));
+                tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
+                byte[] addressBytesBuffer = new byte[40];
+                byte[] currencyBytesBuffer = new byte[40];
+                List<(KeyBytes Address, KeyBytes Currency, Integer Amount)> favs =
+                    new List<(KeyBytes Address, KeyBytes Currency, Integer Amount)>();
+                foreach (var pair in tempTrie.IterateSubTrieValues(subRootPath))
+                {
+                    if (pair.Path.Length == fungibleAssetKeyLength)
+                    {
+                        legacyAccountTrie = legacyAccountTrie.Remove(pair.Path);
+                        pair.Path.ByteArray.CopyTo(1, addressBytesBuffer, 0, 40);
+                        pair.Path.ByteArray.CopyTo(42, currencyBytesBuffer, 0, 40);
+                        favs.Add((
+                            new KeyBytes(addressBytesBuffer),
+                            new KeyBytes(currencyBytesBuffer),
+                            (Integer)pair.Value));
+                    }
+                }
+
+                legacyAccountTrie = stateStore.Commit(legacyAccountTrie);
+                worldTrie = worldTrie.Set(
+                    KeyConverters.ToStateKey(ReservedAddresses.LegacyAccount),
+                    new Binary(legacyAccountTrie.Hash.ByteArray));
+                worldTrie = stateStore.Commit(worldTrie);
+                world = new World(new WorldBaseState(worldTrie, stateStore));
+
+                // Add in fungible assets to new accounts.
+                KeyBytes totalSupplyKeyBytes =
+                    KeyConverters.ToStateKey(CurrencyAccount.TotalSupplyAddress);
+                var grouped = favs.GroupBy(fav => fav.Currency);
+                foreach (var group in grouped)
+                {
+                    var currencyAccountTrie = world.Trie.Get(group.Key) is Binary hash
+                        ? stateStore.GetStateRoot(new HashDigest<SHA256>(hash))
+                        : stateStore.GetStateRoot(null);
+                    foreach (var fav in group)
+                    {
+                        Integer balance = fav.Amount;
+                        Integer prevTotalSupply =
+                            currencyAccountTrie.Get(totalSupplyKeyBytes) is Integer i
+                                ? i
+                                : new Integer(0);
+                        Integer newTotalSupply = new Integer(prevTotalSupply.Value + balance.Value);
+                        currencyAccountTrie =
+                            currencyAccountTrie.Set(
+                                fav.Address,
+                                balance);
+                        currencyAccountTrie =
+                            currencyAccountTrie.Set(
+                                totalSupplyKeyBytes,
+                                newTotalSupply);
+                    }
+
+                    currencyAccountTrie = stateStore.Commit(currencyAccountTrie);
+                    worldTrie = worldTrie.Set(
+                        group.Key,
+                        new Binary(currencyAccountTrie.Hash.ByteArray));
                     worldTrie = stateStore.Commit(worldTrie);
                     world = new World(new WorldBaseState(worldTrie, stateStore));
                 }

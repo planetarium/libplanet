@@ -474,7 +474,7 @@ namespace Libplanet.Tests.Action
             // While not specifically tied to a protocol version,
             // Total supply tracking was introduced while the block protocol version
             // was at 4.
-            if (ProtocolVersion > BlockMetadata.PBFTProtocolVersion)
+            if (ProtocolVersion >= BlockMetadata.PBFTProtocolVersion)
             {
                 IWorld world = _initWorld;
                 IActionContext context = _initContext;

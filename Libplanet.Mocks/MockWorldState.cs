@@ -170,26 +170,49 @@ namespace Libplanet.Mocks
         /// </returns>
         public MockWorldState SetBalance(Address address, Currency currency, Integer rawValue)
         {
-            ITrie trie = GetAccountState(ReservedAddresses.LegacyAccount).Trie;
-
-            if (currency.TotalSupplyTrackable)
+            if (Version >= BlockMetadata.CurrencyAccountProtocolVersion)
             {
-                Integer balance = trie.Get(ToFungibleAssetKey(address, currency)) is Integer b
+                Address accountAddress = new Address(currency.Hash.ByteArray);
+                KeyBytes balanceKey = ToStateKey(address);
+                KeyBytes totalSupplyKey = ToStateKey(CurrencyAccount.TotalSupplyAddress);
+
+                ITrie trie = GetAccountState(accountAddress).Trie;
+                Integer balance = trie.Get(balanceKey) is Integer b
                     ? b
                     : new Integer(0);
-                Integer totalSupply = trie.Get(ToTotalSupplyKey(currency)) is Integer t
+                Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
                     ? t
                     : new Integer(0);
+
                 trie = trie.Set(
-                    ToTotalSupplyKey(currency),
+                    totalSupplyKey,
                     new Integer(totalSupply.Value - balance.Value + rawValue.Value));
+                trie = trie.Set(balanceKey, rawValue);
+                return SetAccount(accountAddress, new Account(new AccountState(trie)));
             }
+            else
+            {
+                Address accountAddress = ReservedAddresses.LegacyAccount;
+                KeyBytes balanceKey = ToFungibleAssetKey(address, currency);
+                KeyBytes totalSupplyKey = ToTotalSupplyKey(currency);
 
-            trie = trie.Set(
-                ToFungibleAssetKey(address, currency),
-                rawValue);
+                ITrie trie = GetAccountState(accountAddress).Trie;
+                if (currency.TotalSupplyTrackable)
+                {
+                    Integer balance = trie.Get(balanceKey) is Integer b
+                        ? b
+                        : new Integer(0);
+                    Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
+                        ? t
+                        : new Integer(0);
+                    trie = trie.Set(
+                        totalSupplyKey,
+                        new Integer(totalSupply.Value - balance.Value + rawValue.Value));
+                }
 
-            return SetAccount(ReservedAddresses.LegacyAccount, new AccountState(trie));
+                trie = trie.Set(balanceKey, rawValue);
+                return SetAccount(accountAddress, new AccountState(trie));
+            }
         }
 
         public MockWorldState SetValidatorSet(ValidatorSet validatorSet)
