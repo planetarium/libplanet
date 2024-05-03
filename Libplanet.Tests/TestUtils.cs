@@ -643,7 +643,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         ))
                     : protocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
                     ? preEval.Sign(privateKey, evaluatedSrh)
-                    : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
+                    : preEval.Sign(privateKey, MerkleTrie.EmptyRootHash);
             }
 
             ValidatingActionRenderer validator = null;
