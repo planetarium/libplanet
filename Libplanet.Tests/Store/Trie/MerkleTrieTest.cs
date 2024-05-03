@@ -396,7 +396,7 @@ namespace Libplanet.Tests.Store.Trie
         public void RemoveValue()
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
-            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            IStateStore stateStore = new TrieStateStore(keyValueStore);
             ITrie trie = stateStore.GetStateRoot(null);
             HashDigest<SHA256> nullTrieHash = trie.Hash;
 
@@ -528,6 +528,36 @@ namespace Libplanet.Tests.Store.Trie
 
             Assert.Empty(expected);
             Assert.Null(trie.Root);
+        }
+
+        [Fact]
+        public void RemoveValueNoOp()
+        {
+            IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            ITrie trie = stateStore.GetStateRoot(null);
+
+            KeyBytes key00 = new KeyBytes(new byte[] { 0x00 });
+            KeyBytes key0000 = new KeyBytes(new byte[] { 0x00, 0x00 });
+            IValue value0000 = new Text("0000");
+            KeyBytes key0011 = new KeyBytes(new byte[] { 0x00, 0x11 });
+            IValue value0011 = new Text("0011");
+            KeyBytes key000000 = new KeyBytes(new byte[] { 0x00, 0x00, 0x00 });
+
+            trie = trie.Set(key0000, value0000);
+            trie = trie.Set(key0011, value0011);
+            trie = stateStore.Commit(trie);
+            int expectedNodeCount = trie.IterateNodes().Count();
+            int expectedValueCount = trie.IterateValues().Count();
+            HashDigest<SHA256> expectedHash = trie.Hash;
+
+            // Does nothing without throwing an exception when trying to remove value from
+            // a path where there is a node without value or a non-existent path.
+            trie = trie.Remove(key00);
+            trie = trie.Remove(key000000);
+            trie = stateStore.Commit(trie);
+            Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
+            Assert.Equal(expectedValueCount, trie.IterateValues().Count());
+            Assert.Equal(expectedHash, trie.Hash);
         }
     }
 }
