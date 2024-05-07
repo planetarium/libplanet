@@ -11032,25 +11032,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockWorldState.SetBalance
   nameWithType: MockWorldState.SetBalance
-- uid: Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.Currency,Bencodex.Types.Integer)
-  name: SetTotalSupply(Currency, Integer)
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_
-  commentId: M:Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.Currency,Bencodex.Types.Integer)
-  fullName: Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.Currency, Bencodex.Types.Integer)
-  nameWithType: MockWorldState.SetTotalSupply(Currency, Integer)
-- uid: Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.FungibleAssetValue)
-  name: SetTotalSupply(FungibleAssetValue)
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_SetTotalSupply_Libplanet_Types_Assets_FungibleAssetValue_
-  commentId: M:Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.FungibleAssetValue)
-  fullName: Libplanet.Mocks.MockWorldState.SetTotalSupply(Libplanet.Types.Assets.FungibleAssetValue)
-  nameWithType: MockWorldState.SetTotalSupply(FungibleAssetValue)
-- uid: Libplanet.Mocks.MockWorldState.SetTotalSupply*
-  name: SetTotalSupply
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_SetTotalSupply_
-  commentId: Overload:Libplanet.Mocks.MockWorldState.SetTotalSupply
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockWorldState.SetTotalSupply
-  nameWithType: MockWorldState.SetTotalSupply
 - uid: Libplanet.Mocks.MockWorldState.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)
   name: SetValidatorSet(ValidatorSet)
   href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_
@@ -11064,19 +11045,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockWorldState.SetValidatorSet
   nameWithType: MockWorldState.SetValidatorSet
-- uid: Libplanet.Mocks.MockWorldState.ToModern
-  name: ToModern()
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_ToModern
-  commentId: M:Libplanet.Mocks.MockWorldState.ToModern
-  fullName: Libplanet.Mocks.MockWorldState.ToModern()
-  nameWithType: MockWorldState.ToModern()
-- uid: Libplanet.Mocks.MockWorldState.ToModern*
-  name: ToModern
-  href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_ToModern_
-  commentId: Overload:Libplanet.Mocks.MockWorldState.ToModern
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockWorldState.ToModern
-  nameWithType: MockWorldState.ToModern
 - uid: Libplanet.Mocks.MockWorldState.Trie
   name: Trie
   href: api/Libplanet.Mocks.MockWorldState.html#Libplanet_Mocks_MockWorldState_Trie

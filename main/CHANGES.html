@@ -72,11 +72,17 @@ from 6 to 7.  [<a href="https://github.com/planetarium/libplanet/pull/3769">#376
 <code>IterateSubTrieNodes(KeyBytes)</code> methods to <code>MerkleTrie</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3774">#3774</a>]</li>
 <li>(Libplanet.Types) Added <code>BlockMetadata.CurrencyAccountProtocolVersion</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3775">#3775</a>]</li>
+<li>(Libplanet.Mocks) Removed <code>MockWorldState.ToModern()</code> and
+<code>MockWorldState.SetTotalSupply()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/3778">#3778</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Mocks) <code>MockWorldState.SetBalance()</code> now automatically updates
+the total supply of the provided <code>Currency</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3778">#3778</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
