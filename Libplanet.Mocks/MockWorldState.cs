@@ -108,34 +108,6 @@ namespace Libplanet.Mocks
                         : _stateStore.GetStateRoot(null));
 
         /// <summary>
-        /// Converts <see cref="MockWorldState"/> to "modern" if <see cref="Legacy"/>
-        /// is <see langword="true"/>.  Otherwise, does nothing.
-        /// </summary>
-        /// <returns>A converted <see cref="MockWorldState"/>.</returns>
-        /// <remarks>
-        /// If converted, this automatically commits itself.
-        /// </remarks>
-        public MockWorldState ToModern()
-        {
-            if (Legacy)
-            {
-                ITrie worldTrie = _stateStore.GetStateRoot(null);
-                worldTrie = worldTrie.SetMetadata(new TrieMetadata(Block.CurrentProtocolVersion));
-                worldTrie = worldTrie.Set(
-                    ToStateKey(ReservedAddresses.LegacyAccount),
-                    Trie.Hash.Bencoded);
-                worldTrie = _stateStore.Commit(worldTrie);
-                return new MockWorldState(
-                    worldTrie,
-                    _stateStore);
-            }
-            else
-            {
-                return this;
-            }
-        }
-
-        /// <summary>
         /// Sets given <paramref name="accountState"/> to <paramref name="address"/>.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> location to set
@@ -185,7 +157,8 @@ namespace Libplanet.Mocks
         /// <summary>
         /// Sets given <see cref="FungibleAssetValue"/> derived from <paramref name="curency"/>
         /// and <paramref name="rawValue"/> to <paramref name="address"/>.
-        /// This bypasses all checks (minter authority, total supply, etc.).
+        /// This bypasses all checks (minter authority, maximum supply, etc.) and adjusts
+        /// the total supply accordingly, if applicable.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> of the <paramref name="value"/>
         /// to set.</param>
@@ -197,44 +170,25 @@ namespace Libplanet.Mocks
         /// </returns>
         public MockWorldState SetBalance(Address address, Currency currency, Integer rawValue)
         {
-            IAccountState accountState = GetAccountState(ReservedAddresses.LegacyAccount);
-            ITrie trie = accountState.Trie.Set(
-                ToFungibleAssetKey(address, currency), rawValue);
-            return SetAccount(ReservedAddresses.LegacyAccount, new AccountState(trie));
-        }
+            ITrie trie = GetAccountState(ReservedAddresses.LegacyAccount).Trie;
 
-        /// <summary>
-        /// Sets given <paramref name="value"/> as total supply of <paramref name="value"/>'s
-        /// <see cref="Currency"/>.  This bypasses all checks
-        /// (minter authority, total supply, etc.).
-        /// </summary>
-        /// <param name="value">The <see cref="FungibleAssetValue"/> to set.</param>
-        /// <returns>A new <see cref="MockWorldState"/> with a committed <see cref="ITrie"/>.
-        /// </returns>
-        public MockWorldState SetTotalSupply(FungibleAssetValue value)
-        {
-            IAccountState accountState = GetAccountState(ReservedAddresses.LegacyAccount);
-            ITrie trie = accountState.Trie.Set(
-                ToTotalSupplyKey(value.Currency), new Integer(value.RawValue));
-            return SetAccount(ReservedAddresses.LegacyAccount, new AccountState(trie));
-        }
+            if (currency.TotalSupplyTrackable)
+            {
+                Integer balance = trie.Get(ToFungibleAssetKey(address, currency)) is Integer b
+                    ? b
+                    : new Integer(0);
+                Integer totalSupply = trie.Get(ToTotalSupplyKey(currency)) is Integer t
+                    ? t
+                    : new Integer(0);
+                trie = trie.Set(
+                    ToTotalSupplyKey(currency),
+                    new Integer(totalSupply.Value - balance.Value + rawValue.Value));
+            }
 
-        /// <summary>
-        /// Sets given <see cref="FungibleAssetValue"/> derived from <paramref name="curency"/>
-        /// and <paramref name="rawValue"/>.  This bypasses all checks
-        /// (minter authority, total supply, etc.).
-        /// </summary>
-        /// <param name="currency">The <see cref="Currency"/> of the
-        /// <see cref="FungibleAssetValue"/> to set.</param>
-        /// <param name="rawValue">The raw amount of <see cref="FungibleAssetValue"/> to set.
-        /// </param>
-        /// <returns>A new <see cref="MockWorldState"/> with a committed <see cref="ITrie"/>.
-        /// </returns>
-        public MockWorldState SetTotalSupply(Currency currency, Integer rawValue)
-        {
-            IAccountState accountState = GetAccountState(ReservedAddresses.LegacyAccount);
-            ITrie trie = accountState.Trie.Set(
-                ToTotalSupplyKey(currency), new Integer(rawValue));
+            trie = trie.Set(
+                ToFungibleAssetKey(address, currency),
+                rawValue);
+
             return SetAccount(ReservedAddresses.LegacyAccount, new AccountState(trie));
         }
 

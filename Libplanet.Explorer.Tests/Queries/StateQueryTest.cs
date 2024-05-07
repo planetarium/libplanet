@@ -170,7 +170,7 @@ public partial class StateQueryTest
                     Assert.IsAssignableFrom<IDictionary<string, object>>(
                         resultDict["world"])["account"])["totalSupply"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(new Integer(10000))),
+            ByteUtil.Hex(_codec.Encode(new Integer(10123))),
             Assert.IsAssignableFrom<string>(totalSupply["hex"]));
     }
 

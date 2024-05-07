@@ -47,7 +47,9 @@ public partial class StateQueryTest
             MockWorldState mock = MockWorldState.CreateLegacy(stateStore);
             mock = mock
                 .SetBalance(_address, FungibleAssetValue.FromRawValue(_currency, 123))
-                .SetTotalSupply(FungibleAssetValue.FromRawValue(_currency, 10_000))
+                .SetBalance(
+                    new PrivateKey().Address,
+                    FungibleAssetValue.FromRawValue(_currency, 10_000))
                 .SetValidatorSet(validatorSet);
             IAccount account = new Account(mock.GetAccountState(ReservedAddresses.LegacyAccount));
             account = account.SetState(_address, Null.Value);

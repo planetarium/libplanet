@@ -16,6 +16,8 @@ To be released.
     `IterateSubTrieNodes(KeyBytes)` methods to `MerkleTrie`.  [[#3774]]
  -  (Libplanet.Types) Added `BlockMetadata.CurrencyAccountProtocolVersion`.
     [[#3775]]
+ -  (Libplanet.Mocks) Removed `MockWorldState.ToModern()` and
+    `MockWorldState.SetTotalSupply()` methods.  [[#3778]]
 
 ### Backward-incompatible network protocol changes
 
@@ -24,6 +26,9 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
+
+ -  (Libplanet.Mocks) `MockWorldState.SetBalance()` now automatically updates
+    the total supply of the provided `Currency`.  [[#3778]]
 
 ### Bug fixes
 
@@ -34,6 +39,7 @@ To be released.
 [#3769]: https://github.com/planetarium/libplanet/pull/3769
 [#3774]: https://github.com/planetarium/libplanet/pull/3774
 [#3775]: https://github.com/planetarium/libplanet/pull/3775
+[#3778]: https://github.com/planetarium/libplanet/pull/3778
 
 
 Version 4.4.2

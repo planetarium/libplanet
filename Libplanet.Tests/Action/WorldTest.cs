@@ -110,12 +110,12 @@ namespace Libplanet.Tests.Action
                     .Select(key => new Validator(key.PublicKey, 1))
                     .ToList())));
 
-            output.WriteLine("Fixtures  {0,-42}  AAA  BBB  CCC  DDD  EEE  FFF", "Address");
+            output.WriteLine("Fixtures  Address");
             int i = 0;
             foreach (Address address in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3}  {6,3},  {7,3}",
+                    "_addr[{0}]  {1}  {2,6}  {3,6}  {4,6}  {5,6}  {6,6}  {7,6}",
                     i++,
                     address,
                     _initWorld.GetBalance(address, _currencies[0]),
@@ -483,7 +483,7 @@ namespace Libplanet.Tests.Action
                     world.GetTotalSupply(_currencies[0]));
 
                 Assert.Equal(
-                    Value(4, 0),
+                    Value(4, 5),
                     _initWorld.GetTotalSupply(_currencies[4]));
 
                 world = world.MintAsset(context, _addr[0], Value(0, 10));
@@ -492,12 +492,15 @@ namespace Libplanet.Tests.Action
 
                 world = world.MintAsset(context, _addr[0], Value(4, 10));
                 Assert.Equal(
-                    Value(4, 10),
+                    Value(4, 15),
                     world.GetTotalSupply(_currencies[4]));
+
+                Assert.Throws<InsufficientBalanceException>(() =>
+                    world.BurnAsset(context, _addr[0], Value(4, 100)));
 
                 world = world.BurnAsset(context, _addr[0], Value(4, 5));
                 Assert.Equal(
-                    Value(4, 5),
+                    Value(4, 10),
                     world.GetTotalSupply(_currencies[4]));
             }
         }
