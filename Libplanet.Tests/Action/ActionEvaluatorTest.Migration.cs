@@ -8,8 +8,10 @@ using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Mocks;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
@@ -22,13 +24,17 @@ namespace Libplanet.Tests.Action
     public partial class ActionEvaluatorTest
     {
         [Fact]
-        public void MigrateWorldWithValidatorSet()
+        public void MigrateWorld()
         {
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
+#pragma warning disable CS0618
+            var legacyCurrency = Currency.Legacy("LEG", 2, null);
+#pragma warning restore CS0618
+            var modernCurrency = Currency.Uncapped("MOD", 4, null);
 
             var address = new PrivateKey().Address;
             var value = new Text("Foo");
@@ -38,11 +44,17 @@ namespace Libplanet.Tests.Action
                     .Select(_ => new Validator(new PrivateKey().PublicKey, 1))
                     .ToList());
 
-            var trie0 = stateStore.GetStateRoot(null);
+            // Throwaway addresses are used to differentiate balance and total supply.
+            var world0 = new World(MockWorldState.CreateLegacy(stateStore)
+                .SetBalance(address, legacyCurrency, 123)
+                .SetBalance(address, modernCurrency, 456)
+                .SetBalance(new PrivateKey().Address, legacyCurrency, 1000)
+                .SetBalance(new PrivateKey().Address, modernCurrency, 2000)
+                .SetValidatorSet(validatorSet));
+            var trie0 = world0.Trie;
             trie0 = trie0.Set(KeyConverters.ToStateKey(address), value);
-            trie0 = trie0.Set(KeyConverters.ValidatorSetKey, validatorSet.Bencoded);
             trie0 = stateStore.Commit(trie0);
-            var world0 = new World(new WorldBaseState(trie0, stateStore));
+            world0 = new World(new WorldBaseState(trie0, stateStore));
 
             var world4 = stateStore.MigrateWorld(
                 world0, BlockMetadata.PBFTProtocolVersion);
@@ -59,6 +71,27 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 validatorSet,
                 world4.GetValidatorSet());
+            Assert.Equal(
+                new Integer(123),
+                world4.Trie.Get(KeyConverters.ToFungibleAssetKey(address, legacyCurrency)));
+            Assert.Equal(
+                new Integer(456),
+                world4.Trie.Get(KeyConverters.ToFungibleAssetKey(address, modernCurrency)));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 123),
+                world4.GetBalance(address, legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 456),
+                world4.GetBalance(address, modernCurrency));
+            Assert.Null(world4.Trie.Get(KeyConverters.ToTotalSupplyKey(legacyCurrency)));
+            Assert.Equal(
+                new Integer(2456),
+                world4.Trie.Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                world4.GetTotalSupply(legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 2456),
+                world4.GetTotalSupply(modernCurrency));
 
             var world5 = stateStore.MigrateWorld(
                 world0, BlockMetadata.WorldStateProtocolVersion);
@@ -77,6 +110,40 @@ namespace Libplanet.Tests.Action
                     .Trie
                     .Get(KeyConverters.ValidatorSetKey));
             Assert.Equal(validatorSet, world5.GetValidatorSet());
+            Assert.Equal(
+                new Integer(123),
+                world5
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, legacyCurrency)));
+            Assert.Equal(
+                new Integer(456),
+                world5
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, modernCurrency)));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 123),
+                world5.GetBalance(address, legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 456),
+                world5.GetBalance(address, modernCurrency));
+            Assert.Null(
+                world5
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(legacyCurrency)));
+            Assert.Equal(
+                new Integer(2456),
+                world5
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                world5.GetTotalSupply(legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 2456),
+                world5.GetTotalSupply(modernCurrency));
 
             var world6 = stateStore.MigrateWorld(
                 world0, BlockMetadata.ValidatorSetAccountProtocolVersion);
@@ -101,6 +168,120 @@ namespace Libplanet.Tests.Action
                     .Trie
                     .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress)));
             Assert.Equal(validatorSet, world6.GetValidatorSet());
+            Assert.Equal(
+                new Integer(123),
+                world6
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, legacyCurrency)));
+            Assert.Equal(
+                new Integer(456),
+                world6
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, modernCurrency)));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 123),
+                world6.GetBalance(address, legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 456),
+                world6.GetBalance(address, modernCurrency));
+            Assert.Null(
+                world6
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(legacyCurrency)));
+            Assert.Equal(
+                new Integer(2456),
+                world6
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                world6.GetTotalSupply(legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 2456),
+                world6.GetTotalSupply(modernCurrency));
+
+            var world7 = stateStore.MigrateWorld(
+                world0, BlockMetadata.CurrencyAccountProtocolVersion);
+            Assert.True(world7.Trie.Recorded);
+            Assert.Equal(7, world7.Version);
+            Assert.NotEqual(world0.Trie.Hash, world7.Trie.Hash);
+            Assert.NotEqual(world6.Trie.Hash, world7.Trie.Hash);
+            Assert.Null(world7.Trie.Get(KeyConverters.ToStateKey(address)));
+            Assert.Equal(
+                value,
+                world7.GetAccount(ReservedAddresses.LegacyAccount).GetState(address));
+            Assert.Null(world7.Trie.Get(KeyConverters.ValidatorSetKey));
+            Assert.Null(
+                world7
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ValidatorSetKey));
+            Assert.Equal(
+                validatorSet.Bencoded,
+                world7
+                    .GetAccount(ReservedAddresses.ValidatorSetAccount)
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress)));
+            Assert.Equal(validatorSet, world7.GetValidatorSet());
+            Assert.Null(
+                world7
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, legacyCurrency)));
+            Assert.Equal(
+                new Integer(123),
+                world7
+                    .GetAccount(new Address(legacyCurrency.Hash.ByteArray))
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(address)));
+            Assert.Null(
+                world7
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToFungibleAssetKey(address, modernCurrency)));
+            Assert.Equal(
+                new Integer(456),
+                world7
+                    .GetAccount(new Address(modernCurrency.Hash.ByteArray))
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(address)));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 123),
+                world7.GetBalance(address, legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 456),
+                world7.GetBalance(address, modernCurrency));
+            Assert.Null(
+                world7
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(legacyCurrency)));
+            Assert.Equal(
+                new Integer(1123),
+                world7
+                    .GetAccount(new Address(legacyCurrency.Hash.ByteArray))
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(CurrencyAccount.TotalSupplyAddress)));
+            Assert.Null(
+                world7
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .Trie
+                    .Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
+            Assert.Equal(
+                new Integer(2456),
+                world7
+                    .GetAccount(new Address(modernCurrency.Hash.ByteArray))
+                    .Trie
+                    .Get(KeyConverters.ToStateKey(CurrencyAccount.TotalSupplyAddress)));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 1123),
+                world7.GetTotalSupply(legacyCurrency));
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(modernCurrency, 2456),
+                world7.GetTotalSupply(modernCurrency));
         }
 
         [Fact]
