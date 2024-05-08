@@ -12,7 +12,7 @@ namespace Libplanet.Action.State
     /// A special "account" for managing <see cref="Currency"/> starting with
     /// <see cref="BlockMetadata.CurrencyAccountProtocolVersion"/>.
     /// </summary>
-    public class CurrencyAccount
+    public sealed class CurrencyAccount
     {
         /// <summary>
         /// The <see cref="Address"/> location within the account where

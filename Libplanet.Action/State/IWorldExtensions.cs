@@ -1,13 +1,9 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Numerics;
-using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
-using static Libplanet.Action.State.KeyConverters;
 
 namespace Libplanet.Action.State
 {
@@ -130,8 +126,25 @@ namespace Libplanet.Action.State
         /// <returns>The total supply of the <paramref name="currency"/>.
         /// </returns>
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when the total supply of the
-        /// given <paramref name="currency"/> is not trackable.</exception>
-        /// <seealso cref="Currency.MaximumSupply"/>
+        /// given <paramref name="currency"/> is not trackable.  A <see cref="Currency"/>'s
+        /// total supply is considered trackable if one of the following conditions is satisfied:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         The <see cref=IWorldState"/> has <see cref="IWorldState.Version"/> that is
+        ///         greater than or equal
+        ///         to <see cref="BlockMetadata.CurrencyAccountProtocolVersion"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         The <see cref="Currency"/> has <see cref="Currency.TotalSupplyTrackable"/>
+        ///         as <see langword="true"/>.
+        ///     </description></item>
+        /// </list>
+        /// That is, a <see cref="Currency"/>'s total supply is tracked regardless of its
+        /// <see cref="Currency.TotalSupplyTrackable"/> value if the <see cref="IWorldState"/>
+        /// has <see cref="IWorldState.Version"/> that is greater than or equal to
+        /// <see cref="BlockMetadata.CurrencyAccountProtocolVersion"/>.
+        /// </exception>
+        /// <seealso cref="Currency.TotalSupplyTrackable"/>
         [Pure]
         public static FungibleAssetValue GetTotalSupply(
             this IWorldState worldState,
