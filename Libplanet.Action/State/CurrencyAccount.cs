@@ -36,30 +36,28 @@ namespace Libplanet.Action.State
 
         public FungibleAssetValue GetBalance(Address address, Currency currency)
         {
-            if (!Currency.Equals(currency))
-            {
-                throw new ArgumentException();
-            }
-
+            CheckCurrency(currency);
+#pragma warning disable SA1118  // The parameter spans multiple lines
             return FungibleAssetValue.FromRawValue(
                 Currency,
                 WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
                     ? GetRawBalanceV7(address)
                     : GetRawBalanceV0(address));
+#pragma warning restore SA1118
         }
 
         public FungibleAssetValue GetTotalSupply(Currency currency)
         {
-            if (!Currency.Equals(currency))
-            {
-                throw new ArgumentException();
-            }
-
+            CheckCurrency(currency);
+#pragma warning disable SA1118  // The parameter spans multiple lines
             return FungibleAssetValue.FromRawValue(
                 Currency,
                 WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
                     ? GetRawTotalSupplyV7()
-                    : GetRawTotalSupplyV0());
+                    : Currency.TotalSupplyTrackable
+                        ? GetRawTotalSupplyV0()
+                        : throw TotalSupplyNotTrackableException.WithDefaultMessage(Currency));
+#pragma warning restore SA1118
         }
 
         public CurrencyAccount MintAsset(
@@ -67,29 +65,25 @@ namespace Libplanet.Action.State
             Address recipient,
             FungibleAssetValue value)
         {
-            if (!Currency.Equals(value.Currency))
-            {
-                throw new ArgumentException();
-            }
-
+            CheckCurrency(value.Currency);
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
-                    "The value to mint has to be greater than zero.");
+                    $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-
-            if (!Currency.AllowsToMint(context.Signer))
+            else if (!Currency.AllowsToMint(context.Signer))
             {
                 throw new CurrencyPermissionException(
-                    $"The account {context.Signer} has no permission to mint currency {Currency}.",
+                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
+                    $"the authority to mint or burn currency {Currency}.",
                     context.Signer,
                     Currency);
             }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? MintAssetV7(context, recipient, value)
-                : MintAssetV0(context, recipient, value);
+                ? MintRawAssetV7(context, recipient, value.RawValue)
+                : MintRawAssetV0(context, recipient, value.RawValue);
         }
 
         public CurrencyAccount BurnAsset(
@@ -97,29 +91,25 @@ namespace Libplanet.Action.State
             Address owner,
             FungibleAssetValue value)
         {
-            if (!Currency.Equals(value.Currency))
-            {
-                throw new ArgumentException();
-            }
-
+            CheckCurrency(value.Currency);
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
-                    "The value to burn has to be greater than zero.");
+                    $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-
-            if (!Currency.AllowsToMint(context.Signer))
+            else if (!Currency.AllowsToMint(context.Signer))
             {
                 throw new CurrencyPermissionException(
-                    $"The account {context.Signer} has no permission to burn currency {Currency}.",
+                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
+                    $"the authority to mint or burn currency {Currency}.",
                     context.Signer,
                     Currency);
             }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? BurnAssetV7(context, owner, value)
-                : BurnAssetV0(context, owner, value);
+                ? BurnRawAssetV7(context, owner, value.RawValue)
+                : BurnRawAssetV0(context, owner, value.RawValue);
         }
 
         public CurrencyAccount TransferAsset(
@@ -128,21 +118,17 @@ namespace Libplanet.Action.State
             Address recipient,
             FungibleAssetValue value)
         {
-            if (!Currency.Equals(value.Currency))
-            {
-                throw new ArgumentException();
-            }
-
+            CheckCurrency(value.Currency);
             if (value.Sign <= 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(value),
-                    "The value to transfer has to be greater than zero.");
+                    $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? TransferAssetV7(context, sender, recipient, value)
-                : TransferAssetV0(context, sender, recipient, value);
+                ? TransferRawAssetV7(context, sender, recipient, value.RawValue)
+                : TransferRawAssetV0(context, sender, recipient, value.RawValue);
         }
 
         public IAccount AsAccount()
@@ -150,247 +136,264 @@ namespace Libplanet.Action.State
             return new Account(new AccountState(Trie));
         }
 
-        private CurrencyAccount MintAssetV0(
+        private CurrencyAccount MintRawAssetV0(
             IActionContext context,
             Address recipient,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
-            ValidateMinter(context.Signer);
             CurrencyAccount currencyAccount = this;
-            BigInteger prevAmount = currencyAccount.GetRawBalanceV0(recipient);
-            BigInteger newAmount = prevAmount + value.RawValue;
-            currencyAccount = currencyAccount.WriteBalanceV0(recipient, newAmount);
-
+            BigInteger prevBalanceRawValue = currencyAccount.GetRawBalanceV0(recipient);
+            currencyAccount =
+                currencyAccount.WriteRawBalanceV0(recipient, prevBalanceRawValue + rawValue);
             if (Currency.TotalSupplyTrackable)
             {
-                // NOTE: This should never throw an exception.
-                BigInteger prevTotalSupply = currencyAccount.GetRawTotalSupplyV0();
+                BigInteger prevTotalSupplyRawValue = currencyAccount.GetRawTotalSupplyV0();
+                if (Currency.MaximumSupply is { } maximumSupply &&
+                    maximumSupply.RawValue < prevTotalSupplyRawValue + rawValue)
+                {
+                    FungibleAssetValue prevTotalSupply =
+                        FungibleAssetValue.FromRawValue(Currency, prevTotalSupplyRawValue);
+                    FungibleAssetValue value =
+                        FungibleAssetValue.FromRawValue(Currency, rawValue);
+                    throw new SupplyOverflowException(
+                        $"Cannot mint {value} in addition to " +
+                        $"the current total supply of {prevTotalSupply} as it would exceed " +
+                        $"the maximum supply {Currency.MaximumSupply}.",
+                        value);
+                }
+
                 currencyAccount =
-                    currencyAccount.WriteTotalSupplyV0(prevTotalSupply + value.RawValue);
+                    currencyAccount.WriteRawTotalSupplyV0(prevTotalSupplyRawValue + rawValue);
             }
 
             return currencyAccount;
         }
 
-        private CurrencyAccount MintAssetV7(
+        private CurrencyAccount MintRawAssetV7(
             IActionContext context,
             Address recipient,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
-            ValidateMinter(context.Signer);
             CurrencyAccount currencyAccount = this;
-            BigInteger prevAmount = currencyAccount.GetRawBalanceV7(recipient);
-            BigInteger newAmount = prevAmount + value.RawValue;
+            BigInteger prevBalanceRawValue = currencyAccount.GetRawBalanceV7(recipient);
             currencyAccount =
-                currencyAccount.WriteBalanceV7(recipient, newAmount);
-            BigInteger prevTotalSupply = currencyAccount.GetRawTotalSupplyV7();
+                currencyAccount.WriteRawBalanceV7(recipient, prevBalanceRawValue + rawValue);
+
+            BigInteger prevTotalSupplyRawValue = currencyAccount.GetRawTotalSupplyV7();
+            if (Currency.MaximumSupply is { } maximumSupply &&
+                maximumSupply.RawValue < prevTotalSupplyRawValue + rawValue)
+            {
+                FungibleAssetValue prevTotalSupply =
+                    FungibleAssetValue.FromRawValue(Currency, prevTotalSupplyRawValue);
+                FungibleAssetValue value =
+                    FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new SupplyOverflowException(
+                    $"Cannot mint {value} in addition to " +
+                    $"the current total supply of {prevTotalSupply} as it would exceed " +
+                    $"the maximum supply {Currency.MaximumSupply}.",
+                    prevTotalSupply);
+            }
+
             currencyAccount =
-                currencyAccount.WriteTotalSupplyV7(prevTotalSupply + value.RawValue);
+                currencyAccount.WriteRawTotalSupplyV7(prevTotalSupplyRawValue + rawValue);
 
             return currencyAccount;
         }
 
-        private CurrencyAccount BurnAssetV0(
+        private CurrencyAccount BurnRawAssetV0(
             IActionContext context,
             Address owner,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
-            ValidateMinter(context.Signer);
             CurrencyAccount currencyAccount = this;
-            BigInteger prevAmount = currencyAccount.GetRawBalanceV0(owner);
-            BigInteger newAmount = prevAmount - value.RawValue;
-            currencyAccount = currencyAccount.WriteBalanceV0(owner, newAmount);
+            BigInteger prevBalanceRawValue = currencyAccount.GetRawBalanceV0(owner);
+            if (prevBalanceRawValue - rawValue < 0)
+            {
+                FungibleAssetValue prevBalance =
+                    FungibleAssetValue.FromRawValue(Currency, prevBalanceRawValue);
+                FungibleAssetValue value = FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new InsufficientBalanceException(
+                    $"Cannot burn or transfer {value} from {owner} as the current balance " +
+                    $"of {owner} is {prevBalance}.",
+                    owner,
+                    prevBalance);
+            }
+
+            currencyAccount =
+                currencyAccount.WriteRawBalanceV0(owner, prevBalanceRawValue - rawValue);
 
             if (Currency.TotalSupplyTrackable)
             {
-                // NOTE: This should never throw an exception.
                 BigInteger prevTotalSupply = currencyAccount.GetRawTotalSupplyV0();
                 currencyAccount =
-                    currencyAccount.WriteTotalSupplyV0(prevTotalSupply - value.RawValue);
+                    currencyAccount.WriteRawTotalSupplyV0(prevTotalSupply - rawValue);
             }
 
             return currencyAccount;
         }
 
-        private CurrencyAccount BurnAssetV7(
+        private CurrencyAccount BurnRawAssetV7(
             IActionContext context,
             Address owner,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
-            ValidateMinter(context.Signer);
             CurrencyAccount currencyAccount = this;
-            BigInteger prevAmount = currencyAccount.GetRawBalanceV7(owner);
-            BigInteger newAmount = prevAmount - value.RawValue;
-            currencyAccount = currencyAccount.WriteBalanceV7(owner, newAmount);
-            BigInteger prevTotalSupply = currencyAccount.GetRawTotalSupplyV7();
-            currencyAccount = currencyAccount.WriteTotalSupplyV7(prevTotalSupply - value.RawValue);
+            BigInteger prevBalanceRawValue = currencyAccount.GetRawBalanceV7(owner);
+            if (prevBalanceRawValue - rawValue < 0)
+            {
+                FungibleAssetValue prevBalance =
+                    FungibleAssetValue.FromRawValue(Currency, prevBalanceRawValue);
+                FungibleAssetValue value = FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new InsufficientBalanceException(
+                    $"Cannot burn or transfer {value} from {owner} as the current balance " +
+                    $"of {owner} is {prevBalance}.",
+                    owner,
+                    prevBalance);
+            }
+
+            currencyAccount =
+                currencyAccount.WriteRawBalanceV7(owner, prevBalanceRawValue - rawValue);
+
+            BigInteger prevTotalSupplyRawValue = currencyAccount.GetRawTotalSupplyV7();
+            currencyAccount =
+                currencyAccount.WriteRawTotalSupplyV7(prevTotalSupplyRawValue - rawValue);
 
             return currencyAccount;
         }
 
-        private CurrencyAccount TransferAssetV7(
+        private CurrencyAccount TransferRawAssetV7(
             IActionContext context,
             Address sender,
             Address recipient,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
             CurrencyAccount currencyAccount = this;
+            BigInteger prevSenderBalanceRawValue = currencyAccount.GetRawBalanceV7(sender);
+            if (prevSenderBalanceRawValue - rawValue < 0)
+            {
+                FungibleAssetValue prevSenderBalance =
+                    FungibleAssetValue.FromRawValue(Currency, prevSenderBalanceRawValue);
+                FungibleAssetValue value = FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new InsufficientBalanceException(
+                    $"Cannot burn or transfer {value} from {sender} as the current balance " +
+                    $"of {sender} is {prevSenderBalance}.",
+                    sender,
+                    prevSenderBalance);
+            }
 
-            BigInteger senderBalance = currencyAccount.GetRawBalanceV7(sender);
-            currencyAccount = currencyAccount.WriteBalanceV7(
+            currencyAccount = currencyAccount.WriteRawBalanceV7(
                 sender,
-                senderBalance - value.RawValue);
-            BigInteger recipientBalance = currencyAccount.GetRawBalanceV7(recipient);
-            currencyAccount = currencyAccount.WriteBalanceV7(
+                prevSenderBalanceRawValue - rawValue);
+            BigInteger prevRecipientBalanceRawValue = currencyAccount.GetRawBalanceV7(recipient);
+            currencyAccount = currencyAccount.WriteRawBalanceV7(
                 recipient,
-                recipientBalance + value.RawValue);
+                prevRecipientBalanceRawValue + rawValue);
             return currencyAccount;
         }
 
-        private CurrencyAccount TransferAssetV0(
+        private CurrencyAccount TransferRawAssetV0(
             IActionContext context,
             Address sender,
             Address recipient,
-            FungibleAssetValue value)
+            BigInteger rawValue)
         {
             CurrencyAccount currencyAccount = this;
+            BigInteger prevSenderBalanceRawValue = currencyAccount.GetRawBalanceV0(sender);
+            if (prevSenderBalanceRawValue - rawValue < 0)
+            {
+                FungibleAssetValue prevSenderBalance =
+                    FungibleAssetValue.FromRawValue(Currency, prevSenderBalanceRawValue);
+                FungibleAssetValue value = FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new InsufficientBalanceException(
+                    $"Cannot burn or transfer {value} from {sender} as the current balance " +
+                    $"of {sender} is {prevSenderBalance}.",
+                    sender,
+                    prevSenderBalance);
+            }
 
             // NOTE: For backward compatibility with the bugged behavior before
             // protocol version 1.
             if (context.BlockProtocolVersion == 0)
             {
-                BigInteger senderBalance = currencyAccount.GetRawBalanceV0(sender);
-                BigInteger recipientBalance = currencyAccount.GetRawBalanceV0(recipient);
-                currencyAccount = currencyAccount.WriteBalanceV0(
+                BigInteger prevRecipientBalanceRawValue =
+                    currencyAccount.GetRawBalanceV0(recipient);
+                currencyAccount = currencyAccount.WriteRawBalanceV0(
                     sender,
-                    senderBalance - value.RawValue);
-                currencyAccount = currencyAccount.WriteBalanceV0(
+                    prevSenderBalanceRawValue - rawValue);
+                currencyAccount = currencyAccount.WriteRawBalanceV0(
                     recipient,
-                    recipientBalance + value.RawValue);
+                    prevRecipientBalanceRawValue + rawValue);
             }
             else
             {
-                BigInteger senderBalance = currencyAccount.GetRawBalanceV0(sender);
-                currencyAccount = currencyAccount.WriteBalanceV0(
+                currencyAccount = currencyAccount.WriteRawBalanceV0(
                     sender,
-                    senderBalance - value.RawValue);
-                BigInteger recipientBalance = currencyAccount.GetRawBalanceV0(recipient);
-                currencyAccount = currencyAccount.WriteBalanceV0(
+                    prevSenderBalanceRawValue - rawValue);
+                BigInteger prevRecipientBalanceRawValue =
+                    currencyAccount.GetRawBalanceV0(recipient);
+                currencyAccount = currencyAccount.WriteRawBalanceV0(
                     recipient,
-                    recipientBalance + value.RawValue);
+                    prevRecipientBalanceRawValue + rawValue);
             }
 
             return currencyAccount;
         }
 
-        private CurrencyAccount WriteBalanceV0(
-            Address address,
-            BigInteger value)
-        {
-            ValidateBalance(value);
-            return new CurrencyAccount(
-                Trie.Set(KeyConverters.ToFungibleAssetKey(address, Currency), new Integer(value)),
+        private CurrencyAccount WriteRawBalanceV0(Address address, BigInteger rawValue) =>
+            new CurrencyAccount(
+                Trie.Set(
+                    KeyConverters.ToFungibleAssetKey(address, Currency), new Integer(rawValue)),
                 WorldVersion,
                 Currency);
-        }
 
-        private CurrencyAccount WriteBalanceV7(Address address, BigInteger value)
-        {
-            ValidateBalance(value);
-            return new CurrencyAccount(
-                Trie.Set(KeyConverters.ToStateKey(address), new Integer(value)),
+        private CurrencyAccount WriteRawBalanceV7(Address address, BigInteger rawValue) =>
+            new CurrencyAccount(
+                Trie.Set(KeyConverters.ToStateKey(address), new Integer(rawValue)),
                 WorldVersion,
                 Currency);
-        }
 
-        private CurrencyAccount WriteTotalSupplyV0(BigInteger value)
-        {
-            ValidateTotalSupply(value);
-            return new CurrencyAccount(
-                Trie.Set(KeyConverters.ToTotalSupplyKey(Currency), new Integer(value)),
+        private CurrencyAccount WriteRawTotalSupplyV0(BigInteger rawValue) =>
+            new CurrencyAccount(
+                Trie.Set(KeyConverters.ToTotalSupplyKey(Currency), new Integer(rawValue)),
                 WorldVersion,
                 Currency);
-        }
 
-        private CurrencyAccount WriteTotalSupplyV7(BigInteger value)
-        {
-            ValidateTotalSupply(value);
-            return new CurrencyAccount(
+        private CurrencyAccount WriteRawTotalSupplyV7(BigInteger rawValue) =>
+            new CurrencyAccount(
                 Trie.Set(
                     KeyConverters.ToStateKey(CurrencyAccount.TotalSupplyAddress),
-                    new Integer(value)),
+                    new Integer(rawValue)),
                 WorldVersion,
                 Currency);
-        }
 
-        private BigInteger GetRawBalanceV0(Address address)
-        {
-            return Trie.Get(
+        private BigInteger GetRawBalanceV0(Address address) =>
+            Trie.Get(
                 KeyConverters.ToFungibleAssetKey(address, Currency)) is Integer i
                     ? i.Value
                     : BigInteger.Zero;
-        }
 
-        private BigInteger GetRawBalanceV7(Address address)
-        {
-            return Trie.Get(KeyConverters.ToStateKey(address)) is Integer i
+        private BigInteger GetRawBalanceV7(Address address) =>
+            Trie.Get(KeyConverters.ToStateKey(address)) is Integer i
                 ? i.Value
                 : BigInteger.Zero;
-        }
 
-        private BigInteger GetRawTotalSupplyV0()
-        {
-            if (!Currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(Currency);
-            }
-
-            return Trie.Get(KeyConverters.ToTotalSupplyKey(Currency)) is Integer i
+        private BigInteger GetRawTotalSupplyV0() =>
+            Trie.Get(KeyConverters.ToTotalSupplyKey(Currency)) is Integer i
                 ? i.Value
                 : BigInteger.Zero;
-        }
 
-        private BigInteger GetRawTotalSupplyV7()
-        {
-            return Trie.Get(KeyConverters.ToStateKey(TotalSupplyAddress)) is Integer i
+        private BigInteger GetRawTotalSupplyV7() =>
+            Trie.Get(KeyConverters.ToStateKey(TotalSupplyAddress)) is Integer i
                 ? i.Value
                 : BigInteger.Zero;
-        }
 
-        private void ValidateMinter(Address signer)
+        private void CheckCurrency(Currency currency)
         {
-            if (!Currency.AllowsToMint(signer))
+            if (!Currency.Equals(currency))
             {
-                // CurrencyPermission
-                throw new ArgumentException();
-            }
-        }
-
-        private void ValidateTotalSupply(BigInteger rawAmount)
-        {
-            if (Currency.MaximumSupply is { } maximumSupply &&
-                maximumSupply.RawValue < rawAmount)
-            {
-                // SupplyOverflow
-                throw new SupplyOverflowException(
-                    "Some message",
-                    FungibleAssetValue.FromRawValue(Currency, rawAmount));
-            }
-            else if (rawAmount < BigInteger.Zero)
-            {
-                throw new ArgumentException();
-            }
-        }
-
-        private void ValidateBalance(BigInteger rawAmount)
-        {
-            if (rawAmount < 0)
-            {
-                // InsufficientBalance
-                throw new InsufficientBalanceException(
-                    "Some message",
-                    new PrivateKey().Address,
-                    FungibleAssetValue.FromRawValue(Currency, rawAmount));
+                throw new ArgumentException(
+                    $"Given currency {currency} should match the account's currency {Currency}.",
+                    nameof(currency));
             }
         }
     }
