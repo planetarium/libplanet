@@ -54,9 +54,7 @@ namespace Libplanet.Action.State
                 Currency,
                 WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
                     ? GetRawTotalSupplyV7()
-                    : Currency.TotalSupplyTrackable
-                        ? GetRawTotalSupplyV0()
-                        : throw TotalSupplyNotTrackableException.WithDefaultMessage(Currency));
+                    : GetRawTotalSupplyV0());
 #pragma warning restore SA1118
         }
 

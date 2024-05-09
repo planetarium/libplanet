@@ -487,7 +487,8 @@ namespace Libplanet.Tests.Action
                 }
                 else
                 {
-                    Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                    Assert.Equal(
+                        Value(0, 0),
                         world.GetTotalSupply(_currencies[0]));
                 }
 
@@ -504,7 +505,8 @@ namespace Libplanet.Tests.Action
                 }
                 else
                 {
-                    Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                    Assert.Equal(
+                        Value(0, 0),
                         world.GetTotalSupply(_currencies[0]));
                 }
 
