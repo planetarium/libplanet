@@ -285,7 +285,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public void MigrateThroughBlock()
+        public void MigrateThroughBlockWorldState()
         {
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -336,6 +336,67 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Text)"foo",
                 accountTrie.Get(KeyConverters.ToStateKey(ModernAction.Address)));
+        }
+
+        [Fact]
+        public void MigrateThroughBlockCurrencyAccount()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            Log.Debug("Test Start.");
+            var chain = MakeBlockChain(
+                policy: new BlockPolicy(),
+                store: store,
+                stateStore: stateStore,
+                actionLoader: new SingleActionLoader(typeof(DumbAction)),
+                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
+            Assert.Equal(0, chain.GetWorldState().Version);
+            var miner = new PrivateKey();
+            var preEval1 = TestUtils.ProposeNext(
+                chain.Tip,
+                miner: miner.PublicKey,
+                protocolVersion: BlockMetadata.WorldStateProtocolVersion - 1);
+            var block1 = chain.EvaluateAndSign(preEval1, miner);
+            var blockCommit = CreateBlockCommit(block1);
+            chain.Append(block1, blockCommit);
+            Assert.Equal(0, chain.GetWorldState().Version);
+
+            // A block that doesn't touch any state does not migrate its state.
+            var block2 = chain.ProposeBlock(miner, blockCommit);
+            blockCommit = CreateBlockCommit(block2);
+            chain.Append(block2, blockCommit);
+            Assert.Equal(0, chain.GetWorldState().Version);
+
+            // Check if after migration, accounts can be created correctly.
+            var action = DumbAction.Create(
+                null,
+                (null, miner.Address, 10));
+
+            var tx = Transaction.Create(
+                nonce: 0,
+                privateKey: miner,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action }.ToPlainValues());
+
+            chain.StageTransaction(tx);
+            var block3 = chain.ProposeBlock(miner, blockCommit);
+            chain.Append(block3, CreateBlockCommit(block3));
+            Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetWorldState().Version);
+
+            var currencyAccountStateRoot = stateStore
+                    .GetStateRoot(block3.StateRootHash)
+                    .Get(KeyConverters.ToStateKey(
+                        new Address(DumbAction.DumbCurrency.Hash.ByteArray)));
+            Assert.NotNull(currencyAccountStateRoot);
+            var currencyAccountTrie = stateStore.GetStateRoot(
+                new HashDigest<SHA256>(currencyAccountStateRoot));
+            Assert.Equal(
+                new Integer(10),
+                currencyAccountTrie.Get(KeyConverters.ToStateKey(miner.Address)));
+            Assert.Equal(
+                new Integer(10),
+                currencyAccountTrie.Get(
+                    KeyConverters.ToStateKey(CurrencyAccount.TotalSupplyAddress)));
         }
     }
 }
