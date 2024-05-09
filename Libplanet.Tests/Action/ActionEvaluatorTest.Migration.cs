@@ -87,7 +87,8 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 new Integer(2456),
                 world4.Trie.Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
-            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 0),
                 world4.GetTotalSupply(legacyCurrency));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(modernCurrency, 2456),
@@ -139,7 +140,8 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .Trie
                     .Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
-            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 0),
                 world5.GetTotalSupply(legacyCurrency));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(modernCurrency, 2456),
@@ -197,7 +199,8 @@ namespace Libplanet.Tests.Action
                     .GetAccount(ReservedAddresses.LegacyAccount)
                     .Trie
                     .Get(KeyConverters.ToTotalSupplyKey(modernCurrency)));
-            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+            Assert.Equal(
+                FungibleAssetValue.FromRawValue(legacyCurrency, 0),
                 world6.GetTotalSupply(legacyCurrency));
             Assert.Equal(
                 FungibleAssetValue.FromRawValue(modernCurrency, 2456),
