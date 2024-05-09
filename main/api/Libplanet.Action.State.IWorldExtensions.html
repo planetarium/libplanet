@@ -94,13 +94,13 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
@@ -192,7 +192,7 @@ executing this method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to zero.</p>
 </td>
@@ -279,11 +279,31 @@ public static FungibleAssetValue GetBalance(this IWorldState worldState, Address
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldExtensions_GetTotalSupply_Libplanet_Action_State_IWorldState_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldExtensions.GetTotalSupply(Libplanet.Action.State.IWorldState%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L148">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L150">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorldExtensions_GetTotalSupply_" data-uid="Libplanet.Action.State.IWorldExtensions.GetTotalSupply*"></a>
   <h4 id="Libplanet_Action_State_IWorldExtensions_GetTotalSupply_Libplanet_Action_State_IWorldState_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Action.State.IWorldExtensions.GetTotalSupply(Libplanet.Action.State.IWorldState,Libplanet.Types.Assets.Currency)">GetTotalSupply(IWorldState, Currency)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>
+Returns the total supply of <code data-dev-comment-type="paramref" class="paramref">currency</code>.
+</p>
+<p>
+The total supply of a given <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> is <em>determined</em>
+by the following:
+<ul><li>
+        If <a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version">Version</a> is less than
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>,
+it is the amount of total supply for the <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> in question
+if the value of <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a>
+is <span class="xref">true</span>, and zero otherwise.  That is, an untracked
+<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&apos;s total supply is always considered zero.
+</li><li>
+    If <a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version">Version</a> is greater than or equal to
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>,
+it is the amount of total supply for the <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> in question
+regardless of the value of <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a>.
+</li></ul>
+
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -303,12 +323,14 @@ public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Cur
       <tr>
         <td><a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a></td>
         <td><span class="parametername">worldState</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> to read from.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
         <td><span class="parametername">currency</span></td>
-        <td></td>
+        <td><p>The currency type to query.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -323,7 +345,8 @@ public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Cur
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td></td>
+        <td><p>The total supply of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -332,7 +355,7 @@ public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Cur
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldExtensions_GetValidatorSet_Libplanet_Action_State_IWorldState_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldExtensions.GetValidatorSet(Libplanet.Action.State.IWorldState)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L160">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorldExtensions_GetValidatorSet_" data-uid="Libplanet.Action.State.IWorldExtensions.GetValidatorSet*"></a>
   <h4 id="Libplanet_Action_State_IWorldExtensions_GetValidatorSet_Libplanet_Action_State_IWorldState_" data-uid="Libplanet.Action.State.IWorldExtensions.GetValidatorSet(Libplanet.Action.State.IWorldState)">GetValidatorSet(IWorldState)</h4>
@@ -459,7 +482,7 @@ executing this method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to 0.</p>
 </td>
@@ -485,7 +508,7 @@ is less than or equal to 0.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorldExtensions_SetValidatorSet_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorldExtensions.SetValidatorSet(Libplanet.Action.State.IWorld%2CLibplanet.Types.Consensus.ValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L171">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorldExtensions.cs/#L173">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorldExtensions_SetValidatorSet_" data-uid="Libplanet.Action.State.IWorldExtensions.SetValidatorSet*"></a>
   <h4 id="Libplanet_Action_State_IWorldExtensions_SetValidatorSet_Libplanet_Action_State_IWorld_Libplanet_Types_Consensus_ValidatorSet_" data-uid="Libplanet.Action.State.IWorldExtensions.SetValidatorSet(Libplanet.Action.State.IWorld,Libplanet.Types.Consensus.ValidatorSet)">SetValidatorSet(IWorld, ValidatorSet)</h4>
@@ -634,7 +657,7 @@ compatibility.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
 is less than or equal to zero.</p>
 </td>
