@@ -6,6 +6,10 @@ Version 4.5.0
 
 To be released.
 
+Due to changes in [#3780], a network ran with a prior version may not be
+compatible with this version, specifically those that ran with
+`IAction`s that has used `GetTotalSupply()`.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -18,6 +22,11 @@ To be released.
     [[#3775]]
  -  (Libplanet.Mocks) Removed `MockWorldState.ToModern()` and
     `MockWorldState.SetTotalSupply()` methods.  [[#3778]]
+ -  (Libplanet.Action) Removed `TotalSupplyNotTrackableException` class.
+    [[#3780]]
+ -  (Libplanet.Action) `IWorldState.GetTotalSupply()` no longer throws
+    a `TotalSupplyNotTrackableException` but returns a zero amount of
+    corresponding `FungibleAssetValue`.  [[#3780]]
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +52,7 @@ To be released.
 [#3775]: https://github.com/planetarium/libplanet/pull/3775
 [#3778]: https://github.com/planetarium/libplanet/pull/3778
 [#3779]: https://github.com/planetarium/libplanet/pull/3779
+[#3780]: https://github.com/planetarium/libplanet/pull/3780
 
 
 Version 4.4.2
