@@ -1775,6 +1775,148 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.AccountState.Trie
   nameWithType: AccountState.Trie
+- uid: Libplanet.Action.State.CurrencyAccount
+  name: CurrencyAccount
+  href: api/Libplanet.Action.State.CurrencyAccount.html
+  commentId: T:Libplanet.Action.State.CurrencyAccount
+  fullName: Libplanet.Action.State.CurrencyAccount
+  nameWithType: CurrencyAccount
+- uid: Libplanet.Action.State.CurrencyAccount.#ctor(Libplanet.Store.Trie.ITrie,System.Int32,Libplanet.Types.Assets.Currency)
+  name: CurrencyAccount(ITrie, Int32, Currency)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount__ctor_Libplanet_Store_Trie_ITrie_System_Int32_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.#ctor(Libplanet.Store.Trie.ITrie,System.Int32,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.CurrencyAccount.CurrencyAccount(Libplanet.Store.Trie.ITrie, System.Int32, Libplanet.Types.Assets.Currency)
+  nameWithType: CurrencyAccount.CurrencyAccount(ITrie, Int32, Currency)
+- uid: Libplanet.Action.State.CurrencyAccount.#ctor*
+  name: CurrencyAccount
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount__ctor_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.CurrencyAccount
+  nameWithType: CurrencyAccount.CurrencyAccount
+- uid: Libplanet.Action.State.CurrencyAccount.AsAccount
+  name: AsAccount()
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_AsAccount
+  commentId: M:Libplanet.Action.State.CurrencyAccount.AsAccount
+  fullName: Libplanet.Action.State.CurrencyAccount.AsAccount()
+  nameWithType: CurrencyAccount.AsAccount()
+- uid: Libplanet.Action.State.CurrencyAccount.AsAccount*
+  name: AsAccount
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_AsAccount_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.AsAccount
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.AsAccount
+  nameWithType: CurrencyAccount.AsAccount
+- uid: Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: BurnAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: CurrencyAccount.BurnAsset(IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.CurrencyAccount.BurnAsset*
+  name: BurnAsset
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_BurnAsset_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.BurnAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.BurnAsset
+  nameWithType: CurrencyAccount.BurnAsset
+- uid: Libplanet.Action.State.CurrencyAccount.Currency
+  name: Currency
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency
+  commentId: P:Libplanet.Action.State.CurrencyAccount.Currency
+  fullName: Libplanet.Action.State.CurrencyAccount.Currency
+  nameWithType: CurrencyAccount.Currency
+- uid: Libplanet.Action.State.CurrencyAccount.Currency*
+  name: Currency
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.Currency
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.Currency
+  nameWithType: CurrencyAccount.Currency
+- uid: Libplanet.Action.State.CurrencyAccount.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_GetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.GetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.CurrencyAccount.GetBalance(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
+  nameWithType: CurrencyAccount.GetBalance(Address, Currency)
+- uid: Libplanet.Action.State.CurrencyAccount.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_GetBalance_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.GetBalance
+  nameWithType: CurrencyAccount.GetBalance
+- uid: Libplanet.Action.State.CurrencyAccount.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_GetTotalSupply_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.CurrencyAccount.GetTotalSupply(Libplanet.Types.Assets.Currency)
+  nameWithType: CurrencyAccount.GetTotalSupply(Currency)
+- uid: Libplanet.Action.State.CurrencyAccount.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_GetTotalSupply_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.GetTotalSupply
+  nameWithType: CurrencyAccount.GetTotalSupply
+- uid: Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: MintAsset(IActionContext, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: CurrencyAccount.MintAsset(IActionContext, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.CurrencyAccount.MintAsset*
+  name: MintAsset
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_MintAsset_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.MintAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.MintAsset
+  nameWithType: CurrencyAccount.MintAsset
+- uid: Libplanet.Action.State.CurrencyAccount.TotalSupplyAddress
+  name: TotalSupplyAddress
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_TotalSupplyAddress
+  commentId: F:Libplanet.Action.State.CurrencyAccount.TotalSupplyAddress
+  fullName: Libplanet.Action.State.CurrencyAccount.TotalSupplyAddress
+  nameWithType: CurrencyAccount.TotalSupplyAddress
+- uid: Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  name: TransferAsset(IActionContext, Address, Address, FungibleAssetValue)
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Action.IActionContext, Libplanet.Crypto.Address, Libplanet.Crypto.Address, Libplanet.Types.Assets.FungibleAssetValue)
+  nameWithType: CurrencyAccount.TransferAsset(IActionContext, Address, Address, FungibleAssetValue)
+- uid: Libplanet.Action.State.CurrencyAccount.TransferAsset*
+  name: TransferAsset
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_TransferAsset_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.TransferAsset
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.TransferAsset
+  nameWithType: CurrencyAccount.TransferAsset
+- uid: Libplanet.Action.State.CurrencyAccount.Trie
+  name: Trie
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Trie
+  commentId: P:Libplanet.Action.State.CurrencyAccount.Trie
+  fullName: Libplanet.Action.State.CurrencyAccount.Trie
+  nameWithType: CurrencyAccount.Trie
+- uid: Libplanet.Action.State.CurrencyAccount.Trie*
+  name: Trie
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Trie_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.Trie
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.Trie
+  nameWithType: CurrencyAccount.Trie
+- uid: Libplanet.Action.State.CurrencyAccount.WorldVersion
+  name: WorldVersion
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_WorldVersion
+  commentId: P:Libplanet.Action.State.CurrencyAccount.WorldVersion
+  fullName: Libplanet.Action.State.CurrencyAccount.WorldVersion
+  nameWithType: CurrencyAccount.WorldVersion
+- uid: Libplanet.Action.State.CurrencyAccount.WorldVersion*
+  name: WorldVersion
+  href: api/Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_WorldVersion_
+  commentId: Overload:Libplanet.Action.State.CurrencyAccount.WorldVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.State.CurrencyAccount.WorldVersion
+  nameWithType: CurrencyAccount.WorldVersion
 - uid: Libplanet.Action.State.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.Action.State.CurrencyPermissionException.html
