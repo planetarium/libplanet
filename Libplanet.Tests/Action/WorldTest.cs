@@ -474,21 +474,39 @@ namespace Libplanet.Tests.Action
             // While not specifically tied to a protocol version,
             // Total supply tracking was introduced while the block protocol version
             // was at 4.
-            if (ProtocolVersion > BlockMetadata.PBFTProtocolVersion)
+            if (ProtocolVersion >= BlockMetadata.PBFTProtocolVersion)
             {
                 IWorld world = _initWorld;
                 IActionContext context = _initContext;
 
-                Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                    world.GetTotalSupply(_currencies[0]));
+                if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
+                {
+                    Assert.Equal(
+                        Value(0, 5),
+                        world.GetTotalSupply(_currencies[0]));
+                }
+                else
+                {
+                    Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                        world.GetTotalSupply(_currencies[0]));
+                }
 
                 Assert.Equal(
                     Value(4, 5),
                     _initWorld.GetTotalSupply(_currencies[4]));
 
                 world = world.MintAsset(context, _addr[0], Value(0, 10));
-                Assert.Throws<TotalSupplyNotTrackableException>(() =>
-                    world.GetTotalSupply(_currencies[0]));
+                if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
+                {
+                    Assert.Equal(
+                        Value(0, 15),
+                        world.GetTotalSupply(_currencies[0]));
+                }
+                else
+                {
+                    Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                        world.GetTotalSupply(_currencies[0]));
+                }
 
                 world = world.MintAsset(context, _addr[0], Value(4, 10));
                 Assert.Equal(

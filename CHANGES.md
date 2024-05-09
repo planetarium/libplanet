@@ -25,6 +25,8 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Action) Added `CurrencyAccount` class.  [[#3779]]
+
 ### Behavioral changes
 
  -  (Libplanet.Mocks) `MockWorldState.SetBalance()` now automatically updates
@@ -40,6 +42,7 @@ To be released.
 [#3774]: https://github.com/planetarium/libplanet/pull/3774
 [#3775]: https://github.com/planetarium/libplanet/pull/3775
 [#3778]: https://github.com/planetarium/libplanet/pull/3778
+[#3779]: https://github.com/planetarium/libplanet/pull/3779
 
 
 Version 4.4.2
