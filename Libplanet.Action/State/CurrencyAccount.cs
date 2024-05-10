@@ -59,7 +59,6 @@ namespace Libplanet.Action.State
         }
 
         public CurrencyAccount MintAsset(
-            IActionContext context,
             Address recipient,
             FungibleAssetValue value)
         {
@@ -70,22 +69,13 @@ namespace Libplanet.Action.State
                     nameof(value),
                     $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-            else if (!Currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
-                    $"the authority to mint or burn currency {Currency}.",
-                    context.Signer,
-                    Currency);
-            }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? MintRawAssetV7(context, recipient, value.RawValue)
-                : MintRawAssetV0(context, recipient, value.RawValue);
+                ? MintRawAssetV7(recipient, value.RawValue)
+                : MintRawAssetV0(recipient, value.RawValue);
         }
 
         public CurrencyAccount BurnAsset(
-            IActionContext context,
             Address owner,
             FungibleAssetValue value)
         {
@@ -96,18 +86,10 @@ namespace Libplanet.Action.State
                     nameof(value),
                     $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-            else if (!Currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
-                    $"the authority to mint or burn currency {Currency}.",
-                    context.Signer,
-                    Currency);
-            }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? BurnRawAssetV7(context, owner, value.RawValue)
-                : BurnRawAssetV0(context, owner, value.RawValue);
+                ? BurnRawAssetV7(owner, value.RawValue)
+                : BurnRawAssetV0(owner, value.RawValue);
         }
 
         public CurrencyAccount TransferAsset(
@@ -153,7 +135,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount MintRawAssetV0(
-            IActionContext context,
             Address recipient,
             BigInteger rawValue)
         {
@@ -186,7 +167,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount MintRawAssetV7(
-            IActionContext context,
             Address recipient,
             BigInteger rawValue)
         {
@@ -217,7 +197,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount BurnRawAssetV0(
-            IActionContext context,
             Address owner,
             BigInteger rawValue)
         {
@@ -249,7 +228,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount BurnRawAssetV7(
-            IActionContext context,
             Address owner,
             BigInteger rawValue)
         {

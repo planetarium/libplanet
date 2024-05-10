@@ -36,11 +36,11 @@ namespace Libplanet.Action.State
         /// <param name="value">The asset value to mint.</param>
         /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
         /// name="value"/> is added to <paramref name="recipient"/>'s balance.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
-        /// is less than or equal to 0.</exception>
         /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
         /// (or a miner in case of block actions) is not a member of the <see
         /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to 0.</exception>
         /// <exception cref="SupplyOverflowException">Thrown when the sum of the
         /// <paramref name="value"/> to be minted and the current total supply amount of the
         /// <see cref="FungibleAssetValue.Currency"/> exceeds the
@@ -50,9 +50,14 @@ namespace Libplanet.Action.State
             this IWorld world,
             IActionContext context,
             Address recipient,
-            FungibleAssetValue value) =>
-                world.SetCurrencyAccount(
-                    world.GetCurrencyAccount(value.Currency).MintAsset(context, recipient, value));
+            FungibleAssetValue value) => value.Currency.AllowsToMint(context.Signer)
+                ? world.SetCurrencyAccount(
+                    world.GetCurrencyAccount(value.Currency).MintAsset(recipient, value))
+                : throw new CurrencyPermissionException(
+                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
+                    $"the authority to mint or burn currency {value.Currency}.",
+                    context.Signer,
+                    value.Currency);
 
         /// <summary>
         /// Burns the fungible asset <paramref name="value"/> (i.e., in-game monetary) from
@@ -65,11 +70,11 @@ namespace Libplanet.Action.State
         /// <param name="value">The fungible asset <paramref name="value"/> to burn.</param>
         /// <returns>A new <see cref="IWorld"/> instance that the given <paramref
         /// name="value"/> is subtracted from <paramref name="owner"/>'s balance.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
-        /// is less than or equal to zero.</exception>
         /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
         /// (or a miner in case of block actions) is not a member of the <see
         /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="value"/>
+        /// is less than or equal to zero.</exception>
         /// <exception cref="InsufficientBalanceException">Thrown when the <paramref name="owner"/>
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
@@ -77,9 +82,14 @@ namespace Libplanet.Action.State
             this IWorld world,
             IActionContext context,
             Address owner,
-            FungibleAssetValue value) =>
-                world.SetCurrencyAccount(
-                    world.GetCurrencyAccount(value.Currency).BurnAsset(context, owner, value));
+            FungibleAssetValue value) => value.Currency.AllowsToMint(context.Signer)
+                ? world.SetCurrencyAccount(
+                    world.GetCurrencyAccount(value.Currency).BurnAsset(owner, value))
+                : throw new CurrencyPermissionException(
+                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
+                    $"the authority to mint or burn currency {value.Currency}.",
+                    context.Signer,
+                    value.Currency);
 
         /// <summary>
         /// Transfers the fungible asset <paramref name="value"/> (i.e., in-game monetary)
