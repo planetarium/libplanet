@@ -55,14 +55,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports.rome": true
+      "source.organizeImports.rome": "explicit"
     }
   },
   "[javascript]": {
     "editor.defaultFormatter": "rome.rome",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports.rome": true
+      "source.organizeImports.rome": "explicit"
     }
   }
 }
