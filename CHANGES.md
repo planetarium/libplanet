@@ -6,9 +6,14 @@ Version 4.5.0
 
 To be released.
 
-Due to changes in [#3780], a network ran with a prior version may not be
-compatible with this version, specifically those that ran with
-`IAction`s that has used `GetTotalSupply()`.
+Due to changes in [#3780] and [#3783], a network ran with a prior version
+may not be compatible with this version.  Regarding [#3780], a network
+that ran with an `IAction` that has used `GetTotalSupply()` with
+its execution result dependent on its value may not be compatible.
+Regarding [#3783], a network that ran with an `IAction` that has either
+used `MintAsset()` and `BurnAsset()` with its execution result dependent on
+handling of a possible `Exception` thrown by these methods
+may not be compatible.
 
 ### Deprecated APIs
 
@@ -27,6 +32,9 @@ compatible with this version, specifically those that ran with
  -  (Libplanet.Action) `IWorldState.GetTotalSupply()` no longer throws
     a `TotalSupplyNotTrackableException` but returns a zero amount of
     corresponding `FungibleAssetValue`.  [[#3780]]
+ -  (Libplanet.Action) Changed the precednce for the types of `Exception`s
+    that may be thrown by `IWorldState.MintAsset()` and
+    `IWorldState.BurnAsset()`.
 
 ### Backward-incompatible network protocol changes
 
@@ -53,6 +61,7 @@ compatible with this version, specifically those that ran with
 [#3778]: https://github.com/planetarium/libplanet/pull/3778
 [#3779]: https://github.com/planetarium/libplanet/pull/3779
 [#3780]: https://github.com/planetarium/libplanet/pull/3780
+[#3783]: https://github.com/planetarium/libplanet/pull/3783
 
 
 Version 4.4.2
