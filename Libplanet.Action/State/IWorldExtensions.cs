@@ -113,10 +113,17 @@ namespace Libplanet.Action.State
             Address sender,
             Address recipient,
             FungibleAssetValue value) =>
-                world.SetCurrencyAccount(
-                    world
-                        .GetCurrencyAccount(value.Currency)
-                        .TransferAsset(context, sender, recipient, value));
+                context.BlockProtocolVersion > 0
+                    ? world.SetCurrencyAccount(
+                        world
+                            .GetCurrencyAccount(value.Currency)
+                            .TransferAsset(sender, recipient, value))
+#pragma warning disable CS0618 // Obsolete
+                    : world.SetCurrencyAccount(
+                        world
+                            .GetCurrencyAccount(value.Currency)
+                            .TransferAssetV0(sender, recipient, value));
+#pragma warning restore CS0618
 
         /// <summary>
         /// <para>
