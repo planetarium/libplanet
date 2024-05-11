@@ -778,7 +778,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
         <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <span class="xref">null</span> if no block
 having such <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
 </td>
@@ -829,7 +829,7 @@ having such <code data-dev-comment-type="paramref" class="paramref">blockHash</c
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
         <td><p>A found block's <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Index">Index</a>, or <span class="xref">null</span> if
 no block having such <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
 </td>
@@ -866,7 +866,7 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
         <td><p>The ID of the current canonical chain.  Maybe <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -973,7 +973,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><p><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> if the index exists. Otherwise
 <span class="xref">null</span>.</p>
 </td>
@@ -1257,7 +1257,7 @@ the offset from the end.  For example, -1 means the topmost block.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><p>The block hash of the index in the chain.  If there is no such index,
 it returns <span class="xref">null</span>.</p>
 </td>
@@ -1336,7 +1336,7 @@ iterate.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
         <td><span class="parametername">limit</span></td>
         <td><p>The maximum number of block hashes to get.</p>
 </td>
@@ -1532,7 +1532,7 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
 when the canonical chain is not assigned.  <span class="xref">false</span> by default.
 If it set to <span class="xref">true</span>, does not throw exception when
 there is no canonical chain.
-Otherwise, throws <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> when
+Otherwise, throws <span class="xref">System.InvalidOperationException</span> when
 there is no canonical chain.</p>
 </td>
       </tr>
@@ -1548,7 +1548,7 @@ there is no canonical chain.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><span class="xref">System.InvalidOperationException</span></td>
         <td><p>Thrown when there is no canonical chain and
 <code data-dev-comment-type="paramref" class="paramref">noopWithoutCanon</code> is false.</p>
 </td>
