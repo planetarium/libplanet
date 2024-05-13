@@ -33,8 +33,8 @@ may not be compatible.
     a `TotalSupplyNotTrackableException` but returns a zero amount of
     corresponding `FungibleAssetValue`.  [[#3780]]
  -  (Libplanet.Action) Changed the precednce for the types of `Exception`s
-    that may be thrown by `IWorldState.MintAsset()` and
-    `IWorldState.BurnAsset()`.
+    that may be thrown by `IWorld.MintAsset()` and
+    `IWorld.BurnAsset()`.
 
 ### Backward-incompatible network protocol changes
 
