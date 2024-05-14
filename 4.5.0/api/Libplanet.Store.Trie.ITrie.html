@@ -1,0 +1,772 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ITrie
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ITrie
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.ITrie">
+
+
+  <h1 id="Libplanet_Store_Trie_ITrie" data-uid="Libplanet.Store.Trie.ITrie" class="text-break">Interface ITrie
+</h1>
+  <div class="markdown level0 summary"><p>An interface for <a href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
+  <h5 id="Libplanet_Store_Trie_ITrie_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ITrie</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L32">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Hash_" data-uid="Libplanet.Store.Trie.ITrie.Hash*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Hash" data-uid="Libplanet.Store.Trie.ITrie.Hash">Hash</h4>
+  <div class="markdown level1 summary"><p>The state root hash of the trie.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">HashDigest&lt;SHA256&gt; Hash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Hash_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is <span class="xref">null</span>, this still gives a unique
+<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> value corresponding to <span class="xref">null</span>
+that is <em>never recorded</em>.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_ITrie_Hash_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Recorded.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Recorded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Recorded_" data-uid="Libplanet.Store.Trie.ITrie.Recorded*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Recorded" data-uid="Libplanet.Store.Trie.ITrie.Recorded">Recorded</h4>
+  <div class="markdown level1 summary"><p>Whether <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is recorded in the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Recorded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Recorded_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> that is <span class="xref">null</span> is always considered
+as recorded.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_ITrie_Recorded_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Root.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Root%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L21">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Root_" data-uid="Libplanet.Store.Trie.ITrie.Root*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Root" data-uid="Libplanet.Store.Trie.ITrie.Root">Root</h4>
+  <div class="markdown level1 summary"><p>The root of the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.  This is <span class="xref">null</span> if and only if
+the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> is empty.  That is, this is never a &quot;hashed node&quot; of a
+<span class="xref">null</span> root.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">INode Root { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Root_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a></div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Diff(Libplanet.Store.Trie.ITrie)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L165">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Diff_" data-uid="Libplanet.Store.Trie.ITrie.Diff*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_" data-uid="Libplanet.Store.Trie.ITrie.Diff(Libplanet.Store.Trie.ITrie)">Diff(ITrie)</h4>
+  <div class="markdown level1 summary"><p>Lists every non-<span class="xref">null</span> <span class="xref">Bencodex.Types.IValue</span> that is different
+from the one stored in <code data-dev-comment-type="paramref" class="paramref">other</code> given any <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;(KeyBytes Path, IValue TargetValue, IValue SourceValue)&gt; Diff(ITrie other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>The other <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> to compare to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-3">(T1 Item1, T2 Item2, T3 Item3)</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">Bencodex.Types.IValue</span>, <span class="xref">Bencodex.Types.IValue</span>&gt;&gt;</td>
+        <td><p>A list of tuples where each tuple consists of the path where
+the difference occurred, the &quot;old&quot; value from <code data-dev-comment-type="paramref" class="paramref">other</code> and
+the current &quot;new&quot; value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This operation has the following properties:</p>
+<ul><li>
+        This operation is non-symmetric.  That is, in general,
+<code>trieA.Diff(trieB)</code> and <code>trieB.Diff(trieA)</code> are not the same.
+</li><li>
+    Values existing in <code data-dev-comment-type="paramref" class="paramref">other</code> but not in the source instance,
+    considered as <span class="xref">null</span> in the source, are not included in the
+    result.
+</li></ul>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.InvalidTrieNodeException.html">InvalidTrieNodeException</a></td>
+        <td><p>Thrown when the method fails
+to traverse the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L82">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Get_" data-uid="Libplanet.Store.Trie.ITrie.Get*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes_" data-uid="Libplanet.Store.Trie.ITrie.Get(Libplanet.Store.Trie.KeyBytes)">Get(KeyBytes)</h4>
+  <div class="markdown level1 summary"><p>Gets the values stored with <code data-dev-comment-type="paramref" class="paramref">key</code> in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set(in KeyBytes, IValue)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IValue Get(KeyBytes key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The key used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set(in KeyBytes, IValue)</a> to store a value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><p>The value associated to the specified <code data-dev-comment-type="paramref" class="paramref">key</code>.  Absent
+value is represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Get_Libplanet_Store_Trie_KeyBytes__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Get(System.Collections.Generic.IReadOnlyList%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L91">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Get_" data-uid="Libplanet.Store.Trie.ITrie.Get*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.ITrie.Get(System.Collections.Generic.IReadOnlyList{Libplanet.Store.Trie.KeyBytes})">Get(IReadOnlyList&lt;KeyBytes&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the values stored with <code data-dev-comment-type="paramref" class="paramref">keys</code> in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set(in KeyBytes, IValue)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IValue&gt; Get(IReadOnlyList&lt;KeyBytes&gt; keys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
+        <td><span class="parametername">keys</span></td>
+        <td><p>The keys used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_">Set(in KeyBytes, IValue)</a> to store a value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><p>The values associated to the specified <code data-dev-comment-type="paramref" class="paramref">keys</code>.  The associated
+values are ordered in the same way to the corresponding <code data-dev-comment-type="paramref" class="paramref">keys</code>.  Absent
+values are represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Get_System_Collections_Generic_IReadOnlyList_Libplanet_Store_Trie_KeyBytes___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_GetNode_Libplanet_Store_Trie_Nibbles_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.GetNode(Libplanet.Store.Trie.Nibbles)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L117">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_GetNode_" data-uid="Libplanet.Store.Trie.ITrie.GetNode*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_GetNode_Libplanet_Store_Trie_Nibbles_" data-uid="Libplanet.Store.Trie.ITrie.GetNode(Libplanet.Store.Trie.Nibbles)">GetNode(Nibbles)</h4>
+  <div class="markdown level1 summary"><p>Gets the first node encountered at <code data-dev-comment-type="paramref" class="paramref">nibbles</code> when traversing down
+from <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">INode GetNode(Nibbles nibbles)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a></td>
+        <td><span class="parametername">nibbles</span></td>
+        <td><p>The path to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a></td>
+        <td><p>A node at <code data-dev-comment-type="paramref" class="paramref">nibbles</code>, if any.
+Otherwise <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_GetNode_Libplanet_Store_Trie_Nibbles__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+There may be more than one <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> at <code data-dev-comment-type="paramref" class="paramref">nibbles</code>.
+For instance, a <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>, a <a class="xref" href="Libplanet.Store.Trie.Nodes.ValueNode.html">ValueNode</a> as the value of the
+aforementioned <a class="xref" href="Libplanet.Store.Trie.Nodes.FullNode.html">FullNode</a>, and up to two additional <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a>s
+is possible.
+</p>
+<p>
+As such, for two equivalent <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s, <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a>s that
+<em>would have the same committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a>es</em>, this may return different
+types of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> depending on the actual underlying &quot;structure&quot;.
+However, returned <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>s for such <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s are
+equivalent as sub-<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s.
+</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.InvalidTrieNodeException.html">InvalidTrieNodeException</a></td>
+        <td><p>Thrown when an unknown type
+of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> is encountered while traversing to the given path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_GetNode_Libplanet_Store_Trie_Nibbles__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_IterateNodes.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.IterateNodes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L139">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_IterateNodes_" data-uid="Libplanet.Store.Trie.ITrie.IterateNodes*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_IterateNodes" data-uid="Libplanet.Store.Trie.ITrie.IterateNodes">IterateNodes()</h4>
+  <div class="markdown level1 summary"><p>Iterates and every stored <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a> along with its respective
+path in <a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;(Nibbles Path, INode Node)&gt; IterateNodes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(T1 Item1, T2 Item2)</a>&lt;<a class="xref" href="Libplanet.Store.Trie.Nibbles.html">Nibbles</a>, <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>&gt;&gt;</td>
+        <td><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of all <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>s
+in no particular order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_IterateNodes_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is a very heavy operation.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_ITrie_IterateNodes_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_IterateValues.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.IterateValues%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L128">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_IterateValues_" data-uid="Libplanet.Store.Trie.ITrie.IterateValues*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_IterateValues" data-uid="Libplanet.Store.Trie.ITrie.IterateValues">IterateValues()</h4>
+  <div class="markdown level1 summary"><p>Iterates and every stored <span class="xref">Bencodex.Types.IValue</span> along with its respective
+path in <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;(KeyBytes Path, IValue Value)&gt; IterateValues()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(T1 Item1, T2 Item2)</a>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">Bencodex.Types.IValue</span>&gt;&gt;</td>
+        <td><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of all <span class="xref">Bencodex.Types.IValue</span>s
+in no particular order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_IterateValues_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is a very heavy operation.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_ITrie_IterateValues_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Remove_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Remove(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Remove_" data-uid="Libplanet.Store.Trie.ITrie.Remove*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Remove_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.ITrie.Remove(Libplanet.Store.Trie.KeyBytes@)">Remove(in KeyBytes)</h4>
+  <div class="markdown level1 summary"><p>Removes the value at the path corresponding to given <code data-dev-comment-type="paramref" class="paramref">key</code>
+<em>in memory</em>.  If there is no <span class="xref">Bencodex.Types.IValue</span> at <code data-dev-comment-type="paramref" class="paramref">key</code>,
+this does nothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITrie Remove(in KeyBytes key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The unique key to associate with the <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>Returns new updated <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Remove_Libplanet_Store_Trie_KeyBytes___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This <em>should not</em> actually remove anything from storage.
+The removal of the value at the marked path given by <code data-dev-comment-type="paramref" class="paramref">key</code> is actually
+recorded to storage when <a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit(ITrie)</a> is called.
+Regardless, there is actually no removal of any value from storage even when
+<a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit(ITrie)</a> is called.</p>
+</div>
+  <h5 id="Libplanet_Store_Trie_ITrie_Remove_Libplanet_Store_Trie_KeyBytes___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit</a>(<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes%40%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L57">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Set_" data-uid="Libplanet.Store.Trie.ITrie.Set*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue_" data-uid="Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,Bencodex.Types.IValue)">Set(in KeyBytes, IValue)</h4>
+  <div class="markdown level1 summary"><p>Stores the <code data-dev-comment-type="paramref" class="paramref">value</code> at the path corresponding to
+given <code data-dev-comment-type="paramref" class="paramref">key</code> <em>in memory</em>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITrie Set(in KeyBytes key, IValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The unique key to associate with the <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>Returns new updated <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This <em>should not</em> actually write anything to storage.
+Stored <code data-dev-comment-type="paramref" class="paramref">value</code> is actually written to storage when
+<a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit(ITrie)</a> is called.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">value</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__Bencodex_Types_IValue__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit</a>(<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>)</div>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_GetMetadata_Libplanet_Store_Trie_ITrie_">TrieExtensions.GetMetadata(ITrie)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_SetMetadata_Libplanet_Store_Trie_ITrie_Bencodex_Types_IValue_">TrieExtensions.SetMetadata(ITrie, IValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Store.Trie.TrieExtensions.html#Libplanet_Store_Trie_TrieExtensions_SetMetadata_Libplanet_Store_Trie_ITrie_Libplanet_Store_Trie_TrieMetadata_">TrieExtensions.SetMetadata(ITrie, TrieMetadata)</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/4.5.0/apiSpec/new?filename=Libplanet_Store_Trie_ITrie.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/4.5.0/Libplanet.Store/Trie/ITrie.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
