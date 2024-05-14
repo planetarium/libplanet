@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.5.0
 -------------
 
-To be released.
+Released on May 14, 2024.
 
 Due to changes in [#3780] and [#3783], a network ran with a prior version
 may not be compatible with this version.  Regarding [#3780], a network
@@ -14,8 +14,6 @@ Regarding [#3783], a network that ran with an `IAction` that has either
 used `MintAsset()` and `BurnAsset()` with its execution result dependent on
 handling of a possible `Exception` thrown by these methods
 may not be compatible.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -36,10 +34,6 @@ may not be compatible.
     that may be thrown by `IWorld.MintAsset()` and
     `IWorld.BurnAsset()`.
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Action) Added `CurrencyAccount` class.  [[#3779]]
@@ -48,12 +42,6 @@ may not be compatible.
 
  -  (Libplanet.Mocks) `MockWorldState.SetBalance()` now automatically updates
     the total supply of the provided `Currency`.  [[#3778]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3769]: https://github.com/planetarium/libplanet/pull/3769
 [#3774]: https://github.com/planetarium/libplanet/pull/3774
