@@ -59,7 +59,6 @@ namespace Libplanet.Action.State
         }
 
         public CurrencyAccount MintAsset(
-            IActionContext context,
             Address recipient,
             FungibleAssetValue value)
         {
@@ -70,22 +69,13 @@ namespace Libplanet.Action.State
                     nameof(value),
                     $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-            else if (!Currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
-                    $"the authority to mint or burn currency {Currency}.",
-                    context.Signer,
-                    Currency);
-            }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? MintRawAssetV7(context, recipient, value.RawValue)
-                : MintRawAssetV0(context, recipient, value.RawValue);
+                ? MintRawAssetV7(recipient, value.RawValue)
+                : MintRawAssetV0(recipient, value.RawValue);
         }
 
         public CurrencyAccount BurnAsset(
-            IActionContext context,
             Address owner,
             FungibleAssetValue value)
         {
@@ -96,22 +86,13 @@ namespace Libplanet.Action.State
                     nameof(value),
                     $"The amount to mint, burn, or transfer must be greater than zero: {value}");
             }
-            else if (!Currency.AllowsToMint(context.Signer))
-            {
-                throw new CurrencyPermissionException(
-                    $"Given {nameof(context)}'s signer {context.Signer} does not have " +
-                    $"the authority to mint or burn currency {Currency}.",
-                    context.Signer,
-                    Currency);
-            }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? BurnRawAssetV7(context, owner, value.RawValue)
-                : BurnRawAssetV0(context, owner, value.RawValue);
+                ? BurnRawAssetV7(owner, value.RawValue)
+                : BurnRawAssetV0(owner, value.RawValue);
         }
 
         public CurrencyAccount TransferAsset(
-            IActionContext context,
             Address sender,
             Address recipient,
             FungibleAssetValue value)
@@ -125,8 +106,27 @@ namespace Libplanet.Action.State
             }
 
             return WorldVersion >= BlockMetadata.CurrencyAccountProtocolVersion
-                ? TransferRawAssetV7(context, sender, recipient, value.RawValue)
-                : TransferRawAssetV0(context, sender, recipient, value.RawValue);
+                ? TransferRawAssetV7(sender, recipient, value.RawValue)
+                : TransferRawAssetV1(sender, recipient, value.RawValue);
+        }
+
+        [Obsolete(
+            "Should not be used unless to specifically keep backwards compatibility " +
+            "for IActions that's been used when block protocol version was 0.")]
+        public CurrencyAccount TransferAssetV0(
+            Address sender,
+            Address recipient,
+            FungibleAssetValue value)
+        {
+            CheckCurrency(value.Currency);
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    $"The amount to mint, burn, or transfer must be greater than zero: {value}");
+            }
+
+            return TransferRawAssetV0(sender, recipient, value.RawValue);
         }
 
         public IAccount AsAccount()
@@ -135,7 +135,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount MintRawAssetV0(
-            IActionContext context,
             Address recipient,
             BigInteger rawValue)
         {
@@ -168,7 +167,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount MintRawAssetV7(
-            IActionContext context,
             Address recipient,
             BigInteger rawValue)
         {
@@ -199,7 +197,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount BurnRawAssetV0(
-            IActionContext context,
             Address owner,
             BigInteger rawValue)
         {
@@ -231,7 +228,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount BurnRawAssetV7(
-            IActionContext context,
             Address owner,
             BigInteger rawValue)
         {
@@ -260,7 +256,6 @@ namespace Libplanet.Action.State
         }
 
         private CurrencyAccount TransferRawAssetV7(
-            IActionContext context,
             Address sender,
             Address recipient,
             BigInteger rawValue)
@@ -289,8 +284,7 @@ namespace Libplanet.Action.State
             return currencyAccount;
         }
 
-        private CurrencyAccount TransferRawAssetV0(
-            IActionContext context,
+        private CurrencyAccount TransferRawAssetV1(
             Address sender,
             Address recipient,
             BigInteger rawValue)
@@ -311,29 +305,46 @@ namespace Libplanet.Action.State
 
             // NOTE: For backward compatibility with the bugged behavior before
             // protocol version 1.
-            if (context.BlockProtocolVersion == 0)
+            currencyAccount = currencyAccount.WriteRawBalanceV0(
+                sender,
+                prevSenderBalanceRawValue - rawValue);
+            BigInteger prevRecipientBalanceRawValue =
+                currencyAccount.GetRawBalanceV0(recipient);
+            currencyAccount = currencyAccount.WriteRawBalanceV0(
+                recipient,
+                prevRecipientBalanceRawValue + rawValue);
+            return currencyAccount;
+        }
+
+        private CurrencyAccount TransferRawAssetV0(
+            Address sender,
+            Address recipient,
+            BigInteger rawValue)
+        {
+            CurrencyAccount currencyAccount = this;
+            BigInteger prevSenderBalanceRawValue = currencyAccount.GetRawBalanceV0(sender);
+            if (prevSenderBalanceRawValue - rawValue < 0)
             {
-                BigInteger prevRecipientBalanceRawValue =
-                    currencyAccount.GetRawBalanceV0(recipient);
-                currencyAccount = currencyAccount.WriteRawBalanceV0(
+                FungibleAssetValue prevSenderBalance =
+                    FungibleAssetValue.FromRawValue(Currency, prevSenderBalanceRawValue);
+                FungibleAssetValue value = FungibleAssetValue.FromRawValue(Currency, rawValue);
+                throw new InsufficientBalanceException(
+                    $"Cannot burn or transfer {value} from {sender} as the current balance " +
+                    $"of {sender} is {prevSenderBalance}.",
                     sender,
-                    prevSenderBalanceRawValue - rawValue);
-                currencyAccount = currencyAccount.WriteRawBalanceV0(
-                    recipient,
-                    prevRecipientBalanceRawValue + rawValue);
-            }
-            else
-            {
-                currencyAccount = currencyAccount.WriteRawBalanceV0(
-                    sender,
-                    prevSenderBalanceRawValue - rawValue);
-                BigInteger prevRecipientBalanceRawValue =
-                    currencyAccount.GetRawBalanceV0(recipient);
-                currencyAccount = currencyAccount.WriteRawBalanceV0(
-                    recipient,
-                    prevRecipientBalanceRawValue + rawValue);
+                    prevSenderBalance);
             }
 
+            // NOTE: For backward compatibility with the bugged behavior before
+            // protocol version 1.
+            BigInteger prevRecipientBalanceRawValue =
+                currencyAccount.GetRawBalanceV0(recipient);
+            currencyAccount = currencyAccount.WriteRawBalanceV0(
+                sender,
+                prevSenderBalanceRawValue - rawValue);
+            currencyAccount = currencyAccount.WriteRawBalanceV0(
+                recipient,
+                prevRecipientBalanceRawValue + rawValue);
             return currencyAccount;
         }
 
