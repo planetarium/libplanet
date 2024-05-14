@@ -63,9 +63,14 @@
 
 <h2 id="version-450">Version 4.5.0</h2>
 <p>To be released.</p>
-<p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3780">#3780</a>, a network ran with a prior version may not be
-compatible with this version, specifically those that ran with
-<code>IAction</code>s that has used <code>GetTotalSupply()</code>.</p>
+<p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3780">#3780</a> and <a href="https://github.com/planetarium/libplanet/pull/3783">#3783</a>, a network ran with a prior version
+may not be compatible with this version.  Regarding <a href="https://github.com/planetarium/libplanet/pull/3780">#3780</a>, a network
+that ran with an <code>IAction</code> that has used <code>GetTotalSupply()</code> with
+its execution result dependent on its value may not be compatible.
+Regarding <a href="https://github.com/planetarium/libplanet/pull/3783">#3783</a>, a network that ran with an <code>IAction</code> that has either
+used <code>MintAsset()</code> and <code>BurnAsset()</code> with its execution result dependent on
+handling of a possible <code>Exception</code> thrown by these methods
+may not be compatible.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -82,6 +87,9 @@ from 6 to 7.  [<a href="https://github.com/planetarium/libplanet/pull/3769">#376
 <li>(Libplanet.Action) <code>IWorldState.GetTotalSupply()</code> no longer throws
 a <code>TotalSupplyNotTrackableException</code> but returns a zero amount of
 corresponding <code>FungibleAssetValue</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3780">#3780</a>]</li>
+<li>(Libplanet.Action) Changed the precednce for the types of <code>Exception</code>s
+that may be thrown by <code>IWorld.MintAsset()</code> and
+<code>IWorld.BurnAsset()</code>.</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

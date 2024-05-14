@@ -84,7 +84,7 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
@@ -93,16 +93,16 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
@@ -324,20 +324,20 @@ the total supply of the currency gets stored.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_BurnAsset_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/CurrencyAccount.cs/#L87">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/CurrencyAccount.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Action_State_CurrencyAccount_BurnAsset_" data-uid="Libplanet.Action.State.CurrencyAccount.BurnAsset*"></a>
-  <h4 id="Libplanet_Action_State_CurrencyAccount_BurnAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">BurnAsset(IActionContext, Address, FungibleAssetValue)</h4>
+  <h4 id="Libplanet_Action_State_CurrencyAccount_BurnAsset_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.BurnAsset(Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">BurnAsset(Address, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency">Currency</a> starting with
 <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CurrencyAccount BurnAsset(IActionContext context, Address owner, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public CurrencyAccount BurnAsset(Address owner, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -349,11 +349,6 @@ the total supply of the currency gets stored.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">owner</span></td>
@@ -486,20 +481,20 @@ the total supply of the currency gets stored.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_MintAsset_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/CurrencyAccount.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Action_State_CurrencyAccount_MintAsset_" data-uid="Libplanet.Action.State.CurrencyAccount.MintAsset*"></a>
-  <h4 id="Libplanet_Action_State_CurrencyAccount_MintAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">MintAsset(IActionContext, Address, FungibleAssetValue)</h4>
+  <h4 id="Libplanet_Action_State_CurrencyAccount_MintAsset_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.MintAsset(Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">MintAsset(Address, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency">Currency</a> starting with
 <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CurrencyAccount MintAsset(IActionContext context, Address recipient, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public CurrencyAccount MintAsset(Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -512,8 +507,62 @@ the total supply of the currency gets stored.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">recipient</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.CurrencyAccount.html">CurrencyAccount</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_TransferAsset_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Crypto.Address%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/CurrencyAccount.cs/#L95">View Source</a>
+  </span>
+  <a id="Libplanet_Action_State_CurrencyAccount_TransferAsset_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAsset*"></a>
+  <h4 id="Libplanet_Action_State_CurrencyAccount_TransferAsset_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">TransferAsset(Address, Address, FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency">Currency</a> starting with
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CurrencyAccount TransferAsset(Address sender, Address recipient, FungibleAssetValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">sender</span></td>
         <td></td>
       </tr>
       <tr>
@@ -545,20 +594,21 @@ the total supply of the currency gets stored.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Action.IActionContext%2CLibplanet.Crypto.Address%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_CurrencyAccount_TransferAssetV0_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.CurrencyAccount.TransferAssetV0(Libplanet.Crypto.Address%2CLibplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/CurrencyAccount.cs/#L113">View Source</a>
   </span>
-  <a id="Libplanet_Action_State_CurrencyAccount_TransferAsset_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAsset*"></a>
-  <h4 id="Libplanet_Action_State_CurrencyAccount_TransferAsset_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAsset(Libplanet.Action.IActionContext,Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">TransferAsset(IActionContext, Address, Address, FungibleAssetValue)</h4>
+  <a id="Libplanet_Action_State_CurrencyAccount_TransferAssetV0_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAssetV0*"></a>
+  <h4 id="Libplanet_Action_State_CurrencyAccount_TransferAssetV0_Libplanet_Crypto_Address_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.State.CurrencyAccount.TransferAssetV0(Libplanet.Crypto.Address,Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">TransferAssetV0(Address, Address, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency">Currency</a> starting with
 <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CurrencyAccount TransferAsset(IActionContext context, Address sender, Address recipient, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Should not be used unless to specifically keep backwards compatibility for IActions that&#39;s been used when block protocol version was 0.&quot;)]
+public CurrencyAccount TransferAssetV0(Address sender, Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -570,11 +620,6 @@ the total supply of the currency gets stored.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">sender</span></td>
