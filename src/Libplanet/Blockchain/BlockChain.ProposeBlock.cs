@@ -60,7 +60,8 @@ namespace Libplanet.Blockchain
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
-                    lastCommit: null),
+                    lastCommit: null,
+                    evidenceHash: null),
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();
@@ -162,8 +163,10 @@ namespace Libplanet.Blockchain
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),
-                    lastCommit: lastCommit),
-                transactions: orderedTransactions);
+                    lastCommit: lastCommit,
+                    evidenceHash: null),
+                transactions: orderedTransactions,
+                evidence: null);
             var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval, stateRootHash);
         }

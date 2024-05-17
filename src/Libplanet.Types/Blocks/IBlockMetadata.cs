@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidence;
 
 namespace Libplanet.Types.Blocks
 {
@@ -89,5 +90,11 @@ namespace Libplanet.Types.Blocks
         /// The <see cref="BlockCommit"/> about previous block's vote information.
         /// </summary>
         BlockCommit? LastCommit { get; }
+
+        /// <summary>
+        /// Committing <see cref="EvidenceId"/>s of vote infraction
+        /// that has been made on previous blocks.
+        /// </summary>
+        HashDigest<SHA256>? EvidenceHash { get; }
     }
 }
