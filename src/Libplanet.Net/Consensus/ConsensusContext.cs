@@ -517,8 +517,10 @@ namespace Libplanet.Net.Consensus
             {
                 try
                 {
-                    var blockCommit = _blockChain.GetBlockCommit(evidenceException.Height);
-                    var evidenceContext = new EvidenceContext(blockCommit);
+                    var stateRootHash = _blockChain.GetNextStateRootHash(evidenceException.Height);
+                    var worldState = _blockChain.GetWorldState(stateRootHash);
+                    var validatorSet = worldState.GetValidatorSet();
+                    var evidenceContext = new EvidenceContext(validatorSet);
                     var evidence = evidenceException.CreateEvidence(evidenceContext);
                     _blockChain.AddEvidence(evidence);
                 }
