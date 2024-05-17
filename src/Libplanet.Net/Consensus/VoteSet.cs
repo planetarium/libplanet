@@ -7,6 +7,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -436,7 +437,10 @@ namespace Libplanet.Net.Consensus
                 {
                     // ... and there's a conflicting vote.
                     // We're not even tracking this blockKey, so just forget it.
-                    throw new InvalidVoteException("There's a conflicting vote", vote);
+                    throw new DuplicateVoteException(
+                        message: "There's a conflicting vote",
+                        voteRef: conflicting,
+                        voteDup: vote);
                 }
 
                 // ... and there's no conflicting vote.

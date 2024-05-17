@@ -135,6 +135,21 @@ namespace Libplanet.Net.Messages
             /// Consensus message that informs vote sets that the peer received new maj23 block.
             /// </summary>
             ConsensusProposalClaimMsg = 0x55,
+
+            /// <summary>
+            /// Inventory to transfer evidence.
+            /// </summary>
+            EvidenceIds = 0x56,
+
+            /// <summary>
+            /// Request to query evidence.
+            /// </summary>
+            GetEvidence = 0x57,
+
+            /// <summary>
+            /// Message containing serialized evidence.
+            /// </summary>
+            Evidence = 0x58,
         }
 
         /// <summary>

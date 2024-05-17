@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 
 namespace Libplanet.Net.Consensus
 {
@@ -84,6 +85,10 @@ namespace Libplanet.Net.Consensus
                     _logger.Debug(oce, "Cancellation was requested");
                     ExceptionOccurred?.Invoke(this, oce);
                     throw;
+                }
+                catch (EvidenceException e)
+                {
+                    _evidenceCollector.Add(e);
                 }
                 catch (Exception e)
                 {
