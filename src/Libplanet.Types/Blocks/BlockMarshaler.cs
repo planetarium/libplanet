@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -21,6 +22,7 @@ namespace Libplanet.Types.Blocks
         // Block fields:
         private static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 }); // 'H'
         private static readonly Binary TransactionsKey = new Binary(new byte[] { 0x54 }); // 'T'
+        private static readonly Binary EvidencesKey = new Binary(new byte[] { 0x56 }); // 'V'
 
         // Header fields:
         private static readonly Binary ProtocolVersionKey = new Binary(0x00);
@@ -38,6 +40,9 @@ namespace Libplanet.Types.Blocks
         private static readonly Binary SignatureKey = new Binary(0x53); // 'S'
         private static readonly Binary PreEvaluationHashKey = new Binary(0x63); // 'c'
         private static readonly Binary LastCommitKey = new Binary(0x43); // 'C'
+
+        private static readonly Binary EvidenceHashKey =
+            new Binary(new byte[] { 0x76 }); // 'v'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
@@ -69,6 +74,11 @@ namespace Libplanet.Types.Blocks
             if (metadata.LastCommit is { } commit)
             {
                 dict = dict.Add(LastCommitKey, commit.Bencoded);
+            }
+
+            if (metadata.EvidenceHash is { } evidenceHash)
+            {
+                dict = dict.Add(EvidenceHashKey, evidenceHash.ByteArray);
             }
 
             return dict;
@@ -123,9 +133,16 @@ namespace Libplanet.Types.Blocks
 
         public static Binary MarshalTransaction(this Transaction tx) => new Binary(tx.Serialize());
 
+        public static List MarshalEvidences(this IReadOnlyList<Evidence> evidences) =>
+            new List(evidences.Select(ev => MarshalEvidence(ev)).Cast<IValue>());
+
+        public static Binary MarshalEvidence(this Evidence evidence)
+            => new Binary(evidence.Serialize());
+
         public static Dictionary MarshalBlock(
             Dictionary marshaledBlockHeader,
-            List marshaledTransactions
+            List marshaledTransactions,
+            List marshaledEvidences
         )
         {
             Dictionary dict = Dictionary.Empty
@@ -135,13 +152,19 @@ namespace Libplanet.Types.Blocks
                 dict = dict.Add(TransactionsKey, marshaledTransactions);
             }
 
+            if (marshaledEvidences.Any())
+            {
+                dict = dict.Add(EvidencesKey, marshaledEvidences);
+            }
+
             return dict;
         }
 
         public static Dictionary MarshalBlock(this Block block) =>
             MarshalBlock(
                 MarshalBlockHeader(block.Header),
-                MarshalTransactions(block.Transactions));
+                MarshalTransactions(block.Transactions),
+                MarshalEvidences(block.Evidences));
 
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             (Integer)marshaledMetadata[IndexKey];
@@ -180,7 +203,10 @@ namespace Libplanet.Types.Blocks
                     : (HashDigest<SHA256>?)null,
                 lastCommit: marshaled.ContainsKey(LastCommitKey)
                     ? new BlockCommit(marshaled[LastCommitKey])
-                    : (BlockCommit?)null);
+                    : (BlockCommit?)null,
+                evidenceHash: marshaled.TryGetValue(EvidenceHashKey, out IValue ehv)
+                    ? new HashDigest<SHA256>(ehv)
+                    : (HashDigest<SHA256>?)null);
 #pragma warning restore SA1118
         }
 
@@ -236,11 +262,23 @@ namespace Libplanet.Types.Blocks
                 ? UnmarshalTransactions((List)marshaledBlock[TransactionsKey])
                 : ImmutableArray<Transaction>.Empty;
 
+        public static IReadOnlyList<Evidence> UnmarshalEvidences(List marshaled) =>
+            marshaled
+                .Select(ev => Evidence.Deserialize(((Binary)ev).ToByteArray()))
+                .ToImmutableArray();
+
+        public static IReadOnlyList<Evidence> UnmarshalBlockEvidences(
+            Dictionary marshaledBlock) =>
+            marshaledBlock.ContainsKey(EvidencesKey)
+                ? UnmarshalEvidences((List)marshaledBlock[EvidencesKey])
+                : ImmutableArray<Evidence>.Empty;
+
         public static Block UnmarshalBlock(Dictionary marshaled)
         {
             BlockHeader header = UnmarshalBlockHeader((Dictionary)marshaled[HeaderKey]);
             IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
-            return new Block(header, txs);
+            IReadOnlyList<Evidence> evidences = UnmarshalBlockEvidences(marshaled);
+            return new Block(header, txs, evidences);
         }
     }
 }

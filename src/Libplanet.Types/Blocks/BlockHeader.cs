@@ -157,7 +157,11 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlockHeader.TxHash;
 
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlockHeader.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public HashDigest<SHA256>? EvidenceHash => _preEvaluationBlockHeader.EvidenceHash;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash =>
