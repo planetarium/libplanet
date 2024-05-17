@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
@@ -90,6 +92,12 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         IReadOnlyList<ITransaction> Txs { get; }
+
+        /// <summary>
+        /// A list of <see cref="Evidence"/>s that are included in a <see cref="Block"/>.
+        /// </summary>
+        [Pure]
+        IReadOnlyList<Evidence> Evidences { get; }
 
         /// <summary>
         /// Consumes the specified amount of gas.

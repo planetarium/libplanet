@@ -401,6 +401,9 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
+
+            public long GetMaxEvidencePendingDuration(long index) =>
+                _impl.GetMaxEvidencePendingDuration(index);
         }
 
         internal class Startup : IBlockChainContext
