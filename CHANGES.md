@@ -6,6 +6,18 @@ Version 4.4.3
 
 To be released.
 
+ -  (Libplanet.Crypto) Upgraded *BouncyCastle.Cryptography* from
+    [2.0.0][BouncyCastle.Cryptography 2.0.0] to
+    [2.3.1][BouncyCastle.Cryptography 2.3.1].  [[#3787], [#3788]]
+ -  (Libplanet) Upgraded *BouncyCastle.Cryptography* from
+    [2.0.0][BouncyCastle.Cryptography 2.0.0] to
+    [2.3.1][BouncyCastle.Cryptography 2.3.1].  [[#3787], [#3788]]
+
+[#3787]: https://github.com/planetarium/libplanet/issues/3787
+[#3788]: https://github.com/planetarium/libplanet/pull/3788
+[BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
+[BouncyCastle.Cryptography 2.3.1]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.3.1
+
 
 Version 4.4.2
 -------------
