@@ -8,6 +8,7 @@ using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Tests.Blockchain.Evidences;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
@@ -27,6 +28,8 @@ namespace Libplanet.Tests.Fixtures
         public readonly PrivateKey Block1Tx1Key;
         public readonly Transaction Block1Tx0;
         public readonly Transaction Block1Tx1;
+        public readonly Evidence Block1Ev0;
+        public readonly Evidence Block1Ev1;
         public readonly BlockContent Block1Content;
         public readonly HashDigest<SHA256> Block1TxHash;
         public readonly BlockMetadata Block1Metadata;
@@ -54,6 +57,11 @@ namespace Libplanet.Tests.Fixtures
                 timestamp: DateTimeOffset.MinValue
             );
             Transaction[] genTxs = new[] { genTx };
+            Evidence[] genEvidences = new[]
+            {
+                new TestEvidence(
+                    0, GenesisKey.Address, new DateTimeOffset(2024, 5, 24, 14, 12, 9, 45, kst)),
+            };
             GenesisContent = new BlockContent(
                 new BlockMetadata(
                     index: 0,
@@ -62,9 +70,9 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null,
-                    evidenceHash: null),
+                    evidenceHash: BlockContent.DeriveEvidenceHash(genEvidences)),
                 transactions: genTxs,
-                evidences: Array.Empty<Evidence>());
+                evidences: genEvidences);
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a");
@@ -111,8 +119,14 @@ namespace Libplanet.Tests.Fixtures
                     "3045022100abe3caabf2a46a297f2e4496f2c46d7e2f723e75fc42025d19f3ed7fce382" +
                     "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0")
             );
+            Block1Ev0 = new TestEvidence(
+                0, GenesisKey.Address, new DateTimeOffset(2024, 5, 24, 14, 13, 9, 45, kst));
+            Block1Ev1 = new TestEvidence(
+                0, GenesisKey.Address, new DateTimeOffset(2024, 5, 24, 14, 14, 9, 45, kst));
 
             var block1Transactions = new List<Transaction>() { Block1Tx0, Block1Tx1 }
+                .OrderBy(tx => tx.Id).ToList();
+            var block1Evidences = new List<Evidence>() { Block1Ev0, Block1Ev1 }
                 .OrderBy(tx => tx.Id).ToList();
             Block1Content = new BlockContent(
                 new BlockMetadata(
@@ -122,9 +136,9 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
-                    evidenceHash: null),
+                    evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidences)),
                 transactions: block1Transactions,
-                evidences: Array.Empty<Evidence>());
+                evidences: block1Evidences);
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
@@ -153,9 +167,9 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
-                    evidenceHash: null),
+                    evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidences)),
                 transactions: block1Transactions,
-                evidences: Array.Empty<Evidence>()); // Tweaked Block1Content
+                evidences: block1Evidences); // Tweaked Block1Content
             Block1MetadataPv1 = new BlockMetadata(Block1ContentPv1);
         }
 

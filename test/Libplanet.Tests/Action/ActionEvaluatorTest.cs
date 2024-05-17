@@ -835,7 +835,10 @@ namespace Libplanet.Tests.Action
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(
-                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                GenesisProposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(chain.Tip),
+                ImmutableArray<Evidence>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);
