@@ -771,7 +771,7 @@ namespace Libplanet.Action
                     stateStore));
         }
 
-        private static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
+        public static IWorld CommitWorld(IWorld prevWorld, IStateStore stateStore)
         {
             var worldTrie = prevWorld.Trie;
             foreach (var account in prevWorld.Delta.Accounts)
