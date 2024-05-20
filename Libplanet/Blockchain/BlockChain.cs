@@ -84,8 +84,7 @@ namespace Libplanet.Blockchain
         /// calculate next states when append new blocks.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
         /// by default or if it is <see langword="null"/>.  Note that action renderers receive
-        /// events made by unsuccessful transactions too; see also
-        /// <see cref="AtomicActionRenderer"/> for workaround.</param>
+        /// events made by unsuccessful transactions as well.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> does not
         /// have canonical chain id set, i.e. <see cref="IStore.GetCanonicalChainId()"/> is
