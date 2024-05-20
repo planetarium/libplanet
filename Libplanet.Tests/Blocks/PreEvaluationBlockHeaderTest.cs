@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("nonce", default(Nonce).ByteArray)
+                .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "public_key",
                     ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
@@ -82,7 +82,7 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("nonce", default(Nonce).ByteArray)
+                .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "public_key",
                     ParseHex("0215ba27a461a986f4ce7bcda1fd73dc708da767d0405729edaacaad7b7ff60eed")
