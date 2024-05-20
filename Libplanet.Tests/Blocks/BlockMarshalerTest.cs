@@ -9,7 +9,7 @@ using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
-    public class BlockMarshalerTest
+    public partial class BlockMarshalerTest
         : IClassFixture<BlockFixture>, IClassFixture<BlockContentFixture>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
