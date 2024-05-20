@@ -8,7 +8,13 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Common) Removed `Nonce` struct.  [[#3793], [#3794]]
+
 ### Backward-incompatible API changes
+
+ -  (Libplanet.Types) Removed `nonce` parameter from
+    `BlockMetadata.DerivePreEvaluationHash()` and
+    `BlockMetadata.MakeCandidateData()` methods.  [[#3793], [#3794]]
 
 ### Backward-incompatible network protocol changes
 
@@ -23,6 +29,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3793]: https://github.com/planetarium/libplanet/issues/3793
+[#3794]: https://github.com/planetarium/libplanet/pull/3794
 
 
 Version 4.5.0
