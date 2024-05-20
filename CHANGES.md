@@ -23,6 +23,10 @@ reconstruct states with valid state root hashes purely from past
  -  (Libplanet.Action) Changed `ActionEvaluate.Evaluate()` to no longer
     accept `IPreEvaluationBlock` with a protocol version less than
     `BlockMetadata.PBFTProtocolVersion`.  [[#3789]]
+ -  (Libplanet.Action) Changed the description of `IActionEvaluate.Evaluate()`
+    so that it may throw `BlockProtocolVersionNotSupportedException` if
+    its implementation is not able to handle `IPreEvaluationBlock` with
+    certain `BlockMetadata.ProtocolVersion`s.  [[#3789]]
  -  (Libplanet.Types) Removed `nonce` parameter from
     `BlockMetadata.DerivePreEvaluationHash()` and
     `BlockMetadata.MakeCandidateData()` methods.  [[#3793], [#3794]]
@@ -35,6 +39,9 @@ reconstruct states with valid state root hashes purely from past
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Action) Added `BlockProtocolVersionNotSupportedException` class.
+    [[#3789]]
 
 ### Behavioral changes
 
