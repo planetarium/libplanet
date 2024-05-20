@@ -37,6 +37,10 @@ namespace Libplanet.Action
         /// the end.
         /// </para>
         /// </remarks>
+        /// <exception cref="BlockProtocolVersionNotSupportedException">Thrown when
+        /// <paramref name="block"/> has a <see cref="IPreEvaluationBlock.ProtocolVersion"/>
+        /// that is not supported by an implementation of <see cref="IActionEvaluator"/>.
+        /// </exception>
         [Pure]
         IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
