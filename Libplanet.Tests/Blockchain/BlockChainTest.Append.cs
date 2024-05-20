@@ -761,8 +761,7 @@ namespace Libplanet.Tests.Blockchain
                 txHash: BlockContent.DeriveTxHash(txs),
                 lastCommit: null);
             var preEval = new PreEvaluationBlock(
-                new PreEvaluationBlockHeader(
-                    metadata, metadata.DerivePreEvaluationHash(default)),
+                new PreEvaluationBlockHeader(metadata, metadata.DerivePreEvaluationHash()),
                 txs);
             var block = preEval.Sign(
                 _fx.Proposer, HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(1024)));

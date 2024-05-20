@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Security.Cryptography;
 using Bencodex;
@@ -310,17 +311,14 @@ namespace Libplanet.Types.Blocks
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
-        /// This data is used for PoW (proof-of-work) to find the satisfying
-        /// <paramref name="nonce"/>, rather than transmitting the block over the network.
         /// </summary>
-        /// <param name="nonce">The nonce of the block.</param>
         /// <returns>The serialized block content in a Bencodex dictionary.</returns>
-        public Bencodex.Types.Dictionary MakeCandidateData(Nonce nonce)
+        public Bencodex.Types.Dictionary MakeCandidateData()
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
                 .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("nonce", nonce.ByteArray);
+                .Add("nonce", ImmutableArray<byte>.Empty);  // For backward-compatibility.
 
             if (ProtocolVersion != 0)
             {
@@ -361,6 +359,6 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         /// <returns>A pre-evaluation block hash.</returns>
         public HashDigest<SHA256> DerivePreEvaluationHash() =>
-            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(default)));
+            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData()));
     }
 }

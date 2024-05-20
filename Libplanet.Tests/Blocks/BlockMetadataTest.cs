@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -124,16 +123,12 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     "transaction_fingerprint",
                     ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"));
-            AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
-            AssertBencodexEqual(
-                expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                GenesisMetadata.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
-            );
+            AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData());
 
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
+                .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "public_key",
                     ParseHex("0215ba27a461a986f4ce7bcda1fd73dc708da767d0405729edaacaad7b7ff60eed")
@@ -149,39 +144,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion);
             AssertBencodexEqual(
                 expectedBlock1,
-                Block1Metadata.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
-            );
-
-            Bencodex.Types.Dictionary expectedPv0 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 0L)
-                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("nonce", ImmutableArray<byte>.Empty)
-                .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
-            AssertBencodexEqual(expectedPv0, GenesisMetadataPv0.MakeCandidateData(default));
-            AssertBencodexEqual(
-                expectedPv0.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                GenesisMetadataPv0.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
-            );
-
-            Bencodex.Types.Dictionary expectedPv1 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 1L)
-                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("nonce", ImmutableArray<byte>.Empty)
-                .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
-                .Add(
-                    "previous_hash",
-                    ParseHex("341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a")
-                )
-                .Add(
-                    "transaction_fingerprint",
-                    ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
-                )
-                .Add("protocol_version", 1);
-            AssertBencodexEqual(expectedPv1, Block1MetadataPv1.MakeCandidateData(default));
-            AssertBencodexEqual(
-                expectedPv1.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
-                Block1MetadataPv1.MakeCandidateData(new Nonce(new byte[] { 0x00, 0x01, 0x02 }))
-            );
+                Block1Metadata.MakeCandidateData());
         }
 
         [Fact]
@@ -190,29 +153,18 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
-                .Add(
-                    "reward_beneficiary",
-                    ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50")
-                )
+                .Add("nonce", ImmutableArray<byte>.Empty)
+                .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
                 .Add(
                     "previous_hash",
                     ParseHex(
-                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
-                    )
-                )
+                        "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"))
                 .Add(
                     "transaction_fingerprint",
                     ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                    )
-                )
+                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"))
                 .Add("protocol_version", 1);
-            AssertBencodexEqual(
-                expected,
-                Block1MetadataPv1.MakeCandidateData(
-                    new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
-            );
+            AssertBencodexEqual(expected, Block1MetadataPv1.MakeCandidateData());
         }
 
         [Fact]
@@ -222,14 +174,8 @@ namespace Libplanet.Tests.Blocks
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
                 .Add("nonce", ImmutableArray<byte>.Empty)
-                .Add(
-                    "reward_beneficiary",
-                    ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce")
-                );
-            AssertBencodexEqual(
-                (IValue)expected.Remove((Text)"protocol_version"),
-                GenesisMetadataPv0.MakeCandidateData(default)
-            );
+                .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
+            AssertBencodexEqual(expected, GenesisMetadataPv0.MakeCandidateData());
         }
 
         [Fact]

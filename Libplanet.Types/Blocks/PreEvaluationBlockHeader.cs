@@ -116,7 +116,7 @@ namespace Libplanet.Types.Blocks
             HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature = null)
         {
-            Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
+            Dictionary dict = Metadata.MakeCandidateData()
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {
