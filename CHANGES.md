@@ -9,6 +9,7 @@ To be released.
 ### Deprecated APIs
 
  -  (Libplanet.Common) Removed `Nonce` struct.  [[#3793], [#3794]]
+ -  Removed `AtomicActionRenderer` class.  [[#3795]]
 
 ### Backward-incompatible API changes
 
@@ -32,6 +33,7 @@ To be released.
 
 [#3793]: https://github.com/planetarium/libplanet/issues/3793
 [#3794]: https://github.com/planetarium/libplanet/pull/3794
+[#3795]: https://github.com/planetarium/libplanet/pull/3795
 
 
 Version 4.5.0
