@@ -20,53 +20,53 @@ namespace Libplanet.Types.Blocks
         internal static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 }); // 'H'
         internal static readonly Binary TransactionsKey = new Binary(new byte[] { 0x54 }); // 'T'
 
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         // Header fields:
-        private static readonly Binary ProtocolVersionKey =
+        internal static readonly Binary ProtocolVersionKey =
             new Binary(new byte[] { 0x00 });
 
-        private static readonly Binary IndexKey =
+        internal static readonly Binary IndexKey =
             new Binary(new byte[] { 0x69 }); // 'i'
 
-        private static readonly Binary TimestampKey =
+        internal static readonly Binary TimestampKey =
             new Binary(new byte[] { 0x74 }); // 't'
 
-        private static readonly Binary DifficultyKey =
+        internal static readonly Binary DifficultyKey =
             new Binary(new byte[] { 0x64 }); // 'd'; Legacy, unused.
 
-        private static readonly Binary TotalDifficultyKey =
+        internal static readonly Binary TotalDifficultyKey =
             new Binary(new byte[] { 0x54 }); // 'T'; Legacy, unused.
 
-        private static readonly Binary NonceKey =
+        internal static readonly Binary NonceKey =
             new Binary(new byte[] { 0x6e }); // 'n'; Legacy, unused.
 
-        private static readonly Binary MinerKey =
+        internal static readonly Binary MinerKey =
             new Binary(new byte[] { 0x6d }); // 'm'
 
-        private static readonly Binary PublicKeyKey =
+        internal static readonly Binary PublicKeyKey =
             new Binary(new byte[] { 0x50 }); // 'P'
 
-        private static readonly Binary PreviousHashKey =
+        internal static readonly Binary PreviousHashKey =
             new Binary(new byte[] { 0x70 }); // 'p'
 
-        private static readonly Binary TxHashKey =
+        internal static readonly Binary TxHashKey =
             new Binary(new byte[] { 0x78 }); // 'x'
 
-        private static readonly Binary HashKey =
+        internal static readonly Binary HashKey =
             new Binary(new byte[] { 0x68 }); // 'h'
 
-        private static readonly Binary StateRootHashKey =
+        internal static readonly Binary StateRootHashKey =
             new Binary(new byte[] { 0x73 }); // 's'
 
-        private static readonly Binary SignatureKey =
+        internal static readonly Binary SignatureKey =
             new Binary(new byte[] { 0x53 }); // 'S'
 
-        private static readonly Binary PreEvaluationHashKey =
+        internal static readonly Binary PreEvaluationHashKey =
             new Binary(new byte[] { 0x63 }); // 'c'
 
-        private static readonly Binary LastCommitKey =
+        internal static readonly Binary LastCommitKey =
             new Binary(new byte[] { 0x43 }); // 'C'
+
+        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {

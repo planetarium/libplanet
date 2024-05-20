@@ -34,7 +34,7 @@ namespace Libplanet.Action
         {
             BlockProtocolVersion = (int)info.GetValue(
                 nameof(BlockProtocolVersion),
-                typeof(int));
+                typeof(int))!;
         }
 
         /// <summary>
