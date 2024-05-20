@@ -237,15 +237,9 @@ namespace Libplanet.Tests.Blocks
         {
             ImmutableArray<byte> FromHex(string hex) => ParseHexToImmutable(hex);
 
-            HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
+            HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
                 FromHex("db037e64000f3f672288e62a7f9a646cc9f636256a91d40559ebbffb53340948"),
-                hash.ByteArray);
-
-            hash = Block1Metadata.DerivePreEvaluationHash(
-                new Nonce(FromHex("e7c1adf92c65d35aaae5")));
-            AssertBytesEqual(
-                FromHex("e1fb185006f05b18d8c264622c2e86d231fc7fbb6a777ae86629c41b37dac0d2"),
                 hash.ByteArray);
         }
 

@@ -383,8 +383,7 @@ namespace Libplanet.Net.Tests.Consensus
                 txHash: BlockContent.DeriveTxHash(txs),
                 lastCommit: null);
             var preEval = new PreEvaluationBlock(
-                new PreEvaluationBlockHeader(
-                    metadata, metadata.DerivePreEvaluationHash(default)),
+                new PreEvaluationBlockHeader(metadata, metadata.DerivePreEvaluationHash()),
                 txs);
             var invalidBlock = preEval.Sign(
                 TestUtils.PrivateKeys[1],

@@ -357,11 +357,10 @@ namespace Libplanet.Types.Blocks
         }
 
         /// <summary>
-        /// Derives a hash digest from the block metadata and <paramref name="nonce"/>.
+        /// Derives a hash digest from the block metadata.
         /// </summary>
-        /// <param name="nonce">The proof-of-work nonce.</param>
         /// <returns>A pre-evaluation block hash.</returns>
-        public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
-            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
+        public HashDigest<SHA256> DerivePreEvaluationHash() =>
+            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(default)));
     }
 }

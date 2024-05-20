@@ -232,7 +232,7 @@ namespace Libplanet.Types.Blocks
             }
             else
             {
-                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash(default);
+                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash();
                 return expected.Equals(preEvaluationHash)
                     ? expected
                     : throw new InvalidBlockPreEvaluationHashException(
