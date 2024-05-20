@@ -24,15 +24,26 @@ namespace Libplanet.Types.Blocks
         public const int CurrentProtocolVersion = 7;
 
         /// <summary>
+        /// <para>
         /// The starting protocol version where a bug in transferring asset was fixed.
         /// Prior to this version, it was possible to duplicate
         /// <see cref="FungibleAssetValue"/>.
+        /// </para>
+        /// <para>
+        /// Also, <see cref="Block.ProtocolVersion"/> was added.
+        /// </para>
         /// </summary>
         public const int TransferFixProtocolVersion = 1;
 
         /// <summary>
+        /// <para>
         /// The starting protocol version where <see cref="IBlockHeader.Signature"/> was added.
         /// Prior to this version, <see cref="Block"/>s had no signature.
+        /// </para>
+        /// <para>
+        /// In its serialized form, <see cref="Block.Miner"/> was removed and
+        /// <see cref="Block.PublicKey"/> together with <see cref="Block.Signature"/> were added.
+        /// </para>
         /// </summary>
         public const int SignatureProtocolVersion = 2;
 
