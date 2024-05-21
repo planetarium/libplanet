@@ -16,6 +16,9 @@ To be released.
  -  (Libplanet.Types) Removed `nonce` parameter from
     `BlockMetadata.DerivePreEvaluationHash()` and
     `BlockMetadata.MakeCandidateData()` methods.  [[#3793], [#3794]]
+ -  (Libplanet.Explorer.Executable) Removed unused `difficultyBoundDivisor`
+    parameter for the executable and removed `Options.DifficultyBoundDivisor`
+    property.  [[#3796]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,6 +37,7 @@ To be released.
 [#3793]: https://github.com/planetarium/libplanet/issues/3793
 [#3794]: https://github.com/planetarium/libplanet/pull/3794
 [#3795]: https://github.com/planetarium/libplanet/pull/3795
+[#3796]: https://github.com/planetarium/libplanet/pull/3796
 
 
 Version 4.5.0

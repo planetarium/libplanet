@@ -20,7 +20,6 @@ namespace Libplanet.Explorer.Executable
             string host,
             int port,
             int blockIntervalMilliseconds,
-            int difficultyBoundDivisor,
             string appProtocolVersionToken,
             int maxTransactionsPerBlock,
             int maxTransactionsBytes,
@@ -36,7 +35,6 @@ namespace Libplanet.Explorer.Executable
             Host = host;
             Port = port;
             BlockIntervalMilliseconds = blockIntervalMilliseconds;
-            DifficultyBoundDivisor = difficultyBoundDivisor;
             AppProtocolVersionToken = appProtocolVersionToken;
             MaxTransactionsPerBlock = maxTransactionsPerBlock;
             MaxTransactionsBytes = maxTransactionsBytes;
@@ -55,8 +53,6 @@ namespace Libplanet.Explorer.Executable
         public int Port { get; set; }
 
         public int BlockIntervalMilliseconds { get; set; }
-
-        public int DifficultyBoundDivisor { get; set; }
 
         public string AppProtocolVersionToken { get; set; }
 
