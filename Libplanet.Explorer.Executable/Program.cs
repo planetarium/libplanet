@@ -116,11 +116,6 @@ in DefaultStore is used.")]
 consecutive blocks.")]
             int blockIntervalMilliseconds = 5000,
             [Option(
-                "difficulty-bound-divisor",
-                new[] { 'D' },
-                Description = "A bound divisor to determine precision of block difficulties.")]
-            int difficultyBoundDivisor = 128,
-            [Option(
                 "app-protocol-version",
                 new[] { 'V' },
                 Description = "An app protocol version token.")]
@@ -160,7 +155,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 host,
                 port,
                 blockIntervalMilliseconds,
-                difficultyBoundDivisor,
                 appProtocolVersionToken,
                 maxTransactionsPerBlock,
                 maxTransactionsBytes,
@@ -394,8 +388,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public long GetMaxTransactionsBytes(long index) =>
                 _impl.GetMaxTransactionsBytes(index);
-
-            public long GetNextBlockDifficulty(BlockChain blocks) => 0;
 
             public TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain blockChain,
