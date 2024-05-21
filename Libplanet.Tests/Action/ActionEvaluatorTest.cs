@@ -1230,23 +1230,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void BlockProtocolVersionNotSupported()
         {
-#pragma warning disable MEN002
-            Block block = BlockMarshaler.UnmarshalBlock(Dictionary.Empty
-                .Add(
-                    BlockMarshaler.HeaderKey,
-                    Dictionary.Empty
-                        .Add(BlockMarshaler.ProtocolVersionKey, new Integer(1))
-                        .Add(BlockMarshaler.TotalDifficultyKey, new Integer(1))
-                        .Add(BlockMarshaler.PreEvaluationHashKey, new Binary(ByteUtil.ParseHex("1bba9fcf4c8152c899ed1674ecbf4a6571c271922c0884ae809f91f037bed8fc")))
-                        .Add(BlockMarshaler.DifficultyKey, new Integer(1))
-                        .Add(BlockMarshaler.HashKey, new Binary(ByteUtil.ParseHex("41ac71ef0451ddd54078a1b3336b747e8b2f970b441c2e3cb5cad8290f7bc0d0")))
-                        .Add(BlockMarshaler.IndexKey, new Integer(1))
-                        .Add(BlockMarshaler.MinerKey, new Binary(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")))
-                        .Add(BlockMarshaler.NonceKey, new Binary(ByteUtil.ParseHex("02000000")))
-                        .Add(BlockMarshaler.PreviousHashKey, new Binary(ByteUtil.ParseHex("d693da3866a34d659e014f97c8feb08afe2e97c99e3f3389da025fd0665c621c")))
-                        .Add(BlockMarshaler.StateRootHashKey, new Binary(ByteUtil.ParseHex("6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa")))
-                        .Add(BlockMarshaler.TimestampKey, new Text("2018-11-29T00:00:15.000000Z"))));
-#pragma warning restore MEN002
+            Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 new TrieStateStore(new MemoryKeyValueStore()),
