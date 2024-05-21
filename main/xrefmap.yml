@@ -6037,134 +6037,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64
   nameWithType: NameValueCollectionExtensions.GetUInt64
-- uid: Libplanet.Common.Nonce
-  name: Nonce
-  href: api/Libplanet.Common.Nonce.html
-  commentId: T:Libplanet.Common.Nonce
-  fullName: Libplanet.Common.Nonce
-  nameWithType: Nonce
-- uid: Libplanet.Common.Nonce.#ctor(System.Byte[])
-  name: Nonce(Byte[])
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce__ctor_System_Byte___
-  commentId: M:Libplanet.Common.Nonce.#ctor(System.Byte[])
-  name.vb: Nonce(Byte())
-  fullName: Libplanet.Common.Nonce.Nonce(System.Byte[])
-  fullName.vb: Libplanet.Common.Nonce.Nonce(System.Byte())
-  nameWithType: Nonce.Nonce(Byte[])
-  nameWithType.vb: Nonce.Nonce(Byte())
-- uid: Libplanet.Common.Nonce.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name: Nonce(in ImmutableArray<Byte>)
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Common.Nonce.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)
-  name.vb: Nonce(ByRef ImmutableArray(Of Byte))
-  fullName: Libplanet.Common.Nonce.Nonce(in System.Collections.Immutable.ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Common.Nonce.Nonce(ByRef System.Collections.Immutable.ImmutableArray(Of System.Byte))
-  nameWithType: Nonce.Nonce(in ImmutableArray<Byte>)
-  nameWithType.vb: Nonce.Nonce(ByRef ImmutableArray(Of Byte))
-- uid: Libplanet.Common.Nonce.#ctor*
-  name: Nonce
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce__ctor_
-  commentId: Overload:Libplanet.Common.Nonce.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.Nonce
-  nameWithType: Nonce.Nonce
-- uid: Libplanet.Common.Nonce.ByteArray
-  name: ByteArray
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ByteArray
-  commentId: P:Libplanet.Common.Nonce.ByteArray
-  fullName: Libplanet.Common.Nonce.ByteArray
-  nameWithType: Nonce.ByteArray
-- uid: Libplanet.Common.Nonce.ByteArray*
-  name: ByteArray
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ByteArray_
-  commentId: Overload:Libplanet.Common.Nonce.ByteArray
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.ByteArray
-  nameWithType: Nonce.ByteArray
-- uid: Libplanet.Common.Nonce.Equals(Libplanet.Common.Nonce)
-  name: Equals(Nonce)
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_Equals_Libplanet_Common_Nonce_
-  commentId: M:Libplanet.Common.Nonce.Equals(Libplanet.Common.Nonce)
-  fullName: Libplanet.Common.Nonce.Equals(Libplanet.Common.Nonce)
-  nameWithType: Nonce.Equals(Nonce)
-- uid: Libplanet.Common.Nonce.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_Equals_System_Object_
-  commentId: M:Libplanet.Common.Nonce.Equals(System.Object)
-  fullName: Libplanet.Common.Nonce.Equals(System.Object)
-  nameWithType: Nonce.Equals(Object)
-- uid: Libplanet.Common.Nonce.Equals*
-  name: Equals
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_Equals_
-  commentId: Overload:Libplanet.Common.Nonce.Equals
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.Equals
-  nameWithType: Nonce.Equals
-- uid: Libplanet.Common.Nonce.GetHashCode
-  name: GetHashCode()
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_GetHashCode
-  commentId: M:Libplanet.Common.Nonce.GetHashCode
-  fullName: Libplanet.Common.Nonce.GetHashCode()
-  nameWithType: Nonce.GetHashCode()
-- uid: Libplanet.Common.Nonce.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_GetHashCode_
-  commentId: Overload:Libplanet.Common.Nonce.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.GetHashCode
-  nameWithType: Nonce.GetHashCode
-- uid: Libplanet.Common.Nonce.op_Equality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)
-  name: Equality(Nonce, Nonce)
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_op_Equality_Libplanet_Common_Nonce_Libplanet_Common_Nonce_
-  commentId: M:Libplanet.Common.Nonce.op_Equality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)
-  fullName: Libplanet.Common.Nonce.Equality(Libplanet.Common.Nonce, Libplanet.Common.Nonce)
-  nameWithType: Nonce.Equality(Nonce, Nonce)
-- uid: Libplanet.Common.Nonce.op_Equality*
-  name: Equality
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_op_Equality_
-  commentId: Overload:Libplanet.Common.Nonce.op_Equality
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.Equality
-  nameWithType: Nonce.Equality
-- uid: Libplanet.Common.Nonce.op_Inequality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)
-  name: Inequality(Nonce, Nonce)
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_op_Inequality_Libplanet_Common_Nonce_Libplanet_Common_Nonce_
-  commentId: M:Libplanet.Common.Nonce.op_Inequality(Libplanet.Common.Nonce,Libplanet.Common.Nonce)
-  fullName: Libplanet.Common.Nonce.Inequality(Libplanet.Common.Nonce, Libplanet.Common.Nonce)
-  nameWithType: Nonce.Inequality(Nonce, Nonce)
-- uid: Libplanet.Common.Nonce.op_Inequality*
-  name: Inequality
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_op_Inequality_
-  commentId: Overload:Libplanet.Common.Nonce.op_Inequality
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.Inequality
-  nameWithType: Nonce.Inequality
-- uid: Libplanet.Common.Nonce.ToByteArray
-  name: ToByteArray()
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ToByteArray
-  commentId: M:Libplanet.Common.Nonce.ToByteArray
-  fullName: Libplanet.Common.Nonce.ToByteArray()
-  nameWithType: Nonce.ToByteArray()
-- uid: Libplanet.Common.Nonce.ToByteArray*
-  name: ToByteArray
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ToByteArray_
-  commentId: Overload:Libplanet.Common.Nonce.ToByteArray
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.ToByteArray
-  nameWithType: Nonce.ToByteArray
-- uid: Libplanet.Common.Nonce.ToString
-  name: ToString()
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ToString
-  commentId: M:Libplanet.Common.Nonce.ToString
-  fullName: Libplanet.Common.Nonce.ToString()
-  nameWithType: Nonce.ToString()
-- uid: Libplanet.Common.Nonce.ToString*
-  name: ToString
-  href: api/Libplanet.Common.Nonce.html#Libplanet_Common_Nonce_ToString_
-  commentId: Overload:Libplanet.Common.Nonce.ToString
-  isSpec: "True"
-  fullName: Libplanet.Common.Nonce.ToString
-  nameWithType: Nonce.ToString
 - uid: Libplanet.Common.Serialization
   name: Libplanet.Common.Serialization
   href: api/Libplanet.Common.Serialization.html
@@ -32505,12 +32377,12 @@ references:
   commentId: F:Libplanet.Types.Blocks.BlockMetadata.CurrentProtocolVersion
   fullName: Libplanet.Types.Blocks.BlockMetadata.CurrentProtocolVersion
   nameWithType: BlockMetadata.CurrentProtocolVersion
-- uid: Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash(Libplanet.Common.Nonce)
-  name: DerivePreEvaluationHash(Nonce)
-  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_DerivePreEvaluationHash_Libplanet_Common_Nonce_
-  commentId: M:Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash(Libplanet.Common.Nonce)
-  fullName: Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash(Libplanet.Common.Nonce)
-  nameWithType: BlockMetadata.DerivePreEvaluationHash(Nonce)
+- uid: Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash
+  name: DerivePreEvaluationHash()
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_DerivePreEvaluationHash
+  commentId: M:Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash
+  fullName: Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash()
+  nameWithType: BlockMetadata.DerivePreEvaluationHash()
 - uid: Libplanet.Types.Blocks.BlockMetadata.DerivePreEvaluationHash*
   name: DerivePreEvaluationHash
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_DerivePreEvaluationHash_
@@ -32544,12 +32416,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockMetadata.LastCommit
   nameWithType: BlockMetadata.LastCommit
-- uid: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Common.Nonce)
-  name: MakeCandidateData(Nonce)
-  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_MakeCandidateData_Libplanet_Common_Nonce_
-  commentId: M:Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Common.Nonce)
-  fullName: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData(Libplanet.Common.Nonce)
-  nameWithType: BlockMetadata.MakeCandidateData(Nonce)
+- uid: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData
+  name: MakeCandidateData()
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_MakeCandidateData
+  commentId: M:Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData
+  fullName: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData()
+  nameWithType: BlockMetadata.MakeCandidateData()
 - uid: Libplanet.Types.Blocks.BlockMetadata.MakeCandidateData*
   name: MakeCandidateData
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_MakeCandidateData_

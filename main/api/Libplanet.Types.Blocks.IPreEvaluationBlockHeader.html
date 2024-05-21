@@ -72,8 +72,8 @@
 
   <h1 id="Libplanet_Types_Blocks_IPreEvaluationBlockHeader" data-uid="Libplanet.Types.Blocks.IPreEvaluationBlockHeader" class="text-break">Interface IPreEvaluationBlockHeader
 </h1>
-  <div class="markdown level0 summary"><p>A common interface for blocks that have their proof-of-work <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>s,
-but are not evaluated yet (i.e., state root hash is not yet determined).</p>
+  <div class="markdown level0 summary"><p>A common interface for blocks that are not evaluated yet
+(i.e., state root hash is not yet determined).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -116,12 +116,12 @@ but are not evaluated yet (i.e., state root hash is not yet determined).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.IPreEvaluationBlockHeader.PreEvaluationHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Types/Blocks/IPreEvaluationBlockHeader.cs/#L17">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Types/Blocks/IPreEvaluationBlockHeader.cs/#L16">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash_" data-uid="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.PreEvaluationHash*"></a>
   <h4 id="Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash" data-uid="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.PreEvaluationHash">PreEvaluationHash</h4>
   <div class="markdown level1 summary"><p>The hash derived from the block <em>except of</em> its state root hash (i.e., without
-action evaluation).  Used for validating <a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a>.</p>
+action evaluation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -143,10 +143,6 @@ action evaluation).  Used for validating <a class="xref" href="Libplanet.Common.
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Common.Nonce.html">Nonce</a></div>
-  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html#Libplanet_Types_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Types_Blocks_IBlockMetadata_">IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata)</a>

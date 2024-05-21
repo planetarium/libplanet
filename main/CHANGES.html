@@ -64,7 +64,15 @@
 <h2 id="version-460">Version 4.6.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet.Common) Removed <code>Nonce</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/3793">#3793</a>, <a href="https://github.com/planetarium/libplanet/pull/3794">#3794</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Types) Removed <code>nonce</code> parameter from
+<code>BlockMetadata.DerivePreEvaluationHash()</code> and
+<code>BlockMetadata.MakeCandidateData()</code> methods.  [<a href="https://github.com/planetarium/libplanet/issues/3793">#3793</a>, <a href="https://github.com/planetarium/libplanet/pull/3794">#3794</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
