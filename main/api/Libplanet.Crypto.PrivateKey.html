@@ -107,7 +107,7 @@ Libplanet-backed games/apps too.</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
@@ -284,7 +284,7 @@ using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_Pr
   <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey__ctor_System_String_" data-uid="Libplanet.Crypto.PrivateKey.#ctor(System.String)">PrivateKey(String)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given hexadecimal
-<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
+<span class="xref">System.String</span> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -302,7 +302,7 @@ using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_Pr
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string of a private key's
 <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>.</p>
@@ -326,7 +326,7 @@ forge signatures.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
@@ -338,7 +338,7 @@ string is <span class="xref">null</span>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
 not a valid hexadecimal string.</p>
 </td>
@@ -540,7 +540,7 @@ public byte[] Decrypt(byte[] ciphertext)</code></pre>
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>s.</p>
+are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <span class="xref">System.String</span>s.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -618,7 +618,7 @@ public ImmutableArray&lt;byte&gt; Decrypt(ImmutableArray&lt;byte&gt; ciphertext)
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>s.</p>
+are <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s, not Unicode <span class="xref">System.String</span>s.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -878,7 +878,7 @@ public static PrivateKey FromString(string hex)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A hexadecimal string of a private key's
 <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>.</p>
@@ -918,7 +918,7 @@ forge signatures.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
 string is <span class="xref">null</span>.</p>
 </td>
@@ -930,7 +930,7 @@ string is <span class="xref">null</span>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><span class="xref">System.FormatException</span></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
 not a valid hexadecimal string.</p>
 </td>
