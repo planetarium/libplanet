@@ -88,12 +88,6 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IAction
 <p>This class is useful when you want an one-use ad-hoc implementation (i.e., Java-style
 anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Blockchain.Renderers.AtomicActionRenderer.html">AtomicActionRenderer</a></h4>
-      <section><p>A middleware to make action render events to satisfy transactions' atomicity.</p>
-<p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance and filters out render events
-made by unsuccessful transactions (i.e., transactions with one or more exception-throwing
-actions).</p>
-</section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a></h4>
       <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> so that all event messages are logged.
 In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> version of
