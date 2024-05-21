@@ -34,9 +34,6 @@ namespace Libplanet.Blockchain.Renderers
     /// any actions throwing an exception in the same transaction is determined.  In other words,
     /// for <see cref="IActionRenderer"/>s, it is not guaranteed that actions in a transaction
     /// are atomic.
-    /// <para>If your action renderer expects to receive only render events about actions belonging
-    /// successful transactions, wrap your action renderer with
-    /// <see cref="AtomicActionRenderer"/>.</para>
     /// </remarks>
     public interface IActionRenderer : IRenderer
     {
