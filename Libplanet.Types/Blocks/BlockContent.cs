@@ -194,11 +194,9 @@ namespace Libplanet.Types.Blocks
             return new HashDigest<SHA256>(hasher.Hash);
         }
 
-        public PreEvaluationBlock Propose()
-        {
-            return new PreEvaluationBlock(
+        public PreEvaluationBlock Propose() =>
+            new PreEvaluationBlock(
                 this,
-                _blockMetadata.DerivePreEvaluationHash(default));
-        }
+                _blockMetadata.DerivePreEvaluationHash());
     }
 }

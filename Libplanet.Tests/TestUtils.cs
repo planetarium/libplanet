@@ -257,12 +257,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : HashAlgorithm =>
             AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
 
-        public static void AssertBytesEqual(Nonce expected, Nonce actual) =>
-            AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
-
-        public static void AssertBytesEqual(Nonce? expected, Nonce? actual) =>
-            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
-
         public static void AssertBytesEqual(Address expected, Address actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
 

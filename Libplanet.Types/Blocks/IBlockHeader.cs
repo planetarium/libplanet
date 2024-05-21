@@ -6,8 +6,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Types.Blocks
 {
     /// <summary>
-    /// A common interface for blocks that have their proof-of-work <see cref="Nonce"/>s and
-    /// <see cref="StateRootHash"/>es, but no transactions.
+    /// A common interface for blocks that have <see cref="StateRootHash"/>es, but no transactions.
     /// </summary>
     public interface IBlockHeader : IPreEvaluationBlockHeader, IBlockExcerpt
     {

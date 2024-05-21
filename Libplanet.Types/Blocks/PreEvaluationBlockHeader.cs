@@ -116,7 +116,7 @@ namespace Libplanet.Types.Blocks
             HashDigest<SHA256> stateRootHash,
             ImmutableArray<byte>? signature = null)
         {
-            Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
+            Dictionary dict = Metadata.MakeCandidateData()
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {
@@ -232,7 +232,7 @@ namespace Libplanet.Types.Blocks
             }
             else
             {
-                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash(default);
+                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash();
                 return expected.Equals(preEvaluationHash)
                     ? expected
                     : throw new InvalidBlockPreEvaluationHashException(
