@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action.State;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 
@@ -83,112 +82,6 @@ namespace Libplanet.Explorer.GraphTypes
                         .Select(address => context.Source.GetState(address))
                         .ToArray()
             );
-
-            Field<IValueType>(
-                name: "balance",
-                description: "Balance at given address and currency hash pair.",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<AddressType>>
-                    {
-                        Name = "address",
-                        Description = "The address to look up.",
-                    },
-                    new QueryArgument<NonNullGraphType<HashDigestType<SHA1>>>
-                    {
-                        Name = "currencyHash",
-                        Description = "The currency hash to look up.",
-                    }
-                ),
-                resolve: context =>
-                    context.Source.Trie.Get(ToFungibleAssetKey(
-                        context.GetArgument<Address>("address"),
-                        context.GetArgument<HashDigest<SHA1>>("currencyHash")))
-            );
-
-            Field<NonNullGraphType<ListGraphType<IValueType>>>(
-                name: "balances",
-                description: "Balances at given addresses and currency hash pair.",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<
-                        ListGraphType<NonNullGraphType<AddressType>>>>
-                    {
-                        Name = "addresses",
-                        Description = "The list of addresses to look up.",
-                    },
-                    new QueryArgument<NonNullGraphType<HashDigestType<SHA1>>>
-                    {
-                        Name = "currencyHash",
-                        Description = "The currency hash to look up.",
-                    }
-                ),
-                resolve: context =>
-                    context.GetArgument<Address[]>("addresses")
-                        .Select(address => context.Source.Trie.Get(
-                            ToFungibleAssetKey(
-                                address, context.GetArgument<HashDigest<SHA1>>("currencyHash"))))
-            );
-
-            Field<IValueType>(
-                name: "totalSupply",
-                description: "Total supply in circulation, if recorded, for given currency hash.",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<HashDigestType<SHA1>>>
-                    {
-                        Name = "currencyHash",
-                        Description = "The currency hash to look up.",
-                    }
-                ),
-                resolve: context =>
-                    context.Source.Trie.Get(ToTotalSupplyKey(
-                        context.GetArgument<HashDigest<SHA1>>("currencyHash")))
-            );
-
-            Field<IValueType>(
-                name: "validatorSet",
-                description: "The validator set.",
-                resolve: context => context.Source.Trie.Get(ValidatorSetKey)
-            );
-        }
-
-        internal static KeyBytes ToFungibleAssetKey(Address address, HashDigest<SHA1> currencyHash)
-        {
-            var addressBytes = address.ByteArray;
-            var currencyBytes = currencyHash.ByteArray;
-            byte[] buffer = new byte[addressBytes.Length * 2 + currencyBytes.Length * 2 + 2];
-
-            buffer[0] = _underScore;
-            for (int i = 0; i < addressBytes.Length; i++)
-            {
-                buffer[1 + i * 2] = _conversionTable[addressBytes[i] >> 4];
-                buffer[1 + i * 2 + 1] = _conversionTable[addressBytes[i] & 0xf];
-            }
-
-            var offset = addressBytes.Length * 2;
-            buffer[offset + 1] = _underScore;
-            for (int i = 0; i < currencyBytes.Length; i++)
-            {
-                buffer[offset + 2 + i * 2] = _conversionTable[currencyBytes[i] >> 4];
-                buffer[offset + 2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
-            }
-
-            return new KeyBytes(buffer);
-        }
-
-        internal static KeyBytes ToTotalSupplyKey(HashDigest<SHA1> currencyHash)
-        {
-            var currencyBytes = currencyHash.ByteArray;
-            byte[] buffer = new byte[currencyBytes.Length * 2 + 2];
-
-            buffer[0] = _underScore;
-            buffer[1] = _underScore;
-
-            for (int i = 0; i < currencyBytes.Length; i++)
-            {
-                buffer[2 + i * 2] = _conversionTable[currencyBytes[i] >> 4];
-                buffer[2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
-            }
-
-            return new KeyBytes(buffer);
         }
     }
 }

@@ -31,6 +31,8 @@ public partial class StateQueryTest
         {
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             _address = new Address("0x5003712B63baAB98094aD678EA2B24BcE445D076");
+
+            // currency hash: "84ba810ca5ac342c122eb7ef455939a8a05d1d40"
             _currency = Currency.Uncapped("ABC", 2, null);
 
             // Setup empty
