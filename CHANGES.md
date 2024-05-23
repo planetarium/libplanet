@@ -33,16 +33,10 @@ reconstruct states with valid state root hashes purely from past
  -  (Libplanet.Explorer.Executable) Removed unused `difficultyBoundDivisor`
     parameter for the executable and removed `Options.DifficultyBoundDivisor`
     property.  [[#3796]]
- -  (Libplanet.Explorer) Moved `balance`, `totalSupply`, and `validatorSet`
-    queries from `AccountStateType` to `WorldStateType`.  [[#3792], [#3798]]
- -  (Libplanet.Explorer) Removed `balances` query from `AccountStateType`.
-    [[#3792], [#3798]]
- -  (Libplanet.Explorer) Changed `balance` and `totalSupply` queries to
-    accept `CurrencyInputType` typed parameter `currency` instead of
-    `HashDigestType` typed parameter as `currencyHash` input.
-    [[#3792], [#3798]]
- -  (Libplanet.Explorer) Changed `balance` and `totalSupply` queries to return
-    `FungibleAssetValueType` instead of `IValueType`.  [[#3792], [#3798]]
+ -  (Libplanet.Explorer) Added `balance`, `totalSupply`, and `validatorSet`
+    queries to `WorldStateType`.  [[#3792], [#3798]]
+ -  (Libplanet.Explorer) Deprecated `balance`, `balances`, `totalSupply` and
+    `validatorSet` query from `AccountStateType`.  [[#3792], [#3798]]
 
 ### Backward-incompatible network protocol changes
 
