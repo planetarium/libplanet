@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InvalidMessageTimestampException
+    <title>Class BlockProtocolVersionNotSupportedException
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InvalidMessageTimestampException
+    <meta name="title" content="Class BlockProtocolVersionNotSupportedException
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,20 +67,22 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException">
 
 
-  <h1 id="Libplanet_Net_Transports_InvalidMessageTimestampException" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException" class="text-break">Class InvalidMessageTimestampException
+  <h1 id="Libplanet_Action_BlockProtocolVersionNotSupportedException" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException" class="text-break">Class BlockProtocolVersionNotSupportedException
 </h1>
-  <div class="markdown level0 summary"><p>An exception that is thrown when the timestamp of an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is
-invalid.</p>
+  <div class="markdown level0 summary"><p>The exception that is thrown when an <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a> with
+a protocol version that is not supported by an implementation of
+<a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> is passed as an argument to
+<a class="xref" href="Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></div>
-    <div class="level2"><span class="xref">InvalidMessageTimestampException</span></div>
+    <div class="level2"><span class="xref">BlockProtocolVersionNotSupportedException</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -140,31 +142,30 @@ invalid.</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Transports.html">Libplanet.Net.Transports</a></h6>
-  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
-  <h5 id="Libplanet_Net_Transports_InvalidMessageTimestampException_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
+  <h5 id="Libplanet_Action_BlockProtocolVersionNotSupportedException_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class InvalidMessageTimestampException : Exception, ISerializable</code></pre>
+public sealed class BlockProtocolVersionNotSupportedException : Exception, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.InvalidMessageTimestampException.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_BlockProtocolVersionNotSupportedException__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Action.BlockProtocolVersionNotSupportedException.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/InvalidMessageTimestampException.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/BlockProtocolVersionNotSupportedException.cs/#L22">View Source</a>
   </span>
-  <a id="Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor*"></a>
-  <h4 id="Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">InvalidMessageTimestampException(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>An exception that is thrown when the timestamp of an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is
-invalid.</p>
+  <a id="Libplanet_Action_BlockProtocolVersionNotSupportedException__ctor_" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor*"></a>
+  <h4 id="Libplanet_Action_BlockProtocolVersionNotSupportedException__ctor_System_String_System_Int32_" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor(System.String,System.Int32)">BlockProtocolVersionNotSupportedException(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.BlockProtocolVersionNotSupportedException.html">BlockProtocolVersionNotSupportedException</a> object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected InvalidMessageTimestampException(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockProtocolVersionNotSupportedException(string message, int blockProtocolVersion)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,13 +178,50 @@ invalid.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>Specifies a <span class="xref">System.Exception.Message</span>.</p>
+</td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
-        <td><span class="parametername">context</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">blockProtocolVersion</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_ProtocolVersion">ProtocolVersion</a> of the
+<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that <code data-dev-comment-type="paramref" class="paramref">action</code> belongs to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_BlockProtocolVersionNotSupportedException_BlockProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/BlockProtocolVersionNotSupportedException.cs/#L44">View Source</a>
+  </span>
+  <a id="Libplanet_Action_BlockProtocolVersionNotSupportedException_BlockProtocolVersion_" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion*"></a>
+  <h4 id="Libplanet_Action_BlockProtocolVersionNotSupportedException_BlockProtocolVersion" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion">BlockProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_ProtocolVersion">ProtocolVersion</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that is
+not supported by an implementation of <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BlockProtocolVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -192,15 +230,17 @@ invalid.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/InvalidMessageTimestampException.cs/#L43">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/BlockProtocolVersionNotSupportedException.cs/#L46">View Source</a>
   </span>
-  <a id="Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData*"></a>
-  <h4 id="Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>An exception that is thrown when the timestamp of an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is
-invalid.</p>
+  <a id="Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData*"></a>
+  <h4 id="Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p>The exception that is thrown when an <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a> with
+a protocol version that is not supported by an implementation of
+<a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> is passed as an argument to
+<a class="xref" href="Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -243,10 +283,10 @@ invalid.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_InvalidMessageTimestampException.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.InvalidMessageTimestampException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_BlockProtocolVersionNotSupportedException.md&amp;value=---%0Auid%3A%20Libplanet.Action.BlockProtocolVersionNotSupportedException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/InvalidMessageTimestampException.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/BlockProtocolVersionNotSupportedException.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

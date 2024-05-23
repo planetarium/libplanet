@@ -250,6 +250,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
   nameWithType: ActionTypeAttribute.TypeIdentifier
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException
+  name: BlockProtocolVersionNotSupportedException
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html
+  commentId: T:Libplanet.Action.BlockProtocolVersionNotSupportedException
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException
+  nameWithType: BlockProtocolVersionNotSupportedException
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor(System.String,System.Int32)
+  name: BlockProtocolVersionNotSupportedException(String, Int32)
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException__ctor_System_String_System_Int32_
+  commentId: M:Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor(System.String,System.Int32)
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersionNotSupportedException(System.String, System.Int32)
+  nameWithType: BlockProtocolVersionNotSupportedException.BlockProtocolVersionNotSupportedException(String, Int32)
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor*
+  name: BlockProtocolVersionNotSupportedException
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException__ctor_
+  commentId: Overload:Libplanet.Action.BlockProtocolVersionNotSupportedException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersionNotSupportedException
+  nameWithType: BlockProtocolVersionNotSupportedException.BlockProtocolVersionNotSupportedException
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_BlockProtocolVersion
+  commentId: P:Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+  nameWithType: BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion*
+  name: BlockProtocolVersion
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_BlockProtocolVersion_
+  commentId: Overload:Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+  nameWithType: BlockProtocolVersionNotSupportedException.BlockProtocolVersion
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: BlockProtocolVersionNotSupportedException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_
+  commentId: Overload:Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData
+  nameWithType: BlockProtocolVersionNotSupportedException.GetObjectData
 - uid: Libplanet.Action.CommittedActionContext
   name: CommittedActionContext
   href: api/Libplanet.Action.CommittedActionContext.html
