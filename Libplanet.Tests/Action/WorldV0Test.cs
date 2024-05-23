@@ -10,5 +10,20 @@ namespace Libplanet.Tests.Action
         }
 
         public override int ProtocolVersion { get; } = 0;
+
+        public override void TransferAssetInBlock()
+        {
+            return;
+        }
+
+        public override void SetValidatorSet()
+        {
+            return;
+        }
+
+        public override void TotalSupplyTracking()
+        {
+            return;
+        }
     }
 }

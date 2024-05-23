@@ -6,6 +6,13 @@ Version 4.6.0
 
 To be released.
 
+Due to changes in [#3789], a network ran with a prior version
+may not be compatible with this version.  The native implementation of
+`IActionEvaluator`, which is `ActionEvaluator`, no longer supports
+evaluation of PoW `Block`s.  That is, it is no longer possible to
+reconstruct states with valid state root hashes purely from past
+`Block`s that includes PoW `Block`s.
+
 ### Deprecated APIs
 
  -  (Libplanet.Common) Removed `Nonce` struct.  [[#3793], [#3794]]
@@ -13,6 +20,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Changed `ActionEvaluate.Evaluate()` to no longer
+    accept `IPreEvaluationBlock` with a protocol version less than
+    `BlockMetadata.PBFTProtocolVersion`.  [[#3789]]
+ -  (Libplanet.Action) Changed the description of `IActionEvaluate.Evaluate()`
+    so that it may throw `BlockProtocolVersionNotSupportedException` if
+    its implementation is not able to handle `IPreEvaluationBlock` with
+    certain `BlockMetadata.ProtocolVersion`s.  [[#3789]]
  -  (Libplanet.Types) Removed `nonce` parameter from
     `BlockMetadata.DerivePreEvaluationHash()` and
     `BlockMetadata.MakeCandidateData()` methods.  [[#3793], [#3794]]
@@ -26,6 +40,9 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Action) Added `BlockProtocolVersionNotSupportedException` class.
+    [[#3789]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -34,6 +51,7 @@ To be released.
 
 ### CLI tools
 
+[#3789]: https://github.com/planetarium/libplanet/pull/3789
 [#3793]: https://github.com/planetarium/libplanet/issues/3793
 [#3794]: https://github.com/planetarium/libplanet/pull/3794
 [#3795]: https://github.com/planetarium/libplanet/pull/3795

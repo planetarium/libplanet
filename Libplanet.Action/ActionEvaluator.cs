@@ -98,6 +98,16 @@ namespace Libplanet.Action
             IPreEvaluationBlock block,
             HashDigest<SHA256>? baseStateRootHash)
         {
+            if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
+            {
+                throw new BlockProtocolVersionNotSupportedException(
+                    $"The native implementation does not support an evaluation of a block " +
+                    $"#{block.Index} pre-evaluation hash {block.PreEvaluationHash} " +
+                    $"with protocol version less than {BlockMetadata.PBFTProtocolVersion}: " +
+                    $"{block.ProtocolVersion}",
+                    block.ProtocolVersion);
+            }
+
             _logger.Information(
                 "Evaluating actions in the block #{BlockIndex} " +
                 "pre-evaluation hash {PreEvaluationHash}...",

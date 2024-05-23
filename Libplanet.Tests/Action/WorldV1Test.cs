@@ -11,5 +11,20 @@ namespace Libplanet.Tests.Action
         }
 
         public override int ProtocolVersion { get; } = BlockMetadata.TransferFixProtocolVersion;
+
+        public override void TransferAssetInBlock()
+        {
+            return;
+        }
+
+        public override void SetValidatorSet()
+        {
+            return;
+        }
+
+        public override void TotalSupplyTracking()
+        {
+            return;
+        }
     }
 }

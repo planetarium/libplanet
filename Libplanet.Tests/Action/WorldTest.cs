@@ -225,7 +225,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public void TransferAssetInBlock()
+        public virtual void TransferAssetInBlock()
         {
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -317,18 +317,9 @@ namespace Libplanet.Tests.Action
                 ? chain.EvaluateAndSign(block3PreEval, _keys[1])
                 : new Block(block3PreEval, (stateRootHash, null, hash));
             chain.Append(block3, TestUtils.CreateBlockCommit(block3));
-            if (ProtocolVersion >= BlockMetadata.TransferFixProtocolVersion)
-            {
-                Assert.Equal(
-                    DumbAction.DumbCurrency * 5,
-                    chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
-            }
-            else
-            {
-                Assert.Equal(
-                    DumbAction.DumbCurrency * 6,
-                    chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
-            }
+            Assert.Equal(
+                DumbAction.DumbCurrency * 5,
+                chain.GetWorldState().GetBalance(_addr[0], DumbAction.DumbCurrency));
         }
 
         [Fact]
@@ -412,117 +403,108 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public void SetValidatorSet()
+        public virtual void SetValidatorSet()
         {
-            if (ProtocolVersion > BlockMetadata.PBFTProtocolVersion)
+            const int newValidatorCount = 6;
+            var world = _initWorld;
+            var keys = Enumerable
+                .Range(0, newValidatorCount)
+                .Select(i => new PrivateKey())
+                .ToList();
+
+            var validatorSet = new ValidatorSet(
+                keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
+            world = world.SetValidatorSet(validatorSet);
+            Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
+            Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
+            var oldValidatorSetRawValue = world
+                .GetAccountState(ReservedAddresses.LegacyAccount)
+                .Trie
+                .Get(KeyConverters.ValidatorSetKey);
+            var newValidatorSetRawValue = world
+                .GetAccountState(ReservedAddresses.ValidatorSetAccount)
+                .Trie
+                .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+            if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
-                const int newValidatorCount = 6;
-                var world = _initWorld;
-                var keys = Enumerable
-                    .Range(0, newValidatorCount)
-                    .Select(i => new PrivateKey())
-                    .ToList();
+                Assert.Null(oldValidatorSetRawValue);
+                Assert.NotNull(newValidatorSetRawValue);
+            }
+            else
+            {
+                Assert.NotNull(oldValidatorSetRawValue);
+                Assert.Null(newValidatorSetRawValue);
+            }
 
-                var validatorSet = new ValidatorSet(
-                    keys.Select(key => new Validator(key.PublicKey, 1)).ToList());
-                world = world.SetValidatorSet(validatorSet);
-                Assert.Equal(newValidatorCount, world.GetValidatorSet().TotalCount);
-                Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
-                var oldValidatorSetRawValue = world
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .Trie
-                    .Get(KeyConverters.ValidatorSetKey);
-                var newValidatorSetRawValue = world
-                    .GetAccountState(ReservedAddresses.ValidatorSetAccount)
-                    .Trie
-                    .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
-                if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
-                {
-                    Assert.Null(oldValidatorSetRawValue);
-                    Assert.NotNull(newValidatorSetRawValue);
-                }
-                else
-                {
-                    Assert.NotNull(oldValidatorSetRawValue);
-                    Assert.Null(newValidatorSetRawValue);
-                }
-
-                world = world.SetValidatorSet(new ValidatorSet());
-                Assert.Equal(0, world.GetValidatorSet().TotalCount);
-                oldValidatorSetRawValue =
-                    world.GetAccountState(ReservedAddresses.LegacyAccount).Trie.Get(
-                        KeyConverters.ValidatorSetKey);
-                newValidatorSetRawValue =
-                    world.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie.Get(
-                        KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
-                if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
-                {
-                    Assert.Null(oldValidatorSetRawValue);
-                    Assert.NotNull(newValidatorSetRawValue);
-                }
-                else
-                {
-                    Assert.NotNull(oldValidatorSetRawValue);
-                    Assert.Null(newValidatorSetRawValue);
-                }
+            world = world.SetValidatorSet(new ValidatorSet());
+            Assert.Equal(0, world.GetValidatorSet().TotalCount);
+            oldValidatorSetRawValue =
+                world.GetAccountState(ReservedAddresses.LegacyAccount).Trie.Get(
+                    KeyConverters.ValidatorSetKey);
+            newValidatorSetRawValue =
+                world.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie.Get(
+                    KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+            if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
+            {
+                Assert.Null(oldValidatorSetRawValue);
+                Assert.NotNull(newValidatorSetRawValue);
+            }
+            else
+            {
+                Assert.NotNull(oldValidatorSetRawValue);
+                Assert.Null(newValidatorSetRawValue);
             }
         }
 
         [Fact]
-        public void TotalSupplyTracking()
+        public virtual void TotalSupplyTracking()
         {
-            // While not specifically tied to a protocol version,
-            // Total supply tracking was introduced while the block protocol version
-            // was at 4.
-            if (ProtocolVersion >= BlockMetadata.PBFTProtocolVersion)
+            IWorld world = _initWorld;
+            IActionContext context = _initContext;
+
+            if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
             {
-                IWorld world = _initWorld;
-                IActionContext context = _initContext;
-
-                if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
-                {
-                    Assert.Equal(
-                        Value(0, 5),
-                        world.GetTotalSupply(_currencies[0]));
-                }
-                else
-                {
-                    Assert.Equal(
-                        Value(0, 0),
-                        world.GetTotalSupply(_currencies[0]));
-                }
-
                 Assert.Equal(
-                    Value(4, 5),
-                    _initWorld.GetTotalSupply(_currencies[4]));
-
-                world = world.MintAsset(context, _addr[0], Value(0, 10));
-                if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
-                {
-                    Assert.Equal(
-                        Value(0, 15),
-                        world.GetTotalSupply(_currencies[0]));
-                }
-                else
-                {
-                    Assert.Equal(
-                        Value(0, 0),
-                        world.GetTotalSupply(_currencies[0]));
-                }
-
-                world = world.MintAsset(context, _addr[0], Value(4, 10));
-                Assert.Equal(
-                    Value(4, 15),
-                    world.GetTotalSupply(_currencies[4]));
-
-                Assert.Throws<InsufficientBalanceException>(() =>
-                    world.BurnAsset(context, _addr[0], Value(4, 100)));
-
-                world = world.BurnAsset(context, _addr[0], Value(4, 5));
-                Assert.Equal(
-                    Value(4, 10),
-                    world.GetTotalSupply(_currencies[4]));
+                    Value(0, 5),
+                    world.GetTotalSupply(_currencies[0]));
             }
+            else
+            {
+                Assert.Equal(
+                    Value(0, 0),
+                    world.GetTotalSupply(_currencies[0]));
+            }
+
+            Assert.Equal(
+                Value(4, 5),
+                _initWorld.GetTotalSupply(_currencies[4]));
+
+            world = world.MintAsset(context, _addr[0], Value(0, 10));
+            if (ProtocolVersion >= BlockMetadata.CurrencyAccountProtocolVersion)
+            {
+                Assert.Equal(
+                    Value(0, 15),
+                    world.GetTotalSupply(_currencies[0]));
+            }
+            else
+            {
+                Assert.Equal(
+                    Value(0, 0),
+                    world.GetTotalSupply(_currencies[0]));
+            }
+
+            world = world.MintAsset(context, _addr[0], Value(4, 10));
+            Assert.Equal(
+                Value(4, 15),
+                world.GetTotalSupply(_currencies[4]));
+
+            Assert.Throws<InsufficientBalanceException>(() =>
+                world.BurnAsset(context, _addr[0], Value(4, 100)));
+
+            world = world.BurnAsset(context, _addr[0], Value(4, 5));
+            Assert.Equal(
+                Value(4, 10),
+                world.GetTotalSupply(_currencies[4]));
         }
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>

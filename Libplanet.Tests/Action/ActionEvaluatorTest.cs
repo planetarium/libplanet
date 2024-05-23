@@ -11,6 +11,7 @@ using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
 using Libplanet.Store;
@@ -1224,6 +1225,18 @@ namespace Libplanet.Tests.Action
                 IActionContext context = eval.InputContext;
                 Assert.Equal(randomSeeds[i], context.RandomSeed);
             }
+        }
+
+        [Fact]
+        public void BlockProtocolVersionNotSupported()
+        {
+            Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
+            var actionEvaluator = new ActionEvaluator(
+                _ => null,
+                new TrieStateStore(new MemoryKeyValueStore()),
+                new SingleActionLoader(typeof(DumbAction)));
+            Assert.Throws<BlockProtocolVersionNotSupportedException>(
+                () => actionEvaluator.Evaluate(block, null));
         }
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
