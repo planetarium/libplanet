@@ -33,6 +33,10 @@ reconstruct states with valid state root hashes purely from past
  -  (Libplanet.Explorer.Executable) Removed unused `difficultyBoundDivisor`
     parameter for the executable and removed `Options.DifficultyBoundDivisor`
     property.  [[#3796]]
+ -  (Libplanet.Explorer) Added `balance`, `totalSupply`, and `validatorSet`
+    queries to `WorldStateType`.  [[#3792], [#3798]]
+ -  (Libplanet.Explorer) Deprecated `balance`, `balances`, `totalSupply` and
+    `validatorSet` query from `AccountStateType`.  [[#3792], [#3798]]
 
 ### Backward-incompatible network protocol changes
 
@@ -52,10 +56,12 @@ reconstruct states with valid state root hashes purely from past
 ### CLI tools
 
 [#3789]: https://github.com/planetarium/libplanet/pull/3789
+[#3792]: https://github.com/planetarium/libplanet/issues/3792
 [#3793]: https://github.com/planetarium/libplanet/issues/3793
 [#3794]: https://github.com/planetarium/libplanet/pull/3794
 [#3795]: https://github.com/planetarium/libplanet/pull/3795
 [#3796]: https://github.com/planetarium/libplanet/pull/3796
+[#3798]: https://github.com/planetarium/libplanet/pull/3798
 
 
 Version 4.5.0

@@ -9,7 +9,6 @@ using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -92,28 +91,21 @@ public partial class StateQueryTest
     }
 
     [Fact]
-    public async Task WorldByBlockHashThenAccountThenBalanceAndBalances()
+    public async Task WorldByBlockHashThenBalance()
     {
         IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             world (blockHash: ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"") {
-                account (address: ""0x1000000000000000000000000000000000000000"") {
-                    balance (
-                        address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076""
-                        currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40""
-                    ) {
-                        hex
-                    }
-                    balances (
-                        addresses: [
-                            ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                            ""0x0000000000000000000000000000000000000000""
-                        ]
-                        currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40""
-                    ) {
-                        hex
-                    }
+                balance (
+                    address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076""
+                    currency: {
+                        ticker: ""ABC""
+                        decimalPlaces: 2
+                        minters: null
+                        totalSupplyTrackable: true
+                    }) {
+                    string
                 }
             }
         }
@@ -123,38 +115,29 @@ public partial class StateQueryTest
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
-        IDictionary<string, object> account =
-            Assert.IsAssignableFrom<IDictionary<string, object>>(
-                Assert.IsAssignableFrom<IDictionary<string, object>>(
-                    resultDict["world"])["account"]);
-
+        IDictionary<string, object> world =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["world"]);
         IDictionary<string, object> balance =
-            Assert.IsAssignableFrom<IDictionary<string, object>>(account["balance"]);
+            Assert.IsAssignableFrom<IDictionary<string, object>>(world["balance"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(new Integer(123))),
-            Assert.IsAssignableFrom<string>(balance["hex"]));
-
-        object[] balances =
-            Assert.IsAssignableFrom<object[]>(account["balances"]);
-        Assert.Equal(2, balances.Length);
-        Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(new Integer(123))),
-            Assert.IsAssignableFrom<string>(
-                Assert.IsAssignableFrom<IDictionary<string, object>>(balances[0])["hex"]));
-        Assert.Null(balances[1]);
+            "1.23 ABC",
+            Assert.IsAssignableFrom<string>(balance["string"]));
     }
 
     [Fact]
-    public async Task WorldByBlockHashThenAccountThenTotalSupply()
+    public async Task WorldByBlockHashThenTotalSupply()
     {
         IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             world (blockHash: ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"") {
-                account (address: ""0x1000000000000000000000000000000000000000"") {
-                    totalSupply (currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40"") {
-                        hex
-                    }
+                totalSupply (currency: {
+                    ticker: ""ABC""
+                    decimalPlaces: 2
+                    minters: null
+                    totalSupplyTrackable: true
+                }) {
+                    string
                 }
             }
         }
@@ -167,24 +150,21 @@ public partial class StateQueryTest
         IDictionary<string, object> totalSupply =
             Assert.IsAssignableFrom<IDictionary<string, object>>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
-                    Assert.IsAssignableFrom<IDictionary<string, object>>(
-                        resultDict["world"])["account"])["totalSupply"]);
+                    resultDict["world"])["totalSupply"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(new Integer(10123))),
-            Assert.IsAssignableFrom<string>(totalSupply["hex"]));
+            "101.23 ABC",
+            Assert.IsAssignableFrom<string>(totalSupply["string"]));
     }
 
     [Fact]
-    public async Task WorldByBlockHashThenAccountThenValidatorSet()
+    public async Task WorldByBlockHashThenValidatorSet()
     {
         IBlockChainStates source = new MockChainStates();
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
         {
             world (blockHash: ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"") {
-                account (address: ""0x1000000000000000000000000000000000000000"") {
-                    validatorSet {
-                        hex
-                    }
+                validatorSet {
+                    hex
                 }
             }
         }
@@ -197,8 +177,7 @@ public partial class StateQueryTest
         IDictionary<string, object> validatorSet =
             Assert.IsAssignableFrom<IDictionary<string, object>>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
-                    Assert.IsAssignableFrom<IDictionary<string, object>>(
-                        resultDict["world"])["account"])["validatorSet"]);
+                    resultDict["world"])["validatorSet"]);
         Assert.Equal(
             ByteUtil.Hex(_codec.Encode(new ValidatorSet(new List<Validator>
                 {

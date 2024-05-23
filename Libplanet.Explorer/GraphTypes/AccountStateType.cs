@@ -86,6 +86,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<IValueType>(
                 name: "balance",
+                deprecationReason: "Does not work post block protocol version 7.",
                 description: "Balance at given address and currency hash pair.",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<AddressType>>
@@ -107,6 +108,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<ListGraphType<IValueType>>>(
                 name: "balances",
+                deprecationReason: "Does not work post block protocol version 7.",
                 description: "Balances at given addresses and currency hash pair.",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<
@@ -130,6 +132,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<IValueType>(
                 name: "totalSupply",
+                deprecationReason: "Does not work post block protocol version 7.",
                 description: "Total supply in circulation, if recorded, for given currency hash.",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<HashDigestType<SHA1>>>
@@ -144,6 +147,7 @@ namespace Libplanet.Explorer.GraphTypes
             );
 
             Field<IValueType>(
+                deprecationReason: "Does not work post block protocol version 6.",
                 name: "validatorSet",
                 description: "The validator set.",
                 resolve: context => context.Source.Trie.Get(ValidatorSetKey)
