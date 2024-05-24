@@ -93,6 +93,8 @@ property.  [<a href="https://github.com/planetarium/libplanet/pull/3796">#3796</
 queries to <code>WorldStateType</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3792">#3792</a>, <a href="https://github.com/planetarium/libplanet/pull/3798">#3798</a>]</li>
 <li>(Libplanet.Explorer) Deprecated <code>balance</code>, <code>balances</code>, <code>totalSupply</code> and
 <code>validatorSet</code> query from <code>AccountStateType</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3792">#3792</a>, <a href="https://github.com/planetarium/libplanet/pull/3798">#3798</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>totalSupply</code> query under <code>StateQuery</code> to
+no longer throw an <code>Exception</code> and return a zero amount instead.  [<a href="https://github.com/planetarium/libplanet/pull/3799">#3799</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -100,6 +102,7 @@ queries to <code>WorldStateType</code>.  [<a href="https://github.com/planetariu
 <ul>
 <li>(Libplanet.Action) Added <code>BlockProtocolVersionNotSupportedException</code> class.
 [<a href="https://github.com/planetarium/libplanet/pull/3789">#3789</a>]</li>
+<li>(Libplanet.Mocks) Added <code>MockBlockChainStates</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3799">#3799</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>

@@ -10811,6 +10811,79 @@ references:
   commentId: N:Libplanet.Mocks
   fullName: Libplanet.Mocks
   nameWithType: Libplanet.Mocks
+- uid: Libplanet.Mocks.MockBlockChainStates
+  name: MockBlockChainStates
+  href: api/Libplanet.Mocks.MockBlockChainStates.html
+  commentId: T:Libplanet.Mocks.MockBlockChainStates
+  fullName: Libplanet.Mocks.MockBlockChainStates
+  nameWithType: MockBlockChainStates
+- uid: Libplanet.Mocks.MockBlockChainStates.#ctor
+  name: MockBlockChainStates()
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates__ctor
+  commentId: M:Libplanet.Mocks.MockBlockChainStates.#ctor
+  fullName: Libplanet.Mocks.MockBlockChainStates.MockBlockChainStates()
+  nameWithType: MockBlockChainStates.MockBlockChainStates()
+- uid: Libplanet.Mocks.MockBlockChainStates.#ctor*
+  name: MockBlockChainStates
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates__ctor_
+  commentId: Overload:Libplanet.Mocks.MockBlockChainStates.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Mocks.MockBlockChainStates.MockBlockChainStates
+  nameWithType: MockBlockChainStates.MockBlockChainStates
+- uid: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash(Libplanet.Types.Blocks.BlockHash,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name: AttachBlockHashToStateRootHash(BlockHash, HashDigest<SHA256>)
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_AttachBlockHashToStateRootHash_Libplanet_Types_Blocks_BlockHash_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash(Libplanet.Types.Blocks.BlockHash,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: AttachBlockHashToStateRootHash(BlockHash, HashDigest(Of SHA256))
+  fullName: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash(Libplanet.Types.Blocks.BlockHash, Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash(Libplanet.Types.Blocks.BlockHash, Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: MockBlockChainStates.AttachBlockHashToStateRootHash(BlockHash, HashDigest<SHA256>)
+  nameWithType.vb: MockBlockChainStates.AttachBlockHashToStateRootHash(BlockHash, HashDigest(Of SHA256))
+- uid: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash*
+  name: AttachBlockHashToStateRootHash
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_AttachBlockHashToStateRootHash_
+  commentId: Overload:Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash
+  isSpec: "True"
+  fullName: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash
+  nameWithType: MockBlockChainStates.AttachBlockHashToStateRootHash
+- uid: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetWorldState(Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetWorldState_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetWorldState(Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable<Libplanet.Common.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable(Of Libplanet.Common.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: MockBlockChainStates.GetWorldState(Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: MockBlockChainStates.GetWorldState(Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable{Libplanet.Types.Blocks.BlockHash})
+  name: GetWorldState(Nullable<BlockHash>)
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetWorldState_System_Nullable_Libplanet_Types_Blocks_BlockHash__
+  commentId: M:Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable{Libplanet.Types.Blocks.BlockHash})
+  name.vb: GetWorldState(Nullable(Of BlockHash))
+  fullName: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable<Libplanet.Types.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Mocks.MockBlockChainStates.GetWorldState(System.Nullable(Of Libplanet.Types.Blocks.BlockHash))
+  nameWithType: MockBlockChainStates.GetWorldState(Nullable<BlockHash>)
+  nameWithType.vb: MockBlockChainStates.GetWorldState(Nullable(Of BlockHash))
+- uid: Libplanet.Mocks.MockBlockChainStates.GetWorldState*
+  name: GetWorldState
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetWorldState_
+  commentId: Overload:Libplanet.Mocks.MockBlockChainStates.GetWorldState
+  isSpec: "True"
+  fullName: Libplanet.Mocks.MockBlockChainStates.GetWorldState
+  nameWithType: MockBlockChainStates.GetWorldState
+- uid: Libplanet.Mocks.MockBlockChainStates.StateStore
+  name: StateStore
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_StateStore
+  commentId: P:Libplanet.Mocks.MockBlockChainStates.StateStore
+  fullName: Libplanet.Mocks.MockBlockChainStates.StateStore
+  nameWithType: MockBlockChainStates.StateStore
+- uid: Libplanet.Mocks.MockBlockChainStates.StateStore*
+  name: StateStore
+  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_StateStore_
+  commentId: Overload:Libplanet.Mocks.MockBlockChainStates.StateStore
+  isSpec: "True"
+  fullName: Libplanet.Mocks.MockBlockChainStates.StateStore
+  nameWithType: MockBlockChainStates.StateStore
 - uid: Libplanet.Mocks.MockUtil
   name: MockUtil
   href: api/Libplanet.Mocks.MockUtil.html
