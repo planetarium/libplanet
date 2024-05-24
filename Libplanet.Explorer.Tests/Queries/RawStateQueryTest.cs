@@ -24,15 +24,15 @@ public partial class RawStateQueryTest
     public async Task StateValue()
     {
         // Check value at address path.
-        IBlockChainStates source = new StateQueryTest.MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<RawStateQuery>(@"
-        {
-            trie(stateRootHash: ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64"") {
-                value(key: ""35303033373132623633626161623938303934616436373865613262323462636534343564303736"") {
+        (var source, _, var stateRootHash) = StateQueryTest.CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<RawStateQuery>($@"
+        {{
+            trie(stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
+                value(key: ""35303033373132623633626161623938303934616436373865613262323462636534343564303736"") {{
                     hex
-                }
-            }
-        }
+                }}
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -54,14 +54,14 @@ public partial class RawStateQueryTest
                     "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
                 new BigInteger(1))
         });
-        result = await ExecuteQueryAsync<RawStateQuery>(@"
-        {
-            trie(stateRootHash: ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64"") {
-                value(key: ""5f5f5f"") {
+        result = await ExecuteQueryAsync<RawStateQuery>($@"
+        {{
+            trie(stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
+                value(key: ""5f5f5f"") {{
                     hex
-                }
-            }
-        }
+                }}
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);

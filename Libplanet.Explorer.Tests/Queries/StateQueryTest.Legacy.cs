@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Action.State;
+using Libplanet.Common;
 using Libplanet.Explorer.Queries;
 using Libplanet.Types.Assets;
 using Xunit;
@@ -16,15 +16,18 @@ public partial class StateQueryTest
     [Fact]
     public async Task States()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             states(
-                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+                addresses: [
+                   ""{ByteUtil.Hex(_address.ByteArray)}""
+                   ""0x0000000000000000000000000000000000000000""
+                ]
+                offsetBlockHash:
+                    ""{ByteUtil.Hex(blockHash.ByteArray)}""
             )
-        }
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -39,23 +42,21 @@ public partial class StateQueryTest
     [Fact]
     public async Task Balance()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             balance(
-                 owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
-                currency { ticker, hash }
+                owner: ""{ByteUtil.Hex(_address.ByteArray)}""
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
+                currency {{ ticker, hash }}
                 sign
                 majorUnit
                 minorUnit
                 quantity
                 string
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -65,8 +66,8 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["balance"]);
         IDictionary<string, object> currencyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(balanceDict["currency"]);
-        Assert.Equal("ABC", currencyDict["ticker"]);
-        Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(_currency.Ticker, currencyDict["ticker"]);
+        Assert.Equal(ByteUtil.Hex(_currency.Hash.ByteArray), currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(balanceDict["sign"]));
         Assert.Equal(1, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
         Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
@@ -81,22 +82,20 @@ public partial class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             totalSupply(
-                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
-                currency { ticker, hash }
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
+                currency {{ ticker, hash }}
                 sign
                 majorUnit
                 minorUnit
                 quantity
                 string
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -107,23 +106,21 @@ public partial class StateQueryTest
         IDictionary<string, object> currencyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal("ABC", currencyDict["ticker"]);
-        Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(ByteUtil.Hex(_currency.Hash.ByteArray), currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(101, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
         Assert.Equal("101.23", totalSupplyDict["quantity"]);
         Assert.Equal("101.23 ABC", totalSupplyDict["string"]);
 
-        result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             totalSupply(
-                 currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
+                 currency: {{ ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false }}
+                 offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 quantity
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Single(result.Errors);
         Assert.Contains("not trackable", result.Errors[0].Message);
@@ -132,17 +129,14 @@ public partial class StateQueryTest
     [Fact]
     public async Task Validators()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
-            validators(
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
+        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
+            validators(offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 publicKey
                 power
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -158,17 +152,17 @@ public partial class StateQueryTest
     [Fact]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, var blockHash, var stateRootHash) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             states(
-                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"",
-                 offsetStateRootHash:
-                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            )
-        }
+                addresses: [
+                    ""{ByteUtil.Hex(_address.ByteArray)}""
+                    ""0x0000000000000000000000000000000000000000""
+                ]
+                offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}""
+                offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"")
+        }}
         ", source: source);
         Assert.IsType<ExecutionErrors>(result.Errors);
     }
@@ -177,15 +171,17 @@ public partial class StateQueryTest
     public async Task StatesBySrh()
     {
         var currency = Currency.Uncapped("ABC", 2, minters: null);
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, _, var stateRootHash) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             states(
-                 addresses: [""0x5003712B63baAB98094aD678EA2B24BcE445D076"", ""0x0000000000000000000000000000000000000000""],
-                 offsetStateRootHash:
-                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
+                addresses: [
+                    ""{ByteUtil.Hex(_address.ByteArray)}""
+                    ""0x0000000000000000000000000000000000000000""
+                ]
+                offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}""
             )
-        }
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -193,29 +189,28 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         object[] states =
             Assert.IsAssignableFrom<object[]>(resultDict["states"]);
-        Assert.Equal(new[] { new byte[] { 110, }, null }, states);
+        Assert.Equal(new[] { _codec.Encode(_value), null }, states);
     }
 
     [Fact]
     public async Task BalanceBySrh()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, _, var stateRootHash) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             balance(
-                 owner: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"",
-                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 offsetStateRootHash:
-                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            ) {
-                currency { ticker, hash }
+                owner: ""{ByteUtil.Hex(_address.ByteArray)}""
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}""
+            ) {{
+                currency {{ ticker, hash }}
                 sign
                 majorUnit
                 minorUnit
                 quantity
                 string
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -225,8 +220,8 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["balance"]);
         IDictionary<string, object> currencyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(balanceDict["currency"]);
-        Assert.Equal("ABC", currencyDict["ticker"]);
-        Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(_currency.Ticker, currencyDict["ticker"]);
+        Assert.Equal(ByteUtil.Hex(_currency.Hash.ByteArray), currencyDict["hash"]);
         Assert.Equal(1, Assert.IsAssignableFrom<int>(balanceDict["sign"]));
         Assert.Equal(1, Assert.IsAssignableFrom<BigInteger>(balanceDict["majorUnit"]));
         Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(balanceDict["minorUnit"]));
@@ -241,22 +236,21 @@ public partial class StateQueryTest
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        (var source, _, var stateRootHash) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             totalSupply(
-                 currency: { ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true },
-                 offsetStateRootHash:
-                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            ) {
-                currency { ticker, hash }
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}""
+            ) {{
+                currency {{ ticker, hash }}
                 sign
                 majorUnit
                 minorUnit
                 quantity
                 string
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -266,24 +260,22 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
         IDictionary<string, object> currencyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
-        Assert.Equal("ABC", currencyDict["ticker"]);
-        Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(_currency.Ticker, currencyDict["ticker"]);
+        Assert.Equal(ByteUtil.Hex(_currency.Hash.ByteArray), currencyDict["hash"]);
         Assert.Equal(101, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(23, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
         Assert.Equal("101.23", totalSupplyDict["quantity"]);
         Assert.Equal("101.23 ABC", totalSupplyDict["string"]);
 
-        result = await ExecuteQueryAsync<StateQuery>(@"
-        {
+        result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
             totalSupply(
-                 currency: { ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false },
-                 offsetBlockHash:
-                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
-            ) {
+                currency: {{ ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false }}
+                offsetBlockHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
                 quantity
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Single(result.Errors);
         Assert.Contains("not trackable", result.Errors[0].Message);
@@ -292,17 +284,14 @@ public partial class StateQueryTest
     [Fact]
     public async Task ValidatorsBySrh()
     {
-        IBlockChainStates source = new MockChainStates();
-        ExecutionResult result = await ExecuteQueryAsync<StateQuery>(@"
-        {
-            validators(
-                 offsetStateRootHash:
-                     ""c33b27773104f75ac9df5b0533854108bd498fab31e5236b6f1e1f6404d5ef64""
-            ) {
+        (var source, _, var stateRootHash) = CreateMockBlockChainStates(0);
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
+        {{
+            validators(offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
                 publicKey
                 power
-            }
-        }
+            }}
+        }}
         ", source: source);
         Assert.Null(result.Errors);
         ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
@@ -311,7 +300,7 @@ public partial class StateQueryTest
         object[] validators = Assert.IsAssignableFrom<object[]>(resultDict["validators"]);
         IDictionary<string, object> validatorDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(validators[0]);
-        Assert.Equal("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233", validatorDict["publicKey"]);
+        Assert.Equal(_validator.PublicKey.ToHex(true), validatorDict["publicKey"]);
         Assert.Equal(new BigInteger(1), validatorDict["power"]);
     }
 }
