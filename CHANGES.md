@@ -37,6 +37,8 @@ reconstruct states with valid state root hashes purely from past
     queries to `WorldStateType`.  [[#3792], [#3798]]
  -  (Libplanet.Explorer) Deprecated `balance`, `balances`, `totalSupply` and
     `validatorSet` query from `AccountStateType`.  [[#3792], [#3798]]
+ -  (Libplanet.Explorer) Changed `totalSupply` query under `StateQuery` to
+    no longer throw an `Exception` and return a zero amount instead.  [[#3799]]
 
 ### Backward-incompatible network protocol changes
 
@@ -46,6 +48,7 @@ reconstruct states with valid state root hashes purely from past
 
  -  (Libplanet.Action) Added `BlockProtocolVersionNotSupportedException` class.
     [[#3789]]
+ -  (Libplanet.Mocks) Added `MockBlockChainStates` class.  [[#3799]]
 
 ### Behavioral changes
 
@@ -62,6 +65,7 @@ reconstruct states with valid state root hashes purely from past
 [#3795]: https://github.com/planetarium/libplanet/pull/3795
 [#3796]: https://github.com/planetarium/libplanet/pull/3796
 [#3798]: https://github.com/planetarium/libplanet/pull/3798
+[#3799]: https://github.com/planetarium/libplanet/pull/3799
 
 
 Version 4.5.0
