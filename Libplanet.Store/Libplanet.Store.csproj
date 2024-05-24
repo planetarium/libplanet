@@ -15,6 +15,8 @@
     <Nullable>enable</Nullable>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Store</RootNamespace>
+    <NoWarn>$(NoWarn);NU1904</NoWarn>
+    <!-- FIXME: NU1904 should be removed once LiteDB is bumped to a secure version -->
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
