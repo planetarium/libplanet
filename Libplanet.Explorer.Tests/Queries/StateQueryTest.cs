@@ -1,17 +1,12 @@
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
-using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Action.State;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Mocks;
-using Libplanet.Types.Consensus;
 using Xunit;
+using Fixture = Libplanet.Explorer.Tests.Fixtures.BlockChainStatesFixture;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
 namespace Libplanet.Explorer.Tests.Queries;
@@ -23,7 +18,7 @@ public partial class StateQueryTest
     [Fact]
     public async Task World()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world(blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -47,16 +42,16 @@ public partial class StateQueryTest
     [Fact]
     public async Task WorldByBlockHashThenAccountThenStateAndStates()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 account (address: ""0x1000000000000000000000000000000000000000"") {{
-                    state (address: ""{ByteUtil.Hex(_address.ByteArray)}"") {{
+                    state (address: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}"") {{
                         hex
                     }}
                     states (addresses: [
-                        ""{ByteUtil.Hex(_address.ByteArray)}"",
+                        ""{ByteUtil.Hex(Fixture.Address.ByteArray)}"",
                         ""0x0000000000000000000000000000000000000000""
                     ]) {{
                         hex
@@ -78,14 +73,14 @@ public partial class StateQueryTest
         IDictionary<string, object> state =
             Assert.IsAssignableFrom<IDictionary<string, object>>(account["state"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(state["hex"]));
 
         object[] states =
             Assert.IsAssignableFrom<object[]>(account["states"]);
         Assert.Equal(2, states.Length);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(states[0])["hex"]));
         Assert.Null(states[1]);
@@ -94,12 +89,12 @@ public partial class StateQueryTest
     [Fact]
     public async Task WorldByBlockHashThenBalance()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 balance (
-                    address: ""{ByteUtil.Hex(_address.ByteArray)}""
+                    address: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}""
                     currency: {{
                         ticker: ""ABC""
                         decimalPlaces: 2
@@ -120,14 +115,14 @@ public partial class StateQueryTest
         IDictionary<string, object> balance =
             Assert.IsAssignableFrom<IDictionary<string, object>>(world["balance"]);
         Assert.Equal(
-            "1.23 ABC",
+            Fixture.Amount.ToString(),
             Assert.IsAssignableFrom<string>(balance["string"]));
     }
 
     [Fact]
     public async Task WorldByBlockHashThenTotalSupply()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -151,14 +146,14 @@ public partial class StateQueryTest
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
                     resultDict["world"])["totalSupply"]);
         Assert.Equal(
-            "101.23 ABC",
+            (Fixture.Amount + Fixture.AdditionalSupply).ToString(),
             Assert.IsAssignableFrom<string>(totalSupply["string"]));
     }
 
     [Fact]
     public async Task WorldByBlockHashThenValidatorSet()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -178,29 +173,23 @@ public partial class StateQueryTest
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
                     resultDict["world"])["validatorSet"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(new ValidatorSet(new List<Validator>
-                {
-                    new(
-                        PublicKey.FromHex(
-                            "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                        new BigInteger(1)),
-                }).Bencoded)),
+            ByteUtil.Hex(_codec.Encode(Fixture.ValidatorSet.Bencoded)),
             Assert.IsAssignableFrom<string>(validatorSet["hex"]));
     }
 
     [Fact]
     public async Task WorldByStateRootHashThenAccountThenStateAndStates()
     {
-        (var source, _, var stateRootHash) = CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
                 account (address: ""0x1000000000000000000000000000000000000000"") {{
-                    state (address: ""0x5003712B63baAB98094aD678EA2B24BcE445D076"") {{
+                    state (address: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}"") {{
                         hex
                     }}
                     states (addresses: [
-                        ""0x5003712B63baAB98094aD678EA2B24BcE445D076""
+                        ""{ByteUtil.Hex(Fixture.Address.ByteArray)}""
                         ""0x0000000000000000000000000000000000000000""
                     ]) {{
                         hex
@@ -222,14 +211,14 @@ public partial class StateQueryTest
         IDictionary<string, object> state =
             Assert.IsAssignableFrom<IDictionary<string, object>>(account["state"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(state["hex"]));
 
         object[] states =
             Assert.IsAssignableFrom<object[]>(account["states"]);
         Assert.Equal(2, states.Length);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(states[0])["hex"]));
         Assert.Null(states[1]);
@@ -239,16 +228,16 @@ public partial class StateQueryTest
     [Fact]
     public async Task WorldByBlockHashThenAccountsThenStateAndStates()
     {
-        (var source, var blockHash, _) = CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 accounts (addresses: [""0x1000000000000000000000000000000000000000""]) {{
-                    state (address: ""{ByteUtil.Hex(_address.ByteArray)}"") {{
+                    state (address: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}"") {{
                         hex
                     }}
                     states (addresses: [
-                        ""{ByteUtil.Hex(_address.ByteArray)}""
+                        ""{ByteUtil.Hex(Fixture.Address.ByteArray)}""
                         ""0x0000000000000000000000000000000000000000""]) {{
                         hex
                     }}
@@ -271,14 +260,14 @@ public partial class StateQueryTest
         IDictionary<string, object> state =
             Assert.IsAssignableFrom<IDictionary<string, object>>(account["state"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(state["hex"]));
 
         object[] states =
             Assert.IsAssignableFrom<object[]>(account["states"]);
         Assert.Equal(2, states.Length);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(_value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(states[0])["hex"]));
         Assert.Null(states[1]);

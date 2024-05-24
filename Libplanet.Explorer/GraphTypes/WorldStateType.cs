@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action.State;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 

@@ -5,13 +5,12 @@ using Bencodex;
 using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
-using Libplanet.Action.State;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Mocks;
 using Libplanet.Types.Consensus;
 using Xunit;
+using Fixture = Libplanet.Explorer.Tests.Fixtures.BlockChainStatesFixture;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
 namespace Libplanet.Explorer.Tests.Queries;
@@ -24,7 +23,7 @@ public partial class RawStateQueryTest
     public async Task StateValue()
     {
         // Check value at address path.
-        (var source, _, var stateRootHash) = StateQueryTest.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
         ExecutionResult result = await ExecuteQueryAsync<RawStateQuery>($@"
         {{
             trie(stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
@@ -43,17 +42,9 @@ public partial class RawStateQueryTest
         IDictionary<string, object> value =
             Assert.IsAssignableFrom<IDictionary<string, object>>(trie["value"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(Null.Value)),
+            ByteUtil.Hex(_codec.Encode(Fixture.Value)),
             Assert.IsAssignableFrom<string>(value["hex"]));
 
-        // Check value at validator set path.
-        ValidatorSet validatorSet = new ValidatorSet(new List<Validator>()
-        {
-            new Validator(
-                PublicKey.FromHex(
-                    "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                new BigInteger(1))
-        });
         result = await ExecuteQueryAsync<RawStateQuery>($@"
         {{
             trie(stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
@@ -72,7 +63,7 @@ public partial class RawStateQueryTest
         value =
             Assert.IsAssignableFrom<IDictionary<string, object>>(trie["value"]);
         Assert.Equal(
-            ByteUtil.Hex(_codec.Encode(validatorSet.Bencoded)),
+            ByteUtil.Hex(_codec.Encode(Fixture.ValidatorSet.Bencoded)),
             Assert.IsAssignableFrom<string>(value["hex"]));
     }
 }
