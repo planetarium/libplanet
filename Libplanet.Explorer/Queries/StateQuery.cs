@@ -172,15 +172,6 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
 
-        if (!currency.TotalSupplyTrackable)
-        {
-            string msg =
-                $"The total supply value of the currency {currency} is not trackable because it"
-                + " is a legacy untracked currency which might have been established before"
-                + " the introduction of total supply tracking support.";
-            throw new ExecutionError(msg);
-        }
-
         switch (blockhash: offsetBlockHash, srh: offsetStateRootHash)
         {
             case (blockhash: not null, srh: not null):
