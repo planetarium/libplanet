@@ -24,8 +24,10 @@ namespace Libplanet.Explorer.Tests.Fixtures
         /// The <see cref="Types.Assets.Currency"/> of the balance
         /// that <see cref="Address"/> is to have.
         /// </summary>
+#pragma warning disable CS0618  // Obsolete.
         public static readonly Currency Currency =
-            Currency.Uncapped("ABC", 2, null);
+            Currency.Legacy("ABC", 2, null);
+#pragma warning restore CS0618
 
         /// <summary>
         /// The amount of <see cref="Currency"/> for <see cref="Address"/> to have.

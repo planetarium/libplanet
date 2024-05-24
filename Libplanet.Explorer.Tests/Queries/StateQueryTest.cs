@@ -5,6 +5,8 @@ using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Common;
 using Libplanet.Explorer.Queries;
+using Libplanet.Types.Blocks;
+using Libplanet.Types.Assets;
 using Xunit;
 using Fixture = Libplanet.Explorer.Tests.Fixtures.BlockChainStatesFixture;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -15,10 +17,12 @@ public partial class StateQueryTest
 {
     private static readonly Codec _codec = new Codec();
 
-    [Fact]
-    public async Task World()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task World(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world(blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -35,14 +39,25 @@ public partial class StateQueryTest
         IDictionary<string, object> states =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["world"]);
         Assert.NotNull(states["stateRootHash"]);
-        Assert.True((bool)states["legacy"]);
-        Assert.Equal(0, states["version"]);
+
+        if (version >= BlockMetadata.WorldStateProtocolVersion)
+        {
+            Assert.False((bool)states["legacy"]);
+        }
+        else
+        {
+            Assert.True((bool)states["legacy"]);
+        }
+
+        Assert.Equal(version, states["version"]);
     }
 
-    [Fact]
-    public async Task WorldByBlockHashThenAccountThenStateAndStates()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByBlockHashThenAccountThenStateAndStates(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -86,10 +101,12 @@ public partial class StateQueryTest
         Assert.Null(states[1]);
     }
 
-    [Fact]
-    public async Task WorldByBlockHashThenBalance()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByBlockHashThenBalance(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -99,7 +116,7 @@ public partial class StateQueryTest
                         ticker: ""ABC""
                         decimalPlaces: 2
                         minters: null
-                        totalSupplyTrackable: true }}) {{
+                        totalSupplyTrackable: false }}) {{
                     string
                 }}
             }}
@@ -119,10 +136,12 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<string>(balance["string"]));
     }
 
-    [Fact]
-    public async Task WorldByBlockHashThenTotalSupply()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByBlockHashThenTotalSupply(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -130,7 +149,7 @@ public partial class StateQueryTest
                     ticker: ""ABC""
                     decimalPlaces: 2
                     minters: null
-                    totalSupplyTrackable: true }}) {{
+                    totalSupplyTrackable: false }}) {{
                     string
                 }}
             }}
@@ -145,15 +164,20 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
                     resultDict["world"])["totalSupply"]);
+        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+            ? (Fixture.Amount + Fixture.AdditionalSupply)
+            : (Fixture.Currency * 0);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).ToString(),
+            expectedTotalSupply.ToString(),
             Assert.IsAssignableFrom<string>(totalSupply["string"]));
     }
 
-    [Fact]
-    public async Task WorldByBlockHashThenValidatorSet()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByBlockHashThenValidatorSet(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -177,10 +201,12 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<string>(validatorSet["hex"]));
     }
 
-    [Fact]
-    public async Task WorldByStateRootHashThenAccountThenStateAndStates()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByStateRootHashThenAccountThenStateAndStates(int version)
     {
-        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
@@ -224,11 +250,12 @@ public partial class StateQueryTest
         Assert.Null(states[1]);
     }
 
-    // FIXME: We need proper mocks to test more complex scenarios.
-    [Fact]
-    public async Task WorldByBlockHashThenAccountsThenStateAndStates()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task WorldByBlockHashThenAccountsThenStateAndStates(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             world (blockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{

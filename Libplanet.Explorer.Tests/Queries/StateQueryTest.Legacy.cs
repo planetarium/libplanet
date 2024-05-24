@@ -6,6 +6,7 @@ using GraphQL.Execution;
 using Libplanet.Common;
 using Libplanet.Explorer.Queries;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Blocks;
 using Xunit;
 using Fixture = Libplanet.Explorer.Tests.Fixtures.BlockChainStatesFixture;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -14,10 +15,12 @@ namespace Libplanet.Explorer.Tests.Queries;
 
 public partial class StateQueryTest
 {
-    [Fact]
-    public async Task States()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task States(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             states(
@@ -40,15 +43,17 @@ public partial class StateQueryTest
         Assert.Equal(new[] { _codec.Encode(Fixture.Value), null }, states);
     }
 
-    [Fact]
-    public async Task Balance()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task Balance(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             balance(
                 owner: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}""
-                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: false }}
                 offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 currency {{ ticker, hash }}
                 sign
@@ -80,18 +85,19 @@ public partial class StateQueryTest
         Assert.Equal(Fixture.Amount.ToString(), balanceDict["string"]);
     }
 
-    [Fact]
-    public async Task TotalSupply()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task TotalSupply(int version)
     {
-         var currency = Currency.Uncapped("ABC", 2, minters: null);
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             totalSupply(
-                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: false }}
                 offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 currency {{ ticker, hash }}
                 sign
@@ -112,20 +118,23 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal(ByteUtil.Hex(Fixture.Currency.Hash.ByteArray), currencyDict["hash"]);
+        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+            ? (Fixture.Amount + Fixture.AdditionalSupply)
+            : (Fixture.Currency * 0);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).Sign,
+            expectedTotalSupply.Sign,
             Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).MajorUnit,
+            expectedTotalSupply.MajorUnit,
             Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).MinorUnit,
+            expectedTotalSupply.MinorUnit,
             Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            expectedTotalSupply.GetQuantityString(),
             totalSupplyDict["quantity"]);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).ToString(),
+            expectedTotalSupply.ToString(),
             totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>($@"
@@ -138,19 +147,22 @@ public partial class StateQueryTest
         }}
         ", source: source);
         Assert.Null(result.Errors);
+        resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         totalSupplyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            (legacyToken * 0).GetQuantityString(),
             totalSupplyDict["quantity"]);
     }
 
-    [Fact]
-    public async Task Validators()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task Validators(int version)
     {
-        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, _) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             validators(offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
@@ -170,10 +182,12 @@ public partial class StateQueryTest
         Assert.Equal(Fixture.Validator.Power, validatorDict["power"]);
     }
 
-    [Fact]
-    public async Task ThrowExecutionErrorIfViolateMutualExclusive()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task ThrowExecutionErrorIfViolateMutualExclusive(int version)
     {
-        (var source, var blockHash, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, var blockHash, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             states(
@@ -188,10 +202,12 @@ public partial class StateQueryTest
         Assert.IsType<ExecutionErrors>(result.Errors);
     }
 
-    [Fact]
-    public async Task StatesBySrh()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task StatesBySrh(int version)
     {
-        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             states(
@@ -212,15 +228,17 @@ public partial class StateQueryTest
         Assert.Equal(new[] { _codec.Encode(Fixture.Value), null }, states);
     }
 
-    [Fact]
-    public async Task BalanceBySrh()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task BalanceBySrh(int version)
     {
-        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             balance(
                 owner: ""{ByteUtil.Hex(Fixture.Address.ByteArray)}""
-                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: false }}
                 offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}""
             ) {{
                 currency {{ ticker, hash }}
@@ -253,17 +271,19 @@ public partial class StateQueryTest
         Assert.Equal(Fixture.Amount.ToString(), balanceDict["string"]);
     }
 
-    [Fact]
-    public async Task TotalSupplyBySrh()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task TotalSupplyBySrh(int version)
     {
 #pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
          var legacyToken = Currency.Legacy("LEG", 0, null);
 #pragma warning restore CS0618
-        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             totalSupply(
-                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: true }}
+                currency: {{ ticker: ""ABC"", decimalPlaces: 2, totalSupplyTrackable: false }}
                 offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}""
             ) {{
                 currency {{ ticker, hash }}
@@ -285,20 +305,23 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal(Fixture.Currency.Ticker, currencyDict["ticker"]);
         Assert.Equal(ByteUtil.Hex(Fixture.Currency.Hash.ByteArray), currencyDict["hash"]);
+        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+            ? (Fixture.Amount + Fixture.AdditionalSupply)
+            : (Fixture.Currency * 0);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).Sign,
+            expectedTotalSupply.Sign,
             Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).MajorUnit,
+            expectedTotalSupply.MajorUnit,
             Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).MinorUnit,
+            expectedTotalSupply.MinorUnit,
             Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            expectedTotalSupply.GetQuantityString(),
             totalSupplyDict["quantity"]);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).ToString(),
+            expectedTotalSupply.ToString(),
             totalSupplyDict["string"]);
 
         result = await ExecuteQueryAsync<StateQuery>($@"
@@ -311,19 +334,22 @@ public partial class StateQueryTest
         }}
         ", source: source);
         Assert.Null(result.Errors);
+        resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
         resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         totalSupplyDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
         Assert.Equal(
-            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            (legacyToken * 0).GetQuantityString(),
             totalSupplyDict["quantity"]);
     }
 
-    [Fact]
-    public async Task ValidatorsBySrh()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(BlockMetadata.CurrentProtocolVersion)]
+    public async Task ValidatorsBySrh(int version)
     {
-        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             validators(offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{

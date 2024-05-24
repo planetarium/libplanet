@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
-using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Common;
-using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
-using Libplanet.Types.Consensus;
 using Xunit;
 using Fixture = Libplanet.Explorer.Tests.Fixtures.BlockChainStatesFixture;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
