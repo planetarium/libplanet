@@ -131,14 +131,20 @@ public partial class StateQueryTest
         result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             totalSupply(
-                 currency: {{ ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false }}
-                 offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
+                currency: {{ ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false }}
+                offsetBlockHash: ""{ByteUtil.Hex(blockHash.ByteArray)}"") {{
                 quantity
             }}
         }}
         ", source: source);
-        Assert.Single(result.Errors);
-        Assert.Contains("not trackable", result.Errors[0].Message);
+        Assert.Null(result.Errors);
+        resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        totalSupplyDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
+        Assert.Equal(
+            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            totalSupplyDict["quantity"]);
     }
 
     [Fact]
@@ -299,13 +305,19 @@ public partial class StateQueryTest
         {{
             totalSupply(
                 currency: {{ ticker: ""LEG"", decimalPlaces: 0, totalSupplyTrackable: false }}
-                offsetBlockHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
+                offsetStateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
                 quantity
             }}
         }}
         ", source: source);
-        Assert.Single(result.Errors);
-        Assert.Contains("not trackable", result.Errors[0].Message);
+        Assert.Null(result.Errors);
+        resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        totalSupplyDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
+        Assert.Equal(
+            (Fixture.Amount + Fixture.AdditionalSupply).GetQuantityString(),
+            totalSupplyDict["quantity"]);
     }
 
     [Fact]
