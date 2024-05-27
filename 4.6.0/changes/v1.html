@@ -1,0 +1,652 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet changelog | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet changelog | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-changelog">Libplanet changelog</h1>
+
+<h2 id="version-140">Version 1.4.0</h2>
+<p>Released on June 7, 2023.</p>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IBlockChainStates.GetTrie()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3168">#3168</a>]</li>
+<li>Removed <code>PolymorphicAction&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3193">#3193</a>]</li>
+<li>Changed <code>BlockChain.Create()</code> to accept <code>IActionEvaluator</code> interface
+instead of <code>ActionEvaluator</code> object.  [<a href="https://github.com/planetarium/libplanet/pull/3195">#3195</a>]</li>
+<li>Removed <code>blockAction</code> parameter from <code>BlockChain.EvaluateGenesis()</code>,
+<code>BlockChain.DetermineGenesisStateRootHash()</code>,
+and <code>BlockChain.ProposeGenesisBlock()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/3195">#3195</a>]</li>
+</ul>
+<h2 id="version-130">Version 1.3.0</h2>
+<p>Released on May 19, 2023.</p>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<ul>
+<li>Renamed <code>PreloadState</code> as <code>BlockSyncState</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li>Replaced <code>Swarm&lt;T&gt;.PreloadAsync</code>'s parameter
+<code>IProgress&lt;PreloadState&gt; progress</code>
+as <code>IProgress&lt;BlockSyncState&gt; progress</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li>Moved <code>IAccountStateDelta</code> and relations interface to
+<code>Libplanet.State</code> namespace (from <code>Libplanet.Action</code> namespace).
+[<a href="https://github.com/planetarium/libplanet/pull/3173">#3173</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;()</code> constructors to explicitly require an
+<code>IBlockChainStates</code> and an <code>IActionEvaluator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3172">#3172</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>,
+<code>BlockChain&lt;T&gt;.EvaluateGenesis()</code>, and <code>BlockChain&lt;T&gt;.ProposeGenesisBlock()</code>
+to explicitly require <code>IActionEvaluator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3172">#3172</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>BlockChain&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3182">#3182</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>IBlockPolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3182">#3182</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>IStagePolicy&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3182">#3182</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>Context&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3183">#3183</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>ConsensusContext&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3183">#3183</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>ConsensusReactor&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3183">#3183</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>BlockCandidateTable&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3184">#3184</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>TxCompletion&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3184">#3184</a>]</li>
+<li>Removed type parameter <code>T</code> from <code>Swarm&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3184">#3184</a>]</li>
+<li>(Libplanet.Explorer) Removed type parameter <code>T</code> requiring <code>T</code> as
+<code>IAction</code> from all classes.  [<a href="https://github.com/planetarium/libplanet/pull/3185">#3185</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Gossip</code> became to store the <code>MessageId</code>s received through the
+<code>HaveMessage</code> instead of immediately replying to them, and send the
+<code>WantMessage</code> requests all at once during each <code>HeartbeatTask</code>.
+<a href="https://github.com/planetarium/libplanet/pull/3152">#3152</a></li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> use <code>PullBlocksAsync()</code> and
+<code>ConsumeBlockCandidates()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> uses <code>BlockCandidateTable&lt;T&gt;</code> to cache
+downloaded <code>Block</code>s, instead of storing them on forked <code>BlockChain&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PullBlocksAsync()</code> and <code>Swarm&lt;T&gt;.GetDemandBlockHashes()</code> iterates
+using new parameter <code>chunkSize</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.ConsumeBlockCandidates()</code> repeats iff new parameter
+<code>checkInterval</code> is not null.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.ConsumeBlockCandidates()</code> does not renders if new parameter
+<code>render</code> is <code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li><code>Swarm&lt;T&gt;.PullBlocksAsync()</code> and <code>Swarm&lt;T&gt;.GetDemandBlockHashes()</code>
+receives new parameter <code>IProgress&lt;BlockSyncState&gt; progress</code> and will
+report progress to it, if it's given.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+<li>Moved creation of <code>BlockDemandTable</code> and <code>BlockCandidateTable</code>
+to constructor of <code>Swarm&lt;T&gt;</code> from <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3154">#3154</a>]</li>
+</ul>
+<h2 id="version-121">Version 1.2.1</h2>
+<p>Released on May 17, 2023.</p>
+<ul>
+<li>(Libplanet.Explorer) Fixed a bug where a <code>TransactionQuery</code> could not
+properly retrieve actions.  [<a href="https://github.com/planetarium/libplanet/pull/3174">#3174</a>]</li>
+</ul>
+<h2 id="version-120">Version 1.2.0</h2>
+<p>Released on May 16, 2023.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>Removed <code>StaticActionLoader</code> class.  Use <code>SingleActionLoader</code> instead.
+[<a href="https://github.com/planetarium/libplanet/pull/3148">#3148</a>]</li>
+<li>Removed <code>Mint</code> and <code>Transfer</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3159">#3159</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed type parameter <code>T</code> from <code>Transaction.Create&lt;T&gt;()</code> and
+<code>PreEvaluationBlock.Evaluate&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3122">#3122</a>]</li>
+<li>Signatures of <code>IActionRenderer&lt;T&gt;</code>'s methods was changed.  [<a href="https://github.com/planetarium/libplanet/pull/3117">#3117</a>]
+<ul>
+<li>The signature of
+<code>RenderAction(IAction, IActionContext, IAccountStateDelta)</code>
+method was changed to
+<code>RenderAction(IValue, IActionContext, IAccountStateDelta)</code>.</li>
+<li>The signature of
+<code>RenderActionError(IAction, IActionContext, Exception)</code>
+method was changed to
+<code>RenderActionError(IValue, IActionContext, Exception)</code>.</li>
+</ul>
+</li>
+<li>Added <code>SingleActionLoader</code>, <code>TypedActionLoader</code>, and <code>IndexedActionLoader</code>
+classes.  [<a href="https://github.com/planetarium/libplanet/pull/3148">#3148</a>]</li>
+<li>Removed <code>trieGetter</code> parameter from <code>ActionEvaluator</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/3149">#3149</a>]</li>
+<li>Added <code>IBlockChainStates.GetTrie()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3149">#3149</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Create()</code> static method now requires <code>actionEvaluator</code>
+parameter explicitly.  [<a href="https://github.com/planetarium/libplanet/pull/3149">#3149</a>]</li>
+<li>Removed <code>IBlockPolicy.NativeTokens</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3153">#3153</a>]
+<ul>
+<li>Removed <code>NonNativeTokenException</code> class.</li>
+<li>Removed <code>IActionContext.IsNativeToken()</code> method.</li>
+<li>Removed <code>nativeTokenPredicate</code> parameter from <code>ActionEvaluator()</code></li>
+<li>Removed <code>nativeTokenPredicate</code> parameter from all <code>BlockChain&lt;T&gt;</code>'s
+methods.</li>
+<li>(Libplanet.Explorer) Removed <code>BlockPolicyType&lt;T&gt;</code> class.</li>
+</ul>
+</li>
+<li>Removed generic type parameter <code>T</code> from <code>IRenderer&lt;T&gt;</code> and all its
+implementations.  [<a href="https://github.com/planetarium/libplanet/pull/3163">#3163</a>]</li>
+<li>Removed <code>IActionContext.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3164">#3164</a>]</li>
+<li>Removed <code>genesisHash</code> parameter from <code>ActionEvaluator()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3164">#3164</a>]</li>
+</ul>
+<h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>IActionContext.GasUsed()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3144">#3144</a>]</li>
+<li>Added <code>IActionContext.GasLimit()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3144">#3144</a>]</li>
+<li>Added <code>PolymorphicAction&lt;T&gt;.ReloadLoader()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/3158">#3158</a>]</li>
+</ul>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<ul>
+<li><code>Transaction.Create()</code> method no more fills <code>Transaction.UpdatedAddresses</code>
+automatically.  [[#368], <a href="https://github.com/planetarium/libplanet/pull/3122">#3122</a>]</li>
+<li><code>Mint</code> and <code>Transfer</code> <code>IAction</code>s no longer check for native tokens.
+[<a href="https://github.com/planetarium/libplanet/pull/3153">#3153</a>]</li>
+</ul>
+<h2 id="version-111">Version 1.1.1</h2>
+<p>Released on May 15, 2023.</p>
+<ul>
+<li>(@planetarium/cli) Fixed the installer bug that it had failed on Linux and
+macOS since version 1.0.2.  [<a href="https://github.com/planetarium/libplanet/issues/3107">#3107</a>, <a href="https://github.com/planetarium/libplanet/pull/3160">#3160</a>, <a href="https://github.com/planetarium/libplanet/pull/3161">#3161</a>]</li>
+</ul>
+<h2 id="version-110">Version 1.1.0</h2>
+<p>Released on May 9, 2023.</p>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<ul>
+<li>Changed the encoding scheme and related methods for <code>TxActionList</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3083">#3083</a>]
+<ul>
+<li>Removed <code>TxActionList.FromBencodex&lt;T&gt;()</code> method.</li>
+<li>Changed the return type for <code>TxActionList.ToBencodex()</code> from
+<code>Dictionary</code> to <code>IValue</code>.</li>
+</ul>
+</li>
+<li>Removed <code>IRenderer&lt;T&gt;.RenderReorg()</code>, <code>IRenderer&lt;T&gt;.RenderReorgEnd()</code>,
+<code>IActionRenderer&lt;T&gt;.UnrenderAction()</code>, and
+<code>IActionRenderer&lt;T&gt;.UnrenderActionError()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3092">#3092</a>]</li>
+<li>Removed <code>NonblockRenderer</code>, <code>NonblockActionRenderer</code>, <code>DelayedRenderer</code>,
+and <code>DelayedActionRenderer</code> classes.  [<a href="https://github.com/planetarium/libplanet/pull/3098">#3098</a>]</li>
+<li>(Libplanet.Net) Removed optional <code>render</code> parameter from
+all <code>Swarm&lt;T&gt;.PreloadAsync()</code> overload methods.  No rendering is done
+during the preloading phase.  [<a href="https://github.com/planetarium/libplanet/pull/3108">#3108</a>]</li>
+<li><code>TxActionList</code> now implements <code>IBencodable</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3110">#3110</a>]
+<ul>
+<li>Removed <code>FromBencodex()</code> static method; use <code>TxActionList(IValue)</code>
+constructor instead.</li>
+<li>Removed <code>ToBencodex()</code> method; use <code>TxActionList.Bencoded</code> instead.</li>
+</ul>
+</li>
+<li><code>TxActionList</code> now implements <code>IEnumerable&lt;IValue&gt;</code> instead of
+<code>IEnumerable&lt;IAction&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3110">#3110</a>]
+<ul>
+<li>Changed <code>TxSystemAction.SystemAction</code> to return an <code>IValue</code>.</li>
+<li>Changed <code>TxCustomActions.CustomActions</code> to return an
+<code>IImmutableList&lt;IValue&gt;</code>.</li>
+</ul>
+</li>
+<li><code>TxActionList</code>'s JSON representation has changed.  It no longer has
+<code>&quot;type&quot;</code> field.  [<a href="https://github.com/planetarium/libplanet/pull/3110">#3110</a>]</li>
+<li>Changed the type for <code>ActionTypeAttribute.TypeIdentifier</code>
+from <code>string</code> to <code>IValue</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Changed the return type for <code>ActionTypeAttribute.ValueOf()</code> from
+<code>string?</code> to <code>IValue?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Changed the return type for <code>IActionTypeLoader.Load()</code> from
+<code>IDictionary&lt;string, Type&gt;</code> to <code>IDictionary&lt;IValue, Type&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Changed return types and parameter types of several methods from
+<code>IReadOnlyList&lt;ActionEvaluation&gt;</code> to <code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]
+<ul>
+<li><code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>
+method's <code>evaluations</code> parameter type.</li>
+<li><code>BlockChain&lt;T&gt;.DetermineBlockStateRootHash()</code>
+method's <code>evaluations</code> parameter type.</li>
+<li><code>BlockChain&lt;T&gt;.EvaluateBlock()</code> method's return type.</li>
+<li><code>BlockChain&lt;T&gt;.EvaluateGenesis()</code> method's return type.</li>
+</ul>
+</li>
+<li>Removed <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IAction, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Removed <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IEnumerable&lt;IValue&gt;, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Removed <code>ITransaction.SystemAction</code> and <code>ITransaction.CustomActions</code>.
+Use <code>ITxInvoice.Actions</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]</li>
+<li>Overhauled <code>TxActionList</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3116">#3116</a>]
+<ul>
+<li>Changed <code>TxActionList</code> class to be <code>sealed</code> from <code>abstract</code>.
+<code>TxActionList</code> is pretty much the old <code>TxCustomActionsList</code>.</li>
+<li>Changed the JSON representation of <code>TxActionList</code> to be more simple.</li>
+<li>Removed <code>TxSystemActionList</code> and <code>TxCustomActionsList</code></li>
+</ul>
+</li>
+<li>Changed <code>Transaction&lt;T&gt;</code> to <code>Transaction</code> to be non-generic.  [<a href="https://github.com/planetarium/libplanet/pull/3121">#3121</a>]</li>
+<li>Changed <code>Block&lt;T&gt;</code> to <code>Block</code> to be non-generic.  [<a href="https://github.com/planetarium/libplanet/pull/3123">#3123</a>]
+<ul>
+<li>Removed <code>IBlockContent&lt;T&gt;</code> interface.  Use <code>IBlockContent</code> instead.
+Also changed <code>IBlockContent.IImmutableSet&lt;ITransaction&gt;</code> to
+<code>IBlockContent.ReadOnlyList&lt;ITransaction&gt;</code>.</li>
+<li>Changed <code>BlockContent&lt;T&gt;</code> to <code>BlockContent</code>.</li>
+<li>Removed <code>IPreEvaluationBlock&lt;T&gt;</code> interface.  Use <code>IPreEvaluationBlock</code>
+instead.</li>
+<li>Changed <code>PreEvaluationBlock&lt;T&gt;</code> to <code>PreEvaluationBlock</code>.
+<ul>
+<li><code>PreEvaluationBlock.Evaluate&lt;T&gt;()</code> now requires type parameter <code>T</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Removed <code>PreEvaluationBlock.Evaluate&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3127">#3127</a>]</li>
+<li>Renamed <code>IActionTypeLoader</code> to <code>IActionLoader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3135">#3135</a>]
+<ul>
+<li>Added <code>IActionLoader.Load(long, IValue)</code> interface method.</li>
+<li>Removed <code>ActionTypeLoaderContext</code> class.  Use <code>long</code> instead.</li>
+<li>Renamed <code>StaticActionTypeLoader</code> to <code>StaticActionLoader</code>.</li>
+</ul>
+</li>
+<li>Added <code>IActionEvaluator.IActionLoader</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
+<li>Changed <code>IActionLoader.LoadAction()</code> to throw <code>InvalidActionException</code>
+instead of <code>ArgumentException</code> when an action cannot be instantiated.
+[<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
+</ul>
+<h3 id="added-apis-1">Added APIs</h3>
+<ul>
+<li>Added <code>IActionEvaluator</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3082">#3082</a>]</li>
+<li>Added <code>SwarmOptions.TaskRegulationOptions</code> property.  [[#3109]]</li>
+<li>Added <code>TaskRegulationOptions</code> class.  [[#3109]]</li>
+<li>Added <code>ActionTypeAttribute(int)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3111">#3111</a>]</li>
+<li>Added <code>IActionEvaluation</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3089">#3089</a>]</li>
+<li>Added parameterless constructor to <code>Mint</code>, <code>Transfer</code>, and <code>Initialize</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3112">#3112</a>]</li>
+<li>Added <code>InvalidActionException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
+</ul>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<ul>
+<li>Changed <code>BlockChain&lt;T&gt;</code> to ignore <code>IRenderer&lt;T&gt;.RenderReorg()</code>,
+<code>IRenderer&lt;T&gt;.RenderReorgEnd()</code>, <code>IActionRenderer&lt;T&gt;.UnrenderAction()</code>,
+and <code>IActionRenderer&lt;T&gt;.UnrenderActionError()</code>, i.e., these interface
+methods are no longer invoked by a <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3087">#3087</a>]</li>
+<li>Changed <code>Context&lt;T&gt;.ConsumeMutation()</code> to iteratively call
+<code>Context&lt;T&gt;.ProcessGenericUponRules()</code> itself, instead of producing
+submutations of it.  [<a href="https://github.com/planetarium/libplanet/pull/3137">#3137</a>]</li>
+<li>(Libplanet.Explorer) The <code>CurrencyInputType</code>'s <code>totalSupplyTrackable</code> field
+became nullable with <code>false</code> as its default value.  [<a href="https://github.com/planetarium/libplanet/pull/3151">#3151</a>]</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixes a bug where <code>BlockChain&lt;T&gt;</code> could not propose if a certain type of
+invalid <code>Transaction</code> was staged.  [<a href="https://github.com/planetarium/libplanet/pull/3136">#3136</a>]</li>
+<li>Fixes a bug where <code>Context&lt;T&gt;</code> would completely halt if a <code>Block</code>
+with an <code>IValue</code> as one of its action that cannot be instantiated via
+its <code>IActionLoader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3140">#3140</a>]</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Upgrade <em>Bencodex</em> from [0.8.0][Bencodex 0.8.0] to
+<a href="https://www.nuget.org/packages/Bencodex/0.10.0">0.10.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3106">#3106</a>]</li>
+<li>Upgrade <em>Bencodex.Json</em> from [0.8.0][Bencodex.Json 0.8.0] to
+<a href="https://www.nuget.org/packages/Bencodex.Json/0.10.0">0.10.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3106">#3106</a>]</li>
+</ul>
+<h2 id="version-103">Version 1.0.3</h2>
+<p>Released on May 15, 2023.</p>
+<ul>
+<li>(@planetarium/cli) Fixed the installer bug that it had failed on Linux and
+macOS since version 1.0.2.  [<a href="https://github.com/planetarium/libplanet/issues/3107">#3107</a>, <a href="https://github.com/planetarium/libplanet/pull/3160">#3160</a>]</li>
+</ul>
+<h2 id="version-102">Version 1.0.2</h2>
+<p>Released on May 4, 2023.</p>
+<ul>
+<li>(Libplanet.Tools) The <code>planet</code> command now falls back to the default
+cryptography backend instead of crash when it fails to load <em>libsecp256k1</em>
+at runtime.  [<a href="https://github.com/planetarium/libplanet/pull/3138">#3138</a>]</li>
+<li>(@planetarium/cli) Fixed the installer bug that it had failed with some
+recent Node.js versions on Windows.   [<a href="https://github.com/planetarium/libplanet/issues/3107">#3107</a>, <a href="https://github.com/planetarium/libplanet/pull/3138">#3138</a>]</li>
+</ul>
+<h2 id="version-101">Version 1.0.1</h2>
+<p>Released on May 3, 2023.</p>
+<ul>
+<li>Fixed a bug where <code>BlockChain&lt;T&gt;.Append()</code> hadn't update tx executions
+even <code>evaluateActions</code> set to <code>true</code> when <code>actionEvaluations</code> are given.
+[<a href="https://github.com/planetarium/libplanet/pull/3125">#3125</a>]</li>
+<li>(Libplanet.Explorer) Fixed a bug where <code>BlockQuery.blocks</code> field had thrown
+<code>KeyNotFoundException</code> when appending block simultaneously.
+[<a href="https://github.com/planetarium/libplanet/issues/3126">#3126</a>, <a href="https://github.com/planetarium/libplanet/pull/3130">#3130</a>]</li>
+</ul>
+<h2 id="version-100">Version 1.0.0</h2>
+<p>Released on April 18, 2023.</p>
+<h3 id="deprecated-apis-1">Deprecated APIs</h3>
+<ul>
+<li>(@planerarium/account)  Deprecated <code>RawPrivateKey.publicKey</code> property in
+favour of <code>RawPrivateKey.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-aws-kms)  Deprecated <code>AwsKmsAccount.publicKey</code> in
+favour of <code>AwsKmsAccount.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>TxMetadata</code> class.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Removed <code>Transaction&lt;T&gt;(TxMetadata, IAction, byte[])</code> constructor.</li>
+<li>Removed <code>Transaction&lt;T&gt;(TxMetadata, IEnumerable&lt;T&gt;, byte[])</code>
+constructor.</li>
+</ul>
+</li>
+<li>Reorganized <code>ITransaction</code> interface in general.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li><code>ITransaction</code> now inherits <code>IUnsignedTx</code> interface instead of having
+properties such as <code>GenesisHash</code>, <code>UpdatedAddresses</code>, <code>Timestamp</code>,
+<code>Nonce</code>, <code>Signer</code>, and <code>PublicKey</code>.</li>
+<li><code>SystemAction</code> property is replaced by <code>Actions</code> property which is
+inherited from <code>IUnsignedTx</code> interface.</li>
+<li><code>CustomActions</code> property is replaced by <code>Actions</code> property which is
+inherited from <code>IUnsignedTx</code> interface.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;</code> no more accept empty <code>Signature</code> as a valid state.
+Instead, you should use <code>UnsignedTx</code> class to represent an unsigned
+transaction.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Removed <code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code>
+constructor.</li>
+<li>Removed <code>Transaction&lt;T&gt;.CreateUnsigned()</code> static method.</li>
+<li>Removed <code>Transaction&lt;T&gt;.Validate()</code> method.</li>
+<li>Removed <code>sign</code> parameter from <code>Transaction&lt;T&gt;.Serialize()</code> method.</li>
+<li>Removed <code>validate</code> parameter from <code>Transaction&lt;T&gt;.Deserialize()</code>
+method.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;</code> now has <code>Actions</code> in a uniform way regardless they
+are custom actions or system actions, through <code>TxActionList</code> abstract
+class.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]
+<ul>
+<li>Changed the type of <code>Transaction&lt;T&gt;.Actions</code> property from
+<code>IImmutableList&lt;IAction&gt;</code> to <code>TxActionList</code>, which is also an
+<code>IReadOnlyList&lt;IAction&gt;</code>.  The property once was deprecated
+in favour of <code>Transaction&lt;T&gt;.CustomActions</code> and
+<code>Transaction&lt;T&gt;.SystemAction</code>, but now it replaces them both.</li>
+<li>Removed <code>Transaction&lt;T&gt;.CustomActions</code> property.</li>
+<li>Removed <code>Transaction&lt;T&gt;.SystemAction</code> property.</li>
+</ul>
+</li>
+<li><code>Transaction&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor is removed.
+Use <code>TxMarshaler.UnmarshalTransaction&lt;T&gt;()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Removed <code>PreEvaluationBlock&lt;T&gt;.Evaluate(PrivateKey, IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>,
+<code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore)</code>, <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(IAction?, Predicate&lt;Currency&gt;, IStateStore, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
+<code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;)</code>,
+and <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash(BlockChain&lt;T&gt;, out IImmutableDictionary&lt;string, IValue&gt;)</code>,
+<code>BlockChain&lt;T&gt;.ExecuteActions(Block&lt;T&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3037">#3037</a>]</li>
+<li>(Libplanet.Extensions.Cocona) Changed signature of
+<code>ApvCommand.Verify(string?, string[]?, bool)</code> method to
+<code>ApvCommand.Verify(string?, PublicKey[]?, bool)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
+<li>Removed <code>PreEvaluationBlock&lt;T&gt;.Mine()</code> and <code>BlockMetadata.MineNonce()</code>
+methods.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a>]</li>
+<li>Removed <code>HashCash</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3067">#3067</a>]</li>
+<li>(@planetarium/account) Replaced <code>Account.publicKey</code> property with
+<code>Account.getPublicKey()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getAddress()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(@planetarium/account) <code>Address.deriveFrom()</code> method now returns
+<code>Promise&lt;Address&gt;</code> when an <code>Account</code> is given.  However, it still returns
+<code>Address</code> when a <code>PublicKey</code> is given.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> no more implements
+<code>ImportableKeyStore&lt;KeyId, RawPrivateKey&gt;</code>.  Instead, it now implements
+<code>ImportableKeyStore&lt;KeyId, Web3Account, Web3KeyMetadata&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>, <a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(Libplanet.Explorer) Added <code>Index</code> field to <code>IBlockChainContext</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, BlockCommit)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3072">#3072</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, DateTimeOffset, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code> method to
+<code>BlockChain&lt;T&gt;.ProposeBlock(PrivateKey, BlockCommit, IComparer&lt;Transaction&lt;T&gt;&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3077">#3077</a>]</li>
+<li>Changed <code>BlockChain&lt;T&gt;.ProposeGenesisBlock(IEnumerable&lt;T&gt;, IEnumerable&lt;IAction&gt;, PrivateKey, DateTimeOffset?, IAction, Predicate&lt;Currency&gt;)</code> to <code>BlockChain&lt;T&gt;.ProposeGenesisBlock( PrivateKey, ImmutableList&lt;Transaction&lt;T&gt;&gt;, DateTimeOffset?, IAction, Predicate&lt;Currency&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3079">#3079</a>]</li>
+<li>(Libplanet.Explorer) <code>Currency.decimalPlaces</code>' type became <code>Byte</code>
+from <code>UInt</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+<li>(Libplanet.Explorer) <code>currencyHash</code> parameter was removed from
+<code>balance</code> and <code>totalSupply</code> in <code>StateQuery</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+</ul>
+<h3 id="added-apis-2">Added APIs</h3>
+<ul>
+<li>Added <code>ITxInvoice</code> interface.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>ITxSigningMetadata</code> interface.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>IUnsignedTx</code> interface.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>TxInvoice</code> class.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>TxSigningMetadata</code> class.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>UnsignedTx</code> class.  [[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;(IUnsignedTx, ImmutableArray&lt;byte&gt;)</code>.
+[[#1164], <a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.DetermineGenesisStateRootHash()</code>,
+<code>BlockChain&lt;T&gt;.EvaluateGenesis()</code>,
+<code>BlockChain&lt;T&gt;.DetermineBlockStateRootHash()</code>,
+and <code>BlockChain&lt;T&gt;.EvaluateBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3037">#3037</a>]</li>
+<li>Added <code>PublicKey.FromHex()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
+<li>Added <code>PublicKey.ToHex()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/2709">#2709</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.PublishMessage()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/3054">#3054</a>, <a href="https://github.com/planetarium/libplanet/pull/3060">#3060</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getPublicKey()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>Account.getAddress()</code> async method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(@planetarium/account) Added <code>RawPrivateKey.getPublicKey()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account) Added <code>RawPrivateKey.getAddress()</code> async method.
+[<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(@planetarium/account-aws-kms) Added <code>AwsKmsAccount.getPublicKey()</code> async
+method.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(@planetarium/account-aws-kms) Added <code>AwsKmsAccount.getAddress()</code> async
+method.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3Account</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>, <a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyObject</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</li>
+<li>(Libplanet.Explorer) Added several interfaces and classes that pertain to
+blockchain indexing.  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]
+<ul>
+<li>Added <code>IBlockChainIndex</code> interface.</li>
+<li>Added <code>IIndexingContext</code> interface.</li>
+<li>Added <code>BlockChainIndexBase</code> abstract class.</li>
+<li>Added <code>RocksDbBlockChainIndex</code> class.</li>
+<li>Added <code>RocksDbIndexingContext</code> class.</li>
+<li>Added <code>IndexingService</code> class.</li>
+<li>Added <code>IndexMismatchException</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Explorer.Cocona) New project was added to provide Cocona
+commands related to <em>Libplanet.Explorer</em> project.  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]
+<ul>
+<li>Added <code>IndexCommand</code> Cocona command class.</li>
+</ul>
+</li>
+<li>(Libplanet.Explorer) Added <code>states</code> query in <code>StateQuery</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3080">#3080</a>]</li>
+<li>(@planetarium/account) Added <code>Address.equals()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account) Added <code>Address.isAddressOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account) Added <code>PublicKey.equals()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>DecryptionOptions</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]
+<ul>
+<li>Added <code>Web3KeyStoreOptions.decryptionOptions</code> attribute.</li>
+</ul>
+</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>WeakPrivateKeyError</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Added <code>Web3KeyMetadata</code>
+interface.  [<a href="https://github.com/planetarium/libplanet/pull/3084">#3084</a>]</li>
+<li>(Libplanet.Tools) Added <code>-v</code>/<code>--validator-key</code> option to
+<code>planet block generate-genesis</code> command.  [<a href="https://github.com/planetarium/libplanet/pull/3088">#3088</a>]</li>
+<li>(Libplanet.Explorer) Added <code>CurrencyInput</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+<li>(Libplanet.Explorer) Added <code>CurrencyInput</code>-typed <code>currency</code> parameter to
+<code>balance</code> and <code>totalSupply</code> in <code>StateQuery</code> type.  [<a href="https://github.com/planetarium/libplanet/pull/3085">#3085</a>]</li>
+</ul>
+<h3 id="behavioral-changes-3">Behavioral changes</h3>
+<ul>
+<li><p>Added <code>TypeConverter</code> to commonly-used types.  [<a href="https://github.com/planetarium/libplanet/issues/2711">#2711</a>, <a href="https://github.com/planetarium/libplanet/pull/3044">#3044</a>]</p>
+<ul>
+<li><code>Address</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+<li><code>HashDigest&lt;T&gt;</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+<li><code>PublicKey</code> now can be converted from and to <code>string</code> through
+<code>TypeConverter</code>.</li>
+</ul>
+</li>
+<li><p><code>Transaction&lt;T&gt;</code> no more supports deserialization from JSON when it contains
+custom actions.  However, it still can be deserialized from JSON when it
+contains a system action.  [<a href="https://github.com/planetarium/libplanet/pull/2986">#2986</a>]</p>
+</li>
+<li><p><code>Transaction&lt;T&gt;.UpdatedAddresses</code> now preserves the order of <code>Address</code>es
+so that it is no more reordered during deserialization.  [<a href="https://github.com/planetarium/libplanet/pull/3074">#3074</a>]</p>
+</li>
+<li><p>The JSON representation of <code>Transaction&lt;T&gt;</code> now includes the <code>&quot;actions&quot;</code>
+field, which includes a system action or a list of custom actions and
+a <code>&quot;type&quot;</code> field denoting one of <code>&quot;system&quot;</code> or <code>&quot;custom&quot;</code>.</p>
+<p>For example:</p>
+<pre><code>{
+   // ... other fields
+   &quot;actions&quot;: {
+     &quot;type&quot;: &quot;system&quot;,
+     &quot;systemAction&quot;: {
+       // system action details
+     }
+   }
+}
+</code></pre>
+<p>Instead of:</p>
+<pre><code>{
+   // ... other fields
+  &quot;systemAction&quot;: {
+     // system action details
+  }
+}
+</code></pre>
+</li>
+<li><p>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore.get()</code> method now
+defers <code>PassphraseEntry.authenticate()</code> call and account unlocking so that
+<code>AccountRetrieval</code> instance can be gathered without unlocking the account.
+Instead, <code>PassphraseEntry.authenticate()</code> is called when operations that
+require unlocking <code>Web3Account</code> are called, such as <code>sign()</code> or
+<code>getPublicKey()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3061">#3061</a>]</p>
+</li>
+<li><p>(Libplanet.Explorer) Now, when an <code>IBlockChainIndex</code> instance is available
+in the optional <code>Index</code> property of the injected <code>IBlockChainContext</code>
+instance, GraphQL queries can benefit from the improved lookup performance
+of the index.  Applications willing to take advantage of the index should
+provide an instance of <code>IBlockChainIndex</code> to the <code>IBlockChainContext</code>
+implementation and add the <code>IndexingService</code> hosted service to sync the
+index in the background.  Note that the synchronization may take a long
+time if you have a lot of blocks (over 24 hours for ~5M blocks).  [<a href="https://github.com/planetarium/libplanet/pull/2613">#2613</a>]</p>
+<ul>
+<li><code>BlockRef</code> property of <code>TransactionType</code> now uses <code>IBlockChainIndex</code>
+if available.</li>
+<li><code>transactionResult</code> query in <code>TransactionQuery</code> now uses
+<code>IBlockChainIndex</code> if available.</li>
+</ul>
+</li>
+<li><p>(@planetarium/account-web3-secret-storage) <code>Web3KeyStore</code> now supports
+Scrypt as one of KDF functions besides PBKDF2.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</p>
+</li>
+</ul>
+<h3 id="bug-fixes-1">Bug fixes</h3>
+<ul>
+<li>In <code>PreVote</code> block validation, <code>Context&lt;T&gt;.IsValid()</code>, validate the block
+header and also the block content (e.g., Tx nonces, Policy defined
+validation rules, or state root hash.)  [<a href="https://github.com/planetarium/libplanet/issues/2973">#2973</a>, <a href="https://github.com/planetarium/libplanet/pull/2995">#2996</a>]</li>
+<li>(@planetarium/account-web3-secret-storage) Fixed a bug where
+<code>Web3KeyStore.import()</code> and <code>Web3KeyStore.generate()</code> methods had written
+JSON field <code>&quot;Crypto&quot;</code> instead of <code>&quot;crypto&quot;</code> in the key file.  [<a href="https://github.com/planetarium/libplanet/pull/3071">#3071</a>]</li>
+</ul>
+<h3 id="dependencies-1">Dependencies</h3>
+<ul>
+<li>*@planetarium/account-aws-kms* now has *@planetarium/account* as a peer
+dependency instead of a normal dependency.  [<a href="https://github.com/planetarium/libplanet/pull/3069">#3069</a>]</li>
+<li>*@planetarium/account-web3-secret-storage* now has *@planetarium/account*
+as a peer dependency instead of a normal dependency.  [<a href="https://github.com/planetarium/libplanet/pull/3069">#3069</a>]</li>
+<li>*@planetarium/tx* now has *@planetarium/account* as a peer dependency
+instead of a normal dependency.  [<a href="https://github.com/planetarium/libplanet/pull/3069">#3069</a>]</li>
+</ul>
+<h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>(Libplanet.Explorer.Executable) Project is now deprecated. It is currently
+nonfunctional.  [<a href="https://github.com/planetarium/libplanet/discussions/2243">#2243</a>, <a href="https://github.com/planetarium/libplanet/discussions/2588">#2588</a>]</li>
+<li>(Libplanet.Tools) Now <code>planet</code> uses <em>libsecp256k1</em> (which is the same
+library used in Bitcoin and written in C) instead of
+<em>BouncyCastle.Cryptography</em> (which is written in C#).  [<a href="https://github.com/planetarium/libplanet/pull/3074">#3074</a>]</li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/4.6.0/changes/v1.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

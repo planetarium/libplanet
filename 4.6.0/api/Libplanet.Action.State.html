@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.Action.State
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.Action.State
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.State">
+
+  <h1 id="Libplanet_Action_State" data-uid="Libplanet.Action.State" class="text-break">Namespace Libplanet.Action.State
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.Action.State.Account.html">Account</a></h4>
+      <section><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a></h4>
+      <section><p>Represents a difference between two <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>s.
+This is a partial interpretation of a raw difference obtained by <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff(ITrie)</a>
+from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>'s perspective.  Keep in mind of the following properties:</p>
+<ul><li>
+        Any <see lagnword="null"></see> value, which is equivalent to non-existent value in
+        the underlying storage, in the source is <em>ignored</em>.  That is, even if
+        the value in the target and the value in the source are different while
+        the value in the source is <span class="xref">null</span>, this will not be
+        part of the resulting <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>.
+</li><li>
+    This only shows the difference in &quot;states&quot; manipulated using
+<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
+this does care about differences in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>s.
+</li><li>
+    Due to the reason mentioned directly above, the size of <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>
+    derived from <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff(ITrie)</a> may not be the same.  Moreover,
+    an <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a> being empty <em>does not guarantee</em>
+    that the data represented by <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>s are the same.
+</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.AccountState.html">AccountState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.CurrencyAccount.html">CurrencyAccount</a></h4>
+      <section><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Action.State.CurrencyAccount.html#Libplanet_Action_State_CurrencyAccount_Currency">Currency</a> starting with
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrencyAccountProtocolVersion">CurrencyAccountProtocolVersion</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
+      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
+to mint a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.State.CurrencyPermissionException.html#Libplanet_Action_State_CurrencyPermissionException_Currency">Currency</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
+      <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to
+transfer or an owner has less <a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorldExtensions.html">IWorldExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.ReservedAddresses.html">ReservedAddresses</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.SupplyOverflowException.html">SupplyOverflowException</a></h4>
+      <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
+supply exceed the maximum amount.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.ValidatorSetAccount.html">ValidatorSetAccount</a></h4>
+      <section><p>A special &quot;account&quot; for managing <a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a> starting with
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_ValidatorSetAccountProtocolVersion">ValidatorSetAccountProtocolVersion</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.World.html">World</a></h4>
+      <section><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.WorldBaseState.html">WorldBaseState</a></h4>
+      <section><p>A default implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> interface.
+It acts as root state of <a class="xref" href="Libplanet.Action.State.World.html">World</a> recursion.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.WorldDelta.html">WorldDelta</a></h4>
+      <section></section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></h4>
+      <section><p>An interface to manipulate an account state with
+maintaining <see cref="!:Delta"></see>.</p>
+<p>It is like a map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
+<span class="xref">null</span> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></h4>
+      <section><p>An interface to fetch account states.</p>
+<p>It is like a readonly map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IBlockChainStates.html">IBlockChainStates</a></h4>
+      <section><p>A minimal interface to get states from a <see cref="!:BlockChain"></see>.</p>
+<p>Note that <see cref="!:BlockChain"></see> implements this interface.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></h4>
+      <section><p>An interface to manipulate an world state with
+maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_Delta">Delta</a>.</p>
+<p>It is like a map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
+<span class="xref">null</span> account cannot be distinguished from
+the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
+any account.</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorldDelta.html">IWorldDelta</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a></h4>
+      <section><p>An interface to fetch world states.</p>
+<p>It is like a readonly map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
+<span class="xref">null</span> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
