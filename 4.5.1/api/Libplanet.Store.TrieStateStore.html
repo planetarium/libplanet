@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TrieStateStore
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TrieStateStore
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.TrieStateStore">
+
+
+  <h1 id="Libplanet_Store_TrieStateStore" data-uid="Libplanet.Store.TrieStateStore" class="text-break">Class TrieStateStore
+</h1>
+  <div class="markdown level0 summary"><p>An <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> implementation. It stores states with <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">TrieStateStore</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
+  <h5 id="Libplanet_Store_TrieStateStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TrieStateStore : IStateStore, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.%23ctor(Libplanet.Store.Trie.IKeyValueStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L26">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore__ctor_" data-uid="Libplanet.Store.TrieStateStore.#ctor*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_" data-uid="Libplanet.Store.TrieStateStore.#ctor(Libplanet.Store.Trie.IKeyValueStore)">TrieStateStore(IKeyValueStore)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TrieStateStore(IKeyValueStore stateKeyValueStore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a></td>
+        <td><span class="parametername">stateKeyValueStore</span></td>
+        <td><p>The storage to store states. It used by
+<a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a> in internal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore_StateKeyValueStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.StateKeyValueStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L33">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore_StateKeyValueStore_" data-uid="Libplanet.Store.TrieStateStore.StateKeyValueStore*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore_StateKeyValueStore" data-uid="Libplanet.Store.TrieStateStore.StateKeyValueStore">StateKeyValueStore</h4>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> implementation. It stores states with <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IKeyValueStore StateKeyValueStore { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.Commit.cs/#L19">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore_Commit_" data-uid="Libplanet.Store.TrieStateStore.Commit*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie_" data-uid="Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)">Commit(ITrie)</h4>
+  <div class="markdown level1 summary"><p>Commits given <code data-dev-comment-type="paramref" class="paramref">trie</code> to storage.
+Returned <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> must be identical to the one obtained from
+<a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a> with resulting <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s
+<a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ITrie Commit(ITrie trie)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><span class="parametername">trie</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> to commit.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>The committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.  The committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s
+<a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Root">Root</a> is guaranteed to be either <span class="xref">null</span>
+or a <a class="xref" href="Libplanet.Store.Trie.Nodes.HashNode.html">HashNode</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Given <code data-dev-comment-type="paramref" class="paramref">trie</code> must have originated from the same instance
+(or with an instance with the same reference to an <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a>).
+Otherwise, this is not guaranteed to work properly.</p>
+</div>
+  <h5 id="Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">GetStateRoot</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Store.TrieStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L52">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore_CopyStates_" data-uid="Libplanet.Store.TrieStateStore.CopyStates*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_" data-uid="Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Store.TrieStateStore)">CopyStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;, TrieStateStore)</h4>
+  <div class="markdown level1 summary"><p>
+Copies states under state root hashes of given <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>
+to <code data-dev-comment-type="paramref" class="paramref">targetStateStore</code>.
+</p>
+<p>
+Under the hood, this not only copies states directly associated
+with <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>, but also automatically copies states
+that are not directly associated with <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>
+but associated with &quot;subtries&quot; with references stored in <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>s
+of <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt; stateRootHashes, TrieStateStore targetStateStore)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="parametername">stateRootHashes</span></td>
+        <td><p>The state root hashes of states to copy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a></td>
+        <td><span class="parametername">targetStateStore</span></td>
+        <td><p>The target state store to copy state root hashes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when a state root cannot be found for
+any of given <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore_Dispose_" data-uid="Libplanet.Store.TrieStateStore.Dispose*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore_Dispose" data-uid="Libplanet.Store.TrieStateStore.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> implementation. It stores states with <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L115">View Source</a>
+  </span>
+  <a id="Libplanet_Store_TrieStateStore_GetStateRoot_" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot*"></a>
+  <h4 id="Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the state root trie of the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code> from the state store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ITrie GetStateRoot(HashDigest&lt;SHA256&gt;? stateRootHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>The state root hash of the state root trie to get.
+If <span class="xref">null</span> is passed the empty state root trie is returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>The state root trie of the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.
+If <span class="xref">null</span> is passed the empty state root trie is returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/4.5.1/apiSpec/new?filename=Libplanet_Store_TrieStateStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/Libplanet.Store/TrieStateStore.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

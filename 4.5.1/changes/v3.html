@@ -1,0 +1,567 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet changelog | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet changelog | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-changelog">Libplanet changelog</h1>
+
+<h2 id="version-396">Version 3.9.6</h2>
+<p>Released on January 26, 2024.</p>
+<ul>
+<li>(Libplanet.Store) Optimized <code>TrieStateStore.CopyStates()</code> to greatly
+reduce the amount of memory used.  [<a href="https://github.com/planetarium/libplanet/pull/3634">#3634</a>]</li>
+</ul>
+<h2 id="version-395">Version 3.9.5</h2>
+<p>Released on January 18, 2024.</p>
+<ul>
+<li>(Libplanet.Store) Changed <code>IStateStore.Commit()</code> to return an <code>ITrie</code>
+with either its <code>Root</code> as <code>null</code> or a <code>HashNode</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3610">#3610</a>]</li>
+<li>(Libplanet.Store) Removed <code>IStateStore.PruneStates()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/3613">#3613</a>, <a href="https://github.com/planetarium/libplanet/pull/3614">#3614</a>]</li>
+</ul>
+<h2 id="version-394">Version 3.9.4</h2>
+<p>Released on January 11, 2024.</p>
+<ul>
+<li>(Libplanet.Explorer) Rolled back some changes to the API to be
+more compatible with pre-3.9.3 API.  [<a href="https://github.com/planetarium/libplanet/pull/3600">#3600</a>]
+<ul>
+<li>Changed the name <code>BencodexValueType</code> to <code>IValueType</code>.</li>
+<li>Changed the name <code>LegacyBencodexValueType</code> to <code>BencodexValueType</code>.</li>
+<li>Changed <code>AddressType.Name</code> from <code>address</code> to <code>Address</code>.</li>
+<li>Changed <code>BlockHashType.Name</code> from <code>blockHash</code> to <code>BlockHash</code>.</li>
+<li>Changed <code>PublicKeyType.Name</code> from <code>publicKey</code> to <code>PublicKey</code>.</li>
+<li>Changed <code>TxIdType.Name</code> from <code>txId</code> to <code>TxId</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="version-393">Version 3.9.3</h2>
+<p>Released on January 4, 2024.</p>
+<p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>, a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+<a href="https://www.nuget.org/packages/Libplanet/2.0.0">Libplanet 2.0.0</a> and onwards prior to this release that have included
+<code>Transaction</code>s that aren't compatible with the updated specification in <a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>.</p>
+<ul>
+<li>(Libplanet.Explorer) Added <code>BlockHashType</code> and <code>TxIdType</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3559">#3559</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>HashDigestSHA256Type</code> to <code>HashDigestType&lt;T&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3559">#3559</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>BencodexValueType</code> to inherit
+<code>ObjectGraphType&lt;IValue&gt;</code> instead of <code>StringGraphType</code>.  Instead of
+simply being a hexadecimal representation of <code>byte[]</code> encoded <code>IValue</code>,
+now one can choose its representation format.  [<a href="https://github.com/planetarium/libplanet/pull/3560">#3560</a>]</li>
+<li>(Libplanet.Explorer) Added <code>HelperQuery</code>, a collection of utility like
+queries.  [<a href="https://github.com/planetarium/libplanet/pull/3561">#3561</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>IRichStore.StoreUpdatedAddressReferences()</code>
+and <code>IterateUpdatedAddressReferences()</code> interface methods.  [<a href="https://github.com/planetarium/libplanet/pull/3562">#3562</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>involvedAddress</code> argument from all
+<code>TransactionQuery</code> query methods.  [<a href="https://github.com/planetarium/libplanet/pull/3562">#3562</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>IRichStore</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3564">#3564</a>]</li>
+<li>(Libplanet.Explorer) Removed parameters <code>mysql-server</code>, <code>mysql-port</code>,
+<code>mysql-username</code>, <code>mysql-password</code>, and <code>mysql-database</code> from
+<code>Libplanet.Explorer.Executable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3564">#3564</a>]</li>
+<li>Changed <code>TxInvoice</code> to no longer allow negative values for
+<code>MaxGasPrice</code> and <code>GasLimit</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3567">#3567</a>]</li>
+<li>(Libplanet.Explorer) Added <code>AccountStateType</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3570">#3570</a>]</li>
+<li>(Libplanet.Explorer) Added <code>account</code> and <code>accounts</code> query to <code>StateQuery</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3570">#3570</a>]</li>
+<li>(Libplanet.Store) Changed <code>ShortNode</code> to no longer inherit <code>BaseNode</code>.
+<code>ShortNode.Value</code> is no longer nullable.  [<a href="https://github.com/planetarium/libplanet/pull/3572">#3572</a>]</li>
+<li>(Libplanet.Store) Removed <code>FullNode()</code> and added <code>FullNode.Empty</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3573">#3573</a>]</li>
+<li>(Libplanet.Store) Slightly optimized <code>ITrie</code> performance.  [<a href="https://github.com/planetarium/libplanet/pull/3573">#3573</a>]</li>
+<li>(Libplanet.Store) Changed <code>FullNode</code> to no longer inherit <code>BaseNode</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3574">#3574</a>]</li>
+<li>(Libplanet.Store) Removed <code>BaseNode</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3574">#3574</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.Remove()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3576">#3576</a>]</li>
+<li>(Libplanet.Store) Added <code>FullNode.RemoveChild()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3576">#3576</a>]</li>
+<li>(Libplanet.Action) Added <code>IAccount.RemoveState()</code> interface method.
+[<a href="https://github.com/planetarium/libplanet/pull/3577">#3577</a>]</li>
+<li>(Libplanet.Explorer) Added <code>LegacyBencodexValueType</code> class that is
+a copy of an old <code>BencodexValueType</code> with its name changed
+for backwards compatibility.  Changed old <code>states</code> query
+to use <code>LegacyBencodexValueType</code> instead of <code>BencodexValueType</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3579">#3579</a>]</li>
+</ul>
+<h2 id="version-392">Version 3.9.2</h2>
+<p>Released on December 15, 2023.</p>
+<ul>
+<li>(Libplanet.RocksDBStore) Added <code>DBOptions</code> type parameter to
+<code>RocksDBKeyValueStore()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3553">#3553</a>]</li>
+</ul>
+<h2 id="version-391">Version 3.9.1</h2>
+<p>Released on December 8, 2023.</p>
+<ul>
+<li>(Libplanet.Explorer) Added <code>INCLUDED</code> to <code>TxStatus</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3542">#3542</a>]</li>
+</ul>
+<h2 id="version-390">Version 3.9.0</h2>
+<p>Released on December 5, 2023.</p>
+<p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3529">#3529</a>, a network ran with a prior version may not
+be compatible with this version,  specifically, those that ran with
+<a href="https://www.nuget.org/packages/Libplanet/2.0.0">Libplanet 2.0.0</a> and onwards prior to this release that have included
+<code>Transaction</code>s that aren't compatible with the updated specification in <a href="https://github.com/planetarium/libplanet/pull/3529">#3529</a>.</p>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) Removed unnecessary extension methods:  [<a href="https://github.com/planetarium/libplanet/pull/3520">#3520</a>]
+<ul>
+<li><code>IReadOnlyList&lt;IActionEvaluation&gt;.GetRawTotalDelta()</code></li>
+<li><code>IReadOnlyList&lt;IAccountDelta&gt;.OrderedSum()</code></li>
+<li><code>IAccountDelta.ToRawDelta()</code></li>
+<li><code>IAccount.GetUpdatedStates()</code></li>
+<li><code>IAccount.GetUpdatedBalances()</code></li>
+<li><code>IAccount.GetUpdatedTotalSupplies()</code></li>
+</ul>
+</li>
+<li>(Libplanet.Action) Changed <code>IAccount</code> to no longer track <code>IAccountDelta</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3520">#3520</a>]</li>
+<li>(Libplanet.Action) Removed <code>IAccountDelta</code> as parameter for constructors
+of <code>Account</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3520">#3520</a>]</li>
+<li>(Libplanet.Action) Removed <code>hashedSignature</code> of type <code>byte[]</code> parameter
+from <code>ActionEvaluator.GenerateRandomSeed()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3523">#3523</a>]</li>
+<li>Changed <code>TxInvoice</code> to no longer allow having the null-ness of
+<code>MaxGasPrice</code> and <code>GasLimit</code> to be different, i.e. either both should be
+null or both should not be null at the same time.  [<a href="https://github.com/planetarium/libplanet/pull/3529">#3529</a>]</li>
+<li>(Libplanet.Action) Removed <code>IAccountDelta</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3535">#3535</a>]</li>
+<li>(Libplanet.Action) Removed <code>IAccount.Delta</code> interface property.  [<a href="https://github.com/planetarium/libplanet/pull/3535">#3535</a>]</li>
+<li>(Libplanet.Action) Changed constructor <code>IAccount(IAccountState, IImmutableDictionary&lt;(Address, Currency), BigInteger&gt;)</code> to
+<code>IAccount(IAccountState, IImmutableHashSet&lt;(Address, Currency)&gt;)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3537">#3537</a>]</li>
+</ul>
+<h2 id="version-381">Version 3.8.1</h2>
+<p>Released on November 27, 2023.</p>
+<ul>
+<li>(Libplanet.Net) Fixed a bug where <code>GossipConsensusMessageCommunicator</code>
+does not clear <code>_peerCatchupRounds</code> on <code>OnStartHeight()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3519">#3519</a>]</li>
+<li>(Libplanet.Net) <code>GossipConsensusMessageCommunicator</code> now filters
+<code>ConsensusVoteMsg</code> which height is different from latest <code>Context</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3519">#3519</a>]</li>
+<li>(Libplanet.Action) Fixed a bug where initialization of <code>AccountMetrics</code>
+is absent.  [<a href="https://github.com/planetarium/libplanet/pull/3521">#3521</a>]</li>
+</ul>
+<h2 id="version-380">Version 3.8.0</h2>
+<p>Released on November 24, 2023.</p>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>updatedAddresses</code> parameter from <code>BlockChain.MakeTransaction()</code>
+[<a href="https://github.com/planetarium/libplanet/pull/3480">#3480</a>]</li>
+<li>Removed <code>updatedAddresses</code> parameter from <code>Transaction.Create()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3480">#3480</a>]</li>
+<li>Removed <code>updatedAddresses</code> parameter from all <code>TxInvoice()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3480">#3480</a>]</li>
+<li>Removed <code>Rehearsal</code> property from <code>IActionContext</code> and
+<code>ICommittedActionContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3485">#3485</a>]</li>
+<li>(Libplanet.Crypto) Removed <code>ToAddress()</code> extension method for
+<code>PrivateKey</code> and <code>PublicKey</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3486">#3486</a>]</li>
+<li>(Libplanet.Crypto) Added <code>Address</code> property to <code>PrivateKey</code> and <code>PublicKey</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3486">#3486</a>]</li>
+</ul>
+<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<ul>
+<li>(Libplanet.Store) Changed <code>Libplanet.RocksDBStore</code> to use
+<a href="https://www.nuget.org/packages/RocksDB"><code>RocksDb</code></a> instead of <a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp"><code>RocksDBSharp</code></a>.
+<em>Note</em> Cannot read new version of <code>Libplanet.RocksDBStore</code>
+storage from under <code>Libplanet.RocksDBStore</code> version 3.6.1.
+[<a href="https://github.com/planetarium/libplanet/issues/1848">#1848</a>, <a href="https://github.com/planetarium/libplanet/pull/3487">#3487</a>]</li>
+</ul>
+<h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.RocksDBStore) Added <code>RocksDBInstanceType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3488">#3488</a>]</li>
+<li>(Libplanet.RocksDBStore) Changed <code>RocksDBStore</code> and <code>RocksDBKeyValueStore</code>
+to accept <code>RocksDBInstanceType</code> type <code>instanceType</code> parameter instead of
+<code>@readonly</code> parameter in their constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/3488">#3488</a>, <a href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">RocksDb Instance Types</a>]</li>
+</ul>
+<h2 id="version-371">Version 3.7.1</h2>
+<p>Released on November 21, 2023.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/3.6.1">Libplanet 3.6.1</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/3500">#3500</a>]</li>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/3.6.2">Libplanet 3.6.2</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/3509">#3509</a>]</li>
+</ul>
+<h2 id="version-370">Version 3.7.0</h2>
+<p>Released on October 27, 2023.</p>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>IBencodable</code> interface to <code>HashDigest&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3455">#3455</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Slightly optimized <code>BlockMarshaler</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3454">#3454</a>]</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Upgrade <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.14.0">0.14.0</a> to
+<a href="https://www.nuget.org/packages/Bencodex/0.16.0">0.16.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3461">#3461</a>]</li>
+<li>Upgrade <em>Bencodex.Json</em> from <a href="https://www.nuget.org/packages/Bencodex.json/0.11.0">0.11.0</a> to
+<a href="https://www.nuget.org/packages/Bencodex.json/0.16.0">0.16.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3461">#3461</a>]</li>
+</ul>
+<h2 id="version-362">Version 3.6.2</h2>
+<p>Released on November 21, 2023.</p>
+<ul>
+<li>(Libplanet.Net) Changed default <code>ContextTimeoutOption</code> values for
+more consistent and stable consensus.  [<a href="https://github.com/planetarium/libplanet/pull/3506">#3506</a>]</li>
+</ul>
+<h2 id="version-361">Version 3.6.1</h2>
+<p>Released on November 20, 2023.</p>
+<ul>
+<li>(Libplanet.Store) Added optional <code>cache</code> parameter of type <code>HashNodeCache</code>
+to <code>MerkleTrie()</code> constructors.  [<a href="https://github.com/planetarium/libplanet/pull/3495">#3495</a>]</li>
+<li>(Libplanet.Store) Added <code>HashNodeCache</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3495">#3495</a>]</li>
+<li>(Libplanet.Store) Changed internal caching strategy of <code>TrieStateStore</code> for
+read/write optimization.  [<a href="https://github.com/planetarium/libplanet/pull/3495">#3495</a>]</li>
+</ul>
+<h2 id="version-360">Version 3.6.0</h2>
+<p>Released on October 6, 2023.</p>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<ul>
+<li>Changed <code>IActionEvaluator.Evaluate()</code>'s return type to
+<code>IReadOnlyList&lt;ICommittedActionEvaluation&gt;</code> from
+<code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3445">#3445</a>]</li>
+<li>Changed <code>BlockChain.DetermineStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList&lt;IActionEvaluation&gt;)</code> to
+<code>BlockChain.DetermineStateRootHash(IActionEvaluator, IPreEvaluationBlock, out IReadOnlyList&lt;ICommittedActionEvaluation&gt;)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3445">#3445</a>]</li>
+<li>Changed <code>BlockChain.EvaluateGenesis()</code>'s return type to
+<code>IReadOnlyList&lt;ICommittedActionEvaluation&gt;</code> from
+<code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3445">#3445</a>]</li>
+<li>Changed <code>BlockChain.EvaluateBlock()</code>'s return type to
+<code>IReadOnlyList&lt;ICommittedActionEvaluation&gt;</code> from
+<code>IReadOnlyList&lt;IActionEvaluation&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3445">#3445</a>]</li>
+<li>Removed <code>StateStoreExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/3323">#3323</a>, <a href="https://github.com/planetarium/libplanet/pull/3450">#3450</a>]</li>
+</ul>
+<h3 id="added-apis-1">Added APIs</h3>
+<ul>
+<li>(Libplanet.Explorer) Added <code>TxResult.InputState</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3446">#3446</a>, <a href="https://github.com/planetarium/libplanet/pull/3447">#3447</a>]</li>
+<li>(Libplanet.Explorer) Added <code>TxResult.OutputState</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3446">#3446</a>, <a href="https://github.com/planetarium/libplanet/pull/3447">#3447</a>]</li>
+<li>(Libplanet.Explorer) Added <code>offsetStateRootHash</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code> argument for <code>StateQuery.states</code> field.
+[<a href="https://github.com/planetarium/libplanet/issues/3448">#3448</a>, <a href="https://github.com/planetarium/libplanet/pull/3449">#3449</a>]</li>
+<li>(Libplanet.Explorer) Added <code>offsetStateRootHash</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code> argument for <code>StateQuery.balance</code> field.
+[<a href="https://github.com/planetarium/libplanet/issues/3448">#3448</a>, <a href="https://github.com/planetarium/libplanet/pull/3449">#3449</a>]</li>
+<li>(Libplanet.Explorer) Added <code>offsetStateRootHash</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code> argument for <code>StateQuery.totalSupply</code> field.
+[<a href="https://github.com/planetarium/libplanet/issues/3448">#3448</a>, <a href="https://github.com/planetarium/libplanet/pull/3449">#3449</a>]</li>
+<li>(Libplanet.Explorer) Added <code>offsetStateRootHash</code> of type
+<code>HashDigest&lt;SHA256&gt;?</code> argument for <code>StateQuery.validators</code> field.
+[<a href="https://github.com/planetarium/libplanet/issues/3448">#3448</a>, <a href="https://github.com/planetarium/libplanet/pull/3449">#3449</a>]</li>
+</ul>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<ul>
+<li><code>IActionEvaluator.Evaluate()</code>, <code>BlockChain.EvaluateGenesis()</code>,
+and <code>BlockChain.EvaluateBlock()</code> have a side-effect of storing
+data to <code>IStateStore</code> when called.  [<a href="https://github.com/planetarium/libplanet/pull/3445">#3445</a>]</li>
+</ul>
+<h2 id="version-350">Version 3.5.0</h2>
+<p>Released on October 4, 2023.</p>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IActionContext.Random</code> property.  Use <code>IActionContext.GetRandom()</code>
+instead.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Added <code>IActionContext.RandomSeed</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Added <code>IActionContext.GetRandom()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3437">#3437</a>]</li>
+<li>Changed <code>IActionEvaluator.Evaluate(IPreEvaluationBlock)</code> to
+<code>IActionEvaluator.Evaluate(IPreEvaluationBlock, HashDigest&lt;SHA256&gt;)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3438">#3438</a>]</li>
+<li>Changed <code>ActionEvaluator</code> to accept <code>IStateStore</code> instead of
+<code>IBlockChainStates</code>  [<a href="https://github.com/planetarium/libplanet/pull/3439">#3439</a>]</li>
+</ul>
+<h2 id="version-340">Version 3.4.0</h2>
+<p>Released on September 25, 2023.</p>
+<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>IBlockChainStates.GetAccountState(HashDigest&lt;SHA256&gt;?)</code>
+interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3425">#3425</a>]</li>
+<li>Removed <code>TxFailure.ExceptionMetadata</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3428">#3428</a>]</li>
+<li>Removed <code>ISerializable</code> interface from <code>TxExecution</code>, <code>TxSuccess</code>,
+and <code>TxFailure</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3428">#3428</a>]</li>
+<li>Removed <code>TxSuccess</code> and <code>TxFailure</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>Changed <code>TxExecution</code> class as <code>sealed</code> from <code>abstract.</code>  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>All properties of <code>TxExecution</code> except <code>BlockHash</code> and <code>TxId</code> were
+overhauled.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Store) Removed <code>IStore.PutTxExecution(TxSuccess)</code> and
+<code>IStore.PutTxExecution(TxFailure)</code>;
+added <code>IStore.PutTxExecution(TxExecution)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.ExceptionName</code> of type <code>string?</code>
+and added <code>TxResult.ExceptionNames</code> of type <code>List&lt;string?&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.UpdatedStates</code> and
+<code>TxResult.UpdatedFungibleAssets</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3429">#3429</a>]</li>
+<li>Changed <code>IActionRenderer.RenderAction(IValue, IActionContext, IAccount)</code>
+to <code>IActionRenderer.RenderAction(IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+<li>Changed <code>IActionRenderer.RenderActionError(IValue, IActionContext, Exception)</code> to <code>IActionRenderer.RenderActionError(IValue, ICommittedActionContext, Exception)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+</ul>
+<h3 id="added-apis-2">Added APIs</h3>
+<ul>
+<li>Added <code>AccountDiff</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3424">#3424</a>]</li>
+<li>Added <code>ICommittedActionContext</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+<li>Added <code>ICommittedActionEvaluation</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3431">#3431</a>]</li>
+</ul>
+<h2 id="version-331">Version 3.3.1</h2>
+<p>Released on September 8, 2023.</p>
+<ul>
+<li>(Libplanet.Store) Fixed a bug where <code>ITrie.Get()</code> could wrongly retrieve
+an <code>IValue</code> from a non-existent path.  [<a href="https://github.com/planetarium/libplanet/pull/3420">#3420</a>]</li>
+</ul>
+<h2 id="version-330">Version 3.3.0</h2>
+<p>Released on September 7, 2023.</p>
+<h3 id="backward-incompatible-api-changes-6">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Store) Removed <code>ITrie.Commit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3392">#3392</a>]</li>
+<li>(Libplanet.Store) Added <code>IStateStore.Commit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3398">#3398</a>]</li>
+<li>(Libplanet.Store) Removed <code>IKeyValueStore.Get(IEnumerable&lt;KeyBytes&gt; keys)</code>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/3362">#3362</a>, <a href="https://github.com/planetarium/libplanet/pull/3400">#3400</a>]</li>
+<li>(Libplanet.Store) Added <code>PathCursor</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/3399">#3399</a>]</li>
+<li>(Libplanet.Store) Added <code>Nibbles</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/3399">#3399</a>]</li>
+<li>(Libplanet.Store) Changed <code>KeyBytes</code> to no longer implement
+<code>IEquatable&lt;byte[]&gt;</code> and <code>IEquatable&lt;ImmutableArray&lt;byte&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3402">#3402</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.GetNode()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3401">#3401</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.IterateValues()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3405">#3405</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.IterateNodes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3405">#3405</a>]</li>
+<li>(Libplanet.Store) Removed <code>Secure</code> option from <code>TrieStateStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3407">#3407</a>]
+<ul>
+<li>Removed <code>secure</code> parameter from <code>TrieStateStore()</code>.</li>
+<li>Removed <code>ITrie.Secure</code> property.</li>
+<li>Removed <code>secure</code> parameter from <code>MerkleTrie()</code>.</li>
+<li>Removed <code>secure</code> parameter from <code>PathCursor()</code>.</li>
+</ul>
+</li>
+<li>(Libplanet.Store) Added <code>ITrie.Diff()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3410">#3410</a>]</li>
+<li>(Libplanet.Store) Removed <code>MerkleTrieExtensions.DifferentNodes()</code>
+static method.  [<a href="https://github.com/planetarium/libplanet/pull/3410">#3410</a>]</li>
+<li>Removed <code>IBlockState</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3413">#3413</a>]</li>
+<li>Removed <code>IBlockChainState.GetBlockState()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3413">#3413</a>]</li>
+<li>Added <code>IBlockChainState.GetAccountState()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3413">#3413</a>]</li>
+<li>Added <code>IAccountState</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3416">#3416</a>]</li>
+<li>Added <code>AccountState</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3416">#3416</a>]</li>
+</ul>
+<h3 id="added-apis-3">Added APIs</h3>
+<ul>
+<li>(Libplanet.RocksDBStore) <code>RocksDBStore</code> and <code>RocksDBKeyValueStore</code> became to
+receive <code>@readonly</code> parameter in their constructor. If it is true, it opens
+rocksdb as read-only mode.  [<a href="https://github.com/planetarium/libplanet/issues/3354">#3354</a>, <a href="https://github.com/planetarium/libplanet/pull/3356">#3356</a>, <a href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">RocksDB Read Only</a>]</li>
+</ul>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Store) Changed <code>ShortNode</code> to no longer accept empty <code>byte</code>
+arrays.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>(Libplanet.Store) Fixed <code>Equals()</code> for <code>FullNode</code> and <code>ShortNode</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3377">#3377</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where adding two <code>byte</code> arrays as keys
+with one being a subsequence of the other would break <code>MerkleTrie</code>
+and lose data.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where when trying to add a value to
+an existing <code>FullNode</code> would throw an <code>Exception</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3390">#3390</a>]</li>
+<li>(Libplanet.Store) Fixed a bug where committing an <code>ITrie</code> may return
+an <code>ITrie</code> with a different path security scheme.  [<a href="https://github.com/planetarium/libplanet/pull/3401">#3401</a>]</li>
+</ul>
+<h2 id="version-320">Version 3.2.0</h2>
+<p>Released on August 10, 2023.</p>
+<h3 id="backward-incompatible-api-changes-7">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) Renamed <code>IAccountStateDelta</code> as <code>IAccount</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3337">#3337</a>]</li>
+<li>(Libplanet.Store) Optimized <code>MerkleTrie.Get()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3347">#3347</a>]</li>
+<li>(Libplanet.Types) Removed <code>TxSuccess.FungibleAssetsDelta</code>  [<a href="https://github.com/planetarium/libplanet/pull/3357">#3357</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.ExceptionMetadata</code> and
+<code>TxResult.FungibleAssetsDelta</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3357">#3357</a>]</li>
+<li>(Libplanet.Store) Added <code>ITrie.Get(KeyBytes)</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3359">#3359</a>]</li>
+<li>(Libplanet.Store) Optimized <code>MerkleTrie.Get()</code> by allowing parallel
+processing when more than 4 <code>KeyBytes</code> keys are given.  [<a href="https://github.com/planetarium/libplanet/pull/3359">#3359</a>]</li>
+</ul>
+<h2 id="version-312">Version 3.1.2</h2>
+<p>Released on August 10, 2023.</p>
+<ul>
+<li>Upgrade <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.12.0">0.12.0</a> to
+<a href="https://www.nuget.org/packages/Bencodex/0.14.0">0.14.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3367">#3367</a>]</li>
+</ul>
+<h2 id="version-311">Version 3.1.1</h2>
+<p>Released on August 9, 2023.</p>
+<ul>
+<li>Fixed a bug where <code>Swarm</code> checks block existent when preloading.
+[<a href="https://github.com/planetarium/libplanet/issues/3253">#3253</a>, <a href="https://github.com/planetarium/libplanet/pull/3353">#3353</a>, <a href="https://github.com/planetarium/libplanet/pull/3360">#3360</a>]</li>
+</ul>
+<h2 id="version-310">Version 3.1.0</h2>
+<p>Released on July 27, 2023.</p>
+<h3 id="backward-incompatible-api-changes-8">Backward-incompatible API changes</h3>
+<ul>
+<li>Changed <code>StateStoreExtensions.Commit()</code> to accept
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Changed <code>AccountDeltaExtensions.ToRawDelta()</code> to return
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Changed <code>ActionEvaluatorExtensions.GetRawTotalDelta()</code> to return
+<code>IImmutableDictionary&lt;KeyBytes, IValue&gt;</code> instead of
+<code>IImmutableDictionary&lt;string, IValue&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Removed <code>EnumerableMeasurement</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
+<li>Removed <code>KeyValueExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3325">#3325</a>]</li>
+<li>Removed <code>StateStoreExtensions.EncodeKey()</code> and
+<code>StateStoreExtensions.DecodeKey()</code> methods.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>StateStoreExtensions.GetStates(IStateStore, HashDigest&lt;SHA256&gt;?, IReadOnlyList&lt;string&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>TrieExtensions.Set(ITrie, IEnumerable&lt;KeyValuePair&lt;string, IValue?&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Removed <code>KeyBytes(string, Encoding)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+</ul>
+<h3 id="added-apis-4">Added APIs</h3>
+<ul>
+<li>Added <code>StateStoreExtensions.GetStates(IStateStore, HashDigest&lt;SHA256&gt;, IReadOnlyList&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+<li>Added <code>KeyBytes.Encoding</code> static property.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+<li>Added <code>KeyBytes(string)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3328">#3328</a>]</li>
+</ul>
+<h3 id="behavioral-changes-3">Behavioral changes</h3>
+<ul>
+<li>Optimized read and write access to <code>IStateStore</code> both for memory and speed.
+[<a href="https://github.com/planetarium/libplanet/pull/3321">#3321</a>]</li>
+</ul>
+<h3 id="dependencies-1">Dependencies</h3>
+<ul>
+<li>Upgrade <em>Bencodex</em> from [0.11.0][Bencodex 0.11.0] to
+<a href="https://www.nuget.org/packages/Bencodex/0.12.0">0.12.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3335">#3335</a>]</li>
+</ul>
+<h2 id="version-301">Version 3.0.1</h2>
+<p>Released on July 21, 2023.</p>
+<ul>
+<li>Fixed builds and tests.  [<a href="https://github.com/planetarium/libplanet/pull/3326">#3326</a>]</li>
+</ul>
+<h2 id="version-300">Version 3.0.0</h2>
+<p>Released on July 19, 2023.</p>
+<h3 id="backward-incompatible-api-changes-9">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Common) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3300">#3300</a>]
+<ul>
+<li><code>Libplanet.Serialization</code></li>
+<li><code>Libplanet.JsonConverters</code></li>
+</ul>
+</li>
+<li>(Libplanet.Common) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3314">#3314</a>]
+<ul>
+<li><code>Libplanet.Misc</code></li>
+</ul>
+</li>
+<li>(Libplanet.Crypto) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3314">#3314</a>]
+<ul>
+<li><code>Libplanet.Crypto</code></li>
+</ul>
+</li>
+<li>(Libplanet.Types) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3314">#3314</a>]
+<ul>
+<li><code>Libplanet.Assets</code></li>
+<li><code>Libplanet.Blocks</code></li>
+<li><code>Libplanet.Consensus</code></li>
+<li><code>Libplanet.Tx</code></li>
+</ul>
+</li>
+<li>(Libplanet.Store) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3303">#3303</a>]
+<ul>
+<li><code>Libplanet.Store</code></li>
+</ul>
+</li>
+<li>(Libplanet.Action) Moved packages from <code>Libplanet</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3310">#3310</a>]
+<ul>
+<li><code>Libplanet.Action</code></li>
+</ul>
+</li>
+<li>Removed <code>IExtractableException</code> and <code>ExtractableException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3304">#3304</a>]</li>
+</ul>
+<h3 id="added-apis-5">Added APIs</h3>
+<ul>
+<li>(Libplanet.Net) Added <code>Gossip.DeniedPeers</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3313">#3313</a>]</li>
+</ul>
+<h3 id="behavioral-changes-4">Behavioral changes</h3>
+<ul>
+<li><code>TxFailure</code> no longer tracks <code>ExceptionMetadata</code> and is always
+set to <code>null</code> even for already stored <code>TxFailure</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3304">#3304</a>]</li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/4.5.1/changes/v3.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
