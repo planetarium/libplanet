@@ -62,7 +62,7 @@
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
 <h2 id="version-460">Version 4.6.0</h2>
-<p>To be released.</p>
+<p>Released on May 27, 2024.</p>
 <p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3789">#3789</a>, a network ran with a prior version
 may not be compatible with this version.  The native implementation of
 <code>IActionEvaluator</code>, which is <code>ActionEvaluator</code>, no longer supports
@@ -96,18 +96,12 @@ queries to <code>WorldStateType</code>.  [<a href="https://github.com/planetariu
 <li>(Libplanet.Explorer) Changed <code>totalSupply</code> query under <code>StateQuery</code> to
 no longer throw an <code>Exception</code> and return a zero amount instead.  [<a href="https://github.com/planetarium/libplanet/pull/3799">#3799</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
-<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>BlockProtocolVersionNotSupportedException</code> class.
 [<a href="https://github.com/planetarium/libplanet/pull/3789">#3789</a>]</li>
 <li>(Libplanet.Mocks) Added <code>MockBlockChainStates</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3799">#3799</a>]</li>
 </ul>
-<h3 id="behavioral-changes">Behavioral changes</h3>
-<h3 id="bug-fixes">Bug fixes</h3>
-<h3 id="dependencies">Dependencies</h3>
-<h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-451">Version 4.5.1</h2>
 <p>Released on May 27, 2024.</p>
 <ul>
@@ -148,7 +142,7 @@ that may be thrown by <code>IWorld.MintAsset()</code> and
 <ul>
 <li>(Libplanet.Action) Added <code>CurrencyAccount</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3779">#3779</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>(Libplanet.Mocks) <code>MockWorldState.SetBalance()</code> now automatically updates
 the total supply of the provided <code>Currency</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3778">#3778</a>]</li>
@@ -223,7 +217,7 @@ and <code>SetValidator()</code> of <code>IWorld</code> to extension methods.  [<
 <li>(Libplanet.Store) Removed <code>journal</code>, <code>indexCacheSize</code>, and <code>flush</code>
 parameters from <code>DefaultStore</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
 </ul>
-<h3 id="dependencies-1">Dependencies</h3>
+<h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Upgraded <em>LiteDB</em> from <a href="https://www.nuget.org/packages/LiteDB/4.1.4">4.1.4</a> to
 <a href="https://www.nuget.org/packages/LiteDB/5.0.15">5.0.15</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
@@ -262,7 +256,7 @@ to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet
 <code>BaseIndex&lt;BlockHash, Block&gt;</code> to <code>IReadOnlyDictionary&lt;BlockHash, Block&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3686">#3686</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>(Libplanet.Net) Changed some types due to removal of 'nullable keyword'.
 [<a href="https://github.com/planetarium/libplanet/pull/3669">#3669</a>]
@@ -286,7 +280,7 @@ from <code>IValue</code> to <code>IValue?</code>.</li>
 <li>(Libplanet.Store.Remote) Introduce
 <code>Libplanet.Store.Client.RemoteKeyValueStore</code>  [<a href="https://github.com/planetarium/libplanet/pull/3688">#3688</a>]</li>
 </ul>
-<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
 <ul>
 <li>(Libplanet.Store) Optimized <code>ITrie.IterateNodes()</code> to greatly
 reduce the amount of memory used.  [<a href="https://github.com/planetarium/libplanet/pull/3687">#3687</a>]</li>
