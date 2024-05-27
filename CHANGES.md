@@ -126,6 +126,12 @@ reconstruct states with valid state root hashes purely from past
 [#3799]: https://github.com/planetarium/libplanet/pull/3799
 
 
+Version 4.5.2
+-------------
+
+To be released.
+
+
 Version 4.5.1
 -------------
 
