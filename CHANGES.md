@@ -68,6 +68,19 @@ reconstruct states with valid state root hashes purely from past
 [#3799]: https://github.com/planetarium/libplanet/pull/3799
 
 
+Version 4.5.1
+-------------
+
+Released on May 27, 2024.
+
+ -  Suppressed build warnings as a temporary measure that may result in
+    build failures due to security vulnerabilities found in
+    [LiteDB 4.1.4] and [BouncyCastle.Cryptography 2.0.0] packages.  [[#3800]]
+
+[#3800]: https://github.com/planetarium/libplanet/pull/3800
+[BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
+
+
 Version 4.5.0
 -------------
 
