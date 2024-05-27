@@ -12,6 +12,7 @@ using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -177,8 +178,10 @@ public class GeneratedBlockChainFixture
                     proposer.PublicKey,
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
-                    Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value)),
-                transactions).Propose(),
+                    Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value),
+                    evidenceHash: null),
+                transactions,
+                evidences: Array.Empty<Evidence>()).Propose(),
             proposer);
         Chain.Append(
             block,
