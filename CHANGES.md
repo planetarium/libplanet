@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.6.0
 -------------
 
-To be released.
+Released on May 27, 2024.
 
 Due to changes in [#3789], a network ran with a prior version
 may not be compatible with this version.  The native implementation of
@@ -40,23 +40,11 @@ reconstruct states with valid state root hashes purely from past
  -  (Libplanet.Explorer) Changed `totalSupply` query under `StateQuery` to
     no longer throw an `Exception` and return a zero amount instead.  [[#3799]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Action) Added `BlockProtocolVersionNotSupportedException` class.
     [[#3789]]
  -  (Libplanet.Mocks) Added `MockBlockChainStates` class.  [[#3799]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3789]: https://github.com/planetarium/libplanet/pull/3789
 [#3792]: https://github.com/planetarium/libplanet/issues/3792
