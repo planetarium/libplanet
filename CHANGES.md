@@ -65,6 +65,12 @@ To be released.
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
 
 
+Version 4.6.1
+-------------
+
+To be released.
+
+
 Version 4.6.0
 -------------
 
