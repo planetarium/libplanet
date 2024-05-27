@@ -4,7 +4,7 @@ Libplanet changelog
 Version 4.5.1
 -------------
 
-To be released.
+Released on May 27, 2024.
 
  -  Suppressed build warnings as a temporary measure that may result in
     build failures due to security vulnerabilities found in
