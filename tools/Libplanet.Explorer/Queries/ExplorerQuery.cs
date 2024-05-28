@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Types;
-using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
@@ -10,6 +9,7 @@ using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Explorer.Queries
@@ -23,6 +23,7 @@ namespace Libplanet.Explorer.Queries
             _chainContext = chainContext;
             Field<BlockQuery>("blockQuery", resolve: context => new { });
             Field<TransactionQuery>("transactionQuery", resolve: context => new { });
+            Field<EvidenceQuery>("evidenceQuery", resolve: context => new { });
             Field<StateQuery>("stateQuery", resolve: context => chainContext.BlockChain);
             Field<NonNullGraphType<NodeStateType>>("nodeState", resolve: context => chainContext);
             Field<HelperQuery>("helperQuery", resolve: context => new { });
@@ -155,11 +156,47 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
+        internal static IEnumerable<Evidence> ListPendingEvidences(
+            bool desc, int offset, int? limit)
+        {
+            if (offset < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(offset),
+                    $"{nameof(ListPendingEvidences)} doesn't support negative offset.");
+            }
+
+            var blockChain = Chain;
+            var comparer = desc ? EvidenceIdComparer.Descending : EvidenceIdComparer.Ascending;
+            var evidences = blockChain.GetPendingEvidences()
+                                      .Skip(offset)
+                                      .Take(limit ?? int.MaxValue)
+                                      .OrderBy(ev => ev.Id, comparer);
+
+            return evidences;
+        }
+
+        internal static IEnumerable<Evidence> ListCommitEvidences(
+            BlockHash? blockHash, bool desc, int offset, int? limit)
+        {
+            var blockChain = Chain;
+            var block = blockHash != null ? blockChain[blockHash.Value] : blockChain.Tip;
+            var comparer = desc ? EvidenceIdComparer.Descending : EvidenceIdComparer.Ascending;
+            var evidences = block.Evidences
+                                 .Skip(offset)
+                                 .Take(limit ?? int.MaxValue)
+                                 .OrderBy(ev => ev.Id, comparer);
+
+            return evidences;
+        }
+
         internal static Block? GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);
 
         internal static Block GetBlockByIndex(long index) => Chain[index];
 
         internal static Transaction GetTransaction(TxId id) => Chain.GetTransaction(id);
+
+        internal static Evidence GetEvidence(EvidenceId id) => Chain.GetCommittedEvidence(id);
 
         private static Block? GetNextBlock(Block block, bool desc)
         {

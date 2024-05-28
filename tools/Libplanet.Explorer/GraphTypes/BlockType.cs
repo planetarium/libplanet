@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Types.Blocks;
@@ -60,6 +59,10 @@ public class BlockType : ObjectGraphType<Block>
         Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType>>>>(
             name: "transactions",
             description: "Transactions belonging to the block."
+        );
+        Field<NonNullGraphType<ListGraphType<NonNullGraphType<EvidenceType>>>>(
+            name: "evidences",
+            description: "Evidences belonging to the block."
         );
         Field<BlockCommitType>(
             name: "LastCommit",
