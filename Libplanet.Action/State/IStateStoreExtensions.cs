@@ -103,6 +103,11 @@ namespace Libplanet.Action.State
                     $"cannot be migrated to a lower version {targetVersion}.");
             }
 
+            if (world.Version == targetVersion)
+            {
+                return world;
+            }
+
             Log.Information(
                 "Migrating state root hash {SourceStateRootHash}/{SourceVersion} to " +
                 "version {TargetVersion}",
