@@ -182,6 +182,21 @@ namespace Libplanet.Blockchain
                     stored: Genesis.Hash
                 );
             }
+
+            if (Tip.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            {
+                return;
+            }
+
+            HashDigest<SHA256> nextStateRootHash =
+                DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
+
+            Store.DeleteNextStateRootHash(Tip.Hash);
+            Store.PutNextStateRootHash(Tip.Hash, nextStateRootHash);
+
+            IEnumerable<TxExecution> txExecutions =
+                MakeTxExecutions(Tip, actionEvaluations);
+            UpdateTxExecutions(txExecutions);
         }
 
         ~BlockChain()

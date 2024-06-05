@@ -535,7 +535,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(0, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal((Text)"foo", state1);
+            Assert.Equal((Text)"foo,foo", state1);
             Assert.Equal((Text)"baz", state2);
 
             blockChain.MakeTransaction(privateKey1, new[] { DumbAction.Create((address1, "bar")) });
@@ -553,7 +553,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(1, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal((Text)"foo,bar,foo", state1);
+            Assert.Equal((Text)"foo,foo,bar,foo", state1);
             Assert.Equal((Text)"baz", state2);
         }
 
