@@ -53,6 +53,8 @@ To be released.
     [[#Sloth]]
  -  `IBlockChainStates.GetWorldState(BlockHash)` now means the `IWorldState`
     before state transition from the `Block`.  [[#3811]]
+ -  `Context.ProcessHeightOrRoundUponRules()` now appends block asynchronously,
+    as a manner of fire-and-forget.  [[#3808]]
 
 ### Bug fixes
 

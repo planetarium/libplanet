@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -203,8 +204,7 @@ namespace Libplanet.Net.Tests.Consensus
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await Task.WhenAll(stepChangedToEndCommit.WaitAsync(), exceptionOccurred.WaitAsync());
-            Assert.IsType<InvalidBlockIndexException>(exceptionThrown);
+            await Task.WhenAll(stepChangedToEndCommit.WaitAsync());
 
             // Check context has only three votes.
             BlockCommit? commit = context.GetBlockCommit();
@@ -589,10 +589,11 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact(Timeout = Timeout)]
         public async Task CanCreateContextWithLastingEvaluation()
         {
-            var blockHeightOneAppended = new AsyncAutoResetEvent();
+            var onTipChanged = new AsyncAutoResetEvent();
             var enteredHeightTwo = new AsyncAutoResetEvent();
 
             TimeSpan newHeightDelay = TimeSpan.FromMilliseconds(100);
+            int actionDelay = 1000;
 
             var fx = new MemoryStoreFixture();
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
@@ -632,7 +633,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 if (eventArgs.NewTip.Index == 1L)
                 {
-                    blockHeightOneAppended.Set();
+                    onTipChanged.Set();
                 }
             };
 
@@ -644,7 +645,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            var action = new DelayAction(200);
+            var action = new DelayAction(actionDelay);
             var tx = Transaction.Create(
                 nonce: 0,
                 privateKey: TestUtils.PrivateKeys[1],
@@ -683,23 +684,20 @@ namespace Libplanet.Net.Tests.Consensus
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await blockHeightOneAppended.WaitAsync();
+            var watch = Stopwatch.StartNew();
+            await onTipChanged.WaitAsync();
+            Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
 
-            Assert.False(
-                context.GetBlockCommit()!.Votes.Any(
-                    vote =>
-                        vote.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey) &&
-                        vote.Flag.Equals(VoteFlag.PreCommit)));
             Assert.Equal(
-                3,
+                4,
                 context.GetBlockCommit()!.Votes.Count(
                     vote => vote.Flag.Equals(VoteFlag.PreCommit)));
 
-            Assert.Equal(1, consensusContext.Contexts.First().Value.Height);
+            Assert.Equal(1, consensusContext.Contexts.Keys.Max());
 
             await enteredHeightTwo.WaitAsync();
-
-            Assert.Equal(2, consensusContext.Contexts.First().Value.Height);
+            Assert.Equal(2, consensusContext.Height);
+            Assert.Equal(2, consensusContext.Contexts.Keys.Max());
         }
 
         public struct ContextJson
