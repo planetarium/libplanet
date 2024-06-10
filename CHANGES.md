@@ -129,7 +129,12 @@ reconstruct states with valid state root hashes purely from past
 Version 4.5.2
 -------------
 
-To be released.
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `ProtocolVersion` field to `BlockType`.
+    [[#3810]]
+
+[#3810]: https://github.com/planetarium/libplanet/pull/3810
 
 
 Version 4.5.1
