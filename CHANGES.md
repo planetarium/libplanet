@@ -191,6 +191,8 @@ Released on April 29, 2024.
  -  (Libplanet.Explorer) Added `RawStateQuery`.  [[#3763]]
 
 [#3763]: https://github.com/planetarium/libplanet/pull/3763
+
+
 Version 4.4.1
 -------------
 
