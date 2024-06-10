@@ -45,24 +45,17 @@ namespace Libplanet.Mocks
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash?)"/>
-        public IWorldState GetWorldState(BlockHash? offset)
+        public IWorldState GetWorldState(BlockHash offset)
         {
-            if (offset is { } blockHash)
+            if (_map.ContainsKey(offset))
             {
-                if (_map.ContainsKey(blockHash))
-                {
-                    return GetWorldState(_map[blockHash]);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"No state root associated with given block hash {blockHash} found.",
-                        nameof(blockHash));
-                }
+                return GetWorldState(_map[offset]);
             }
             else
             {
-                return GetWorldState((HashDigest<SHA256>?)null);
+                throw new ArgumentException(
+                    $"No state root associated with given block hash {offset} found.",
+                    nameof(offset));
             }
         }
 
@@ -76,5 +69,9 @@ namespace Libplanet.Mocks
                     $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.",
                     nameof(stateRootHash));
         }
+
+        /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)"/>
+        public IWorldState GetNextWorldState(BlockHash offset) =>
+            throw new InvalidOperationException();
     }
 }
