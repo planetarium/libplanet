@@ -28,14 +28,14 @@ namespace Libplanet.Tests.Blocks
         {
             var randomHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
-            var votes = keys.Select(key =>
+            var votes = keys.Select((key, index) =>
                     new VoteMetadata(
                         1,
                         0,
                         randomHash,
                         DateTimeOffset.UtcNow,
                         key.PublicKey,
-                        BigInteger.One,
+                        index == 0 ? (BigInteger?)null : BigInteger.One,
                         VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, randomHash, votes);

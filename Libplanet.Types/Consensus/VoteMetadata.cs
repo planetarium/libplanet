@@ -69,7 +69,7 @@ namespace Libplanet.Types.Consensus
             BlockHash blockHash,
             DateTimeOffset timestamp,
             PublicKey validatorPublicKey,
-            BigInteger validatorPower,
+            BigInteger? validatorPower,
             VoteFlag flag)
         {
             if (height < 0)
@@ -82,7 +82,7 @@ namespace Libplanet.Types.Consensus
                 throw new ArgumentException(
                     $"Given {nameof(round)} cannot be negative: {round}");
             }
-            else if (validatorPower <= 0)
+            else if (validatorPower is { } power && power <= 0)
             {
                 var msg = $"Given {nameof(validatorPower)} cannot be negative " +
                           $"or equal to zero: {validatorPower}";
@@ -127,7 +127,9 @@ namespace Libplanet.Types.Consensus
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
                     ((Binary)bencoded[ValidatorPublicKeyKey]).ByteArray),
-                validatorPower: (Integer)bencoded[ValidatorPowerKey],
+                validatorPower: bencoded.ContainsKey(ValidatorPowerKey)
+                    ? (Integer)bencoded[ValidatorPowerKey]
+                    : (Integer?)null,
                 flag: (VoteFlag)(int)(Integer)bencoded[FlagKey])
         {
         }
@@ -149,7 +151,7 @@ namespace Libplanet.Types.Consensus
         public PublicKey ValidatorPublicKey { get; }
 
         /// <inheritdoc/>
-        public BigInteger ValidatorPower { get; }
+        public BigInteger? ValidatorPower { get; }
 
         /// <inheritdoc/>
         public VoteFlag Flag { get; }
@@ -167,12 +169,16 @@ namespace Libplanet.Types.Consensus
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                     .Add(ValidatorPublicKeyKey, ValidatorPublicKey.Format(compress: true))
-                    .Add(ValidatorPowerKey, ValidatorPower)
                     .Add(FlagKey, (long)Flag);
 
                 if (BlockHash is { } blockHash)
                 {
                     encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
+                }
+
+                if (ValidatorPower is { } power)
+                {
+                    encoded = encoded.Add(ValidatorPowerKey, power);
                 }
 
                 return encoded;

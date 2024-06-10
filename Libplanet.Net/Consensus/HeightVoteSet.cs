@@ -132,10 +132,11 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
-                if (_validatorSet.GetValidator(validatorKey).Power != vote.ValidatorPower)
+                if (vote.ValidatorPower is { } power &&
+                    _validatorSet.GetValidator(validatorKey).Power != power)
                 {
-                    const string msg = "ValidatorPower of the vote is not the same " +
-                                       "with the one in the validator set";
+                    const string msg = "ValidatorPower of the vote is given and the value is " +
+                                       "not the same with the one in the validator set";
                     throw new InvalidVoteException(msg, vote);
                 }
 
