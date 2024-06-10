@@ -29,9 +29,10 @@ Version DPoS
     and its implementations.  [[#3730]]
  -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
     interface and its implementations.  [[#3762]]
- -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.  [[#3737]]
+ -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.
+    [[#3737], [#3813]]
  -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
-    interface and its implementations.  [[#3737]]
+    interface and its implementations.  [[#3737], [#3813]]
 
 ### Backward-incompatible network protocol changes
 
@@ -55,6 +56,7 @@ Version DPoS
 [#3748]: https://github.com/planetarium/libplanet/pull/3748
 [#3762]: https://github.com/planetarium/libplanet/pull/3762
 [#3764]: https://github.com/planetarium/libplanet/pull/3764
+[#3813]: https://github.com/planetarium/libplanet/pull/3813
 
 
 Version 5.0.0
