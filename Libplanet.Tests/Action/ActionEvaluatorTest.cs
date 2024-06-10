@@ -493,8 +493,8 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),     // Adds "E"
-                (2, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address3),      // Adds "F"
+                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),     // Adds "F"
+                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),      // Adds "E"
                 (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),    // Adds "D"
             };
             Assert.Equal(expectations.Length, evals.Length);

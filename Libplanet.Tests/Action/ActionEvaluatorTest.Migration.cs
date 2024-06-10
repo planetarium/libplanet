@@ -384,10 +384,11 @@ namespace Libplanet.Tests.Action
             chain.StageTransaction(tx);
             var block3 = chain.ProposeBlock(miner, blockCommit);
             chain.Append(block3, CreateBlockCommit(block3));
-            Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetWorldState().Version);
+            Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
 
+            var nextStateRootHash = chain.GetNextStateRootHash(block3.Hash);
             var currencyAccountStateRoot = stateStore
-                    .GetStateRoot(block3.StateRootHash)
+                    .GetStateRoot(nextStateRootHash)
                     .Get(KeyConverters.ToStateKey(
                         new Address(DumbAction.DumbCurrency.Hash.ByteArray)));
             Assert.NotNull(currencyAccountStateRoot);
