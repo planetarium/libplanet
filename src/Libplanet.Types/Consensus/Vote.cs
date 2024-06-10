@@ -166,6 +166,7 @@ namespace Libplanet.Types.Consensus
             var dict = new Dictionary<string, object>
             {
                 { "validator_public_key", ValidatorPublicKey.ToString() },
+                { "validator_power", ValidatorPower.ToString() },
                 { "vote_flag", Flag.ToString() },
                 { "block_hash", BlockHash.ToString() },
                 { "height", Height },
