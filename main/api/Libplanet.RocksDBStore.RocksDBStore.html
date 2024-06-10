@@ -96,7 +96,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></div>
     <div class="level2"><span class="xref">RocksDBStore</span></div>
   </div>
@@ -177,6 +177,15 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_">BaseStore.DeleteBlockCommit(BlockHash)</a>
     </div>
     <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetNextStateRootHash_Libplanet_Types_Blocks_BlockHash_">BaseStore.GetNextStateRootHash(BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutNextStateRootHash_Libplanet_Types_Blocks_BlockHash_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.PutNextStateRootHash(BlockHash, HashDigest&lt;SHA256&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteNextStateRootHash_Libplanet_Types_Blocks_BlockHash_">BaseStore.DeleteNextStateRootHash(BlockHash)</a>
+    </div>
+    <div>
       <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Types_Tx_TxExecution_">BaseStore.SerializeTxExecution(TxExecution)</a>
     </div>
     <div>
@@ -201,7 +210,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.RocksDBStore.html">Libplanet.RocksDBStore</a></h6>
@@ -217,7 +226,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_Libplanet_RocksDBStore_RocksDBInstanceType_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.%23ctor(System.String%2CSystem.Int32%2CSystem.Int32%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Nullable%7BSystem.UInt64%7D%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CLibplanet.RocksDBStore.RocksDBInstanceType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L167">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L172">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore__ctor_" data-uid="Libplanet.RocksDBStore.RocksDBStore.#ctor*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore__ctor_System_String_System_Int32_System_Int32_System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Nullable_System_UInt64__System_Int32_System_Int32_System_Int32_Libplanet_RocksDBStore_RocksDBInstanceType_" data-uid="Libplanet.RocksDBStore.RocksDBStore.#ctor(System.String,System.Int32,System.Int32,System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Nullable{System.UInt64},System.Int32,System.Int32,System.Int32,Libplanet.RocksDBStore.RocksDBInstanceType)">RocksDBStore(String, Int32, Int32, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;, Nullable&lt;UInt64&gt;, Int32, Int32, Int32, RocksDBInstanceType)</h4>
@@ -239,7 +248,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">path</span></td>
         <td><p>The path of the directory where the storage files will be saved.</p>
 </td>
@@ -257,21 +266,21 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">maxTotalWalSize</span></td>
         <td><p>The number to configure <code>max_total_wal_size</code> RocksDB
 option.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">keepLogFileNum</span></td>
         <td><p>The number to configure <code>keep_log_file_num</code> RocksDB
 option.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">UInt64</a>&gt;</td>
         <td><span class="parametername">maxLogFileSize</span></td>
         <td><p>The number to configure <code>max_log_file_size</code>
 RocksDB option.</p>
@@ -318,7 +327,7 @@ instances.  <a class="xref" href="Libplanet.RocksDBStore.RocksDBInstanceType.htm
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_AppendIndex_System_Guid_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L593">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L603">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_AppendIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.AppendIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_AppendIndex_System_Guid_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid,BlockHash)">AppendIndex(Guid, BlockHash)</h4>
@@ -359,7 +368,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -394,7 +403,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ContainsBlock(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L948">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L958">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ContainsBlock_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsBlock(BlockHash)">ContainsBlock(BlockHash)</h4>
@@ -465,7 +474,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction(TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L767">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L777">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ContainsTransaction_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ContainsTransaction(TxId)">ContainsTransaction(TxId)</h4>
@@ -536,7 +545,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.CountBlocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1070">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1080">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_CountBlocks_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountBlocks*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_CountBlocks" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountBlocks">CountBlocks()</h4>
@@ -592,7 +601,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_CountIndex_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L517">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L527">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_CountIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_CountIndex_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)">CountIndex(Guid)</h4>
@@ -633,7 +642,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -665,7 +674,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteBlock(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L907">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L917">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlock(BlockHash)">DeleteBlock(BlockHash)</h4>
@@ -736,7 +745,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteBlockCommit_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteBlockCommit(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1319">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1330">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlockCommit*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteBlockCommit_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteBlockCommit(BlockHash)">DeleteBlockCommit(BlockHash)</h4>
@@ -792,7 +801,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L408">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L418">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)">DeleteChainId(Guid)</h4>
@@ -817,7 +826,7 @@ does nothing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The ID of chain to delete.</p>
 </td>
@@ -836,10 +845,66 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteNextStateRootHash_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteNextStateRootHash(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1432">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteNextStateRootHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteNextStateRootHash*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteNextStateRootHash_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteNextStateRootHash(BlockHash)">DeleteNextStateRootHash(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
+which is more production-ready than <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.
+This stores data in the RocksDB with multiple partitions under the hood.</p>
+<p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>max-total-wal-size</code></td><td>Corresponds to RocksDB&apos;s <code>max_total_wal_size</code> option.</td></tr><tr><td><code>keep-log-file-num</code></td><td>Corresponds to RocksDB&apos;s <code>keep_log_file_num</code> option.</td></tr><tr><td><code>max_log_file_size</code></td><td>Corresponds to RocksDB&apos;s <code>max_log_file_size</code> option.</td></tr><tr><td><code>tx-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>block-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteNextStateRootHash(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_DeleteNextStateRootHash_BlockHash__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_TxId_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex(TxId%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L979">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L989">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_TxId_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex(TxId,BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -900,7 +965,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1075">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1085">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_Dispose_" data-uid="Libplanet.RocksDBStore.RocksDBStore.Dispose*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_Dispose" data-uid="Libplanet.RocksDBStore.RocksDBStore.Dispose">Dispose()</h4>
@@ -941,7 +1006,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid%2CSystem.Guid%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L625">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L635">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid,System.Guid,BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
@@ -982,12 +1047,12 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">sourceChainId</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">destinationChainId</span></td>
         <td></td>
       </tr>
@@ -1007,7 +1072,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_System_Guid_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid%2CSystem.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1122">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid,System.Guid)">ForkTxNonces(Guid, Guid)</h4>
@@ -1031,14 +1096,14 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">sourceChainId</span></td>
         <td><p>The chain <see cref="!:BlockChain.Id"></see> of
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Nonce">Nonce</a>s to fork.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">destinationChainId</span></td>
         <td><p>The chain <see cref="!:BlockChain.Id"></see> of destination
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Nonce">Nonce</a>s.</p>
@@ -1057,7 +1122,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetBlockCommit_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetBlockCommit(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1264">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1275">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetBlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockCommit*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetBlockCommit_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockCommit(BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -1114,7 +1179,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BlockCommit</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">BlockCommit</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1128,7 +1193,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetBlockCommitHashes.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetBlockCommitHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1345">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1356">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetBlockCommitHashes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockCommitHashes*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetBlockCommitHashes" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockCommitHashes">GetBlockCommitHashes()</h4>
@@ -1149,8 +1214,8 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
-        <td><p>Returns an <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><p>Returns an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
 of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>s.</p>
 </td>
       </tr>
@@ -1167,7 +1232,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L802">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L812">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetBlockDigest_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetBlockDigest(BlockHash)">GetBlockDigest(BlockHash)</h4>
@@ -1224,7 +1289,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1238,7 +1303,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L483">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L493">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
@@ -1259,7 +1324,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
         <td><p>The ID of the current canonical chain.  Maybe <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -1269,14 +1334,14 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalChainId">BaseStore.GetCanonicalChainId()</a></div>
   <h5 id="Libplanet_RocksDBStore_RocksDBStore_GetCanonicalChainId_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetCanonicalChainId_System_Guid_">SetCanonicalChainId</a>(<span class="xref">System.Guid</span>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetCanonicalChainId_System_Guid_">SetCanonicalChainId</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetChainBlockCommit_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1227">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1238">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetChainBlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetChainBlockCommit_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetChainBlockCommit(System.Guid)">GetChainBlockCommit(Guid)</h4>
@@ -1299,7 +1364,7 @@ with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as i
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The <see cref="!:BlockChain.Id"></see> of
 the <see cref="!:BlockChain"></see> to retrieve <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>.</p>
@@ -1317,7 +1382,7 @@ the <see cref="!:BlockChain"></see> to retrieve <a class="xref" href="Libplanet.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BlockCommit</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">BlockCommit</span>&gt;</td>
         <td><p>Returns <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> if given <code data-dev-comment-type="paramref" class="paramref">chainId</code> is
 stored and available, otherwise returns <span class="xref">null</span>.</p>
 </td>
@@ -1332,10 +1397,81 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetNextStateRootHash_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetNextStateRootHash(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1377">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_GetNextStateRootHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetNextStateRootHash*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetNextStateRootHash_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetNextStateRootHash(BlockHash)">GetNextStateRootHash(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
+which is more production-ready than <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.
+This stores data in the RocksDB with multiple partitions under the hood.</p>
+<p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>max-total-wal-size</code></td><td>Corresponds to RocksDB&apos;s <code>max_total_wal_size</code> option.</td></tr><tr><td><code>keep-log-file-num</code></td><td>Corresponds to RocksDB&apos;s <code>keep_log_file_num</code> option.</td></tr><tr><td><code>max_log_file_size</code></td><td>Corresponds to RocksDB&apos;s <code>max_log_file_size</code> option.</td></tr><tr><td><code>tx-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>block-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override HashDigest&lt;SHA256&gt;? GetNextStateRootHash(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">HashDigest</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_GetNextStateRootHash_BlockHash__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTransaction_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTransaction(TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L675">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L685">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTransaction_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTransaction(TxId)">GetTransaction(TxId)</h4>
@@ -1392,7 +1528,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Transaction</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Transaction</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1406,7 +1542,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_BlockHash_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTxExecution(BlockHash%2CTxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1004">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1014">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxExecution*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTxExecution_BlockHash_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxExecution(BlockHash,TxId)">GetTxExecution(BlockHash, TxId)</h4>
@@ -1468,7 +1604,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">TxExecution</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TxExecution</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1482,7 +1618,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_System_Guid_Address_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid%2CAddress)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1031">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1041">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxNonce*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_System_Guid_Address_" data-uid="Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid,Address)">GetTxNonce(Guid, Address)</h4>
@@ -1523,7 +1659,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1558,7 +1694,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_System_Guid_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid%2CAddress%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1050">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1060">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_System_Guid_Address_System_Int64_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid,Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1599,7 +1735,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1624,7 +1760,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_System_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L555">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L565">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_System_Guid_System_Int64_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
@@ -1646,7 +1782,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The chain ID of the index that contains the block.</p>
 </td>
@@ -1670,7 +1806,7 @@ the offset from the end.  For example, -1 means the topmost block.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td><p>The block hash of the index in the chain.  If there is no such index,
 it returns <span class="xref">null</span>.</p>
 </td>
@@ -1688,7 +1824,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L789">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L799">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateBlockHashes" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1709,7 +1845,7 @@ it returns <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td><p>All block hashes in the store.</p>
 </td>
       </tr>
@@ -1726,7 +1862,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L535">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L545">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateIndexes*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1748,7 +1884,7 @@ it returns <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The chain ID of the index that contains block hashes to
 iterate.</p>
@@ -1761,7 +1897,7 @@ iterate.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
         <td><span class="parametername">limit</span></td>
         <td><p>The maximum number of block hashes to get.</p>
 </td>
@@ -1778,7 +1914,7 @@ iterate.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td><p>Block hashes in the index of the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, in ascending
 order; the genesis block goes first, and the tip block goes last.</p>
 </td>
@@ -1796,7 +1932,7 @@ order; the genesis block goes first, and the tip block goes last.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex(TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L987">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L997">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_TxId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex(TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
@@ -1853,7 +1989,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">BlockHash</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">BlockHash</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1867,7 +2003,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ListChainIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L393">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L403">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ListChainIds_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListChainIds*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ListChainIds" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListChainIds">ListChainIds()</h4>
@@ -1888,7 +2024,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
         <td><p>Chain IDs with at least a single block.</p>
 </td>
       </tr>
@@ -1905,7 +2041,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1016">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1026">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListTxNonces*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)">ListTxNonces(Guid)</h4>
@@ -1928,7 +2064,7 @@ and their corresponding <a class="xref" href="Libplanet.Types.Tx.Transaction.htm
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The ID of the chain to list <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es and their
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> nonces.</p>
@@ -1946,7 +2082,7 @@ and their corresponding <a class="xref" href="Libplanet.Types.Tx.Transaction.htm
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">Address</span>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<span class="xref">Address</span>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
         <td><p>Pairs of an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> and its tx nonce.  All nonces are greater
 than 0.  (If there are underlying entries having zero nonces these must be hidden.)</p>
 </td>
@@ -1957,14 +2093,14 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_System_Guid_">BaseStore.ListTxNonces(Guid)</a></div>
   <h5 id="Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_">GetTxNonce</a>(<span class="xref">System.Guid</span>, <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_">GetTxNonce</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>, <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_MigrateChainDBFromColumnFamilies_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L273">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L283">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_MigrateChainDBFromColumnFamilies_" data-uid="Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_MigrateChainDBFromColumnFamilies_System_String_" data-uid="Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(System.String)">MigrateChainDBFromColumnFamilies(String)</h4>
@@ -2005,7 +2141,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">path</span></td>
         <td></td>
       </tr>
@@ -2035,7 +2171,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PruneOutdatedChains_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1158">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PruneOutdatedChains_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PruneOutdatedChains_System_Boolean_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains(System.Boolean)">PruneOutdatedChains(Boolean)</h4>
@@ -2097,7 +2233,7 @@ there is no canonical chain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutBlock_Block_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutBlock(Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L853">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L863">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutBlock_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlock*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutBlock_Block_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlock(Block)">PutBlock(Block)</h4>
@@ -2153,7 +2289,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutBlockCommit_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutBlockCommit(BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1292">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1303">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutBlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlockCommit*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutBlockCommit_BlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutBlockCommit(BlockCommit)">PutBlockCommit(BlockCommit)</h4>
@@ -2209,7 +2345,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutChainBlockCommit_System_Guid_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit(System.Guid%2CBlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1248">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1259">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutChainBlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutChainBlockCommit_System_Guid_BlockCommit_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutChainBlockCommit(System.Guid,BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
@@ -2250,7 +2386,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -2267,10 +2403,71 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutNextStateRootHash_BlockHash_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutNextStateRootHash(BlockHash%2CHashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1405">View Source</a>
+  </span>
+  <a id="Libplanet_RocksDBStore_RocksDBStore_PutNextStateRootHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutNextStateRootHash*"></a>
+  <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutNextStateRootHash_BlockHash_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutNextStateRootHash(BlockHash,HashDigest{System.Security.Cryptography.SHA256})">PutNextStateRootHash(BlockHash, HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
+which is more production-ready than <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.
+This stores data in the RocksDB with multiple partitions under the hood.</p>
+<p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>max-total-wal-size</code></td><td>Corresponds to RocksDB&apos;s <code>max_total_wal_size</code> option.</td></tr><tr><td><code>keep-log-file-num</code></td><td>Corresponds to RocksDB&apos;s <code>keep_log_file_num</code> option.</td></tr><tr><td><code>max_log_file_size</code></td><td>Corresponds to RocksDB&apos;s <code>max_log_file_size</code> option.</td></tr><tr><td><code>tx-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>block-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutNextStateRootHash(BlockHash blockHash, HashDigest&lt;SHA256&gt; nextStateRootHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">HashDigest</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">nextStateRootHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_RocksDBStore_RocksDBStore_PutNextStateRootHash_BlockHash_HashDigest_System_Security_Cryptography_SHA256___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTransaction_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTransaction(Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L722">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L732">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutTransaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTransaction*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTransaction_Transaction_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTransaction(Transaction)">PutTransaction(Transaction)</h4>
@@ -2326,7 +2523,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_TxExecution_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxExecution)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L997">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L1007">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTxExecution_TxExecution_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxExecution(TxExecution)">PutTxExecution(TxExecution)</h4>
@@ -2384,7 +2581,7 @@ and <a class="xref" href="Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_TxId_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex(TxId%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L970">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L980">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_PutTxIdBlockHashIndex_TxId_BlockHash_" data-uid="Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex(TxId,BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -2445,7 +2642,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L502">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L512">View Source</a>
   </span>
   <a id="Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId*"></a>
   <h4 id="Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_System_Guid_" data-uid="Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)">SetCanonicalChainId(Guid)</h4>
@@ -2467,7 +2664,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The ID of a new canonical chain.</p>
 </td>
@@ -2502,7 +2699,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_RocksDBStore_RocksDBStore.md&amp;value=---%0Auid%3A%20Libplanet.RocksDBStore.RocksDBStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L85" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.RocksDBStore/RocksDBStore.cs/#L86" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

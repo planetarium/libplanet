@@ -61,6 +61,57 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
+<h2 id="version-500">Version 5.0.0</h2>
+<p>To be released.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet) <code>BlockChain.DetermineGenesisStateRootHash()</code>
+has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.EvaluateGenesis()</code> has been removed.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.DetermineBlockStateRootHash()</code>
+has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
+does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>Bumped <code>BlockMetadata.CurrentProtocolVersion</code> to 8.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.EvaluateBlock()</code> accepts <code>Block</code>
+instead of <code>IPreEvaluationBlock</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.ProposeGenesisBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt;? stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.ProposeGenesisBlock()</code> does not receive
+parameter <code>IActionEvaluator actionEvaluator</code> any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) <code>BlockChain.ProposeBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt; stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.Store) Added <code>IStore.GetNextStateRootHash()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.PutNextStateRootHash()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.DeleteNextStateRootHash()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet.Action) Added
+<code>IBlockChainStates.GetNextWorldState()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.DetermineNextBlockStateRootHash()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>BlockHeader.StateRootHash</code> now means state root hash calculated by
+<code>BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)</code>.
+[[#Sloth]]</li>
+<li><code>IBlockChainStates.GetWorldState(BlockHash)</code> now means the <code>IWorldState</code>
+before state transition from the <code>Block</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes</h3>
+<h3 id="dependencies">Dependencies</h3>
+<h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-460">Version 4.6.0</h2>
 <p>Released on May 27, 2024.</p>
 <p>Due to changes in <a href="https://github.com/planetarium/libplanet/pull/3789">#3789</a>, a network ran with a prior version
@@ -69,12 +120,12 @@ may not be compatible with this version.  The native implementation of
 evaluation of PoW <code>Block</code>s.  That is, it is no longer possible to
 reconstruct states with valid state root hashes purely from past
 <code>Block</code>s that includes PoW <code>Block</code>s.</p>
-<h3 id="deprecated-apis">Deprecated APIs</h3>
+<h3 id="deprecated-apis-1">Deprecated APIs</h3>
 <ul>
 <li>(Libplanet.Common) Removed <code>Nonce</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/3793">#3793</a>, <a href="https://github.com/planetarium/libplanet/pull/3794">#3794</a>]</li>
 <li>Removed <code>AtomicActionRenderer</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3795">#3795</a>]</li>
 </ul>
-<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) Changed <code>ActionEvaluate.Evaluate()</code> to no longer
 accept <code>IPreEvaluationBlock</code> with a protocol version less than
@@ -96,7 +147,7 @@ queries to <code>WorldStateType</code>.  [<a href="https://github.com/planetariu
 <li>(Libplanet.Explorer) Changed <code>totalSupply</code> query under <code>StateQuery</code> to
 no longer throw an <code>Exception</code> and return a zero amount instead.  [<a href="https://github.com/planetarium/libplanet/pull/3799">#3799</a>]</li>
 </ul>
-<h3 id="added-apis">Added APIs</h3>
+<h3 id="added-apis-1">Added APIs</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>BlockProtocolVersionNotSupportedException</code> class.
 [<a href="https://github.com/planetarium/libplanet/pull/3789">#3789</a>]</li>
@@ -119,7 +170,7 @@ Regarding <a href="https://github.com/planetarium/libplanet/pull/3783">#3783</a>
 used <code>MintAsset()</code> and <code>BurnAsset()</code> with its execution result dependent on
 handling of a possible <code>Exception</code> thrown by these methods
 may not be compatible.</p>
-<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Types) Updated <code>BlockMetadata.CurrentProtocolVersion</code>
 from 6 to 7.  [<a href="https://github.com/planetarium/libplanet/pull/3769">#3769</a>]</li>
@@ -138,11 +189,11 @@ corresponding <code>FungibleAssetValue</code>.  [<a href="https://github.com/pla
 that may be thrown by <code>IWorld.MintAsset()</code> and
 <code>IWorld.BurnAsset()</code>.</li>
 </ul>
-<h3 id="added-apis-1">Added APIs</h3>
+<h3 id="added-apis-2">Added APIs</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>CurrencyAccount</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3779">#3779</a>]</li>
 </ul>
-<h3 id="behavioral-changes">Behavioral changes</h3>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
 <ul>
 <li>(Libplanet.Mocks) <code>MockWorldState.SetBalance()</code> now automatically updates
 the total supply of the provided <code>Currency</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3778">#3778</a>]</li>
@@ -160,7 +211,7 @@ the total supply of the provided <code>Currency</code>.  [<a href="https://githu
 </ul>
 <h2 id="version-440">Version 4.4.0</h2>
 <p>Released on April 17, 2024.</p>
-<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) Removed <code>IWorld.SetValidator()</code> extension method.
 Use <code>IWorld.SetValidatorSet()</code> extension method instead.  [<a href="https://github.com/planetarium/libplanet/pull/3735">#3735</a>]</li>
@@ -185,7 +236,7 @@ from 5 to 6.  [<a href="https://github.com/planetarium/libplanet/pull/3741">#374
 from <code>0x1000000000000000000000000000000000000002</code>
 to <code>0x100000000000000000000000000000000000001</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3745">#3745</a>]</li>
 </ul>
-<h3 id="added-apis-2">Added APIs</h3>
+<h3 id="added-apis-3">Added APIs</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>ValidatorSetAccount</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3745">#3745</a>]</li>
 <li>(Libplanet.Explorer) Added <code>WorldState.version</code> field.  [<a href="https://github.com/planetarium/libplanet/pull/3746">#3746</a>]</li>
@@ -202,7 +253,7 @@ to <code>0x100000000000000000000000000000000000001</code>.  [<a href="https://gi
 compatible with this version, specifically those that ran with
 <code>IAction</code>s that has allowed negative balances through <code>TransferAssets()</code>
 with <code>allowNegativeBalance</code> as <code>true</code>.</p>
-<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>Txs</code> property of
 type <code>IReadOnlyList&lt;ITransaction&gt;?</code> to <code>IActionContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3713">#3713</a>]</li>
@@ -217,14 +268,14 @@ and <code>SetValidator()</code> of <code>IWorld</code> to extension methods.  [<
 <li>(Libplanet.Store) Removed <code>journal</code>, <code>indexCacheSize</code>, and <code>flush</code>
 parameters from <code>DefaultStore</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
 </ul>
-<h3 id="dependencies">Dependencies</h3>
+<h3 id="dependencies-1">Dependencies</h3>
 <ul>
 <li>Upgraded <em>LiteDB</em> from <a href="https://www.nuget.org/packages/LiteDB/4.1.4">4.1.4</a> to
 <a href="https://www.nuget.org/packages/LiteDB/5.0.15">5.0.15</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3729">#3729</a>]</li>
 </ul>
 <h2 id="version-420">Version 4.2.0</h2>
 <p>Released on March 22, 2024.</p>
-<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) Moved <code>GetBalance()</code> and <code>GetTotalSupply()</code> methods from
 <code>IAccountState</code> to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3694">#3694</a>, <a href="https://github.com/planetarium/libplanet/pull/3697">#3697</a>]</li>
@@ -239,13 +290,13 @@ to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>(Libplanet.Action) Moved <code>SetValidator()</code> from <code>IAccount</code> to <code>IWorld</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3702">#3702</a>]</li>
 </ul>
-<h3 id="added-apis-3">Added APIs</h3>
+<h3 id="added-apis-4">Added APIs</h3>
 <ul>
 <li>Added <code>Libplanet.Mocks</code> project.  [<a href="https://github.com/planetarium/libplanet/pull/3642">#3642</a>]</li>
 </ul>
 <h2 id="version-410">Version 4.1.0</h2>
 <p>Released on March 8, 2024.</p>
-<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-6">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed the '#nullable disable' from 3 projects
 (Action, Common, Explorer). [<a href="https://github.com/planetarium/libplanet/pull/3622">#3622</a>]</li>
@@ -256,7 +307,7 @@ to <code>IWorldState</code>.  [<a href="https://github.com/planetarium/libplanet
 <code>BaseIndex&lt;BlockHash, Block&gt;</code> to <code>IReadOnlyDictionary&lt;BlockHash, Block&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3686">#3686</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>(Libplanet.Net) Changed some types due to removal of 'nullable keyword'.
 [<a href="https://github.com/planetarium/libplanet/pull/3669">#3669</a>]
@@ -273,14 +324,14 @@ from <code>IValue</code> to <code>IValue?</code>.</li>
 </ul>
 </li>
 </ul>
-<h3 id="added-apis-4">Added APIs</h3>
+<h3 id="added-apis-5">Added APIs</h3>
 <ul>
 <li>(Libplanet.Store.Remote) Introduce
 <code>Libplanet.Store.Server.RemoteKeyValueService</code>  [<a href="https://github.com/planetarium/libplanet/pull/3688">#3688</a>]</li>
 <li>(Libplanet.Store.Remote) Introduce
 <code>Libplanet.Store.Client.RemoteKeyValueStore</code>  [<a href="https://github.com/planetarium/libplanet/pull/3688">#3688</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
 <ul>
 <li>(Libplanet.Store) Optimized <code>ITrie.IterateNodes()</code> to greatly
 reduce the amount of memory used.  [<a href="https://github.com/planetarium/libplanet/pull/3687">#3687</a>]</li>
@@ -334,7 +385,7 @@ instead of <code>HashDigestType&lt;T&gt;</code> in legacy queries.</li>
 </ul>
 <h2 id="version-400">Version 4.0.0</h2>
 <p>Released on January 22, 2024.</p>
-<h3 id="backward-incompatible-api-changes-6">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-7">Backward-incompatible API changes</h3>
 <ul>
 <li>Bumped <code>BlockMetadata.CurrentProtocolVersion</code> to 5.  [<a href="https://github.com/planetarium/libplanet/pull/3524">#3524</a>]</li>
 <li>Removed <code>BlockChain.GetBalance(Address, Currency, Address)</code> method.
@@ -378,7 +429,7 @@ method.</li>
 [<a href="https://github.com/planetarium/libplanet/pull/3512">#3512</a>]</li>
 <li>(Libplanet.Common) Removed <code>EnumerableExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/3625">#3625</a>, <a href="https://github.com/planetarium/libplanet/pull/3626">#3626</a>]</li>
 </ul>
-<h3 id="added-apis-5">Added APIs</h3>
+<h3 id="added-apis-6">Added APIs</h3>
 <ul>
 <li>Added <code>BlockMetadata.LegacyStateVersion</code> constant.  [<a href="https://github.com/planetarium/libplanet/pull/3524">#3524</a>]</li>
 <li>(Libplanet.Action) Added <code>IWorld</code> interface and its implementation.

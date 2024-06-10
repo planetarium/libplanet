@@ -213,7 +213,7 @@ send requests and receive replies.</p>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_LastMessageTimestamp_" data-uid="Libplanet.Net.Transports.ITransport.LastMessageTimestamp*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_LastMessageTimestamp" data-uid="Libplanet.Net.Transports.ITransport.LastMessageTimestamp">LastMessageTimestamp</h4>
-  <div class="markdown level1 summary"><p>The <span class="xref">System.DateTimeOffset</span> of the last message received.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> of the last message received.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -231,7 +231,7 @@ DateTimeOffset? LastMessageTimestamp { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTimeOffset</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -351,7 +351,7 @@ empty set of <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -389,7 +389,7 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><span class="parametername">peers</span></td>
         <td><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s to broadcast the
 <code data-dev-comment-type="paramref" class="paramref">content</code>.</p>
@@ -417,7 +417,7 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -457,7 +457,7 @@ is already disposed.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">identity</span></td>
         <td><p>The byte array that represents identification of the
 <a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a> to respond.</p>
@@ -482,7 +482,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p>An awaitable task without value.</p>
 </td>
       </tr>
@@ -502,7 +502,7 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance is already disposed.</p>
 </td>
       </tr>
@@ -548,7 +548,7 @@ and waits for its multiple replies.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
@@ -585,7 +585,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">content</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
@@ -612,7 +612,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -659,7 +659,7 @@ and waits for its single reply.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p>A timeout of waiting for the reply of the message.</p>
 </td>
@@ -710,7 +710,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance
 is already disposed.</p>
 </td>
@@ -762,8 +762,8 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>An awaitable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> without a value.</p>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An awaitable <span class="xref">System.Threading.Tasks.Task</span> without a value.</p>
 </td>
       </tr>
     </tbody>
@@ -782,7 +782,7 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when the instance is already disposed.</p>
 </td>
       </tr>
@@ -839,8 +839,8 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>An awaitable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> without a value.</p>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An awaitable <span class="xref">System.Threading.Tasks.Task</span> without a value.</p>
 </td>
       </tr>
     </tbody>
@@ -859,7 +859,7 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
         <td><p>Thrown when the instance is already disposed.</p>
 </td>
       </tr>
@@ -891,8 +891,8 @@ send requests and receive replies.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> completed when <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_Running">Running</a>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A <span class="xref">System.Threading.Tasks.Task</span> completed when <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_Running">Running</a>
 property becomes <span class="xref">true</span>.</p>
 </td>
       </tr>
