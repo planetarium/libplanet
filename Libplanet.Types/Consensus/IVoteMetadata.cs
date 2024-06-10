@@ -39,7 +39,7 @@ namespace Libplanet.Types.Consensus
         /// <summary>
         /// The voting power of the validator that voted.
         /// </summary>
-        BigInteger ValidatorPower { get; }
+        BigInteger? ValidatorPower { get; }
 
         /// <summary>
         /// The <see cref="VoteFlag"/> indicating the type of a <see cref="Vote"/>.

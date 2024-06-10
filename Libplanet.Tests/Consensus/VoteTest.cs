@@ -28,6 +28,20 @@ namespace Libplanet.Tests.Consensus
             Vote vote = voteMetadata.Sign(privateKey);
             Assert.True(
                 privateKey.PublicKey.Verify(_codec.Encode(voteMetadata.Bencoded), vote.Signature));
+
+            var nullPowerVoteMetadata = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                privateKey.PublicKey,
+                null,
+                VoteFlag.PreCommit);
+            Vote nullPowerVote = nullPowerVoteMetadata.Sign(privateKey);
+            Assert.True(
+                privateKey.PublicKey.Verify(
+                    _codec.Encode(nullPowerVoteMetadata.Bencoded),
+                    nullPowerVote.Signature));
         }
 
         [Fact]
