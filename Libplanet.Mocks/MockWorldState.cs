@@ -155,7 +155,7 @@ namespace Libplanet.Mocks
             SetBalance(address, value.Currency, new Integer(value.RawValue));
 
         /// <summary>
-        /// Sets given <see cref="FungibleAssetValue"/> derived from <paramref name="curency"/>
+        /// Sets given <see cref="FungibleAssetValue"/> derived from <paramref name="currency"/>
         /// and <paramref name="rawValue"/> to <paramref name="address"/>.
         /// This bypasses all checks (minter authority, maximum supply, etc.) and adjusts
         /// the total supply accordingly, if applicable.
