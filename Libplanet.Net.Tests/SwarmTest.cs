@@ -1063,13 +1063,13 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     (Text)dumbItem,
                     minerA.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress1));
                 Assert.Equal(
                     (Text)dumbItem,
                     minerB.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress2));
 
@@ -1087,13 +1087,13 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     restage ? null : (Text?)dumbItem,
                     minerA.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress1));
                 Assert.Equal(
                     (Text)dumbItem,
                     minerA.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress2));
 
@@ -1112,13 +1112,13 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     (Text)dumbItem,
                     minerA.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress1));
                 Assert.Equal(
                     (Text)dumbItem,
                     minerA.BlockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(targetAddress2));
             }
@@ -1276,29 +1276,32 @@ namespace Libplanet.Net.Tests
             var policyA = new NullBlockPolicy();
             var policyB = new NullBlockPolicy();
             var fx = new DefaultStoreFixture();
+            var aev = new ActionEvaluator(
+                _ => null, fx.StateStore, new SingleActionLoader(typeof(DumbAction)));
             var genesis = fx.GenesisBlock;
+            var nextSrh = aev.Evaluate(genesis, genesis.StateRootHash).Last().OutputState;
             Block aBlock1 = ProposeNextBlock(
                 genesis,
                 keyA,
-                stateRootHash: genesis.StateRootHash);
+                stateRootHash: nextSrh);
             Block aBlock2 = ProposeNextBlock(
                 aBlock1,
                 keyA,
-                stateRootHash: genesis.StateRootHash,
+                stateRootHash: nextSrh,
                 lastCommit: CreateBlockCommit(aBlock1));
             Block aBlock3 = ProposeNextBlock(
                 aBlock2,
                 keyA,
-                stateRootHash: genesis.StateRootHash,
+                stateRootHash: nextSrh,
                 lastCommit: CreateBlockCommit(aBlock2));
             Block bBlock1 = ProposeNextBlock(
                 genesis,
                 keyB,
-                stateRootHash: genesis.StateRootHash);
+                stateRootHash: nextSrh);
             Block bBlock2 = ProposeNextBlock(
                 bBlock1,
                 keyB,
-                stateRootHash: genesis.StateRootHash,
+                stateRootHash: nextSrh,
                 lastCommit: CreateBlockCommit(bBlock1));
 
             policyA.BlockedMiners.Add(keyB.Address);
@@ -1446,19 +1449,19 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     "1",
                     (Text)genesisChainA
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(signerAddress));
                 Assert.Equal(
                     "2",
                     (Text)genesisChainB
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(signerAddress));
                 Assert.Equal(
                     "1",
                     (Text)genesisChainC
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(signerAddress));
             }

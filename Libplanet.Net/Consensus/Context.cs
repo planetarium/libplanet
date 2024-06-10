@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -95,11 +94,7 @@ namespace Libplanet.Net.Consensus
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         private readonly ILogger _logger;
-        private readonly
-            LRUCache<
-                BlockHash,
-                (bool IsValid, IReadOnlyList<ICommittedActionEvaluation> EvaluatedActions)>
-            _blockValidationCache;
+        private readonly LRUCache<BlockHash, bool> _blockValidationCache;
 
         private Block? _lockedValue;
         private int _lockedRound;
@@ -193,8 +188,7 @@ namespace Libplanet.Net.Consensus
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             _blockValidationCache =
-                new LRUCache<BlockHash, (bool, IReadOnlyList<ICommittedActionEvaluation>)>(
-                    cacheSize, Math.Max(cacheSize / 64, 8));
+                new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
 
@@ -449,32 +443,23 @@ namespace Libplanet.Net.Consensus
         /// Validates the given block.
         /// </summary>
         /// <param name="block">A <see cref="Block"/> to validate.</param>
-        /// <param name="evaluatedActions">A list of evaluated actions from <see cref="Block"/>.
-        /// If a given block is invalid, this will returns
-        /// <see cref="ImmutableArray{ActionEvaluations}.Empty"/>
-        /// lists.
-        /// </param>
         /// <returns><see langword="true"/> if block is valid, otherwise <see langword="false"/>.
         /// </returns>
-        private bool IsValid(
-            Block block, out IReadOnlyList<ICommittedActionEvaluation> evaluatedActions)
+        private bool IsValid(Block block)
         {
-            if (_blockValidationCache.TryGet(block.Hash, out var cached))
+            if (_blockValidationCache.TryGet(block.Hash, out var isValid))
             {
-                evaluatedActions = cached.EvaluatedActions;
-                return cached.IsValid;
+                return isValid;
             }
             else
             {
                 // Need to get txs from store, lock?
                 // TODO: Remove ChainId, enhancing lock management.
                 _blockChain._rwlock.EnterUpgradeableReadLock();
-                IReadOnlyList<ICommittedActionEvaluation> actionEvaluations;
 
                 if (block.Index != Height)
                 {
-                    evaluatedActions = ImmutableArray<ICommittedActionEvaluation>.Empty;
-                    _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
+                    _blockValidationCache.AddReplace(block.Hash, false);
                     return false;
                 }
 
@@ -506,7 +491,7 @@ namespace Libplanet.Net.Consensus
                         }
                     }
 
-                    _blockChain.ValidateBlockStateRootHash(block, out actionEvaluations);
+                    _blockChain.ValidateBlockStateRootHash(block, TimeSpan.Zero);
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||
@@ -518,8 +503,7 @@ namespace Libplanet.Net.Consensus
                         "Block #{Index} {Hash} is invalid",
                         block.Index,
                         block.Hash);
-                    evaluatedActions = ImmutableArray<ICommittedActionEvaluation>.Empty;
-                    _blockValidationCache.AddReplace(block.Hash, (false, evaluatedActions));
+                    _blockValidationCache.AddReplace(block.Hash, false);
                     return false;
                 }
                 finally
@@ -527,8 +511,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain._rwlock.ExitUpgradeableReadLock();
                 }
 
-                evaluatedActions = actionEvaluations;
-                _blockValidationCache.AddReplace(block.Hash, (true, actionEvaluations));
+                _blockValidationCache.AddReplace(block.Hash, true);
                 return true;
             }
         }

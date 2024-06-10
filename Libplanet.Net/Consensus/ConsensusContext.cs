@@ -8,6 +8,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -434,14 +435,29 @@ namespace Libplanet.Net.Consensus
         private Context CreateContext(long height)
         {
             // blockchain may not contain block of Height - 1?
-            var context = new Context(
+            ValidatorSet validatorSet;
+            if (_blockChain.Tip.ProtocolVersion
+                < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            {
+                validatorSet = _blockChain
+                    .GetWorldState(_blockChain[Height - 1].StateRootHash)
+                    .GetValidatorSet();
+            }
+            else
+            {
+                validatorSet = _blockChain
+                    .GetWorldState(
+                        _blockChain.GetNextStateRootHash(
+                            _blockChain[Height - 1].Hash, TimeSpan.Zero))
+                    .GetValidatorSet();
+            }
+
+            Context context = new Context(
                 _consensusMessageCommunicator,
                 _blockChain,
                 height,
                 _privateKey,
-                _blockChain
-                    .GetWorldState(_blockChain[Height - 1].Hash)
-                    .GetValidatorSet(),
+                validatorSet,
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);
             return context;

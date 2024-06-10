@@ -469,14 +469,12 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block ProposeGenesisBlock(
-            IActionEvaluator actionEvaluator,
             PreEvaluationBlock preEval,
             PrivateKey privateKey)
         {
             return preEval.Sign(
                 privateKey,
-                BlockChain.DetermineGenesisStateRootHash(
-                    actionEvaluator, preEval, out _));
+                MerkleTrie.EmptyRootHash);
         }
 
         public static PreEvaluationBlock ProposeNext(
@@ -627,19 +625,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     validatorSet,
                     timestamp,
                     protocolVersion);
-                var stateRootHash = BlockChain.DetermineGenesisStateRootHash(
-                    actionEvaluator,
-                    preEval,
-                    out _);
+                var evaluatedSrh = actionEvaluator.Evaluate(preEval, null).Last().OutputState;
                 genesisBlock = protocolVersion < 2
                     ? new Block(
                         preEval,
                         (
-                            stateRootHash,
+                            evaluatedSrh,
                             null,
-                            preEval.Header.DeriveBlockHash(stateRootHash, null)
+                            preEval.Header.DeriveBlockHash(evaluatedSrh, null)
                         ))
-                    : preEval.Sign(GenesisProposer, stateRootHash);
+                    : protocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
+                    ? preEval.Sign(GenesisProposer, evaluatedSrh)
+                    : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
             }
 
             ValidatingActionRenderer validator = null;

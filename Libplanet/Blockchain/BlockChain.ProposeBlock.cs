@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -28,10 +30,10 @@ namespace Libplanet.Blockchain
         /// each <see cref="Transaction.GenesisHash"/> is set to <see langword="null"/>.
         /// </para>
         /// </summary>
-        /// <param name="actionEvaluator">The <see cref="IActionEvaluator"/> to use to
-        /// evaluate the proposed <see cref="Block"/>.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
+        /// <param name="stateRootHash">A state root hash of genesis block.  If it's null,
+        /// it will use empty state root hash.</param>
         /// <param name="transactions">A list of <see cref="Transaction"/>s to include
         /// in the genesis <see cref="Block"/>.</param>
         /// <param name="timestamp">The timestamp of the genesis block.  If it's null, it will
@@ -41,8 +43,8 @@ namespace Libplanet.Blockchain
         // FIXME: This method should take a IBlockPolicy instead of params blockAction
         // (Or at least there should be such an overload).
         public static Block ProposeGenesisBlock(
-            IActionEvaluator actionEvaluator,
             PrivateKey privateKey = null,
+            HashDigest<SHA256>? stateRootHash = null,
             ImmutableList<Transaction> transactions = null,
             DateTimeOffset? timestamp = null)
         {
@@ -62,9 +64,8 @@ namespace Libplanet.Blockchain
                 transactions: transactions);
 
             PreEvaluationBlock preEval = content.Propose();
-            return preEval.Sign(
-                privateKey,
-                DetermineGenesisStateRootHash(actionEvaluator, preEval, out _));
+            stateRootHash ??= MerkleTrie.EmptyRootHash;
+            return preEval.Sign(privateKey, (HashDigest<SHA256>)stateRootHash);
         }
 
         /// <summary>
@@ -91,12 +92,7 @@ namespace Libplanet.Blockchain
             IComparer<Transaction> txPriority = null)
         {
             long index = Count;
-            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
-
-            _logger.Debug(
-                "Starting to propose block #{Index} with previous hash {PreviousHash}...",
-                index,
-                prevHash);
+            _logger.Debug("Starting to propose block #{Index}...", index);
 
             ImmutableList<Transaction> transactions;
             try
@@ -146,7 +142,14 @@ namespace Libplanet.Blockchain
             BlockCommit lastCommit)
         {
             long index = Count;
-            BlockHash? prevHash = Store.IndexBlockHash(Id, index - 1);
+            BlockHash prevHash = Store.IndexBlockHash(Id, index - 1)
+                ?? throw new NullReferenceException($"Chain {Id} is missing block #{index - 1}");
+
+            HashDigest<SHA256> stateRootHash =
+                _blocks[prevHash].ProtocolVersion <
+                BlockMetadata.StateRootHashPostponeProtocolVersion
+                    ? _blocks[prevHash].StateRootHash
+                    : (HashDigest<SHA256>)GetNextStateRootHash(prevHash, TimeSpan.Zero);
 
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
@@ -163,14 +166,14 @@ namespace Libplanet.Blockchain
                     lastCommit: lastCommit),
                 transactions: orderedTransactions);
             var preEval = blockContent.Propose();
-            return ProposeBlock(proposer, preEval);
+            return ProposeBlock(proposer, preEval, stateRootHash);
         }
 
         internal Block ProposeBlock(
             PrivateKey proposer,
-            PreEvaluationBlock preEvaluationBlock) => preEvaluationBlock.Sign(
-                proposer,
-                DetermineBlockStateRootHash(preEvaluationBlock, out _));
+            PreEvaluationBlock preEvaluationBlock,
+            HashDigest<SHA256> stateRootHash) =>
+            preEvaluationBlock.Sign(proposer, stateRootHash);
 
         /// <summary>
         /// Gathers <see cref="Transaction"/>s for proposing a <see cref="Block"/> for

@@ -92,10 +92,7 @@ namespace Libplanet.Tests.Action
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
-                BlockChain.DetermineGenesisStateRootHash(
-                    actionEvaluator,
-                    noStateRootBlock,
-                    out IReadOnlyList<ICommittedActionEvaluation> evals));
+                MerkleTrie.EmptyRootHash);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
@@ -156,31 +153,31 @@ namespace Libplanet.Tests.Action
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(address),
                 value);
             Assert.Equal(
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(ContextRecordingAction.MinerRecordAddress),
                 block.Miner.Bencoded);
             Assert.Equal(
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(ContextRecordingAction.SignerRecordAddress),
                 tx.Signer.Bencoded);
             Assert.Equal(
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(ContextRecordingAction.BlockIndexRecordAddress),
                 new Integer(block.Index));
             Assert.Equal(
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(ContextRecordingAction.RandomRecordAddress),
                 new Integer(evaluations.Single().InputContext.GetRandom().Next()));
@@ -496,8 +493,8 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),     // Adds "E"
-                (2, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address3),      // Adds "F"
+                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),     // Adds "F"
+                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),      // Adds "E"
                 (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),    // Adds "D"
             };
             Assert.Equal(expectations.Length, evals.Length);
@@ -850,7 +847,7 @@ namespace Libplanet.Tests.Action
             Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
 
             chain.Append(block, CreateBlockCommit(block), render: true);
-            previousState = _storeFx.StateStore.GetWorld(genesis.StateRootHash);
+            previousState = _storeFx.StateStore.GetWorld(block.StateRootHash);
             var txEvaluations = actionEvaluator.EvaluateBlock(
                 block,
                 previousState).ToList();
@@ -1012,7 +1009,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
+                block, chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1082,7 +1079,7 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetStateRootHash(block.PreviousHash));
+                chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);

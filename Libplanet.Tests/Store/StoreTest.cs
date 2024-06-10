@@ -14,6 +14,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
@@ -1012,7 +1013,7 @@ namespace Libplanet.Tests.Store
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = preEval.Sign(
                     GenesisProposer,
-                    BlockChain.DetermineGenesisStateRootHash(actionEvaluator, preEval, out _));
+                    MerkleTrie.EmptyRootHash);
                 var blocks = BlockChain.Create(
                     policy,
                     new VolatileStagePolicy(),
@@ -1165,6 +1166,37 @@ namespace Libplanet.Tests.Store
 
                 fx.Store.DeleteBlockCommit(blockCommit.BlockHash);
                 Assert.Null(fx.Store.GetBlockCommit(blockCommit.BlockHash));
+            }
+        }
+
+        [SkippableFact]
+        public void GetNextStateRootHash()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                HashDigest<SHA256> nextStateRootHash
+                    = HashDigest<SHA256>.DeriveFrom(new byte[] { 0, 1, 2 });
+                fx.Store.PutNextStateRootHash(fx.Block2.Hash, nextStateRootHash);
+                HashDigest<SHA256>? storedNextStateRootHash =
+                    fx.Store.GetNextStateRootHash(fx.Block2.Hash);
+
+                Assert.Equal(nextStateRootHash, storedNextStateRootHash);
+            }
+        }
+
+        [SkippableFact]
+        public void DeleteNextStateRootHash()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                HashDigest<SHA256> nextStateRootHash
+                    = HashDigest<SHA256>.DeriveFrom(new byte[] { 0, 1, 2 });
+                fx.Store.PutNextStateRootHash(fx.Block2.Hash, nextStateRootHash);
+
+                Assert.NotNull(fx.Store.GetNextStateRootHash(fx.Block2.Hash));
+
+                fx.Store.DeleteNextStateRootHash(fx.Block2.Hash);
+                Assert.Null(fx.Store.GetNextStateRootHash(fx.Block2.Hash));
             }
         }
 

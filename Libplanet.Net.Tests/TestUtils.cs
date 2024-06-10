@@ -288,7 +288,7 @@ namespace Libplanet.Net.Tests
                 height,
                 privateKey,
                 validatorSet ?? blockChain
-                    .GetWorldState(blockChain[height - 1].Hash)
+                    .GetNextWorldState(blockChain[height - 1].Hash)!
                     .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 

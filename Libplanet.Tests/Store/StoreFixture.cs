@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Blockchain;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -104,31 +104,36 @@ namespace Libplanet.Tests.Store
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
                 Proposer,
-                BlockChain.DetermineGenesisStateRootHash(
-                    actionEvaluator,
-                    preEval,
-                    out IReadOnlyList<ICommittedActionEvaluation> evals));
+                MerkleTrie.EmptyRootHash);
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
+            var genesisNextSrh = actionEvaluator.Evaluate(
+                GenesisBlock, GenesisBlock.StateRootHash).Last().OutputState;
             Block1 = TestUtils.ProposeNextBlock(
                 GenesisBlock,
                 miner: Proposer,
+                stateRootHash: genesisNextSrh,
                 lastCommit: null);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
             Block2 = TestUtils.ProposeNextBlock(
                 Block1,
                 miner: Proposer,
+                stateRootHash: genesisNextSrh,
                 lastCommit: TestUtils.CreateBlockCommit(Block1));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
             Block3 = TestUtils.ProposeNextBlock(
                 Block2,
                 miner: Proposer,
+                stateRootHash: genesisNextSrh,
                 lastCommit: TestUtils.CreateBlockCommit(Block2));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
-            Block3Alt = TestUtils.ProposeNextBlock(Block2, miner: Proposer);
+            Block3Alt = TestUtils.ProposeNextBlock(
+                Block2, miner: Proposer, stateRootHash: genesisNextSrh);
             stateRootHashes[Block3Alt.Hash] = Block3Alt.StateRootHash;
-            Block4 = TestUtils.ProposeNextBlock(Block3, miner: Proposer);
+            Block4 = TestUtils.ProposeNextBlock(
+                Block3, miner: Proposer, stateRootHash: genesisNextSrh);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;
-            Block5 = TestUtils.ProposeNextBlock(Block4, miner: Proposer);
+            Block5 = TestUtils.ProposeNextBlock(
+                Block4, miner: Proposer, stateRootHash: genesisNextSrh);
             stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>());
