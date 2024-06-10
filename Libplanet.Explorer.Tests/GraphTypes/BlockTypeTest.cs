@@ -74,6 +74,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             signature
                         }
                     }
+                    protocolVersion
                 }";
 
             var store = new MemoryStore();
@@ -125,6 +126,10 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             };
 
             Assert.Equal(expectedLastCommit, resultData["lastCommit"]);
+
+            Assert.Equal(
+                block.ProtocolVersion,
+                resultData["protocolVersion"]);
         }
     }
 }
