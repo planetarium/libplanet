@@ -1,33 +1,33 @@
 Libplanet changelog
 ===================
 
-Version Sloth
--------------------------
+Version 5.0.0
+-------------
 
 To be released.
 
 ### Deprecated APIs
 
  -  (Libplanet) `BlockChain.DetermineGenesisStateRootHash()`
-    has been removed.  [[#Sloth]]
+    has been removed.  [[#3811]]
  -  (Libplanet) `BlockChain.EvaluateGenesis()` has been removed.
-    [[#Sloth]]
+    [[#3811]]
  -  (Libplanet) `BlockChain.DetermineBlockStateRootHash()`
-    has been removed.  [[#Sloth]]
+    has been removed.  [[#3811]]
 
 ### Backward-incompatible API changes
 
  -  (Libplanet.Action) `IBlockChainStates.GetWorldState(BlockHash?)`
-    does not accept null parameter any more.  [[#Sloth]]
- -  Bumped `BlockMetadata.CurrentProtocolVersion` to 8.  [[#Sloth]]
+    does not accept null parameter any more.  [[#3811]]
+ -  Bumped `BlockMetadata.CurrentProtocolVersion` to 8.  [[#3811]]
  -  (Libplanet) `BlockChain.EvaluateBlock()` accepts `Block`
-    instead of `IPreEvaluationBlock`.  [[#Sloth]]
+    instead of `IPreEvaluationBlock`.  [[#3811]]
  -  (Libplanet) `BlockChain.ProposeGenesisBlock()` receives parameter
-    `HashDigest<SHA256>? stateRootHash`.  [[#Sloth]]
+    `HashDigest<SHA256>? stateRootHash`.  [[#3811]]
  -  (Libplanet) `BlockChain.ProposeGenesisBlock()` does not receive
-    parameter `IActionEvaluator actionEvaluator` any more.  [[#Sloth]]
+    parameter `IActionEvaluator actionEvaluator` any more.  [[#3811]]
  -  (Libplanet) `BlockChain.ProposeBlock()` receives parameter
-    `HashDigest<SHA256> stateRootHash`.  [[#Sloth]]
+    `HashDigest<SHA256> stateRootHash`.  [[#3811]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,15 +36,15 @@ To be released.
 ### Added APIs
 
  -  (Libplanet.Store) Added `IStore.GetNextStateRootHash()` method.
-    [[#Sloth]]
+    [[#3811]]
  -  (Libplanet.Store) Added `IStore.PutNextStateRootHash()` method.
-    [[#Sloth]]
+    [[#3811]]
  -  (Libplanet.Store) Added `IStore.DeleteNextStateRootHash()` method.
-    [[#Sloth]]
+    [[#3811]]
  -  (Libplanet.Action) Added
-    `IBlockChainStates.GetNextWorldState()` method.  [[#Sloth]]
+    `IBlockChainStates.GetNextWorldState()` method.  [[#3811]]
  -  (Libplanet) Added `BlockChain.DetermineNextBlockStateRootHash()`
-    method.  [[#Sloth]]
+    method.  [[#3811]]
 
 ### Behavioral changes
 
@@ -52,7 +52,7 @@ To be released.
     `BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)`.
     [[#Sloth]]
  -  `IBlockChainStates.GetWorldState(BlockHash)` now means the `IWorldState`
-    before state transition from the `Block`.  [[#Sloth]]
+    before state transition from the `Block`.  [[#3811]]
 
 ### Bug fixes
 
@@ -60,7 +60,7 @@ To be released.
 
 ### CLI tools
 
-[#Sloth]: https://github.com/planetarium/libplanet/pull/TBD
+[#3811]: https://github.com/planetarium/libplanet/pull/3811
 
 
 Version 4.6.0
