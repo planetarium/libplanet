@@ -103,7 +103,7 @@ namespace Libplanet.Types.Consensus
         public PublicKey ValidatorPublicKey => _metadata.ValidatorPublicKey;
 
         /// <inheritdoc/>
-        public BigInteger ValidatorPower => _metadata.ValidatorPower;
+        public BigInteger? ValidatorPower => _metadata.ValidatorPower;
 
         /// <inheritdoc/>
         public VoteFlag Flag => _metadata.Flag;

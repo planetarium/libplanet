@@ -30,7 +30,7 @@ namespace Libplanet.Explorer.GraphTypes
                 "ValidatorPublicKey",
                 description: "Public key of the validator which is subject of the vote.",
                 resolve: ctx => ctx.Source.ValidatorPublicKey);
-            Field<NonNullGraphType<BigIntGraphType>>(
+            Field<BigIntGraphType>(
                 "ValidatorPower",
                 description: "Power of the validator which is subject of the vote.",
                 resolve: ctx => ctx.Source.ValidatorPower);

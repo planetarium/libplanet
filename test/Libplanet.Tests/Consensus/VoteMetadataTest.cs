@@ -68,6 +68,17 @@ namespace Libplanet.Tests.Consensus
                 VoteFlag.PreCommit);
             var decoded = new VoteMetadata(expected.Bencoded);
             Assert.Equal(expected, decoded);
+
+            expected = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                null,
+                VoteFlag.PreCommit);
+            decoded = new VoteMetadata(expected.Bencoded);
+            Assert.Equal(expected, decoded);
         }
     }
 }
