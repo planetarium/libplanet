@@ -65,6 +65,17 @@ To be released.
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
 
 
+Version 4.6.1
+-------------
+
+Released on June 11, 2024.
+
+-  Ported changes from [Libplanet 4.5.2] release.  [[#3816]]
+
+[#3816]: https://github.com/planetarium/libplanet/pull/3816
+[Libplanet 4.5.2]: https://www.nuget.org/packages/Libplanet/4.5.2
+
+
 Version 4.6.0
 -------------
 
@@ -118,6 +129,17 @@ reconstruct states with valid state root hashes purely from past
 [#3796]: https://github.com/planetarium/libplanet/pull/3796
 [#3798]: https://github.com/planetarium/libplanet/pull/3798
 [#3799]: https://github.com/planetarium/libplanet/pull/3799
+
+
+Version 4.5.2
+-------------
+
+Released on June 10, 2024.
+
+ -  (Libplanet.Explorer) Added `ProtocolVersion` field to `BlockType`.
+    [[#3810]]
+
+[#3810]: https://github.com/planetarium/libplanet/pull/3810
 
 
 Version 4.5.1
