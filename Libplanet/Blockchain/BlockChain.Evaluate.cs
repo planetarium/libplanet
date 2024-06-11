@@ -124,7 +124,7 @@ namespace Libplanet.Blockchain
             }
 
             if (preEvaluationBlock.ProtocolVersion <
-                BlockMetadata.StateRootHashPostponeProtocolVersion)
+                BlockMetadata.SlothProtocolVersion)
             {
                 return preEvaluationBlock.Sign(
                     privateKey,
@@ -139,7 +139,7 @@ namespace Libplanet.Blockchain
             }
 
             if (_blocks[previousHash].ProtocolVersion
-                < BlockMetadata.StateRootHashPostponeProtocolVersion)
+                < BlockMetadata.SlothProtocolVersion)
             {
                 return preEvaluationBlock.Sign(privateKey, _blocks[previousHash].StateRootHash);
             }

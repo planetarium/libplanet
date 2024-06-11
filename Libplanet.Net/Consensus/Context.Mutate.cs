@@ -1,6 +1,5 @@
 using System;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -426,7 +425,7 @@ namespace Libplanet.Net.Consensus
 
                     IsValid(block4);
 
-                    _blockChain.Append(block4, GetBlockCommit());
+                    AppendBlock(block4);
                 }
                 catch (Exception e)
                 {

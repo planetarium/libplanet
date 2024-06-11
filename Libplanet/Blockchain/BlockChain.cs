@@ -182,6 +182,21 @@ namespace Libplanet.Blockchain
                     stored: Genesis.Hash
                 );
             }
+
+            if (Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
+            {
+                return;
+            }
+
+            HashDigest<SHA256> nextStateRootHash =
+                DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
+
+            Store.DeleteNextStateRootHash(Tip.Hash);
+            Store.PutNextStateRootHash(Tip.Hash, nextStateRootHash);
+
+            IEnumerable<TxExecution> txExecutions =
+                MakeTxExecutions(Tip, actionEvaluations);
+            UpdateTxExecutions(txExecutions);
         }
 
         ~BlockChain()
@@ -376,7 +391,7 @@ namespace Libplanet.Blockchain
             var id = Guid.NewGuid();
 
             if (genesisBlock.ProtocolVersion <
-                BlockMetadata.StateRootHashPostponeProtocolVersion)
+                BlockMetadata.SlothProtocolVersion)
             {
                 var preEval = new PreEvaluationBlock(
                     genesisBlock.Header, genesisBlock.Transactions);
@@ -424,7 +439,7 @@ namespace Libplanet.Blockchain
                 actionEvaluator,
                 renderers);
 
-            if (genesisBlock.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 return blockChain;
             }
@@ -540,7 +555,7 @@ namespace Libplanet.Blockchain
             Block block,
             BlockCommit blockCommit)
         {
-            if (block.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+            if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 AppendStateRootHashPreceded(block, blockCommit, render: true);
                 return;

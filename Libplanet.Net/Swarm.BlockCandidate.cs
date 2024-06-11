@@ -196,7 +196,7 @@ namespace Libplanet.Net
 
                 foreach (var (block, commit) in blocks)
                 {
-                    if (block.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion)
+                    if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
                     {
                         workspace.AppendStateRootHashPreceded(
                             block, commit, render: render && !forked);

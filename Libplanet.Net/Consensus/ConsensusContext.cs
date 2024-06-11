@@ -195,11 +195,9 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                RemoveOldContexts(height);
                 Height = height;
 
                 _logger.Information("Start consensus for height #{Height}", Height);
-
                 lock (_contextLock)
                 {
                     if (!_contexts.ContainsKey(height))
@@ -209,6 +207,8 @@ namespace Libplanet.Net.Consensus
 
                     _contexts[height].Start(lastCommit);
                 }
+
+                RemoveOldContexts(height);
             }
         }
 
@@ -437,7 +437,7 @@ namespace Libplanet.Net.Consensus
             // blockchain may not contain block of Height - 1?
             ValidatorSet validatorSet;
             if (_blockChain.Tip.ProtocolVersion
-                < BlockMetadata.StateRootHashPostponeProtocolVersion)
+                < BlockMetadata.SlothProtocolVersion)
             {
                 validatorSet = _blockChain
                     .GetWorldState(_blockChain[Height - 1].StateRootHash)

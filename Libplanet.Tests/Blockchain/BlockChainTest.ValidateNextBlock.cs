@@ -231,7 +231,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlockInvalidStateRootHashBeforePostpone()
         {
-            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var beforePostponeBPV = BlockMetadata.SlothProtocolVersion - 1;
             var policy = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlockInvalidStateRootHashOnPostpone()
         {
-            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var beforePostponeBPV = BlockMetadata.SlothProtocolVersion - 1;
             var policy = new BlockPolicy(
                 new SetStatesAtBlock(default, (Text)"foo", default, 1),
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Blockchain
 
             PreEvaluationBlock preBlock1 = new BlockContent(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.StateRootHashPostponeProtocolVersion,
+                    protocolVersion: BlockMetadata.SlothProtocolVersion,
                     index: 1,
                     timestamp: genesisBlock.Timestamp.AddSeconds(1),
                     miner: TestUtils.GenesisProposer.Address,
@@ -679,6 +679,64 @@ namespace Libplanet.Tests.Blockchain
             );
             Assert.Throws<InvalidBlockCommitException>(() =>
                 blockChain.ValidateBlockCommit(validNextBlock, invalidBlockCommit));
+        }
+
+        [Fact]
+        public void ValidateNextBlockOnChainRestart()
+        {
+            var newChain = new BlockChain(
+                _blockChain.Policy,
+                _blockChain.StagePolicy,
+                _blockChain.Store,
+                _blockChain.StateStore,
+                _blockChain.Genesis,
+                new BlockChainStates(_blockChain.Store, _blockChain.StateStore),
+                _blockChain.ActionEvaluator);
+
+            newChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext));
+            Assert.Equal(newChain.Tip, _validNext);
+        }
+
+        [Fact]
+        public void ValidateNextBlockAEVChangedOnChainRestart()
+        {
+            var nextSrhBeforeRestart = _blockChain.GetNextStateRootHash(_blockChain.Tip.Hash);
+            var policyWithBlockAction = new BlockPolicy(
+                new SetStatesAtBlock(default, (Text)"foo", default, 0));
+
+            var actionEvaluator = new ActionEvaluator(
+                _ => policyWithBlockAction.BlockAction,
+                _blockChain.StateStore,
+                new SingleActionLoader(typeof(DumbAction)));
+
+            var newChain = new BlockChain(
+                policyWithBlockAction,
+                _blockChain.StagePolicy,
+                _blockChain.Store,
+                _blockChain.StateStore,
+                _blockChain.Genesis,
+                new BlockChainStates(_blockChain.Store, _blockChain.StateStore),
+                actionEvaluator);
+
+            Block newValidNext = newChain.EvaluateAndSign(
+                new BlockContent(
+                    new BlockMetadata(
+                        protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                        index: newChain.Tip.Index + 1,
+                        timestamp: newChain.Tip.Timestamp.AddSeconds(1),
+                        miner: TestUtils.GenesisProposer.Address,
+                        publicKey: TestUtils.GenesisProposer.PublicKey,
+                        previousHash: newChain.Tip.Hash,
+                        txHash: null,
+                        lastCommit: null)).Propose(),
+                TestUtils.GenesisProposer);
+
+            Assert.NotEqual(_validNext, newValidNext);
+
+            Assert.Throws<InvalidBlockStateRootHashException>(() =>
+                newChain.Append(_validNext, TestUtils.CreateBlockCommit(_validNext)));
+
+            newChain.Append(newValidNext, TestUtils.CreateBlockCommit(newValidNext));
         }
     }
 }

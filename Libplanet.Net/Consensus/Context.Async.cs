@@ -174,6 +174,11 @@ namespace Libplanet.Net.Consensus
             MutationConsumed?.Invoke(this, mutation);
         }
 
+        private void AppendBlock(Block block)
+        {
+            _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
+        }
+
         /// <summary>
         /// Schedules <see cref="ProcessTimeoutPropose"/> to be queued after
         /// <see cref="TimeoutPropose"/> amount of time.

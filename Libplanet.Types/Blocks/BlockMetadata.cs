@@ -82,7 +82,14 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         public const int CurrencyAccountProtocolVersion = 7;
 
-        public const int StateRootHashPostponeProtocolVersion = 8;
+        /// <summary>
+        /// The starting protocol version where <see cref="Block.StateRootHash"/> is
+        /// postponed by one blocks.
+        /// Meaning of <see cref="Block.StateRootHash"/> has been changed from
+        /// the result state reference of <see cref="Block.Transactions"/> to state reference
+        /// before <see cref="Block.Transactions"/> were executed.
+        /// </summary>
+        public const int SlothProtocolVersion = 8;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
