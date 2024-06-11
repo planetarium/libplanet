@@ -70,6 +70,11 @@ Version 4.6.1
 
 To be released.
 
+-  Ported changes from [Libplanet 4.5.2] release.  [[#3816]]
+
+[#3816]: https://github.com/planetarium/libplanet/pull/3816
+[Libplanet 4.5.2]: https://www.nuget.org/packages/Libplanet/4.5.2
+
 
 Version 4.6.0
 -------------
