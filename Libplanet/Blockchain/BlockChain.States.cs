@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Libplanet.Action.State;
 using Libplanet.Common;
@@ -22,12 +23,15 @@ namespace Libplanet.Blockchain
             => _blockChainStates.GetWorldState(stateRootHash);
 
         /// <summary>
+        /// Obsolete: Temporary method, avoid using it.
         /// Gets the next world state in the <see cref="BlockChain"/>.
         /// </summary>
         /// <returns>The next world state.  If it does not exist, returns null.</returns>
+        [Obsolete("Temporary method maintained during adaptation period")]
         public IWorldState? GetNextWorldState() => GetNextWorldState(Tip.Hash);
 
         /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)" />
+        [Obsolete("Temporary method maintained during adaptation period")]
         public IWorldState? GetNextWorldState(BlockHash offset)
             => _blockChainStates.GetNextWorldState(offset);
     }

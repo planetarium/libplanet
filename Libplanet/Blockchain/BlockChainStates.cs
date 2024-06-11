@@ -31,6 +31,7 @@ namespace Libplanet.Blockchain
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
 
         /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)"/>
+        [Obsolete("Temporary method maintained during adaptation period")]
         public IWorldState? GetNextWorldState(BlockHash offset)
             => _store.GetNextStateRootHash(offset) is HashDigest<SHA256> nextSrh
                 ? new WorldBaseState(GetTrie(nextSrh), _stateStore)

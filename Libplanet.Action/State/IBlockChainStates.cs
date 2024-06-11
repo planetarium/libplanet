@@ -55,6 +55,7 @@ namespace Libplanet.Action.State
         IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
 
         /// <summary>
+        /// Obsolete: Temporary method, avoid using it.
         /// Returns the <see cref="IWorldState"/> in the BlockChain at <paramref name="offset"/>.
         /// </summary>
         /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
@@ -67,6 +68,7 @@ namespace Libplanet.Action.State
         /// but corresponding state root is not found in the <see cref="IStateStore"/>.
         /// </exception>
         /// <seealso cref="IWorldState"/>
+        [Obsolete("Temporary method maintained during adaptation period")]
         IWorldState? GetNextWorldState(BlockHash offset);
     }
 }
