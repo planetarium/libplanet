@@ -142,7 +142,7 @@ namespace Libplanet.Blockchain
             // condition should be checked once more.
             var validators =
                 block.ProtocolVersion <
-                BlockMetadata.StateRootHashPostponeProtocolVersion
+                BlockMetadata.SlothProtocolVersion
                     ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
                     : GetWorldState(block.StateRootHash).GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
@@ -341,7 +341,7 @@ namespace Libplanet.Blockchain
 
             HashDigest<SHA256> stateRootHash =
                 _blocks[previousHash].ProtocolVersion <
-                BlockMetadata.StateRootHashPostponeProtocolVersion
+                BlockMetadata.SlothProtocolVersion
                     ? _blocks[previousHash].StateRootHash
                     : (HashDigest<SHA256>)GetNextStateRootHash(previousHash, validationInterval);
 

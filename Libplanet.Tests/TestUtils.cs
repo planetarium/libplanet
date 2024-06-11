@@ -634,7 +634,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             null,
                             preEval.Header.DeriveBlockHash(evaluatedSrh, null)
                         ))
-                    : protocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
+                    : protocolVersion < BlockMetadata.SlothProtocolVersion
                     ? preEval.Sign(GenesisProposer, evaluatedSrh)
                     : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
             }

@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain
 
             HashDigest<SHA256> stateRootHash =
                 _blocks[prevHash].ProtocolVersion <
-                BlockMetadata.StateRootHashPostponeProtocolVersion
+                BlockMetadata.SlothProtocolVersion
                     ? _blocks[prevHash].StateRootHash
                     : (HashDigest<SHA256>)GetNextStateRootHash(prevHash, TimeSpan.Zero);
 

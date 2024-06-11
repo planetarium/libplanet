@@ -795,7 +795,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void AppendSRHPostponeBPVBump()
         {
-            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var beforePostponeBPV = BlockMetadata.SlothProtocolVersion - 1;
             var policy = new NullBlockPolicy();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -841,7 +841,7 @@ namespace Libplanet.Tests.Blockchain
                 new[] { tx }.ToImmutableList(),
                 commitBeforeBump);
             Assert.Equal(
-                BlockMetadata.StateRootHashPostponeProtocolVersion,
+                BlockMetadata.SlothProtocolVersion,
                 blockAfterBump1.ProtocolVersion);
             var commitAfterBump1 = TestUtils.CreateBlockCommit(blockAfterBump1);
             blockChain.Append(blockAfterBump1, commitAfterBump1);
@@ -855,7 +855,7 @@ namespace Libplanet.Tests.Blockchain
                 new[] { tx }.ToImmutableList(),
                 commitAfterBump1);
             Assert.Equal(
-                BlockMetadata.StateRootHashPostponeProtocolVersion,
+                BlockMetadata.SlothProtocolVersion,
                 blockAfterBump2.ProtocolVersion);
             var commitAfterBump2 = TestUtils.CreateBlockCommit(blockAfterBump2);
             blockChain.Append(blockAfterBump2, commitAfterBump2);

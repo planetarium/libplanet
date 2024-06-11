@@ -505,7 +505,7 @@ namespace Libplanet.Tests.Action
         }
 
         protected static IWorldState GetLatestWorldState(BlockChain blockChain) =>
-            blockChain.Tip.ProtocolVersion < BlockMetadata.StateRootHashPostponeProtocolVersion
+            blockChain.Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion
                 ? blockChain.GetWorldState()
                 : blockChain.GetNextWorldState();
 

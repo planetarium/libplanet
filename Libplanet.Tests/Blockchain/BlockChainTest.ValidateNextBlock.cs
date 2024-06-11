@@ -231,7 +231,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlockInvalidStateRootHashBeforePostpone()
         {
-            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var beforePostponeBPV = BlockMetadata.SlothProtocolVersion - 1;
             var policy = new BlockPolicy(
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlockInvalidStateRootHashOnPostpone()
         {
-            var beforePostponeBPV = BlockMetadata.StateRootHashPostponeProtocolVersion - 1;
+            var beforePostponeBPV = BlockMetadata.SlothProtocolVersion - 1;
             var policy = new BlockPolicy(
                 new SetStatesAtBlock(default, (Text)"foo", default, 1),
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Blockchain
 
             PreEvaluationBlock preBlock1 = new BlockContent(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.StateRootHashPostponeProtocolVersion,
+                    protocolVersion: BlockMetadata.SlothProtocolVersion,
                     index: 1,
                     timestamp: genesisBlock.Timestamp.AddSeconds(1),
                     miner: TestUtils.GenesisProposer.Address,
