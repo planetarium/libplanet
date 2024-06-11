@@ -32751,12 +32751,12 @@ references:
   commentId: F:Libplanet.Types.Blocks.BlockMetadata.SignatureProtocolVersion
   fullName: Libplanet.Types.Blocks.BlockMetadata.SignatureProtocolVersion
   nameWithType: BlockMetadata.SignatureProtocolVersion
-- uid: Libplanet.Types.Blocks.BlockMetadata.StateRootHashPostponeProtocolVersion
-  name: StateRootHashPostponeProtocolVersion
-  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_StateRootHashPostponeProtocolVersion
-  commentId: F:Libplanet.Types.Blocks.BlockMetadata.StateRootHashPostponeProtocolVersion
-  fullName: Libplanet.Types.Blocks.BlockMetadata.StateRootHashPostponeProtocolVersion
-  nameWithType: BlockMetadata.StateRootHashPostponeProtocolVersion
+- uid: Libplanet.Types.Blocks.BlockMetadata.SlothProtocolVersion
+  name: SlothProtocolVersion
+  href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SlothProtocolVersion
+  commentId: F:Libplanet.Types.Blocks.BlockMetadata.SlothProtocolVersion
+  fullName: Libplanet.Types.Blocks.BlockMetadata.SlothProtocolVersion
+  nameWithType: BlockMetadata.SlothProtocolVersion
 - uid: Libplanet.Types.Blocks.BlockMetadata.Timestamp
   name: Timestamp
   href: api/Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_Timestamp

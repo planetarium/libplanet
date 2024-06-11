@@ -108,6 +108,8 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>
 [[#Sloth]]</li>
 <li><code>IBlockChainStates.GetWorldState(BlockHash)</code> now means the <code>IWorldState</code>
 before state transition from the <code>Block</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
+as a manner of fire-and-forget.  [[#3808]]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
