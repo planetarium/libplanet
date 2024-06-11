@@ -62,6 +62,17 @@ reconstruct states with valid state root hashes purely from past
 [#3799]: https://github.com/planetarium/libplanet/pull/3799
 
 
+Version 4.5.2
+-------------
+
+Released on June 10, 2024.
+
+ -  (Libplanet.Explorer) Added `ProtocolVersion` field to `BlockType`.
+    [[#3810]]
+
+[#3810]: https://github.com/planetarium/libplanet/pull/3810
+
+
 Version 4.5.1
 -------------
 

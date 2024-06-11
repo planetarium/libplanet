@@ -86,5 +86,9 @@ public class BlockType : ObjectGraphType<Block>
             name: "PreEvaluationHash",
             description: "The hash of PreEvaluationBlock.",
             resolve: ctx => ctx.Source.PreEvaluationHash.ToByteArray());
+        Field<NonNullGraphType<IntGraphType>>(
+            name: "ProtocolVersion",
+            description: "The protocol version number of the block.",
+            resolve: ctx => ctx.Source.ProtocolVersion);
     }
 }
