@@ -49,6 +49,7 @@ namespace Libplanet.Net.Tests.Consensus
             AsyncAutoResetEvent heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             AsyncAutoResetEvent heightThreeStepChangedToEndCommit = new AsyncAutoResetEvent();
             AsyncAutoResetEvent heightFourStepChangedToPropose = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent onTipChangedToThree = new AsyncAutoResetEvent();
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 3 && eventArgs.Step == ConsensusStep.Propose)
@@ -70,6 +71,13 @@ namespace Libplanet.Net.Tests.Consensus
                 {
                     proposal = proposalMsg;
                     proposalMessageSent.Set();
+                }
+            };
+            blockChain.TipChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.NewTip.Index == 3L)
+                {
+                    onTipChangedToThree.Set();
                 }
             };
 
@@ -100,6 +108,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Waiting for commit.
             await heightThreeStepChangedToEndCommit.WaitAsync();
+            await onTipChangedToThree.WaitAsync();
             Assert.Equal(3, blockChain.Tip.Index);
 
             // Next height starts normally.
