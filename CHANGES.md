@@ -68,7 +68,7 @@ To be released.
 Version 4.6.1
 -------------
 
-To be released.
+Released on June 11, 2024.
 
 -  Ported changes from [Libplanet 4.5.2] release.  [[#3816]]
 
