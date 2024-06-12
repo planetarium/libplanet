@@ -53,20 +53,5 @@ namespace Libplanet.Action.State
         /// </exception>
         /// <seealso cref="IWorldState"/>
         IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
-
-        /// <summary>
-        /// Returns the <see cref="IWorldState"/> in the BlockChain at <paramref name="offset"/>.
-        /// </summary>
-        /// <param name="offset">The <see cref="BlockHash"/> of the <see cref="Block"/> to create
-        /// for which to create an <see cref="IWorldState"/>.</param>
-        /// <returns>
-        /// The <see cref="IWorldState"/> at <paramref name="offset"/>.
-        /// Returns <see langword="null"/> if next state root hash does not exists.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when next state root hash exists,
-        /// but corresponding state root is not found in the <see cref="IStateStore"/>.
-        /// </exception>
-        /// <seealso cref="IWorldState"/>
-        IWorldState? GetNextWorldState(BlockHash offset);
     }
 }

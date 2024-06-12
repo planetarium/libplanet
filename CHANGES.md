@@ -28,6 +28,8 @@ To be released.
     parameter `IActionEvaluator actionEvaluator` any more.  [[#3811]]
  -  (Libplanet) `BlockChain.ProposeBlock()` receives parameter
     `HashDigest<SHA256> stateRootHash`.  [[#3811]]
+ -  (Libplanet) Added `BlockChain.GetNextWorldState()` and
+    `BlockChain.GetNextWorldState(BlockHash?)` methods.  [[#3821]]
 
 ### Backward-incompatible network protocol changes
 
@@ -41,8 +43,6 @@ To be released.
     [[#3811]]
  -  (Libplanet.Store) Added `IStore.DeleteNextStateRootHash()` method.
     [[#3811]]
- -  (Libplanet.Action) Added
-    `IBlockChainStates.GetNextWorldState()` method.  [[#3811]]
  -  (Libplanet) Added `BlockChain.DetermineNextBlockStateRootHash()`
     method.  [[#3811]]
 

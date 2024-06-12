@@ -699,7 +699,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 block: blockA,
                 tx: txA,
-                previousState: fx.CreateWorld(blockA.PreviousHash),
+                previousState: fx.StateStore.GetWorld(blockA.StateRootHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
@@ -755,7 +755,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsB = ActionEvaluator.EvaluateActions(
                 block: blockB,
                 tx: txB,
-                previousState: fx.CreateWorld(blockB.PreviousHash),
+                previousState: fx.StateStore.GetWorld(blockB.StateRootHash),
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
@@ -1201,7 +1201,7 @@ namespace Libplanet.Tests.Action
             ActionEvaluation[] evalsA = ActionEvaluator.EvaluateActions(
                 block: blockA,
                 tx: txA,
-                previousState: fx.CreateWorld(blockA.PreviousHash),
+                previousState: fx.StateStore.GetWorld(blockA.StateRootHash),
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
