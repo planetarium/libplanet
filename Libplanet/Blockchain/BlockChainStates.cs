@@ -30,12 +30,6 @@ namespace Libplanet.Blockchain
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
 
-        /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)"/>
-        public IWorldState? GetNextWorldState(BlockHash offset)
-            => _store.GetNextStateRootHash(offset) is HashDigest<SHA256> nextSrh
-                ? new WorldBaseState(GetTrie(nextSrh), _stateStore)
-                : null;
-
         /// <summary>
         /// Returns the state root associated with <see cref="BlockHash"/>
         /// <paramref name="offset"/>.

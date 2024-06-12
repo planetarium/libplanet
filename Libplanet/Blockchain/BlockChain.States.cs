@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Libplanet.Action.State;
 using Libplanet.Common;
@@ -27,8 +28,22 @@ namespace Libplanet.Blockchain
         /// <returns>The next world state.  If it does not exist, returns null.</returns>
         public IWorldState? GetNextWorldState() => GetNextWorldState(Tip.Hash);
 
-        /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)" />
         public IWorldState? GetNextWorldState(BlockHash offset)
-            => _blockChainStates.GetNextWorldState(offset);
+        {
+            var nextSrh = Store.GetNextStateRootHash(offset);
+            if (nextSrh is { } srh)
+            {
+                var trie = StateStore.GetStateRoot(srh);
+                return trie.Recorded
+                    ? new WorldBaseState(StateStore.GetStateRoot(nextSrh), StateStore)
+                    : throw new ArgumentException(
+                        $"Could not find state root {srh} in {nameof(StateStore)}.",
+                        nameof(offset));
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

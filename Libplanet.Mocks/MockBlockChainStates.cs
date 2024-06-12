@@ -69,9 +69,5 @@ namespace Libplanet.Mocks
                     $"Could not find state root {stateRootHash} in {nameof(IStateStore)}.",
                     nameof(stateRootHash));
         }
-
-        /// <inheritdoc cref="IBlockChainStates.GetNextWorldState(BlockHash)"/>
-        public IWorldState GetNextWorldState(BlockHash offset) =>
-            throw new InvalidOperationException();
     }
 }
