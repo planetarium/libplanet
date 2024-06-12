@@ -2106,19 +2106,6 @@ references:
   commentId: T:Libplanet.Action.State.IBlockChainStates
   fullName: Libplanet.Action.State.IBlockChainStates
   nameWithType: IBlockChainStates
-- uid: Libplanet.Action.State.IBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  name: GetNextWorldState(BlockHash)
-  href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetNextWorldState_Libplanet_Types_Blocks_BlockHash_
-  commentId: M:Libplanet.Action.State.IBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  fullName: Libplanet.Action.State.IBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  nameWithType: IBlockChainStates.GetNextWorldState(BlockHash)
-- uid: Libplanet.Action.State.IBlockChainStates.GetNextWorldState*
-  name: GetNextWorldState
-  href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetNextWorldState_
-  commentId: Overload:Libplanet.Action.State.IBlockChainStates.GetNextWorldState
-  isSpec: "True"
-  fullName: Libplanet.Action.State.IBlockChainStates.GetNextWorldState
-  nameWithType: IBlockChainStates.GetNextWorldState
 - uid: Libplanet.Action.State.IBlockChainStates.GetWorldState(Libplanet.Types.Blocks.BlockHash)
   name: GetWorldState(BlockHash)
   href: api/Libplanet.Action.State.IBlockChainStates.html#Libplanet_Action_State_IBlockChainStates_GetWorldState_Libplanet_Types_Blocks_BlockHash_
@@ -3582,19 +3569,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChainStates.BlockChainStates
   nameWithType: BlockChainStates.BlockChainStates
-- uid: Libplanet.Blockchain.BlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  name: GetNextWorldState(BlockHash)
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetNextWorldState_Libplanet_Types_Blocks_BlockHash_
-  commentId: M:Libplanet.Blockchain.BlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  fullName: Libplanet.Blockchain.BlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  nameWithType: BlockChainStates.GetNextWorldState(BlockHash)
-- uid: Libplanet.Blockchain.BlockChainStates.GetNextWorldState*
-  name: GetNextWorldState
-  href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetNextWorldState_
-  commentId: Overload:Libplanet.Blockchain.BlockChainStates.GetNextWorldState
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChainStates.GetNextWorldState
-  nameWithType: BlockChainStates.GetNextWorldState
 - uid: Libplanet.Blockchain.BlockChainStates.GetWorldState(Libplanet.Types.Blocks.BlockHash)
   name: GetWorldState(BlockHash)
   href: api/Libplanet.Blockchain.BlockChainStates.html#Libplanet_Blockchain_BlockChainStates_GetWorldState_Libplanet_Types_Blocks_BlockHash_
@@ -10853,19 +10827,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Mocks.MockBlockChainStates.AttachBlockHashToStateRootHash
   nameWithType: MockBlockChainStates.AttachBlockHashToStateRootHash
-- uid: Libplanet.Mocks.MockBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  name: GetNextWorldState(BlockHash)
-  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetNextWorldState_Libplanet_Types_Blocks_BlockHash_
-  commentId: M:Libplanet.Mocks.MockBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  fullName: Libplanet.Mocks.MockBlockChainStates.GetNextWorldState(Libplanet.Types.Blocks.BlockHash)
-  nameWithType: MockBlockChainStates.GetNextWorldState(BlockHash)
-- uid: Libplanet.Mocks.MockBlockChainStates.GetNextWorldState*
-  name: GetNextWorldState
-  href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetNextWorldState_
-  commentId: Overload:Libplanet.Mocks.MockBlockChainStates.GetNextWorldState
-  isSpec: "True"
-  fullName: Libplanet.Mocks.MockBlockChainStates.GetNextWorldState
-  nameWithType: MockBlockChainStates.GetNextWorldState
 - uid: Libplanet.Mocks.MockBlockChainStates.GetWorldState(Libplanet.Types.Blocks.BlockHash)
   name: GetWorldState(BlockHash)
   href: api/Libplanet.Mocks.MockBlockChainStates.html#Libplanet_Mocks_MockBlockChainStates_GetWorldState_Libplanet_Types_Blocks_BlockHash_
