@@ -269,6 +269,34 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <inheritdoc />
+        public async Task RebuildConnectionAsync(
+            IEnumerable<BoundPeer> seedPeers,
+            int depth,
+            CancellationToken cancellationToken)
+        {
+            _logger.Verbose("Rebuilding connection using seed peers...");
+            var history = new ConcurrentBag<BoundPeer>();
+            var dialHistory = new ConcurrentBag<BoundPeer>();
+            var tasks = seedPeers.Select(seed =>
+                FindPeerAsync(
+                    history,
+                    dialHistory,
+                    _address,
+                    seed,
+                    depth,
+                    _requestTimeout,
+                    cancellationToken)).ToList();
+
+            try
+            {
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+            }
+        }
+
+        /// <inheritdoc />
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
             _logger.Verbose("Checking replacement cache");
@@ -720,6 +748,12 @@ namespace Libplanet.Net.Protocols
                 _logger.Warning(
                     aggregateException,
                     "Some responses from neighbors found unexpectedly terminated");
+            }
+
+            if (depth == 1)
+            {
+                // depth 1 means spawn FindPeerAsync task of depth 0, and it does nothing.
+                return;
             }
 
             var findPeerTasks = new List<Task>();
