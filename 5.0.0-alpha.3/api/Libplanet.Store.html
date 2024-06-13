@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.Store
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.Store
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store">
+
+  <h1 id="Libplanet_Store" data-uid="Libplanet.Store" class="text-break">Namespace Libplanet.Store
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></h4>
+      <section><p>Common code for several <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementations.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.BlockSet.html">BlockSet</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a></h4>
+      <section><p>
+A <code>class</code> representing an abstract data model that can be easily
+encoded and decoded to and from a <span class="xref">Bencodex.Types.Dictionary</span>.
+</p>
+<p>
+Inheriting this class and simply declaring properties allows an instance of the child class
+to encode its data into a <span class="xref">Bencodex.Types.Dictionary</span> where the encoded
+<span class="xref">Bencodex.Types.Dictionary</span> has the concrete class&apos;es each property name as its key and
+the each corresponding property value as its value.
+</p>
+<p>
+However, there are certain restrictions that apply when using this <code>class</code>:
+<ul><li>
+        The complete list of allowed property types are as follows:
+<ul><li>
+        Primitive types: <code>bool</code>, <code>int</code>, <code>long</code>, <code>BigInteger</code>,
+<code>ImmutableArray&lt;byte></code>, <code>Guid</code>, <code>Address</code>,
+and <code>string</code>.
+</li><li>
+    Special types: Any type inherited from <a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a>.
+</li><li>
+    Collective types:
+<ul><li>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1">ImmutableList&lt;T&gt;</a> where <code>T</code> is a primitive type.
+</li><li>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutabledictionary-2">ImmutableDictionary&lt;TKey,TValue&gt;</a> where
+<ul><li>
+<code>TKey</code> is one of
+<code>ImmutableArray&lt;byte></code>, <code>Address</code>,
+<code>Guid</code>, and <code>string</code>.
+</li><li>
+<code>TValue</code> is a primitive type.
+</li></ul>
+</li></ul>
+</li></ul>
+</li><li>
+    Value types are not allowed to be declared as <code>nullable</code>, not even as
+    a generic type parameter.  That is, types such as <code>bool?</code>, <code>Address?</code>,
+    and <code>ImmutableList&lt;int?></code>are not allowed.
+</li><li>
+    Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
+    result in an <span class="xref">System.Exception</span> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+</li><li>
+    Trying to assign <span class="xref">null</span> to any property or to a part of
+    a collection will result in an <span class="xref">System.Exception</span> when
+<a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Dictionary)</a> is called.
+</li></ul>
+
+</section>
+      <h4><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a></h4>
+      <section><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
+the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+for some complex indices.</p>
+<p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
+parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.HashNodeCache.html">HashNodeCache</a></h4>
+      <section><p>A class used for internally caching hashed nodes of <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>s.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a></h4>
+      <section><p>Volatile in-memory store.</p>
+<p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
+game logic.</p>
+<p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>memory:</code></li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.StoreExtensions.html">StoreExtensions</a></h4>
+      <section><p>Convenient extension methods for <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html">StoreLoaderAttribute</a></h4>
+      <section><p>Registers a static method as a store loader.  The method must comply with
+<a class="xref" href="Libplanet.Store.StoreLoader.html">StoreLoader</a> delegate.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> implementation. It stores states with <a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a>.</p>
+</section>
+    <h3 id="structs">Structs
+</h3>
+      <h4><a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a></h4>
+      <section><p>Class that store uses to save blocks. This contains:
+<a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a>, and list of <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>s.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></h4>
+      <section><p>An interface to store states.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></h4>
+      <section></section>
+    <h3 id="delegates">Delegates
+</h3>
+      <h4><a class="xref" href="Libplanet.Store.StoreLoader.html">StoreLoader</a></h4>
+      <section><p>A function that parses a URI and returns a pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and
+<a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
