@@ -14,8 +14,18 @@ using Serilog;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A class that maintains the states of a <see cref="Context"/> for block
-    /// indices now in consensus.
+    /// <para>
+    /// A class that maintains a collection of <see cref="Context"/>s.
+    /// </para>
+    /// <para>
+    /// Internally, multiple <see cref="Context"/>s may be managed at any given time.
+    /// In particular, a <see cref="Context"/> with its <see cref="Context.Height"/> that
+    /// is greater than <see cref="Height"/> may be created preemptively to hold
+    /// <see cref="ConsensusMsg"/>s to be processed at later time.  Furthermore,
+    /// it is guaranteed that no <see cref="Context"/> with its <see cref="Context.Height"/>
+    /// less than <see cref="Height"/>, as any such <see cref="Context"/> is disposed
+    /// when <see cref="Height"/> is updated.
+    /// </para>
     /// </summary>
     public partial class ConsensusContext : IDisposable
     {
@@ -75,12 +85,19 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// The index of block that <see cref="ConsensusContext"/> is watching. The value can be
-        /// changed by starting a consensus or appending a block.
+        /// <para>
+        /// The height of the current running <see cref="Context"/>.
+        /// </para>
+        /// <para>
+        /// This is initially set to -1, representing that there is no running
+        /// <see cref="Context"/>, when a <see cref="ConsensusContext"/> is created.
+        /// This value can only be increased by calling <see cref="NewHeight"/>.
+        /// </para>
         /// </summary>
-        /// <seealso cref="NewHeight"/>  <seealso cref="OnTipChanged"/>
         /// <returns>If <see cref="NewHeight"/> or <see cref="OnTipChanged"/> is called
         /// before, returns current working height, otherwise returns <c>-1</c>.</returns>
+        /// <seealso cref="NewHeight"/>
+        /// <seealso cref="OnTipChanged"/>
         public long Height { get; private set; }
 
         /// <summary>
@@ -176,16 +193,16 @@ namespace Libplanet.Net.Consensus
                         ? _contexts[height - 1].GetBlockCommit()
                         : null;
                     _logger.Debug(
-                        "LastCommit of height #{Height} is: {LastCommit}",
+                        "LastCommit of height #{Height} is {LastCommit}",
                         Height,
                         lastCommit);
 
-                    if (lastCommit == null)
+                    if (lastCommit is null)
                     {
                         BlockCommit? storedCommit = _blockChain.GetBlockCommit(height - 1);
-                        if (storedCommit != null)
+                        if (storedCommit is { } commit)
                         {
-                            lastCommit = storedCommit;
+                            lastCommit = commit;
                             _logger.Debug(
                                 "Found cached LastCommit of Height #{Height} " +
                                 "and Round #{Round}",
@@ -195,11 +212,10 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                Height = height;
-
                 _logger.Information("Start consensus for height #{Height}", Height);
                 lock (_contextLock)
                 {
+                    Height = height;
                     if (!_contexts.ContainsKey(height))
                     {
                         _contexts[height] = CreateContext(height);
@@ -391,7 +407,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="e">The event arguments given by <see cref="BlockChain.TipChanged"/>
         /// as a tuple of the old tip and the new tip.
         /// </param>
-        private void OnTipChanged(object? sender, (Block OldTip, Block NewTip) e)
+        private void OnTipChanged(object? sender, (Block _, Block NewTip) e)
         {
             // TODO: Should set delay by using GST.
             _newHeightCts?.Cancel();
