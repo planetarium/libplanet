@@ -1,9 +1,18 @@
 #!/bin/bash
 set -e
+
+# Taken from https://github.com/har7an/bash-semver-regex
+# Regex for a semver digit
+D='0|[1-9][0-9]*'
+# Regex for a semver pre-release word
+PW='[0-9]*[a-zA-Z-][0-9a-zA-Z-]*'
+# Regex for a semver build-metadata word
+MW='[0-9a-zA-Z-]+'
+
 if [[ "$1" = "" ]]; then
   echo error: missing version to download >&2
   exit 1
-elif [[ "$1" =~ ^([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)$ ]]; then
+elif [[ "$1" =~ ^($D)\.($D)\.($D)(-(($D|$PW)(\.($D|$PW))*))?(\+($MW(\.$MW)*))?$ ]]; then
   version="$1"
 else
   echo error: invalid version number: "$1" >&2
