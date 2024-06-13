@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LoggedRenderer
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LoggedRenderer
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer">
+
+
+  <h1 id="Libplanet_Blockchain_Renderers_LoggedRenderer" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer" class="text-break">Class LoggedRenderer
+</h1>
+  <div class="markdown level0 summary"><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
+<p>Every single event message causes two log messages: one is logged <em>before</em>
+rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
+it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">LoggedRenderer</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LoggedRenderer : IRenderer</code></pre>
+  </div>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_examples"><strong>Examples</strong></h5>
+  <pre><code>IRenderer renderer = new SomeRenderer();
+// Wraps the renderer with LoggedRenderer:
+renderer = new LoggedRenderer(
+    renderer,
+    Log.Logger,
+    LogEventLevel.Information,
+);</code></pre>
+
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%2CSerilog.ILogger%2CSerilog.Events.LogEventLevel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L43">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.#ctor(Libplanet.Blockchain.Renderers.IRenderer,Serilog.ILogger,Serilog.Events.LogEventLevel)">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a> instance which decorates the given
+<code data-dev-comment-type="paramref" class="paramref">renderer</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LoggedRenderer(IRenderer renderer, ILogger logger, LogEventLevel level = LogEventLevel.Debug)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></td>
+        <td><span class="parametername">renderer</span></td>
+        <td><p>The actual renderer to forward all event messages to and actually
+render things.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Serilog.ILogger</span></td>
+        <td><span class="parametername">logger</span></td>
+        <td><p>The logger to write log messages to.  Note that all log messages
+this decorator writes become in the context of the <code data-dev-comment-type="paramref" class="paramref">renderer</code>'s
+type (with the context property <code>SourceContext</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Serilog.Events.LogEventLevel</span></td>
+        <td><span class="parametername">level</span></td>
+        <td><p>The log event level.  All log messages become this level.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_Level.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.Level%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L65">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_Level_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Level*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Level" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Level">Level</h4>
+  <div class="markdown level1 summary"><p>The log event level.  All log messages become this level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LogEventLevel Level { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Serilog.Events.LogEventLevel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Level_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_Logger.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.Logger%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L72">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_Logger_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Logger*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Logger" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>The logger to write log messages to.  Note that all log messages this decorator writes
+become in the context of the <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer">Renderer</a>'s type (with the context
+property <code>SourceContext</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ILogger Logger { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Serilog.ILogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Logger_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.Renderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Renderer*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.Renderer">Renderer</h4>
+  <div class="markdown level1 summary"><p>The inner renderer to forward all event messages to and actually render things.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer Renderer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering(System.String%2CLibplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block%2CSystem.Action%7BLibplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L86">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block__" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering(System.String,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block,System.Action{Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block})">LogBlockRendering(String, Block, Block, Action&lt;Block, Block&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
+<p>Every single event message causes two log messages: one is logged <em>before</em>
+rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
+it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void LogBlockRendering(string methodName, Block oldTip, Block newTip, Action&lt;Block, Block&gt; callback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">methodName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">oldTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">newTip</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
+renderer, action-level fine-grained events will not be logged.  For action renderers,
+please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
+</div>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block___examples">Examples</h5>
+  <pre><code>IRenderer renderer = new SomeRenderer();
+// Wraps the renderer with LoggedRenderer:
+renderer = new LoggedRenderer(
+    renderer,
+    Log.Logger,
+    LogEventLevel.Information,
+);</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.RenderBlock(Libplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L75">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.RenderBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.RenderBlock(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block)">RenderBlock(Block, Block)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right after a new <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is appended to
+a <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a> (so that its <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a> has changed).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderBlock(Block oldTip, Block newTip)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">oldTip</span></td>
+        <td><p>The previous <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">newTip</span></td>
+        <td><p>The current <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for a block, and only after applied to
+the blockchain, unless it has been stale due to reorg.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.2/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.2/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
