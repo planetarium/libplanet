@@ -93,15 +93,29 @@ async function main() {
     versionSuffix += `+${commitHash}`;
     versionType = "nightly";
   } else if (tag != null) {
-    // Release
-    if (tag !== versionPrefix) {
+    // Tagged
+    if (tag === versionPrefix) {
+      // Release
+      packageVersion = tag;
+      versionType = "stable";
+    } else if (tag.startsWith(versionPrefix)) {
+      // Prerelease
+      packageVersion = tag;
+      delimIndex = tag.indexOf("-");
+      versionSuffix = tag.substring(delimIndex + 1);
+      versionType = "prerelease";
+      if (delimIndex < 0 || !versionSuffix) {
+        console.error(
+          `Git tag (${tag}) is not in a proper format for prerelease`,
+        );
+        process.exit(1);
+      }
+    } else {
       console.error(
-        `Git tag (${tag}) does not match VersionPrefix (${versionPrefix})`,
+        `Git tag (${tag}) does not contain VersionPrefix (${versionPrefix})`,
       );
       process.exit(1);
     }
-    packageVersion = tag;
-    versionType = "stable";
   } else {
     // Dev
     const timestamp = await getCommitTimestamp();
