@@ -77,8 +77,18 @@
     <h3 id="classes">Classes
 </h3>
       <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html">ConsensusContext</a></h4>
-      <section><p>A class that maintains the states of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> for block
-indices now in consensus.</p>
+      <section><p>
+A class that maintains a collection of <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a>s.
+</p>
+<p>
+Internally, multiple <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a>s may be managed at any given time.
+In particular, a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> with its <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height">Height</a> that
+is greater than <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a> may be created preemptively to hold
+<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>s to be processed at later time.  Furthermore,
+it is guaranteed that no <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> with its <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height">Height</a>
+less than <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a>, as any such <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> is disposed
+when <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a> is updated.
+</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusReactor.html">ConsensusReactor</a></h4>
       <section><p>A manager class for starting network and joining into consensus.
