@@ -98,13 +98,13 @@ Libplanet-backed games/apps too.</p>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
@@ -303,7 +303,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">message</span></td>
         <td><p>A binary data to encrypt.</p>
 </td>
@@ -320,7 +320,7 @@ with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">P
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><p>A ciphertext that was encrypted from the original <code data-dev-comment-type="paramref" class="paramref">message</code>.
 This can be decrypted with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.</p>
 </td>
@@ -601,13 +601,13 @@ Case insensitive, and accepts either compressed or uncompressed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
         <td><p>Thrown when the length of the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.FormatException</span></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
         <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string
 is not a valid hexadecimal string.</p>
 </td>
@@ -775,7 +775,7 @@ public ImmutableArray&lt;byte&gt; ToImmutableArray(bool compress)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><p>An encoded immutable <span class="xref">System.Byte</span> array representation.  It can be
 recovered to a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance again using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PublicKey(IReadOnlyList&lt;Byte&gt;)</a> constructor whether it is compressed
