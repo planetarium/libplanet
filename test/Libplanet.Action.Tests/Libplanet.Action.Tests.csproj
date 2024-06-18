@@ -4,18 +4,18 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
-    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <None Include="..\..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,8 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Action\Libplanet.Action.csproj" />
-    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Action\Libplanet.Action.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
   </ItemGroup>
 

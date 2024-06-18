@@ -16,7 +16,7 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Mocks</RootNamespace>
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +25,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
@@ -41,15 +41,15 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Action\Libplanet.Action.csproj" />
-    <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
-    <ProjectReference Include="..\Libplanet.Crypto\Libplanet.Crypto.csproj" />
-    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
-    <ProjectReference Include="..\Libplanet.Types\Libplanet.Types.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Action\Libplanet.Action.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Common\Libplanet.Common.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Crypto\Libplanet.Crypto.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Types\Libplanet.Types.csproj" />
   </ItemGroup>
 
 </Project>

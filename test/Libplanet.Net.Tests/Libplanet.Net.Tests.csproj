@@ -8,14 +8,14 @@
     <IsTestProject>true</IsTestProject>
     <LangVersion>8.0</LangVersion>
     <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
-    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\Libplanet.Tests\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
@@ -48,9 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
-    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Stun\Libplanet.Stun.csproj" />
     <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
   </ItemGroup>
 

@@ -27,11 +27,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
+      <ProjectReference Include="..\..\src\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\LICENSE">
+      <None Include="..\..\LICENSE">
         <Pack>true</Pack>
         <PackagePath>LICENSE.txt</PackagePath>
         <Link>LICENSE</Link>

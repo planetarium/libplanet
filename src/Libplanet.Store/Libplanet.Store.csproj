@@ -18,7 +18,7 @@
     <NoWarn>$(NoWarn);NU1904</NoWarn>
     <!-- FIXME: NU1904 should be removed once LiteDB is bumped to a secure version -->
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +33,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
@@ -48,7 +48,7 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
 

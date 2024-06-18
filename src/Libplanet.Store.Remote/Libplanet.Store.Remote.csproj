@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\LICENSE">
+      <None Include="..\..\LICENSE">
         <Pack>true</Pack>
         <PackagePath>LICENSE.txt</PackagePath>
         <Link>LICENSE</Link>
@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
         <Link>Menees.Analyzers.Settings.xml</Link>
       </AdditionalFiles>
     </ItemGroup>

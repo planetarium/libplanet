@@ -17,7 +17,7 @@
     <RootNamespace>Libplanet.Action</RootNamespace>
     <AssemblyName>Libplanet.Action</AssemblyName>
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +30,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
@@ -45,7 +45,7 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

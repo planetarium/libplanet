@@ -7,14 +7,14 @@
     <IsTestProject>true</IsTestProject>
     <LangVersion>7.1</LangVersion>
     <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
-    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include=".\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
@@ -61,9 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
-    <ProjectReference Include="..\Libplanet.Types\Libplanet.Types.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Types\Libplanet.Types.csproj" />
     <ProjectReference Include="..\Libplanet.Action.Tests\Libplanet.Action.Tests.csproj" />
     <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
   </ItemGroup>

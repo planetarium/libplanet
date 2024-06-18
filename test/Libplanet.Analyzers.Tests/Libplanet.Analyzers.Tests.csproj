@@ -7,14 +7,14 @@
     <IsTestProject>true</IsTestProject>
     <LangVersion>7.1</LangVersion>
 <NoWarn>$(NoWarn);SA1401</NoWarn>
-    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
@@ -62,6 +62,6 @@
 
   <ItemGroup>
     <ProjectReference
-      Include="..\Libplanet.Analyzers\Libplanet.Analyzers.csproj" />
+      Include="..\..\tools\Libplanet.Analyzers\Libplanet.Analyzers.csproj" />
   </ItemGroup>
 </Project>
