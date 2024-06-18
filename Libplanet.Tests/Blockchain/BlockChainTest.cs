@@ -2316,7 +2316,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 blockChain
-                    .GetNextWorldState(blockChain[0].Hash)
+                    .GetResultWorldState(0)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     ValidatorPrivateKeys.Select(
@@ -2324,7 +2324,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 blockChain
-                    .GetNextWorldState(blockChain[1].Hash)
+                    .GetResultWorldState(1)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     newValidators.Select(

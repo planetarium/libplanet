@@ -16,6 +16,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -321,7 +322,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetNextWorldState(blockChain[0L].Hash)!
+                    .GetResultWorldState(0)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
@@ -623,7 +624,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetNextWorldState(blockChain[0L].Hash)!
+                    .GetResultWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
