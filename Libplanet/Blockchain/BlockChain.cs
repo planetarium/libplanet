@@ -185,18 +185,19 @@ namespace Libplanet.Blockchain
 
             if (Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
-                return;
+                Store.PutNextStateRootHash(Tip.Hash, Tip.StateRootHash);
             }
+            else
+            {
+                HashDigest<SHA256> nextStateRootHash =
+                    DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
 
-            HashDigest<SHA256> nextStateRootHash =
-                DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
+                Store.DeleteNextStateRootHash(Tip.Hash);
+                Store.PutNextStateRootHash(Tip.Hash, nextStateRootHash);
 
-            Store.DeleteNextStateRootHash(Tip.Hash);
-            Store.PutNextStateRootHash(Tip.Hash, nextStateRootHash);
-
-            IEnumerable<TxExecution> txExecutions =
-                MakeTxExecutions(Tip, actionEvaluations);
-            UpdateTxExecutions(txExecutions);
+                IEnumerable<TxExecution> txExecutions = MakeTxExecutions(Tip, actionEvaluations);
+                UpdateTxExecutions(txExecutions);
+            }
         }
 
         ~BlockChain()
@@ -1159,6 +1160,7 @@ namespace Libplanet.Blockchain
                                 TimestampFormat, CultureInfo.InvariantCulture));
 
                     _blocks[block.Hash] = block;
+                    Store.PutNextStateRootHash(block.Hash, block.StateRootHash);
                     IEnumerable<TxExecution> txExecutions =
                         MakeTxExecutions(block, actionEvaluations);
                     UpdateTxExecutions(txExecutions);
