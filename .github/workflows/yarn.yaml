@@ -61,7 +61,7 @@ jobs:
     - if: runner.os != 'Windows'
       run: |
         set -ev
-        cd Libplanet.Tools/
+        cd tools/Libplanet.Tools/
         bin/npm-test.sh "$LATEST_VERSION"
       env:
         LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
@@ -69,7 +69,7 @@ jobs:
       shell: pwsh
       run: |
         $ErrorActionPreference = "Stop"
-        cd Libplanet.Tools\
+        cd tools\Libplanet.Tools\
         pwsh `
           -ExecutionPolicy Bypass `
           -File bin\npm-test.ps1 `

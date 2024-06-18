@@ -76,6 +76,7 @@ function getScheduledJobDate() {
 async function main() {
   const csprojPath = path.join(
     path.dirname(__dirname),
+    "src",
     "Libplanet",
     "Libplanet.csproj",
   );

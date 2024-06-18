@@ -1,6 +1,3 @@
-namespace Libplanet.Tests.Tx
-{
-    public class X {
-
-    }
+namespace Libplanet.Tests.Tx {
+    class X {}
 }

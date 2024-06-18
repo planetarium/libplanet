@@ -1,9 +1,9 @@
-import { encodeUnsignedTx } from "../../src/tx/unsigned";
-import { key1 } from "./fixtures";
+import { join } from "node:path";
 import { RecordView, encode } from "@planetarium/bencodex";
 import { execa } from "execa";
-import { join } from "node:path";
 import { expect, test } from "vitest";
+import { encodeUnsignedTx } from "../../src/tx/unsigned";
+import { key1 } from "./fixtures";
 
 test("encodeUnsignedTx", async () => {
   const encoded = encodeUnsignedTx({
@@ -28,25 +28,25 @@ test("encodeUnsignedTx", async () => {
                     new Uint8Array(
                       Buffer.from(
                         "47d082a115c63e7b58b1532d20e631538eafadde",
-                        "hex",
-                      ),
+                        "hex"
+                      )
                     ),
                   ],
                   ticker: "NCG",
                 },
-                "text",
+                "text"
               ),
               1000n,
             ],
             recipient: new Uint8Array(
-              Buffer.from("5a533067D0cBa77490268b26195EdB10B990143D", "hex"),
+              Buffer.from("5a533067D0cBa77490268b26195EdB10B990143D", "hex")
             ),
             sender: new Uint8Array(
-              Buffer.from("111CB8E18c6D70f5032000c5739c5ac36E793EDB", "hex"),
+              Buffer.from("111CB8E18c6D70f5032000c5739c5ac36E793EDB", "hex")
             ),
           },
         },
-        "text",
+        "text"
       ),
     ],
   });
@@ -57,7 +57,7 @@ test("encodeUnsignedTx", async () => {
       "run",
       "--no-build",
       "--project",
-      join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
+      join(__dirname, "..", "..", "..", "..", "tools", "Libplanet.Tools"),
       "--",
       "tx",
       "analyze",
@@ -66,7 +66,7 @@ test("encodeUnsignedTx", async () => {
     ],
     {
       input: Buffer.from(payload),
-    },
+    }
   );
   expect(JSON.parse(stdout)).toStrictEqual({
     nonce: 123,
