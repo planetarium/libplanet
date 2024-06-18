@@ -4,20 +4,20 @@
       "src": [
         {
           "files": [
-            "Libplanet/Libplanet.csproj",
-            "Libplanet.Action/Libplanet.Action.csproj",
-            "Libplanet.Common/Libplanet.Common.csproj",
-            "Libplanet.Crypto/Libplanet.Crypto.csproj",
-            "Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
-            "Libplanet.Explorer.Cocona/Libplanet.Explorer.Cocona.csproj",
-            "Libplanet.Extensions.Cocona/Libplanet.Extensions.Cocona.csproj",
-            "Libplanet.Mocks/Libplanet.Mocks.csproj",
-            "Libplanet.Net/Libplanet.Net.csproj",
-            "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
-            "Libplanet.Store/Libplanet.Store.csproj",
-            "Libplanet.Store.Remote/Libplanet.Store.Remote.csproj",
-            "Libplanet.Stun/Libplanet.Stun.csproj",
-            "Libplanet.Types/Libplanet.Types.csproj"
+            "src/Libplanet/Libplanet.csproj",
+            "src/Libplanet.Action/Libplanet.Action.csproj",
+            "src/Libplanet.Common/Libplanet.Common.csproj",
+            "src/Libplanet.Crypto/Libplanet.Crypto.csproj",
+            "src/Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
+            "tools/Libplanet.Explorer.Cocona/Libplanet.Explorer.Cocona.csproj",
+            "tools/Libplanet.Extensions.Cocona/Libplanet.Extensions.Cocona.csproj",
+            "test/Libplanet.Mocks/Libplanet.Mocks.csproj",
+            "src/Libplanet.Net/Libplanet.Net.csproj",
+            "src/Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
+            "src/Libplanet.Store/Libplanet.Store.csproj",
+            "src/Libplanet.Store.Remote/Libplanet.Store.Remote.csproj",
+            "src/Libplanet.Stun/Libplanet.Stun.csproj",
+            "src/Libplanet.Types/Libplanet.Types.csproj"
           ],
           "exclude": ["**/bin/**", "**/obj/**"],
           "src": "../"
@@ -48,7 +48,7 @@
         ]
       },
       {
-        "src": "../Libplanet.Analyzers",
+        "src": "../tools/Libplanet.Analyzers",
         "dest": "analyzer",
         "files": [
           "*.md",
@@ -56,14 +56,14 @@
         ]
       },
       {
-        "src": "../Libplanet.Tools",
+        "src": "../tools/Libplanet.Tools",
         "dest": "cli",
         "files": [
           "*.md"
         ]
       },
       {
-        "src": "../Libplanet.Explorer",
+        "src": "../tools/Libplanet.Explorer",
         "dest": "explorer",
         "files": [
           "*.md"
@@ -111,7 +111,6 @@
     "fileMetadataFiles": [],
 
     "template": ["default"],
-    // "statictoc" has a bug that relative links with nested dirs in nav refer to incorrect destinations
 
     "theme": ["theme"],
     "postProcessors": [],

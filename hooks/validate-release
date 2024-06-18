@@ -24,7 +24,7 @@ if [[ "$version" = *-* ]]; then
   exit 1
 fi
 
-csproj="$root/Libplanet/Libplanet.csproj"
+csproj="$root/src/Libplanet/Libplanet.csproj"
 if command -v xmllint > /dev/null; then
   csproj_version="$(xmllint \
     --xpath '/*[local-name()="Project"]
