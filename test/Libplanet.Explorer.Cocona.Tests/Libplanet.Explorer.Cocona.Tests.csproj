@@ -14,10 +14,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
         <Link>Menees.Analyzers.Settings.xml</Link>
       </AdditionalFiles>
-      <AdditionalFiles Include="..\stylecop.json" />
+      <AdditionalFiles Include="..\..\stylecop.json" />
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
@@ -25,7 +25,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-      <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+      <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
@@ -53,7 +53,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Libplanet.Explorer.Cocona\Libplanet.Explorer.Cocona.csproj" />
+        <ProjectReference Include="..\..\tools\Libplanet.Explorer.Cocona\Libplanet.Explorer.Cocona.csproj" />
         <ProjectReference Include="..\Libplanet.Explorer.Tests\Libplanet.Explorer.Tests.csproj" />
     </ItemGroup>
 

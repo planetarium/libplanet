@@ -30,17 +30,17 @@
     <NoWarn>$(NoWarn);S4035;CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

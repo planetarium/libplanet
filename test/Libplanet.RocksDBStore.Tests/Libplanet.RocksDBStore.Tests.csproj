@@ -6,14 +6,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsTestProject>true</IsTestProject>
     <LangVersion>7.1</LangVersion>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -56,7 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
   </ItemGroup>
 </Project>

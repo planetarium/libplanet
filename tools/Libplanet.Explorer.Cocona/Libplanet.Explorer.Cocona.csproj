@@ -20,7 +20,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -52,17 +52,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <ProjectReference Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
     <ProjectReference Include="..\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
 </Project>

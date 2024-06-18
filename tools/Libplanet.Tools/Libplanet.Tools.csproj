@@ -29,7 +29,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
@@ -52,13 +52,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
     <None Include="README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,9 +89,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
-    <ProjectReference Include="..\Libplanet.Crypto.Secp256k1\Libplanet.Crypto.Secp256k1.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\..\src\Libplanet.Crypto.Secp256k1\Libplanet.Crypto.Secp256k1.csproj" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>

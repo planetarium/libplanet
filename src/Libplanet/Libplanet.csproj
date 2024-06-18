@@ -48,18 +48,18 @@ https://docs.libplanet.io/</Description>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
     <!-- FIXME: NU1902 should be removed once BouncyCastle is bumped to a secure version -->
     <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
-    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+    <None Include="..\..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
+    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
