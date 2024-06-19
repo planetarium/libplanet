@@ -895,7 +895,7 @@ namespace Libplanet.Net.Tests
             }
 
             BlockChain forked = minerChain.Fork(minerChain.Genesis.Hash);
-            while (forked.Count <= minerChain.Count)
+            while (forked.Count <= minerChain.Count + 1)
             {
                 Block block = forked.ProposeBlock(
                     minerKey, CreateBlockCommit(forked.Tip));
@@ -921,7 +921,10 @@ namespace Libplanet.Net.Tests
                         s.ReceivedBlockHashCount > minerChain.Count / 2)
                     {
                         receivedCount = s.ReceivedBlockHashCount;
-                        minerChain.Swap(forked, render: false);
+                        if (minerChain.Count < forked.Count)
+                        {
+                            minerChain.Swap(forked, render: false);
+                        }
                     }
                 }),
                 cancellationToken: CancellationToken.None
@@ -1107,14 +1110,14 @@ namespace Libplanet.Net.Tests
             }
 
             var forked = seedChain.Fork(seedChain[5].Hash);
-            seedChain.Swap(forked, false);
             for (int i = 0; i < 10; i++)
             {
-                Block block = seedChain.ProposeBlock(
-                    seedKey, CreateBlockCommit(seedChain.Tip));
-                seedChain.Append(block, TestUtils.CreateBlockCommit(block));
+                Block block = forked.ProposeBlock(
+                    seedKey, CreateBlockCommit(forked.Tip));
+                forked.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
+            seedChain.Swap(forked, false);
             var actionExecutionCount = 0;
 
             var progress = new ActionProgress<BlockSyncState>(state =>

@@ -524,6 +524,10 @@ namespace Libplanet.Tests.Blockchain
         {
             // Fork is not canonical.
             var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
+            var b = workspace.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: CreateBlockCommit(workspace.Tip));
+            workspace.Append(b, CreateBlockCommit(b));
             Assert.True(_blockChain.IsCanonical);
             Assert.False(workspace.IsCanonical);
 
@@ -820,7 +824,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            DumbAction.Create((addresses[0], "foo")),
+                            DumbAction.Create((addresses[0], "2-0")),
                         },
                         timestamp: DateTimeOffset.MinValue,
                         nonce: 2,
@@ -828,7 +832,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            DumbAction.Create((addresses[1], "bar")),
+                            DumbAction.Create((addresses[1], "2-1")),
                         },
                         timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                         nonce: 3,
@@ -839,7 +843,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            DumbAction.Create((addresses[2], "baz")),
+                            DumbAction.Create((addresses[2], "3-0")),
                         },
                         timestamp: DateTimeOffset.MinValue,
                         nonce: 4,
@@ -847,7 +851,7 @@ namespace Libplanet.Tests.Blockchain
                     _fx.MakeTransaction(
                         new[]
                         {
-                            DumbAction.Create((addresses[3], "qux")),
+                            DumbAction.Create((addresses[3], "3-1")),
                         },
                         timestamp: DateTimeOffset.MinValue.AddSeconds(4),
                         nonce: 5,
@@ -862,35 +866,63 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(b, CreateBlockCommit(b));
             }
 
-            Transaction[] txsB =
+            Transaction[][] txsB =
             {
-                // block #2'
-                _fx.MakeTransaction(
-                    new[]
-                    {
-                        DumbAction.Create((addresses[0], "fork-foo")),
-                    },
-                    timestamp: DateTimeOffset.MinValue,
-                    nonce: 2,
-                    privateKey: privateKey),
-                _fx.MakeTransaction(
-                    new[]
-                    {
-                        DumbAction.Create((addresses[1], "fork-bar")),
-                        DumbAction.Create((addresses[2], "fork-baz")),
-                    },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2),
-                    nonce: 3,
-                    privateKey: privateKey),
+                new[]
+                {
+                    // block #2'
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            DumbAction.Create((addresses[0], "2'-0")),
+                        },
+                        timestamp: DateTimeOffset.MinValue,
+                        nonce: 2,
+                        privateKey: privateKey),
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            DumbAction.Create((addresses[1], "2'-1-0")),
+                            DumbAction.Create((addresses[2], "2'-1-1")),
+                        },
+                        timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                        nonce: 3,
+                        privateKey: privateKey),
+                },
+                new[]
+                {
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            DumbAction.Create((addresses[0], "3'-0")),
+                        },
+                        timestamp: DateTimeOffset.MinValue,
+                        nonce: 4,
+                        privateKey: privateKey),
+                },
+                new[]
+                {
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            DumbAction.Create((addresses[0], "4'-0")),
+                        },
+                        timestamp: DateTimeOffset.MinValue,
+                        nonce: 5,
+                        privateKey: privateKey),
+                },
             };
 
-            Block forkTip = fork.ProposeBlock(
-                miner, txsB.ToImmutableList(), CreateBlockCommit(fork.Tip));
-            fork.Append(forkTip, CreateBlockCommit(forkTip), render: true);
+            foreach (Transaction[] txs in txsB)
+            {
+                Block b = fork.ProposeBlock(
+                    miner, txs.ToImmutableList(), CreateBlockCommit(fork.Tip));
+                fork.Append(b, CreateBlockCommit(b), render: true);
+            }
 
             Guid previousChainId = _blockChain.Id;
             _renderer.ResetRecords();
-            _blockChain.Swap(fork, render)();   // #3 -> #2 -> #1 -> #2'
+            _blockChain.Swap(fork, render)();   // #3 -> #2 -> #1 -> #2' -> #3' -> #4'
 
             Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
             Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
@@ -904,10 +936,8 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             DumbAction[] actions = actionRenders.Select(r => ToDumbAction(r.Action)).ToArray();
 
-            int actionsCountA = txsA.Sum(
-                a => a.Sum(tx => tx.Actions.Count)
-            );
-            int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
+            int actionsCountA = txsA.Sum(a => a.Sum(tx => tx.Actions.Count));
+            int actionsCountB = txsB.Sum(b => b.Sum(tx => tx.Actions.Count));
 
             int totalBlockCount = (int)_blockChain.Tip.Index + 1;
 
@@ -927,9 +957,11 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(0, actionRenders.Count(r => r.Unrender));
                 Assert.True(actionRenders.All(r => r.Render));
 
-                Assert.Equal("fork-foo", actions[0].Append?.Item);
-                Assert.Equal("fork-bar", actions[1].Append?.Item);
-                Assert.Equal("fork-baz", actions[2].Append?.Item);
+                Assert.Equal("2'-0", actions[0].Append?.Item);
+                Assert.Equal("2'-1-0", actions[1].Append?.Item);
+                Assert.Equal("2'-1-1", actions[2].Append?.Item);
+                Assert.Equal("3'-0", actions[3].Append?.Item);
+                Assert.Equal("4'-0", actions[4].Append?.Item);
 
                 RenderRecord.ActionBase[] blockActionRenders = _renderer.ActionRecords
                     .Where(r => IsMinerReward(r.Action))
@@ -943,7 +975,7 @@ namespace Libplanet.Tests.Blockchain
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(minerAddress)
                 );
-                Assert.Single(blockActionRenders); // #1 -> #2'
+                Assert.Equal(3, blockActionRenders.Length); // #1 -> #2' -> #3' -> #4'
                 Assert.True(blockActionRenders.All(r => r.Render));
             }
             else
@@ -1024,11 +1056,11 @@ namespace Libplanet.Tests.Blockchain
         [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
-        public void SwapForSameTip(bool render)
+        public void CannotSwapForSameHeightTip(bool render)
         {
             BlockChain fork = _blockChain.Fork(_blockChain.Tip.Hash);
             IReadOnlyList<RenderRecord> prevRecords = _renderer.Records;
-            _blockChain.Swap(fork, render: render)();
+            Assert.Throws<ArgumentException>(() => _blockChain.Swap(fork, render: render)());
 
             // Render methods should be invoked if and only if the tip changes
             Assert.Equal(prevRecords, _renderer.Records);
@@ -1068,6 +1100,10 @@ namespace Libplanet.Tests.Blockchain
                         key, lastCommit: CreateBlockCommit(chain2.Tip));
                     chain2.Append(block2, CreateBlockCommit(block2));
                 }
+
+                Block extraBlock2 = chain2.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(chain2.Tip));
+                chain2.Append(extraBlock2, CreateBlockCommit(extraBlock2));
 
                 Log.Logger.CompareBothChains(
                     LogEventLevel.Debug,

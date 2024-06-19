@@ -30,29 +30,26 @@ namespace Libplanet.Blockchain
             {
                 throw new ArgumentNullException(nameof(other));
             }
+            else if (other.Tip.Index <= Tip.Index)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(other)}'s tip index ({other.Tip.Index}) must be " +
+                    $"greater than the current one ({Tip.Index}) for {nameof(Swap)}.",
+                    nameof(other));
+            }
 
-            if (Tip.Equals(other.Tip))
-            {
-                // If it's swapped for a chain with the same tip, it means there is no state change.
-                // Hence render is unnecessary.
-                render = false;
-            }
-            else
-            {
-                _logger.Debug(
-                    "The blockchain was reorged from " +
-                    "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
-                    "to {NewChainId} (#{NewTipIndex} {NewTipHash})",
-                    Id,
-                    Tip.Index,
-                    Tip.Hash,
-                    other.Id,
-                    other.Tip.Index,
-                    other.Tip.Hash);
-            }
+            _logger.Debug(
+                "The blockchain was reorged from " +
+                "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
+                "to {NewChainId} (#{NewTipIndex} {NewTipHash})",
+                Id,
+                Tip.Index,
+                Tip.Hash,
+                other.Id,
+                other.Tip.Index,
+                other.Tip.Hash);
 
             System.Action renderSwap = () => { };
-
             _rwlock.EnterUpgradeableReadLock();
             try
             {
