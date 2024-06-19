@@ -105,8 +105,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ExecuteActions()
         {
-            (var addresses, Transaction[] txs) =
-                MakeFixturesForAppendTests();
+            (var addresses, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
             Block block1 = _blockChain.ProposeBlock(
@@ -126,7 +125,7 @@ namespace Libplanet.Tests.Blockchain
             };
 
             IValue legacyStateRootRaw =
-                _fx.StateStore.GetStateRoot(_fx.Store.GetNextStateRootHash(block1.Hash))
+                _fx.StateStore.GetStateRoot(_blockChain.GetNextStateRootHash())
                 .Get(ToStateKey(ReservedAddresses.LegacyAccount));
             Assert.NotNull(legacyStateRootRaw);
             var legacyStateRoot =

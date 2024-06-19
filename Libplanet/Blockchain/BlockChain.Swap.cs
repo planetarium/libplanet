@@ -109,6 +109,7 @@ namespace Libplanet.Blockchain
                     TipChanged?.Invoke(this, (oldTip, newTip));
 
                     Store.DeleteChainId(obsoleteId);
+                    _nextStateRootHash = other.NextStateRootHash;
                 }
                 finally
                 {

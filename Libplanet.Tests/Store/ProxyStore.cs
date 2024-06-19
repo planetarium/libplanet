@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
@@ -191,17 +189,5 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.GetBlockCommitHashes"/>
         public IEnumerable<BlockHash> GetBlockCommitHashes() =>
             Store.GetBlockCommitHashes();
-
-        /// <inheritdoc cref="IStore.GetNextStateRootHash"/>
-        public HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash) =>
-            Store.GetNextStateRootHash(blockHash);
-
-        /// <inheritdoc cref="IStore.PutNextStateRootHash"/>
-        public void PutNextStateRootHash(BlockHash blockHash, HashDigest<SHA256> nextStateRootHash)
-            => Store.PutNextStateRootHash(blockHash, nextStateRootHash);
-
-        /// <inheritdoc cref="IStore.DeleteNextStateRootHash"/>
-        public void DeleteNextStateRootHash(BlockHash blockHash) =>
-            Store.DeleteNextStateRootHash(blockHash);
     }
 }

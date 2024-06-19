@@ -1862,8 +1862,6 @@ namespace Libplanet.Tests.Blockchain
                         .ToList();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
-                    store.PutNextStateRootHash(
-                        b.Hash, evals.Last().OutputState.Trie.Hash);
                     BuildIndex(chain.Id, b);
                     Assert.Equal(b, chain[b.Hash]);
                     if (presentIndices.Contains((int)b.Index))

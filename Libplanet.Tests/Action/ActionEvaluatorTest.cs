@@ -1009,7 +1009,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);
@@ -1079,7 +1079,7 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
             Assert.False(evaluations[0].InputContext.BlockAction);
             Assert.Single(evaluations);

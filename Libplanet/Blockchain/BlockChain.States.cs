@@ -28,12 +28,11 @@ namespace Libplanet.Blockchain
         /// <returns>The next world state.  If it does not exist, returns null.</returns>
         public IWorldState? GetNextWorldState()
         {
-            var nextSrh = GetNextStateRootHash();
-            if (nextSrh is { } srh)
+            if (GetNextStateRootHash() is { } srh)
             {
                 var trie = StateStore.GetStateRoot(srh);
                 return trie.Recorded
-                    ? new WorldBaseState(StateStore.GetStateRoot(nextSrh), StateStore)
+                    ? new WorldBaseState(trie, StateStore)
                     : throw new InvalidOperationException(
                         $"Could not find state root {srh} in {nameof(StateStore)} for " +
                         $"the current tip.");

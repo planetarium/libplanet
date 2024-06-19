@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -688,6 +689,7 @@ namespace Libplanet.Net.Tests.Consensus
             var watch = Stopwatch.StartNew();
             await onTipChanged.WaitAsync();
             Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
+            Thread.Sleep(100); // Wait for votes to get collected.
 
             Assert.Equal(
                 4,

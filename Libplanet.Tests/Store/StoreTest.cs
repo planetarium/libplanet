@@ -1170,37 +1170,6 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void GetNextStateRootHash()
-        {
-            using (StoreFixture fx = FxConstructor())
-            {
-                HashDigest<SHA256> nextStateRootHash
-                    = HashDigest<SHA256>.DeriveFrom(new byte[] { 0, 1, 2 });
-                fx.Store.PutNextStateRootHash(fx.Block2.Hash, nextStateRootHash);
-                HashDigest<SHA256>? storedNextStateRootHash =
-                    fx.Store.GetNextStateRootHash(fx.Block2.Hash);
-
-                Assert.Equal(nextStateRootHash, storedNextStateRootHash);
-            }
-        }
-
-        [SkippableFact]
-        public void DeleteNextStateRootHash()
-        {
-            using (StoreFixture fx = FxConstructor())
-            {
-                HashDigest<SHA256> nextStateRootHash
-                    = HashDigest<SHA256>.DeriveFrom(new byte[] { 0, 1, 2 });
-                fx.Store.PutNextStateRootHash(fx.Block2.Hash, nextStateRootHash);
-
-                Assert.NotNull(fx.Store.GetNextStateRootHash(fx.Block2.Hash));
-
-                fx.Store.DeleteNextStateRootHash(fx.Block2.Hash);
-                Assert.Null(fx.Store.GetNextStateRootHash(fx.Block2.Hash));
-            }
-        }
-
-        [SkippableFact]
         public void ForkTxNonces()
         {
             IStore store = Fx.Store;
