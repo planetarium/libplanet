@@ -444,11 +444,6 @@ namespace Libplanet.Blockchain
                 return blockChain;
             }
 
-            HashDigest<SHA256> nextStateRootHash =
-                blockChain.DetermineNextBlockStateRootHash(genesisBlock, out _);
-
-            blockChain.Store.PutNextStateRootHash(genesisBlock.Hash, nextStateRootHash);
-
             return blockChain;
         }
 
