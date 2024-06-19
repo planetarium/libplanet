@@ -427,8 +427,7 @@ namespace Libplanet.Blockchain
             store.SetCanonicalChainId(id);
 
             blockChainStates ??= new BlockChainStates(store, stateStore);
-
-            var blockChain = new BlockChain(
+            return new BlockChain(
                 policy,
                 stagePolicy,
                 store,
@@ -438,13 +437,6 @@ namespace Libplanet.Blockchain
                 blockChainStates,
                 actionEvaluator,
                 renderers);
-
-            if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
-            {
-                return blockChain;
-            }
-
-            return blockChain;
         }
 
         /// <summary>
