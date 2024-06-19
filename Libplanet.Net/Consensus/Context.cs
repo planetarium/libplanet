@@ -491,7 +491,7 @@ namespace Libplanet.Net.Consensus
                         }
                     }
 
-                    _blockChain.ValidateBlockStateRootHash(block, TimeSpan.Zero);
+                    _blockChain.ValidateBlockStateRootHash(block);
                 }
                 catch (Exception e) when (
                     e is InvalidBlockException ||

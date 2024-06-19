@@ -1405,26 +1405,27 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal HashDigest<SHA256>? GetNextStateRootHash(
-            BlockHash blockHash,
-            TimeSpan? fetchInterval = null)
-        {
-            while (true)
-            {
-                if (Store.GetNextStateRootHash(blockHash) is HashDigest<SHA256> srh)
-                {
-                    return srh;
-                }
+        internal HashDigest<SHA256>? GetNextStateRootHash() =>
+            GetNextStateRootHash(Tip);
 
-                if (fetchInterval is TimeSpan interval)
-                {
-                    Thread.Sleep(interval);
-                }
-                else
-                {
-                    return null;
-                }
+        internal HashDigest<SHA256>? GetNextStateRootHash(long index) =>
+            GetNextStateRootHash(this[index]);
+
+        internal HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash) =>
+            GetNextStateRootHash(this[blockHash]);
+
+        private HashDigest<SHA256>? GetNextStateRootHash(Block block)
+        {
+            if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
+            {
+                return block.StateRootHash;
             }
+            else if (block.Index < Tip.Index)
+            {
+                return this[block.Index + 1].StateRootHash;
+            }
+
+            return Store.GetNextStateRootHash(block.Hash);
         }
     }
 }

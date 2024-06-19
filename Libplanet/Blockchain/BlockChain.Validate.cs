@@ -318,19 +318,21 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Validates a result obtained from <see cref="EvaluateBlock"/> by
-        /// comparing the state root hash from <see cref="GetNextStateRootHash"/>
+        /// comparing the state root hash from <see cref="GetNextStateRootHash(BlockHash)"/>
         /// which stores state root hash from <see cref="DetermineNextBlockStateRootHash"/>,
         /// to the one in <paramref name="block"/>.
         /// </summary>
         /// <param name="block">The <see cref="Block"/> to validate against.</param>
-        /// <param name="validationInterval">The interval for fetching calculated state root hash
-        /// from <see cref="Append(Block, BlockCommit)"/>.</param>
+        /// <exception cref="InvalidOperationException">If this method is called
+        /// when the result of <see cref="GetNextStateRootHash(BlockHash)"/>
+        /// is <see langword="null"/>.  This can happen if <paramref name="block"/>
+        /// is an index higher than the tip but its result is not ready yet.</exception>
         /// <exception cref="InvalidBlockStateRootHashException">If the state root hash
         /// calculated by committing to the <see cref="IStateStore"/> does not match
         /// the <paramref name="block"/>'s <see cref="Block.StateRootHash"/>.</exception>
         /// <seealso cref="EvaluateBlock"/>
         /// <seealso cref="DetermineNextBlockStateRootHash"/>
-        internal void ValidateBlockStateRootHash(Block block, TimeSpan validationInterval = default)
+        internal void ValidateBlockStateRootHash(Block block)
         {
             // NOTE: Since previous hash validation is on block validation,
             // assume block is genesis if previous hash is null.
@@ -339,14 +341,10 @@ namespace Libplanet.Blockchain
                 return;
             }
 
-            HashDigest<SHA256> stateRootHash =
-                _blocks[previousHash].ProtocolVersion <
-                BlockMetadata.SlothProtocolVersion
-                    ? _blocks[previousHash].StateRootHash
-                    : GetNextStateRootHash(previousHash) ??
-                        throw new InvalidOperationException(
-                            $"Cannot validate a block' state root hash as the next " +
-                            $"state root hash for block {previousHash} is missing.");
+            HashDigest<SHA256> stateRootHash = GetNextStateRootHash(previousHash) ??
+                throw new InvalidOperationException(
+                    $"Cannot validate a block' state root hash as the next " +
+                    $"state root hash for block {previousHash} is missing.");
 
             if (!stateRootHash.Equals(block.StateRootHash))
             {

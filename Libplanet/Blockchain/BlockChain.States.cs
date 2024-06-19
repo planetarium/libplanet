@@ -28,7 +28,7 @@ namespace Libplanet.Blockchain
         /// <returns>The next world state.  If it does not exist, returns null.</returns>
         public IWorldState? GetNextWorldState()
         {
-            var nextSrh = Store.GetNextStateRootHash(Tip.Hash);
+            var nextSrh = GetNextStateRootHash();
             if (nextSrh is { } srh)
             {
                 var trie = StateStore.GetStateRoot(srh);
