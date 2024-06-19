@@ -343,7 +343,10 @@ namespace Libplanet.Blockchain
                 _blocks[previousHash].ProtocolVersion <
                 BlockMetadata.SlothProtocolVersion
                     ? _blocks[previousHash].StateRootHash
-                    : (HashDigest<SHA256>)GetNextStateRootHash(previousHash, validationInterval);
+                    : GetNextStateRootHash(previousHash) ??
+                        throw new InvalidOperationException(
+                            $"Cannot validate a block' state root hash as the next " +
+                            $"state root hash for block {previousHash} is missing.");
 
             if (!stateRootHash.Equals(block.StateRootHash))
             {
