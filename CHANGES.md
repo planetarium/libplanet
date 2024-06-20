@@ -12,6 +12,7 @@ To be released.
 
  -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
     interface and its implementations.  [[#3762]]
+ -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.  [[#3841]]
  -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`.
     [[#3913]]
  -  (Libplanet.Net) Removed `SwarmOptions.BranchpointThreshold` property.
@@ -59,6 +60,7 @@ To be released.
 ### CLI tools
 
 [#3762]: https://github.com/planetarium/libplanet/pull/3762
+[#3841]: https://github.com/planetarium/libplanet/pull/3841
 [#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
