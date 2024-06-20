@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Net</PackageId>
     <Title>P2P implementation for Libplanet</Title>
     <Description>A peer-to-peer networking layer based on Libplanet.</Description>
     <PackageIcon>icon.png</PackageIcon>
@@ -9,7 +8,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet.Net</RootNamespace>
     <AssemblyName>Libplanet.Net</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>

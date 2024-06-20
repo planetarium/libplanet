@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Mocks</PackageId>
-    <Title>Libplanet.Mocks</Title>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>Libplanet.Mocks</RootNamespace>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>

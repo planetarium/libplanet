@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Stun</PackageId>
-    <Title>Libplanet.Stun</Title>
     <Summary>A STUN/TURN client implementation for Libplanet.</Summary>
     <Description>A STUN/TURN client implementation for Libplanet.</Description>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet.Stun</RootNamespace>
     <AssemblyName>Libplanet.Stun</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>

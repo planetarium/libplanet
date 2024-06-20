@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Tools</PackageId>
     <Title>planet: Libplanet CLI Tools</Title>
     <Summary>planet: Libplanet CLI Tools</Summary>
     <Description>This CLI app is a collection of utilities for application <!--

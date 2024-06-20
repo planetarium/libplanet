@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Types</PackageId>
-    <Title>Libplanet.Types</Title>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>Libplanet.Types</RootNamespace>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>

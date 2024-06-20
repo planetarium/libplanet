@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Store</PackageId>
-    <Title>Libplanet.Store</Title>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>Libplanet.Store</RootNamespace>
     <NoWarn>$(NoWarn);NU1904</NoWarn>

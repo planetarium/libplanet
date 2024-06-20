@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0</TargetFrameworks>
+    <LangVersion>10</LangVersion>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 

@@ -3,7 +3,6 @@
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>8.0</LangVersion>
     <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <PackageId>Libplanet.Crypto.Secp256k1</PackageId>
-  </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>10</LangVersion>
     <RootNamespace>Libplanet.Crypto.Secp256k1</RootNamespace>
+    <LangVersion>10</LangVersion>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

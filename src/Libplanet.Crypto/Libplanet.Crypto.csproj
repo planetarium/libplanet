@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Crypto</PackageId>
-    <Title>Libplanet.Crypto</Title>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>Libplanet.Crypto</RootNamespace>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>

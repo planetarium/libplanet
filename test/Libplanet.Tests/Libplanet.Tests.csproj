@@ -2,7 +2,6 @@
   <PropertyGroup>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>7.1</LangVersion>
     <NoWarn>$(NoWarn);SA1401;SYSLIB0011</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

@@ -5,8 +5,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <LangVersion>9</LangVersion>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
+    <Title>$(ProjectName)</Title>
   </PropertyGroup>
 
 </Project>
