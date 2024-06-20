@@ -22,10 +22,4 @@
       <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-        <Link>Menees.Analyzers.Settings.xml</Link>
-      </AdditionalFiles>
-    </ItemGroup>
-
 </Project>

@@ -39,6 +39,19 @@
     <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="icon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>
+  </ItemGroup>
+
+  <ItemGroup>
+     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

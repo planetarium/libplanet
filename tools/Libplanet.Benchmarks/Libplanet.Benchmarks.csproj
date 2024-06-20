@@ -9,9 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
@@ -21,6 +18,10 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="Menees.Analyzers.2017" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

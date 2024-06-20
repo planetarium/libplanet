@@ -11,12 +11,6 @@
     <PackageReference Include="Bencodex.Json" Version="0.16.0" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
