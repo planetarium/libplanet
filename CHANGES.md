@@ -31,6 +31,7 @@ Version DPoS
     interface and its implementations.  [[#3762]]
  -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.
     [[#3737], [#3813]]
+ -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.   [[#3841]]
  -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
     interface and its implementations.  [[#3737], [#3813]]
 
@@ -57,6 +58,7 @@ Version DPoS
 [#3762]: https://github.com/planetarium/libplanet/pull/3762
 [#3764]: https://github.com/planetarium/libplanet/pull/3764
 [#3813]: https://github.com/planetarium/libplanet/pull/3813
+[#3841]: https://github.com/planetarium/libplanet/pull/3841
 
 
 Version Sloth
