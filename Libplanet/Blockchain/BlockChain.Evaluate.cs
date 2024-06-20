@@ -83,10 +83,14 @@ namespace Libplanet.Blockchain
         /// contains an action that cannot be loaded with <see cref="IActionLoader"/>.</exception>
         /// <seealso cref="ValidateBlockPrecededStateRootHash"/>
         [Pure]
-        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlock(Block block)
-            => ActionEvaluator.Evaluate(
-                block,
-                Store.GetStateRootHash(block.Hash));
+        public IReadOnlyList<ICommittedActionEvaluation> EvaluateBlock(Block block) =>
+            block.ProtocolVersion >= BlockMetadata.SlothProtocolVersion
+                ? ActionEvaluator.Evaluate(
+                    block,
+                    Store.GetStateRootHash(block.Hash))
+                : ActionEvaluator.Evaluate(
+                    block,
+                    Store.GetStateRootHash(block.PreviousHash));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and
