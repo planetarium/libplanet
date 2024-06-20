@@ -29,4 +29,8 @@
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
+
 </Project>
