@@ -6,8 +6,6 @@
     --> programmers who create decentralized games powered by Libplanet <!--
     --> (https://libplanet.io/).</Description>
     <OutputType>Exe</OutputType>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,9 +35,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Remove="..\..\README.md" />
     <None Include="README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>

@@ -27,12 +27,4 @@
       <ProjectReference Include="..\..\src\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="..\..\LICENSE">
-        <Pack>true</Pack>
-        <PackagePath>LICENSE.txt</PackagePath>
-        <Link>LICENSE</Link>
-      </None>
-    </ItemGroup>
-
 </Project>

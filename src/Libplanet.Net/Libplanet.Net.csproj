@@ -2,9 +2,6 @@
   <PropertyGroup>
     <Title>P2P implementation for Libplanet</Title>
     <Description>A peer-to-peer networking layer based on Libplanet.</Description>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
-    <PackageTags>multiplayer online game;game;blockchain</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -19,9 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>

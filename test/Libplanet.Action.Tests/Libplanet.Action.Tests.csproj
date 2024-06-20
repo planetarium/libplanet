@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
