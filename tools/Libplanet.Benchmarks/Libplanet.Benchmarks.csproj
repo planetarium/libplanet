@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

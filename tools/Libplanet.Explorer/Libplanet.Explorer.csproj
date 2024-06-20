@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
