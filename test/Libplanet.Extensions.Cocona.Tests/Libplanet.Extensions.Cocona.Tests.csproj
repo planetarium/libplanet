@@ -3,8 +3,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Nullable>enable</Nullable>
                 <RootNamespace>Libplanet.Extensions.Cocona.Tests</RootNamespace>
-        <LangVersion>10</LangVersion>
-    </PropertyGroup>
+        </PropertyGroup>
 
     <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
         <TargetFramework>$(TestsTargetFramework)</TargetFramework>

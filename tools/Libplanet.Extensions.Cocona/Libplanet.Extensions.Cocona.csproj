@@ -1,11 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Extensions.Cocona</PackageId>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>10</LangVersion>
     <RootNamespace>Libplanet.Extensions.Cocona</RootNamespace>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

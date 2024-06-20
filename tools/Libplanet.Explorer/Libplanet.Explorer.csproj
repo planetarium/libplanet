@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Explorer</PackageId>
-    <Title>Libplanet.Explorer</Title>
     <NoWarn>NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>10</LangVersion>
     <RootNamespace>Libplanet.Explorer</RootNamespace>
     <AssemblyName>Libplanet.Explorer</AssemblyName>
     <Nullable>enable</Nullable>

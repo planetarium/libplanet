@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Libplanet.Explorer.Cocona</PackageId>
-    <AssemblyName>Libplanet.Explorer.Cocona</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
     <RootNamespace>Libplanet.Explorer.Cocona</RootNamespace>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
