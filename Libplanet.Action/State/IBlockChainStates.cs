@@ -22,8 +22,8 @@ namespace Libplanet.Action.State
         /// The <see cref="IWorldState"/> at <paramref name="offset"/>, which is the identical
         /// to what <see cref="Block.StateRootHash"/> of <paramref name="offset"/> indicates.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="offset"/>
-        /// one of the following is true.
+        /// <exception cref="ArgumentException">Thrown when one of the following is true
+        /// for <paramref name="offset"/>.
         /// <list type="bullet">
         ///     <item><description>
         ///         Corresponding <see cref="Block"/> is not found in the <see cref="IStore"/>.
@@ -46,7 +46,7 @@ namespace Libplanet.Action.State
         /// <returns>
         /// The <see cref="IWorldState"/> with <paramref name="stateRootHash"/>.
         /// If <paramref name="stateRootHash"/> is <see langword="null"/>,
-        /// returns the hash of the empty state root.
+        /// returns an empty <see cref="IWorldState"/>.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when no <see cref="ITrie"/> with
         /// <paramref name="hash"/> as its state root hash is found.
