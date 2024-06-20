@@ -8,6 +8,7 @@
     <LangVersion>10</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
 </Project>

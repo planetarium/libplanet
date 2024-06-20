@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Remove="Menees.Analyzers.2017" />
+    <PackageReference Remove="StyleCop.Analyzers" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
