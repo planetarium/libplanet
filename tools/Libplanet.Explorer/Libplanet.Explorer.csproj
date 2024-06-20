@@ -2,13 +2,6 @@
   <PropertyGroup>
     <PackageId>Libplanet.Explorer</PackageId>
     <Title>Libplanet.Explorer</Title>
-    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Company>Planetarium</Company>
-    <Authors>Planetarium</Authors>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <NoWarn>NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>icon.png</PackageIcon>
@@ -16,15 +9,12 @@
 
   <PropertyGroup>
     <LangVersion>10</LangVersion>
-    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Libplanet.Explorer</RootNamespace>
     <AssemblyName>Libplanet.Explorer</AssemblyName>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
+      <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

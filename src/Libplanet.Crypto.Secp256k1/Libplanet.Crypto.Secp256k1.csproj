@@ -1,23 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Libplanet.Crypto.Secp256k1</PackageId>
-    <Authors>Planetarium</Authors>
-    <Company>Planetarium</Company>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>10</LangVersion>
-    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
     <RootNamespace>Libplanet.Crypto.Secp256k1</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5104</NoWarn>
-    <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
-        <RootNamespace>Libplanet.Explorer.Cocona.Tests</RootNamespace>
+                <RootNamespace>Libplanet.Explorer.Cocona.Tests</RootNamespace>
         <LangVersion>8</LangVersion>
     </PropertyGroup>
 

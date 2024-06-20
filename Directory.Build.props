@@ -1,0 +1,17 @@
+<Project>
+
+  <Import Condition="'$(SolutionDir)' != '' and '$(SolutionDir)' != '$(MSBuildThisFileDirectory)' and $([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../')) != ''"
+          Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Company>Planetarium</Company>
+    <Authors>Planetarium</Authors>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'!='Debug'">true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>
