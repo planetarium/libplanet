@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Analyzers</PackageId>
     <Title>Static analysis on Libplanet-powered apps</Title>
     <Description>The Roslyn analyzer which checks if code has common <!--
     --> mistakes prone to made with Libplanet-powered game apps.</Description>
@@ -9,7 +8,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet.Analyzers</RootNamespace>
     <AssemblyName>Libplanet.Analyzers</AssemblyName>
     <IncludeBuildOutput>false</IncludeBuildOutput>

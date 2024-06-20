@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
-  <PackageId>Libplanet.RocksDBStore</PackageId>
-  <Title>Libplanet.RocksDBStore</Title>
   <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
   <Description>A Libplanet.IStore implementation using RocksDB</Description>
   <PackageIcon>icon.png</PackageIcon>
 </PropertyGroup>
 
 <PropertyGroup>
-  <LangVersion>8.0</LangVersion>
   <RootNamespace>Libplanet.RocksDBStore</RootNamespace>
   <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
   <ProduceReferenceAssembly>true</ProduceReferenceAssembly>

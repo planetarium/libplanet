@@ -3,7 +3,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
     <RootNamespace>Libplanet.Crypto.Secp256k1.Tests</RootNamespace>
-    <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">

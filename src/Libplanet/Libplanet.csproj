@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet</PackageId>
-    <Title>Libplanet</Title>
     <VersionPrefix>5.1.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
@@ -26,7 +24,6 @@ https://docs.libplanet.io/</Description>
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
