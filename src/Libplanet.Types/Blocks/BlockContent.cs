@@ -191,7 +191,12 @@ namespace Libplanet.Types.Blocks
             }
 
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
-            return new HashDigest<SHA256>(hasher.Hash);
+            if (hasher.Hash is { } hash)
+            {
+                return new HashDigest<SHA256>(hash);
+            }
+
+            return null;
         }
 
         public PreEvaluationBlock Propose()

@@ -702,8 +702,14 @@ namespace Libplanet.Store
 
             foreach (UPath path in _blockCommits.EnumerateFiles(UPath.Root))
             {
-                string name = path.FullName.Split('/').LastOrDefault();
-                hashes.Add(new BlockHash(ByteUtil.ParseHex(name)));
+                if (path.FullName.Split('/').LastOrDefault() is { } name)
+                {
+                    hashes.Add(new BlockHash(ByteUtil.ParseHex(name)));
+                }
+                else
+                {
+                    throw new InvalidOperationException("Failed to get the block hash.");
+                }
             }
 
             return hashes.AsEnumerable();

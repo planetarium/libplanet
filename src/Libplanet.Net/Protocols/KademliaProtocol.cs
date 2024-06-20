@@ -723,7 +723,7 @@ namespace Libplanet.Net.Protocols
             }
 
             var findPeerTasks = new List<Task>();
-            BoundPeer closestKnownPeer = closestCandidate.FirstOrDefault();
+            BoundPeer? closestKnownPeer = closestCandidate.FirstOrDefault();
             var count = 0;
             foreach (var peer in peers)
             {
