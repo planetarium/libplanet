@@ -98,28 +98,46 @@ namespace Libplanet.Net
                 return false;
             }
 
-            if (synced is { } syncedB
-                && !syncedB.Id.Equals(BlockChain?.Id)
-                && BlockChain.Tip.Index < syncedB.Tip.Index)
+            try
             {
-                _logger.Debug(
-                    "Swapping chain {ChainIdA} with chain {ChainIdB}...",
-                    BlockChain.Id,
-                    synced.Id
-                );
-                renderSwap = BlockChain.Swap(
-                    synced,
-                    render: render);
-                _logger.Debug(
-                    "Swapped chain {ChainIdA} with chain {ChainIdB}",
-                    BlockChain.Id,
-                    synced.Id
-                );
-            }
+                // Although highly unlikely, current block chain's tip can change.
+                if (synced is { } syncedB
+                    && !syncedB.Id.Equals(BlockChain?.Id)
+                    && BlockChain.Tip.Index < syncedB.Tip.Index)
+                {
+                    _logger.Debug(
+                        "Swapping chain {ChainIdA} with chain {ChainIdB}...",
+                        BlockChain.Id,
+                        synced.Id
+                    );
+                    renderSwap = BlockChain.Swap(
+                        synced,
+                        render: render);
+                    _logger.Debug(
+                        "Swapped chain {ChainIdA} with chain {ChainIdB}",
+                        BlockChain.Id,
+                        synced.Id
+                    );
 
-            renderSwap();
-            BroadcastBlock(BlockChain.Tip);
-            return true;
+                    renderSwap();
+                    BroadcastBlock(BlockChain.Tip);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "{MethodName}() has failed to swap chain {ChainIdA} with chain {ChainIdB}",
+                    nameof(BlockCandidateProcess),
+                    BlockChain.Id,
+                    synced.Id);
+                return false;
+            }
         }
 
         private BlockChain AppendPreviousBlocks(
