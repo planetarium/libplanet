@@ -6,7 +6,6 @@
 </PropertyGroup>
 
 <PropertyGroup>
-  <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
   <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   <Nullable>enable</Nullable>
   <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
