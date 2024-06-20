@@ -4,28 +4,18 @@
     <Title>Libplanet.Stun</Title>
     <Summary>A STUN/TURN client implementation for Libplanet.</Summary>
     <Description>A STUN/TURN client implementation for Libplanet.</Description>
-    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <Authors>Planetarium</Authors>
-    <Company>Planetarium</Company>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Stun</RootNamespace>
     <AssemblyName>Libplanet.Stun</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);MEN001</NoWarn>
-    <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

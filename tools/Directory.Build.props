@@ -1,0 +1,11 @@
+<Project>
+
+  <Import Condition="'$(SolutionDir)' != '' and '$(SolutionDir)' != '$(MSBuildThisFileDirectory)' and $([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../')) != ''"
+          Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+</Project>
