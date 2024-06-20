@@ -203,7 +203,7 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        workspace.AppendStateRootHashPreceded(block, commit, render: render && !forked);
+                        workspace.Append(block, commit, render: render && !forked);
                     }
 
                     actionExecutionState.ExecutedBlockCount += 1;
