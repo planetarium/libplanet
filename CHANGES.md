@@ -14,6 +14,7 @@ To be released.
     [[#3811]]
  -  (Libplanet) `BlockChain.DetermineBlockStateRootHash()`
     has been removed.  [[#3811]]
+ -  (Libplanet.Types) `Vote.Verify()` has been removed.  [[#3837]]
 
 ### Backward-incompatible API changes
 
@@ -63,6 +64,7 @@ To be released.
 ### CLI tools
 
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
+[#3837]: https://github.com/planetarium/libplanet/pull/3837
 
 
 Version 4.6.1
