@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
@@ -109,15 +110,28 @@ namespace Libplanet.Explorer.Executable
 
         public string GenesisBlockPath { get; set; }
 
-        internal Block GetGenesisBlock(IBlockPolicy policy)
+        internal async Task<Block> GetGenesisBlockAsync(IBlockPolicy policy)
         {
+#if NETSTATNDARD2_1_OR_GREATER
             var uri = new Uri(GenesisBlockPath);
+            awai Task.CompletedTask;
             using (var client = new WebClient())
             {
                 var serialized = client.DownloadData(uri);
                 var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
                 return BlockMarshaler.UnmarshalBlock(dict);
             }
+#elif NET6_0_OR_GREATER
+            var uri = new Uri(GenesisBlockPath);
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                var serialized = await client.GetByteArrayAsync(uri);
+                var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
+                return BlockMarshaler.UnmarshalBlock(dict);
+            }
+#else
+            throw new System.PlatformNotSupportedException();
+#endif
         }
     }
 }

@@ -197,7 +197,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         stagePolicy,
                         store,
                         stateStore,
-                        options.GetGenesisBlock(policy),
+                        await options.GetGenesisBlockAsync(policy),
                         blockChainStates,
                         new ActionEvaluator(
                             _ => policy.BlockAction,

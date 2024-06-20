@@ -13,8 +13,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
-      <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+    </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
     <PackAsTool>true</PackAsTool>
@@ -45,18 +44,6 @@
 
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="2.0.*" />
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers; buildtransitive
-      </IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers
-      </IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
