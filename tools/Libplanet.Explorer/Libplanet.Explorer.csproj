@@ -40,6 +40,10 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
     <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />

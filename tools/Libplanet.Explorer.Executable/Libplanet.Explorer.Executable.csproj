@@ -29,6 +29,10 @@
     <PackageReference Include="Cocona.Lite" Version="1.5.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
     <ProjectReference Include="..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
