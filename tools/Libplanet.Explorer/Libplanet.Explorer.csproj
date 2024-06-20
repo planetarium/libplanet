@@ -2,7 +2,6 @@
   <PropertyGroup>
     <NoWarn>NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
-    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,8 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
