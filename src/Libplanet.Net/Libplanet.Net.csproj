@@ -3,25 +3,16 @@
     <PackageId>Libplanet.Net</PackageId>
     <Title>P2P implementation for Libplanet</Title>
     <Description>A peer-to-peer networking layer based on Libplanet.</Description>
-    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <Authors>Planetarium</Authors>
-    <Company>Planetarium</Company>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Net</RootNamespace>
     <AssemblyName>Libplanet.Net</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
@@ -29,7 +20,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);S4035;CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
-    <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

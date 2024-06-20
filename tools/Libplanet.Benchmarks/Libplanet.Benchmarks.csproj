@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Libplanet.Benchmarks</RootNamespace>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -16,11 +15,6 @@
     </AdditionalFiles>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
-                             '$(BuildingByReSharper)'!='true'">
-    <TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
 
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>

@@ -19,17 +19,10 @@
 See also the docs for details:
 https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
-    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <Authors>Planetarium</Authors>
-    <Company>Planetarium</Company>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,17 +30,14 @@ https://docs.libplanet.io/</Description>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);S4035;CS1591;NU5104;MEN001;NU1902</NoWarn>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
     <!-- FIXME: NU1902 should be removed once BouncyCastle is bumped to a secure version -->
-    <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

@@ -3,19 +3,12 @@
   <PropertyGroup>
     <PackageId>Libplanet.Crypto</PackageId>
     <Title>Libplanet.Crypto</Title>
-    <Authors>Planetarium</Authors>
-    <Company>Planetarium</Company>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Libplanet.Crypto</RootNamespace>
-    <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
