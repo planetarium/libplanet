@@ -64,6 +64,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         private Block _genesis;
 
+        private HashDigest<SHA256>? _nextStateRootHash;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain"/> class by loading
         /// the canonical chain from given <paramref name="store"/>.
@@ -1404,7 +1406,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal HashDigest<SHA256>? GetNextStateRootHash() => NextStateRootHash;
+        internal HashDigest<SHA256>? GetNextStateRootHash() => _nextStateRootHash;
 
         internal HashDigest<SHA256>? GetNextStateRootHash(long index) =>
             GetNextStateRootHash(this[index]);
