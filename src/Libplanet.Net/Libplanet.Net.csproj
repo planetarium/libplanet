@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RootNamespace>Libplanet.Net</RootNamespace>
     <AssemblyName>Libplanet.Net</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <RootNamespace>Libplanet.Action</RootNamespace>
     <AssemblyName>Libplanet.Action</AssemblyName>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

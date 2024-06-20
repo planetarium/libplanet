@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
-    <RootNamespace>Libplanet.Crypto.Secp256k1.Tests</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
