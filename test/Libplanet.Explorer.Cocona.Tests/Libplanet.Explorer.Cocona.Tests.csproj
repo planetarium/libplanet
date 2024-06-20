@@ -19,12 +19,7 @@
       </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
-      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.1" />
-      <PackageReference Include="xunit" Version="2.4.1" />
-      <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
-      <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6" />
-    </ItemGroup>
+            </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\tools\Libplanet.Explorer.Cocona\Libplanet.Explorer.Cocona.csproj" />
