@@ -12,6 +12,7 @@ To be released.
 
  -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
     interface and its implementations.  [[#3762]]
+ -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.  [[#3841]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#3762]: https://github.com/planetarium/libplanet/pull/3762
+[#3841]: https://github.com/planetarium/libplanet/pull/3841
 
 
 Version 5.3.1
