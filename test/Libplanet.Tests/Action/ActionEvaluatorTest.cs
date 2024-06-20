@@ -1126,9 +1126,12 @@ namespace Libplanet.Tests.Action
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(
-                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                proposer: GenesisProposer,
+                transactions: txs.ToImmutableList(),
+                lastCommit: CreateBlockCommit(chain.Tip),
+                evidence: ImmutableArray<EvidenceBase>.Empty);
 
-            IWorld previousState = actionEvaluator.PrepareInitialDelta(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(null);
             var evaluations = actionEvaluator.EvaluatePolicyEndTxActions(
                 genesis,
                 txs[0],
@@ -1536,10 +1539,10 @@ namespace Libplanet.Tests.Action
             Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty),
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(DumbAction)));
             Assert.Throws<BlockProtocolVersionNotSupportedException>(
