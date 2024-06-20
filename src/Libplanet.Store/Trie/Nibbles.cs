@@ -146,10 +146,12 @@ namespace Libplanet.Store.Trie
 
         public bool Equals(Nibbles other)
         {
+#if NETSTANDARD2_0_OR_GREATER
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+#endif // NETSTANDARD2_0_OR_GREATER
 
             return other is { } nibbles && ByteArray.SequenceEqual(nibbles.ByteArray);
         }
