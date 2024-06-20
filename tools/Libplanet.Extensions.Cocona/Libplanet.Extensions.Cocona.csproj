@@ -29,10 +29,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.51.0.59060">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

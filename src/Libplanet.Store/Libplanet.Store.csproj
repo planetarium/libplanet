@@ -36,6 +36,9 @@
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Common\Libplanet.Common.csproj" />
