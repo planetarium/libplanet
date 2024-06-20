@@ -4,6 +4,7 @@
           Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

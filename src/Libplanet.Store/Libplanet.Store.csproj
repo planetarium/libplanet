@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);NU1904</NoWarn>
     <!-- FIXME: NU1904 should be removed once LiteDB is bumped to a secure version -->
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
