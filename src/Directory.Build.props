@@ -4,7 +4,7 @@
           Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <LangVersion>9</LangVersion>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>

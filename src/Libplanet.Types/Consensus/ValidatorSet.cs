@@ -140,7 +140,16 @@ namespace Libplanet.Types.Consensus
             validator => validator.PublicKey.Equals(publicKey));
 
         public Validator GetValidator(PublicKey publicKey)
-            => Validators.Find(validator => validator.PublicKey == publicKey);
+        {
+            if (Validators.Find(validator => validator.PublicKey == publicKey) is { } validator)
+            {
+                return validator;
+            }
+
+            throw new ArgumentException(
+                message: $"No validator with the given public key: {publicKey}",
+                paramName: nameof(publicKey));
+        }
 
         public ImmutableList<Validator> GetValidators(IEnumerable<PublicKey> publicKeys)
             => (from publicKey in publicKeys select GetValidator(publicKey)).ToImmutableList();

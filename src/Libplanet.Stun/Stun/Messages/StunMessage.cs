@@ -18,14 +18,18 @@ namespace Libplanet.Stun.Messages
         protected StunMessage()
         {
             var transactionId = new byte[12];
+#if NETSTANDARD2_0_OR_GREATER
             using var rng = new RNGCryptoServiceProvider();
+#elif NET6_0_OR_GREATER
+            using var rng = RandomNumberGenerator.Create();
+#endif
             rng.GetBytes(transactionId);
             TransactionId = transactionId;
         }
 
         // TODO Should document following STUN / TURN RFC
         // https://www.iana.org/assignments/stun-parameters/stun-parameters.xhtml
-        #pragma warning disable SA1602
+#pragma warning disable SA1602
         public enum MessageClass : byte
         {
             Request = 0x0,
@@ -47,7 +51,7 @@ namespace Libplanet.Stun.Messages
             ConnectionBind = 0x00b,
             ConnectionAttempt = 0x00c,
         }
-        #pragma warning restore SA1602
+#pragma warning restore SA1602
 
         /// <summary>
         /// A <see cref="MessageClass"/> of STUN packet.
