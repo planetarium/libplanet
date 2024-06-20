@@ -9,7 +9,6 @@
 
   <PropertyGroup>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5128</NoWarn>

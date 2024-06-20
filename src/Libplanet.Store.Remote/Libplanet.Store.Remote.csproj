@@ -4,8 +4,7 @@
       <TargetFrameworks>net6.0</TargetFrameworks>
       <LangVersion>10</LangVersion>
       <ImplicitUsings>enable</ImplicitUsings>
-      <Nullable>enable</Nullable>
-    </PropertyGroup>
+      </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
