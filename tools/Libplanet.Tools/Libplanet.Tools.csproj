@@ -21,7 +21,6 @@
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
     <PackAsTool>true</PackAsTool>
-    <AssemblyName>Libplanet.Tools</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' ">

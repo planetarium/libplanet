@@ -24,7 +24,6 @@ https://docs.libplanet.io/</Description>
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>Libplanet</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
