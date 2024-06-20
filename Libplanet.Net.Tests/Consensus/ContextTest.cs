@@ -323,7 +323,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetResultWorldState(0)
+                    .GetNextWorldState(0)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
@@ -625,7 +625,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetResultWorldState(0L)
+                    .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
