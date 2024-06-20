@@ -6,7 +6,6 @@
 </PropertyGroup>
 
 <PropertyGroup>
-  <RootNamespace>Libplanet.RocksDBStore</RootNamespace>
   <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
   <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   <Nullable>enable</Nullable>

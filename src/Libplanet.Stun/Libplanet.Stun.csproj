@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RootNamespace>Libplanet.Stun</RootNamespace>
     <AssemblyName>Libplanet.Stun</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <Nullable>enable</Nullable>

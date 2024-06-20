@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <RootNamespace>Libplanet.Types</RootNamespace>
     <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

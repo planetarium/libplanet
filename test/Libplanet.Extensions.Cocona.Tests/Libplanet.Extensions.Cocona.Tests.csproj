@@ -2,7 +2,6 @@
     <PropertyGroup>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Nullable>enable</Nullable>
-                <RootNamespace>Libplanet.Extensions.Cocona.Tests</RootNamespace>
         </PropertyGroup>
 
     <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">

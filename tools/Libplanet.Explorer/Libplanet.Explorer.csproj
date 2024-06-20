@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RootNamespace>Libplanet.Explorer</RootNamespace>
     <AssemblyName>Libplanet.Explorer</AssemblyName>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
