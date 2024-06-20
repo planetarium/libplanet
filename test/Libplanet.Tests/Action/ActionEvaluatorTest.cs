@@ -289,26 +289,27 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var policyWithExceptions = new BlockPolicy(
-                beginBlockActions: new IAction[]
-                {
-                    new UpdateValueAction(_beginBlockValueAddress, 1),
-                    new ThrowException { ThrowOnExecution = true },
-                }.ToImmutableArray(),
-                endBlockActions: new IAction[]
-                {
-                    new UpdateValueAction(_endBlockValueAddress, 1),
-                    new ThrowException { ThrowOnExecution = true },
-                }.ToImmutableArray(),
-                beginTxActions: new IAction[]
-                {
-                    new UpdateValueAction(_beginTxValueAddress, 1),
-                    new ThrowException { ThrowOnExecution = true },
-                }.ToImmutableArray(),
-                endTxActions: new IAction[]
-                {
-                    new UpdateValueAction(_endTxValueAddress, 1),
-                    new ThrowException { ThrowOnExecution = true },
-                }.ToImmutableArray());
+                new PolicyActionsRegistry(
+                    beginBlockActions: new IAction[]
+                    {
+                        new UpdateValueAction(_beginBlockValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    endBlockActions: new IAction[]
+                    {
+                        new UpdateValueAction(_endBlockValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    beginTxActions: new IAction[]
+                    {
+                        new UpdateValueAction(_beginTxValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    endTxActions: new IAction[]
+                    {
+                        new UpdateValueAction(_endTxValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray()));
 
             var (chain, actionEvaluator) =
                 TestUtils.MakeBlockChainAndActionEvaluator(
@@ -319,7 +320,10 @@ namespace Libplanet.Tests.Action
 
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var block = chain.ProposeBlock(
-                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                GenesisProposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(chain.Tip),
+                ImmutableArray<EvidenceBase>.Empty);
             var evaluations = actionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
 

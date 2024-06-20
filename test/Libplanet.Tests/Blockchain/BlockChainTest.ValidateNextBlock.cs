@@ -749,9 +749,7 @@ namespace Libplanet.Tests.Blockchain
                 new IAction[] { new SetStatesAtBlock(default, (Text)"foo", default, 0), }
                     .ToImmutableArray();
             var policyWithBlockAction = new BlockPolicy(
-                new PolicyActionsRegistry(
-                    beginBlockActions: ImmutableArray.Create<IAction>(
-                        new SetStatesAtBlock(default, (Text)"foo", default, 0))));
+                new PolicyActionsRegistry(endBlockActions: endBlockActions));
 
             var actionEvaluator = new ActionEvaluator(
                 policyWithBlockAction.PolicyActionsRegistry,
