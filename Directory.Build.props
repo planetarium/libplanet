@@ -4,6 +4,18 @@
           Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
+    <VersionPrefix>5.0.0</VersionPrefix>
+    <!-- Note: don't be confused by the word "prefix" here.  It's merely a
+    version without suffix like "-dev.123".  See the following examples:
+    Version: 1.2.3-dev.456
+    VersionPrefix: 1.2.3
+    VersionSuffix: dev.456
+    If it's a stable release the version becomes like:
+    Version: 1.2.3
+    VersionPrefix: 1.2.3
+    VersionSuffix: (N/A)
+    Note that the version suffix is filled through CLI option of dotnet command.
+    -->
     <Nullable>enable</Nullable>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
@@ -13,6 +25,18 @@
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <GeneratePackageOnBuild Condition="'$(Configuration)'!='Debug'">true</GeneratePackageOnBuild>
+
+    <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
+    <PackageTags>multiplayer online game;game;blockchain</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="README.md" />
+    <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="icon.png" />
+  </ItemGroup>
 
 </Project>

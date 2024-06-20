@@ -2,7 +2,6 @@
   <PropertyGroup>
     <Summary>A STUN/TURN client implementation for Libplanet.</Summary>
     <Description>A STUN/TURN client implementation for Libplanet.</Description>
-    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -14,8 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>

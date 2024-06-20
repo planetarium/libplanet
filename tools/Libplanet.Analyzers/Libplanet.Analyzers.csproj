@@ -3,8 +3,6 @@
     <Title>Static analysis on Libplanet-powered apps</Title>
     <Description>The Roslyn analyzer which checks if code has common <!--
     --> mistakes prone to made with Libplanet-powered game apps.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,9 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
+    <None Remove="..\..\README.md" />
     <None Include="README.md" Pack="true" PackagePath="README.md" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
@@ -76,7 +73,7 @@
       Pack="true"
       PackagePath="tools" />
     <None
-      Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll"
+      Include="$(TargetPath)"
       Pack="true"
       PackagePath="analyzers/dotnet/cs"
       Visible="false" />

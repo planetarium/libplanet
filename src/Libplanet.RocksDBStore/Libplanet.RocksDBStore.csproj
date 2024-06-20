@@ -2,7 +2,6 @@
 <PropertyGroup>
   <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
   <Description>A Libplanet.IStore implementation using RocksDB</Description>
-  <PackageIcon>icon.png</PackageIcon>
 </PropertyGroup>
 
 <PropertyGroup>
@@ -15,8 +14,6 @@
 </PropertyGroup>
 
 <ItemGroup>
-  <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-  <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
   <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
     <Link>Menees.Analyzers.Settings.xml</Link>
   </AdditionalFiles>
