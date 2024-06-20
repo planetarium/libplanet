@@ -748,12 +748,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlockAEVChangedOnChainRestart()
         {
-            var nextSrhBeforeRestart = _blockChain.GetNextStateRootHash(_blockChain.Tip.Hash);
+            var endBlockActions =
+                new IAction[] { new SetStatesAtBlock(default, (Text)"foo", default, 0), }
+                    .ToImmutableArray();
             var policyWithBlockAction = new BlockPolicy(
-                new SetStatesAtBlock(default, (Text)"foo", default, 0));
+                endBlockActions: endBlockActions);
 
             var actionEvaluator = new ActionEvaluator(
-                _ => policyWithBlockAction.BlockAction,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => policyWithBlockAction.EndBlockActions,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 _blockChain.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
 
