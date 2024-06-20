@@ -1,26 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers; buildtransitive
-      </IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Bencodex" Version="0.16.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers
-      </IncludeAssets>
-    </PackageReference>
-    <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

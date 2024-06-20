@@ -14,6 +14,10 @@
       <Protobuf Include="**/*.proto" GrpcServices="Both"/>
     </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Remove="StyleCop.Analyzers" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>

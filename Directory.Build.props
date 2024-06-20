@@ -25,6 +25,7 @@
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <GeneratePackageOnBuild Condition="'$(Configuration)'!='Debug'">true</GeneratePackageOnBuild>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Libplanet.ruleset</CodeAnalysisRuleSet>
 
     <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
@@ -43,12 +44,25 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
      <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers; buildtransitive
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
