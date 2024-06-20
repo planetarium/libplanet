@@ -140,11 +140,9 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            var validators =
-                block.ProtocolVersion <
-                BlockMetadata.SlothProtocolVersion
-                    ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
-                    : GetWorldState(block.StateRootHash).GetValidatorSet();
+            var validators = block.ProtocolVersion < BlockMetadata.SlothProtocolVersion
+                ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
+                : GetWorldState(block.StateRootHash).GetValidatorSet();
             if (!validators.ValidateBlockCommitValidators(blockCommit))
             {
                 throw new InvalidBlockCommitException(

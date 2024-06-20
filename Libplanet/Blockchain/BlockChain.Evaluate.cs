@@ -113,48 +113,38 @@ namespace Libplanet.Blockchain
         internal Block EvaluateAndSign(
             PreEvaluationBlock preEvaluationBlock, PrivateKey privateKey)
         {
-            if (preEvaluationBlock.Index < 1)
+            if (preEvaluationBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
-                throw new ArgumentException(
-                    $"Given {nameof(preEvaluationBlock)} must have block index " +
-                    $"higher than 0");
+                if (preEvaluationBlock.ProtocolVersion < BlockMetadata.SignatureProtocolVersion)
+                {
+                    throw new ArgumentException(
+                        $"Given {nameof(preEvaluationBlock)} must have protocol version " +
+                        $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
+                }
+                else
+                {
+                    return preEvaluationBlock.Sign(
+                        privateKey,
+                        DetermineBlockPrecededStateRootHash(preEvaluationBlock, out _));
+                }
             }
-
-            if (preEvaluationBlock.ProtocolVersion < BlockMetadata.SignatureProtocolVersion)
+            else
             {
-                throw new ArgumentException(
-                    $"Given {nameof(preEvaluationBlock)} must have protocol version " +
-                    $"2 or greater: {preEvaluationBlock.ProtocolVersion}");
+                if (preEvaluationBlock.Index < 1)
+                {
+                    throw new ArgumentException(
+                        $"Given {nameof(preEvaluationBlock)} must have block index " +
+                        $"higher than 0");
+                }
+                else
+                {
+                    var prevBlock = _blocks[(BlockHash)preEvaluationBlock.PreviousHash];
+                    var stateRootHash = GetNextStateRootHash(prevBlock.Hash)
+                        ?? throw new NullReferenceException(
+                            $"State root hash of block is not prepared");
+                    return preEvaluationBlock.Sign(privateKey, stateRootHash);
+                }
             }
-
-            if (preEvaluationBlock.ProtocolVersion <
-                BlockMetadata.SlothProtocolVersion)
-            {
-                return preEvaluationBlock.Sign(
-                    privateKey,
-                    DetermineBlockPrecededStateRootHash(preEvaluationBlock, out _));
-            }
-
-            if (!(preEvaluationBlock.PreviousHash is BlockHash previousHash))
-            {
-                throw new ArgumentException(
-                    $"Given {nameof(preEvaluationBlock)} must have non-null previous hash " +
-                    $"If it isn't genesis");
-            }
-
-            if (_blocks[previousHash].ProtocolVersion
-                < BlockMetadata.SlothProtocolVersion)
-            {
-                return preEvaluationBlock.Sign(privateKey, _blocks[previousHash].StateRootHash);
-            }
-
-            if (!(GetNextStateRootHash(previousHash) is HashDigest<SHA256> stateRootHash))
-            {
-                throw new NullReferenceException(
-                    $"State root hash of block is not prepared");
-            }
-
-            return preEvaluationBlock.Sign(privateKey, stateRootHash);
         }
 
         /// <summary>

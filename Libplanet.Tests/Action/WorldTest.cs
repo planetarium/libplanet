@@ -505,9 +505,7 @@ namespace Libplanet.Tests.Action
         }
 
         protected static IWorldState GetLatestWorldState(BlockChain blockChain) =>
-            blockChain.Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion
-                ? blockChain.GetWorldState()
-                : blockChain.GetNextWorldState();
+            blockChain.GetNextWorldState();
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
