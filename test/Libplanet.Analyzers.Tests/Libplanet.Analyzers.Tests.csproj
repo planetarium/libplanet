@@ -8,9 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
@@ -20,10 +17,6 @@
 
   <ItemGroup>
 <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
-    <PackageReference
-      Include="Menees.Analyzers.2017"
-      Version="2.0.3"
-      PrivateAssets="all" />
     <PackageReference
       Include="Microsoft.CodeAnalysis.Analyzers"
       Version="3.3.0" />

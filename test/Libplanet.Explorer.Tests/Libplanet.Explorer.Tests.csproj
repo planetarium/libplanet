@@ -13,6 +13,10 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6" />
     </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Remove="Menees.Analyzers.2017" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>

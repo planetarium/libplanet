@@ -10,12 +10,6 @@
     <PackageReference Include="Bencodex" Version="0.16.0" />
     <PackageReference Include="Bencodex.Json" Version="0.16.0" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>

@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="2.0.*" />
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
@@ -40,9 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 

@@ -23,6 +23,10 @@
         </PackageReference>
     </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Remove="Menees.Analyzers.2017" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
