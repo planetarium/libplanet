@@ -1,27 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-<PropertyGroup>
-  <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
-  <Description>A Libplanet.IStore implementation using RocksDB</Description>
-</PropertyGroup>
 
-<PropertyGroup>
-  <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-  <Nullable>enable</Nullable>
-  <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <PropertyGroup>
+    <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
+    <Description>A Libplanet.IStore implementation using RocksDB</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <Nullable>enable</Nullable>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5104</NoWarn>
-</PropertyGroup>
+  </PropertyGroup>
 
-<ItemGroup>
-  <PackageReference Include="RocksDB" Version="8.5.3.42578" />
-  <PackageReference Include="Serilog" Version="2.8.0" />
-</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RocksDB" Version="8.5.3.42578" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+  </ItemGroup>
 
-<ItemGroup>
-  <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-  <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
-  <!-- FIXME: We should specify the version range when the following NuGet issue
-  is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
-</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+    <!-- FIXME: We should specify the version range when the following NuGet issue
+    is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
+  </ItemGroup>
 
 </Project>

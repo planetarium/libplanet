@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
     <Description>A .NET library for creating multiplayer online game in decentralized fashion.

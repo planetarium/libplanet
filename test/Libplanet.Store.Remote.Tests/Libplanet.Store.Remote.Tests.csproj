@@ -1,17 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <ImplicitUsings>enable</ImplicitUsings>
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-        </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Grpc.Core.Testing" Version="2.46.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.27" />
-        <PackageReference Include="Moq" Version="4.20.70" />
-        <PackageReference Include="Moq.AutoMock" Version="3.5.0" />
-        <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core.Testing" Version="2.46.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.27" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Moq.AutoMock" Version="3.5.0" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Remove="Menees.Analyzers.2017" />
@@ -22,8 +21,8 @@
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\src\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Libplanet.Store.Remote\Libplanet.Store.Remote.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -9,9 +10,6 @@
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,4 +28,5 @@
     <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\..\src\Libplanet.Crypto.Secp256k1\Libplanet.Crypto.Secp256k1.csproj" />
   </ItemGroup>
+
 </Project>

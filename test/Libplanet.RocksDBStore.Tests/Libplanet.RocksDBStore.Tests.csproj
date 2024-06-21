@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-<PropertyGroup>
+
+  <PropertyGroup>
     <Nullable>disable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -7,9 +8,6 @@
 
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,4 +24,5 @@
     <ProjectReference Include="..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
     <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
   </ItemGroup>
+
 </Project>

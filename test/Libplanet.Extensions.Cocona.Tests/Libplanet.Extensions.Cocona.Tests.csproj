@@ -1,45 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-            </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-        <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
 
-    <ItemGroup>
-      </ItemGroup>
+  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+  </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-      <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+  </PropertyGroup>
 
-    <PropertyGroup>
-      </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
+  </ItemGroup>
 
-    <ItemGroup>
-          <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
-        </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-      <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\tools\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
-        <ProjectReference Include="..\..\test\Libplanet.RocksDBStore.Tests\Libplanet.RocksDBStore.Tests.csproj" />
-        <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tools\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
+    <ProjectReference Include="..\..\test\Libplanet.RocksDBStore.Tests\Libplanet.RocksDBStore.Tests.csproj" />
+    <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <None Include="Fixtures\**"
-        CopyToOutputDirectory="PreserveNewest"
-        CopyToPublishDirectory="PreserveNewest"
-        LinkBase="Fixtures" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="Fixtures\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" LinkBase="Fixtures" />
+  </ItemGroup>
+
 </Project>
-
