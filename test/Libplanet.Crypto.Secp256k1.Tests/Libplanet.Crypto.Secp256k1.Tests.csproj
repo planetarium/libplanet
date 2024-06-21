@@ -4,20 +4,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

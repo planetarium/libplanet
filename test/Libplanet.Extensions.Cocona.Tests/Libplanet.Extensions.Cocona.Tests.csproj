@@ -4,14 +4,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
   </ItemGroup>

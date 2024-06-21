@@ -112,36 +112,6 @@ commands:
         - "tools/*/bin/"
         - "tools/*/obj/"
 
-  mono_build_base:
-    steps:
-    - checkout
-    - concat_files:
-        glob: "{src,test,tools}/*/*.csproj"
-        to: .combined-package-files.txt
-    - restore_cache:
-        keys:
-        - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
-        - v1-deps-{{ arch }}
-    - run: |
-        msbuild \
-          -t:Restore \
-          -p:Configuration=ReleaseMono \
-          -p:TestsTargetFramework=net47
-    - save_cache:
-        key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
-        paths:
-        - ~/.nuget/packages
-    - run: |
-        msbuild \
-          -p:Configuration=ReleaseMono \
-          -p:TestsTargetFramework=net47 \
-          -p:SkipSonar=true
-    - persist_to_workspace:
-        root: .
-        paths:
-        - "*/bin/"
-        - "*/obj/"
-
   netcore_test_base:
     parameters:
       collect_tests_from:
@@ -434,13 +404,6 @@ jobs:
     - netcore_build_base:
         collect_tests_filter: "<<parameters.collect_tests_filter>>"
 
-  linux-mono-build:
-    docker:
-    - image: mono:6.12
-    resource_class: xlarge
-    working_directory: /mnt/ramdisk
-    steps: [mono_build_base]
-
   linux-netcore-test-netmq:
     parameters:
       parallelism:
@@ -503,52 +466,11 @@ jobs:
     steps:
     - netcore_test_base: { code_coverage: false }
 
-  linux-unity-test:
-    docker:
-    - image: mono:6.12
-    environment:
-      XUNIT_UNITY_RUNNER: 0.5.0
-    resource_class: xlarge
-    working_directory: /mnt/ramdisk
-    parallelism: 4
-    steps:
-    - run:
-        name: Install xsltproc
-        command: apt update -y && apt install -y xsltproc
-    - unity_test_base
-
-  macos-unity-test:
-    macos:
-      xcode: 15.2.0
-    environment:
-      XUNIT_UNITY_RUNNER: 0.5.0
-    parallelism: 3
-    steps:
-    - ulimit: { n: 10240 }
-    - unity_test_base:
-        runner_target: StandaloneOSX
-
-  windows-unity-test:
-    executor:
-      name: win/default
-      size: xlarge
-    environment:
-      XUNIT_UNITY_RUNNER: 0.5.0
-    parallelism: 4
-    steps:
-    - run:
-        name: Install bzip2 & xsltproc
-        command: choco install bzip2 xsltproc
-    - unity_test_base:
-        runner_target: StandaloneWindows64
-
 workflows:
   main:
     jobs:
     - linux-netcore-build:
         collect_tests_filter: "FullyQualifiedName!~Libplanet.Net.Tests & CircleCI!=Skip"
-    # Temporarily tunred off by excluding of linux-unity-test
-    #- linux-mono-build
     - linux-netcore-test-netmq:
         requires: [linux-netcore-build]
     - linux-netcore-test-ar-SA:
@@ -559,15 +481,6 @@ workflows:
         requires: [linux-netcore-build]
     - windows-netcore-test:
         requires: [linux-netcore-build]
-    # Temporarily tunred off due to error on xunity-unity-runner:
-    #- linux-unity-test:
-    #    requires: [linux-mono-build]
-    # Temporarily turned off due to CircleCI's slow worker node assignments of
-    # macOS and Windows VMs:
-    #- macos-unity-test:
-    #    requires: [linux-mono-build]
-    #- windows-unity-test:
-    #    requires: [linux-mono-build]
   net:
     jobs:
     - linux-netcore-build:
@@ -577,10 +490,6 @@ workflows:
         name: linux-netcore-test-netmq-net
         requires: [linux-netcore-build-net]
         parallelism: 1
-    # - macos-netcore-test:
-    #     name: macos-netcore-test-net
-    #     requires: [linux-netcore-build-net]
-    #     parallelism: 1
     - windows-netcore-test:
         name: windows-netcore-test-net
         requires: [linux-netcore-build-net]

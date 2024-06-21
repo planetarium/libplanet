@@ -14,10 +14,6 @@
     </AdditionalFiles>
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="DiffPlex" Version="1.7.0" />
@@ -42,17 +38,6 @@
     <ProjectReference Include="..\..\src\Libplanet.Types\Libplanet.Types.csproj" />
     <ProjectReference Include="..\Libplanet.Action.Tests\Libplanet.Action.Tests.csproj" />
     <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
-    <!--
-    As Mono has no proper AppDomain, we prevent it on Mono.
-    This works around Xunit's fatal error on Mono.
-    -->
-    <Content Include="xunit.runner.mono.json">
-      <Link>xunit.runner.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

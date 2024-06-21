@@ -7,10 +7,6 @@
     <NoWarn>$(NoWarn);SA1401</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
-    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
