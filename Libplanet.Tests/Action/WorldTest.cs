@@ -260,11 +260,13 @@ namespace Libplanet.Tests.Action
             chain.Append(block1, TestUtils.CreateBlockCommit(block1));
             Assert.Equal(
                 DumbAction.DumbCurrency * 0,
-                GetLatestWorldState(chain)
+                chain
+                    .GetNextWorldState()
                     .GetBalance(_addr[0], DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 20,
-                GetLatestWorldState(chain)
+                chain
+                    .GetNextWorldState()
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
             // Transfer
@@ -288,11 +290,13 @@ namespace Libplanet.Tests.Action
             chain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
-                GetLatestWorldState(chain)
+                chain
+                    .GetNextWorldState()
                     .GetBalance(_addr[0], DumbAction.DumbCurrency));
             Assert.Equal(
                 DumbAction.DumbCurrency * 15,
-                GetLatestWorldState(chain)
+                chain
+                    .GetNextWorldState()
                     .GetBalance(_addr[1], DumbAction.DumbCurrency));
 
             // Transfer bugged
@@ -503,9 +507,6 @@ namespace Libplanet.Tests.Action
                 Value(4, 10),
                 world.GetTotalSupply(_currencies[4]));
         }
-
-        protected static IWorldState GetLatestWorldState(BlockChain blockChain) =>
-            blockChain.GetNextWorldState();
 
         protected FungibleAssetValue Value(int currencyIndex, BigInteger quantity) =>
             new FungibleAssetValue(_currencies[currencyIndex], quantity, 0);
