@@ -95,7 +95,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></div>
     <div class="level2"><span class="xref">DefaultStore</span></div>
   </div>
@@ -122,13 +122,13 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
       <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_Bencodex_Types_IValue_Serilog_ILogger_">BaseStore.DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)</a>
     </div>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
       <span class="xref">System.Object.GetType()</span>
@@ -690,8 +690,25 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
   </span>
   <a id="Libplanet_Store_DefaultStore_DeleteNextStateRootHash_" data-uid="Libplanet.Store.DefaultStore.DeleteNextStateRootHash*"></a>
   <h4 id="Libplanet_Store_DefaultStore_DeleteNextStateRootHash_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteNextStateRootHash(Libplanet.Types.Blocks.BlockHash)">DeleteNextStateRootHash(BlockHash)</h4>
-  <div class="markdown level1 summary"><p>Deletes the next state root hash of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> corresponding to the given
-<code data-dev-comment-type="paramref" class="paramref">blockHash</code> from the store.</p>
+  <div class="markdown level1 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
+the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+for some complex indices.</p>
+<p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
+parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -711,9 +728,7 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
       <tr>
         <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of a next state root hash
-to delete.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -864,7 +879,7 @@ block indexes.</p>
   <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash_">BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)</a></div>
   <h5 id="Libplanet_Store_DefaultStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__">IterateIndexes</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>, <span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__">IterateIndexes</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;)</div>
       <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_Types_Blocks_BlockHash_">AppendIndex</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>, <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>)</div>
   </div>
   <span class="small pull-right mobile-hide">
@@ -1073,7 +1088,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
         <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <span class="xref">null</span> if no block
 having such <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
 </td>
@@ -1112,7 +1127,7 @@ having such <code data-dev-comment-type="paramref" class="paramref">blockHash</c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</td>
         <td><p>The ID of the current canonical chain.  Maybe <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -1192,7 +1207,25 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </span>
   <a id="Libplanet_Store_DefaultStore_GetNextStateRootHash_" data-uid="Libplanet.Store.DefaultStore.GetNextStateRootHash*"></a>
   <h4 id="Libplanet_Store_DefaultStore_GetNextStateRootHash_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.GetNextStateRootHash(Libplanet.Types.Blocks.BlockHash)">GetNextStateRootHash(BlockHash)</h4>
-  <div class="markdown level1 summary"><p>Gets the next state root hash for given <code data-dev-comment-type="paramref" class="paramref">blockHash</code> from the store.</p>
+  <div class="markdown level1 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
+the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+for some complex indices.</p>
+<p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
+parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1212,9 +1245,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>
-to retrieve next state root hash.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1228,11 +1259,8 @@ to retrieve next state root hash.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><p>Returns <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> if next state root hash of given
-<code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored and available,
-otherwise returns <span class="xref">null</span>.</p>
-</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1550,7 +1578,7 @@ the offset from the end.  For example, -1 means the topmost block.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><p>The block hash of the index in the chain.  If there is no such index,
 it returns <span class="xref">null</span>.</p>
 </td>
@@ -1641,7 +1669,7 @@ iterate.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
         <td><span class="parametername">limit</span></td>
         <td><p>The maximum number of block hashes to get.</p>
 </td>
@@ -1827,7 +1855,7 @@ and their corresponding <a class="xref" href="Libplanet.Types.Tx.Transaction.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
         <td><p>Pairs of an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> and its tx nonce.  All nonces are greater
 than 0.  (If there are underlying entries having zero nonces these must be hidden.)</p>
 </td>
@@ -2042,8 +2070,25 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
   </span>
   <a id="Libplanet_Store_DefaultStore_PutNextStateRootHash_" data-uid="Libplanet.Store.DefaultStore.PutNextStateRootHash*"></a>
   <h4 id="Libplanet_Store_DefaultStore_PutNextStateRootHash_Libplanet_Types_Blocks_BlockHash_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.DefaultStore.PutNextStateRootHash(Libplanet.Types.Blocks.BlockHash,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})">PutNextStateRootHash(BlockHash, HashDigest&lt;SHA256&gt;)</h4>
-  <div class="markdown level1 summary"><p>Puts a next state root hash of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> corresponding to the
-<code data-dev-comment-type="paramref" class="paramref">blockHash</code> to the store.</p>
+  <div class="markdown level1 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
+the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+for some complex indices.</p>
+<p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
+parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -2063,16 +2108,12 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
       <tr>
         <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>
-where <code data-dev-comment-type="paramref" class="paramref">nextStateRootHash</code> evaluated.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">nextStateRootHash</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a> that represents
-state root hash of the next state.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

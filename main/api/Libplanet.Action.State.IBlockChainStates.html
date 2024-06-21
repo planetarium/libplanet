@@ -147,8 +147,8 @@ to what <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">offset</code>
-one of the following is true.</p>
+        <td><p>Thrown when one of the following is true
+for <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
 <ul><li>
         Corresponding <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> is not found in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.
 </li><li>
@@ -191,7 +191,7 @@ with <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The state root hash for which to create
 an <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>.</p>
@@ -212,7 +212,7 @@ an <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a
         <td><a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a></td>
         <td><p>The <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.
 If <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code> is <span class="xref">null</span>,
-returns the hash of the empty state root.</p>
+returns an empty <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>.</p>
 </td>
       </tr>
     </tbody>
