@@ -24,8 +24,8 @@
     <Authors>Planetarium</Authors>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <GeneratePackageOnBuild Condition="'$(Configuration)'!='Debug'">true</GeneratePackageOnBuild>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Libplanet.ruleset</CodeAnalysisRuleSet>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
 
     <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>

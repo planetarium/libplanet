@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
