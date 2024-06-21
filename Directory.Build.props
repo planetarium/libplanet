@@ -4,6 +4,8 @@
           Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <LangVersion>10</LangVersion>
     <VersionPrefix>5.1.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
