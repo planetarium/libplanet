@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Title>Static analysis on Libplanet-powered apps</Title>
     <Description>The Roslyn analyzer which checks if code has common <!--
@@ -23,14 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference
-      Include="Microsoft.CodeAnalysis.Analyzers"
-      Version="3.3.0"
-      PrivateAssets="all" />
-    <PackageReference
-      Include="Microsoft.CodeAnalysis.CSharp.Workspaces"
-      Version="3.7.0"
-      PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 
@@ -41,15 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None
-      Include="tools\*.ps1"
-      CopyToOutputDirectory="Always"
-      Pack="true"
-      PackagePath="tools" />
-    <None
-      Include="$(TargetPath)"
-      Pack="true"
-      PackagePath="analyzers/dotnet/cs"
-      Visible="false" />
+    <None Include="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="tools" />
+    <None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
+
 </Project>

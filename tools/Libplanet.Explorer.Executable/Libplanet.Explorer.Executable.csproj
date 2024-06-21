@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
@@ -21,9 +22,11 @@
     <ProjectReference Include="..\Libplanet.Explorer\Libplanet.Explorer.csproj" />
     <ProjectReference Include="..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="wwwroot\**\*">
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
 </Project>

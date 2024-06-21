@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <NoWarn>$(NoWarn);NU1904</NoWarn>
-    <!-- FIXME: NU1904 should be removed once LiteDB is bumped to a secure version -->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Nullable>disable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -8,9 +9,6 @@
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Libplanet.Stun\Libplanet.Stun.csproj" />
