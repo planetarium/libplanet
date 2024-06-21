@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Title>planet: Libplanet CLI Tools</Title>
     <Summary>planet: Libplanet CLI Tools</Summary>
@@ -58,4 +59,5 @@
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>
+
 </Project>

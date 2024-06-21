@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
@@ -7,18 +8,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Remove="Menees.Analyzers.2017" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Remove="StyleCop.Analyzers" />
   </ItemGroup>
 

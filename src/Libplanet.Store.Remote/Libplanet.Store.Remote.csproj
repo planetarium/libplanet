@@ -1,20 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-      <TargetFrameworks>net6.0</TargetFrameworks>
-      <LangVersion>10</LangVersion>
-      <ImplicitUsings>enable</ImplicitUsings>
-      </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Protobuf Include="**/*.proto" GrpcServices="Both"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <LangVersion>10</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
     <PackageReference Remove="StyleCop.Analyzers" />
   </ItemGroup>
 
@@ -22,8 +15,9 @@
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="**/*.proto" GrpcServices="Both"/>
+    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+  </ItemGroup>
 
 </Project>

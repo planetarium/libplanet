@@ -1,13 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-      <Nullable>disable</Nullable>
-                <IsPublishable>false</IsPublishable>
-    </PropertyGroup>
-
-
-    <ItemGroup>
-    </ItemGroup>
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Remove="Menees.Analyzers.2017" />
@@ -18,10 +14,10 @@
     <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\tools\Libplanet.Explorer\Libplanet.Explorer.csproj" />
-      <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
-      <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tools\Libplanet.Explorer\Libplanet.Explorer.csproj" />
+    <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
+    <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
+  </ItemGroup>
 
 </Project>
