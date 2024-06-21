@@ -626,7 +626,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     timestamp,
                     protocolVersion);
                 var evaluatedSrh = actionEvaluator.Evaluate(preEval, null).Last().OutputState;
-                genesisBlock = protocolVersion < 2
+                genesisBlock = protocolVersion < BlockMetadata.SignatureProtocolVersion
                     ? new Block(
                         preEval,
                         (
@@ -635,8 +635,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                             preEval.Header.DeriveBlockHash(evaluatedSrh, null)
                         ))
                     : protocolVersion < BlockMetadata.SlothProtocolVersion
-                    ? preEval.Sign(GenesisProposer, evaluatedSrh)
-                    : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
+                        ? preEval.Sign(GenesisProposer, evaluatedSrh)
+                        : preEval.Sign(GenesisProposer, MerkleTrie.EmptyRootHash);
             }
 
             ValidatingActionRenderer validator = null;

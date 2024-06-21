@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -16,6 +17,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -321,7 +323,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetNextWorldState(blockChain[0L].Hash)!
+                    .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
@@ -623,7 +625,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1L,
                 TestUtils.PrivateKeys[0],
                 blockChain
-                    .GetNextWorldState(blockChain[0L].Hash)!
+                    .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
 
@@ -687,6 +689,7 @@ namespace Libplanet.Net.Tests.Consensus
             var watch = Stopwatch.StartNew();
             await onTipChanged.WaitAsync();
             Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
+            Thread.Sleep(100); // Wait for votes to get collected.
 
             Assert.Equal(
                 4,

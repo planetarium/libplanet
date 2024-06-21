@@ -64,6 +64,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         private Block _genesis;
 
+        private HashDigest<SHA256>? _nextStateRootHash;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockChain"/> class by loading
         /// the canonical chain from given <paramref name="store"/>.
@@ -185,18 +187,15 @@ namespace Libplanet.Blockchain
 
             if (Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
-                return;
+                _nextStateRootHash = Tip.StateRootHash;
             }
-
-            HashDigest<SHA256> nextStateRootHash =
-                DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
-
-            Store.DeleteNextStateRootHash(Tip.Hash);
-            Store.PutNextStateRootHash(Tip.Hash, nextStateRootHash);
-
-            IEnumerable<TxExecution> txExecutions =
-                MakeTxExecutions(Tip, actionEvaluations);
-            UpdateTxExecutions(txExecutions);
+            else
+            {
+                _nextStateRootHash =
+                    DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
+                IEnumerable<TxExecution> txExecutions = MakeTxExecutions(Tip, actionEvaluations);
+                UpdateTxExecutions(txExecutions);
+            }
         }
 
         ~BlockChain()
@@ -390,8 +389,7 @@ namespace Libplanet.Blockchain
 
             var id = Guid.NewGuid();
 
-            if (genesisBlock.ProtocolVersion <
-                BlockMetadata.SlothProtocolVersion)
+            if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 var preEval = new PreEvaluationBlock(
                     genesisBlock.Header, genesisBlock.Transactions);
@@ -545,10 +543,11 @@ namespace Libplanet.Blockchain
             if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 AppendStateRootHashPreceded(block, blockCommit, render: true);
-                return;
             }
-
-            Append(block, blockCommit, render: true);
+            else
+            {
+                Append(block, blockCommit, render: true);
+            }
         }
 
         /// <summary>
@@ -757,23 +756,13 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.AppendIndex(forkedId, Genesis.Hash);
-                var forked = new BlockChain(
-                    Policy,
-                    StagePolicy,
-                    Store,
-                    StateStore,
-                    forkedId,
-                    Genesis,
-                    _blockChainStates,
-                    ActionEvaluator,
-                    renderers);
                 Store.ForkBlockIndexes(Id, forkedId, point);
                 if (GetBlockCommit(point) is { } p)
                 {
                     Store.PutChainBlockCommit(forkedId, GetBlockCommit(point));
                 }
 
-                Store.ForkTxNonces(Id, forked.Id);
+                Store.ForkTxNonces(Id, forkedId);
                 for (Block block = Tip;
                      block.PreviousHash is { } hash && !block.Hash.Equals(point);
                      block = _blocks[hash])
@@ -785,9 +774,20 @@ namespace Libplanet.Blockchain
 
                     foreach ((Address address, int txCount) in signers)
                     {
-                        Store.IncreaseTxNonce(forked.Id, address, -txCount);
+                        Store.IncreaseTxNonce(forkedId, address, -txCount);
                     }
                 }
+
+                var forked = new BlockChain(
+                    Policy,
+                    StagePolicy,
+                    Store,
+                    StateStore,
+                    forkedId,
+                    Genesis,
+                    _blockChainStates,
+                    ActionEvaluator,
+                    renderers);
 
                 _logger.Information(
                     "Forked chain at #{Index} {Hash} from id {PreviousId} to id {ForkedId}",
@@ -984,6 +984,7 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
+                    _nextStateRootHash = null;
                 }
                 finally
                 {
@@ -1026,8 +1027,7 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256> nextStateRootHash =
                     DetermineNextBlockStateRootHash(block, out var actionEvaluations);
-
-                Store.PutNextStateRootHash(block.Hash, nextStateRootHash);
+                _nextStateRootHash = nextStateRootHash;
 
                 IEnumerable<TxExecution> txExecutions =
                     MakeTxExecutions(block, actionEvaluations);
@@ -1159,9 +1159,6 @@ namespace Libplanet.Blockchain
                                 TimestampFormat, CultureInfo.InvariantCulture));
 
                     _blocks[block.Hash] = block;
-                    IEnumerable<TxExecution> txExecutions =
-                        MakeTxExecutions(block, actionEvaluations);
-                    UpdateTxExecutions(txExecutions);
 
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -1179,6 +1176,10 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
+                    _nextStateRootHash = block.StateRootHash;
+                    IEnumerable<TxExecution> txExecutions =
+                        MakeTxExecutions(block, actionEvaluations);
+                    UpdateTxExecutions(txExecutions);
                 }
                 finally
                 {
@@ -1403,25 +1404,27 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal HashDigest<SHA256>? GetNextStateRootHash(
-            BlockHash blockHash,
-            TimeSpan? fetchInterval = null)
-        {
-            while (true)
-            {
-                if (Store.GetNextStateRootHash(blockHash) is HashDigest<SHA256> srh)
-                {
-                    return srh;
-                }
+        internal HashDigest<SHA256>? GetNextStateRootHash() => _nextStateRootHash;
 
-                if (fetchInterval is TimeSpan interval)
-                {
-                    Thread.Sleep(interval);
-                }
-                else
-                {
-                    return null;
-                }
+        internal HashDigest<SHA256>? GetNextStateRootHash(long index) =>
+            GetNextStateRootHash(this[index]);
+
+        internal HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash) =>
+            GetNextStateRootHash(this[blockHash]);
+
+        private HashDigest<SHA256>? GetNextStateRootHash(Block block)
+        {
+            if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
+            {
+                return block.StateRootHash;
+            }
+            else if (block.Index < Tip.Index)
+            {
+                return this[block.Index + 1].StateRootHash;
+            }
+            else
+            {
+                return GetNextStateRootHash();
             }
         }
     }

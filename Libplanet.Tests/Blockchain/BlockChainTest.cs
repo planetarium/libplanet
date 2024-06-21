@@ -1862,8 +1862,6 @@ namespace Libplanet.Tests.Blockchain
                         .ToList();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
-                    store.PutNextStateRootHash(
-                        b.Hash, evals.Last().OutputState.Trie.Hash);
                     BuildIndex(chain.Id, b);
                     Assert.Equal(b, chain[b.Hash]);
                     if (presentIndices.Contains((int)b.Index))
@@ -2316,7 +2314,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 blockChain
-                    .GetNextWorldState(blockChain[0].Hash)
+                    .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     ValidatorPrivateKeys.Select(
@@ -2324,7 +2322,7 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 blockChain
-                    .GetNextWorldState(blockChain[1].Hash)
+                    .GetNextWorldState(1L)
                     .GetValidatorSet(),
                 new ValidatorSet(
                     newValidators.Select(

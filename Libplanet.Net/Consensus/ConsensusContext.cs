@@ -452,8 +452,7 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             ValidatorSet validatorSet;
-            if (_blockChain.Tip.ProtocolVersion
-                < BlockMetadata.SlothProtocolVersion)
+            if (_blockChain.Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 validatorSet = _blockChain
                     .GetWorldState(_blockChain[Height - 1].StateRootHash)
@@ -461,11 +460,20 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                validatorSet = _blockChain
-                    .GetWorldState(
-                        _blockChain.GetNextStateRootHash(
-                            _blockChain[Height - 1].Hash, TimeSpan.Zero))
-                    .GetValidatorSet();
+                while (true)
+                {
+                    var nextStateRootHash = _blockChain.GetNextStateRootHash(Height - 1);
+                    if (nextStateRootHash is { } nsrh)
+                    {
+                        validatorSet = _blockChain
+                            .GetWorldState(nsrh)
+                            .GetValidatorSet();
+                        break;
+                    }
+
+                    // FIXME: Maybe this should be adjustable?
+                    Thread.Sleep(100);
+                }
             }
 
             Context context = new Context(

@@ -145,11 +145,10 @@ namespace Libplanet.Blockchain
             BlockHash prevHash = Store.IndexBlockHash(Id, index - 1)
                 ?? throw new NullReferenceException($"Chain {Id} is missing block #{index - 1}");
 
-            HashDigest<SHA256> stateRootHash =
-                _blocks[prevHash].ProtocolVersion <
-                BlockMetadata.SlothProtocolVersion
-                    ? _blocks[prevHash].StateRootHash
-                    : (HashDigest<SHA256>)GetNextStateRootHash(prevHash, TimeSpan.Zero);
+            HashDigest<SHA256> stateRootHash = GetNextStateRootHash(prevHash) ??
+                throw new InvalidOperationException(
+                    $"Cannot propose a block as the next state root hash " +
+                    $"for block {prevHash} is missing.");
 
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.

@@ -19,6 +19,7 @@ using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -288,7 +289,7 @@ namespace Libplanet.Net.Tests
                 height,
                 privateKey,
                 validatorSet ?? blockChain
-                    .GetNextWorldState(blockChain[height - 1].Hash)!
+                    .GetNextWorldState(height - 1)
                     .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
