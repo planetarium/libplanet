@@ -4,8 +4,6 @@
           Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>10</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
