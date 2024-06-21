@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">$(TargetFrameworks);netstandard2.0;netstandard2.1</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />

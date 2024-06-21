@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <Nullable>enable</Nullable>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5104</NoWarn>
   </PropertyGroup>

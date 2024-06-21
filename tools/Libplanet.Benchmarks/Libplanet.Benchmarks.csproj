@@ -4,7 +4,6 @@
     <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 

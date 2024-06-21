@@ -8,8 +8,6 @@
   <PropertyGroup>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);S4035;CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
