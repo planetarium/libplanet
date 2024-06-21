@@ -11,7 +11,6 @@
 
   <PropertyGroup>
     <ToolCommandName>planet</ToolCommandName>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
     </PropertyGroup>
