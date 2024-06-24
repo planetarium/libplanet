@@ -38,6 +38,7 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context> _contexts;
+        private readonly HashSet<ConsensusMsg> _pendingMessages;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -72,6 +73,7 @@ namespace Libplanet.Net.Consensus
             _contextTimeoutOption = contextTimeoutOption;
 
             _contexts = new Dictionary<long, Context>();
+            _pendingMessages = new HashSet<ConsensusMsg>();
             _blockChain.TipChanged += OnTipChanged;
 
             _logger = Log
@@ -221,6 +223,15 @@ namespace Libplanet.Net.Consensus
                         _contexts[height] = CreateContext(height);
                     }
 
+                    foreach (var message in _pendingMessages)
+                    {
+                        if (message.Height == height)
+                        {
+                            _contexts[height].ProduceMessage(message);
+                        }
+                    }
+
+                    _pendingMessages.RemoveWhere(message => message.Height == height);
                     _contexts[height].Start(lastCommit);
                 }
 
@@ -264,12 +275,15 @@ namespace Libplanet.Net.Consensus
 
             lock (_contextLock)
             {
-                if (!_contexts.ContainsKey(height))
+                if (_contexts.ContainsKey(height))
                 {
-                    _contexts[height] = CreateContext(height);
+                    _contexts[height].ProduceMessage(consensusMessage);
+                }
+                else
+                {
+                    _pendingMessages.Add(consensusMessage);
                 }
 
-                _contexts[height].ProduceMessage(consensusMessage);
                 return true;
             }
         }
@@ -496,16 +510,17 @@ namespace Libplanet.Net.Consensus
         {
             lock (_contextLock)
             {
-                foreach (var ctx in _contexts.Values)
+                foreach (var pair in _contexts)
                 {
-                    if (ctx.Height < height)
+                    if (pair.Key < height)
                     {
-                        _logger.Debug("Removing context for height {Height}", ctx.Height);
-
-                        ctx.Dispose();
-                        _contexts.Remove(ctx.Height);
+                        _logger.Debug("Removing context for height {Height}", pair.Key);
+                        pair.Value.Dispose();
+                        _contexts.Remove(pair.Key);
                     }
                 }
+
+                _pendingMessages.RemoveWhere(message => message.Height < height);
             }
         }
     }
