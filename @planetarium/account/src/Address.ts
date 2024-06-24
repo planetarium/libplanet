@@ -1,6 +1,7 @@
+import { Buffer } from "buffer";
 import { keccak_256 } from "@noble/hashes/sha3";
-import { PublicKey } from "./PublicKey.js";
 import { Account, isAccount } from "./Account.js";
+import { PublicKey } from "./PublicKey.js";
 
 if (typeof globalThis.TextEncoder === "undefined") {
   // FIXME: This is a workaround for the lack of TextEncoder in Vitest.
@@ -46,7 +47,7 @@ export class Address {
   static deriveFrom(account: Account): Promise<Address>;
 
   static deriveFrom(
-    publicKey: PublicKey | Account,
+    publicKey: PublicKey | Account
   ): Address | Promise<Address> {
     if (isAccount(publicKey)) {
       return publicKey.getPublicKey().then(this.#deriveFrom);
@@ -55,7 +56,7 @@ export class Address {
     }
 
     throw new Error(
-      `Expected either PublicKey or Account, got ${typeof publicKey}`,
+      `Expected either PublicKey or Account, got ${typeof publicKey}`
     );
   }
 
@@ -72,8 +73,8 @@ export class Address {
     } else if (!hex.match(/^(0x)?[0-9a-f]{40}$/i)) {
       throw new Error(
         `Expected a string of 40 hexadecimals, but ${JSON.stringify(
-          hex,
-        )} was given.`,
+          hex
+        )} was given.`
       );
     }
 
@@ -89,7 +90,7 @@ export class Address {
     const expectedChecksum = checksum(hex);
     if (expectedChecksum !== hex) {
       throw new Error(
-        `Expected checksum is 0x${expectedChecksum}, but 0x${hex} was given.`,
+        `Expected checksum is 0x${expectedChecksum}, but 0x${hex} was given.`
       );
     }
 
@@ -103,7 +104,7 @@ export class Address {
 
     if (bytes.length !== 20) {
       throw new Error(
-        `Expected 20 bytes, but ${bytes.length} bytes were given.`,
+        `Expected 20 bytes, but ${bytes.length} bytes were given.`
       );
     }
 
