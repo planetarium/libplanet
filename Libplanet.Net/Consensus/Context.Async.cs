@@ -11,15 +11,11 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Starts round #0 of consensus for <see cref="Height"/>.
         /// </summary>
-        /// <param name="lastCommit">A <see cref="Block.LastCommit"/> from previous block.
-        /// </param>
-        public void Start(BlockCommit? lastCommit = null)
+        public void Start()
         {
             _logger.Information(
-                "Starting context for height #{Height}, LastCommit: {LastCommit}",
-                Height,
-                lastCommit);
-            _lastCommit = lastCommit;
+                "Starting context for height #{Height}",
+                Height);
             _consensusMessageCommunicator.OnStartHeight(Height);
             ProduceMutation(() => StartRound(0));
 

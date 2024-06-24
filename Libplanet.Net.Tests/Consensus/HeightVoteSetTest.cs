@@ -3,7 +3,6 @@ using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
-using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Xunit;
@@ -22,8 +21,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// </summary>
         public HeightVoteSetTest()
         {
-            _blockChain = TestUtils.CreateDummyBlockChain(
-                new MemoryStoreFixture(TestUtils.Policy.BlockAction));
+            _blockChain = TestUtils.CreateDummyBlockChain();
             var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             _lastCommit = TestUtils.CreateBlockCommit(block);
             _heightVoteSet = new HeightVoteSet(2, TestUtils.ValidatorSet);

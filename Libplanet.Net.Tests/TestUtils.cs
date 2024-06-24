@@ -88,16 +88,18 @@ namespace Libplanet.Net.Tests
         }
 
         public static BlockChain CreateDummyBlockChain(
-            MemoryStoreFixture fx,
             IBlockPolicy? policy = null,
             IActionLoader? actionLoader = null,
             Block? genesisBlock = null)
         {
+            policy ??= Policy;
+            actionLoader ??= ActionLoader;
+            var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
-                policy ?? Policy,
+                policy,
                 fx.Store,
                 new TrieStateStore(new MemoryKeyValueStore()),
-                actionLoader ?? ActionLoader,
+                actionLoader,
                 genesisBlock: genesisBlock);
 
             return blockChain;
@@ -235,8 +237,7 @@ namespace Libplanet.Net.Tests
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
-            var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockChain = CreateDummyBlockChain(fx, policy, actionLoader);
+            var blockChain = CreateDummyBlockChain(policy, actionLoader);
             ConsensusContext? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];
@@ -258,9 +259,39 @@ namespace Libplanet.Net.Tests
             return (blockChain, consensusContext);
         }
 
+        public static Context CreateDummyContext(
+            BlockChain blockChain,
+            long height = 1,
+            BlockCommit? lastCommit = null,
+            PrivateKey? privateKey = null,
+            ContextTimeoutOption? contextTimeoutOptions = null,
+            ValidatorSet? validatorSet = null)
+        {
+            Context? context = null;
+            privateKey ??= PrivateKeys[0];
+            void BroadcastMessage(ConsensusMsg message) =>
+                Task.Run(() =>
+                {
+                    context!.ProduceMessage(message);
+                });
+
+            context = new Context(
+                new DummyConsensusMessageHandler(BroadcastMessage),
+                blockChain,
+                height,
+                lastCommit,
+                privateKey,
+                validatorSet ?? blockChain
+                    .GetNextWorldState(height - 1)
+                    .GetValidatorSet(),
+                contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
+            return context;
+        }
+
         public static (BlockChain BlockChain, Context Context)
             CreateDummyContext(
                 long height = 1,
+                BlockCommit? lastCommit = null,
                 IBlockPolicy? policy = null,
                 IActionLoader? actionLoader = null,
                 PrivateKey? privateKey = null,
@@ -281,12 +312,13 @@ namespace Libplanet.Net.Tests
                 TimeSpan.FromSeconds(1),
                 policy,
                 actionLoader,
-                PrivateKeys[1]);
+                privateKey);
 
             context = new Context(
                 new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 height,
+                lastCommit,
                 privateKey,
                 validatorSet ?? blockChain
                     .GetNextWorldState(height - 1)

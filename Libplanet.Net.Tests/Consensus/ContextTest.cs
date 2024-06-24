@@ -86,8 +86,15 @@ namespace Libplanet.Net.Tests.Consensus
             // Assumed that height 1 is already committed.  It will catch a propose to check
             // whether the lastCommit of height 1 is used for propose.  Note that Peer2
             // is the proposer for height 2.
-            var (blockChain, context) = TestUtils.CreateDummyContext(
+            var blockChain = TestUtils.CreateDummyBlockChain();
+            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
+            blockChain.Append(heightOneBlock, lastCommit);
+
+            var context = TestUtils.CreateDummyContext(
+                blockChain,
                 height: 2,
+                lastCommit: lastCommit,
                 privateKey: TestUtils.PrivateKeys[2],
                 validatorSet: Libplanet.Tests.TestUtils.ValidatorSet);
 
@@ -107,12 +114,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            // It needs a lastCommit to use, so we assume that index #1 block is already committed.
-            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
-            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
-
-            context.Start(lastCommit);
+            context.Start();
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
 
             Assert.Equal(ConsensusStep.PreVote, context.Step);
@@ -135,15 +137,18 @@ namespace Libplanet.Net.Tests.Consensus
             var exceptionOccurred = new AsyncAutoResetEvent();
             Exception? exceptionThrown = null;
 
-            var (blockChain, context) = TestUtils.CreateDummyContext(
+            // Add block #1 so we can start with a last commit for height 2.
+            var blockChain = TestUtils.CreateDummyBlockChain();
+            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
+            blockChain.Append(heightOneBlock, lastCommit);
+
+            var context = TestUtils.CreateDummyContext(
+                blockChain,
                 height: 2,
+                lastCommit: lastCommit,
                 privateKey: TestUtils.PrivateKeys[2],
                 validatorSet: TestUtils.ValidatorSet);
-
-            // Add block #1 so we can start with a last commit for height 2.
-            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
-            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -172,7 +177,7 @@ namespace Libplanet.Net.Tests.Consensus
                 exceptionOccurred.Set();
             };
 
-            context.Start(lastCommit);
+            context.Start();
 
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
 
@@ -321,6 +326,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
+                null,
                 TestUtils.PrivateKeys[0],
                 blockChain
                     .GetNextWorldState(0L)
@@ -623,6 +629,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
+                null,
                 TestUtils.PrivateKeys[0],
                 blockChain
                     .GetNextWorldState(0L)
