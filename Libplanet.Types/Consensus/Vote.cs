@@ -117,19 +117,6 @@ namespace Libplanet.Types.Consensus
                 ? ((Bencodex.Types.Dictionary)_metadata.Bencoded).Add(SignatureKey, Signature)
                 : _metadata.Bencoded;
 
-        /// <summary>
-        /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
-        /// <see cref="Validator"/>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the <see cref="Signature"/> is not empty
-        /// and is a valid signature signed by <see cref="Validator"/>,
-        /// <see langword="false"/> otherwise.</returns>
-        [Pure]
-        public bool Verify() =>
-            !Signature.IsEmpty &&
-            ValidatorPublicKey.Verify(
-                _codec.Encode(_metadata.Bencoded).ToImmutableArray(), Signature);
-
         /// <inheritdoc/>
         [Pure]
         public bool Equals(Vote? other)

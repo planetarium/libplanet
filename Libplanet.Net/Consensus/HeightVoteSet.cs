@@ -120,11 +120,6 @@ namespace Libplanet.Net.Consensus
 
                 PublicKey validatorKey = vote.ValidatorPublicKey;
 
-                if (validatorKey is null)
-                {
-                    throw new InvalidVoteException("ValidatorKey of the vote cannot be null", vote);
-                }
-
                 if (!_validatorSet.ContainsPublicKey(validatorKey))
                 {
                     throw new InvalidVoteException(
@@ -140,10 +135,10 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
-                if (!vote.Verify())
+                if (vote.Signature.IsEmpty)
                 {
                     throw new InvalidVoteException(
-                        "Received vote's signature is invalid",
+                        "Received vote's signature is empty",
                         vote);
                 }
 
