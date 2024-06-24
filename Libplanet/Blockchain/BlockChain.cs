@@ -204,8 +204,14 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// An event which is invoked when <see cref="Tip"/> is changed.
+        /// An event that is invoked when <see cref="Tip"/> is changed.
         /// </summary>
+        /// <remarks>
+        /// This is only invoked when <see cref="Tip"/> is changed, <em>not</em> when
+        /// a <see cref="BlockChain"/> is instantiated.  Furthermore, it is guaranteed
+        /// that the new tip event argument's <see cref="Block.Index"/> will always
+        /// be <em>increasing</em> for each invokation.
+        /// </remarks>
         // FIXME: This should be completely replaced by IRenderer.RenderBlock() or any other
         // alternatives.
         internal event EventHandler<(Block OldTip, Block NewTip)> TipChanged;
