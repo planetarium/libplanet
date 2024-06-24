@@ -308,12 +308,7 @@ namespace Libplanet.Net.Tests
                     context!.ProduceMessage(message);
                 });
 
-            var (blockChain, consensusContext) = CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
-                policy,
-                actionLoader,
-                privateKey);
-
+            var blockChain = CreateDummyBlockChain(policy, actionLoader);
             context = new Context(
                 new DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,

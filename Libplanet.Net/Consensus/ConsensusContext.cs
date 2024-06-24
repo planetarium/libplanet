@@ -234,7 +234,7 @@ namespace Libplanet.Net.Consensus
                         }
                     }
 
-                    _pendingMessages.RemoveWhere(message => message.Height == height);
+                    _pendingMessages.RemoveWhere(message => message.Height <= height);
                     _contexts[height].Start();
                 }
 
@@ -524,8 +524,6 @@ namespace Libplanet.Net.Consensus
                         _contexts.Remove(pair.Key);
                     }
                 }
-
-                _pendingMessages.RemoveWhere(message => message.Height < height);
             }
         }
     }

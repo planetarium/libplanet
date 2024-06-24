@@ -210,7 +210,7 @@ namespace Libplanet.Blockchain
         /// This is only invoked when <see cref="Tip"/> is changed, <em>not</em> when
         /// a <see cref="BlockChain"/> is instantiated.  Furthermore, it is guaranteed
         /// that the new tip event argument's <see cref="Block.Index"/> will always
-        /// be <em>increasing</em> for each invokation.
+        /// be <em>increasing</em> for each invocation.
         /// </remarks>
         // FIXME: This should be completely replaced by IRenderer.RenderBlock() or any other
         // alternatives.
