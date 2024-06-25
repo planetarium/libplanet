@@ -7,13 +7,10 @@
     --> programmers who create decentralized games powered by Libplanet <!--
     --> (https://libplanet.io/).</Description>
     <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <ToolCommandName>planet</ToolCommandName>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
-    </PropertyGroup>
+  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
     <PackAsTool>true</PackAsTool>
