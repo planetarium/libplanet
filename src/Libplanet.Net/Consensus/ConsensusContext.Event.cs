@@ -33,10 +33,16 @@ namespace Libplanet.Net.Consensus
                 StateChanged?.Invoke(this, eventArgs);
             context.MessageToPublish += (sender, message) =>
                 MessagePublished?.Invoke(this, (context.Height, message));
+            context.MessageToPublish += (sender, message) =>
+                _consensusMessageCommunicator.PublishMessage(message);
             context.MessageConsumed += (sender, message) =>
                 MessageConsumed?.Invoke(this, (context.Height, message));
             context.MutationConsumed += (sender, action) =>
                 MutationConsumed?.Invoke(this, (context.Height, action));
+            context.HeightStarted += (sender, height) =>
+                _consensusMessageCommunicator.OnStartHeight(height);
+            context.RoundStarted += (sender, round) =>
+                _consensusMessageCommunicator.OnStartRound(round);
         }
     }
 }

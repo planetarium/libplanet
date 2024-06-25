@@ -30,6 +30,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal event EventHandler<ConsensusMsg>? MessageToPublish;
 
+        internal event EventHandler<long>? HeightStarted;
+
+        internal event EventHandler<int>? RoundStarted;
+
         /// <summary>
         /// An event that is invoked when a queued <see cref="ConsensusMsg"/> is consumed.
         /// </summary>

@@ -269,14 +269,8 @@ namespace Libplanet.Net.Tests
         {
             Context? context = null;
             privateKey ??= PrivateKeys[0];
-            void BroadcastMessage(ConsensusMsg message) =>
-                Task.Run(() =>
-                {
-                    context!.ProduceMessage(message);
-                });
-
             context = new Context(
-                new DummyConsensusMessageHandler(BroadcastMessage),
+                new DummyConsensusMessageHandler(message => { }),
                 blockChain,
                 height,
                 lastCommit,
@@ -285,6 +279,7 @@ namespace Libplanet.Net.Tests
                     .GetNextWorldState(height - 1)
                     .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
             return context;
         }
 
@@ -302,15 +297,9 @@ namespace Libplanet.Net.Tests
             privateKey ??= PrivateKeys[1];
             policy ??= Policy;
 
-            void BroadcastMessage(ConsensusMsg message) =>
-                Task.Run(() =>
-                {
-                    context!.ProduceMessage(message);
-                });
-
             var blockChain = CreateDummyBlockChain(policy, actionLoader);
             context = new Context(
-                new DummyConsensusMessageHandler(BroadcastMessage),
+                new DummyConsensusMessageHandler((message) => { }),
                 blockChain,
                 height,
                 lastCommit,
@@ -319,6 +308,7 @@ namespace Libplanet.Net.Tests
                     .GetNextWorldState(height - 1)
                     .GetValidatorSet(),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             return (blockChain, context);
         }

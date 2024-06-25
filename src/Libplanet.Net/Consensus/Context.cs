@@ -438,11 +438,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to publish.</param>
         /// <remarks><see cref="ConsensusMsg"/> should be published to itself.</remarks>
-        private void PublishMessage(ConsensusMsg message)
-        {
-            _consensusMessageCommunicator.PublishMessage(message);
+        private void PublishMessage(ConsensusMsg message) =>
             MessageToPublish?.Invoke(this, message);
-        }
 
         /// <summary>
         /// Validates the given block.

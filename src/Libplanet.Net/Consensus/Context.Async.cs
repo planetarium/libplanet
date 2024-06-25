@@ -25,7 +25,7 @@ namespace Libplanet.Net.Consensus
             _logger.Information(
                 "Starting context for height #{Height}",
                 Height);
-            _consensusMessageCommunicator.OnStartHeight(Height);
+            HeightStarted?.Invoke(this, Height);
             ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.
