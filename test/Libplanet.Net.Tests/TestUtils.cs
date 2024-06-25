@@ -270,7 +270,6 @@ namespace Libplanet.Net.Tests
             Context? context = null;
             privateKey ??= PrivateKeys[0];
             context = new Context(
-                new DummyConsensusMessageHandler(message => { }),
                 blockChain,
                 height,
                 lastCommit,
@@ -299,7 +298,6 @@ namespace Libplanet.Net.Tests
 
             var blockChain = CreateDummyBlockChain(policy, actionLoader);
             context = new Context(
-                new DummyConsensusMessageHandler((message) => { }),
                 blockChain,
                 height,
                 lastCommit,

@@ -341,7 +341,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ContextTimeoutOption());
 
             context = new Context(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
                 null,
@@ -350,6 +349,7 @@ namespace Libplanet.Net.Tests.Consensus
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             consensusContext.Contexts.Add(1L, context);
 
@@ -644,7 +644,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ContextTimeoutOption());
 
             context = new Context(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
                 null,
@@ -653,6 +652,7 @@ namespace Libplanet.Net.Tests.Consensus
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             consensusContext.Contexts.Add(1L, context);
 
