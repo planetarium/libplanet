@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void StartAsProposer()
+        public async Task StartAsProposer()
         {
             var proposalSent = new AsyncAutoResetEvent();
             var stepChangedToPreVote = new AsyncAutoResetEvent();
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void StartAsProposerWithLastCommit()
+        public async Task StartAsProposerWithLastCommit()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             ConsensusProposalMsg? proposal = null;
@@ -123,6 +123,24 @@ namespace Libplanet.Net.Tests.Consensus
                 (Dictionary)new Codec().Decode(proposal!.Proposal.MarshaledBlock));
             Assert.NotNull(proposed.LastCommit);
             Assert.Equal(lastCommit, proposed.LastCommit);
+        }
+
+        [Fact]
+        public async Task CannotStartTwice()
+        {
+            var stepChanged = new AsyncAutoResetEvent();
+            var (_, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step == ConsensusStep.Propose)
+                {
+                    stepChanged.Set();
+                }
+            };
+            context.Start();
+
+            await stepChanged.WaitAsync();
+            Assert.Throws<InvalidOperationException>(() => context.Start());
         }
 
         [Fact(Timeout = Timeout)]
@@ -211,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await Task.WhenAll(stepChangedToEndCommit.WaitAsync());
+            await stepChangedToEndCommit.WaitAsync();
 
             // Check context has only three votes.
             BlockCommit? commit = context.GetBlockCommit();
@@ -459,7 +477,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// </para>
         /// </summary>
         [Fact]
-        public async void CanReplaceProposal()
+        public async Task CanReplaceProposal()
         {
             var codec = new Codec();
             var privateKeys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToArray();
