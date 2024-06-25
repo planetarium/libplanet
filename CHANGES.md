@@ -34,6 +34,8 @@ To be released.
  -  (Libplanet.Net) Changed `Context.Start()` to throw an
     `InvalidOperationException` when `Context` is not in a valid state.
     [[#3846]]
+ -  (Libplanet.Net) Removed `IConsensusMessageCommunicator` parameter from
+    `Context()`.  [[#3848], [#3849]]
 
 ### Backward-incompatible network protocol changes
 
@@ -62,6 +64,8 @@ To be released.
 [#3833]: https://github.com/planetarium/libplanet/issues/3833
 [#3845]: https://github.com/planetarium/libplanet/pull/3845
 [#3846]: https://github.com/planetarium/libplanet/pull/3846
+[#3848]: https://github.com/planetarium/libplanet/issues/3848
+[#3849]: https://github.com/planetarium/libplanet/issues/3849
 
 
 Version 4.6.1
