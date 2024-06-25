@@ -1,10 +1,10 @@
+import { join } from "node:path";
+import { RecordView, encode } from "@planetarium/bencodex";
+import { execa } from "execa";
+import { describe, expect, test } from "vitest";
 import { encodeSignedTx, signTx } from "../../src/tx/signed";
 import { type UnsignedTx } from "../../src/tx/unsigned";
 import { account1, address1 } from "./fixtures";
-import { RecordView, encode } from "@planetarium/bencodex";
-import { execa } from "execa";
-import { join } from "node:path";
-import { describe, expect, test } from "vitest";
 
 describe("signTx", () => {
   test("UnsignedTx", async () => {
@@ -30,28 +30,28 @@ describe("signTx", () => {
                       minters: [
                         Buffer.from(
                           "47d082a115c63e7b58b1532d20e631538eafadde",
-                          "hex",
+                          "hex"
                         ),
                       ],
                       ticker: "NCG",
                     },
-                    "text",
+                    "text"
                   ),
                   1000n,
                 ],
                 recipient: Buffer.from(
                   "5a533067D0cBa77490268b26195EdB10B990143D",
-                  "hex",
+                  "hex"
                 ),
                 sender: Buffer.from(
                   "111CB8E18c6D70f5032000c5739c5ac36E793EDB",
-                  "hex",
+                  "hex"
                 ),
               },
-              "text",
+              "text"
             ),
           },
-          "text",
+          "text"
         ),
       ],
     };
@@ -64,13 +64,13 @@ describe("signTx", () => {
         "run",
         "--no-build",
         "--project",
-        join(__dirname, "..", "..", "..", "..", "Libplanet.Tools"),
+        join(__dirname, "..", "..", "..", "..", "tools", "Libplanet.Tools"),
         "--",
         "tx",
         "analyze",
         "-",
       ],
-      { input: payload },
+      { input: payload }
     );
     expect(JSON.parse(stdout)).toStrictEqual({
       id: "49a645bb80fa96757009615ec33bc15a2e90e9121877de9f14de35b7d657a118",

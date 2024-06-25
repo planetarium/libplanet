@@ -70,7 +70,7 @@ commands:
     steps:
     - checkout
     - concat_files:
-        glob: "*/*.csproj"
+        glob: "{src,test,tools}/*/*.csproj"
         to: .combined-package-files.txt
     - restore_cache:
         keys:
@@ -105,14 +105,18 @@ commands:
         root: .
         paths:
         - <<parameters.collect_tests_to>>
-        - "*/bin/"
-        - "*/obj/"
+        - "src/*/bin/"
+        - "src/*/obj/"
+        - "test/*/bin/"
+        - "test/*/obj/"
+        - "tools/*/bin/"
+        - "tools/*/obj/"
 
   mono_build_base:
     steps:
     - checkout
     - concat_files:
-        glob: "*/*.csproj"
+        glob: "{src,test,tools}/*/*.csproj"
         to: .combined-package-files.txt
     - restore_cache:
         keys:

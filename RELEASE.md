@@ -186,7 +186,7 @@ You also need to prepare the next patch release.  Switch to the maintenance
 branch (e.g., *1.2-maintenance*), and make sure it is up-to-date.
 
 You need to bump the patch version of the `<VersionPrefix>` field
-in the *Libplanet/Libplanet.csproj* file.  For example, if the version you have
+in the *src/Libplanet/Libplanet.csproj* file.  For example, if the version you have
 just released is *1.2.3*, bump it to *1.2.4* (3 + 1 = 4).
 
 Also the changelog section for the next patch release should be prepared; add
@@ -236,8 +236,8 @@ git reset --hard upstream/main
 ~~~~
 
 Since this maintenance branch purposes to prepare the next patch release, e.g.,
-*1.2.1*, the `<VersionPrefix>` field of the *Libplanet/Libplanet.csproj* file
-also needs to be updated:
+*1.2.1*, the `<VersionPrefix>` field of the *src/Libplanet/Libplanet.csproj*
+file also needs to be updated:
 
 ~~~~ xml
 <VersionPrefix>1.2.1</VersionPrefix>
@@ -279,7 +279,7 @@ git switch main  # Or on Git < 2.23: git checkout main
 git fetch upstream && git reset --hard upstream/main
 ~~~~
 
-Then, in a similar manner, update *Libplanet/Libplanet.csproj*'s
+Then, in a similar manner, update *src/Libplanet/Libplanet.csproj*'s
 `<VersionPrefix>` to *1.3.0*, and add an empty section for *1.3.0* with
 the release date undecided to the changelog.  Make a commit with a simple
 message like <q>Version bump</q>.
@@ -331,7 +331,8 @@ The checklist to prepare the next release:
      4. Send a pull request to the upstream's *main* branch.
      5. Switch to the *<var>X</var>.<var>Y</var>-maintenance* branch and
         make sure it is up-to-date.
-     6. Bump `<VersionPrefix>`'s patch version on *Libplanet/Libplanet.csproj*.
+     6. Bump `<VersionPrefix>`'s patch version on
+        *src/Libplanet/Libplanet.csproj*.
         (For example, if you have just released *1.2.3*, bump it to *1.2.4*.)
      7. Add a new section for the next unreleased version to the changelog,
         with the sentence <q>To be released</q> (no release date).
@@ -343,7 +344,7 @@ The checklist to prepare the next release:
 
      1. Create a new branch named *<var>X</var>.<var>Y</var>-maintenance* and
         switch to it.
-     2. Bump `<VersionPrefix>` on *Libplanet/Libplanet.csproj* to
+     2. Bump `<VersionPrefix>` on *src/Libplanet/Libplanet.csproj* to
         *<var>X</var>.<var>Y</var>.1*.
      3. Add a new section for the next unreleased version
         (*<var>X</var>.<var>Y</var>.1*) to the changelog, with the sentence
@@ -351,7 +352,7 @@ The checklist to prepare the next release:
      4. Commit the changes with a message <q>Version bump</q>.
      5. `git push upstream X.Y-maintenance`
      6. Switch to the *main* branch.
-     7. Bump `<VersionPrefix>`'s minor version on *Libplanet/Libplanet.csproj*.
+     7. Bump `<VersionPrefix>`'s minor version on *src/Libplanet/Libplanet.csproj*.
         (For example, if you have just released *1.2.0*, bump it to *1.3.0*.)
      8. Add a new section for the next unreleased minor version to the
         changelog, with the sentence <q>To be released</q> (no release date).

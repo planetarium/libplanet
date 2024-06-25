@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="**/*.proto" GrpcServices="Both"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\LICENSE">
+        <Pack>true</Pack>
+        <PackagePath>LICENSE.txt</PackagePath>
+        <Link>LICENSE</Link>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
+        <Link>Menees.Analyzers.Settings.xml</Link>
+      </AdditionalFiles>
+    </ItemGroup>
+
+</Project>

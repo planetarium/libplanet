@@ -21,8 +21,8 @@
   "scripts": {
     "build": "yarn && nanobundle build",
     "prepack": "yarn && yarn build",
-    "dev": "yarn && dotnet build ../../Libplanet.Tools && vitest",
-    "test": "yarn && yarn run -T tsc -p tsconfig.json && dotnet build ../../Libplanet.Tools && vitest run",
+    "dev": "yarn && dotnet build ../../tools/Libplanet.Tools && vitest",
+    "test": "yarn && yarn run -T tsc -p tsconfig.json && dotnet build ../../tools/Libplanet.Tools && vitest run",
     "coverage": "yarn && vitest run --coverage"
   },
   "repository": {

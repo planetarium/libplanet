@@ -6,7 +6,7 @@
     "@planetarium/account-aws-kms",
     "@planetarium/account-web3-secret-storage",
     "@planetarium/tx",
-    "Libplanet.Tools"
+    "tools/Libplanet.Tools"
   ],
   "scripts": {
     "build": "printf \"\\033[41;97mLibplanet note: currently, it is expected for `yarn build` to fail on the first run and succeed on the second run due to an unknown issue unrelated to the codebase (see issue #3492,) so the build phase runs twice. Whenever the culprit is specified please remove this message and the duplicate call.\\033[0m\n\" >&2 && _libplanet_build=1 yarn workspaces foreach -p -A run build || _libplanet_build=1 yarn workspaces foreach -p -A run build",
