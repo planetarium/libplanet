@@ -125,6 +125,24 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
 
+        [Fact]
+        public async void CannotStartTwice()
+        {
+            var stepChanged = new AsyncAutoResetEvent();
+            var (_, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step == ConsensusStep.Propose)
+                {
+                    stepChanged.Set();
+                }
+            };
+            context.Start();
+
+            await stepChanged.WaitAsync();
+            Assert.Throws<InvalidOperationException>(() => context.Start());
+        }
+
         [Fact(Timeout = Timeout)]
         public async Task CanAcceptMessagesAfterCommitFailure()
         {
@@ -211,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await Task.WhenAll(stepChangedToEndCommit.WaitAsync());
+            await stepChangedToEndCommit.WaitAsync();
 
             // Check context has only three votes.
             BlockCommit? commit = context.GetBlockCommit();

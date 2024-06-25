@@ -11,8 +11,17 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Starts round #0 of consensus for <see cref="Height"/>.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="Step"/>
+        /// is not <see cref="ConsensusStep.Default"/>.</exception>
         public void Start()
         {
+            if (Step != ConsensusStep.Default)
+            {
+                throw new InvalidOperationException(
+                    $"Context cannot be started unless its state is {ConsensusStep.Default} " +
+                    $"but its current step is {Step}");
+            }
+
             _logger.Information(
                 "Starting context for height #{Height}",
                 Height);
