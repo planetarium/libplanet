@@ -88,6 +88,9 @@ parameter <code>IActionEvaluator actionEvaluator</code> any more.  [<a href="htt
 <li>(Libplanet.Net) Changed <code>Context()</code> to accept additional <code>BlockCommit?</code>
 typed argument.  Removed <code>lastCommit</code> parameter from <code>Context.Start()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/3833">#3833</a>, <a href="https://github.com/planetarium/libplanet/pull/3845">#3845</a>]</li>
+<li>(Libplanet.Net) Changed <code>Context.Start()</code> to throw an
+<code>InvalidOperationException</code> when <code>Context</code> is not in a valid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3846">#3846</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
