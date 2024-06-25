@@ -60,7 +60,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg)
                 {
@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -179,7 +179,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToEndCommit.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -325,23 +325,7 @@ namespace Libplanet.Net.Tests.Consensus
                 new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(DelayAction)));
 
-            Context? context = null;
-
-            void BroadcastMessage(ConsensusMsg message) =>
-                Task.Run(() =>
-                {
-                    context!.ProduceMessage(message);
-                });
-
-            var consensusContext = new ConsensusContext(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
-                blockChain,
-                TestUtils.PrivateKeys[0],
-                newHeightDelay,
-                new ContextTimeoutOption());
-
-            context = new Context(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
+            Context context = new Context(
                 blockChain,
                 1L,
                 null,
@@ -350,8 +334,7 @@ namespace Libplanet.Net.Tests.Consensus
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
-
-            consensusContext.Contexts.Add(1L, context);
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -376,14 +359,6 @@ namespace Libplanet.Net.Tests.Consensus
                 if (eventArgs.NewTip.Index == 1L)
                 {
                     blockHeightOneAppended.Set();
-                }
-            };
-
-            consensusContext.StateChanged += (_, eventArgs) =>
-            {
-                if (consensusContext.Height == 2L)
-                {
-                    enteredHeightTwo.Set();
                 }
             };
 
@@ -413,7 +388,8 @@ namespace Libplanet.Net.Tests.Consensus
                             VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            foreach (int i in new int[] { 1, 2, 3 })
+            // Two additional votes should be enough to reach a consensus.
+            foreach (int i in new int[] { 1, 2 })
             {
                 context.ProduceMessage(
                     new ConsensusPreCommitMsg(
@@ -426,16 +402,29 @@ namespace Libplanet.Net.Tests.Consensus
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
-            await Task.WhenAll(blockHeightOneAppended.WaitAsync(), enteredHeightTwo.WaitAsync());
+            await blockHeightOneAppended.WaitAsync();
+            Assert.Equal(
+                3,
+                context.GetBlockCommit()!.Votes.Count(vote => vote.Flag == VoteFlag.PreCommit));
 
             Assert.True(enteredPreVote.IsSet);
             Assert.True(enteredPreCommit.IsSet);
             Assert.True(enteredEndCommit.IsSet);
-            Assert.True(
-                context.GetBlockCommit()!.Votes.Any(
-                    vote =>
-                        vote.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey) &&
-                        vote.Flag.Equals(VoteFlag.PreCommit)));
+
+            // Add the last vote and wait for it to be consumed.
+            context.ProduceMessage(
+                new ConsensusPreCommitMsg(
+                    new VoteMetadata(
+                        1,
+                        0,
+                        block.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.PrivateKeys[3].PublicKey,
+                        VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[3])));
+            Thread.Sleep(10);
+            Assert.Equal(
+                4,
+                context.GetBlockCommit()!.Votes.Count(vote => vote.Flag == VoteFlag.PreCommit));
         }
 
         /// <summary>
@@ -644,7 +633,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ContextTimeoutOption());
 
             context = new Context(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
                 blockChain,
                 1L,
                 null,
@@ -653,6 +641,7 @@ namespace Libplanet.Net.Tests.Consensus
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
                 contextTimeoutOptions: new ContextTimeoutOption());
+            context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             consensusContext.Contexts.Add(1L, context);
 

@@ -495,7 +495,6 @@ namespace Libplanet.Net.Consensus
             }
 
             Context context = new Context(
-                _consensusMessageCommunicator,
                 _blockChain,
                 height,
                 lastCommit,

@@ -8,6 +8,22 @@ namespace Libplanet.Net.Consensus
     public partial class Context
     {
         /// <summary>
+        /// An event that is invoked when <see cref="Context"/> starts via <see cref="Start"/>.
+        /// </summary>
+        internal event EventHandler<long>? HeightStarted;
+
+        /// <summary>
+        /// An event that is invoked when <see cref="Context"/> starts a new round
+        /// via <see cref="StartRound"/>.
+        /// </summary>
+        internal event EventHandler<int>? RoundStarted;
+
+        /// <summary>
+        /// An event that is invoked when a <see cref="ConsensusMsg"/> needs to be published.
+        /// </summary>
+        internal event EventHandler<ConsensusMsg>? MessageToPublish;
+
+        /// <summary>
         /// An event that is invoked when an <see cref="Exception"/> is thrown.
         /// </summary>
         internal event EventHandler<Exception>? ExceptionOccurred;
@@ -24,11 +40,6 @@ namespace Libplanet.Net.Consensus
         /// and/or <see cref="ConsensusStep"/> is changed.
         /// </summary>
         internal event EventHandler<ContextState>? StateChanged;
-
-        /// <summary>
-        /// An event that is invoked when a <see cref="ConsensusMsg"/> is published.
-        /// </summary>
-        internal event EventHandler<ConsensusMsg>? MessagePublished;
 
         /// <summary>
         /// An event that is invoked when a queued <see cref="ConsensusMsg"/> is consumed.

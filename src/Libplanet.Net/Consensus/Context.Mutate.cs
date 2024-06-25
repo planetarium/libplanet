@@ -24,9 +24,9 @@ namespace Libplanet.Net.Consensus
                 round,
                 Round,
                 ToString());
-            _consensusMessageCommunicator.OnStartRound(round);
 
             Round = round;
+            RoundStarted?.Invoke(this, Round);
             _heightVoteSet.SetRound(round);
 
             Proposal = null;

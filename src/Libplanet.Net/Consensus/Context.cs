@@ -79,7 +79,6 @@ namespace Libplanet.Net.Consensus
     {
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
-        private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly Codec _codec;
         private readonly ValidatorSet _validatorSet;
@@ -107,8 +106,6 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="consensusMessageCommunicator">A communicator for receiving
-        /// <see cref="ConsensusMsg"/> from or publishing to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -125,7 +122,6 @@ namespace Libplanet.Net.Consensus
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public Context(
-            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
             BlockCommit? lastCommit,
@@ -133,7 +129,6 @@ namespace Libplanet.Net.Consensus
             ValidatorSet validators,
             ContextTimeoutOption contextTimeoutOptions)
             : this(
-                consensusMessageCommunicator,
                 blockChain,
                 height,
                 lastCommit,
@@ -147,7 +142,6 @@ namespace Libplanet.Net.Consensus
         }
 
         private Context(
-            IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
             BlockCommit? lastCommit,
@@ -171,7 +165,6 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(Context));
 
             _privateKey = privateKey;
-            _consensusMessageCommunicator = consensusMessageCommunicator;
             Height = height;
             Round = round;
             Step = consensusStep;
@@ -438,11 +431,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to publish.</param>
         /// <remarks><see cref="ConsensusMsg"/> should be published to itself.</remarks>
-        private void PublishMessage(ConsensusMsg message)
-        {
-            _consensusMessageCommunicator.PublishMessage(message);
-            MessagePublished?.Invoke(this, message);
-        }
+        private void PublishMessage(ConsensusMsg message) =>
+            MessageToPublish?.Invoke(this, message);
 
         /// <summary>
         /// Validates the given block.
