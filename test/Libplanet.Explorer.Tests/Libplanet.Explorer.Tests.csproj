@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>

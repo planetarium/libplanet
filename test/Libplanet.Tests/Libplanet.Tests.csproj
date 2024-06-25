@@ -26,11 +26,6 @@
     <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="Mono.HttpUtility" Version="1.0.0.1" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
