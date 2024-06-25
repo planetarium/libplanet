@@ -294,10 +294,9 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            using var fx = new MemoryStoreFixture(policy.BlockAction);
             var diffPolicyBlockChain =
                 TestUtils.CreateDummyBlockChain(
-                    fx, policy, new SingleActionLoader(typeof(DumbAction)), blockChain.Genesis);
+                    policy, new SingleActionLoader(typeof(DumbAction)), blockChain.Genesis);
 
             var invalidTx = diffPolicyBlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 

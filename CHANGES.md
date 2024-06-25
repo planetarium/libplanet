@@ -28,6 +28,9 @@ To be released.
     parameter `IActionEvaluator actionEvaluator` any more.  [[#3811]]
  -  (Libplanet) `BlockChain.ProposeBlock()` receives parameter
     `HashDigest<SHA256> stateRootHash`.  [[#3811]]
+ -  (Libplanet.Net) Changed `Context()` to accept additional `BlockCommit?`
+    typed argument.  Removed `lastCommit` parameter from `Context.Start()`.
+    [[#3833], [#3845]]
 
 ### Backward-incompatible network protocol changes
 
@@ -53,6 +56,8 @@ To be released.
 ### CLI tools
 
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
+[#3833]: https://github.com/planetarium/libplanet/issues/3833
+[#3845]: https://github.com/planetarium/libplanet/pull/3845
 
 
 Version 4.6.1

@@ -38,6 +38,7 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context> _contexts;
+        private readonly HashSet<ConsensusMsg> _pendingMessages;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -72,6 +73,7 @@ namespace Libplanet.Net.Consensus
             _contextTimeoutOption = contextTimeoutOption;
 
             _contexts = new Dictionary<long, Context>();
+            _pendingMessages = new HashSet<ConsensusMsg>();
             _blockChain.TipChanged += OnTipChanged;
 
             _logger = Log
@@ -212,16 +214,28 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                _logger.Information("Start consensus for height #{Height}", Height);
+                _logger.Information(
+                    "Start consensus for height #{Height} with last commit {LastCommit}",
+                    Height,
+                    lastCommit);
                 lock (_contextLock)
                 {
                     Height = height;
                     if (!_contexts.ContainsKey(height))
                     {
-                        _contexts[height] = CreateContext(height);
+                        _contexts[height] = CreateContext(height, lastCommit);
                     }
 
-                    _contexts[height].Start(lastCommit);
+                    foreach (var message in _pendingMessages)
+                    {
+                        if (message.Height == height)
+                        {
+                            _contexts[height].ProduceMessage(message);
+                        }
+                    }
+
+                    _pendingMessages.RemoveWhere(message => message.Height <= height);
+                    _contexts[height].Start();
                 }
 
                 RemoveOldContexts(height);
@@ -264,12 +278,15 @@ namespace Libplanet.Net.Consensus
 
             lock (_contextLock)
             {
-                if (!_contexts.ContainsKey(height))
+                if (_contexts.ContainsKey(height))
                 {
-                    _contexts[height] = CreateContext(height);
+                    _contexts[height].ProduceMessage(consensusMessage);
+                }
+                else
+                {
+                    _pendingMessages.Add(consensusMessage);
                 }
 
-                _contexts[height].ProduceMessage(consensusMessage);
                 return true;
             }
         }
@@ -448,7 +465,8 @@ namespace Libplanet.Net.Consensus
         /// and attach event handlers to it, and return the created context.
         /// </summary>
         /// <param name="height">The height of the context to create.</param>
-        private Context CreateContext(long height)
+        /// <param name="lastCommit">The last commit of the previous <see cref="Block"/>.</param>
+        private Context CreateContext(long height, BlockCommit? lastCommit)
         {
             // blockchain may not contain block of Height - 1?
             ValidatorSet validatorSet;
@@ -480,6 +498,7 @@ namespace Libplanet.Net.Consensus
                 _consensusMessageCommunicator,
                 _blockChain,
                 height,
+                lastCommit,
                 _privateKey,
                 validatorSet,
                 contextTimeoutOptions: _contextTimeoutOption);
@@ -496,14 +515,13 @@ namespace Libplanet.Net.Consensus
         {
             lock (_contextLock)
             {
-                foreach (var ctx in _contexts.Values)
+                foreach (var pair in _contexts)
                 {
-                    if (ctx.Height < height)
+                    if (pair.Key < height)
                     {
-                        _logger.Debug("Removing context for height {Height}", ctx.Height);
-
-                        ctx.Dispose();
-                        _contexts.Remove(ctx.Height);
+                        _logger.Debug("Removing context for height {Height}", pair.Key);
+                        pair.Value.Dispose();
+                        _contexts.Remove(pair.Key);
                     }
                 }
             }

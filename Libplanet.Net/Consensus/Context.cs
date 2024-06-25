@@ -114,6 +114,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="height">A target <see cref="Context.Height"/> of the consensus state.
         /// </param>
+        /// <param name="lastCommit">The last commit for the previous <see cref="Block"/>.</param>
         /// <param name="privateKey">A private key for signing a block and message.
         /// <seealso cref="GetValue"/>
         /// <seealso cref="ProcessGenericUponRules"/>
@@ -127,6 +128,7 @@ namespace Libplanet.Net.Consensus
             IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
+            BlockCommit? lastCommit,
             PrivateKey privateKey,
             ValidatorSet validators,
             ContextTimeoutOption contextTimeoutOptions)
@@ -134,6 +136,7 @@ namespace Libplanet.Net.Consensus
                 consensusMessageCommunicator,
                 blockChain,
                 height,
+                lastCommit,
                 privateKey,
                 validators,
                 ConsensusStep.Default,
@@ -147,6 +150,7 @@ namespace Libplanet.Net.Consensus
             IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             long height,
+            BlockCommit? lastCommit,
             PrivateKey privateKey,
             ValidatorSet validators,
             ConsensusStep consensusStep,
@@ -171,6 +175,7 @@ namespace Libplanet.Net.Consensus
             Height = height;
             Round = round;
             Step = consensusStep;
+            _lastCommit = lastCommit;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;

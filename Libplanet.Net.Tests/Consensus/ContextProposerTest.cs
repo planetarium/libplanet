@@ -305,9 +305,19 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusPreVoteMsg? preVote = null;
             var preVoteSent = new AsyncAutoResetEvent();
 
-            var (blockChain, context) = TestUtils.CreateDummyContext(
+            var blockChain = TestUtils.CreateDummyBlockChain();
+            var block1 = blockChain.ProposeBlock(new PrivateKey());
+            var block1Commit = TestUtils.CreateBlockCommit(block1);
+            blockChain.Append(block1, block1Commit);
+            var block2 = blockChain.ProposeBlock(new PrivateKey(), block1Commit);
+            var block2Commit = TestUtils.CreateBlockCommit(block2);
+            blockChain.Append(block2, block2Commit);
+
+            var context = TestUtils.CreateDummyContext(
+                blockChain,
                 privateKey: TestUtils.PrivateKeys[2],
                 height: 2,
+                lastCommit: block2Commit,
                 validatorSet: TestUtils.ValidatorSet);
             context.MessagePublished += (_, message) =>
             {
@@ -323,18 +333,11 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            var block1 = blockChain.ProposeBlock(new PrivateKey());
-            var block1Commit = TestUtils.CreateBlockCommit(block1);
-            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-            var block2 = blockChain.ProposeBlock(new PrivateKey(), block1Commit);
-            var block2Commit = TestUtils.CreateBlockCommit(block2);
-            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
-
             Assert.Equal(
                 TestUtils.PrivateKeys[2].PublicKey,
                 TestUtils.ValidatorSet.GetProposer(2, 0).PublicKey);
 
-            context.Start(lastCommit: block2Commit);
+            context.Start();
             await proposalSent.WaitAsync();
             Bencodex.Codec codec = new Bencodex.Codec();
             var proposedBlock = BlockMarshaler.UnmarshalBlock(
