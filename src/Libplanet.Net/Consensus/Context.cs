@@ -441,7 +441,7 @@ namespace Libplanet.Net.Consensus
         private void PublishMessage(ConsensusMsg message)
         {
             _consensusMessageCommunicator.PublishMessage(message);
-            MessagePublished?.Invoke(this, message);
+            MessageToPublish?.Invoke(this, message);
         }
 
         /// <summary>

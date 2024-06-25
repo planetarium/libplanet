@@ -26,9 +26,9 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<ContextState>? StateChanged;
 
         /// <summary>
-        /// An event that is invoked when a <see cref="ConsensusMsg"/> is published.
+        /// An event that is invoked when a <see cref="ConsensusMsg"/> needs to be published.
         /// </summary>
-        internal event EventHandler<ConsensusMsg>? MessagePublished;
+        internal event EventHandler<ConsensusMsg>? MessageToPublish;
 
         /// <summary>
         /// An event that is invoked when a queued <see cref="ConsensusMsg"/> is consumed.

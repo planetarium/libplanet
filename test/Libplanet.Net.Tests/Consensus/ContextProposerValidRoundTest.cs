@@ -49,7 +49,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
             context.TimeoutProcessed += (_, __) => timeoutProcessed = true;
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
             context.TimeoutProcessed += (_, __) => timeoutProcessed = true;
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {

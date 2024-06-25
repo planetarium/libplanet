@@ -60,7 +60,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg)
                 {
@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {
@@ -179,7 +179,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToEndCommit.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusProposalMsg proposalMsg)
                 {

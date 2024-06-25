@@ -92,7 +92,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreCommit.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreCommitMsg preCommitMsg)
                 {
@@ -162,7 +162,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreCommit.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreCommitMsg preCommitMsg &&
                     preCommitMsg.BlockHash.Equals(default))
@@ -213,7 +213,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
@@ -286,7 +286,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
@@ -348,7 +348,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 timeoutProcessed = true;
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash.Equals(default))
                 {
@@ -464,7 +464,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChangedToPreVote.Set();
                 }
             };
-            context.MessagePublished += (_, message) =>
+            context.MessageToPublish += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg)
                 {
