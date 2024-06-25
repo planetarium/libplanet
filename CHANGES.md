@@ -31,6 +31,9 @@ To be released.
  -  (Libplanet.Net) Changed `Context()` to accept additional `BlockCommit?`
     typed argument.  Removed `lastCommit` parameter from `Context.Start()`.
     [[#3833], [#3845]]
+ -  (Libplanet.Net) Changed `Context.Start()` to throw an
+    `InvalidOperationException` when `Context` is not in a valid state.
+    [[#3846]]
 
 ### Backward-incompatible network protocol changes
 
@@ -58,6 +61,7 @@ To be released.
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
 [#3833]: https://github.com/planetarium/libplanet/issues/3833
 [#3845]: https://github.com/planetarium/libplanet/pull/3845
+[#3846]: https://github.com/planetarium/libplanet/pull/3846
 
 
 Version 4.6.1

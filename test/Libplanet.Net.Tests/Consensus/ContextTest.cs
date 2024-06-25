@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void StartAsProposer()
+        public async Task StartAsProposer()
         {
             var proposalSent = new AsyncAutoResetEvent();
             var stepChangedToPreVote = new AsyncAutoResetEvent();
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void StartAsProposerWithLastCommit()
+        public async Task StartAsProposerWithLastCommit()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             ConsensusProposalMsg? proposal = null;
@@ -126,7 +126,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact]
-        public async void CannotStartTwice()
+        public async Task CannotStartTwice()
         {
             var stepChanged = new AsyncAutoResetEvent();
             var (_, context) = TestUtils.CreateDummyContext();
@@ -477,7 +477,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// </para>
         /// </summary>
         [Fact]
-        public async void CanReplaceProposal()
+        public async Task CanReplaceProposal()
         {
             var codec = new Codec();
             var privateKeys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToArray();
