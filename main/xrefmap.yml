@@ -12730,12 +12730,12 @@ references:
   commentId: T:Libplanet.Net.Consensus.Context
   fullName: Libplanet.Net.Consensus.Context
   nameWithType: Context
-- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Types.Blocks.BlockCommit,Libplanet.Crypto.PrivateKey,Libplanet.Types.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: Context(IConsensusMessageCommunicator, BlockChain, Int64, BlockCommit, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Types_Blocks_BlockCommit_Libplanet_Crypto_PrivateKey_Libplanet_Types_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Types.Blocks.BlockCommit,Libplanet.Crypto.PrivateKey,Libplanet.Types.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Net.Consensus.IConsensusMessageCommunicator, Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Types.Blocks.BlockCommit, Libplanet.Crypto.PrivateKey, Libplanet.Types.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: Context.Context(IConsensusMessageCommunicator, BlockChain, Int64, BlockCommit, PrivateKey, ValidatorSet, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Types.Blocks.BlockCommit,Libplanet.Crypto.PrivateKey,Libplanet.Types.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  name: Context(BlockChain, Int64, BlockCommit, PrivateKey, ValidatorSet, ContextTimeoutOption)
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Blockchain_BlockChain_System_Int64_Libplanet_Types_Blocks_BlockCommit_Libplanet_Crypto_PrivateKey_Libplanet_Types_Consensus_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
+  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,Libplanet.Types.Blocks.BlockCommit,Libplanet.Crypto.PrivateKey,Libplanet.Types.Consensus.ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
+  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Blockchain.BlockChain, System.Int64, Libplanet.Types.Blocks.BlockCommit, Libplanet.Crypto.PrivateKey, Libplanet.Types.Consensus.ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
+  nameWithType: Context.Context(BlockChain, Int64, BlockCommit, PrivateKey, ValidatorSet, ContextTimeoutOption)
 - uid: Libplanet.Net.Consensus.Context.#ctor*
   name: Context
   href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_
