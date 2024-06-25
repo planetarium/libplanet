@@ -72,12 +72,12 @@
 
   <h1 id="Libplanet_Common_ByteUtil" data-uid="Libplanet.Common.ByteUtil" class="text-break">Class ByteUtil
 </h1>
-  <div class="markdown level0 summary"><p>Utility methods to deal with <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> arrays.</p>
+  <div class="markdown level0 summary"><p>Utility methods to deal with <span class="xref">System.Byte</span> arrays.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ByteUtil</span></div>
   </div>
   <div class="inheritedMembers">
@@ -86,10 +86,10 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.GetHashCode()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
     </div>
     <div>
       <span class="xref">System.Object.GetType()</span>
@@ -101,7 +101,7 @@
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
@@ -117,13 +117,13 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_CalculateHashCode_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.CalculateHashCode(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L154">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_CalculateHashCode_" data-uid="Libplanet.Common.ByteUtil.CalculateHashCode*"></a>
   <h4 id="Libplanet_Common_ByteUtil_CalculateHashCode_System_Byte___" data-uid="Libplanet.Common.ByteUtil.CalculateHashCode(System.Byte[])">CalculateHashCode(Byte[])</h4>
   <div class="markdown level1 summary"><p>Calculates a deterministic hash code from a given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  It is mostly used to implement
-<span class="xref">System.Object.GetHashCode()</span> method.</p>
+<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">GetHashCode()</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -142,9 +142,9 @@ public static int CalculateHashCode(byte[] bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array, which completely
+        <td><p>A <span class="xref">System.Byte</span> array, which completely
 determines (or encodes) an object, to calculate a hash code.</p>
 </td>
       </tr>
@@ -190,11 +190,11 @@ the same hash code is returned.  It must not be <span class="xref">null</span>.<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_Hex_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.Hex(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L100">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L100">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_Hex_" data-uid="Libplanet.Common.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_Common_ByteUtil_Hex_System_Byte___" data-uid="Libplanet.Common.ByteUtil.Hex(System.Byte[])">Hex(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Renders a hexadecimal string in lowercase from a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string in lowercase from a <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -213,9 +213,9 @@ public static string Hex(byte[] bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
+        <td><p>A <span class="xref">System.Byte</span> array to renders
 the corresponding hexadecimal string.</p>
 </td>
       </tr>
@@ -248,11 +248,11 @@ the corresponding hexadecimal string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_Hex_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.Hex(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L137">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L137">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_Hex_" data-uid="Libplanet.Common.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_Common_ByteUtil_Hex_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Common.ByteUtil.Hex(System.Collections.Immutable.ImmutableArray{System.Byte}@)">Hex(in ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Renders a hexadecimal string in lowercase from a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string in lowercase from a <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -271,9 +271,9 @@ public static string Hex(in ImmutableArray&lt;byte&gt; bytes)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
+        <td><p>A <span class="xref">System.Byte</span> array to renders
 the corresponding hexadecimal string.</p>
 </td>
       </tr>
@@ -306,11 +306,11 @@ the corresponding hexadecimal string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_ParseHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.ParseHex(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L44">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_ParseHex_" data-uid="Libplanet.Common.ByteUtil.ParseHex*"></a>
   <h4 id="Libplanet_Common_ByteUtil_ParseHex_System_String_" data-uid="Libplanet.Common.ByteUtil.ParseHex(System.String)">ParseHex(String)</h4>
-  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a mutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a mutable <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -332,7 +332,7 @@ public static byte[] ParseHex(string hex)</code></pre>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
         <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a> which encodes
-<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s in hexadecimal.  Its length must be zero or
+<span class="xref">System.Byte</span>s in hexadecimal.  Its length must be zero or
 an even number.  It must not be <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -348,8 +348,8 @@ an even number.  It must not be <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that the given
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A <span class="xref">System.Byte</span> array that the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string represented in hexadecimal.
 It lengthens the half of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
 </td>
@@ -389,11 +389,11 @@ of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_ParseHexToImmutable_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.ParseHexToImmutable(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_ParseHexToImmutable_" data-uid="Libplanet.Common.ByteUtil.ParseHexToImmutable*"></a>
   <h4 id="Libplanet_Common_ByteUtil_ParseHexToImmutable_System_String_" data-uid="Libplanet.Common.ByteUtil.ParseHexToImmutable(System.String)">ParseHexToImmutable(String)</h4>
-  <div class="markdown level1 summary"><p>Converts a hexadecimal string to an immutable <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+  <div class="markdown level1 summary"><p>Converts a hexadecimal string to an immutable <span class="xref">System.Byte</span> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -414,7 +414,7 @@ public static ImmutableArray&lt;byte&gt; ParseHexToImmutable(string hex)</code><
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a> which encodes <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>s in
+        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a> which encodes <span class="xref">System.Byte</span>s in
 hexadecimal.  Its length must be zero or an even number.  It must not be
 <span class="xref">null</span>.</p>
 </td>
@@ -431,8 +431,8 @@ hexadecimal.  Its length must be zero or an even number.  It must not be
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a> array that the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><p>A <span class="xref">System.Byte</span> array that the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string
 represented in hexadecimal.</p>
 </td>
       </tr>
@@ -477,7 +477,7 @@ is not a valid hexadecimal string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_Satisfies_System_Collections_Generic_IReadOnlyList_System_Byte__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L204">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L204">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_Satisfies_" data-uid="Libplanet.Common.ByteUtil.Satisfies*"></a>
   <h4 id="Libplanet_Common_ByteUtil_Satisfies_System_Collections_Generic_IReadOnlyList_System_Byte__System_Int64_" data-uid="Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList{System.Byte},System.Int64)">Satisfies(IReadOnlyList&lt;Byte&gt;, Int64)</h4>
@@ -501,7 +501,7 @@ public static bool Satisfies(IReadOnlyList&lt;byte&gt; hashDigest, long difficul
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">hashDigest</span></td>
         <td><p>A hash digest to test.</p>
 </td>
@@ -524,7 +524,7 @@ public static bool Satisfies(IReadOnlyList&lt;byte&gt; hashDigest, long difficul
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span> only if a digest is less than the target computed for
 the given <code data-dev-comment-type="paramref" class="paramref">difficulty</code>).  If <code data-dev-comment-type="paramref" class="paramref">difficulty</code> is <code>0</code>
 it always returns <span class="xref">true</span>.</p>
@@ -537,7 +537,7 @@ it always returns <span class="xref">true</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil_TimingSafelyCompare_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L183">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Common_ByteUtil_TimingSafelyCompare_" data-uid="Libplanet.Common.ByteUtil.TimingSafelyCompare*"></a>
   <h4 id="Libplanet_Common_ByteUtil_TimingSafelyCompare_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})">TimingSafelyCompare(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</h4>
@@ -560,13 +560,13 @@ public static bool TimingSafelyCompare(IReadOnlyList&lt;byte&gt; left, IReadOnly
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">left</span></td>
         <td><p>A byte array.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">right</span></td>
         <td><p>Another byte array.</p>
 </td>
@@ -583,7 +583,7 @@ public static bool TimingSafelyCompare(IReadOnlyList&lt;byte&gt; left, IReadOnly
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span> iff two byte arrays have the exactly same contents.</p>
 </td>
       </tr>
@@ -604,7 +604,7 @@ the timing dependent on the length of the shorter one.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_ByteUtil.md&amp;value=---%0Auid%3A%20Libplanet.Common.ByteUtil%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Common/ByteUtil.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/ByteUtil.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

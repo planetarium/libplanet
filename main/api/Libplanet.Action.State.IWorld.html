@@ -78,7 +78,7 @@ maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_A
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> account cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -118,7 +118,7 @@ method does not manipulate the instance, but returns a new
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_Delta.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.Delta%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/State/IWorld.cs/#L42">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorld_Delta_" data-uid="Libplanet.Action.State.IWorld.Delta*"></a>
   <h4 id="Libplanet_Action_State_IWorld_Delta" data-uid="Libplanet.Action.State.IWorld.Delta">Delta</h4>
@@ -158,7 +158,7 @@ method does not manipulate the instance, but returns a new
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/State/IWorld.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorld_GetAccount_" data-uid="Libplanet.Action.State.IWorld.GetAccount*"></a>
   <h4 id="Libplanet_Action_State_IWorld_GetAccount_Libplanet_Crypto_Address_" data-uid="Libplanet.Action.State.IWorld.GetAccount(Libplanet.Crypto.Address)">GetAccount(Address)</h4>
@@ -217,7 +217,7 @@ method does not manipulate the instance, but returns a new
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccount)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/State/IWorld.cs/#L74">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IWorld_SetAccount_" data-uid="Libplanet.Action.State.IWorld.SetAccount*"></a>
   <h4 id="Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Action.State.IWorld.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)">SetAccount(Address, IAccount)</h4>
@@ -287,7 +287,7 @@ a new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> insta
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><span class="xref">System.ArgumentException</span></td>
         <td><p>Thrown when <see cref="!:Legacy"></see> is <span class="xref">true</span> and
 <code data-dev-comment-type="paramref" class="paramref">address</code> is not <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>.</p>
 </td>
@@ -327,7 +327,7 @@ a new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> insta
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IWorld.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IWorld%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Action/State/IWorld.cs/#L36" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/State/IWorld.cs/#L36" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
