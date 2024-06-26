@@ -270,8 +270,8 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
         }
 
-        [Fact]
-        public async void GetVoteSetBits()
+        [Fact(Timeout = Timeout)]
+        public async Task GetVoteSetBits()
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
             AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
@@ -343,8 +343,8 @@ namespace Libplanet.Net.Tests.Consensus
                 voteSetBits.VoteBits.SequenceEqual(new[] { true, false, false, false }));
         }
 
-        [Fact]
-        public async void HandleVoteSetBits()
+        [Fact(Timeout = Timeout)]
+        public async Task HandleVoteSetBits()
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
             ConsensusStep step = ConsensusStep.Default;
@@ -413,8 +413,8 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(TestUtils.PrivateKeys[1].PublicKey, votes[1].ValidatorPublicKey);
         }
 
-        [Fact]
-        public async void HandleProposalClaim()
+        [Fact(Timeout = Timeout)]
+        public async Task HandleProposalClaim()
         {
             PrivateKey proposer = TestUtils.PrivateKeys[1];
             ConsensusStep step = ConsensusStep.Default;
