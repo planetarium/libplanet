@@ -125,7 +125,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CannotStartTwice()
         {
             var stepChanged = new AsyncAutoResetEvent();
@@ -465,7 +465,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// receiving <see cref="ConsensusMaj23Msg"/> message from peer C or D.
         /// </para>
         /// </summary>
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanReplaceProposal()
         {
             var codec = new Codec();
@@ -617,33 +617,16 @@ namespace Libplanet.Net.Tests.Consensus
                 fx.StateStore,
                 new SingleActionLoader(typeof(DelayAction)));
 
-            Context? context = null;
-
-            void BroadcastMessage(ConsensusMsg message) =>
-                Task.Run(() =>
-                {
-                    context!.ProduceMessage(message);
-                });
-
             var consensusContext = new ConsensusContext(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
+                new TestUtils.DummyConsensusMessageHandler(message => { }),
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
+            consensusContext.NewHeight(1L);
 
-            context = new Context(
-                blockChain,
-                1L,
-                null,
-                TestUtils.PrivateKeys[0],
-                blockChain
-                    .GetNextWorldState(0L)
-                    .GetValidatorSet(),
-                contextTimeoutOptions: new ContextTimeoutOption());
+            Context context = consensusContext.Contexts[1L];
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
-
-            consensusContext.Contexts.Add(1L, context);
 
             blockChain.TipChanged += (_, eventArgs) =>
             {
@@ -670,7 +653,7 @@ namespace Libplanet.Net.Tests.Consensus
             blockChain.StageTransaction(tx);
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 
-            context.Start();
+            consensusContext.Start();
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 

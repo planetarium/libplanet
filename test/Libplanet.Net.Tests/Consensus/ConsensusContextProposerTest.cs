@@ -34,6 +34,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             var timeoutProcessed = new AsyncAutoResetEvent();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action.State;
@@ -153,7 +154,8 @@ namespace Libplanet.Net.Consensus
         internal Dictionary<long, Context> Contexts => _contexts;
 
         /// <summary>
-        /// Switches <see cref="Running"/> to <see langword="true"/>.
+        /// Switches <see cref="Running"/> to <see langword="true"/> and also starts
+        /// the current highest <see cref="Context"/>, if any.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when
         /// <see cref="Running"/> is already <see langword="true"/>.</exception>
@@ -166,7 +168,14 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
-                Running = true;
+                lock (_contextLock)
+                {
+                    Running = true;
+                    if (_contexts.Count > 0)
+                    {
+                        _contexts[_contexts.Keys.Max()].Start();
+                    }
+                }
             }
         }
 
@@ -260,7 +269,10 @@ namespace Libplanet.Net.Consensus
                     }
 
                     _pendingMessages.RemoveWhere(message => message.Height <= height);
-                    _contexts[height].Start();
+                    if (Running)
+                    {
+                        _contexts[height].Start();
+                    }
                 }
 
                 RemoveOldContexts(height);

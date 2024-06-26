@@ -46,6 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.Start();
             blockChain.TipChanged += (_, __) => tipChanged.Set();
             consensusContext.MessagePublished += (_, eventArgs) =>
             {
@@ -122,6 +123,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.Start();
 
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -251,6 +253,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.Start();
 
             consensusContext.MessageConsumed += (_, eventArgs) =>
             {
@@ -292,6 +295,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.Start();
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 1 && eventArgs.Step == ConsensusStep.EndCommit)

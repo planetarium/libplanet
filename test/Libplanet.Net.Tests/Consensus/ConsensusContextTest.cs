@@ -45,6 +45,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[3]);
+            consensusContext.Start();
 
             AsyncAutoResetEvent heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             AsyncAutoResetEvent heightThreeStepChangedToEndCommit = new AsyncAutoResetEvent();
@@ -125,6 +126,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             Assert.Equal(ConsensusStep.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
@@ -139,6 +141,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             Assert.Equal(-1, consensusContext.Height);
             Block block = blockChain.ProposeBlock(new PrivateKey());
@@ -156,6 +159,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
@@ -174,6 +178,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             // Create context of index 1.
             consensusContext.NewHeight(1);
@@ -213,6 +218,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
 
             consensusContext.StateChanged += (sender, tuple) =>
             {
@@ -281,6 +287,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
+            consensusContext.Start();
             consensusContext.NewHeight(1);
             var block = blockChain.ProposeBlock(proposer);
             var proposal = new ProposalMetadata(
@@ -354,6 +361,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
+            consensusContext.Start();
             consensusContext.NewHeight(1);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -424,6 +432,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
+            consensusContext.Start();
             consensusContext.NewHeight(1);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
