@@ -20,7 +20,7 @@
     <AssemblyName>planet</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And&#xD;&#xA;                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
+  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And '$(RuntimeIdentifier).Substring(0, 6)' == 'linux-' ">
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
