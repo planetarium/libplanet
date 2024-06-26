@@ -67,6 +67,7 @@ namespace Libplanet.Net.Consensus
             _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
+            Running = false;
             Height = -1;
             _newHeightDelay = newHeightDelay;
 
@@ -85,6 +86,12 @@ namespace Libplanet.Net.Consensus
             _contextLock = new object();
             _newHeightLock = new object();
         }
+
+        /// <summary>
+        /// A value shwoing whether a <see cref="ConsensusContext"/> is in a running state or not.
+        /// This determines whether internally handled <see cref="Context"/> gets started or not.
+        /// </summary>
+        public bool Running { get; private set; }
 
         /// <summary>
         /// <para>
@@ -144,6 +151,24 @@ namespace Libplanet.Net.Consensus
         /// height of value, and value is the <see cref="Context"/>.
         /// </summary>
         internal Dictionary<long, Context> Contexts => _contexts;
+
+        /// <summary>
+        /// Switches <see cref="Running"/> to <see langword="true"/>.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when
+        /// <see cref="Running"/> is already <see langword="true"/>.</exception>
+        public void Start()
+        {
+            if (Running)
+            {
+                throw new InvalidOperationException(
+                    $"Can only start {nameof(ConsensusContext)} if {nameof(Running)} is {false}.");
+            }
+            else
+            {
+                Running = true;
+            }
+        }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
