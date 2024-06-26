@@ -335,7 +335,7 @@ than once, the time it's called is difficult to predict.</p>
 <p>For changing in-memory game states or drawing graphics,
 implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface separately and
 attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
-<p>For randomness, <em>never</em> use <span class="xref">System.Random</span>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.random">Random</a>
 nor any other PRNGs provided by other than Libplanet.
 Use <see cref="!:IActionContext.Random"></see> instead.
 <see cref="!:IActionContext.Random"></see> guarantees the same action
