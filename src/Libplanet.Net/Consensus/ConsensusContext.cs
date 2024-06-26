@@ -39,7 +39,6 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly HashSet<ConsensusMsg> _pendingMessages;
         private Context _currentContext;
-
         private CancellationTokenSource? _newHeightCts;
 
         /// <summary>
@@ -74,7 +73,6 @@ namespace Libplanet.Net.Consensus
             _currentContext = CreateContext(
                 _blockChain.Tip.Index + 1,
                 _blockChain.GetBlockCommit(_blockChain.Tip.Index));
-            Height = _blockChain.Tip.Index + 1;
             _pendingMessages = new HashSet<ConsensusMsg>();
 
             _logger = Log
@@ -96,19 +94,16 @@ namespace Libplanet.Net.Consensus
 
         /// <summary>
         /// <para>
-        /// The height of the current running <see cref="Context"/>.
+        /// The height of the current viewing <see cref="Context"/>.
         /// </para>
         /// <para>
-        /// This is initially set to -1, representing that there is no running
-        /// <see cref="Context"/>, when a <see cref="ConsensusContext"/> is created.
         /// This value can only be increased by calling <see cref="NewHeight"/>.
         /// </para>
         /// </summary>
-        /// <returns>If <see cref="NewHeight"/> or <see cref="OnTipChanged"/> is called
-        /// before, returns current working height, otherwise returns <c>-1</c>.</returns>
+        /// <returns>The height of the current viewing <see cref="Context"/>.</returns>
         /// <seealso cref="NewHeight"/>
         /// <seealso cref="OnTipChanged"/>
-        public long Height { get; private set; }
+        public long Height => CurrentContext.Height;
 
         /// <summary>
         /// A current round of <see cref="Context"/> in current <see cref="Height"/>.
@@ -116,16 +111,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the round
         /// of current <see cref="Context"/>, or otherwise returns -1.
         /// </returns>
-        public long Round
-        {
-            get
-            {
-                lock (_contextLock)
-                {
-                    return _currentContext.Round;
-                }
-            }
-        }
+        public long Round => CurrentContext.Round;
 
         /// <summary>
         /// The current step of <see cref="Context"/> in current <see cref="Height"/>.
@@ -134,18 +120,18 @@ namespace Libplanet.Net.Consensus
         /// of current <see cref="Context"/>, or otherwise returns
         /// <see cref="ConsensusStep.Null"/>.
         /// </returns>
-        public ConsensusStep Step
+        public ConsensusStep Step => CurrentContext.Step;
+
+        internal Context CurrentContext
         {
             get
             {
                 lock (_contextLock)
                 {
-                    return _currentContext.Step;
+                    return _currentContext;
                 }
             }
         }
-
-        internal Context CurrentContext => _currentContext;
 
         /// <summary>
         /// Switches <see cref="Running"/> to <see langword="true"/> and also starts
@@ -210,40 +196,37 @@ namespace Libplanet.Net.Consensus
                         $"the current height #{Height}.");
                 }
 
-                BlockCommit? lastCommit = null;
                 lock (_contextLock)
                 {
-                    lastCommit = _currentContext.Height == height - 1
-                        ? _currentContext.GetBlockCommit()
-                        : null;
-                    _currentContext.Dispose();
+                    BlockCommit? lastCommit = null;
+                    if (_currentContext.Height == height - 1 &&
+                        _currentContext.GetBlockCommit() is { } prevCommit)
+                    {
+                        lastCommit = prevCommit;
+                        _logger.Debug(
+                            "Retrieved block commit for Height #{Height} from previous context",
+                            lastCommit.Height);
+                    }
+
+                    if (lastCommit is null &&
+                        _blockChain.GetBlockCommit(height - 1) is { } storedCommit)
+                    {
+                        lastCommit = storedCommit;
+                        _logger.Debug(
+                            "Retrieved cached block commit for Height #{Height} from blockchain",
+                            lastCommit.Height);
+                    }
+
                     _logger.Debug(
-                        "LastCommit of height #{Height} is {LastCommit}",
-                        Height,
+                        "LastCommit for height #{Height} is {LastCommit}",
+                        height,
                         lastCommit);
 
-                    if (lastCommit is null)
-                    {
-                        BlockCommit? storedCommit = _blockChain.GetBlockCommit(height - 1);
-                        if (storedCommit is { } commit)
-                        {
-                            lastCommit = commit;
-                            _logger.Debug(
-                                "Found cached LastCommit of Height #{Height} " +
-                                "and Round #{Round}",
-                                lastCommit.Height,
-                                lastCommit.Round);
-                        }
-                    }
-                }
-
-                _logger.Information(
-                    "Start consensus for height #{Height} with last commit {LastCommit}",
-                    Height,
-                    lastCommit);
-                lock (_contextLock)
-                {
-                    Height = height;
+                    _currentContext.Dispose();
+                    _logger.Information(
+                        "Start consensus for height #{Height} with last commit {LastCommit}",
+                        height,
+                        lastCommit);
                     _currentContext = CreateContext(height, lastCommit);
 
                     foreach (var message in _pendingMessages)
@@ -489,28 +472,19 @@ namespace Libplanet.Net.Consensus
         {
             // blockchain may not contain block of Height - 1?
             ValidatorSet validatorSet;
-            if (_blockChain.Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
+            while (true)
             {
-                validatorSet = _blockChain
-                    .GetWorldState(_blockChain[Height - 1].StateRootHash)
-                    .GetValidatorSet();
-            }
-            else
-            {
-                while (true)
+                var nextStateRootHash = _blockChain.GetNextStateRootHash(height - 1);
+                if (nextStateRootHash is { } nsrh)
                 {
-                    var nextStateRootHash = _blockChain.GetNextStateRootHash(Height - 1);
-                    if (nextStateRootHash is { } nsrh)
-                    {
-                        validatorSet = _blockChain
-                            .GetWorldState(nsrh)
-                            .GetValidatorSet();
-                        break;
-                    }
-
-                    // FIXME: Maybe this should be adjustable?
-                    Thread.Sleep(100);
+                    validatorSet = _blockChain
+                        .GetWorldState(nsrh)
+                        .GetValidatorSet();
+                    break;
                 }
+
+                // FIXME: Maybe this should be adjustable?
+                Thread.Sleep(100);
             }
 
             Context context = new Context(

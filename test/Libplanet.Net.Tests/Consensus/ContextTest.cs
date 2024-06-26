@@ -608,7 +608,7 @@ namespace Libplanet.Net.Tests.Consensus
             var enteredHeightTwo = new AsyncAutoResetEvent();
 
             TimeSpan newHeightDelay = TimeSpan.FromMilliseconds(100);
-            int actionDelay = 1000;
+            int actionDelay = 2000;
 
             var fx = new MemoryStoreFixture();
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
@@ -685,14 +685,14 @@ namespace Libplanet.Net.Tests.Consensus
             var watch = Stopwatch.StartNew();
             await onTipChanged.WaitAsync();
             Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
-            Thread.Sleep(100); // Wait for votes to get collected.
+            watch.Restart();
 
+            await enteredHeightTwo.WaitAsync();
             Assert.Equal(
                 4,
                 context.GetBlockCommit()!.Votes.Count(
                     vote => vote.Flag.Equals(VoteFlag.PreCommit)));
-
-            await enteredHeightTwo.WaitAsync();
+            Assert.True(watch.ElapsedMilliseconds > (actionDelay * 0.5));
             Assert.Equal(2, consensusContext.Height);
         }
 

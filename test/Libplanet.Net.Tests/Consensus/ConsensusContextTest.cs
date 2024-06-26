@@ -132,6 +132,18 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(-1, consensusContext.Round);
         }
 
+        [Fact]
+        public void CannotStartTwice()
+        {
+            var (_, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.ActionLoader,
+                TestUtils.PrivateKeys[1]);
+            consensusContext.Start();
+            Assert.Throws<InvalidOperationException>(() => consensusContext.Start());
+        }
+
         [Fact(Timeout = Timeout)]
         public async void NewHeightWhenTipChanged()
         {
