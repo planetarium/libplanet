@@ -118,7 +118,6 @@ namespace Libplanet.Net.Consensus
         {
             Task task = _gossip.StartAsync(cancellationToken);
             await _gossip.WaitForRunningAsync();
-            _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
             _consensusContext.Start();
             await task;
         }

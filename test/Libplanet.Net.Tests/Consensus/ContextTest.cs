@@ -623,9 +623,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
-            consensusContext.NewHeight(1L);
-
-            Context context = consensusContext.Contexts[1L];
+            Context context = consensusContext.CurrentContext;
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             blockChain.TipChanged += (_, eventArgs) =>
@@ -683,6 +681,7 @@ namespace Libplanet.Net.Tests.Consensus
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
+            Assert.Equal(1, consensusContext.Height);
             var watch = Stopwatch.StartNew();
             await onTipChanged.WaitAsync();
             Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
@@ -693,11 +692,8 @@ namespace Libplanet.Net.Tests.Consensus
                 context.GetBlockCommit()!.Votes.Count(
                     vote => vote.Flag.Equals(VoteFlag.PreCommit)));
 
-            Assert.Equal(1, consensusContext.Contexts.Keys.Max());
-
             await enteredHeightTwo.WaitAsync();
             Assert.Equal(2, consensusContext.Height);
-            Assert.Equal(2, consensusContext.Contexts.Keys.Max());
         }
 
         public struct ContextJson

@@ -126,10 +126,10 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
-            consensusContext.Start();
 
-            Assert.Equal(ConsensusStep.Null, consensusContext.Step);
-            Assert.Equal("No context", consensusContext.ToString());
+            Assert.Equal(ConsensusStep.Default, consensusContext.Step);
+            Assert.Equal(1, consensusContext.Height);
+            Assert.Equal(-1, consensusContext.Round);
         }
 
         [Fact(Timeout = Timeout)]
@@ -143,10 +143,10 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.PrivateKeys[1]);
             consensusContext.Start();
 
-            Assert.Equal(-1, consensusContext.Height);
+            Assert.Equal(1, consensusContext.Height);
             Block block = blockChain.ProposeBlock(new PrivateKey());
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(-1, consensusContext.Height);
+            Assert.Equal(1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
@@ -160,49 +160,12 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
             consensusContext.Start();
-
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
             Assert.False(consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(
                     blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
                     TestUtils.PrivateKeys[0],
                     0)));
-        }
-
-        [Fact(Timeout = Timeout)]
-        public void RemoveOldContexts()
-        {
-            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.ActionLoader,
-                TestUtils.PrivateKeys[1]);
-            consensusContext.Start();
-
-            // Create context of index 1.
-            consensusContext.NewHeight(1);
-            // Create context of index 2.
-            consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(
-                    blockChain.ProposeBlock(TestUtils.PrivateKeys[2]),
-                    TestUtils.PrivateKeys[2],
-                    2,
-                    1));
-
-            var block = blockChain.ProposeBlock(new PrivateKey());
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            block = blockChain.ProposeBlock(
-                new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            block = blockChain.ProposeBlock(
-                new PrivateKey(), TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-
-            // Create context of index 4, check if the context of 1 and 2 are removed correctly.
-            consensusContext.NewHeight(4);
-            Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
-            Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
         }
 
         [Fact(Timeout = Timeout)]
@@ -218,8 +181,6 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
-            consensusContext.Start();
-
             consensusContext.StateChanged += (sender, tuple) =>
             {
                 if (tuple.Height == 1 && tuple.Step == ConsensusStep.EndCommit)
@@ -236,8 +197,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-
+            consensusContext.Start();
             await heightOneProposalSent.WaitAsync();
             BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
@@ -261,7 +221,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             await heightOneEndCommit.WaitAsync();
 
-            var blockCommit = consensusContext.Contexts[1].GetBlockCommit();
+            var blockCommit = consensusContext.CurrentContext.GetBlockCommit();
             Assert.NotNull(blockCommit);
             Assert.NotEqual(votes[0], blockCommit!.Votes.First(x =>
                 x.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[0].PublicKey)));
@@ -288,7 +248,6 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
             consensusContext.Start();
-            consensusContext.NewHeight(1);
             var block = blockChain.ProposeBlock(proposer);
             var proposal = new ProposalMetadata(
                 1,
@@ -325,7 +284,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChanged.Set();
                 }
             };
-            consensusContext.Contexts[1].VoteSetModified += (_, eventArgs) =>
+            consensusContext.CurrentContext.VoteSetModified += (_, eventArgs) =>
             {
                 if (eventArgs.Flag == VoteFlag.PreCommit)
                 {
@@ -340,11 +299,11 @@ namespace Libplanet.Net.Tests.Consensus
             await committed.WaitAsync();
 
             // VoteSetBits expects missing votes
-            VoteSetBits voteSetBits = consensusContext.Contexts[1]
+            VoteSetBits voteSetBits = consensusContext.CurrentContext
                 .GetVoteSetBits(0, block.Hash, VoteFlag.PreVote);
             Assert.True(
                 voteSetBits.VoteBits.SequenceEqual(new[] { true, true, false, true }));
-            voteSetBits = consensusContext.Contexts[1]
+            voteSetBits = consensusContext.CurrentContext
                 .GetVoteSetBits(0, block.Hash, VoteFlag.PreCommit);
             Assert.True(
                 voteSetBits.VoteBits.SequenceEqual(new[] { true, false, false, false }));
@@ -361,8 +320,6 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
-            consensusContext.Start();
-            consensusContext.NewHeight(1);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step != step)
@@ -371,6 +328,8 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChanged.Set();
                 }
             };
+
+            consensusContext.Start();
             var block = blockChain.ProposeBlock(proposer);
             var proposal = new ProposalMetadata(
                 1,
@@ -432,8 +391,6 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
-            consensusContext.Start();
-            consensusContext.NewHeight(1);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step != step)
@@ -442,6 +399,7 @@ namespace Libplanet.Net.Tests.Consensus
                     stepChanged.Set();
                 }
             };
+            consensusContext.Start();
             var block = blockChain.ProposeBlock(proposer);
             var proposal = new ProposalMetadata(
                 1,

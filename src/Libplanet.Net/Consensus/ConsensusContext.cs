@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action.State;
@@ -38,8 +37,8 @@ namespace Libplanet.Net.Consensus
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
-        private readonly Dictionary<long, Context> _contexts;
         private readonly HashSet<ConsensusMsg> _pendingMessages;
+        private Context _currentContext;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -69,14 +68,14 @@ namespace Libplanet.Net.Consensus
             _blockChain = blockChain;
             _privateKey = privateKey;
             Running = false;
-            Height = -1;
             _newHeightDelay = newHeightDelay;
 
             _contextTimeoutOption = contextTimeoutOption;
-
-            _contexts = new Dictionary<long, Context>();
+            _currentContext = CreateContext(
+                _blockChain.Tip.Index + 1,
+                _blockChain.GetBlockCommit(_blockChain.Tip.Index));
+            Height = _blockChain.Tip.Index + 1;
             _pendingMessages = new HashSet<ConsensusMsg>();
-            _blockChain.TipChanged += OnTipChanged;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -84,6 +83,7 @@ namespace Libplanet.Net.Consensus
                 .ForContext<ConsensusContext>()
                 .ForContext("Source", nameof(ConsensusContext));
 
+            _blockChain.TipChanged += OnTipChanged;
             _contextLock = new object();
             _newHeightLock = new object();
         }
@@ -122,7 +122,7 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
+                    return _currentContext.Round;
                 }
             }
         }
@@ -140,18 +140,12 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    return _contexts.ContainsKey(Height)
-                        ? _contexts[Height].Step
-                        : ConsensusStep.Null;
+                    return _currentContext.Step;
                 }
             }
         }
 
-        /// <summary>
-        /// A dictionary of <see cref="Context"/> for each heights. Each key represents the
-        /// height of value, and value is the <see cref="Context"/>.
-        /// </summary>
-        internal Dictionary<long, Context> Contexts => _contexts;
+        internal Context CurrentContext => _currentContext;
 
         /// <summary>
         /// Switches <see cref="Running"/> to <see langword="true"/> and also starts
@@ -171,10 +165,7 @@ namespace Libplanet.Net.Consensus
                 lock (_contextLock)
                 {
                     Running = true;
-                    if (_contexts.Count > 0)
-                    {
-                        _contexts[_contexts.Keys.Max()].Start();
-                    }
+                    _currentContext.Start();
                 }
             }
         }
@@ -185,10 +176,7 @@ namespace Libplanet.Net.Consensus
             _newHeightCts?.Cancel();
             lock (_contextLock)
             {
-                foreach (Context context in _contexts.Values)
-                {
-                    context.Dispose();
-                }
+                _currentContext.Dispose();
             }
 
             _blockChain.TipChanged -= OnTipChanged;
@@ -225,9 +213,10 @@ namespace Libplanet.Net.Consensus
                 BlockCommit? lastCommit = null;
                 lock (_contextLock)
                 {
-                    lastCommit = _contexts.ContainsKey(height - 1)
-                        ? _contexts[height - 1].GetBlockCommit()
+                    lastCommit = _currentContext.Height == height - 1
+                        ? _currentContext.GetBlockCommit()
                         : null;
+                    _currentContext.Dispose();
                     _logger.Debug(
                         "LastCommit of height #{Height} is {LastCommit}",
                         Height,
@@ -255,27 +244,22 @@ namespace Libplanet.Net.Consensus
                 lock (_contextLock)
                 {
                     Height = height;
-                    if (!_contexts.ContainsKey(height))
-                    {
-                        _contexts[height] = CreateContext(height, lastCommit);
-                    }
+                    _currentContext = CreateContext(height, lastCommit);
 
                     foreach (var message in _pendingMessages)
                     {
                         if (message.Height == height)
                         {
-                            _contexts[height].ProduceMessage(message);
+                            _currentContext.ProduceMessage(message);
                         }
                     }
 
                     _pendingMessages.RemoveWhere(message => message.Height <= height);
                     if (Running)
                     {
-                        _contexts[height].Start();
+                        _currentContext.Start();
                     }
                 }
-
-                RemoveOldContexts(height);
             }
         }
 
@@ -315,9 +299,9 @@ namespace Libplanet.Net.Consensus
 
             lock (_contextLock)
             {
-                if (_contexts.ContainsKey(height))
+                if (_currentContext.Height == height)
                 {
-                    _contexts[height].ProduceMessage(consensusMessage);
+                    _currentContext.ProduceMessage(consensusMessage);
                 }
                 else
                 {
@@ -352,9 +336,9 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
-                        return _contexts[height].AddMaj23(maj23);
+                        return _currentContext.AddMaj23(maj23);
                     }
                 }
             }
@@ -386,11 +370,11 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
                         // NOTE: Should check if collected messages have same BlockHash with
                         // VoteSetBit's BlockHash?
-                        return _contexts[height].GetVoteSetBitsResponse(voteSetBits);
+                        return _currentContext.GetVoteSetBitsResponse(voteSetBits);
                     }
                 }
             }
@@ -422,11 +406,11 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
                         // NOTE: Should check if collected messages have same BlockHash with
                         // VoteSetBit's BlockHash?
-                        return _contexts[height].Proposal;
+                        return _currentContext.Proposal;
                     }
                 }
             }
@@ -444,9 +428,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_contextLock)
             {
-                return _contexts.ContainsKey(Height)
-                    ? _contexts[Height].ToString()
-                    : "No context";
+                return _currentContext.ToString();
             }
         }
 
@@ -540,27 +522,6 @@ namespace Libplanet.Net.Consensus
                 contextTimeoutOptions: _contextTimeoutOption);
             AttachEventHandlers(context);
             return context;
-        }
-
-        /// <summary>
-        /// Discard and remove all contexts that has lower height with
-        /// the given <paramref name="height"/>.
-        /// </summary>
-        /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
-        private void RemoveOldContexts(long height)
-        {
-            lock (_contextLock)
-            {
-                foreach (var pair in _contexts)
-                {
-                    if (pair.Key < height)
-                    {
-                        _logger.Debug("Removing context for height {Height}", pair.Key);
-                        pair.Value.Dispose();
-                        _contexts.Remove(pair.Key);
-                    }
-                }
-            }
         }
     }
 }
