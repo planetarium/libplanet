@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks Condition="'$(_IsPacking)'=='true'">$(TargetFrameworks);netstandard2.0;netstandard2.1</TargetFrameworks>
     <IsPackable>true</IsPackable>
+    <IsTestProject>false</IsTestProject>
+    <IsPublishable>true</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +15,15 @@
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="JunitXml.TestLogger" />
+    <PackageReference Remove="Microsoft.NET.Test.Sdk" />
+    <PackageReference Remove="xunit" />
+    <PackageReference Remove="xunit.runner.visualstudio" />
+    <PackageReference Remove="xunit.extensibility.execution" />
+    <PackageReference Remove="coverlet.collector" />
   </ItemGroup>
 
   <ItemGroup>
