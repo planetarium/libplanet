@@ -30,7 +30,6 @@ namespace Libplanet.Net.Consensus
     public partial class ConsensusContext : IDisposable
     {
         private readonly object _contextLock;
-        private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
         private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
@@ -39,6 +38,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly HashSet<ConsensusMsg> _pendingMessages;
         private Context _currentContext;
+
         private CancellationTokenSource? _newHeightCts;
 
         /// <summary>
@@ -84,7 +84,6 @@ namespace Libplanet.Net.Consensus
 
             _blockChain.TipChanged += OnTipChanged;
             _contextLock = new object();
-            _newHeightLock = new object();
         }
 
         /// <summary>
@@ -183,9 +182,8 @@ namespace Libplanet.Net.Consensus
         /// </remarks>
         public void NewHeight(long height)
         {
-            lock (_newHeightLock)
+            lock (_contextLock)
             {
-                _newHeightCts?.Cancel();
                 _logger.Information(
                     "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
                     nameof(NewHeight),
@@ -199,53 +197,50 @@ namespace Libplanet.Net.Consensus
                         $"the current height #{Height}.");
                 }
 
-                lock (_contextLock)
+                BlockCommit? lastCommit = null;
+                if (_currentContext.Height == height - 1 &&
+                    _currentContext.GetBlockCommit() is { } prevCommit)
                 {
-                    BlockCommit? lastCommit = null;
-                    if (_currentContext.Height == height - 1 &&
-                        _currentContext.GetBlockCommit() is { } prevCommit)
-                    {
-                        lastCommit = prevCommit;
-                        _logger.Debug(
-                            "Retrieved block commit for Height #{Height} from previous context",
-                            lastCommit.Height);
-                    }
-
-                    if (lastCommit is null &&
-                        _blockChain.GetBlockCommit(height - 1) is { } storedCommit)
-                    {
-                        lastCommit = storedCommit;
-                        _logger.Debug(
-                            "Retrieved stored block commit for Height #{Height} from blockchain",
-                            lastCommit.Height);
-                    }
-
+                    lastCommit = prevCommit;
                     _logger.Debug(
-                        "LastCommit for height #{Height} is {LastCommit}",
-                        height,
-                        lastCommit);
+                        "Retrieved block commit for Height #{Height} from previous context",
+                        lastCommit.Height);
+                }
 
-                    _currentContext.Dispose();
-                    _logger.Information(
-                        "Start consensus for height #{Height} with last commit {LastCommit}",
-                        height,
-                        lastCommit);
-                    _currentContext = CreateContext(height, lastCommit);
-                    AttachEventHandlers(_currentContext);
+                if (lastCommit is null &&
+                    _blockChain.GetBlockCommit(height - 1) is { } storedCommit)
+                {
+                    lastCommit = storedCommit;
+                    _logger.Debug(
+                        "Retrieved stored block commit for Height #{Height} from blockchain",
+                        lastCommit.Height);
+                }
 
-                    foreach (var message in _pendingMessages)
+                _logger.Debug(
+                    "LastCommit for height #{Height} is {LastCommit}",
+                    height,
+                    lastCommit);
+
+                _currentContext.Dispose();
+                _logger.Information(
+                    "Start consensus for height #{Height} with last commit {LastCommit}",
+                    height,
+                    lastCommit);
+                _currentContext = CreateContext(height, lastCommit);
+                AttachEventHandlers(_currentContext);
+
+                foreach (var message in _pendingMessages)
+                {
+                    if (message.Height == height)
                     {
-                        if (message.Height == height)
-                        {
-                            _currentContext.ProduceMessage(message);
-                        }
+                        _currentContext.ProduceMessage(message);
                     }
+                }
 
-                    _pendingMessages.RemoveWhere(message => message.Height <= height);
-                    if (Running)
-                    {
-                        _currentContext.Start();
-                    }
+                _pendingMessages.RemoveWhere(message => message.Height <= height);
+                if (Running)
+                {
+                    _currentContext.Start();
                 }
             }
         }
