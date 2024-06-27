@@ -51,11 +51,11 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Context.ProcessHeightOrRoundUponRules()` now appends block asynchronously,
+    as a manner of fire-and-forget.  [[#3808]]
  -  `BlockHeader.StateRootHash` now means state root hash calculated by
     `BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)`.
     [[#3811]]
- -  `Context.ProcessHeightOrRoundUponRules()` now appends block asynchronously,
-    as a manner of fire-and-forget.  [[#3808]]
 
 ### Bug fixes
 
@@ -63,6 +63,7 @@ To be released.
 
 ### CLI tools
 
+[#3808]: https://github.com/planetarium/libplanet/pull/3808
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
 [#3833]: https://github.com/planetarium/libplanet/issues/3833
 [#3845]: https://github.com/planetarium/libplanet/pull/3845
