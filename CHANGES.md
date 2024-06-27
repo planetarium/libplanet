@@ -36,6 +36,12 @@ To be released.
     [[#3846]]
  -  (Libplanet.Net) Removed `IConsensusMessageCommunicator` parameter from
     `Context()`.  [[#3848], [#3849]]
+ -  (Libplanet.Net) Added `Running` property to `ConsensusContext`.  [[#3851]]
+ -  (Libplanet.Net) Added `Start()` method to `ConsensusContext`.  [[#3851]]
+ -  (Libplanet.Net) Changed `NewHeight()` to throw a `NullReferenceException`
+    if it is called while its internal `BlockChain` is in an invalid state.
+    [[#3851]]
+ -  (Libplanet.Net) Removed `Null` value from `ConsensusStep` enum.  [[#3851]]
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +72,7 @@ To be released.
 [#3846]: https://github.com/planetarium/libplanet/pull/3846
 [#3848]: https://github.com/planetarium/libplanet/issues/3848
 [#3849]: https://github.com/planetarium/libplanet/issues/3849
+[#3851]: https://github.com/planetarium/libplanet/pull/3851
 
 
 Version 4.6.1

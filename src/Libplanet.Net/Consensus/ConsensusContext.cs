@@ -117,8 +117,7 @@ namespace Libplanet.Net.Consensus
         /// The current step of <see cref="Context"/> in current <see cref="Height"/>.
         /// </summary>
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the step
-        /// of current <see cref="Context"/>, or otherwise returns
-        /// <see cref="ConsensusStep.Null"/>.
+        /// of current <see cref="Context"/>.
         /// </returns>
         public ConsensusStep Step => CurrentContext.Step;
 
