@@ -93,6 +93,12 @@ typed argument.  Removed <code>lastCommit</code> parameter from <code>Context.St
 [<a href="https://github.com/planetarium/libplanet/pull/3846">#3846</a>]</li>
 <li>(Libplanet.Net) Removed <code>IConsensusMessageCommunicator</code> parameter from
 <code>Context()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3848">#3848</a>, <a href="https://github.com/planetarium/libplanet/issues/3849">#3849</a>]</li>
+<li>(Libplanet.Net) Added <code>Running</code> property to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Added <code>Start()</code> method to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Changed <code>NewHeight()</code> to throw a <code>NullReferenceException</code>
+if it is called while its internal <code>BlockChain</code> is in an invalid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Removed <code>Null</code> value from <code>ConsensusStep</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

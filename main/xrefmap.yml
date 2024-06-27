@@ -12446,6 +12446,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.ConsensusContext.Round
   nameWithType: ConsensusContext.Round
+- uid: Libplanet.Net.Consensus.ConsensusContext.Running
+  name: Running
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Running
+  commentId: P:Libplanet.Net.Consensus.ConsensusContext.Running
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Running
+  nameWithType: ConsensusContext.Running
+- uid: Libplanet.Net.Consensus.ConsensusContext.Running*
+  name: Running
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Running_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Running
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Running
+  nameWithType: ConsensusContext.Running
+- uid: Libplanet.Net.Consensus.ConsensusContext.Start
+  name: Start()
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Start
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.Start
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Start()
+  nameWithType: ConsensusContext.Start()
+- uid: Libplanet.Net.Consensus.ConsensusContext.Start*
+  name: Start
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Start_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusContext.Start
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.ConsensusContext.Start
+  nameWithType: ConsensusContext.Start
 - uid: Libplanet.Net.Consensus.ConsensusContext.Step
   name: Step
   href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Step
@@ -12700,12 +12726,6 @@ references:
   commentId: F:Libplanet.Net.Consensus.ConsensusStep.EndCommit
   fullName: Libplanet.Net.Consensus.ConsensusStep.EndCommit
   nameWithType: ConsensusStep.EndCommit
-- uid: Libplanet.Net.Consensus.ConsensusStep.Null
-  name: "Null"
-  href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Null
-  commentId: F:Libplanet.Net.Consensus.ConsensusStep.Null
-  fullName: Libplanet.Net.Consensus.ConsensusStep.Null
-  nameWithType: ConsensusStep.Null
 - uid: Libplanet.Net.Consensus.ConsensusStep.PreCommit
   name: PreCommit
   href: api/Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit
