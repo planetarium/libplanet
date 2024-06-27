@@ -73,6 +73,7 @@ namespace Libplanet.Net.Consensus
             _currentContext = CreateContext(
                 _blockChain.Tip.Index + 1,
                 _blockChain.GetBlockCommit(_blockChain.Tip.Index));
+            AttachEventHandlers(_currentContext);
             _pendingMessages = new HashSet<ConsensusMsg>();
 
             _logger = Log
@@ -172,17 +173,19 @@ namespace Libplanet.Net.Consensus
         /// Starts a new <see cref="Context"/> for given <paramref name="height"/>.
         /// </summary>
         /// <param name="height">The height of a new <see cref="Context"/> to start.</param>
-        /// <exception cref="InvalidHeightIncreasingException">Thrown if given
+        /// <exception cref="InvalidHeightIncreasingException">Thrown when given
         /// <paramref name="height"/> is less than or equal to <see cref="Height"/>.</exception>
-        /// <remarks>The method is also called when the tip of the <see cref="BlockChain"/> is
-        /// changed (i.e., committed, synchronized).
+        /// <exception cref="NullReferenceException">Thrown when <see cref="BlockChain"/> does
+        /// not have the appropriate next state root hash ready for given <paramref name="height"/>.
+        /// </exception>
+        /// <remarks>The method is only called with a delay
+        /// when <see cref="BlockChain.TipChanged"/> is triggered.
         /// </remarks>
         public void NewHeight(long height)
         {
             lock (_newHeightLock)
             {
                 _newHeightCts?.Cancel();
-
                 _logger.Information(
                     "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
                     nameof(NewHeight),
@@ -213,7 +216,7 @@ namespace Libplanet.Net.Consensus
                     {
                         lastCommit = storedCommit;
                         _logger.Debug(
-                            "Retrieved cached block commit for Height #{Height} from blockchain",
+                            "Retrieved stored block commit for Height #{Height} from blockchain",
                             lastCommit.Height);
                     }
 
@@ -228,6 +231,7 @@ namespace Libplanet.Net.Consensus
                         height,
                         lastCommit);
                     _currentContext = CreateContext(height, lastCommit);
+                    AttachEventHandlers(_currentContext);
 
                     foreach (var message in _pendingMessages)
                     {
@@ -436,6 +440,14 @@ namespace Libplanet.Net.Consensus
                 async () =>
                 {
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
+
+                    // Delay further until evaluation is ready.
+                    while (_blockChain.GetNextStateRootHash(e.NewTip.Index) is null)
+                    {
+                        // FIXME: Maybe interval should be adjustable?
+                        await Task.Delay(100, _newHeightCts.Token);
+                    }
+
                     if (!_newHeightCts.IsCancellationRequested)
                     {
                         try
@@ -467,25 +479,18 @@ namespace Libplanet.Net.Consensus
         /// and attach event handlers to it, and return the created context.
         /// </summary>
         /// <param name="height">The height of the context to create.</param>
-        /// <param name="lastCommit">The last commit of the previous <see cref="Block"/>.</param>
+        /// <param name="lastCommit">The block commit of the previous <see cref="Block"/>.</param>
+        /// <exception cref="NullReferenceException">Thrown when <see cref="BlockChain"/> does
+        /// not have the appropriate next state root hash ready for given <paramref name="height"/>.
+        /// </exception>
         private Context CreateContext(long height, BlockCommit? lastCommit)
         {
-            // blockchain may not contain block of Height - 1?
-            ValidatorSet validatorSet;
-            while (true)
-            {
-                var nextStateRootHash = _blockChain.GetNextStateRootHash(height - 1);
-                if (nextStateRootHash is { } nsrh)
-                {
-                    validatorSet = _blockChain
-                        .GetWorldState(nsrh)
-                        .GetValidatorSet();
-                    break;
-                }
-
-                // FIXME: Maybe this should be adjustable?
-                Thread.Sleep(100);
-            }
+            var nextStateRootHash = _blockChain.GetNextStateRootHash(height - 1) ??
+                throw new NullReferenceException(
+                    $"Could not find the next state root hash for index {height - 1}");
+            ValidatorSet validatorSet = _blockChain
+                .GetWorldState(nextStateRootHash)
+                .GetValidatorSet();
 
             Context context = new Context(
                 _blockChain,
@@ -494,7 +499,6 @@ namespace Libplanet.Net.Consensus
                 _privateKey,
                 validatorSet,
                 contextTimeoutOptions: _contextTimeoutOption);
-            AttachEventHandlers(context);
             return context;
         }
     }
