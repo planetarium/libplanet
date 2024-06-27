@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "+Ko70+bNYU48abWiwvZFt4s89n2ZG2UA1t0fX95K3ko="
+          "hash": "/zVwLhWcwE5C4UGI7zUpbxGG5owyGxU5jMu+Z/VQr5s="
         }
       },
       "is_incremental": false,
@@ -85,6 +85,18 @@
         ".html": {
           "relative_path": "changes/v3.html",
           "hash": "COoNqPFfO7M/cPlI/nZiERsBli9Jb/VEwzcmCZpQdw8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../changes/v4.md",
+      "output": {
+        ".html": {
+          "relative_path": "changes/v4.html",
+          "hash": "DgsmmLSFLGIjibSdBwM6B2zD4jAjs3ldsI9suiFzd+g="
         }
       },
       "is_incremental": false,
@@ -5626,7 +5638,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 17,
+          "total_file_count": 18,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
