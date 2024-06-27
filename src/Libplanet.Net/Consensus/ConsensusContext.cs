@@ -30,15 +30,14 @@ namespace Libplanet.Net.Consensus
     public partial class ConsensusContext : IDisposable
     {
         private readonly object _contextLock;
-        private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
         private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
-        private readonly Dictionary<long, Context> _contexts;
         private readonly HashSet<ConsensusMsg> _pendingMessages;
+        private Context _currentContext;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -67,14 +66,15 @@ namespace Libplanet.Net.Consensus
             _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
-            Height = -1;
+            Running = false;
             _newHeightDelay = newHeightDelay;
 
             _contextTimeoutOption = contextTimeoutOption;
-
-            _contexts = new Dictionary<long, Context>();
+            _currentContext = CreateContext(
+                _blockChain.Tip.Index + 1,
+                _blockChain.GetBlockCommit(_blockChain.Tip.Index));
+            AttachEventHandlers(_currentContext);
             _pendingMessages = new HashSet<ConsensusMsg>();
-            _blockChain.TipChanged += OnTipChanged;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -82,25 +82,28 @@ namespace Libplanet.Net.Consensus
                 .ForContext<ConsensusContext>()
                 .ForContext("Source", nameof(ConsensusContext));
 
+            _blockChain.TipChanged += OnTipChanged;
             _contextLock = new object();
-            _newHeightLock = new object();
         }
 
         /// <summary>
+        /// A value shwoing whether a <see cref="ConsensusContext"/> is in a running state or not.
+        /// This determines whether internally handled <see cref="Context"/> gets started or not.
+        /// </summary>
+        public bool Running { get; private set; }
+
+        /// <summary>
         /// <para>
-        /// The height of the current running <see cref="Context"/>.
+        /// The height of the current viewing <see cref="Context"/>.
         /// </para>
         /// <para>
-        /// This is initially set to -1, representing that there is no running
-        /// <see cref="Context"/>, when a <see cref="ConsensusContext"/> is created.
         /// This value can only be increased by calling <see cref="NewHeight"/>.
         /// </para>
         /// </summary>
-        /// <returns>If <see cref="NewHeight"/> or <see cref="OnTipChanged"/> is called
-        /// before, returns current working height, otherwise returns <c>-1</c>.</returns>
+        /// <returns>The height of the current viewing <see cref="Context"/>.</returns>
         /// <seealso cref="NewHeight"/>
         /// <seealso cref="OnTipChanged"/>
-        public long Height { get; private set; }
+        public long Height => CurrentContext.Height;
 
         /// <summary>
         /// A current round of <see cref="Context"/> in current <see cref="Height"/>.
@@ -108,42 +111,49 @@ namespace Libplanet.Net.Consensus
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the round
         /// of current <see cref="Context"/>, or otherwise returns -1.
         /// </returns>
-        public long Round
-        {
-            get
-            {
-                lock (_contextLock)
-                {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
-                }
-            }
-        }
+        public long Round => CurrentContext.Round;
 
         /// <summary>
         /// The current step of <see cref="Context"/> in current <see cref="Height"/>.
         /// </summary>
         /// <returns>If there is <see cref="Context"/> for <see cref="Height"/> returns the step
-        /// of current <see cref="Context"/>, or otherwise returns
-        /// <see cref="ConsensusStep.Null"/>.
+        /// of current <see cref="Context"/>.
         /// </returns>
-        public ConsensusStep Step
+        public ConsensusStep Step => CurrentContext.Step;
+
+        internal Context CurrentContext
         {
             get
             {
                 lock (_contextLock)
                 {
-                    return _contexts.ContainsKey(Height)
-                        ? _contexts[Height].Step
-                        : ConsensusStep.Null;
+                    return _currentContext;
                 }
             }
         }
 
         /// <summary>
-        /// A dictionary of <see cref="Context"/> for each heights. Each key represents the
-        /// height of value, and value is the <see cref="Context"/>.
+        /// Switches <see cref="Running"/> to <see langword="true"/> and also starts
+        /// the current highest <see cref="Context"/>, if any.
         /// </summary>
-        internal Dictionary<long, Context> Contexts => _contexts;
+        /// <exception cref="InvalidOperationException">Thrown when
+        /// <see cref="Running"/> is already <see langword="true"/>.</exception>
+        public void Start()
+        {
+            if (Running)
+            {
+                throw new InvalidOperationException(
+                    $"Can only start {nameof(ConsensusContext)} if {nameof(Running)} is {false}.");
+            }
+            else
+            {
+                lock (_contextLock)
+                {
+                    Running = true;
+                    _currentContext.Start();
+                }
+            }
+        }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -151,10 +161,7 @@ namespace Libplanet.Net.Consensus
             _newHeightCts?.Cancel();
             lock (_contextLock)
             {
-                foreach (Context context in _contexts.Values)
-                {
-                    context.Dispose();
-                }
+                _currentContext.Dispose();
             }
 
             _blockChain.TipChanged -= OnTipChanged;
@@ -164,17 +171,18 @@ namespace Libplanet.Net.Consensus
         /// Starts a new <see cref="Context"/> for given <paramref name="height"/>.
         /// </summary>
         /// <param name="height">The height of a new <see cref="Context"/> to start.</param>
-        /// <exception cref="InvalidHeightIncreasingException">Thrown if given
+        /// <exception cref="InvalidHeightIncreasingException">Thrown when given
         /// <paramref name="height"/> is less than or equal to <see cref="Height"/>.</exception>
-        /// <remarks>The method is also called when the tip of the <see cref="BlockChain"/> is
-        /// changed (i.e., committed, synchronized).
+        /// <exception cref="NullReferenceException">Thrown when <see cref="BlockChain"/> does
+        /// not have the appropriate next state root hash ready for given <paramref name="height"/>.
+        /// </exception>
+        /// <remarks>The method is only called with a delay
+        /// when <see cref="BlockChain.TipChanged"/> is triggered.
         /// </remarks>
         public void NewHeight(long height)
         {
-            lock (_newHeightLock)
+            lock (_contextLock)
             {
-                _newHeightCts?.Cancel();
-
                 _logger.Information(
                     "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
                     nameof(NewHeight),
@@ -189,56 +197,50 @@ namespace Libplanet.Net.Consensus
                 }
 
                 BlockCommit? lastCommit = null;
-                lock (_contextLock)
+                if (_currentContext.Height == height - 1 &&
+                    _currentContext.GetBlockCommit() is { } prevCommit)
                 {
-                    lastCommit = _contexts.ContainsKey(height - 1)
-                        ? _contexts[height - 1].GetBlockCommit()
-                        : null;
+                    lastCommit = prevCommit;
                     _logger.Debug(
-                        "LastCommit of height #{Height} is {LastCommit}",
-                        Height,
-                        lastCommit);
-
-                    if (lastCommit is null)
-                    {
-                        BlockCommit? storedCommit = _blockChain.GetBlockCommit(height - 1);
-                        if (storedCommit is { } commit)
-                        {
-                            lastCommit = commit;
-                            _logger.Debug(
-                                "Found cached LastCommit of Height #{Height} " +
-                                "and Round #{Round}",
-                                lastCommit.Height,
-                                lastCommit.Round);
-                        }
-                    }
+                        "Retrieved block commit for Height #{Height} from previous context",
+                        lastCommit.Height);
                 }
 
+                if (lastCommit is null &&
+                    _blockChain.GetBlockCommit(height - 1) is { } storedCommit)
+                {
+                    lastCommit = storedCommit;
+                    _logger.Debug(
+                        "Retrieved stored block commit for Height #{Height} from blockchain",
+                        lastCommit.Height);
+                }
+
+                _logger.Debug(
+                    "LastCommit for height #{Height} is {LastCommit}",
+                    height,
+                    lastCommit);
+
+                _currentContext.Dispose();
                 _logger.Information(
                     "Start consensus for height #{Height} with last commit {LastCommit}",
-                    Height,
+                    height,
                     lastCommit);
-                lock (_contextLock)
+                _currentContext = CreateContext(height, lastCommit);
+                AttachEventHandlers(_currentContext);
+
+                foreach (var message in _pendingMessages)
                 {
-                    Height = height;
-                    if (!_contexts.ContainsKey(height))
+                    if (message.Height == height)
                     {
-                        _contexts[height] = CreateContext(height, lastCommit);
+                        _currentContext.ProduceMessage(message);
                     }
-
-                    foreach (var message in _pendingMessages)
-                    {
-                        if (message.Height == height)
-                        {
-                            _contexts[height].ProduceMessage(message);
-                        }
-                    }
-
-                    _pendingMessages.RemoveWhere(message => message.Height <= height);
-                    _contexts[height].Start();
                 }
 
-                RemoveOldContexts(height);
+                _pendingMessages.RemoveWhere(message => message.Height <= height);
+                if (Running)
+                {
+                    _currentContext.Start();
+                }
             }
         }
 
@@ -278,9 +280,9 @@ namespace Libplanet.Net.Consensus
 
             lock (_contextLock)
             {
-                if (_contexts.ContainsKey(height))
+                if (_currentContext.Height == height)
                 {
-                    _contexts[height].ProduceMessage(consensusMessage);
+                    _currentContext.ProduceMessage(consensusMessage);
                 }
                 else
                 {
@@ -315,9 +317,9 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
-                        return _contexts[height].AddMaj23(maj23);
+                        return _currentContext.AddMaj23(maj23);
                     }
                 }
             }
@@ -349,11 +351,11 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
                         // NOTE: Should check if collected messages have same BlockHash with
                         // VoteSetBit's BlockHash?
-                        return _contexts[height].GetVoteSetBitsResponse(voteSetBits);
+                        return _currentContext.GetVoteSetBitsResponse(voteSetBits);
                     }
                 }
             }
@@ -385,11 +387,11 @@ namespace Libplanet.Net.Consensus
             {
                 lock (_contextLock)
                 {
-                    if (_contexts.ContainsKey(height))
+                    if (_currentContext.Height == height)
                     {
                         // NOTE: Should check if collected messages have same BlockHash with
                         // VoteSetBit's BlockHash?
-                        return _contexts[height].Proposal;
+                        return _currentContext.Proposal;
                     }
                 }
             }
@@ -407,9 +409,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_contextLock)
             {
-                return _contexts.ContainsKey(Height)
-                    ? _contexts[Height].ToString()
-                    : "No context";
+                return _currentContext.ToString();
             }
         }
 
@@ -434,6 +434,14 @@ namespace Libplanet.Net.Consensus
                 async () =>
                 {
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
+
+                    // Delay further until evaluation is ready.
+                    while (_blockChain.GetNextStateRootHash(e.NewTip.Index) is null)
+                    {
+                        // FIXME: Maybe interval should be adjustable?
+                        await Task.Delay(100, _newHeightCts.Token);
+                    }
+
                     if (!_newHeightCts.IsCancellationRequested)
                     {
                         try
@@ -465,34 +473,18 @@ namespace Libplanet.Net.Consensus
         /// and attach event handlers to it, and return the created context.
         /// </summary>
         /// <param name="height">The height of the context to create.</param>
-        /// <param name="lastCommit">The last commit of the previous <see cref="Block"/>.</param>
+        /// <param name="lastCommit">The block commit of the previous <see cref="Block"/>.</param>
+        /// <exception cref="NullReferenceException">Thrown when <see cref="BlockChain"/> does
+        /// not have the appropriate next state root hash ready for given <paramref name="height"/>.
+        /// </exception>
         private Context CreateContext(long height, BlockCommit? lastCommit)
         {
-            // blockchain may not contain block of Height - 1?
-            ValidatorSet validatorSet;
-            if (_blockChain.Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
-            {
-                validatorSet = _blockChain
-                    .GetWorldState(_blockChain[Height - 1].StateRootHash)
-                    .GetValidatorSet();
-            }
-            else
-            {
-                while (true)
-                {
-                    var nextStateRootHash = _blockChain.GetNextStateRootHash(Height - 1);
-                    if (nextStateRootHash is { } nsrh)
-                    {
-                        validatorSet = _blockChain
-                            .GetWorldState(nsrh)
-                            .GetValidatorSet();
-                        break;
-                    }
-
-                    // FIXME: Maybe this should be adjustable?
-                    Thread.Sleep(100);
-                }
-            }
+            var nextStateRootHash = _blockChain.GetNextStateRootHash(height - 1) ??
+                throw new NullReferenceException(
+                    $"Could not find the next state root hash for index {height - 1}");
+            ValidatorSet validatorSet = _blockChain
+                .GetWorldState(nextStateRootHash)
+                .GetValidatorSet();
 
             Context context = new Context(
                 _blockChain,
@@ -501,29 +493,7 @@ namespace Libplanet.Net.Consensus
                 _privateKey,
                 validatorSet,
                 contextTimeoutOptions: _contextTimeoutOption);
-            AttachEventHandlers(context);
             return context;
-        }
-
-        /// <summary>
-        /// Discard and remove all contexts that has lower height with
-        /// the given <paramref name="height"/>.
-        /// </summary>
-        /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
-        private void RemoveOldContexts(long height)
-        {
-            lock (_contextLock)
-            {
-                foreach (var pair in _contexts)
-                {
-                    if (pair.Key < height)
-                    {
-                        _logger.Debug("Removing context for height {Height}", pair.Key);
-                        pair.Value.Dispose();
-                        _contexts.Remove(pair.Key);
-                    }
-                }
-            }
         }
     }
 }

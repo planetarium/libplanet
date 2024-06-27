@@ -125,7 +125,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CannotStartTwice()
         {
             var stepChanged = new AsyncAutoResetEvent();
@@ -465,7 +465,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// receiving <see cref="ConsensusMaj23Msg"/> message from peer C or D.
         /// </para>
         /// </summary>
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanReplaceProposal()
         {
             var codec = new Codec();
@@ -608,7 +608,7 @@ namespace Libplanet.Net.Tests.Consensus
             var enteredHeightTwo = new AsyncAutoResetEvent();
 
             TimeSpan newHeightDelay = TimeSpan.FromMilliseconds(100);
-            int actionDelay = 1000;
+            int actionDelay = 2000;
 
             var fx = new MemoryStoreFixture();
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
@@ -617,33 +617,14 @@ namespace Libplanet.Net.Tests.Consensus
                 fx.StateStore,
                 new SingleActionLoader(typeof(DelayAction)));
 
-            Context? context = null;
-
-            void BroadcastMessage(ConsensusMsg message) =>
-                Task.Run(() =>
-                {
-                    context!.ProduceMessage(message);
-                });
-
             var consensusContext = new ConsensusContext(
-                new TestUtils.DummyConsensusMessageHandler(BroadcastMessage),
+                new TestUtils.DummyConsensusMessageHandler(message => { }),
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
                 new ContextTimeoutOption());
-
-            context = new Context(
-                blockChain,
-                1L,
-                null,
-                TestUtils.PrivateKeys[0],
-                blockChain
-                    .GetNextWorldState(0L)
-                    .GetValidatorSet(),
-                contextTimeoutOptions: new ContextTimeoutOption());
+            Context context = consensusContext.CurrentContext;
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
-
-            consensusContext.Contexts.Add(1L, context);
 
             blockChain.TipChanged += (_, eventArgs) =>
             {
@@ -670,7 +651,7 @@ namespace Libplanet.Net.Tests.Consensus
             blockChain.StageTransaction(tx);
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 
-            context.Start();
+            consensusContext.Start();
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 
@@ -700,21 +681,19 @@ namespace Libplanet.Net.Tests.Consensus
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
+            Assert.Equal(1, consensusContext.Height);
             var watch = Stopwatch.StartNew();
             await onTipChanged.WaitAsync();
             Assert.True(watch.ElapsedMilliseconds < (actionDelay * 0.5));
-            Thread.Sleep(100); // Wait for votes to get collected.
+            watch.Restart();
 
+            await enteredHeightTwo.WaitAsync();
             Assert.Equal(
                 4,
                 context.GetBlockCommit()!.Votes.Count(
                     vote => vote.Flag.Equals(VoteFlag.PreCommit)));
-
-            Assert.Equal(1, consensusContext.Contexts.Keys.Max());
-
-            await enteredHeightTwo.WaitAsync();
+            Assert.True(watch.ElapsedMilliseconds > (actionDelay * 0.5));
             Assert.Equal(2, consensusContext.Height);
-            Assert.Equal(2, consensusContext.Contexts.Keys.Max());
         }
 
         public struct ContextJson

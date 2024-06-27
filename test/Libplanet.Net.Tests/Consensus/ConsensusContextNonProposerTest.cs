@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            consensusContext.NewHeight(1);
+            consensusContext.Start();
             var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block1, TestUtils.PrivateKeys[1]));
@@ -122,6 +122,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
+            consensusContext.Start();
 
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -251,7 +252,6 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[2]);
-
             consensusContext.MessageConsumed += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 2 &&
@@ -263,9 +263,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            // Do a consensus for height #1. (Genesis doesn't have last commit.)
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-
+            consensusContext.Start();
             Block block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var createdLastCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, createdLastCommit);
@@ -307,8 +305,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-
+            consensusContext.Start();
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));

@@ -34,9 +34,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Policy,
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
-
             var timeoutProcessed = new AsyncAutoResetEvent();
-
             consensusContext.TimeoutProcessed += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 1)
@@ -45,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Start();
 
             // Wait for block to be proposed.
             Assert.Equal(1, consensusContext.Height);
