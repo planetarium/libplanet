@@ -53,7 +53,7 @@ To be released.
 
  -  `BlockHeader.StateRootHash` now means state root hash calculated by
     `BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)`.
-    [[#Sloth]]
+    [[#3811]]
  -  `Context.ProcessHeightOrRoundUponRules()` now appends block asynchronously,
     as a manner of fire-and-forget.  [[#3808]]
 
