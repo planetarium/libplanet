@@ -312,14 +312,6 @@ namespace Libplanet.Types.Blocks
             return new Block(header, txs, evidence);
         }
 
-        public static PreEvaluationBlock UnmarshalPreEvaluationBlock(Dictionary marshaled)
-        {
-            PreEvaluationBlockHeader header
-                = UnmarshalPreEvaluationBlockHeader((Dictionary)marshaled[PreEvalHeaderKey]);
-            IReadOnlyList<Transaction> txs = UnmarshalBlockTransactions(marshaled);
-            return new PreEvaluationBlock(header, txs);
-        }
-
         public static Proof? UnmarshalProof(Dictionary marshaled) =>
             marshaled.ContainsKey(ProofKey)
                 ? new Proof(marshaled[ProofKey])

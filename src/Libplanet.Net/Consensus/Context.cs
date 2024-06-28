@@ -85,7 +85,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
-        private readonly PreProposalSet _preProposalSet;
+        private readonly LotSet _lotSet;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -106,6 +106,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private Proof? _lastProof;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -173,6 +174,7 @@ namespace Libplanet.Net.Consensus
             Round = round;
             Step = consensusStep;
             _lastCommit = lastCommit;
+            _lastProof = blockChain[height - 1].Proof;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;
@@ -183,6 +185,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
+            _lotSet = new LotSet(height, round, _lastProof, validators, 20);
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
@@ -216,6 +219,9 @@ namespace Libplanet.Net.Consensus
         public ConsensusStep Step { get; private set; }
 
         public Proposal? Proposal { get; private set; }
+
+        public PublicKey? Proposer
+            => _lotSet.Maj23?.PublicKey;
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -411,6 +417,18 @@ namespace Libplanet.Net.Consensus
                 round * _contextTimeoutOption.ProposeMultiplier);
         }
 
+        private TimeSpan TimeoutSortition(long round)
+        {
+            return TimeSpan.FromSeconds(
+                _contextTimeoutOption.SortitionSecondBase +
+                round * _contextTimeoutOption.SortitionMultiplier);
+        }
+
+        private TimeSpan DelayLotGather()
+        {
+            return TimeSpan.FromSeconds(_contextTimeoutOption.LotGatherSecond);
+        }
+
         /// <summary>
         /// Creates a new <see cref="Block"/> to propose.
         /// </summary>
@@ -420,8 +438,11 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                var evidence = _blockChain.GetPendingEvidence();
-                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit, null, evidence);
+                Block block = _blockChain.ProposeBlock(
+                    _privateKey, 
+                    _lastCommit,
+                    _lotSet.GenerateProof(_privateKey),
+                    _blockChain.GetPendingEvidence());
                 _blockChain.Store.PutBlock(block);
                 return block;
             }

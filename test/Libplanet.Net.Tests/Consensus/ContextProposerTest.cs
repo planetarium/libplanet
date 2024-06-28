@@ -381,7 +381,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             Assert.Equal(
                 TestUtils.PrivateKeys[2].PublicKey,
-                TestUtils.ValidatorSet.GetProposer(2, 0).PublicKey);
+                context.Proposer);
 
             context.Start();
             await proposalSent.WaitAsync();

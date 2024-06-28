@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using Bencodex;
+using Bencodex.Misc;
 using Bencodex.Types;
 using Libplanet.Common;
 
@@ -173,6 +174,10 @@ namespace Libplanet.Crypto
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode()
             => ByteUtil.CalculateHashCode(ToByteArray());
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
+            => ByteArray.Hex();
 
         private static BigInteger HashToInt(ImmutableArray<byte> hash)
             => new BigInteger(

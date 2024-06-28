@@ -5,46 +5,46 @@ using Libplanet.Consensus;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// An exception thrown when a received <see cref="Proposal"/> is invalid.  In particular,
-    /// this is thrown pre-emptively before a <see cref="Proposal"/> is processed, i.e.
+    /// An exception thrown when a received <see cref="DominantLot"/> is invalid.  In particular,
+    /// this is thrown pre-emptively before a <see cref="DominantLot"/> is processed, i.e.
     /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
     [Serializable]
-    public class InvalidProposalException : Exception
+    public class InvalidDominantLotException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidProposalException"/> class.
+        /// Initializes a new instance of <see cref="InvalidDominantLotException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
-        /// <param name="proposal">The <see cref="Proposal"/> that caused this exception.
+        /// <param name="dominantLot">The <see cref="DominantLot"/> that caused this exception.
         /// </param>
         /// <param name="innerException">The exception that is the cause of the current exception.
         /// </param>
-        public InvalidProposalException(
+        public InvalidDominantLotException(
             string message,
-            Proposal proposal,
+            DominantLot dominantLot,
             Exception innerException)
             : base(message, innerException)
         {
-            Proposal = proposal;
+            DominantLot = dominantLot;
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidProposalException"/> class.
+        /// Initializes a new instance of <see cref="InvalidDominantLotException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
-        /// <param name="proposal">The <see cref="Proposal"/> that caused this exception.
+        /// <param name="dominantLot">The <see cref="Lot"/> that caused this exception.
         /// </param>
-        public InvalidProposalException(string message, Proposal proposal)
+        public InvalidDominantLotException(string message, DominantLot dominantLot)
             : base(message)
         {
-            Proposal = proposal;
+            DominantLot = dominantLot;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidProposalException"/>
+        /// Initializes a new instance of the <see cref="InvalidDominantLotException"/>
         /// class with serialized data.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/>
@@ -53,21 +53,21 @@ namespace Libplanet.Net.Consensus
         /// <param name="context">The <see cref="StreamingContext"/>
         /// that contains contextual information about the source or destination.
         /// </param>
-        protected InvalidProposalException(SerializationInfo info, StreamingContext context)
+        protected InvalidDominantLotException(SerializationInfo info, StreamingContext context)
         {
-            Proposal =
-                info.GetValue(nameof(Proposal), typeof(Proposal)) as Proposal ??
+            DominantLot =
+                info.GetValue(nameof(DominantLot), typeof(DominantLot)) as DominantLot ??
                 throw new SerializationException(
-                    $"{nameof(Proposal)} is expected to be a non-null {nameof(Proposal)}.");
+                    $"{nameof(DominantLot)} is expected to be a non-null {nameof(DominantLot)}.");
         }
 
-        public Proposal Proposal { get; }
+        public DominantLot DominantLot { get; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Proposal), Proposal);
+            info.AddValue(nameof(DominantLot), DominantLot);
         }
     }
 }

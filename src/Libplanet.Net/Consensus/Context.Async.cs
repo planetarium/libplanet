@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidence;
@@ -139,6 +140,7 @@ namespace Libplanet.Net.Consensus
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
             var prevState = new ContextState(
                 _heightVoteSet.Count,
+                _lotSet.DominantLots.Count,
                 Height,
                 Round,
                 Step,
@@ -146,6 +148,7 @@ namespace Libplanet.Net.Consensus
             mutation();
             var nextState = new ContextState(
                 _heightVoteSet.Count,
+                _lotSet.DominantLots.Count,
                 Height,
                 Round,
                 Step,
@@ -168,6 +171,7 @@ namespace Libplanet.Net.Consensus
                 StateChanged?.Invoke(this, nextState);
                 prevState = new ContextState(
                     _heightVoteSet.Count,
+                    _lotSet.DominantLots.Count,
                     Height,
                     Round,
                     Step,
@@ -175,6 +179,7 @@ namespace Libplanet.Net.Consensus
                 ProcessGenericUponRules();
                 nextState = new ContextState(
                     _heightVoteSet.Count,
+                    _lotSet.DominantLots.Count,
                     Height,
                     Round,
                     Step,
@@ -187,6 +192,33 @@ namespace Libplanet.Net.Consensus
         private void AppendBlock(Block block)
         {
             _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
+        }
+
+        private async Task VoteLotAfterGathering()
+        {
+            TimeSpan delay = DelayLotGather();
+            await Task.Delay(delay, _cancellationTokenSource.Token);
+            if (_lotSet.DominantLot is { } lot)
+            {
+                DominantLot dominantLot = new DominantLotMetadata(
+                    Height,
+                    Round,
+                    lot,
+                    DateTimeOffset.UtcNow,
+                    _privateKey.PublicKey).Sign(_privateKey);
+                PublishMessage(new ConsensusDominantLotMsg(dominantLot));
+            }
+        }
+
+        private async Task OnTimeoutSortition(int round)
+        {
+            TimeSpan timeout = TimeoutSortition(round);
+            await Task.Delay(timeout, _cancellationTokenSource.Token);
+            _logger.Information(
+                "TimeoutSortition has occurred in {Timeout}. {Info}",
+                timeout,
+                ToString());
+            ProduceMutation(() => ProcessTimeoutSortition(round));
         }
 
         /// <summary>
@@ -241,12 +273,14 @@ namespace Libplanet.Net.Consensus
         {
             public ContextState(
                 int voteCount,
+                int dominantLotCount,
                 long height,
                 int round,
                 ConsensusStep step,
                 BlockHash? proposal)
             {
                 VoteCount = voteCount;
+                DominantLotCount = dominantLotCount;
                 Height = height;
                 Round = round;
                 Step = step;
@@ -254,6 +288,8 @@ namespace Libplanet.Net.Consensus
             }
 
             public int VoteCount { get; }
+
+            public int DominantLotCount { get; }
 
             public long Height { get; }
 
@@ -266,6 +302,7 @@ namespace Libplanet.Net.Consensus
             public bool Equals(ContextState other)
             {
                 return VoteCount == other.VoteCount &&
+                       DominantLotCount == other.DominantLotCount &&
                        Round == other.Round &&
                        Step == other.Step &&
                        Proposal.Equals(other.Proposal);
@@ -278,7 +315,12 @@ namespace Libplanet.Net.Consensus
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(VoteCount, Round, (int)Step, Proposal.GetHashCode());
+                return HashCode.Combine(
+                    VoteCount,
+                    DominantLotCount,
+                    Round,
+                    (int)Step,
+                    Proposal.GetHashCode());
             }
         }
     }

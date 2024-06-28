@@ -181,10 +181,10 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
             consensusContext.Start();
-
+            var proposer = new PrivateKey();
             Assert.Equal(1, consensusContext.Height);
             Block block = blockChain.ProposeBlock(
-                new PrivateKey(),
+                proposer,
                 proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(1, consensusContext.Height);

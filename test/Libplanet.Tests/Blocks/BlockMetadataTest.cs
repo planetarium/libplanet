@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Types.Blocks;
@@ -247,7 +248,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: blockHash,
                 txHash: null,
                 lastCommit: invalidHeightLastCommit,
-                proof: new LotMetadata(2L, 0, null).Prove(validatorA).Proof,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null));
 
             // BlockHash of the last commit is invalid.
@@ -270,7 +271,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: GenesisHash,
                 txHash: null,
                 lastCommit: invalidBlockHashLastCommit,
-                proof: new LotMetadata(2L, 0, null).Prove(validatorA).Proof,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null));
 
             var validLastCommit = new BlockCommit(
@@ -300,7 +301,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: blockHash,
                 txHash: null,
                 lastCommit: validLastCommit,
-                proof: new LotMetadata(2L, 0, null).Prove(validatorA).Proof,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null);
         }
 
