@@ -137,9 +137,14 @@ namespace Libplanet.Net.Messages
             ConsensusProposalClaimMsg = 0x55,
 
             /// <summary>
-            /// Consensus pre-proposal message.
+            /// Consensus message that sends a lot to be drawn.
             /// </summary>
-            ConsensusPreProposal = 0x56,
+            ConsensusLot = 0x56,
+
+            /// <summary>
+            /// Consensus message that sends a dominant lot to vote for proposer.
+            /// </summary>
+            ConsensusDominantLot = 0x57,
         }
 
         /// <summary>

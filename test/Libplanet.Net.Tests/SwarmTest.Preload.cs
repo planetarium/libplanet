@@ -1162,7 +1162,7 @@ namespace Libplanet.Net.Tests
             for (int i = 0; i < 10; i++)
             {
                 Block block = forked.ProposeBlock(
-                    seedKey, 
+                    seedKey,
                     CreateBlockCommit(forked.Tip),
                     CreateZeroRoundProof(forked.Tip, seedKey));
                 forked.Append(block, TestUtils.CreateBlockCommit(block));

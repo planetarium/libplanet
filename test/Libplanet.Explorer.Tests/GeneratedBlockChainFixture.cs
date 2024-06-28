@@ -14,6 +14,7 @@ using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Consensus;
 
 namespace Libplanet.Explorer.Tests;
 
@@ -177,7 +178,7 @@ public class GeneratedBlockChainFixture
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value),
-                    new LotMetadata(Chain.Tip.Index + 1, 0, Chain.Tip.Proof).Prove(proposer).Proof),
+                    new ConsensusInformation(Chain.Tip.Index + 1, 0, Chain.Tip.Proof).Prove(proposer)),
                 transactions).Propose(),
             proposer);
         Chain.Append(

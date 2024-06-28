@@ -25,6 +25,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -412,7 +413,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static Proof CreateZeroRoundProof(
             Block tip,
             PrivateKey proposerKey)
-            => new LotMetadata(tip.Index + 1, 0, tip.Proof).Prove(proposerKey).Proof;
+            => new ConsensusInformation(tip.Index + 1, 0, tip.Proof).Prove(proposerKey);
 
         public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,

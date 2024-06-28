@@ -14,6 +14,7 @@ using Libplanet.Explorer.Tests.Queries;
 using Libplanet.Store;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
+using Libplanet.Consensus;
 
 namespace Libplanet.Explorer.Tests.GraphTypes
 {
@@ -41,7 +42,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     previousHash: lastBlockHash,
                     txHash: null,
                     lastCommit: lastBlockCommit,
-                    proof: new LotMetadata(2, 0, null).Prove(privateKey).Proof)).Propose();
+                    proof: new ConsensusInformation(2, 0, null).Prove(privateKey))).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);

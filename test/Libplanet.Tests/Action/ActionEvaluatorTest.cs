@@ -9,8 +9,8 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
 using Libplanet.Store;
@@ -21,7 +21,6 @@ using Libplanet.Tests.Store;
 using Libplanet.Tests.Tx;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
@@ -133,7 +132,7 @@ namespace Libplanet.Tests.Action
                    previousHash: null,
                    txHash: BlockContent.DeriveTxHash(txs),
                    lastCommit: null,
-                   proof: new LotMetadata(0, 0, null).Prove(GenesisProposer).Proof),
+                   proof: new ConsensusInformation(0, 0, null).Prove(GenesisProposer)),
                transactions: txs).Propose();
 
             // Since there is no static method determine state root hash of common block,
@@ -736,7 +735,7 @@ namespace Libplanet.Tests.Action
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0),
-                    proof: new LotMetadata(123L, 0, null).Prove(GenesisProposer).Proof),
+                    proof: new ConsensusInformation(123L, 0, null).Prove(GenesisProposer)),
                 transactions: txs).Propose();
             IWorld previousState = stateStore.GetWorld(null);
             var nextState = actionEvaluator.EvaluateTx(

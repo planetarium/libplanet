@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 
@@ -182,6 +183,33 @@ namespace Libplanet.Net.Consensus
         private void AppendBlock(Block block)
         {
             _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
+        }
+
+        private async Task VoteLotAfterGathering()
+        {
+            TimeSpan delay = DelayLotGather();
+            await Task.Delay(delay, _cancellationTokenSource.Token);
+            if (_lotSet.DominantLot is { } lot)
+            {
+                DominantLot dominantLot = new DominantLotMetadata(
+                    Height,
+                    Round,
+                    lot,
+                    DateTimeOffset.UtcNow,
+                    _privateKey.PublicKey).Sign(_privateKey);
+                PublishMessage(new ConsensusDominantLotMsg(dominantLot));
+            }
+        }
+
+        private async Task OnTimeoutSortition(int round)
+        {
+            TimeSpan timeout = TimeoutSortition(round);
+            await Task.Delay(timeout, _cancellationTokenSource.Token);
+            _logger.Information(
+                "TimeoutSortition has occurred in {Timeout}. {Info}",
+                timeout,
+                ToString());
+            ProduceMutation(() => ProcessTimeoutSortition(round));
         }
 
         /// <summary>

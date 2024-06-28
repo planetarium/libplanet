@@ -9,13 +9,41 @@ namespace Libplanet.Net.Consensus
     public class ContextTimeoutOption
     {
         public ContextTimeoutOption(
-            int proposeSecondBase = 8,
+            int lotGatherSecond = 1,
+            int sortitionSecondBase = 4,
+            int proposeSecondBase = 4,
             int preVoteSecondBase = 4,
             int preCommitSecondBase = 4,
-            int proposeMultiplier = 4,
+            int sortitionMultiplier = 2,
+            int proposeMultiplier = 2,
             int preVoteMultiplier = 2,
             int preCommitMultiplier = 2)
         {
+            if (lotGatherSecond <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(lotGatherSecond),
+                    "LotGatherSecond must be greater than 0.");
+            }
+
+            LotGatherSecond = lotGatherSecond;
+
+            if (sortitionSecondBase <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(sortitionSecondBase),
+                    "SortitionSecondBase must be greater than 0.");
+            }
+
+            SortitionSecondBase = sortitionSecondBase;
+
+            if (SortitionSecondBase < LotGatherSecond)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(sortitionSecondBase),
+                    "SortitionSecondBase must be greater than LotGatherSecond.");
+            }
+
             if (proposeSecondBase <= 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -42,6 +70,15 @@ namespace Libplanet.Net.Consensus
             }
 
             PreCommitSecondBase = preCommitSecondBase;
+
+            if (sortitionMultiplier <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(sortitionMultiplier),
+                    "SortitionMultiplier must be greater than 0.");
+            }
+
+            SortitionMultiplier = sortitionMultiplier;
 
             if (proposeMultiplier <= 0)
             {
@@ -71,11 +108,17 @@ namespace Libplanet.Net.Consensus
             PreCommitMultiplier = preCommitMultiplier;
         }
 
+        public int LotGatherSecond { get; }
+
+        public int SortitionSecondBase { get; }
+
         public int ProposeSecondBase { get; }
 
         public int PreVoteSecondBase { get; }
 
         public int PreCommitSecondBase { get; }
+
+        public int SortitionMultiplier { get; }
 
         public int ProposeMultiplier { get; }
 

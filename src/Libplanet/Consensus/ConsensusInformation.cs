@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -8,8 +10,8 @@ namespace Libplanet.Consensus
 {
     /// <summary>
     /// Consensus round information used as payload of the
-    /// <see cref="Types.Blocks.PreEvaluationBlock.Proof"/> in the
-    /// <see cref="PreProposal"/>.
+    /// <see cref="Types.Blocks.Block.Proof"/> in the
+    /// <see cref="Lot"/>.
     /// </summary>
     public readonly struct ConsensusInformation : IEquatable<ConsensusInformation>
     {
@@ -29,13 +31,12 @@ namespace Libplanet.Consensus
         /// </summary>
         /// <param name="height">Height of the consensus where
         /// <see cref="Types.Consensus.Validator"/> participate in the draw of the
-        /// <see cref="PreProposal"/>.</param>
+        /// <see cref="Lot"/>.</param>
         /// <param name="round">Round of the consensus where <see cref="Types.Consensus.Validator"/>
-        /// participate in the draw of the <see cref="PreProposal"/>.</param>
+        /// participate in the draw of the <see cref="Lot"/>.</param>
         /// <param name="lastProof"><see cref="Proof"/> that has been decided on the previous round.
-        /// if current <see cref="Round"/> is 0, it indicates <see cref="Proof"/>
-        /// from the <see cref="Types.Blocks.IBlockMetadata.LastCommit"/>
-        /// of the <see cref="Types.Blocks.PreEvaluationBlock"/> preproposing.
+        /// if deciding <see cref="Round"/> is 0, it indicates <see cref="Proof"/>
+        /// from the previous <see cref="Types.Blocks.Block"/>.
         /// <seealso cref="Types.Blocks.BlockCommit.Round"/></param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="height"/> or
         /// <paramref name="round"/> is negative.</exception>
@@ -61,16 +62,43 @@ namespace Libplanet.Consensus
             Encoded = Encode();
         }
 
+        public ConsensusInformation(IReadOnlyList<byte> encoded)
+            : this(_codec.Decode(encoded.ToArray()))
+        {
+        }
+
+        public ConsensusInformation(IValue bencoded)
+            : this(bencoded is Dictionary dict
+                ? dict
+                : throw new ArgumentException(
+                    $"Given {nameof(bencoded)} must be of type " +
+                    $"{typeof(Dictionary)}: {bencoded.GetType()}",
+                    nameof(bencoded)))
+        {
+        }
+
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+        private ConsensusInformation(Dictionary bencoded)
+            : this(
+                  (Integer)bencoded[HeightKey],
+                  (Integer)bencoded[RoundKey],
+                  bencoded.ContainsKey(LastProofKey)
+                    ? (Proof?)new Proof(bencoded[LastProofKey])
+                    : null)
+        {
+        }
+#pragma warning restore SA1118 // Parameter should not span multiple lines
+
         /// <summary>
         /// Height of the consensus where
         /// <see cref="Types.Consensus.Validator"/> participate in the draw of the
-        /// <see cref="PreProposal"/>.
+        /// <see cref="Proof"/>.
         /// </summary>
         public long Height { get; }
 
         /// <summary>
         /// Round of the consensus where <see cref="Types.Consensus.Validator"/>
-        /// participate in the draw of the <see cref="PreProposal"/>.
+        /// participate in the draw of the <see cref="Lot"/>.
         /// </summary>
         public int Round { get; }
 
@@ -92,10 +120,10 @@ namespace Libplanet.Consensus
         /// <param name="height">
         /// Height of the consensus where
         /// <see cref="Types.Consensus.Validator"/> participate in the draw of the
-        /// <see cref="PreProposal"/>.</param>
+        /// <see cref="Lot"/>.</param>
         /// <param name="round">
         /// Round of the consensus where <see cref="Types.Consensus.Validator"/>
-        /// participate in the draw of the <see cref="PreProposal"/>.</param>
+        /// participate in the draw of the <see cref="Lot"/>.</param>
         /// <param name="lastProof">
         /// <see cref="Proof"/> that has been decided on the previous round.</param>
         /// <param name="prover">
@@ -112,10 +140,10 @@ namespace Libplanet.Consensus
         /// <param name="height">
         /// Height of the consensus where
         /// <see cref="Types.Consensus.Validator"/> participate in the draw of the
-        /// <see cref="PreProposal"/>.</param>
+        /// <see cref="Lot"/>.</param>
         /// <param name="round">
         /// Round of the consensus where <see cref="Types.Consensus.Validator"/>
-        /// participate in the draw of the <see cref="PreProposal"/>.</param>
+        /// participate in the draw of the <see cref="Lot"/>.</param>
         /// <param name="lastProof">
         /// <see cref="Proof"/> that has been decided on the previous round.</param>
         /// <param name="proof">
@@ -129,6 +157,20 @@ namespace Libplanet.Consensus
         public static bool Verify(
             long height, int round, Proof? lastProof, Proof proof, PublicKey verifier)
             => new ConsensusInformation(height, round, lastProof).Verify(proof, verifier);
+
+        /// <summary>
+        /// Generate a <see cref="Lot"/> with <see cref="ConsensusInformation"/> and
+        /// <paramref name="prover"/>.
+        /// </summary>
+        /// <param name="prover">
+        /// <see cref="PrivateKey"/> to prove <see cref="ConsensusInformation"/> with.
+        /// </param>
+        /// <returns>
+        /// <see cref="Lot"/> that contains <see cref="Proof"/> generated by
+        /// <see cref="Prove(PrivateKey)"/>, <see cref="PublicKey"/> of <paramref name="prover"/>
+        /// and <see cref="ConsensusInformation"/>.</returns>
+        public Lot ToLot(PrivateKey prover)
+            => new Lot(Prove(prover), prover.PublicKey, this);
 
         /// <summary>
         /// Generate a <see cref="Proof"/> with <see cref="ConsensusInformation"/> and
@@ -170,14 +212,19 @@ namespace Libplanet.Consensus
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode()
-        {
-            return HashCode.Combine(
+            => HashCode.Combine(
                 Height,
                 Round,
                 LastProof);
-        }
+
+        public override string ToString()
+            => $"{nameof(ConsensusInformation)} " +
+            $": Height {Height}, Round {Round}, LastProof {LastProof}";
 
         private ImmutableArray<byte> Encode()
+            => _codec.Encode(Bencode()).ToImmutableArray();
+
+        private IValue Bencode()
         {
             Dictionary bencoded = Dictionary.Empty
                     .Add(HeightKey, Height)
@@ -188,7 +235,7 @@ namespace Libplanet.Consensus
                 bencoded = bencoded.Add(LastProofKey, lastProof.ByteArray);
             }
 
-            return _codec.Encode(bencoded).ToImmutableArray();
+            return bencoded;
         }
     }
 }
