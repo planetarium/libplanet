@@ -728,7 +728,7 @@ namespace Libplanet.Types.Assets
 
         private static SHA1 GetSHA1()
         {
-#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
             try
             {
                 return new SHA1CryptoServiceProvider();

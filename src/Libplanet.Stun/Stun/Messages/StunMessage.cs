@@ -20,7 +20,7 @@ namespace Libplanet.Stun.Messages
             var transactionId = new byte[12];
 #if NETSTANDARD2_0_OR_GREATER
             using var rng = new RNGCryptoServiceProvider();
-#elif NET6_0_OR_GREATER
+#elif NET6_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
             using var rng = RandomNumberGenerator.Create();
 #endif
             rng.GetBytes(transactionId);
