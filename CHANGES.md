@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.
+    [[#3737], [#3813]]
+ -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
+    interface and its implementations.  [[#3737], [#3813]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +28,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3737]: https://github.com/planetarium/libplanet/pull/3737
+[#3813]: https://github.com/planetarium/libplanet/pull/3813
 
 
 Version 5.0.0
