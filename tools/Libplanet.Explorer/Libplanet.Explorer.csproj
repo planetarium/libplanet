@@ -1,55 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <PackageId>Libplanet.Explorer</PackageId>
-    <Title>Libplanet.Explorer</Title>
-    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Company>Planetarium</Company>
-    <Authors>Planetarium</Authors>
-    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
-    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <NoWarn>NU1701;NU5104;SA1118</NoWarn>
+    <NoWarn>$(NoWarn);NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
-    <PackageIcon>icon.png</PackageIcon>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion>10</LangVersion>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Libplanet.Explorer</RootNamespace>
-    <AssemblyName>Libplanet.Explorer</AssemblyName>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Nullable>enable</Nullable>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <IsTestProject>false</IsTestProject>
-    <CodeAnalysisRuleSet>..\..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png" />
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
-    <AdditionalFiles Include="..\..\stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.7" />
     <PackageReference Include="MySqlConnector" Version="1.1.0" />
     <PackageReference Include="SqlKata" Version="2.2.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers
-      </IncludeAssets>
-    </PackageReference>
     <PackageReference Include="GraphQL" Version="4.7.1" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="4.7.1" />
     <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="5.1.1" />
@@ -57,6 +18,10 @@
     <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.1.1" />
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.1.1" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,13 +35,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Views\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Store\RocksDBStoreBitConverter.cs" />
   </ItemGroup>
+
 </Project>

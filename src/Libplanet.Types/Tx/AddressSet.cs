@@ -87,7 +87,13 @@ namespace Libplanet.Types.Tx
 
         /// <inheritdoc cref="IImmutableSet{T}.TryGetValue(T, out T)"/>
         [Pure]
+#if NETSTANDARD2_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
         public bool TryGetValue(Address equalValue, out Address actualValue)
+#elif NET6_0_OR_GREATER
+        public bool TryGetValue(
+            Address equalValue,
+            [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out Address actualValue)
+#endif
         {
             if (_addresses.Contains(equalValue))
             {
@@ -95,6 +101,9 @@ namespace Libplanet.Types.Tx
                 return true;
             }
 
+#if NET6_0_OR_GREATER
+            actualValue = default;
+#endif
             return false;
         }
 

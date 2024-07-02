@@ -1,0 +1,10 @@
+<Project>
+
+  <Import Project="..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+    <NoWarn>$(NoWarn);SA1000</NoWarn>
+  </PropertyGroup>
+
+</Project>

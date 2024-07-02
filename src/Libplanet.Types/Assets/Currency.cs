@@ -80,7 +80,12 @@ namespace Libplanet.Types.Assets
         /// The deterministic hash derived from other fields.
         /// </summary>
         [JsonInclude]
+#if NETSTANDARD2_0_OR_GREATER
         public readonly HashDigest<SHA1> Hash;
+#else
+#pragma warning disable SA1201
+        public HashDigest<SHA1> Hash => GetHash();
+#endif
 
         /// <summary>
         /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
@@ -243,7 +248,9 @@ namespace Libplanet.Types.Assets
                 Minters = null;
             }
 
+#if NETSTANDARD2_0_OR_GREATER
             Hash = GetHash();
+#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         /// <summary>
@@ -273,6 +280,7 @@ namespace Libplanet.Types.Assets
 #pragma warning restore SA1118
         {
             TotalSupplyTrackable = totalSupplyTrackable;
+#if NETSTANDARD2_0_OR_GREATER
             HashDigest<SHA1> expectedHash = GetHash();
             if (!expectedHash.Equals(hash))
             {
@@ -286,6 +294,7 @@ namespace Libplanet.Types.Assets
             }
 
             Hash = hash;
+#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         private Currency(SerializationInfo info, StreamingContext context)
@@ -349,7 +358,9 @@ namespace Libplanet.Types.Assets
                 }
             }
 
+#if NETSTANDARD2_0_OR_GREATER
             Hash = GetHash();
+#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         /// <summary>
@@ -397,7 +408,9 @@ namespace Libplanet.Types.Assets
                 _maximumSupply = maximumSupply;
             }
 
+#if NETSTANDARD2_0_OR_GREATER
             Hash = GetHash();
+#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         /// <summary>
@@ -435,7 +448,9 @@ namespace Libplanet.Types.Assets
             DecimalPlaces = decimalPlaces;
             _maximumSupply = null;
             TotalSupplyTrackable = totalSupplyTrackable;
+#if NETSTANDARD2_0_OR_GREATER
             Hash = GetHash();
+#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         /// <summary>
@@ -713,6 +728,7 @@ namespace Libplanet.Types.Assets
 
         private static SHA1 GetSHA1()
         {
+#if NETSTANDARD2_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
             try
             {
                 return new SHA1CryptoServiceProvider();
@@ -721,6 +737,9 @@ namespace Libplanet.Types.Assets
             {
                 return new SHA1Managed();
             }
+#elif NET6_0_OR_GREATER
+            return SHA1.Create();
+#endif
         }
 
         [Pure]
@@ -758,7 +777,12 @@ namespace Libplanet.Types.Assets
             var codec = new Codec();
             codec.Encode(SerializeForHash(), stream);
             stream.FlushFinalBlock();
-            return new HashDigest<SHA1>(sha1.Hash);
+            if (sha1.Hash is { } hash)
+            {
+                return new HashDigest<SHA1>(sha1.Hash);
+            }
+
+            throw new InvalidOperationException("Failed to compute the hash.");
         }
     }
 
