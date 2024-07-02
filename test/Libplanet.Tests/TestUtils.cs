@@ -403,6 +403,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 blockHash,
                 deterministicTimestamp ? DateTimeOffset.UnixEpoch : DateTimeOffset.UtcNow,
                 key.PublicKey,
+                ValidatorSet.GetValidator(key.PublicKey).Power,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
             return new BlockCommit(

@@ -317,6 +317,7 @@ namespace Libplanet.Net.Tests
                         specialBlock.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.PrivateKeys[0].PublicKey,
+                        TestUtils.ValidatorSet[0].Power,
                         VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0])));
             var validBlockCommit = TestUtils.CreateBlockCommit(specialBlock);
             chainB.Append(specialBlock, invalidBlockCommit);

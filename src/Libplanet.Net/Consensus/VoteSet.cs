@@ -507,6 +507,7 @@ namespace Libplanet.Net.Consensus
                             BlockHash,
                             DateTimeOffset.UtcNow,
                             key,
+                            validatorSet.GetValidator(key).Power,
                             VoteFlag.Null).Sign(null))
                     .ToList();
         }

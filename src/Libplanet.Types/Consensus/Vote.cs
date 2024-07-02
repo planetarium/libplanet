@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -102,6 +103,9 @@ namespace Libplanet.Types.Consensus
         public PublicKey ValidatorPublicKey => _metadata.ValidatorPublicKey;
 
         /// <inheritdoc/>
+        public BigInteger? ValidatorPower => _metadata.ValidatorPower;
+
+        /// <inheritdoc/>
         public VoteFlag Flag => _metadata.Flag;
 
         /// <summary>
@@ -162,6 +166,7 @@ namespace Libplanet.Types.Consensus
             var dict = new Dictionary<string, object>
             {
                 { "validator_public_key", ValidatorPublicKey.ToString() },
+                { "validator_power", ValidatorPower.ToString() },
                 { "vote_flag", Flag.ToString() },
                 { "block_hash", BlockHash.ToString() },
                 { "height", Height },

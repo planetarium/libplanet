@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -65,6 +66,7 @@ namespace Libplanet.Benchmarks
                         _blockHash,
                         DateTimeOffset.UtcNow,
                         _privateKeys[x].PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit).Sign(_privateKeys[x]))
                 .ToArray();
         }
