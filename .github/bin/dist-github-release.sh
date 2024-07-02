@@ -38,7 +38,8 @@ elif [ ! -f obj/release_note.txt ]; then
 fi
 
 for project in "${projects[@]}"; do
-  nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
+  name=$(echo $project | sed -E 's/^.+\///')
+  nupkg_path="./$project/bin/$configuration/$name.$tag.nupkg"
   if [ ! -f "$nupkg_path" ]; then
     {
       echo "$nupkg_path is missing."
@@ -73,7 +74,8 @@ while ! "$(dirname "$0")/github-release.sh" info \
 done
 
 for project in "${projects[@]}"; do
-  nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
+  name=$(echo $project | sed -E 's/^.+\///')
+  nupkg_path="./$project/bin/$configuration/$name.$tag.nupkg"
   "$(dirname "$0")/github-release.sh" upload \
     --user "$github_user" \
     --repo "$github_repo" \
