@@ -158,7 +158,7 @@ namespace Libplanet.Net
                  newTip,
                  blocks.Select(pair => pair.Item1).ToList());
 
-            if (oldTip is null || branchpoint.Equals(oldTip))
+            if (branchpoint.Equals(oldTip))
             {
                 _logger.Debug(
                     "No need to fork. at {MethodName}()",
@@ -196,8 +196,7 @@ namespace Libplanet.Net
                 );
             }
 
-            if (!(workspace.Tip is null) &&
-                !workspace.Tip.Hash.Equals(blocks.First().Item1.PreviousHash))
+            if (!workspace.Tip.Hash.Equals(blocks.First().Item1.PreviousHash))
             {
                 blocks = blocks.Skip(1).ToList();
             }
@@ -277,13 +276,13 @@ namespace Libplanet.Net
 
         private Block FindBranchpoint(Block oldTip, Block newTip, List<Block> newBlocks)
         {
-            while (oldTip is Block && oldTip.Index > newTip.Index &&
+            while (oldTip.Index > newTip.Index &&
                    oldTip.PreviousHash is { } aPrev)
             {
                 oldTip = BlockChain[aPrev];
             }
 
-            while (newTip is Block && newTip.Index > oldTip.Index &&
+            while (newTip.Index > oldTip.Index &&
                    newTip.PreviousHash is { } bPrev)
             {
                 try
@@ -300,7 +299,7 @@ namespace Libplanet.Net
                 }
             }
 
-            if (oldTip is null || newTip is null || oldTip.Index != newTip.Index)
+            if (oldTip.Index != newTip.Index)
             {
                 throw new ArgumentException(
                     "Some previous blocks of two blocks are orphan.",
