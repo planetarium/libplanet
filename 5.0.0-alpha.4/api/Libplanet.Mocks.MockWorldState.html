@@ -1,0 +1,698 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MockWorldState
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MockWorldState
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Mocks.MockWorldState">
+
+
+  <h1 id="Libplanet_Mocks_MockWorldState" data-uid="Libplanet.Mocks.MockWorldState" class="text-break">Class MockWorldState
+</h1>
+  <div class="markdown level0 summary"><p>
+A mock implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with various methods for
+setting up a semi-valid <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> for testing.
+</p>
+<p>
+For ease of use, any mutating method automatically commits the resulting
+<a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> to the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> that the instance is tied to.
+</p>
+<p>
+If simply an empty disposable <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is needed, use
+<a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockLegacyWorldState">MockLegacyWorldState</a> or <a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockModernWorldState">MockModernWorldState</a>
+instead.
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">MockWorldState</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Mocks.html">Libplanet.Mocks</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Mocks.dll</h6>
+  <h5 id="Libplanet_Mocks_MockWorldState_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MockWorldState : IWorldState</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_Legacy.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.Legacy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_Legacy_" data-uid="Libplanet.Mocks.MockWorldState.Legacy*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_Legacy" data-uid="Libplanet.Mocks.MockWorldState.Legacy">Legacy</h4>
+  <div class="markdown level1 summary"><p>Whether <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is backed by an <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> with
+the legacy data model.  This is <span class="xref">true</span> if and only if
+<a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version">Version</a> is less than
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Legacy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_Trie.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.Trie%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L57">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_Trie_" data-uid="Libplanet.Mocks.MockWorldState.Trie*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_Trie" data-uid="Libplanet.Mocks.MockWorldState.Trie">Trie</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> of the <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ITrie Trie { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_Version.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.Version%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L63">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_Version_" data-uid="Libplanet.Mocks.MockWorldState.Version*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_Version" data-uid="Libplanet.Mocks.MockWorldState.Version">Version</h4>
+  <div class="markdown level1 summary"><p>The version of the backend <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> data model.  This should be in sync with
+<a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a> of the <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>
+getting evaluated.  As this was only introduced since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a>, this returns
+zero with any <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> representing an <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> before
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a> or any <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
+representing an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Version { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Mocks_MockWorldState_Version_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Version">Version</a></div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_CreateLegacy_Libplanet_Store_IStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.CreateLegacy(Libplanet.Store.IStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_CreateLegacy_" data-uid="Libplanet.Mocks.MockWorldState.CreateLegacy*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_CreateLegacy_Libplanet_Store_IStateStore_" data-uid="Libplanet.Mocks.MockWorldState.CreateLegacy(Libplanet.Store.IStateStore)">CreateLegacy(IStateStore)</h4>
+  <div class="markdown level1 summary"><p>Creates a new manipulable empty legacy <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>
+that is tied to <code data-dev-comment-type="paramref" class="paramref">stateStore</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MockWorldState CreateLegacy(IStateStore stateStore = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
+        <td><span class="parametername">stateStore</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> to use
+as the new instance's backend storage.  If <span class="xref">null</span>,
+uses an ephemeral on-memory <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td><p>A new empty legacy <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_CreateModern_Libplanet_Store_IStateStore_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L90">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_CreateModern_" data-uid="Libplanet.Mocks.MockWorldState.CreateModern*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_CreateModern_Libplanet_Store_IStateStore_System_Int32_" data-uid="Libplanet.Mocks.MockWorldState.CreateModern(Libplanet.Store.IStateStore,System.Int32)">CreateModern(IStateStore, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new manipulable empty modern <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>
+that is tied to <code data-dev-comment-type="paramref" class="paramref">stateStore</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MockWorldState CreateModern(IStateStore stateStore = null, int version = 8)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
+        <td><span class="parametername">stateStore</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> to use
+as the new instance's backend storage.  If <span class="xref">null</span>,
+uses an ephemeral on-memory <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>The version of the backing <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
+to use.  If not specified, defaults to
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td><p>A new empty modern <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_GetAccountState_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.GetAccountState(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L102">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_GetAccountState_" data-uid="Libplanet.Mocks.MockWorldState.GetAccountState*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_GetAccountState_Libplanet_Crypto_Address_" data-uid="Libplanet.Mocks.MockWorldState.GetAccountState(Libplanet.Crypto.Address)">GetAccountState(Address)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAccountState GetAccountState(Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> referring
+the world to get its state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> of the given <code data-dev-comment-type="paramref" class="paramref">address</code>.
+If it has never been set to any state it returns <span class="xref">null</span>
+instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccountState_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetAccount(Libplanet.Crypto.Address%2CLibplanet.Action.State.IAccountState)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_SetAccount_" data-uid="Libplanet.Mocks.MockWorldState.SetAccount*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccountState_" data-uid="Libplanet.Mocks.MockWorldState.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccountState)">SetAccount(Address, IAccountState)</h4>
+  <div class="markdown level1 summary"><p>Sets given <code data-dev-comment-type="paramref" class="paramref">accountState</code> to <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MockWorldState SetAccount(Address address, IAccountState accountState)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> location to set
+<code data-dev-comment-type="paramref" class="paramref">accountState</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a></td>
+        <td><span class="parametername">accountState</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a> to set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> with a committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Mocks_MockWorldState_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccountState__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Unlike <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_Action_State_IWorld_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_">SetAccount(Address, IAccount)</a>, a result returned always
+has a committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.Currency%2CBencodex.Types.Integer)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L171">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_SetBalance_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_Bencodex_Types_Integer_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency,Bencodex.Types.Integer)">SetBalance(Address, Currency, Integer)</h4>
+  <div class="markdown level1 summary"><p>Sets given <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> derived from <code data-dev-comment-type="paramref" class="paramref">currency</code>
+and <code data-dev-comment-type="paramref" class="paramref">rawValue</code> to <code data-dev-comment-type="paramref" class="paramref">address</code>.
+This bypasses all checks (minter authority, maximum supply, etc.) and adjusts
+the total supply accordingly, if applicable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MockWorldState SetBalance(Address address, Currency currency, Integer rawValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of the <code data-dev-comment-type="paramref" class="paramref">value</code>
+to set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> of the
+<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> to set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bencodex.Types.Integer</span></td>
+        <td><span class="parametername">rawValue</span></td>
+        <td><p>The raw amount of <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> to set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> with a committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L154">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_SetBalance_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_SetBalance_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Mocks.MockWorldState.SetBalance(Libplanet.Crypto.Address,Libplanet.Types.Assets.FungibleAssetValue)">SetBalance(Address, FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Sets given <code data-dev-comment-type="paramref" class="paramref">value</code> to <code data-dev-comment-type="paramref" class="paramref">address</code>.
+This bypasses all checks (minter authority, total supply, etc.).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MockWorldState SetBalance(Address address, FungibleAssetValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> location to set
+<code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> to set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> with a committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L218">View Source</a>
+  </span>
+  <a id="Libplanet_Mocks_MockWorldState_SetValidatorSet_" data-uid="Libplanet.Mocks.MockWorldState.SetValidatorSet*"></a>
+  <h4 id="Libplanet_Mocks_MockWorldState_SetValidatorSet_Libplanet_Types_Consensus_ValidatorSet_" data-uid="Libplanet.Mocks.MockWorldState.SetValidatorSet(Libplanet.Types.Consensus.ValidatorSet)">SetValidatorSet(ValidatorSet)</h4>
+  <div class="markdown level1 summary"><p>
+A mock implementation of <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> with various methods for
+setting up a semi-valid <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> for testing.
+</p>
+<p>
+For ease of use, any mutating method automatically commits the resulting
+<a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a> to the <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> that the instance is tied to.
+</p>
+<p>
+If simply an empty disposable <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is needed, use
+<a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockLegacyWorldState">MockLegacyWorldState</a> or <a class="xref" href="Libplanet.Mocks.MockUtil.html#Libplanet_Mocks_MockUtil_MockModernWorldState">MockModernWorldState</a>
+instead.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MockWorldState SetValidatorSet(ValidatorSet validatorSet)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
+        <td><span class="parametername">validatorSet</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Mocks.MockWorldState.html">MockWorldState</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.0.0-alpha.4/apiSpec/new?filename=Libplanet_Mocks_MockWorldState.md&amp;value=---%0Auid%3A%20Libplanet.Mocks.MockWorldState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.0.0-alpha.4/Libplanet.Mocks/MockWorldState.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
