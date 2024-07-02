@@ -58,7 +58,7 @@
     "fast-check": "^3.8.0",
     "nanobundle": "^1.6.0",
     "stream-buffers": "^3.0.2",
-    "vite": "^4.1.4",
+    "vite": "^4.5.3",
     "vitest": "^0.29.2"
   },
   "dependencies": {
