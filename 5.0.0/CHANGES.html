@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet changelog | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet changelog | Libplanet ">
+  
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-changelog">Libplanet changelog</h1>
+
+<h2 id="version-500">Version 5.0.0</h2>
+<p>Released on July 2, 2024.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li><code>BlockChain.DetermineGenesisStateRootHash()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.EvaluateGenesis()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.DetermineBlockStateRootHash()</code> has been removed.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
+does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>Bumped <code>BlockMetadata.CurrentProtocolVersion</code> to 8.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.EvaluateBlock()</code> accepts <code>Block</code>
+instead of <code>IPreEvaluationBlock</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeGenesisBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt;? stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeGenesisBlock()</code> does not receive
+parameter <code>IActionEvaluator actionEvaluator</code> any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt; stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet.Net) Changed <code>Context()</code> to accept additional <code>BlockCommit?</code>
+typed argument.  Removed <code>lastCommit</code> parameter from <code>Context.Start()</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/3833">#3833</a>, <a href="https://github.com/planetarium/libplanet/pull/3845">#3845</a>]</li>
+<li>(Libplanet.Net) Changed <code>Context.Start()</code> to throw an
+<code>InvalidOperationException</code> when <code>Context</code> is not in a valid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3846">#3846</a>]</li>
+<li>(Libplanet.Net) Removed <code>IConsensusMessageCommunicator</code> parameter from
+<code>Context()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3848">#3848</a>, <a href="https://github.com/planetarium/libplanet/issues/3849">#3849</a>]</li>
+<li>(Libplanet.Net) Added <code>Running</code> property to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Added <code>Start()</code> method to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Changed <code>NewHeight()</code> to throw a <code>NullReferenceException</code>
+if it is called while its internal <code>BlockChain</code> is in an invalid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Removed <code>Null</code> value from <code>ConsensusStep</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+</ul>
+<h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockChain.DetermineNextBlockStateRootHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
+as a manner of fire-and-forget.  [<a href="https://github.com/planetarium/libplanet/pull/3808">#3808</a>]</li>
+<li><code>BlockHeader.StateRootHash</code> now means state root hash calculated by
+<code>BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h2 id="previous-version-changes">Previous version changes</h2>
+<ul>
+<li><a href="changes/v4.html">Version 4.x.x</a></li>
+<li><a href="changes/v3.html">Version 3.x.x</a></li>
+<li><a href="changes/v2.html">Version 2.x.x</a></li>
+<li><a href="changes/v1.html">Version 1.x.x</a></li>
+<li><a href="changes/v0.html">Version 0.x.x</a></li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.0.0/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
