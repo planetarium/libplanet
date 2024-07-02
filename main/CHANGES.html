@@ -61,27 +61,16 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
-<h2 id="version-510">Version 5.1.0</h2>
-<p>To be released.</p>
-<h3 id="deprecated-apis">Deprecated APIs</h3>
-<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
-<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
-<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
-<h3 id="added-apis">Added APIs</h3>
-<h3 id="behavioral-changes">Behavioral changes</h3>
-<h3 id="bug-fixes">Bug fixes</h3>
-<h3 id="dependencies">Dependencies</h3>
-<h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-500">Version 5.0.0</h2>
 <p>Released on July 2, 2024.</p>
-<h3 id="deprecated-apis-1">Deprecated APIs</h3>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
 <ul>
 <li><code>BlockChain.DetermineGenesisStateRootHash()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 <li><code>BlockChain.EvaluateGenesis()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 <li><code>BlockChain.DetermineBlockStateRootHash()</code> has been removed.
 [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
 does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
@@ -109,11 +98,11 @@ if it is called while its internal <code>BlockChain</code> is in an invalid stat
 [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
 <li>(Libplanet.Net) Removed <code>Null</code> value from <code>ConsensusStep</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
 </ul>
-<h3 id="added-apis-1">Added APIs</h3>
+<h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>BlockChain.DetermineNextBlockStateRootHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
 as a manner of fire-and-forget.  [<a href="https://github.com/planetarium/libplanet/pull/3808">#3808</a>]</li>
