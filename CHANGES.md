@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.0.0
 -------------
 
-To be released.
+Released on July 2, 2024.
 
 ### Deprecated APIs
 
@@ -41,10 +41,6 @@ To be released.
     [[#3851]]
  -  (Libplanet.Net) Removed `Null` value from `ConsensusStep` enum.  [[#3851]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockChain.DetermineNextBlockStateRootHash()` method.  [[#3811]]
@@ -56,12 +52,6 @@ To be released.
  -  `BlockHeader.StateRootHash` now means state root hash calculated by
     `BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)`.
     [[#3811]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3808]: https://github.com/planetarium/libplanet/pull/3808
 [#3811]: https://github.com/planetarium/libplanet/pull/3811
