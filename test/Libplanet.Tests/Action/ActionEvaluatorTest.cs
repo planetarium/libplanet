@@ -22,6 +22,7 @@ using Libplanet.Tests.Store;
 using Libplanet.Tests.Tx;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
@@ -74,6 +75,7 @@ namespace Libplanet.Tests.Action
                     actions: new[] { new ContextRecordingAction(txAddress, new Text("Foo")), }
                         .ToPlainValues()),
             };
+            var evs = Array.Empty<Evidence>();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent(
                 new BlockMetadata(
@@ -84,8 +86,10 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidences: evs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 stateStore,
@@ -248,6 +252,7 @@ namespace Libplanet.Tests.Action
                 genesisHash: genesis.Hash,
                 actions: new[] { action }.ToPlainValues());
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<Evidence>();
             PreEvaluationBlock block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
@@ -255,8 +260,10 @@ namespace Libplanet.Tests.Action
                     publicKey: new PrivateKey().PublicKey,
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidences: evs).Propose();
             IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
 
             Assert.Throws<OutOfMemoryException>(
@@ -457,7 +464,7 @@ namespace Libplanet.Tests.Action
                         new TxInvoice(
                             genesisHash: genesis.Hash,
                             updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
-                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(5),
                             actions: new TxActionList(new[]
                             {
                                 DumbAction.Create(
@@ -493,9 +500,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),     // Adds "F"
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),      // Adds "E"
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),    // Adds "D"
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -550,6 +557,7 @@ namespace Libplanet.Tests.Action
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<Evidence>();
             var block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
@@ -557,8 +565,10 @@ namespace Libplanet.Tests.Action
                     publicKey: keys[0].PublicKey,
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidences: evs).Propose();
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IWorld world = new World(MockWorldState.CreateLegacy(stateStore)
                 .SetBalance(addresses[0], DumbAction.DumbCurrency * 100)
@@ -657,6 +667,7 @@ namespace Libplanet.Tests.Action
                 null,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<Evidence>();
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
@@ -671,8 +682,10 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: CreateBlockCommit(hash, 122, 0)),
-                transactions: txs).Propose();
+                    lastCommit: CreateBlockCommit(hash, 122, 0),
+                    evidenceHash: null),
+                transactions: txs,
+                evidences: evs).Propose();
             IWorld previousState = stateStore.GetWorld(null);
             var nextState = actionEvaluator.EvaluateTx(
                 block: block,
@@ -818,11 +831,14 @@ namespace Libplanet.Tests.Action
                 stateStore: _storeFx.StateStore,
                 actionLoader: new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: _storeFx.GenesisBlock,
-                privateKey: ChainPrivateKey);
+                privateKey: GenesisProposer);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(
-                GenesisProposer, txs.ToImmutableList(), CreateBlockCommit(chain.Tip));
+                GenesisProposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(chain.Tip),
+                ImmutableArray<Evidence>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
             var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);

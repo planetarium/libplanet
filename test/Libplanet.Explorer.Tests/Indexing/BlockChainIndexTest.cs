@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -57,6 +58,7 @@ public abstract class BlockChainIndexTest
                         divergentBlock.Hash,
                         DateTimeOffset.UtcNow,
                         pk.PublicKey,
+                        BigInteger.One,
                         VoteFlag.PreCommit)
                         .Sign(pk))
                     .ToImmutableArray()));

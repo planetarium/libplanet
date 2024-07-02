@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using GraphQL;
 using GraphQL.Execution;
@@ -31,6 +32,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     lastBlockHash,
                     DateTimeOffset.Now,
                     privateKey.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(privateKey));
             var lastBlockCommit = new BlockCommit(1, 0, lastBlockHash, lastVotes);
             var preEval = new BlockContent(
@@ -40,7 +42,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     publicKey: privateKey.PublicKey,
                     previousHash: lastBlockHash,
                     txHash: null,
-                    lastCommit: lastBlockCommit)).Propose();
+                    lastCommit: lastBlockCommit,
+                    evidenceHash: null)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);
@@ -70,6 +73,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             blockHash
                             timestamp
                             validatorPublicKey
+                            validatorPower
                             flag
                             signature
                         }
@@ -118,6 +122,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             { "blockHash", lastVotes[0].BlockHash.ToString() },
                             { "timestamp", new DateTimeOffsetGraphType().Serialize(lastVotes[0].Timestamp) },
                             { "validatorPublicKey", lastVotes[0].ValidatorPublicKey.ToString() },
+                            { "validatorPower", lastVotes[0].ValidatorPower },
                             { "flag", lastVotes[0].Flag.ToString() },
                             { "signature", ByteUtil.Hex(lastVotes[0].Signature) },
                         }

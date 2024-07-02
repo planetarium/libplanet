@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -17,9 +18,21 @@ namespace Libplanet.Tests.Consensus
 
             // Works with some hash value.
             _ = new VoteMetadata(
-                2, 2, hash, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.Null);
+                2,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                new PrivateKey().PublicKey,
+                BigInteger.One,
+                VoteFlag.Null);
             _ = new VoteMetadata(
-                2, 2, hash, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.Unknown);
+                2,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                new PrivateKey().PublicKey,
+                BigInteger.One,
+                VoteFlag.Unknown);
 
             // Null hash is not allowed.
             Assert.Throws<ArgumentException>(() => new VoteMetadata(
@@ -28,6 +41,7 @@ namespace Libplanet.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
+                BigInteger.One,
                 VoteFlag.Null));
             Assert.Throws<ArgumentException>(() => new VoteMetadata(
                 2,
@@ -35,6 +49,7 @@ namespace Libplanet.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
+                BigInteger.One,
                 VoteFlag.Unknown));
         }
 
@@ -49,8 +64,20 @@ namespace Libplanet.Tests.Consensus
                 hash,
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit);
             var decoded = new VoteMetadata(expected.Bencoded);
+            Assert.Equal(expected, decoded);
+
+            expected = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                null,
+                VoteFlag.PreCommit);
+            decoded = new VoteMetadata(expected.Bencoded);
             Assert.Equal(expected, decoded);
         }
     }

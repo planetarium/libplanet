@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -27,13 +28,14 @@ namespace Libplanet.Tests.Blocks
         {
             var randomHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
-            var votes = keys.Select(key =>
+            var votes = keys.Select((key, index) =>
                     new VoteMetadata(
                         1,
                         0,
                         randomHash,
                         DateTimeOffset.UtcNow,
                         key.PublicKey,
+                        index == 0 ? (BigInteger?)null : BigInteger.One,
                         VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, randomHash, votes);
@@ -50,8 +52,15 @@ namespace Libplanet.Tests.Blocks
             var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var votes = ImmutableArray<Vote>.Empty
-                .Add(new VoteMetadata(
-                    0, 0, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
+                .Add(
+                    new VoteMetadata(
+                            0,
+                            0,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            key.PublicKey,
+                            BigInteger.One,
+                            VoteFlag.PreCommit)
                         .Sign(key));
 
             // Negative height is not allowed.
@@ -89,6 +98,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     key.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(key));
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(height, round, hash, votes));
@@ -101,6 +111,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     key.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(key));
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(height, round, hash, votes));
@@ -122,6 +133,7 @@ namespace Libplanet.Tests.Blocks
                     badHash,
                     DateTimeOffset.UtcNow,
                     key.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(key));
             Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
         }
@@ -133,9 +145,17 @@ namespace Libplanet.Tests.Blocks
             var round = 3;
             var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
-            var preCommitVotes = keys.Select(key => new VoteMetadata(
-                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
-                    .Sign(key)).ToList();
+            var preCommitVotes = keys.Select(
+                    key => new VoteMetadata(
+                            height,
+                            round,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            key.PublicKey,
+                            BigInteger.One,
+                            VoteFlag.PreCommit)
+                        .Sign(key))
+                .ToList();
 
             var votes = ImmutableArray<Vote>.Empty
                 .Add(new VoteMetadata(
@@ -144,6 +164,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     keys[0].PublicKey,
+                    BigInteger.One,
                     VoteFlag.Null).Sign(null))
                 .AddRange(preCommitVotes.Skip(1));
             _ = new BlockCommit(height, round, hash, votes);
@@ -155,6 +176,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     keys[0].PublicKey,
+                    BigInteger.One,
                     VoteFlag.Unknown).Sign(null))
                 .AddRange(preCommitVotes.Skip(1));
             Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
@@ -166,6 +188,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     keys[0].PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreVote).Sign(keys[0]))
                 .AddRange(preCommitVotes.Skip(1));
             Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
@@ -177,6 +200,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     keys[0].PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(keys[0]))
                 .AddRange(preCommitVotes.Skip(1));
             _ = new BlockCommit(height, round, hash, votes);
@@ -194,6 +218,7 @@ namespace Libplanet.Tests.Blocks
                     fx.Hash1,
                     DateTimeOffset.Now,
                     key.PublicKey,
+                    BigInteger.One,
                     VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
             var expected = new BlockCommit(1, 0, fx.Hash1, votes);

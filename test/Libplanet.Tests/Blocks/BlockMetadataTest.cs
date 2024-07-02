@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -43,7 +44,8 @@ namespace Libplanet.Tests.Blocks
                     publicKey: null,
                     previousHash: Block1Metadata.PreviousHash,
                     txHash: Block1Metadata.TxHash,
-                    lastCommit: null));
+                    lastCommit: null,
+                    evidenceHash: null));
             Assert.Throws<InvalidBlockProtocolVersionException>(
                 () => new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
@@ -53,7 +55,8 @@ namespace Libplanet.Tests.Blocks
                     publicKey: null,
                     previousHash: Block1Metadata.PreviousHash,
                     txHash: Block1Metadata.TxHash,
-                    lastCommit: null));
+                    lastCommit: null,
+                    evidenceHash: null));
         }
 
         [Fact]
@@ -65,7 +68,8 @@ namespace Libplanet.Tests.Blocks
                 publicKey: Block1Metadata.PublicKey,
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: Block1Metadata.TxHash,
-                lastCommit: null));
+                lastCommit: null,
+                evidenceHash: null));
         }
 
         [Fact]
@@ -81,7 +85,8 @@ namespace Libplanet.Tests.Blocks
                 publicKey: Block1Metadata.PublicKey,
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: Block1Metadata.TxHash,
-                lastCommit: null);
+                lastCommit: null,
+                evidenceHash: null);
             Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
                 new DateTime(2021, 9, 7, 0, 30, 12, 345),
@@ -98,14 +103,16 @@ namespace Libplanet.Tests.Blocks
                 publicKey: GenesisMetadata.PublicKey,
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: GenesisMetadata.TxHash,
-                lastCommit: null));
+                lastCommit: null,
+                evidenceHash: null));
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
                 timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 previousHash: null,
                 txHash: Block1Metadata.TxHash,
-                lastCommit: null));
+                lastCommit: null,
+                evidenceHash: null));
         }
 
         [Fact]
@@ -122,7 +129,12 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"));
+                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f")
+                )
+                .Add(
+                    "evidences_hash",
+                    ParseHex("d30625b51e2ec86d94c5cf514fb9beb22b86300403216893ef23bec84e95a898")
+                );
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData());
 
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
@@ -141,7 +153,11 @@ namespace Libplanet.Tests.Blocks
                     "transaction_fingerprint",
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
-                .Add("protocol_version", BlockMetadata.CurrentProtocolVersion);
+                .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
+                .Add(
+                    "evidences_hash",
+                    ParseHex("562f7f47f9911664a1b1022b0201923e17d1cd198de3d64b1c45dd795ba235cb")
+                );
             AssertBencodexEqual(
                 expectedBlock1,
                 Block1Metadata.MakeCandidateData());
@@ -162,7 +178,13 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     "transaction_fingerprint",
                     ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"))
+                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                    )
+                )
+                .Add(
+                    "evidences_hash",
+                    ParseHex("562f7f47f9911664a1b1022b0201923e17d1cd198de3d64b1c45dd795ba235cb")
+                )
                 .Add("protocol_version", 1);
             AssertBencodexEqual(expected, Block1MetadataPv1.MakeCandidateData());
         }
@@ -185,7 +207,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
-                FromHex("dd8247ae1782ff29f992099d2e2e339c44e67a0c2266fca265d26561fa85cda0"),
+                FromHex("f9e2b86436ce2c6828d4dc72b36dd4fcb9f44dc9cc128683f9dd55ece0b242c6"),
                 hash.ByteArray);
         }
 
@@ -218,7 +240,8 @@ namespace Libplanet.Tests.Blocks
                 publicKey: validatorA.PublicKey,
                 previousHash: blockHash,
                 txHash: null,
-                lastCommit: invalidHeightLastCommit));
+                lastCommit: invalidHeightLastCommit,
+                evidenceHash: null));
 
             // BlockHash of the last commit is invalid.
             var invalidBlockHashLastCommit = new BlockCommit(
@@ -239,7 +262,8 @@ namespace Libplanet.Tests.Blocks
                 publicKey: validatorA.PublicKey,
                 previousHash: GenesisHash,
                 txHash: null,
-                lastCommit: invalidBlockHashLastCommit));
+                lastCommit: invalidBlockHashLastCommit,
+                evidenceHash: null));
 
             var validLastCommit = new BlockCommit(
                 1,
@@ -256,6 +280,7 @@ namespace Libplanet.Tests.Blocks
                         blockHash,
                         timestamp,
                         validatorB.PublicKey,
+                        BigInteger.One,
                         VoteFlag.Null).Sign(null),
                 }.ToImmutableArray());
             var validMetadata = new BlockMetadata(
@@ -266,14 +291,15 @@ namespace Libplanet.Tests.Blocks
                 publicKey: validatorA.PublicKey,
                 previousHash: blockHash,
                 txHash: null,
-                lastCommit: validLastCommit);
+                lastCommit: validLastCommit,
+                evidenceHash: null);
         }
 
         private static Vote GenerateVote(BlockHash hash, long height, int round, VoteFlag flag)
         {
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
-                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, flag);
+                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, BigInteger.One, flag);
             return flag == VoteFlag.PreVote || flag == VoteFlag.PreCommit
                 ? voteMetadata.Sign(key)
                 : voteMetadata.Sign(null);

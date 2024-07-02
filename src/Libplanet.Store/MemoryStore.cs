@@ -11,6 +11,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Store
@@ -57,6 +58,12 @@ namespace Libplanet.Store
 
         private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
             new ConcurrentDictionary<Guid, BlockCommit>();
+
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _pendingEvidences =
+            new ConcurrentDictionary<EvidenceId, Evidence>();
+
+        private readonly ConcurrentDictionary<EvidenceId, Evidence> _committedEvidences
+            = new ConcurrentDictionary<EvidenceId, Evidence>();
 
         private Guid? _canonicalChainId;
 
@@ -162,7 +169,11 @@ namespace Libplanet.Store
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
             IEnumerable<Transaction> txs = txids.Select(txid => _txs[txid]);
-            return new Block(header, txs);
+            ImmutableArray<EvidenceId> evidenceIds = digest.EvidenceIds
+                .Select(b => new EvidenceId(b.ToBuilder().ToArray()))
+                .ToImmutableArray();
+            IEnumerable<Evidence> evidences = evidenceIds.Select(evId => _committedEvidences[evId]);
+            return new Block(header, txs, evidences);
         }
 
         long? IStore.GetBlockIndex(BlockHash blockHash) =>
@@ -179,9 +190,16 @@ namespace Libplanet.Store
                 _txs[tx.Id] = tx;
             }
 
+            var evidences = block.Evidences;
+            foreach (var evidence in evidences)
+            {
+                _committedEvidences[evidence.Id] = evidence;
+            }
+
             _blocks[block.Hash] = new BlockDigest(
                 block.Header,
-                txs.Select(tx => tx.Id.ByteArray).ToImmutableArray()
+                txs.Select(tx => tx.Id.ByteArray).ToImmutableArray(),
+                evidences.Select(ev => ev.Id.ByteArray).ToImmutableArray()
             );
         }
 
@@ -300,6 +318,46 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
+
+        /// <inheritdoc/>
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+            => _pendingEvidences.Keys;
+
+        /// <inheritdoc/>
+        public Evidence? GetPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutPendingEvidence(Evidence evidence)
+            => _pendingEvidences[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeletePendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidences.ContainsKey(evidenceId);
+
+        /// <inheritdoc/>
+        public Evidence? GetCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutCommittedEvidence(Evidence evidence)
+            => _committedEvidences[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeleteCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidences.ContainsKey(evidenceId);
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)

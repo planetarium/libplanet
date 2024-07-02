@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Tests.Tx;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Tests.Blocks
@@ -30,7 +32,8 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
                     "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa"),
-                lastCommit: null
+                lastCommit: null,
+                evidences: ImmutableArray<Evidence>.Empty
             );
             HasTx = TestUtils.ProposeNextBlock(
                 Next,
@@ -54,8 +57,10 @@ namespace Libplanet.Tests.Blocks
                             Next.Hash,
                             Next.Timestamp,
                             Miner.PublicKey,
+                            BigInteger.One,
                             VoteFlag.PreCommit).Sign(Miner),
-                    }.ToImmutableArray())
+                    }.ToImmutableArray()),
+                evidences: ImmutableArray<Evidence>.Empty
             );
         }
 

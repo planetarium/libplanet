@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Net;
+using System.Numerics;
 using Bencodex;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
@@ -152,6 +153,7 @@ namespace Libplanet.Net.Tests.Messages
                             genesis.Hash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            BigInteger.One,
                             VoteFlag.PreVote).Sign(privateKey));
                 case MessageContent.MessageType.ConsensusCommit:
                     return new ConsensusPreCommitMsg(
@@ -161,6 +163,7 @@ namespace Libplanet.Net.Tests.Messages
                             genesis.Hash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            BigInteger.One,
                             VoteFlag.PreCommit).Sign(privateKey));
                 case MessageContent.MessageType.ConsensusMaj23Msg:
                     return new ConsensusMaj23Msg(

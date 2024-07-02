@@ -97,6 +97,9 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public HashDigest<SHA256>? EvidenceHash => Metadata.EvidenceHash;
+
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash => _preEvaluationHash;
 
@@ -156,7 +159,7 @@ namespace Libplanet.Types.Blocks
             }
             else if (!privateKey.PublicKey.Equals(PublicKey))
             {
-                string m = "The given private key does not match to the miner's public key." +
+                string m = "The given private key does not match to the proposer's public key." +
                     $"Block's public key: {PublicKey}\n" +
                     $"Derived public key: {privateKey.PublicKey}\n";
                 throw new ArgumentException(m, nameof(privateKey));

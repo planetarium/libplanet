@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -20,9 +21,10 @@ namespace Libplanet.Types.Blocks
 
         public PreEvaluationBlock(
             IPreEvaluationBlockHeader preEvaluationBlockHeader,
-            IEnumerable<Transaction> transactions)
+            IEnumerable<Transaction> transactions,
+            IEnumerable<Evidence> evidences)
             : this(
-                new BlockContent(preEvaluationBlockHeader, transactions),
+                new BlockContent(preEvaluationBlockHeader, transactions, evidences),
                 preEvaluationBlockHeader.PreEvaluationHash)
         {
         }
@@ -55,6 +57,8 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockContent.Transactions" />
         IReadOnlyList<ITransaction> IBlockContent.Transactions => _content.Transactions;
 
+        public IReadOnlyList<Evidence> Evidences => _content.Evidences;
+
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
 
@@ -78,6 +82,9 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _header.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public HashDigest<SHA256>? EvidenceHash => _header.EvidenceHash;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;

@@ -93,12 +93,14 @@ namespace Libplanet.Types.Blocks
                 vote.Height != height ||
                 vote.Round != round ||
                 !blockHash.Equals(vote.BlockHash) ||
-                (vote.Flag != VoteFlag.Null && vote.Flag != VoteFlag.PreCommit)))
+                (vote.Flag != VoteFlag.Null && vote.Flag != VoteFlag.PreCommit) ||
+                (vote.Flag == VoteFlag.PreCommit && !vote.Verify())))
             {
                 throw new ArgumentException(
                     $"Every vote must have the same height as {height}, the same round " +
                     $"as {round}, the same hash as {blockHash}, and must have flag value of " +
-                    $"either {VoteFlag.Null} or {VoteFlag.PreCommit}.",
+                    $"either {VoteFlag.Null} or {VoteFlag.PreCommit}, " +
+                    $"and must be signed if the vote's flag is {VoteFlag.PreCommit}.",
                     nameof(votes));
             }
 

@@ -20,6 +20,7 @@ using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidences;
 using Libplanet.Types.Tx;
 using Serilog;
 using Serilog.Events;
@@ -317,6 +318,7 @@ namespace Libplanet.Net.Tests
                         specialBlock.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.PrivateKeys[0].PublicKey,
+                        TestUtils.ValidatorSet[0].Power,
                         VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0])));
             var validBlockCommit = TestUtils.CreateBlockCommit(specialBlock);
             chainB.Append(specialBlock, invalidBlockCommit);
@@ -479,7 +481,8 @@ namespace Libplanet.Net.Tests
                 Block block = minerChain.ProposeBlock(
                     ChainPrivateKey,
                     new[] { tx }.ToImmutableList(),
-                    CreateBlockCommit(minerChain.Tip));
+                    CreateBlockCommit(minerChain.Tip),
+                    ImmutableArray<Evidence>.Empty);
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();
