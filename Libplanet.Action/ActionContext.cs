@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Threading;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
@@ -13,9 +11,6 @@ namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext
     {
-        public static readonly AsyncLocal<GasMeter> GetGasMeter = new AsyncLocal<GasMeter>();
-
-        private readonly long _gasLimit;
 
         private readonly IReadOnlyList<ITransaction> _txs;
 
@@ -29,7 +24,6 @@ namespace Libplanet.Action
             IWorld previousState,
             int randomSeed,
             bool isBlockAction,
-            long gasLimit,
             FungibleAssetValue? maxGasPrice,
             IReadOnlyList<ITransaction>? txs = null)
         {
@@ -42,11 +36,8 @@ namespace Libplanet.Action
             PreviousState = previousState;
             RandomSeed = randomSeed;
             IsBlockAction = isBlockAction;
-            _gasLimit = gasLimit;
             MaxGasPrice = maxGasPrice;
             _txs = txs ?? ImmutableList<Transaction>.Empty;
-
-            GetGasMeter.Value = new GasMeter(_gasLimit);
         }
 
         /// <inheritdoc cref="IActionContext.Signer"/>
@@ -85,40 +76,7 @@ namespace Libplanet.Action
             ? _txs
             : ImmutableList<ITransaction>.Empty;
 
-        /// <inheritdoc cref="IActionContext.UseGas(long)"/>
-        public void UseGas(long gas) => GetGasMeter.Value?.UseGas(gas);
-
-        /// <inheritdoc cref="IActionContext.GetRandom"/>
+       /// <inheritdoc cref="IActionContext.GetRandom"/>
         public IRandom GetRandom() => new Random(RandomSeed);
-
-        /// <summary>
-        /// Returns the elapsed gas of the current action.
-        /// </summary>
-        /// <returns>
-        /// The elapsed gas of the current action.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when <see cref="GetGasMeter"/> is not initialized.
-        /// </exception>
-        public long GasUsed()
-        {
-            if (GetGasMeter.Value is { } gasMeter)
-            {
-                return gasMeter.GasUsed;
-            }
-
-            throw new InvalidOperationException($"{nameof(GetGasMeter)} is not initialized.");
-        }
-
-        /// <summary>
-        /// Returns the gas limit of the current action.
-        /// </summary>
-        /// <returns>
-        /// The gas limit of the current action.
-        /// </returns>
-        public long GasLimit()
-        {
-            return _gasLimit;
-        }
     }
 }
