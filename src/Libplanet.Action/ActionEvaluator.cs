@@ -276,7 +276,6 @@ namespace Libplanet.Action
             IActionContext inputContext = context;
             IWorld state = inputContext.PreviousState;
             Exception? exc = null;
-            IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
 
             IActionContext CreateActionContext(IWorld newPrevState)
             {
@@ -301,9 +300,7 @@ namespace Libplanet.Action
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 AccountMetrics.Initialize();
-                state = feeCollector.Mortgage(state);
                 context = CreateActionContext(state);
-                feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
                 logger?
                     .ForContext("Tag", "Metric")
@@ -365,8 +362,6 @@ namespace Libplanet.Action
                     e);
             }
 
-            state = feeCollector.Refund(state);
-            state = feeCollector.Reward(state);
             state = stateStore.CommitWorld(state);
 
             if (!state.Trie.Recorded)
