@@ -27,6 +27,66 @@ To be released.
 
 ### Dependencies
 
+The entire project is now defined by common properties in the
+`Directory.Build.props` file. The Directory.Build.props file is located at
+the root and in the src, tools, test path.
+
+The project structure and affected Directory.Build.props locations are shown
+below.
+
+```plain
+┌ Directory.Build.props
+├ src
+│  ├ Directory.Build.props
+│  ├ Libplanet
+│  ├ Libplanet.Action
+│  ├ Libplanet.Common
+│  ├ Libplanet.Crypto.Secp256k1
+│  ├ Libplanet.Crypto
+│  ├ Libplanet.Net
+│  ├ Libplanet.RocksDBStore
+│  ├ Libplanet.Store.Remote
+│  ├ Libplanet.Store
+│  ├ Libplanet.Stun
+│  └ Libplanet.Types
+├ test
+│  ├ Directory.Build.props
+│  ├ Libplanet.Action.Tests
+│  ├ Libplanet.Analyzers.Tests
+│  ├ Libplanet.Crypto.Secp256k1.Tests
+│  ├ Libplanet.Explorer.Cocona.Tests
+│  ├ Libplanet.Explorer.Tests
+│  ├ Libplanet.Extensions.Cocona.Tests
+│  ├ Libplanet.Mocks
+│  ├ Libplanet.Net.Tests
+│  ├ Libplanet.RocksDBStore.Tests
+│  ├ Libplanet.Store.Remote.Tests
+│  ├ Libplanet.Stun.Tests
+│  └ Libplanet.Tests
+└ tools
+   ├ Directory.Build.props
+   ├ Libplanet.Analyzers
+   ├ Libplanet.Benchmarks
+   ├ Libplanet.Explorer.Cocona
+   ├ Libplanet.Explorer.Executable
+   ├ Libplanet.Explorer
+   ├ Libplanet.Extensions.Cocona
+   └ Libplanet.Tools
+```
+
+The default SDK version for the project has been bumped up to .NET 6.0.
+The list of supported SDKs is as follows
+ - netstandard2.0
+ - netstandard2.1
+ - netcoreapp3.1
+ - net6.0"
+
+> Support for `netstandard2.0` is coming to an end soon, please note that
+projects using `netstandard2.0` will be deprecated.
+
+The `VersionPrefix` property has been moved from the
+*src/Libplanet/Libplanet.csproj* file to the `Directory.Build.props` file.
+
 ### CLI tools
 
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
