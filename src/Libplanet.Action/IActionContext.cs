@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
@@ -116,14 +115,6 @@ namespace Libplanet.Action
         IReadOnlyList<EvidenceBase> Evidence { get; }
 
         /// <summary>
-        /// Consumes the specified amount of gas.
-        /// </summary>
-        /// <param name="gas">
-        /// The amount of gas to consume.
-        /// </param>
-        void UseGas(long gas);
-
-        /// <summary>
         /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.
         /// </summary>
@@ -131,21 +122,5 @@ namespace Libplanet.Action
         /// as its seed value.</returns>
         [Pure]
         IRandom GetRandom();
-
-        /// <summary>
-        /// Returns the total gas used by the current action.
-        /// </summary>
-        /// <returns>The total gas used by the current action.</returns>
-        [Pure]
-        long GasUsed();
-
-        /// <summary>
-        /// Returns the limit gas of the current action.
-        /// </summary>
-        /// <returns>
-        /// The limit gas of the current action.
-        /// </returns>
-        [Pure]
-        long GasLimit();
     }
 }
