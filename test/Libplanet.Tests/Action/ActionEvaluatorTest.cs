@@ -1335,9 +1335,9 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsPolicyAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -1405,9 +1405,9 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsPolicyAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
@@ -1478,14 +1478,14 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsPolicyAction);
+            Assert.False(evaluations[0].InputContext.IsBlockAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
             Assert.Equal(
                 typeof(InsufficientBalanceException),
                 evaluations.Single().Exception?.InnerException?.GetType());
-        }
+         }
 
         [Fact]
         public void GenerateRandomSeed()
