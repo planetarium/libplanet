@@ -23,7 +23,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 9;
+        public const int CurrentProtocolVersion = 10;
 
         /// <summary>
         /// <para>
@@ -99,6 +99,15 @@ namespace Libplanet.Types.Blocks
         /// layer, you can define and use custom evidence.
         /// </summary>
         public const int EvidenceProtocolVersion = 9;
+
+        /// <summary>
+        /// The starting protocol version where <see cref="Block.Proof"/> has been added
+        /// for verifiable random function.  This is used for proposer selection,
+        /// and app random seed.  Prior to this version,
+        /// proposer of block was selected with round robin, and
+        /// <see cref="PreEvaluationBlock.PreEvaluationHash"/> was used for app random seed.
+        /// </summary>
+        public const int VRFProtocolVersion = 10;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();

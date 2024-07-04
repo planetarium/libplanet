@@ -313,16 +313,16 @@ namespace Libplanet.Blockchain
                     throw new InvalidBlockLastCommitException(ibce.Message);
                 }
 
-                if (block.Proof is { } && block.ProtocolVersion < 6)
+                if (block.Proof is { } && block.ProtocolVersion < BlockMetadata.VRFProtocolVersion)
                 {
                     throw new InvalidBlockProofException(
-                        "Block of protocol version lower than 6 does not support proof.");
+                        "Block of protocol version lower than 9 does not support proof.");
                 }
 
-                if (block.Proof is null && block.ProtocolVersion >= 6)
+                if (block.Proof is null && block.ProtocolVersion >= BlockMetadata.VRFProtocolVersion)
                 {
                     throw new InvalidBlockProofException(
-                        "Block of protocol version higher than 5 must contain proof.");
+                        "Block of protocol version higher than 9 must contain proof.");
                 }
             }
 
