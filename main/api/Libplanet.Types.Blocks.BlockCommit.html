@@ -81,29 +81,13 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>&gt;</div>
-    <div><span class="xref">Bencodex.IBencodable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">IBencodable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Blocks.html">Libplanet.Types.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Blocks_BlockCommit_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class BlockCommit : IEquatable&lt;BlockCommit&gt;, IBencodable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class BlockCommit : IEquatable&lt;BlockCommit&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -115,12 +99,12 @@
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockCommit.cs/#L113">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockCommit__ctor_" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockCommit__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor(Bencodex.Types.IValue)">BlockCommit(IValue)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockCommit__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor(Bencodex.Types.IValue)">BlockCommit(Bencodex.Types.IValue)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockCommit(IValue bencoded)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockCommit(Bencodex.Types.IValue bencoded)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,13 +125,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_Collections_Immutable_ImmutableArray_Libplanet_Types_Consensus_Vote__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Types.Blocks.BlockHash%2CSystem.Collections.Immutable.ImmutableArray%7BLibplanet.Types.Consensus.Vote%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_ImmutableArray_Libplanet_Types_Consensus_Vote__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Types.Blocks.BlockHash%2CImmutableArray%7BLibplanet.Types.Consensus.Vote%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockCommit.cs/#L68">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockCommit__ctor_" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockCommit__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_Collections_Immutable_ImmutableArray_Libplanet_Types_Consensus_Vote__" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.Collections.Immutable.ImmutableArray{Libplanet.Types.Consensus.Vote})">BlockCommit(Int64, Int32, BlockHash, ImmutableArray&lt;Vote&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockCommit__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_ImmutableArray_Libplanet_Types_Consensus_Vote__" data-uid="Libplanet.Types.Blocks.BlockCommit.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,ImmutableArray{Libplanet.Types.Consensus.Vote})">BlockCommit(Int64, Int32, BlockHash, ImmutableArray&lt;Vote&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an instance of <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> given a set of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -186,52 +170,10 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
         <td><span class="parametername">votes</span></td>
         <td><p>The set of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s as a proof for the commit
 of the last <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when either
-<code data-dev-comment-type="paramref" class="paramref">height</code> or <code data-dev-comment-type="paramref" class="paramref">round</code> is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown for any of the following reasons:</p>
-<ul><li>
-    Given <code data-dev-comment-type="paramref" class="paramref">votes</code> is empty.
-</li><li>
-    Any one of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> of <code data-dev-comment-type="paramref" class="paramref">votes</code> has a different
-<a class="xref" href="Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_Height">Height</a> from <code data-dev-comment-type="paramref" class="paramref">height</code>.
-</li><li>
-    Any one of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> of <code data-dev-comment-type="paramref" class="paramref">votes</code> has a different
-<a class="xref" href="Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_Round">Round</a> from <code data-dev-comment-type="paramref" class="paramref">round</code>.
-</li><li>
-    Any one of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> of <code data-dev-comment-type="paramref" class="paramref">votes</code> has a different
-<a class="xref" href="Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_BlockHash">BlockHash</a> from <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.
-</li><li>
-    Any one of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> of <code data-dev-comment-type="paramref" class="paramref">votes</code> has
-<a class="xref" href="Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_Flag">Flag</a> that is neither <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types_Consensus_VoteFlag_Null">Null</a>
-nor <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types_Consensus_VoteFlag_PreCommit">PreCommit</a>.
-</li><li>
-    The number of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s with <a class="xref" href="Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_Flag">Flag</a> set as
-<a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types_Consensus_VoteFlag_PreCommit">PreCommit</a> does not exceed 2/3 of the total number of
-<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s in <code data-dev-comment-type="paramref" class="paramref">votes</code>
-</li></ul>
 </td>
       </tr>
     </tbody>
@@ -251,8 +193,7 @@ nor <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Type
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonIgnore]
-public IValue Bencoded { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Bencodex.Types.IValue Bencoded { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -384,7 +325,7 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -440,18 +381,18 @@ public IValue Bencoded { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockCommit.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockCommit_Equals_" data-uid="Libplanet.Types.Blocks.BlockCommit.Equals*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockCommit_Equals_System_Object_" data-uid="Libplanet.Types.Blocks.BlockCommit.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockCommit_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Blocks.BlockCommit.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -464,7 +405,7 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -485,8 +426,6 @@ public IValue Bencoded { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -517,8 +456,6 @@ public IValue Bencoded { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockCommit_ToHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockCommit.ToHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -528,7 +465,7 @@ public IValue Bencoded { get; }</code></pre>
   </span>
   <a id="Libplanet_Types_Blocks_BlockCommit_ToHash_" data-uid="Libplanet.Types.Blocks.BlockCommit.ToHash*"></a>
   <h4 id="Libplanet_Types_Blocks_BlockCommit_ToHash" data-uid="Libplanet.Types.Blocks.BlockCommit.ToHash">ToHash()</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Security.Cryptography.SHA256</span> digested <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> hash value.</p>
+  <div class="markdown level1 summary"><p>Gets a <see cref="!:SHA256"></see> digested <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> hash value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -545,8 +482,8 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;</td>
-        <td><p>Returns a <span class="xref">System.Security.Cryptography.SHA256</span> digested <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>.</p>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><p>Returns a <see cref="!:SHA256"></see> digested <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -564,8 +501,7 @@ public IValue Bencoded { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -582,14 +518,9 @@ public override string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">Bencodex.IBencodable</span>
+      <span class="xref">IBencodable</span>
   </div>
 </article>
           </div>

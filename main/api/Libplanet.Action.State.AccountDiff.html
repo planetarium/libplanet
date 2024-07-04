@@ -83,7 +83,7 @@ from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountSt
         part of the resulting <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>.
 </li><li>
     This only shows the difference in &quot;states&quot; manipulated using
-<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
+<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
 this does care about differences in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>s.
 </li><li>
     Due to the reason mentioned directly above, the size of <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>
@@ -98,35 +98,11 @@ this does care about differences in <a class="xref" href="Libplanet.Types.Assets
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">AccountDiff</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_State_AccountDiff_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AccountDiff</code></pre>
+    <pre><code class="lang-csharp hljs">public class AccountDiff : object</code></pre>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -150,7 +126,7 @@ from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountSt
         part of the resulting <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>.
 </li><li>
     This only shows the difference in &quot;states&quot; manipulated using
-<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
+<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
 this does care about differences in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>s.
 </li><li>
     Due to the reason mentioned directly above, the size of <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>
@@ -162,7 +138,7 @@ this does care about differences in <a class="xref" href="Libplanet.Types.Assets
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImmutableDictionary&lt;Address, (IValue, IValue)&gt; StateDiffs { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ImmutableDictionary&lt;Address, (IValue? , IValue)&gt; StateDiffs { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,7 +150,7 @@ this does care about differences in <a class="xref" href="Libplanet.Types.Assets
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">System.ValueTuple</span>&lt;<span class="xref">Bencodex.Types.IValue</span>, <span class="xref">Bencodex.Types.IValue</span>&gt;&gt;</td>
+        <td><span class="xref">ImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Nullable</span>&lt;<span class="xref">IValue</span>&gt;, <span class="xref">IValue</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -306,23 +282,6 @@ this does care about differences in <a class="xref" href="Libplanet.Types.Assets
   <div class="markdown level1 remarks"><p>Note that the ordering of the parameters are flipped compared to
 <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff(ITrie)</a> for syntactical reasons.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the diff internally obtained from
-<a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff(ITrie)</a> cannot be properly interpreted.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Action_State_AccountDiff_Create_Libplanet_Store_Trie_ITrie_Libplanet_Store_Trie_ITrie__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Diff_Libplanet_Store_Trie_ITrie_">Diff</a>(<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>)</div>

@@ -83,35 +83,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Crypto.ICryptoBackend-1.html">ICryptoBackend</a>&lt;T&gt;</div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Crypto.dll</h6>
   <h5 id="Libplanet_Crypto_DefaultCryptoBackend_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DefaultCryptoBackend&lt;T&gt; : ICryptoBackend&lt;T&gt; where T : HashAlgorithm</code></pre>
+    <pre><code class="lang-csharp hljs">public class DefaultCryptoBackend&lt;T&gt; : object, ICryptoBackend&lt;T&gt; where T : HashAlgorithm</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

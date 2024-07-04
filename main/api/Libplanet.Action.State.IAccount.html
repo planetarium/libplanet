@@ -78,7 +78,7 @@ maintaining <see cref="!:Delta"></see>.</p>
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -94,7 +94,7 @@ any state.</li></ul>
       <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetState_Libplanet_Crypto_Address_">IAccountState.GetState(Address)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetStates_System_Collections_Generic_IReadOnlyList_Libplanet_Crypto_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
+      <a class="xref" href="Libplanet.Action.State.IAccountState.html#Libplanet_Action_State_IAccountState_GetStates_IReadOnlyList_Libplanet_Crypto_Address__">IAccountState.GetStates(IReadOnlyList&lt;Address&gt;)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
@@ -104,7 +104,7 @@ any state.</li></ul>
     <pre><code class="lang-csharp hljs">public interface IAccount : IAccountState</code></pre>
   </div>
   <h5 id="Libplanet_Action_State_IAccount_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>This interface is immutable.  <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a>
+  <div class="markdown level0 remarks"><p>This interface is immutable.  <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_">SetState(Address, IValue)</a>
 method does not manipulate the instance, but returns a new
 <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instance with updated states.</p>
 </div>
@@ -125,8 +125,7 @@ method does not manipulate the instance, but returns a new
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccount RemoveState(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccount RemoveState(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,13 +171,13 @@ with updated states instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/State/IAccount.cs/#L54">View Source</a>
   </span>
   <a id="Libplanet_Action_State_IAccount_SetState_" data-uid="Libplanet.Action.State.IAccount.SetState*"></a>
-  <h4 id="Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_" data-uid="Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address,Bencodex.Types.IValue)">SetState(Address, IValue)</h4>
+  <h4 id="Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_" data-uid="Libplanet.Action.State.IAccount.SetState(Libplanet.Crypto.Address,IValue)">SetState(Address, IValue)</h4>
   <div class="markdown level1 summary"><p>Gets a new instance that the account state of the given
 <code data-dev-comment-type="paramref" class="paramref">address</code> is set to the given
 <code data-dev-comment-type="paramref" class="paramref">state</code>.</p>
@@ -186,8 +185,7 @@ with updated states instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccount SetState(Address address, IValue state)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccount SetState(Address address, IValue state)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -207,7 +205,7 @@ the account to set its state.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">state</span></td>
         <td><p>The new state to fill the account with.</p>
 </td>
@@ -232,7 +230,7 @@ is set to the given <code data-dev-comment-type="paramref" class="paramref">stat
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method method does not manipulate the instance,
 but returns a new <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instance
 with updated states instead.</p>

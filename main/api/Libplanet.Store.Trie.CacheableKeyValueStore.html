@@ -83,37 +83,13 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_Trie_CacheableKeyValueStore_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CacheableKeyValueStore : IKeyValueStore, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class CacheableKeyValueStore : object, IKeyValueStore</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -162,6 +138,41 @@ operations via <a class="xref" href="Libplanet.Store.Trie.CacheableKeyValueStore
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/CacheableKeyValueStore.cs/#L64">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_CacheableKeyValueStore_Delete_" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Delete*"></a>
+  <h4 id="Libplanet_Store_Trie_CacheableKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})">Delete(IEnumerable&lt;KeyBytes&gt;)</h4>
+  <div class="markdown level1 summary"><p>Delete multiple <code data-dev-comment-type="paramref" class="paramref">keys</code> at once.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Delete(IEnumerable&lt;KeyBytes&gt; keys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
+        <td><span class="parametername">keys</span></td>
+        <td><p>Keys to delete.  The order of keys does not matter.
+Non-existent keys are ignored.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -190,41 +201,6 @@ operations via <a class="xref" href="Libplanet.Store.Trie.CacheableKeyValueStore
         <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
         <td><span class="parametername">key</span></td>
         <td><p>A key to delete.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Collections.Generic.IEnumerable%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/CacheableKeyValueStore.cs/#L64">View Source</a>
-  </span>
-  <a id="Libplanet_Store_Trie_CacheableKeyValueStore_Delete_" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Delete*"></a>
-  <h4 id="Libplanet_Store_Trie_CacheableKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})">Delete(IEnumerable&lt;KeyBytes&gt;)</h4>
-  <div class="markdown level1 summary"><p>Delete multiple <code data-dev-comment-type="paramref" class="paramref">keys</code> at once.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Delete(IEnumerable&lt;KeyBytes&gt; keys)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
-        <td><span class="parametername">keys</span></td>
-        <td><p>Keys to delete.  The order of keys does not matter.
-Non-existent keys are ignored.</p>
 </td>
       </tr>
     </tbody>
@@ -345,22 +321,6 @@ Non-existent keys are ignored.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
-        <td><p>Thrown when the key is not found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_ListKeys.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -387,9 +347,42 @@ Non-existent keys are ignored.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
         <td><p>All keys in an arbitrary order.  The order might be vary for each call.</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary%7BLibplanet.Store.Trie.KeyBytes%2CSystem.Byte%5B%5D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/CacheableKeyValueStore.cs/#L51">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_CacheableKeyValueStore_Set_" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Set*"></a>
+  <h4 id="Libplanet_Store_Trie_CacheableKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})">Set(IDictionary&lt;KeyBytes, Byte[]&gt;)</h4>
+  <div class="markdown level1 summary"><p>The proxy class to cache <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a> operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Set(IDictionary&lt;KeyBytes, byte[]&gt; values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IDictionary</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">System.Byte</span>[]&gt;</td>
+        <td><span class="parametername">values</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -433,45 +426,12 @@ Non-existent keys are ignored.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Collections.Generic.IDictionary%7BLibplanet.Store.Trie.KeyBytes%2CSystem.Byte%5B%5D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/CacheableKeyValueStore.cs/#L51">View Source</a>
-  </span>
-  <a id="Libplanet_Store_Trie_CacheableKeyValueStore_Set_" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Set*"></a>
-  <h4 id="Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____" data-uid="Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})">Set(IDictionary&lt;KeyBytes, Byte[]&gt;)</h4>
-  <div class="markdown level1 summary"><p>The proxy class to cache <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a> operations.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Set(IDictionary&lt;KeyBytes, byte[]&gt; values)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>, <span class="xref">System.Byte</span>[]&gt;</td>
-        <td><span class="parametername">values</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>

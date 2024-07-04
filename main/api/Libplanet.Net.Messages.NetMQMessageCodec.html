@@ -81,37 +81,13 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html">IMessageCodec</a>&lt;<span class="xref">NetMQ.NetMQMessage</span>&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html">IMessageCodec</a>&lt;<span class="xref">NetMQMessage</span>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Messages_NetMQMessageCodec_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NetMQMessageCodec : IMessageCodec&lt;NetMQMessage&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class NetMQMessageCodec : object, IMessageCodec&lt;NetMQMessage&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -166,16 +142,16 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQ_NetMQMessage_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQ.NetMQMessage%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQMessage_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/NetMQMessageCodec.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_NetMQMessageCodec_Decode_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Decode*"></a>
-  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQ_NetMQMessage_System_Boolean_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQ.NetMQMessage,System.Boolean)">Decode(NetMQMessage, Boolean)</h4>
+  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_Decode_NetMQMessage_System_Boolean_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Decode(NetMQMessage,System.Boolean)">Decode(NetMQMessage, Boolean)</h4>
   <div class="markdown level1 summary"><p>Decodes given <see typeref="T"></see>-typed <code data-dev-comment-type="paramref" class="paramref">encoded</code> into
 <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> and checks its validity.
-<a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_MessageContent_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___">Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])</a></p>
+<a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_MessageContent_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_DateTimeOffset_System_Byte___">Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -193,7 +169,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">NetMQ.NetMQMessage</span></td>
+        <td><span class="xref">NetMQMessage</span></td>
         <td><span class="parametername">encoded</span></td>
         <td></td>
       </tr>
@@ -231,12 +207,6 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when empty <code data-dev-comment-type="paramref" class="paramref">encoded</code>
-is given.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Net.Transports.InvalidMessageSignatureException.html">InvalidMessageSignatureException</a></td>
         <td><p>Thrown when the signer of
 <code data-dev-comment-type="paramref" class="paramref">encoded</code> is invalid.</p>
@@ -246,13 +216,13 @@ is given.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent%2CLibplanet.Crypto.PrivateKey%2CLibplanet.Net.AppProtocolVersion%2CLibplanet.Net.BoundPeer%2CSystem.DateTimeOffset%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_DateTimeOffset_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent%2CPrivateKey%2CLibplanet.Net.AppProtocolVersion%2CLibplanet.Net.BoundPeer%2CDateTimeOffset%2CSystem.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/NetMQMessageCodec.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_NetMQMessageCodec_Encode_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Encode*"></a>
-  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_Byte___" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,System.DateTimeOffset,System.Byte[])">Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])</h4>
+  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_DateTimeOffset_System_Byte___" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,DateTimeOffset,System.Byte[])">Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])</h4>
   <div class="markdown level1 summary"><p>Encodes the message to <see typeref="T"></see>-typed instance with given
 <code data-dev-comment-type="paramref" class="paramref">privateKey</code> and <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </div>
@@ -278,9 +248,9 @@ is given.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="xref">PrivateKey</span></td>
         <td><span class="parametername">privateKey</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> to sign the encoded message.</p>
+        <td><p>The <see cref="!:PrivateKey"></see> to sign the encoded message.</p>
 </td>
       </tr>
       <tr>
@@ -299,9 +269,9 @@ the transport layer.
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">timestamp</span></td>
-        <td><p>The <span class="xref">System.DateTimeOffset</span> of the time
+        <td><p>The <see cref="!:DateTimeOffset"></see> of the time
 <code data-dev-comment-type="paramref" class="paramref">content</code> is encoded.</p>
 </td>
       </tr>
@@ -309,7 +279,7 @@ the transport layer.
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">identity</span></td>
         <td><p>The byte array identifies the message to match between
-message and its respond used in <span class="xref">NetMQ</span>.</p>
+message and its respond used in <see cref="!:NetMQ"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -324,7 +294,7 @@ message and its respond used in <span class="xref">NetMQ</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">NetMQ.NetMQMessage</span></td>
+        <td><span class="xref">NetMQMessage</span></td>
         <td><p>A <see typeref="T"></see> containing the signed <a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a>.</p>
 </td>
       </tr>
@@ -342,21 +312,21 @@ message and its respond used in <span class="xref">NetMQ</span>.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Transports.InvalidCredentialException.html">InvalidCredentialException</a></td>
         <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">privateKey</code>'s
-<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> does not match that of <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+<see cref="!:PublicKey"></see> does not match that of <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQ_NetMQMessage_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQMessage_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQMessage%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/NetMQMessageCodec.cs/#L115">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType*"></a>
-  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQ_NetMQMessage_System_Boolean_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQ.NetMQMessage,System.Boolean)">ParseMessageType(NetMQMessage, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Parses a <a class="xref" href="Libplanet.Net.Messages.MessageContent.MessageType.html">MessageContent.MessageType</a> from given <span class="xref">NetMQ.NetMQMessage</span>.</p>
+  <h4 id="Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQMessage_System_Boolean_" data-uid="Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQMessage,System.Boolean)">ParseMessageType(NetMQMessage, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Parses a <a class="xref" href="Libplanet.Net.Messages.MessageContent.MessageType.html">MessageContent.MessageType</a> from given <see cref="!:NetMQMessage"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -374,9 +344,9 @@ message and its respond used in <span class="xref">NetMQ</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">NetMQ.NetMQMessage</span></td>
+        <td><span class="xref">NetMQMessage</span></td>
         <td><span class="parametername">encoded</span></td>
-        <td><p>A encoded <span class="xref">NetMQ.NetMQMessage</span>.</p>
+        <td><p>A encoded <see cref="!:NetMQMessage"></see>.</p>
 </td>
       </tr>
       <tr>
@@ -402,23 +372,6 @@ message and its respond used in <span class="xref">NetMQ</span>.</p>
 <code data-dev-comment-type="paramref" class="paramref">encoded</code>. If given value cannot be
 interpreted in <a class="xref" href="Libplanet.Net.Messages.MessageContent.MessageType.html">MessageContent.MessageType</a>,
 this would return a integer number.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.IndexOutOfRangeException</span></td>
-        <td><p>Thrown if given <span class="xref">NetMQ.NetMQMessage</span>
-has not enough <span class="xref">NetMQ.NetMQFrame</span> for parsing a message type.</p>
 </td>
       </tr>
     </tbody>

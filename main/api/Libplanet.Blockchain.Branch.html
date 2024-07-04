@@ -80,47 +80,23 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Branch</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Branch_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Branch</code></pre>
+    <pre><code class="lang-csharp hljs">public class Branch : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Branch__ctor_System_Collections_Generic_IEnumerable_System_ValueTuple_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Branch.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.ValueTuple%7BLibplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.BlockCommit%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Branch__ctor_IEnumerable_System_ValueTuple_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Branch.%23ctor(IEnumerable%7BSystem.ValueTuple%7BLibplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.BlockCommit%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/Branch.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Branch__ctor_" data-uid="Libplanet.Blockchain.Branch.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Branch__ctor_System_Collections_Generic_IEnumerable_System_ValueTuple_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit___" data-uid="Libplanet.Blockchain.Branch.#ctor(System.Collections.Generic.IEnumerable{System.ValueTuple{Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit}})">Branch(IEnumerable&lt;(Block, BlockCommit)&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Branch__ctor_IEnumerable_System_ValueTuple_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit___" data-uid="Libplanet.Blockchain.Branch.#ctor(IEnumerable{System.ValueTuple{Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit}})">Branch(IEnumerable&lt;(Block, BlockCommit)&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of <a class="xref" href="Libplanet.Blockchain.Branch.html">Branch</a> from <code data-dev-comment-type="paramref" class="paramref">blocks</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -139,33 +115,10 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>&gt;&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>&gt;&gt;</td>
         <td><span class="parametername">blocks</span></td>
         <td><p>An enumerable of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and
 <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> pairs to convert from.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown for failing to satisfy any of the following:</p>
-<ul><li>
-        Given <code data-dev-comment-type="paramref" class="paramref">blocks</code> is non-empty.
-</li><li>
-    Given <code data-dev-comment-type="paramref" class="paramref">blocks</code> are consecutive in the sense that indices
-    are unique, consecutive, and every <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_PreviousHash">PreviousHash</a> match
-    the <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Hash">Hash</a> of the previous <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.
-</li></ul>
 </td>
       </tr>
     </tbody>
@@ -181,7 +134,7 @@
   </span>
   <a id="Libplanet_Blockchain_Branch_Blocks_" data-uid="Libplanet.Blockchain.Branch.Blocks*"></a>
   <h4 id="Libplanet_Blockchain_Branch_Blocks" data-uid="Libplanet.Blockchain.Branch.Blocks">Blocks</h4>
-  <div class="markdown level1 summary"><p>An <span class="xref">System.Collections.Immutable.ImmutableArray&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and
+  <div class="markdown level1 summary"><p>An <see cref="!:ImmutableArray&lt;T>"></see> of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and
 <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> pairs guaranteed to satisfy
 the following properties:</p>
 <ul><li>
@@ -209,7 +162,7 @@ the following properties:</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>&gt;&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>

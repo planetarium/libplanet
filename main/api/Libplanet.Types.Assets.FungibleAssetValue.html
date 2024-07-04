@@ -77,46 +77,32 @@
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
-    <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
-    <div><span class="xref">System.IComparable</span></div>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</div>
+    <div><span class="xref">IComparable</span></div>
+    <div><span class="xref">ISerializable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Assets.html">Libplanet.Types.Assets</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(FungibleAssetValueJsonConverter))]
-[Serializable]
-public readonly struct FungibleAssetValue : IEquatable&lt;FungibleAssetValue&gt;, IComparable&lt;FungibleAssetValue&gt;, IComparable, ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct FungibleAssetValue</code></pre>
   </div>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue__ctor_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(Bencodex.Types.IValue)">FungibleAssetValue(IValue)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_IValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(IValue)">FungibleAssetValue(IValue)</h4>
   <div class="markdown level1 summary"><p>Holds a fungible asset value which holds its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> together.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -135,25 +121,82 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Bencodex_Types_IValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_IValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_System_Numerics_BigInteger_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(Libplanet.Types.Assets.Currency%2CSystem.Int32%2CSystem.Numerics.BigInteger%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_BigInteger_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(Libplanet.Types.Assets.Currency%2CBigInteger%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L82">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_FungibleAssetValue__ctor_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor*"></a>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_BigInteger_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(Libplanet.Types.Assets.Currency,BigInteger,BigInteger)">FungibleAssetValue(Currency, BigInteger, BigInteger)</h4>
+  <div class="markdown level1 summary"><p>Creates a value of the <code data-dev-comment-type="paramref" class="paramref">currency</code> from the given
+<code data-dev-comment-type="paramref" class="paramref">majorUnit</code> and <code data-dev-comment-type="paramref" class="paramref">minorUnit</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue(Currency currency, BigInteger majorUnit, BigInteger minorUnit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency to create a value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td><span class="parametername">majorUnit</span></td>
+        <td><p>The major unit of the fungible asset value,
+i.e., digits <em>before</em> the decimal separator.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td><span class="parametername">minorUnit</span></td>
+        <td><p>The minor unit of the fungible asset value,
+i.e., digits <em>after</em> the decimal separator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_BigInteger_BigInteger__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+</div>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_BigInteger_BigInteger__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_DecimalPlaces">DecimalPlaces</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_BigInteger_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(Libplanet.Types.Assets.Currency%2CSystem.Int32%2CBigInteger%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L116">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue__ctor_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_System_Numerics_BigInteger_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(Libplanet.Types.Assets.Currency,System.Int32,System.Numerics.BigInteger,System.Numerics.BigInteger)">FungibleAssetValue(Currency, Int32, BigInteger, BigInteger)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_BigInteger_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(Libplanet.Types.Assets.Currency,System.Int32,BigInteger,BigInteger)">FungibleAssetValue(Currency, Int32, BigInteger, BigInteger)</h4>
   <div class="markdown level1 summary"><p>Creates a value of the <code data-dev-comment-type="paramref" class="paramref">currency</code> from the given <code data-dev-comment-type="paramref" class="paramref">sign</code>, <code data-dev-comment-type="paramref" class="paramref">majorUnit</code> and <code data-dev-comment-type="paramref" class="paramref">minorUnit</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -186,14 +229,14 @@ zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">majorUnit</span></td>
         <td><p>The major unit of the fungible asset value,
 i.e., digits <em>before</em> the decimal separator.  Must not be negative.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">minorUnit</span></td>
         <td><p>The minor unit of the fungible asset value,
 i.e., digits <em>after</em> the decimal separator.  Must not be negative.</p>
@@ -201,103 +244,11 @@ i.e., digits <em>after</em> the decimal separator.  Must not be negative.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_System_Numerics_BigInteger_System_Numerics_BigInteger__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_BigInteger_BigInteger__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the the <code data-dev-comment-type="paramref" class="paramref">sign</code> is not
-one of <code>1</code>, <code>0</code>, and <code>-1</code>, or <code data-dev-comment-type="paramref" class="paramref">majorUnit</code> or
-<code data-dev-comment-type="paramref" class="paramref">minorUnit</code> is negative.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_System_Numerics_BigInteger_System_Numerics_BigInteger__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_DecimalPlaces">DecimalPlaces</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.%23ctor(Libplanet.Types.Assets.Currency%2CSystem.Numerics.BigInteger%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L82">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue__ctor_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.#ctor(Libplanet.Types.Assets.Currency,System.Numerics.BigInteger,System.Numerics.BigInteger)">FungibleAssetValue(Currency, BigInteger, BigInteger)</h4>
-  <div class="markdown level1 summary"><p>Creates a value of the <code data-dev-comment-type="paramref" class="paramref">currency</code> from the given
-<code data-dev-comment-type="paramref" class="paramref">majorUnit</code> and <code data-dev-comment-type="paramref" class="paramref">minorUnit</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FungibleAssetValue(Currency currency, BigInteger majorUnit, BigInteger minorUnit)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency to create a value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><span class="parametername">majorUnit</span></td>
-        <td><p>The major unit of the fungible asset value,
-i.e., digits <em>before</em> the decimal separator.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><span class="parametername">minorUnit</span></td>
-        <td><p>The minor unit of the fungible asset value,
-i.e., digits <em>after</em> the decimal separator.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_System_Numerics_BigInteger__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the negativity sign is ambiguous
-(e.g., both units have signs) or too big for the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_System_Numerics_BigInteger__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency_System_Int32_BigInteger_BigInteger__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_DecimalPlaces">DecimalPlaces</a></div>
   </div>
@@ -337,7 +288,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue__ctor_Libplanet_Types_Assets_Currency__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <h3 id="fields">Fields
 </h3>
@@ -373,7 +324,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Currency_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -400,7 +351,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -411,7 +362,7 @@ Therefore, do not depend on this value for permanent uses but only for volatile 
 </div>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_RawValue_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_">FromRawValue(Currency, BigInteger)</a></div>
+      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_BigInteger_">FromRawValue(Currency, BigInteger)</a></div>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -430,8 +381,7 @@ separator, in absolute value.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly BigInteger MajorUnit { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly BigInteger MajorUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -443,7 +393,7 @@ public readonly BigInteger MajorUnit { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -470,8 +420,7 @@ separator, in absolute value.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly BigInteger MinorUnit { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly BigInteger MinorUnit { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -483,7 +432,7 @@ public readonly BigInteger MinorUnit { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -509,8 +458,7 @@ public readonly BigInteger MinorUnit { get; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly int Sign { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly int Sign { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -532,7 +480,7 @@ table:</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Sign_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <h3 id="methods">Methods
 </h3>
@@ -551,8 +499,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly FungibleAssetValue Abs()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly FungibleAssetValue Abs()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -572,7 +519,7 @@ public readonly FungibleAssetValue Abs()</code></pre>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Abs_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -588,8 +535,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly int CompareTo(FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly int CompareTo(FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -625,24 +571,23 @@ public readonly int CompareTo(FungibleAssetValue other)</code></pre>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.CompareTo(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.CompareTo(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L629">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.CompareTo*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Object_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Nullable_System_Object__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.CompareTo(System.Nullable{System.Object})">CompareTo(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Holds a fungible asset value which holds its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> together.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly int CompareTo(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly int CompareTo(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -655,7 +600,7 @@ public readonly int CompareTo(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -676,193 +621,26 @@ public readonly int CompareTo(object obj)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Object__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_CompareTo_System_Nullable_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue%2CLibplanet.Types.Assets.FungibleAssetValue%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L537">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue,Libplanet.Types.Assets.FungibleAssetValue@)">DivRem(FungibleAssetValue, out FungibleAssetValue)</h4>
-  <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, returns the quotient, and returns
-the <code data-dev-comment-type="paramref" class="paramref">remainder</code> in an output parameter.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly BigInteger DivRem(FungibleAssetValue divisor, out FungibleAssetValue remainder)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><span class="parametername">divisor</span></td>
-        <td><p>The value to divide by.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><span class="parametername">remainder</span></td>
-        <td><p>When this method returns (without any exception), the remainder
-after dividing the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>.  This parameter is passed
-uninitialized.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><p>The quotient of the division.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when two values do not have the same
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-zero.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L576">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue)">DivRem(FungibleAssetValue)</h4>
-  <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, and returns a pair of the quotient
-and the remainder.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly (BigInteger Quotient, FungibleAssetValue Remainder) DivRem(FungibleAssetValue divisor)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><span class="parametername">divisor</span></td>
-        <td><p>The value to divide by.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Numerics.BigInteger</span>, <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
-        <td><p>A tuple of the <code>Quotient</code> and <code>Remainder</code> of the division.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when two values do not have the same
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-zero.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(System.Numerics.BigInteger%2CLibplanet.Types.Assets.FungibleAssetValue%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(BigInteger%2CLibplanet.Types.Assets.FungibleAssetValue%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L516">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(System.Numerics.BigInteger,Libplanet.Types.Assets.FungibleAssetValue@)">DivRem(BigInteger, out FungibleAssetValue)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(BigInteger,Libplanet.Types.Assets.FungibleAssetValue@)">DivRem(BigInteger, out FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, returns the quotient, and returns
 the <code data-dev-comment-type="paramref" class="paramref">remainder</code> in an output parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetValue remainder)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetValue remainder)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -875,7 +653,7 @@ public readonly FungibleAssetValue DivRem(BigInteger divisor, out FungibleAssetV
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">divisor</span></td>
         <td><p>The number to divide by.</p>
 </td>
@@ -906,44 +684,26 @@ uninitialized.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-<code>0</code> (zero).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(System.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L561">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(System.Numerics.BigInteger)">DivRem(BigInteger)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(BigInteger)">DivRem(BigInteger)</h4>
   <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, and returns a pair of the quotient
 and the remainder.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivRem(BigInteger divisor)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivRem(BigInteger divisor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -956,7 +716,7 @@ public readonly (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivR
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">divisor</span></td>
         <td><p>The number to divide by.</p>
 </td>
@@ -979,27 +739,128 @@ public readonly (FungibleAssetValue Quotient, FungibleAssetValue Remainder) DivR
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue%2CLibplanet.Types.Assets.FungibleAssetValue%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L537">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue,Libplanet.Types.Assets.FungibleAssetValue@)">DivRem(FungibleAssetValue, out FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, returns the quotient, and returns
+the <code data-dev-comment-type="paramref" class="paramref">remainder</code> in an output parameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly BigInteger DivRem(FungibleAssetValue divisor, out FungibleAssetValue remainder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Condition</th>
+        <th>Name</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-<code>0</code> (zero).</p>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">divisor</span></td>
+        <td><p>The value to divide by.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">remainder</span></td>
+        <td><p>When this method returns (without any exception), the remainder
+after dividing the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>.  This parameter is passed
+uninitialized.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td><p>The quotient of the division.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L576">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem*"></a>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.DivRem(Libplanet.Types.Assets.FungibleAssetValue)">DivRem(FungibleAssetValue)</h4>
+  <div class="markdown level1 summary"><p>Divides the value by <code data-dev-comment-type="paramref" class="paramref">divisor</code>, and returns a pair of the quotient
+and the remainder.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly (BigInteger Quotient, FungibleAssetValue Remainder) DivRem(FungibleAssetValue divisor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">divisor</span></td>
+        <td><p>The value to divide by.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">BigInteger</span>, <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><p>A tuple of the <code>Quotient</code> and <code>Remainder</code> of the division.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_Equals_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.Equals(Libplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1014,8 +875,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly bool Equals(FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1051,24 +911,23 @@ public readonly bool Equals(FungibleAssetValue other)</code></pre>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Equals_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L619">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_Equals_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.Equals*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Object_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Assets.FungibleAssetValue.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Holds a fungible asset value which holds its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> together.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1081,7 +940,7 @@ public override readonly bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -1102,21 +961,19 @@ public override readonly bool Equals(object obj)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Object__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Equals_System_Nullable_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.FromRawValue(Libplanet.Types.Assets.Currency%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.FromRawValue(Libplanet.Types.Assets.Currency%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L502">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.FromRawValue*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.FromRawValue(Libplanet.Types.Assets.Currency,System.Numerics.BigInteger)">FromRawValue(Currency, BigInteger)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.FromRawValue(Libplanet.Types.Assets.Currency,BigInteger)">FromRawValue(Currency, BigInteger)</h4>
   <div class="markdown level1 summary"><p>Restores a value from a <code data-dev-comment-type="paramref" class="paramref">rawValue</code> of a <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1141,7 +998,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">rawValue</span></td>
         <td><p>The <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_RawValue">RawValue</a> to restore.</p>
 </td>
@@ -1164,11 +1021,11 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_BigInteger__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_FromRawValue_Libplanet_Types_Assets_Currency_BigInteger__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_RawValue">RawValue</a></div>
   </div>
@@ -1186,8 +1043,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly int GetHashCode()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1204,11 +1060,9 @@ public override readonly int GetHashCode()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1219,13 +1073,12 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_GetQuantityString_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.GetQuantityString*"></a>
   <h4 id="Libplanet_Types_Assets_FungibleAssetValue_GetQuantityString_System_Boolean_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.GetQuantityString(System.Boolean)">GetQuantityString(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Gets the value quantity without its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> in <span class="xref">System.String</span>.</p>
+  <div class="markdown level1 summary"><p>Gets the value quantity without its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> in <see cref="!:System.String"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly string GetQuantityString(bool minorUnit = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly string GetQuantityString(bool minorUnit = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1265,7 +1118,7 @@ digits and an optional decimal separator (period).</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_GetQuantityString_System_Boolean__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1326,25 +1179,8 @@ minus (-), and decimal separator (.).</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Parse_Libplanet_Types_Assets_Currency_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">value</code> is not
-a valid numeric string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1371,14 +1207,14 @@ a valid numeric string.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_Serialize_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1394,8 +1230,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1412,11 +1247,9 @@ public override readonly string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_ToString_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <h3 id="operators">Operators
 </h3>
@@ -1434,8 +1267,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator +(FungibleAssetValue left, FungibleAssetValue right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator +(FungibleAssetValue left, FungibleAssetValue right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1479,25 +1311,8 @@ public static FungibleAssetValue operator +(FungibleAssetValue left, FungibleAss
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Addition_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when two values do not have the same
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Equality_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Equality(Libplanet.Types.Assets.FungibleAssetValue%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1512,8 +1327,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator ==(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1558,7 +1372,7 @@ Otherwise <span class="xref">false</span>.</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Equality_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1575,8 +1389,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator&gt;(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator&gt;(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1623,7 +1436,7 @@ equal) <span class="xref">false</span>.</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_GreaterThan_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1640,8 +1453,7 @@ operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).<
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator &gt;=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator &gt;=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1688,7 +1500,7 @@ Otherwise <span class="xref">false</span>.</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_GreaterThanOrEqual_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1704,8 +1516,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator !=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1750,7 +1561,7 @@ Otherwise <span class="xref">true</span>.</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Inequality_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1767,8 +1578,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator &lt;(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator &lt;(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1815,7 +1625,7 @@ operand (<code data-dev-comment-type="paramref" class="paramref">other</code>). 
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_LessThan_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1832,8 +1642,7 @@ operand (<code data-dev-comment-type="paramref" class="paramref">other</code>).<
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static bool operator &lt;=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator &lt;=(FungibleAssetValue obj, FungibleAssetValue other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1879,7 +1688,69 @@ to the right operand (<code data-dev-comment-type="paramref" class="paramref">ot
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_LessThanOrEqual_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Modulus(Libplanet.Types.Assets.FungibleAssetValue%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L405">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Modulus*"></a>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Modulus(Libplanet.Types.Assets.FungibleAssetValue,BigInteger)">Modulus(FungibleAssetValue, BigInteger)</h4>
+  <div class="markdown level1 summary"><p>Divides the value (<code data-dev-comment-type="paramref" class="paramref">dividend</code>) by <code data-dev-comment-type="paramref" class="paramref">divisor</code>,
+and returns the remainder.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator %(FungibleAssetValue dividend, BigInteger divisor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">dividend</span></td>
+        <td><p>The value to be divided.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td><span class="parametername">divisor</span></td>
+        <td><p>The number to divide by.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The remainder after dividing <code data-dev-comment-type="paramref" class="paramref">dividend</code>
+by <code data-dev-comment-type="paramref" class="paramref">divisor</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_BigInteger__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1896,8 +1767,7 @@ and returns the remainder.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator %(FungibleAssetValue dividend, FungibleAssetValue divisor)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator %(FungibleAssetValue dividend, FungibleAssetValue divisor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1942,188 +1812,23 @@ by <code data-dev-comment-type="paramref" class="paramref">divisor</code>.</p>
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when two values do not have the same
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-zero.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Modulus(Libplanet.Types.Assets.FungibleAssetValue%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L405">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Modulus*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Modulus(Libplanet.Types.Assets.FungibleAssetValue,System.Numerics.BigInteger)">Modulus(FungibleAssetValue, BigInteger)</h4>
-  <div class="markdown level1 summary"><p>Divides the value (<code data-dev-comment-type="paramref" class="paramref">dividend</code>) by <code data-dev-comment-type="paramref" class="paramref">divisor</code>,
-and returns the remainder.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator %(FungibleAssetValue dividend, BigInteger divisor)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><span class="parametername">dividend</span></td>
-        <td><p>The value to be divided.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><span class="parametername">divisor</span></td>
-        <td><p>The number to divide by.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The remainder after dividing <code data-dev-comment-type="paramref" class="paramref">dividend</code>
-by <code data-dev-comment-type="paramref" class="paramref">divisor</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Modulus_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.DivideByZeroException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">divisor</code> is
-<code>0</code> (zero).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(Libplanet.Types.Assets.FungibleAssetValue%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L381">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(Libplanet.Types.Assets.FungibleAssetValue,System.Numerics.BigInteger)">Multiply(FungibleAssetValue, BigInteger)</h4>
-  <div class="markdown level1 summary"><p>Multiplies <code data-dev-comment-type="paramref" class="paramref">right</code> times the <code data-dev-comment-type="paramref" class="paramref">left</code> value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator *(FungibleAssetValue left, BigInteger right)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><span class="parametername">left</span></td>
-        <td><p>The value to multiply.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><span class="parametername">right</span></td>
-        <td><p>The times to multiply.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>The multiplied value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_System_Numerics_BigInteger__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(System.Numerics.BigInteger%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_BigInteger_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(BigInteger%2CLibplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L391">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(System.Numerics.BigInteger,Libplanet.Types.Assets.FungibleAssetValue)">Multiply(BigInteger, FungibleAssetValue)</h4>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_BigInteger_Libplanet_Types_Assets_FungibleAssetValue_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(BigInteger,Libplanet.Types.Assets.FungibleAssetValue)">Multiply(BigInteger, FungibleAssetValue)</h4>
   <div class="markdown level1 summary"><p>Multiplies <code data-dev-comment-type="paramref" class="paramref">left</code> times the <code data-dev-comment-type="paramref" class="paramref">right</code> value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator *(BigInteger left, FungibleAssetValue right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator *(BigInteger left, FungibleAssetValue right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2136,7 +1841,7 @@ public static FungibleAssetValue operator *(BigInteger left, FungibleAssetValue 
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">left</span></td>
         <td><p>The times to multiply.</p>
 </td>
@@ -2165,9 +1870,69 @@ public static FungibleAssetValue operator *(BigInteger left, FungibleAssetValue 
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_BigInteger_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(Libplanet.Types.Assets.FungibleAssetValue%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L381">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply*"></a>
+  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_BigInteger_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.op_Multiply(Libplanet.Types.Assets.FungibleAssetValue,BigInteger)">Multiply(FungibleAssetValue, BigInteger)</h4>
+  <div class="markdown level1 summary"><p>Multiplies <code data-dev-comment-type="paramref" class="paramref">right</code> times the <code data-dev-comment-type="paramref" class="paramref">left</code> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator *(FungibleAssetValue left, BigInteger right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The value to multiply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The times to multiply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>The multiplied value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Multiply_Libplanet_Types_Assets_FungibleAssetValue_BigInteger__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -2183,8 +1948,7 @@ to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.Fungib
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator -(FungibleAssetValue left, FungibleAssetValue right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator -(FungibleAssetValue left, FungibleAssetValue right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2229,25 +1993,8 @@ public static FungibleAssetValue operator -(FungibleAssetValue left, FungibleAss
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_Subtraction_Libplanet_Types_Assets_FungibleAssetValue_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when two values do not have the same
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_op_UnaryNegation_Libplanet_Types_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.op_UnaryNegation(Libplanet.Types.Assets.FungibleAssetValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -2265,8 +2012,7 @@ Does nothing if the <code data-dev-comment-type="paramref" class="paramref">valu
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator -(FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator -(FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2304,64 +2050,20 @@ public static FungibleAssetValue operator -(FungibleAssetValue value)</code></pr
   </table>
   <h5 id="Libplanet_Types_Assets_FungibleAssetValue_op_UnaryNegation_Libplanet_Types_Assets_FungibleAssetValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
-</div>
-  <h3 id="eii">Explicit Interface Implementations
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_FungibleAssetValue_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.FungibleAssetValue.System%23Runtime%23Serialization%23ISerializable%23GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/FungibleAssetValue.cs/#L645">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_FungibleAssetValue_System_Runtime_Serialization_ISerializable_GetObjectData_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.System#Runtime#Serialization#ISerializable#GetObjectData*"></a>
-  <h4 id="Libplanet_Types_Assets_FungibleAssetValue_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Types.Assets.FungibleAssetValue.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">ISerializable.GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>Holds a fungible asset value which holds its <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_Currency">Currency</a> together.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_FungibleAssetValue_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>It behaves like numbers except for division operator (<code>/</code>) to prevent to forget
-to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_System_Numerics_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
+to handle its remainder; use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_Libplanet_Types_Assets_FungibleAssetValue_">DivRem(FungibleAssetValue)</a> and <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_DivRem_BigInteger_">DivRem(BigInteger)</a> methods instead.</p>
 </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IComparable&lt;T&gt;</span>
+      <span class="xref">IComparable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IComparable</span>
+      <span class="xref">IComparable</span>
   </div>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <span class="xref">ISerializable</span>
   </div>
 </article>
           </div>

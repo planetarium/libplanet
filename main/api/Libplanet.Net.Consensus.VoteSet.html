@@ -79,47 +79,23 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">VoteSet</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Consensus.html">Libplanet.Net.Consensus</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Consensus_VoteSet_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VoteSet</code></pre>
+    <pre><code class="lang-csharp hljs">public class VoteSet : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_Libplanet_Types_Consensus_VoteFlag_Libplanet_Types_Consensus_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Types.Consensus.VoteFlag%2CLibplanet.Types.Consensus.ValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_VoteFlag_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.%23ctor(System.Int64%2CSystem.Int32%2CVoteFlag%2CValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L27">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet__ctor_" data-uid="Libplanet.Net.Consensus.VoteSet.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_Libplanet_Types_Consensus_VoteFlag_Libplanet_Types_Consensus_ValidatorSet_" data-uid="Libplanet.Net.Consensus.VoteSet.#ctor(System.Int64,System.Int32,Libplanet.Types.Consensus.VoteFlag,Libplanet.Types.Consensus.ValidatorSet)">VoteSet(Int64, Int32, VoteFlag, ValidatorSet)</h4>
+  <h4 id="Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_VoteFlag_ValidatorSet_" data-uid="Libplanet.Net.Consensus.VoteSet.#ctor(System.Int64,System.Int32,VoteFlag,ValidatorSet)">VoteSet(Int64, Int32, VoteFlag, ValidatorSet)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -147,12 +123,12 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html">VoteFlag</a></td>
+        <td><span class="xref">VoteFlag</span></td>
         <td><span class="parametername">voteType</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.ValidatorSet.html">ValidatorSet</a></td>
+        <td><span class="xref">ValidatorSet</span></td>
         <td><span class="parametername">validatorSet</span></td>
         <td></td>
       </tr>
@@ -169,7 +145,7 @@
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_Count_" data-uid="Libplanet.Net.Consensus.VoteSet.Count*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_Count" data-uid="Libplanet.Net.Consensus.VoteSet.Count">Count</h4>
-  <div class="markdown level1 summary"><p>Count of the canonical <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.</p>
+  <div class="markdown level1 summary"><p>Count of the canonical <see cref="!:Vote"></see>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -216,7 +192,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -230,7 +206,7 @@
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_TotalCount_" data-uid="Libplanet.Net.Consensus.VoteSet.TotalCount*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_TotalCount" data-uid="Libplanet.Net.Consensus.VoteSet.TotalCount">TotalCount</h4>
-  <div class="markdown level1 summary"><p>Count of the all <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.</p>
+  <div class="markdown level1 summary"><p>Count of the all <see cref="!:Vote"></see>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -277,7 +253,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Validator.html">Validator</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Validator</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -316,13 +292,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L202">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(Libplanet.Types.Blocks.BlockHash)">BitArrayByBlockHash(BlockHash)</h4>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(BlockHash)">BitArrayByBlockHash(BlockHash)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -340,7 +316,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="xref">BlockHash</span></td>
         <td><span class="parametername">blockHash</span></td>
         <td></td>
       </tr>
@@ -363,13 +339,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Contains_Libplanet_Crypto_PublicKey_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Contains(Libplanet.Crypto.PublicKey%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Contains_PublicKey_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Contains(PublicKey%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L72">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_Contains_" data-uid="Libplanet.Net.Consensus.VoteSet.Contains*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_Contains_Libplanet_Crypto_PublicKey_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.Contains(Libplanet.Crypto.PublicKey,Libplanet.Types.Blocks.BlockHash)">Contains(PublicKey, BlockHash)</h4>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_Contains_PublicKey_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.Contains(PublicKey,BlockHash)">Contains(PublicKey, BlockHash)</h4>
   <div class="markdown level1 summary"><p>Predicate indicates where the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> have collected a vote with
 given <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
@@ -389,15 +365,15 @@ given <code data-dev-comment-type="paramref" class="paramref">publicKey</code> a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="xref">PublicKey</span></td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><p>A <see cref="!:PublicKey"></see> of the <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="xref">BlockHash</span></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><p>A <see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -428,7 +404,7 @@ else <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_GetAllVotes_" data-uid="Libplanet.Net.Consensus.VoteSet.GetAllVotes*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_GetAllVotes" data-uid="Libplanet.Net.Consensus.VoteSet.GetAllVotes">GetAllVotes()</h4>
-  <div class="markdown level1 summary"><p>Gets all collected <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.</p>
+  <div class="markdown level1 summary"><p>Gets all collected <see cref="!:Vote"></see>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -445,23 +421,23 @@ else <span class="xref">false</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
-        <td><p><span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p><see cref="!:IEnumerable&lt;T>"></see> of <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetByPublicKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetByPublicKey_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetByPublicKey(PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L256">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_GetByPublicKey_" data-uid="Libplanet.Net.Consensus.VoteSet.GetByPublicKey*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_GetByPublicKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Net.Consensus.VoteSet.GetByPublicKey(Libplanet.Crypto.PublicKey)">GetByPublicKey(PublicKey)</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.
-If given validator has conflicting votes, returns &quot;canonical&quot; <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetByPublicKey_PublicKey_" data-uid="Libplanet.Net.Consensus.VoteSet.GetByPublicKey(PublicKey)">GetByPublicKey(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:Vote"></see> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.
+If given validator has conflicting votes, returns &quot;canonical&quot; <see cref="!:Vote"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -479,9 +455,9 @@ If given validator has conflicting votes, returns &quot;canonical&quot; <a class
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="xref">PublicKey</span></td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the validator signed <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><p>A <see cref="!:PublicKey"></see> of the validator signed <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -496,45 +472,28 @@ If given validator has conflicting votes, returns &quot;canonical&quot; <a class
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a></td>
-        <td><p>A <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
-        <td><p>Thrown when there's no <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>
-signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.</p>
+        <td><span class="xref">Vote</span></td>
+        <td><p>A <see cref="!:Vote"></see> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVote_Libplanet_Crypto_PublicKey_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVote(Libplanet.Crypto.PublicKey%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVote_PublicKey_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVote(PublicKey%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_GetVote_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVote*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVote_Libplanet_Crypto_PublicKey_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVote(Libplanet.Crypto.PublicKey,Libplanet.Types.Blocks.BlockHash)">GetVote(PublicKey, BlockHash)</h4>
-  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVote_PublicKey_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVote(PublicKey,BlockHash)">GetVote(PublicKey, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets a <see cref="!:Vote"></see> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vote GetVote(PublicKey publicKey, BlockHash blockHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public Vote? GetVote(PublicKey publicKey, BlockHash blockHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -547,15 +506,15 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="xref">PublicKey</span></td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><p>A <see cref="!:PublicKey"></see> of the <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="xref">BlockHash</span></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><p>A <see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -570,8 +529,8 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a></td>
-        <td><p>A <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A <see cref="!:Vote"></see> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code> if exists. Else, <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -579,14 +538,14 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVotes_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVotes(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVotes_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVotes(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_GetVotes_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVotes*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVotes_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVotes(Libplanet.Types.Blocks.BlockHash)">GetVotes(BlockHash)</h4>
-  <div class="markdown level1 summary"><p>Gets all collected <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s that voted to block with hash
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVotes_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVotes(BlockHash)">GetVotes(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets all collected <see cref="!:Vote"></see>s that voted to block with hash
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -605,9 +564,9 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="xref">BlockHash</span></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s to collect.</p>
+        <td><p><see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>s to collect.</p>
 </td>
       </tr>
     </tbody>
@@ -622,8 +581,8 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
-        <td><p><span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p><see cref="!:IEnumerable&lt;T>"></see> of <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -637,7 +596,7 @@ signed by given <code data-dev-comment-type="paramref" class="paramref">publicKe
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_HasAll_" data-uid="Libplanet.Net.Consensus.VoteSet.HasAll*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_HasAll" data-uid="Libplanet.Net.Consensus.VoteSet.HasAll">HasAll()</h4>
-  <div class="markdown level1 summary"><p>Predicate which returns <span class="xref">true</span> when collected all <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.
+  <div class="markdown level1 summary"><p>Predicate which returns <span class="xref">true</span> when collected all <see cref="!:Vote"></see>s.
 Else, return <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -656,7 +615,7 @@ Else, return <span class="xref">false</span>.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p><span class="xref">true</span> when collected all <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.
+        <td><p><span class="xref">true</span> when collected all <see cref="!:Vote"></see>s.
 Else, <span class="xref">false</span>.</p>
 </td>
       </tr>
@@ -671,7 +630,7 @@ Else, <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny_" data-uid="Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny" data-uid="Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny">HasOneThirdsAny()</h4>
-  <div class="markdown level1 summary"><p>If there is a +1/3 majority for any <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>,
+  <div class="markdown level1 summary"><p>If there is a +1/3 majority for any <see cref="!:BlockHash"></see>,
 return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -705,7 +664,7 @@ else <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny_" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny">HasTwoThirdsAny()</h4>
-  <div class="markdown level1 summary"><p>If there is a +2/3 majority for any <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>,
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for any <see cref="!:BlockHash"></see>,
 return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -739,7 +698,7 @@ else <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority_" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority">HasTwoThirdsMajority()</h4>
-  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>,
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <see cref="!:BlockHash"></see>,
 return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -806,7 +765,7 @@ commits, else <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_List_" data-uid="Libplanet.Net.Consensus.VoteSet.List*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_List" data-uid="Libplanet.Net.Consensus.VoteSet.List">List()</h4>
-  <div class="markdown level1 summary"><p>Returns a copy of the list of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
+  <div class="markdown level1 summary"><p>Returns a copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -823,8 +782,8 @@ commits, else <span class="xref">false</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
-        <td><p>A copy of the list of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -838,9 +797,9 @@ commits, else <span class="xref">false</span>.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_MappedList_" data-uid="Libplanet.Net.Consensus.VoteSet.MappedList*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_MappedList" data-uid="Libplanet.Net.Consensus.VoteSet.MappedList">MappedList()</h4>
-  <div class="markdown level1 summary"><p>Returns a copy of the list of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
-If failed to collect <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> from certain peer,
-fill it with nil <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
+  <div class="markdown level1 summary"><p>Returns a copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
+If failed to collect <see cref="!:Vote"></see> from certain peer,
+fill it with nil <see cref="!:Vote"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -857,26 +816,10 @@ fill it with nil <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>&gt;</td>
-        <td><p>A copy of the list of <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
-If failed to collect <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a> from certain peer,
-fill it with nil <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.NullReferenceException</span></td>
-        <td><p>Thrown when there are no +2/3 majority <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote</a>s.</p>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
+If failed to collect <see cref="!:Vote"></see> from certain peer,
+fill it with nil <see cref="!:Vote"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -890,7 +833,7 @@ fill it with nil <a class="xref" href="Libplanet.Types.Consensus.Vote.html">Vote
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_" data-uid="Libplanet.Net.Consensus.VoteSet.SetPeerMaj23*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23_" data-uid="Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)">SetPeerMaj23(Maj23)</h4>
-  <div class="markdown level1 summary"><p>If a peer claims that it has 2/3 majority for given <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>,
+  <div class="markdown level1 summary"><p>If a peer claims that it has 2/3 majority for given <see cref="!:BlockHash"></see>,
 modify state by calling this method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -948,7 +891,7 @@ this can cause memory issues.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html">InvalidMaj23Exception</a></td>
-        <td><p>Thrown when given <code data-dev-comment-type="paramref" class="paramref">maj23</code> has conflicting <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.</p>
+        <td><p>Thrown when given <code data-dev-comment-type="paramref" class="paramref">maj23</code> has conflicting <see cref="!:BlockHash"></see>.</p>
 </td>
       </tr>
     </tbody>
@@ -962,13 +905,13 @@ this can cause memory issues.</p>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_ToBlockCommit_" data-uid="Libplanet.Net.Consensus.VoteSet.ToBlockCommit*"></a>
   <h4 id="Libplanet_Net_Consensus_VoteSet_ToBlockCommit" data-uid="Libplanet.Net.Consensus.VoteSet.ToBlockCommit">ToBlockCommit()</h4>
-  <div class="markdown level1 summary"><p>Create a <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> instance if <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> has +2/3 majority
+  <div class="markdown level1 summary"><p>Create a <see cref="!:BlockCommit"></see> instance if <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> has +2/3 majority
 commits.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockCommit ToBlockCommit()</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockCommit? ToBlockCommit()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -980,8 +923,8 @@ commits.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a></td>
-        <td><p>A <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> instance made by collected commits. If failed
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BlockCommit</span>&gt;</td>
+        <td><p>A <see cref="!:BlockCommit"></see> instance made by collected commits. If failed
 to collect +2/3 majority commits, return <span class="xref">null</span>.</p>
 </td>
       </tr>
@@ -989,16 +932,16 @@ to collect +2/3 majority commits, return <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(Libplanet.Types.Blocks.BlockHash%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(BlockHash%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/VoteSet.cs/#L342">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_" data-uid="Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority*"></a>
-  <h4 id="Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(Libplanet.Types.Blocks.BlockHash@)">TwoThirdsMajority(out BlockHash)</h4>
-  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>,
-return <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> and <span class="xref">true</span>.
-Else, return the <span class="xref">langword_csharp_default</span> <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> and
+  <h4 id="Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_BlockHash__" data-uid="Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(BlockHash@)">TwoThirdsMajority(out BlockHash)</h4>
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <see cref="!:BlockHash"></see>,
+return <see cref="!:BlockHash"></see> and <span class="xref">true</span>.
+Else, return the <span class="xref">langword_csharp_default</span> <see cref="!:BlockHash"></see> and
 <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1017,9 +960,9 @@ Else, return the <span class="xref">langword_csharp_default</span> <a class="xre
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="xref">BlockHash</span></td>
         <td><span class="parametername">blockHash</span></td>
-        <td><p><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the +2/3 majority vote.
+        <td><p><see cref="!:BlockHash"></see> of the +2/3 majority vote.
 If not exists, it will have <span class="xref">langword_csharp_default</span>.</p>
 </td>
       </tr>

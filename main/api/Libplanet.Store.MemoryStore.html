@@ -77,7 +77,7 @@
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -89,37 +89,13 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_MemoryStore_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class MemoryStore : IStore, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class MemoryStore : object, IStore</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -160,19 +136,19 @@ to delete.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.ForkBlockIndexes(System.Guid%2CSystem.Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L129">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_ForkBlockIndexes_" data-uid="Libplanet.Store.MemoryStore.ForkBlockIndexes*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Types.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid,Guid,Libplanet.Types.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -191,12 +167,12 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">sourceChainId</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">destinationChainId</span></td>
         <td></td>
       </tr>
@@ -221,7 +197,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -287,8 +263,8 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><p>Returns an <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>Returns an <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es
 of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>s.</p>
 </td>
       </tr>
@@ -296,13 +272,13 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetChainBlockCommit_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetChainBlockCommit(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetChainBlockCommit_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetChainBlockCommit(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L278">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_GetChainBlockCommit_" data-uid="Libplanet.Store.MemoryStore.GetChainBlockCommit*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_GetChainBlockCommit_System_Guid_" data-uid="Libplanet.Store.MemoryStore.GetChainBlockCommit(System.Guid)">GetChainBlockCommit(Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_GetChainBlockCommit_Guid_" data-uid="Libplanet.Store.MemoryStore.GetChainBlockCommit(Guid)">GetChainBlockCommit(Guid)</h4>
   <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> associated with a <see cref="!:BlockChain"></see>
 with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <see cref="!:BlockChain.Id"></see>.</p>
 </div>
@@ -322,7 +298,7 @@ with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as i
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The <see cref="!:BlockChain.Id"></see> of
 the <see cref="!:BlockChain"></see> to retrieve <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>.</p>
@@ -383,13 +359,13 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutChainBlockCommit_System_Guid_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutChainBlockCommit(System.Guid%2CLibplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutChainBlockCommit(Guid%2CLibplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L284">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_PutChainBlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutChainBlockCommit*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_PutChainBlockCommit_System_Guid_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutChainBlockCommit(System.Guid,Libplanet.Types.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutChainBlockCommit(Guid,Libplanet.Types.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
   <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> associated with a <see cref="!:BlockChain"></see>
 with <code data-dev-comment-type="paramref" class="paramref">chainId</code> as its <see cref="!:BlockChain.Id"></see>.
 The given <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> should have the same <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>
@@ -411,7 +387,7 @@ as the <see cref="!:BlockChain.Tip"></see>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td><p>The <see cref="!:BlockChain.Id"></see> of
 the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a>.</p>
@@ -429,19 +405,19 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23AppendIndex(System.Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23AppendIndex(Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_System_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(System.Guid,Libplanet.Types.Blocks.BlockHash)">IStore.AppendIndex(Guid, BlockHash)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(Guid,Libplanet.Types.Blocks.BlockHash)">IStore.AppendIndex(Guid, BlockHash)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -460,7 +436,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -500,7 +476,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -554,7 +530,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -608,7 +584,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -633,19 +609,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23CountIndex(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23CountIndex(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L83">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_System_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex(System.Guid)">IStore.CountIndex(Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex(Guid)">IStore.CountIndex(Guid)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -664,7 +640,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -699,7 +675,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -741,19 +717,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23DeleteChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23DeleteChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L71">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_System_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId(System.Guid)">IStore.DeleteChainId(Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId(Guid)">IStore.DeleteChainId(Guid)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -772,7 +748,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -792,7 +768,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -824,19 +800,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_System_Guid_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ForkTxNonces(System.Guid%2CSystem.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ForkTxNonces(Guid%2CGuid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L251">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_System_Guid_System_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces(System.Guid,System.Guid)">IStore.ForkTxNonces(Guid, Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces(Guid,Guid)">IStore.ForkTxNonces(Guid, Guid)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -855,12 +831,12 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">sourceChainId</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">destinationChainId</span></td>
         <td></td>
       </tr>
@@ -880,7 +856,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -934,7 +910,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -988,7 +964,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1042,7 +1018,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1060,7 +1036,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Guid</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1079,7 +1055,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1133,7 +1109,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1187,7 +1163,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1234,19 +1210,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTxNonce(System.Guid%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTxNonce(Guid%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L232">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_System_Guid_Libplanet_Crypto_Address_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce(System.Guid,Libplanet.Crypto.Address)">IStore.GetTxNonce(Guid, Address)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce(Guid,Libplanet.Crypto.Address)">IStore.GetTxNonce(Guid, Address)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1265,7 +1241,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1293,19 +1269,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_System_Guid_Libplanet_Crypto_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IncreaseTxNonce(System.Guid%2CLibplanet.Crypto.Address%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IncreaseTxNonce(Guid%2CLibplanet.Crypto.Address%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L238">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_System_Guid_Libplanet_Crypto_Address_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce(System.Guid,Libplanet.Crypto.Address,System.Int64)">IStore.IncreaseTxNonce(Guid, Address, Int64)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce(Guid,Libplanet.Crypto.Address,System.Int64)">IStore.IncreaseTxNonce(Guid, Address, Int64)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1324,7 +1300,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1342,19 +1318,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_System_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IndexBlockHash(System.Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_System_Guid_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash(System.Guid,System.Int64)">IStore.IndexBlockHash(Guid, Int64)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash(Guid,System.Int64)">IStore.IndexBlockHash(Guid, Int64)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1373,7 +1349,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1413,7 +1389,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1431,26 +1407,26 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IterateIndexes(System.Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})">IStore.IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})">IStore.IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1469,7 +1445,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1495,7 +1471,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1514,7 +1490,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1549,7 +1525,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1568,7 +1544,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1586,26 +1562,26 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Guid</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ListTxNonces(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ListTxNonces(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L227">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_System_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces(System.Guid)">IStore.ListTxNonces(Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces(Guid)">IStore.ListTxNonces(Guid)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1624,7 +1600,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
@@ -1640,7 +1616,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">System.Int64</span>&gt;&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">KeyValuePair</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">System.Int64</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1659,7 +1635,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1698,7 +1674,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1737,7 +1713,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1776,7 +1752,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1815,7 +1791,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1847,19 +1823,19 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23SetCanonicalChainId(System.Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23SetCanonicalChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L80">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_System_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(System.Guid)">IStore.SetCanonicalChainId(Guid)</h4>
+  <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(Guid)">IStore.SetCanonicalChainId(Guid)</h4>
   <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1878,47 +1854,18 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">chainId</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_System_IDisposable_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.System%23IDisposable%23Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L63">View Source</a>
-  </span>
-  <a id="Libplanet_Store_MemoryStore_System_IDisposable_Dispose_" data-uid="Libplanet.Store.MemoryStore.System#IDisposable#Dispose*"></a>
-  <h4 id="Libplanet_Store_MemoryStore_System_IDisposable_Dispose" data-uid="Libplanet.Store.MemoryStore.System#IDisposable#Dispose">IDisposable.Dispose()</h4>
-  <div class="markdown level1 summary"><p>Volatile in-memory store.</p>
-<p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
-game logic.</p>
-<p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
-<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
-<ul><li><code>memory:</code></li></ul>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void IDisposable.Dispose()</code></pre>
-  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
-  </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Libplanet.Store.StoreExtensions.html#Libplanet_Store_StoreExtensions_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_">StoreExtensions.Copy(IStore, IStore)</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Store.StoreExtensions.html#Libplanet_Store_StoreExtensions_GetStateRootHash_Libplanet_Store_IStore_System_Nullable_Libplanet_Types_Blocks_BlockHash__">StoreExtensions.GetStateRootHash(IStore, Nullable&lt;BlockHash&gt;)</a>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>

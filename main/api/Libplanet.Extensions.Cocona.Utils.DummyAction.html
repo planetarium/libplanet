@@ -79,34 +79,6 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Utils.DummyAction</span></div>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.html">Libplanet.Extensions.Cocona</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_syntax">Syntax</h5>
@@ -141,12 +113,7 @@
   </span>
   <a id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.PlainValue*"></a>
   <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.PlainValue">PlainValue</h4>
-  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
-(or fields) of an action, so that they can be transmitted over
-network or saved to persistent storage.</p>
-<p>Serialized values are deserialized by
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue(IValue)</a> method later.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -162,39 +129,23 @@ network or saved to persistent storage.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
-        <td><p>A Bencodex value which encodes this action's bound values (held
-by properties or fields).</p>
-</td>
+        <td><span class="xref">IValue</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_PlainValue_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_Bencodex_Types_IValue_">LoadPlainValue</a>(<span class="xref">Bencodex.Types.IValue</span>)</div>
-  </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Utils.DummyAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Utils.DummyAction.Execute(IActionContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Utils.cs/#L263">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.Execute*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
-  <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
-<em>deterministic</em>.</p>
-<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
-it receives information such as a transaction signer,
-its states immediately before the execution,
-and a deterministic random seed.</p>
-<p>Other “bound” information resides in the action
-object in itself, as its properties (or fields).</p>
-<p>A returned <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> object functions as
-a delta which shifts from previous states to next states.</p>
-</div>
+  <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_IActionContext_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.Execute(IActionContext)">Execute(IActionContext)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -211,13 +162,9 @@ a delta which shifts from previous states to next states.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="xref">IActionContext</span></td>
         <td><span class="parametername">context</span></td>
-        <td><p>A context object containing addresses that
-signed the transaction, states immediately before the execution,
-and a PRNG object which produces deterministic random numbers.
-See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -231,65 +178,21 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
-        <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
-</td>
+        <td><span class="xref">IWorld</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method should be deterministic:
-for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.
-Side effects should be avoided, because an action's
-<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
-than once, the time it's called is difficult to predict.</p>
-<p>For changing in-memory game states or drawing graphics,
-implement the <see cref="!:Blockchain.Renderers.IRenderer"></see> interface separately and
-attach it to a <see cref="!:Blockchain.BlockChain"></see> instance.</p>
-<p>For randomness, <em>never</em> use <span class="xref">System.Random</span>
-nor any other PRNGs provided by other than Libplanet.
-Use <see cref="!:IActionContext.Random"></see> instead.
-<see cref="!:IActionContext.Random"></see> guarantees the same action
-has the consistent result for every node in the network.</p>
-<p>Also do not perform I/O operations such as file system access
-or networking.  These bring an action indeterministic.  You maybe
-fine to log messages for debugging purpose, but equivalent messages
-could be logged multiple times.</p>
-<p>Although it might be surprising, <a href="https://wp.me/p1fTCO-kT">floating-point arithmetics are
-underspecified so that it can make different results on different
-machines, platforms, runtimes, compilers, and builds</a>.</p>
-<p>Lastly, you need to be aware and keep in mind that there
-is a global state named <span class="xref">System.Globalization.CultureInfo.CurrentCulture</span> on .NET;
-if you format numbers, dates and times, currencies, or other such
-things into strings and parse these strings back these can rely on
-<span class="xref">System.Globalization.CultureInfo.CurrentCulture</span>,
-so that the same action make different results on two differently
-configured systems like Thai language and French language.
-In order to make these types of conversions deterministic,
-you have to explicitly pass <span class="xref">System.Globalization.CultureInfo.InvariantCulture</span>.</p>
-<p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
-<p>Lastly, you can conduct static analysis on your code
-using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
-The analyzer can be enabled by adding its NuGet package into
-your project as a dependency.</p>
-</div>
-  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
-  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Utils.cs/#L267">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
-  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
-property made), and then fills this action's properties (or fields)
-with the deserialized values.</p>
-</div>
+  <h4 id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_IValue_" data-uid="Libplanet.Extensions.Cocona.Utils.DummyAction.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -306,23 +209,12 @@ with the deserialized values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">plainValue</span></td>
-        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
-property) to be deserialized and assigned to this action's
-properties (or fields).</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Extensions_Cocona_Utils_DummyAction_LoadPlainValue_Bencodex_Types_IValue__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
-  </div>
 </article>
           </div>
 

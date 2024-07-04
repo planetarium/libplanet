@@ -80,35 +80,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">StoreExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_StoreExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class StoreExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class StoreExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -151,23 +127,6 @@ between two different types of <a class="xref" href="Libplanet.Store.IStore.html
         <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
         <td><span class="parametername">to</span></td>
         <td><p>The store to contain the copied contents. Expected to be empty.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the store passed through
-<code data-dev-comment-type="paramref" class="paramref">to</code> is not empty.</p>
 </td>
       </tr>
     </tbody>
@@ -223,27 +182,10 @@ This can be <span class="xref">null</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><p>The state root hash of the block associated with <code data-dev-comment-type="paramref" class="paramref">blockHash</code>
 if found or <span class="xref">null</span> if <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is itself
 <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is
-not <span class="xref">null</span> but the corresponding block is not found in store.</p>
 </td>
       </tr>
     </tbody>

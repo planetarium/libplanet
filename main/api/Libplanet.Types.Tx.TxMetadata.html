@@ -80,32 +80,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TxMetadata</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_TxMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class TxMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class TxMetadata : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -117,13 +96,13 @@
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMetadata.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMetadata__ctor_" data-uid="Libplanet.Types.Tx.TxMetadata.#ctor*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMetadata__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMetadata.#ctor(Bencodex.Types.Dictionary)">TxMetadata(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMetadata__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMetadata.#ctor(Bencodex.Types.Dictionary)">TxMetadata(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Tx.TxMetadata.html">TxMetadata</a> from a Bencodex <code data-dev-comment-type="paramref" class="paramref">dictionary</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxMetadata(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public TxMetadata(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,29 +119,6 @@
         <td><span class="parametername">dictionary</span></td>
         <td><p>A Bencodex dictionary made using
 <a class="xref" href="Libplanet.Types.Tx.TxMetadata.html#Libplanet_Types_Tx_TxMetadata_ToBencodex">ToBencodex()</a> method.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">dictionary</code> lacks some fields.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.InvalidCastException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">dictionary</code> has some invalid values.</p>
 </td>
       </tr>
     </tbody>
@@ -404,7 +360,7 @@ This is derived from the <a class="xref" href="Libplanet.Types.Tx.TxMetadata.htm
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -436,7 +392,7 @@ transaction.  However, it could be wrong.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -460,8 +416,7 @@ transaction.  However, it could be wrong.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public Dictionary ToBencodex()</code></pre>
+    <pre><code class="lang-csharp hljs">public Bencodex.Types.Dictionary ToBencodex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -492,8 +447,7 @@ public Dictionary ToBencodex()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -510,8 +464,6 @@ public override string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
 </article>
           </div>
 

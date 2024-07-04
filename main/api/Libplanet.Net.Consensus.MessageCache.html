@@ -80,35 +80,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">MessageCache</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Consensus.html">Libplanet.Net.Consensus</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Consensus_MessageCache_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MessageCache</code></pre>
+    <pre><code class="lang-csharp hljs">public class MessageCache : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -149,21 +125,20 @@ recently seen <a class="xref" href="Libplanet.Net.Messages.Message.html">Message
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_MessageCache_DiffFrom_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageId__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Messages.MessageId%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_MessageCache_DiffFrom_IEnumerable_Libplanet_Net_Messages_MessageId__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.MessageCache.DiffFrom(IEnumerable%7BLibplanet.Net.Messages.MessageId%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/MessageCache.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_MessageCache_DiffFrom_" data-uid="Libplanet.Net.Consensus.MessageCache.DiffFrom*"></a>
-  <h4 id="Libplanet_Net_Consensus_MessageCache_DiffFrom_System_Collections_Generic_IEnumerable_Libplanet_Net_Messages_MessageId__" data-uid="Libplanet.Net.Consensus.MessageCache.DiffFrom(System.Collections.Generic.IEnumerable{Libplanet.Net.Messages.MessageId})">DiffFrom(IEnumerable&lt;MessageId&gt;)</h4>
+  <h4 id="Libplanet_Net_Consensus_MessageCache_DiffFrom_IEnumerable_Libplanet_Net_Messages_MessageId__" data-uid="Libplanet.Net.Consensus.MessageCache.DiffFrom(IEnumerable{Libplanet.Net.Messages.MessageId})">DiffFrom(IEnumerable&lt;MessageId&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the array of <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> of set difference
 <code data-dev-comment-type="paramref" class="paramref">ids</code> - <span class="xref">Libplanet.Net.Consensus.MessageCache._messages</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public MessageId[] DiffFrom(IEnumerable&lt;MessageId&gt; ids)</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageId[] DiffFrom(IEnumerable&lt;MessageId&gt; ids)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -176,7 +151,7 @@ public MessageId[] DiffFrom(IEnumerable&lt;MessageId&gt; ids)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</td>
         <td><span class="parametername">ids</span></td>
         <td><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>s of the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s
 to calculate difference from.</p>
@@ -215,8 +190,7 @@ if it exists in the message cache.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public MessageContent Get(MessageId id)</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageContent Get(MessageId id)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -252,23 +226,6 @@ public MessageContent Get(MessageId id)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
-        <td><p>Thrown when a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> of id
-<code data-dev-comment-type="paramref" class="paramref">id</code> does not exist in the message cache.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_MessageCache_GetGossipIds.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.MessageCache.GetGossipIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -283,8 +240,7 @@ public MessageContent Get(MessageId id)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public MessageId[] GetGossipIds()</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageId[] GetGossipIds()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -332,22 +288,6 @@ public MessageId[] GetGossipIds()</code></pre>
         <td><a class="xref" href="Libplanet.Net.Messages.MessageContent.html">MessageContent</a></td>
         <td><span class="parametername">message</span></td>
         <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to cache.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with the same id already exists.</p>
 </td>
       </tr>
     </tbody>

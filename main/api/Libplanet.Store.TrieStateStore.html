@@ -83,37 +83,13 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_TrieStateStore_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TrieStateStore : IStateStore, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class TrieStateStore : object, IStateStore</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -198,7 +174,7 @@
   <h4 id="Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie_" data-uid="Libplanet.Store.TrieStateStore.Commit(Libplanet.Store.Trie.ITrie)">Commit(ITrie)</h4>
   <div class="markdown level1 summary"><p>Commits given <code data-dev-comment-type="paramref" class="paramref">trie</code> to storage.
 Returned <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> must be identical to the one obtained from
-<a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a> with resulting <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s
+<a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_SHA256___">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a> with resulting <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s
 <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -249,17 +225,17 @@ Otherwise, this is not guaranteed to work properly.</p>
 </div>
   <h5 id="Libplanet_Store_TrieStateStore_Commit_Libplanet_Store_Trie_ITrie__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">GetStateRoot</a>(<span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;)</div>
+      <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_SHA256___">GetStateRoot</a>(<span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CLibplanet.Store.TrieStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_CopyStates_IImmutableSet_Libplanet_Common_HashDigest_SHA256___Libplanet_Store_TrieStateStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet%7BLibplanet.Common.HashDigest%7BSHA256%7D%7D%2CLibplanet.Store.TrieStateStore)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/TrieStateStore.cs/#L52">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_CopyStates_" data-uid="Libplanet.Store.TrieStateStore.CopyStates*"></a>
-  <h4 id="Libplanet_Store_TrieStateStore_CopyStates_System_Collections_Immutable_IImmutableSet_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___Libplanet_Store_TrieStateStore_" data-uid="Libplanet.Store.TrieStateStore.CopyStates(System.Collections.Immutable.IImmutableSet{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}},Libplanet.Store.TrieStateStore)">CopyStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;, TrieStateStore)</h4>
+  <h4 id="Libplanet_Store_TrieStateStore_CopyStates_IImmutableSet_Libplanet_Common_HashDigest_SHA256___Libplanet_Store_TrieStateStore_" data-uid="Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet{Libplanet.Common.HashDigest{SHA256}},Libplanet.Store.TrieStateStore)">CopyStates(IImmutableSet&lt;HashDigest&lt;SHA256&gt;&gt;, TrieStateStore)</h4>
   <div class="markdown level1 summary"><p>
 Copies states under state root hashes of given <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>
 to <code data-dev-comment-type="paramref" class="paramref">targetStateStore</code>.
@@ -288,7 +264,7 @@ of <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">stateRootHashes</span></td>
         <td><p>The state root hashes of states to copy.</p>
 </td>
@@ -297,23 +273,6 @@ of <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code
         <td><a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a></td>
         <td><span class="parametername">targetStateStore</span></td>
         <td><p>The target state store to copy state root hashes.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when a state root cannot be found for
-any of given <code data-dev-comment-type="paramref" class="paramref">stateRootHashes</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -336,13 +295,13 @@ any of given <code data-dev-comment-type="paramref" class="paramref">stateRootHa
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable%7BLibplanet.Common.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/TrieStateStore.cs/#L115">View Source</a>
   </span>
   <a id="Libplanet_Store_TrieStateStore_GetStateRoot_" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot*"></a>
-  <h4 id="Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Store_TrieStateStore_GetStateRoot_System_Nullable_Libplanet_Common_HashDigest_SHA256___" data-uid="Libplanet.Store.TrieStateStore.GetStateRoot(System.Nullable{Libplanet.Common.HashDigest{SHA256}})">GetStateRoot(Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the state root trie of the <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code> from the state store.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -361,7 +320,7 @@ any of given <code data-dev-comment-type="paramref" class="paramref">stateRootHa
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The state root hash of the state root trie to get.
 If <span class="xref">null</span> is passed the empty state root trie is returned.</p>
@@ -391,7 +350,7 @@ If <span class="xref">null</span> is passed the empty state root trie is returne
       <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>

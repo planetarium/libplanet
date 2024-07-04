@@ -91,7 +91,7 @@ from <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountSt
         part of the resulting <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>.
 </li><li>
     This only shows the difference in &quot;states&quot; manipulated using
-<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_Bencodex_Types_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
+<a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_SetState_Libplanet_Crypto_Address_IValue_">SetState(Address, IValue)</a> and <a class="xref" href="Libplanet.Action.State.IAccount.html#Libplanet_Action_State_IAccount_RemoveState_Libplanet_Crypto_Address_">RemoveState(Address)</a>.  That is,
 this does care about differences in <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>s.
 </li><li>
     Due to the reason mentioned directly above, the size of <a class="xref" href="Libplanet.Action.State.AccountDiff.html">AccountDiff</a>
@@ -145,7 +145,7 @@ maintaining <see cref="!:Delta"></see>.</p>
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -157,7 +157,7 @@ any state.</li></ul>
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li></ul>
 </section>
       <h4><a class="xref" href="Libplanet.Action.State.IBlockChainStates.html">IBlockChainStates</a></h4>
@@ -171,7 +171,7 @@ maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_A
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> account cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -185,7 +185,7 @@ any account.</li></ul>
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to

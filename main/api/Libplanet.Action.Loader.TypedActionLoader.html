@@ -84,54 +84,30 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.Loader.html">Libplanet.Action.Loader</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_Loader_TypedActionLoader_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TypedActionLoader : IActionLoader</code></pre>
+    <pre><code class="lang-csharp hljs">public class TypedActionLoader : object, IActionLoader</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.%23ctor(System.Collections.Generic.IDictionary%7BBencodex.Types.IValue%2CSystem.Type%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader__ctor_IDictionary_IValue_Type__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.%23ctor(IDictionary%7BIValue%2CType%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Loader/TypedActionLoader.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Action_Loader_TypedActionLoader__ctor_" data-uid="Libplanet.Action.Loader.TypedActionLoader.#ctor*"></a>
-  <h4 id="Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type__" data-uid="Libplanet.Action.Loader.TypedActionLoader.#ctor(System.Collections.Generic.IDictionary{Bencodex.Types.IValue,System.Type})">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</h4>
+  <h4 id="Libplanet_Action_Loader_TypedActionLoader__ctor_IDictionary_IValue_Type__" data-uid="Libplanet.Action.Loader.TypedActionLoader.#ctor(IDictionary{IValue,Type})">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</h4>
   <div class="markdown level1 summary"><p>
 Creates a new <a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html">TypedActionLoader</a> instance with an explicit
-<span class="xref">Bencodex.Types.IValue</span>s to <span class="xref">System.Type</span>s mapping.
+<see cref="!:IValue"></see>s to <see cref="!:Type"></see>s mapping.
 </p>
 <p>
 The mapping can be generated semi-automatically using
-<a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_Create_System_Reflection_Assembly_System_Type_">Create(Assembly, Type)</a>.
+<a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_Create_System_Nullable_Assembly__System_Nullable_Type__">Create(Nullable&lt;Assembly&gt;, Nullable&lt;Type&gt;)</a>.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -150,16 +126,16 @@ The mapping can be generated semi-automatically using
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">Bencodex.Types.IValue</span>, <span class="xref">System.Type</span>&gt;</td>
+        <td><span class="xref">IDictionary</span>&lt;<span class="xref">IValue</span>, <span class="xref">Type</span>&gt;</td>
         <td><span class="parametername">types</span></td>
-        <td><p>The <span class="xref">Bencodex.Types.IValue</span>s to <span class="xref">System.Type</span>s mapping to use.</p>
+        <td><p>The <see cref="!:IValue"></see>s to <see cref="!:Type"></see>s mapping to use.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type___seealso">See Also</h5>
+  <h5 id="Libplanet_Action_Loader_TypedActionLoader__ctor_IDictionary_IValue_Type___seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_Create_System_Reflection_Assembly_System_Type_">Create(Assembly, Type)</a></div>
+      <div><a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader_Create_System_Nullable_Assembly__System_Nullable_Type__">Create(Nullable&lt;Assembly&gt;, Nullable&lt;Type&gt;)</a></div>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -189,7 +165,7 @@ The mapping can be generated semi-automatically using
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">Bencodex.Types.IValue</span>, <span class="xref">System.Type</span>&gt;</td>
+        <td><span class="xref">IDictionary</span>&lt;<span class="xref">IValue</span>, <span class="xref">Type</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -198,13 +174,13 @@ The mapping can be generated semi-automatically using
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader_Create_System_Reflection_Assembly_System_Type_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.Create(System.Reflection.Assembly%2CSystem.Type)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader_Create_System_Nullable_Assembly__System_Nullable_Type__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.Create(System.Nullable%7BAssembly%7D%2CSystem.Nullable%7BType%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Loader/TypedActionLoader.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Action_Loader_TypedActionLoader_Create_" data-uid="Libplanet.Action.Loader.TypedActionLoader.Create*"></a>
-  <h4 id="Libplanet_Action_Loader_TypedActionLoader_Create_System_Reflection_Assembly_System_Type_" data-uid="Libplanet.Action.Loader.TypedActionLoader.Create(System.Reflection.Assembly,System.Type)">Create(Assembly, Type)</h4>
+  <h4 id="Libplanet_Action_Loader_TypedActionLoader_Create_System_Nullable_Assembly__System_Nullable_Type__" data-uid="Libplanet.Action.Loader.TypedActionLoader.Create(System.Nullable{Assembly},System.Nullable{Type})">Create(Nullable&lt;Assembly&gt;, Nullable&lt;Type&gt;)</h4>
   <div class="markdown level1 summary"><p>
 Creates a new <a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html">TypedActionLoader</a> instance.
 </p>
@@ -214,13 +190,13 @@ The <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type to loa
 except for those handled by <a class="xref" href="Libplanet.Action.Sys.Registry.html">Registry</a> for system <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s.
 </p>
 <p>
-This automatically searches an <span class="xref">System.Reflection.Assembly</span> with all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s
+This automatically searches an <see cref="!:Assembly"></see> with all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s
 according to the following rule:
 <ul><li>
-        The <span class="xref">System.Reflection.Assembly</span> to search is <code data-dev-comment-type="paramref" class="paramref">assembly</code> if given,
-        or the <span class="xref">System.Reflection.Assembly</span> of <code data-dev-comment-type="paramref" class="paramref">baseType</code> if not.
+        The <see cref="!:Assembly"></see> to search is <code data-dev-comment-type="paramref" class="paramref">assembly</code> if given,
+        or the <see cref="!:Assembly"></see> of <code data-dev-comment-type="paramref" class="paramref">baseType</code> if not.
 </li><li>
-    From the <span class="xref">System.Reflection.Assembly</span> determined above, all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s
+    From the <see cref="!:Assembly"></see> determined above, all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s
     with <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> attached are collected.
 </li><li>
     If <code data-dev-comment-type="paramref" class="paramref">baseType</code> is provided, only those <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
@@ -228,15 +204,15 @@ according to the following rule:
 </li></ul>
 
 <p>
-Then a dictionary mapping from <span class="xref">Bencodex.Types.IValue</span>s to <span class="xref">System.Type</span>s created
+Then a dictionary mapping from <see cref="!:IValue"></see>s to <see cref="!:Type"></see>s created
 from searched <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s and the explicit loader is created by
-passing the map to <a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type__">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</a>.
+passing the map to <a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_IDictionary_IValue_Type__">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</a>.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TypedActionLoader Create(Assembly assembly = null, Type baseType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static TypedActionLoader Create(Assembly? assembly = null, Type? baseType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -249,13 +225,13 @@ passing the map to <a class="xref" href="Libplanet.Action.Loader.TypedActionLoad
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Assembly</span>&gt;</td>
         <td><span class="parametername">assembly</span></td>
-        <td><p>The <span class="xref">System.Reflection.Assembly</span> to search <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> types.</p>
+        <td><p>The <see cref="!:Assembly"></see> to search <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> types.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Type</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Type</span>&gt;</td>
         <td><span class="parametername">baseType</span></td>
         <td><p>The type of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> to filter.</p>
 </td>
@@ -289,26 +265,26 @@ passing the map to <a class="xref" href="Libplanet.Action.Loader.TypedActionLoad
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when both <code data-dev-comment-type="paramref" class="paramref">assembly</code> and
-<code data-dev-comment-type="paramref" class="paramref">baseType</code> are <span class="xref">null</span>.</p>
+        <td><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></td>
+        <td><p>Thrown when an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be
+instantiated with given <code data-dev-comment-type="paramref" class="paramref">index</code> and <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_Loader_TypedActionLoader_Create_System_Reflection_Assembly_System_Type__seealso">See Also</h5>
+  <h5 id="Libplanet_Action_Loader_TypedActionLoader_Create_System_Nullable_Assembly__System_Nullable_Type___seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_System_Collections_Generic_IDictionary_Bencodex_Types_IValue_System_Type__">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Action.Loader.TypedActionLoader.html#Libplanet_Action_Loader_TypedActionLoader__ctor_IDictionary_IValue_Type__">TypedActionLoader(IDictionary&lt;IValue, Type&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Loader/TypedActionLoader.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_Action_Loader_TypedActionLoader_LoadAction_" data-uid="Libplanet.Action.Loader.TypedActionLoader.LoadAction*"></a>
-  <h4 id="Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_" data-uid="Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)">LoadAction(Int64, IValue)</h4>
+  <h4 id="Libplanet_Action_Loader_TypedActionLoader_LoadAction_System_Int64_IValue_" data-uid="Libplanet.Action.Loader.TypedActionLoader.LoadAction(System.Int64,IValue)">LoadAction(Int64, IValue)</h4>
   <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a> implementation for multiple <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> types.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -332,7 +308,7 @@ passing the map to <a class="xref" href="Libplanet.Action.Loader.TypedActionLoad
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>

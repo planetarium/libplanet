@@ -78,7 +78,7 @@ maintaining <a class="xref" href="Libplanet.Action.State.IWorld.html#Libplanet_A
 that every possible <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> exists and
 is mapped to <span class="xref">null</span>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<span class="xref">System.Collections.Generic.KeyNotFoundException</span>,
+<see cref="!:KeyNotFoundException"></see>,
 but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> with
 <span class="xref">null</span> account cannot be distinguished from
 the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> having never been set to
@@ -128,8 +128,7 @@ this <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IWorldDelta Delta { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IWorldDelta Delta { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,8 +166,7 @@ method does not manipulate the instance, but returns a new
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IAccount GetAccount(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">IAccount GetAccount(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -227,8 +225,7 @@ set to given <code data-dev-comment-type="paramref" class="paramref">account</co
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IWorld SetAccount(Address address, IAccount account)</code></pre>
+    <pre><code class="lang-csharp hljs">IWorld SetAccount(Address address, IAccount account)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,23 +274,6 @@ given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p
   <div class="markdown level1 remarks"><p>This method method does not manipulate the instance, but returns
 a new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance with an updated world state instead.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <see cref="!:Legacy"></see> is <span class="xref">true</span> and
-<code data-dev-comment-type="paramref" class="paramref">address</code> is not <a class="xref" href="Libplanet.Action.State.ReservedAddresses.html#Libplanet_Action_State_ReservedAddresses_LegacyAccount">LegacyAccount</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Libplanet.Action.State.IWorldExtensions.html#Libplanet_Action_State_IWorldExtensions_BurnAsset_Libplanet_Action_State_IWorld_Libplanet_Action_IActionContext_Libplanet_Crypto_Address_Libplanet_Types_Assets_FungibleAssetValue_">IWorldExtensions.BurnAsset(IWorld, IActionContext, Address, FungibleAssetValue)</a>

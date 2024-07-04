@@ -84,12 +84,12 @@
       <h4><a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a></h4>
       <section><p>
 A <code>class</code> representing an abstract data model that can be easily
-encoded and decoded to and from a <span class="xref">Bencodex.Types.Dictionary</span>.
+encoded and decoded to and from a <see cref="!:BTypes.Dictionary"></see>.
 </p>
 <p>
 Inheriting this class and simply declaring properties allows an instance of the child class
-to encode its data into a <span class="xref">Bencodex.Types.Dictionary</span> where the encoded
-<span class="xref">Bencodex.Types.Dictionary</span> has the concrete class&apos;es each property name as its key and
+to encode its data into a <see cref="!:BTypes.Dictionary"></see> where the encoded
+<see cref="!:BTypes.Dictionary"></see> has the concrete class&apos;es each property name as its key and
 the each corresponding property value as its value.
 </p>
 <p>
@@ -105,9 +105,9 @@ and <code>string</code>.
 </li><li>
     Collective types:
 <ul><li>
-<span class="xref">System.Collections.Immutable.ImmutableList&lt;T&gt;</span> where <code>T</code> is a primitive type.
+<see cref="!:ImmutableList&lt;T>"></see> where <code>T</code> is a primitive type.
 </li><li>
-<span class="xref">System.Collections.Immutable.ImmutableDictionary&lt;TKey, TValue&gt;</span> where
+<see cref="!:ImmutableDictionary&lt;TKey,TValue>"></see> where
 <ul><li>
 <code>TKey</code> is one of
 <code>ImmutableArray&lt;byte></code>, <code>Address</code>,
@@ -123,11 +123,11 @@ and <code>string</code>.
     and <code>ImmutableList&lt;int?></code>are not allowed.
 </li><li>
     Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
-    result in an <span class="xref">System.Exception</span> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+    result in an <see cref="!:Exception"></see> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
 </li><li>
     Trying to assign <span class="xref">null</span> to any property or to a part of
-    a collection will result in an <span class="xref">System.Exception</span> when
-<a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Dictionary)</a> is called.
+    a collection will result in an <see cref="!:Exception"></see> when
+<a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Bencodex.Types.Dictionary)</a> is called.
 </li></ul>
 
 </section>
@@ -137,7 +137,7 @@ the file system or in memory.  It also uses <a href="https://www.litedb.org/">Li
 for some complex indices.</p>
 <p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
 <p>The following query string parameters are supported:</p>
 <table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
@@ -149,7 +149,7 @@ parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a c
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
 parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
-parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore__ctor_System_String_">DefaultKeyValueStore(String)</a>&apos;s <code>path</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:DefaultKeyValueStore(string)"></see>&apos;s <code>path</code>
 parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
 </section>
       <h4><a class="xref" href="Libplanet.Store.HashNodeCache.html">HashNodeCache</a></h4>
@@ -161,7 +161,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
 game logic.</p>
 <p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
 <a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
-using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_System_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
 <ul><li><code>memory:</code></li></ul>
 </section>
       <h4><a class="xref" href="Libplanet.Store.StoreExtensions.html">StoreExtensions</a></h4>

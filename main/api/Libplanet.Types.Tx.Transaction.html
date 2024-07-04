@@ -83,41 +83,85 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</div>
     <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
     <div><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></div>
     <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>&gt;</div>
     <div><a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>&gt;</div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a>&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_Transaction_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Transaction : IEquatable&lt;Transaction&gt;, ITransaction, IUnsignedTx, ITxInvoice, IEquatable&lt;ITxInvoice&gt;, ITxSigningMetadata, IEquatable&lt;ITxSigningMetadata&gt;, IEquatable&lt;IUnsignedTx&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Transaction : IEquatable&lt;Transaction&gt;, ITransaction, IUnsignedTx, ITxInvoice, ITxSigningMetadata</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.%23ctor(Libplanet.Types.Tx.IUnsignedTx%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction__ctor_" data-uid="Libplanet.Types.Tx.Transaction.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.Transaction.#ctor(Libplanet.Types.Tx.IUnsignedTx,ImmutableArray{System.Byte})">Transaction(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> instance by verifying a
+<code data-dev-comment-type="paramref" class="paramref">signature</code> of an <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transaction(IUnsignedTx unsignedTx, ImmutableArray&lt;byte&gt; signature)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td><span class="parametername">unsignedTx</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to combine with
+<code data-dev-comment-type="paramref" class="paramref">signature</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td><p>The signature to combine with <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">signature</code> is not valid for <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.%23ctor(Libplanet.Types.Tx.IUnsignedTx%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -159,87 +203,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
-does not match the public key of <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.%23ctor(Libplanet.Types.Tx.IUnsignedTx%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L40">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_Transaction__ctor_" data-uid="Libplanet.Types.Tx.Transaction.#ctor*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.Transaction.#ctor(Libplanet.Types.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})">Transaction(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> instance by verifying a
-<code data-dev-comment-type="paramref" class="paramref">signature</code> of an <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction(IUnsignedTx unsignedTx, ImmutableArray&lt;byte&gt; signature)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
-        <td><span class="parametername">unsignedTx</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to combine with
-<code data-dev-comment-type="paramref" class="paramref">signature</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">signature</span></td>
-        <td><p>The signature to combine with <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">signature</code> is not valid for <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
   </div>
@@ -260,8 +224,7 @@ This can be empty, but cannot be <span class="xref">null</span>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(TxActionListJsonConverter))]
-public TxActionList Actions { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TxActionList Actions { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -552,7 +515,7 @@ This cannot be <span class="xref">null</span>.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>A new <span class="xref">System.Byte</span> array of this transaction's
+        <td><p>A new <see cref="!:System.Byte"></see> array of this transaction's
 signature.  Changing a returned array does not affect the internal
 state of this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> object.</p>
 </td>
@@ -629,7 +592,7 @@ from the <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libpla
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -677,7 +640,7 @@ an &quot;unsigned transaction&quot;.  This is not recommended.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -690,13 +653,13 @@ an &quot;unsigned transaction&quot;.  This is not recommended.
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CSystem.Collections.Generic.IEnumerable%7BBencodex.Types.IValue%7D%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CIEnumerable%7BIValue%7D%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BDateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L245">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_Transaction_Create_" data-uid="Libplanet.Types.Tx.Transaction.Create*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset__" data-uid="Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Collections.Generic.IEnumerable{Bencodex.Types.IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IValue&gt;, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
+  <h4 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset__" data-uid="Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},IEnumerable{IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IValue&gt;, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
   <div class="markdown level1 summary"><p>A façade factory to create a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.
 It automatically fills the following values from:</p>
 <table><thead><tr><th>Property</th><th>Parameter the filled value derived from</th></tr></thead><tbody><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signer">Signer</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_PublicKey">PublicKey</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a></td><td><code data-dev-comment-type="paramref" class="paramref">actions</code> and
@@ -748,7 +711,7 @@ in the genesis block.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">IValue</span>&gt;</td>
         <td><span class="parametername">actions</span></td>
         <td><p>A list of user-defined custom actions to include.  This can
 be empty, but cannot be <span class="xref">null</span>.  This goes to
@@ -768,7 +731,7 @@ the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTimeOffset</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
         <td><span class="parametername">timestamp</span></td>
         <td><p>The time this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>
 is created and signed.  This goes to the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Timestamp">Timestamp</a>
@@ -795,24 +758,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">privateKey</co
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when <span class="xref">null</span>
-is passed to <code data-dev-comment-type="paramref" class="paramref">privateKey</code> or <code data-dev-comment-type="paramref" class="paramref">actions</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Collections_Generic_IEnumerable_Bencodex_Types_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
   </div>
@@ -945,20 +891,20 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L289">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_Transaction_Equals_" data-uid="Libplanet.Types.Tx.Transaction.Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction_Equals_System_Object_" data-uid="Libplanet.Types.Tx.Transaction.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Tx.Transaction.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
 a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -971,7 +917,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -992,9 +938,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Types_Tx_Transaction_Equals_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
   </div>
@@ -1030,8 +974,6 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <h5 id="Libplanet_Types_Tx_Transaction_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
@@ -1045,7 +987,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmi
   </span>
   <a id="Libplanet_Types_Tx_Transaction_Serialize_" data-uid="Libplanet.Types.Tx.Transaction.Serialize*"></a>
   <h4 id="Libplanet_Types_Tx_Transaction_Serialize" data-uid="Libplanet.Types.Tx.Transaction.Serialize">Serialize()</h4>
-  <div class="markdown level1 summary"><p>Encodes this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> into a <span class="xref">System.Byte</span> array.</p>
+  <div class="markdown level1 summary"><p>Encodes this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> into a <see cref="!:System.Byte"></see> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1073,174 +1015,7 @@ representation of this <a class="xref" href="Libplanet.Types.Tx.Transaction.html
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
   </div>
-  <h3 id="eii">Explicit Interface Implementations
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.System%23IEquatable%7BLibplanet%23Types%23Tx%23ITxInvoice%7D%23Equals(Libplanet.Types.Tx.ITxInvoice)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L271">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#ITxInvoice}#Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#ITxInvoice}#Equals(Libplanet.Types.Tx.ITxInvoice)">IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice)</h4>
-  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
-a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxSigningMetadata__Equals_Libplanet_Types_Tx_ITxSigningMetadata_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.System%23IEquatable%7BLibplanet%23Types%23Tx%23ITxSigningMetadata%7D%23Equals(Libplanet.Types.Tx.ITxSigningMetadata)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L276">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxSigningMetadata__Equals_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#ITxSigningMetadata}#Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxSigningMetadata__Equals_Libplanet_Types_Tx_ITxSigningMetadata_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#ITxSigningMetadata}#Equals(Libplanet.Types.Tx.ITxSigningMetadata)">IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata)</h4>
-  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
-a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool IEquatable&lt;ITxSigningMetadata&gt;.Equals(ITxSigningMetadata other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_ITxSigningMetadata__Equals_Libplanet_Types_Tx_ITxSigningMetadata__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_IUnsignedTx__Equals_Libplanet_Types_Tx_IUnsignedTx_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.System%23IEquatable%7BLibplanet%23Types%23Tx%23IUnsignedTx%7D%23Equals(Libplanet.Types.Tx.IUnsignedTx)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/Transaction.cs/#L281">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_IUnsignedTx__Equals_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#IUnsignedTx}#Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_IUnsignedTx__Equals_Libplanet_Types_Tx_IUnsignedTx_" data-uid="Libplanet.Types.Tx.Transaction.System#IEquatable{Libplanet#Types#Tx#IUnsignedTx}#Equals(Libplanet.Types.Tx.IUnsignedTx)">IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx)</h4>
-  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
-a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_Transaction_System_IEquatable_Libplanet_Types_Tx_IUnsignedTx__Equals_Libplanet_Types_Tx_IUnsignedTx__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
-  </div>
   <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
-  </div>
   <div>
       <a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>
   </div>
@@ -1251,16 +1026,16 @@ bool IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx other)</code></pre>
       <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
       <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -1279,7 +1054,7 @@ bool IEquatable&lt;IUnsignedTx&gt;.Equals(IUnsignedTx other)</code></pre>
       <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Sign_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_">TransactionExtensions.Sign(IUnsignedTx, PrivateKey)</a>
   </div>
   <div>
-      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__">TransactionExtensions.Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</a>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__">TransactionExtensions.Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalUnsignedTx_Libplanet_Types_Tx_IUnsignedTx_">TxMarshaler.MarshalUnsignedTx(IUnsignedTx)</a>

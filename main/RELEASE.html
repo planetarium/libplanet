@@ -200,7 +200,7 @@ branch.  See also the below commits for example:</p>
 <p>You also need to prepare the next patch release.  Switch to the maintenance
 branch (e.g., <em>1.2-maintenance</em>), and make sure it is up-to-date.</p>
 <p>You need to bump the patch version of the <code>&lt;VersionPrefix&gt;</code> field
-in the <em>src/Libplanet/Libplanet.csproj</em> file.  For example, if the version you have
+in the <em>Directory.Build.props</em> file.  For example, if the version you have
 just released is <em>1.2.3</em>, bump it to <em>1.2.4</em> (3 + 1 = 4).</p>
 <p>Also the changelog section for the next patch release should be prepared; add
 a new section like this on the topmost next the to-level heading of
@@ -235,7 +235,7 @@ git switch --create=1.2-maintenance  # Or: git checkout -b 1.2-maintenance
 git reset --hard upstream/main
 </code></pre>
 <p>Since this maintenance branch purposes to prepare the next patch release, e.g.,
-<em>1.2.1</em>, the <code>&lt;VersionPrefix&gt;</code> field of the <em>src/Libplanet/Libplanet.csproj</em>
+<em>1.2.1</em>, the <code>&lt;VersionPrefix&gt;</code> field of the <em>Directory.Build.props</em>
 file also needs to be updated:</p>
 <pre><code class="lang-xml">&lt;VersionPrefix&gt;1.2.1&lt;/VersionPrefix&gt;
 </code></pre>
@@ -264,7 +264,7 @@ to release <em>1.3.0</em> next time here.</p>
 <pre><code class="lang-bash">git switch main  # Or on Git &lt; 2.23: git checkout main
 git fetch upstream &amp;&amp; git reset --hard upstream/main
 </code></pre>
-<p>Then, in a similar manner, update <em>src/Libplanet/Libplanet.csproj</em>'s
+<p>Then, in a similar manner, update <em>Directory.Build.props</em>'s
 <code>&lt;VersionPrefix&gt;</code> to <em>1.3.0</em>, and add an empty section for <em>1.3.0</em> with
 the release date undecided to the changelog.  Make a commit with a simple
 message like <q>Version bump</q>.</p>
@@ -309,7 +309,7 @@ both branches and place the <em>main</em> branch's section topmost.</li>
 <li>Switch to the <em><var>X</var>.<var>Y</var>-maintenance</em> branch and
 make sure it is up-to-date.</li>
 <li>Bump <code>&lt;VersionPrefix&gt;</code>'s patch version on
-<em>src/Libplanet/Libplanet.csproj</em>.
+<em>Directory.Build.props</em>.
 (For example, if you have just released <em>1.2.3</em>, bump it to <em>1.2.4</em>.)</li>
 <li>Add a new section for the next unreleased version to the changelog,
 with the sentence <q>To be released</q> (no release date).</li>
@@ -322,7 +322,7 @@ with the sentence <q>To be released</q> (no release date).</li>
 <ol>
 <li>Create a new branch named <em><var>X</var>.<var>Y</var>-maintenance</em> and
 switch to it.</li>
-<li>Bump <code>&lt;VersionPrefix&gt;</code> on <em>src/Libplanet/Libplanet.csproj</em> to
+<li>Bump <code>&lt;VersionPrefix&gt;</code> on <em>Directory.Build.props</em> to
 <em><var>X</var>.<var>Y</var>.1</em>.</li>
 <li>Add a new section for the next unreleased version
 (<em><var>X</var>.<var>Y</var>.1</em>) to the changelog, with the sentence
@@ -330,7 +330,7 @@ switch to it.</li>
 <li>Commit the changes with a message <q>Version bump</q>.</li>
 <li><code>git push upstream X.Y-maintenance</code></li>
 <li>Switch to the <em>main</em> branch.</li>
-<li>Bump <code>&lt;VersionPrefix&gt;</code>'s minor version on <em>src/Libplanet/Libplanet.csproj</em>.
+<li>Bump <code>&lt;VersionPrefix&gt;</code>'s minor version on <em>Directory.Build.props</em>.
 (For example, if you have just released <em>1.2.0</em>, bump it to <em>1.3.0</em>.)</li>
 <li>Add a new section for the next unreleased minor version to the
 changelog, with the sentence <q>To be released</q> (no release date).</li>

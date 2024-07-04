@@ -97,7 +97,7 @@ serialization and deserialization.</p>
       <section><p>The exception that is thrown when an <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a> with
 a protocol version that is not supported by an implementation of
 <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a> is passed as an argument to
-<a class="xref" href="Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a>.</p>
+<a class="xref" href="Libplanet.Action.IActionEvaluator.html#Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256___">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.CommittedActionContext.html">CommittedActionContext</a></h4>
       <section></section>
@@ -116,7 +116,7 @@ a single action.</p>
       <h4><a class="xref" href="Libplanet.Action.GasUseNegativeException.html">GasUseNegativeException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></h4>
-      <section><p>The <span class="xref">System.Exception</span> that is thrown when an <span class="xref">Bencodex.Types.IValue</span> that is
+      <section><p>The <see cref="!:Exception"></see> that is thrown when an <see cref="!:IValue"></see> that is
 supposedly a serialized <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> cannot be deserialized via an
 <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>.</p>
 </section>
@@ -131,7 +131,7 @@ to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</
       <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
       <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
-is stored in the <span class="xref">System.Exception.InnerException</span> property.</p>
+is stored in the <see cref="!:Exception.InnerException"></see> property.</p>
 </section>
     <h3 id="interfaces">Interfaces
 </h3>
@@ -199,7 +199,7 @@ The fee collector is called only when the transaction is collectible.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to
-<span class="xref">System.Random</span>.</p>
+<see cref="!:System.Random"></see>.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>

@@ -94,14 +94,14 @@ In other words, this is an <a class="xref" href="Libplanet.Blockchain.Renderers.
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a>.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
-it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (regardless of
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a></h4>
       <section><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
-it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (regardless of
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </section>
     <h3 id="interfaces">Interfaces
@@ -113,8 +113,8 @@ If you need more fine-grained events than <a class="xref" href="Libplanet.Blockc
 implement this interface instead.</p>
 <p>The invocation order of methods for each <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> are:</p>
 <ol><li><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html#Libplanet_Blockchain_Renderers_IRenderer_RenderBlock_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_">RenderBlock(Block, Block)</a> (one time)
-</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__">RenderAction(IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;)</a>
-&amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_Bencodex_Types_IValue_Libplanet_Action_ICommittedActionContext_System_Exception_">RenderActionError(IValue, ICommittedActionContext, Exception)</a> (zero or more
+</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderAction_IValue_Libplanet_Action_ICommittedActionContext_Libplanet_Common_HashDigest_SHA256__">RenderAction(IValue, ICommittedActionContext, HashDigest&lt;SHA256&gt;)</a>
+&amp; <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderActionError_IValue_Libplanet_Action_ICommittedActionContext_Exception_">RenderActionError(IValue, ICommittedActionContext, Exception)</a> (zero or more
 times)</li><li><a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html#Libplanet_Blockchain_Renderers_IActionRenderer_RenderBlockEnd_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_">RenderBlockEnd(Block, Block)</a> (one time)</li></ol>
 </section>
       <h4><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></h4>

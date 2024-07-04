@@ -75,7 +75,7 @@
   <div class="markdown level0 summary"><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
-it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (regardless of
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -89,39 +89,15 @@ it is also logged with the log level <span class="xref">Serilog.Events.LogEventL
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LoggedRenderer : IRenderer</code></pre>
+    <pre><code class="lang-csharp hljs">public class LoggedRenderer : object, IRenderer</code></pre>
   </div>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
@@ -139,20 +115,20 @@ renderer = new LoggedRenderer(
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%2CSerilog.ILogger%2CSerilog.Events.LogEventLevel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.LoggedRenderer.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%2CILogger%2CLogEventLevel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.#ctor(Libplanet.Blockchain.Renderers.IRenderer,Serilog.ILogger,Serilog.Events.LogEventLevel)">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.#ctor(Libplanet.Blockchain.Renderers.IRenderer,ILogger,LogEventLevel)">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html">LoggedRenderer</a> instance which decorates the given
 <code data-dev-comment-type="paramref" class="paramref">renderer</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LoggedRenderer(IRenderer renderer, ILogger logger, LogEventLevel level = LogEventLevel.Debug)</code></pre>
+    <pre><code class="lang-csharp hljs">public LoggedRenderer(IRenderer renderer, ILogger logger, LogEventLevel level = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +148,7 @@ render things.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Serilog.ILogger</span></td>
+        <td><span class="xref">ILogger</span></td>
         <td><span class="parametername">logger</span></td>
         <td><p>The logger to write log messages to.  Note that all log messages
 this decorator writes become in the context of the <code data-dev-comment-type="paramref" class="paramref">renderer</code>'s
@@ -180,16 +156,16 @@ type (with the context property <code>SourceContext</code>).</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Serilog.Events.LogEventLevel</span></td>
+        <td><span class="xref">LogEventLevel</span></td>
         <td><span class="parametername">level</span></td>
         <td><p>The log event level.  All log messages become this level.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
@@ -222,14 +198,14 @@ please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRend
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Serilog.Events.LogEventLevel</span></td>
+        <td><span class="xref">LogEventLevel</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Level_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
@@ -262,14 +238,14 @@ property <code>SourceContext</code>).</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Serilog.ILogger</span></td>
+        <td><span class="xref">ILogger</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Logger_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
@@ -307,7 +283,7 @@ please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRend
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_Renderer_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>
@@ -322,17 +298,17 @@ please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRend
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/Renderers/LoggedRenderer.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering*"></a>
-  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block__" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering(System.String,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block,System.Action{Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block})">LogBlockRendering(String, Block, Block, Action&lt;Block, Block&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block__" data-uid="Libplanet.Blockchain.Renderers.LoggedRenderer.LogBlockRendering(System.String,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block,System.Action{Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block})">LogBlockRendering(String, Block, Block, System.Action&lt;Block, Block&gt;)</h4>
   <div class="markdown level1 summary"><p>Decorates an <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a> so that all event messages are logged.</p>
 <p>Every single event message causes two log messages: one is logged <em>before</em>
 rendering, and other one is logged <em>after</em> rendering.  If any exception is thrown
-it is also logged with the log level <span class="xref">Serilog.Events.LogEventLevel.Error</span> (regardless of
+it is also logged with the log level <see cref="!:LogEventLevel.Error"></see> (regardless of
 <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer_Level">Level</a> configuration).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void LogBlockRendering(string methodName, Block oldTip, Block newTip, Action&lt;Block, Block&gt; callback)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void LogBlockRendering(string methodName, Block oldTip, Block newTip, System.Action&lt;Block, Block&gt; callback)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -368,7 +344,7 @@ it is also logged with the log level <span class="xref">Serilog.Events.LogEventL
   </table>
   <h5 id="Libplanet_Blockchain_Renderers_LoggedRenderer_LogBlockRendering_System_String_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_System_Action_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Since <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> is a subtype of <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a>,
-<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_Serilog_ILogger_Serilog_Events_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
+<a class="xref" href="Libplanet.Blockchain.Renderers.LoggedRenderer.html#Libplanet_Blockchain_Renderers_LoggedRenderer__ctor_Libplanet_Blockchain_Renderers_IRenderer_ILogger_LogEventLevel_">LoggedRenderer(IRenderer, ILogger, LogEventLevel)</a> constructor can take
 an <a class="xref" href="Libplanet.Blockchain.Renderers.IActionRenderer.html">IActionRenderer</a> instance as well.  However, even it takes an action
 renderer, action-level fine-grained events will not be logged.  For action renderers,
 please use <a class="xref" href="Libplanet.Blockchain.Renderers.LoggedActionRenderer.html">LoggedActionRenderer</a> instead.</p>

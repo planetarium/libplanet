@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TxCommand</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.Commands.html">Libplanet.Extensions.Cocona.Commands</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Commands_TxCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TxCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class TxCommand : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -124,8 +100,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Analyze the given signed or unsigned transaction.&quot;)]
-public int Analyze([Argument(Description = &quot;The file path of the transaction to analyze.  If a hyphen (-) is given it reads from the standard input (if you want to read just a file named \&quot;-\&quot;, use \&quot;./-\&quot; instead).&quot;)] string file, [Option(&#39;u&#39;, Description = &quot;Analyze an unsigned transaction.  This option is mutually exclusive with -i/--ignore-signature.&quot;)] bool unsigned = false, [Option(&#39;i&#39;, Description = &quot;Terminate the program with a zero exit code (success) even if the signature is invalid.  However, it still prints the error message to the standard error, and the exit code is still non-zero if the transaction is invalid in other ways.  This option is mutually exclusive with -u/--unsigned.&quot;)] bool ignoreSignature = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public int Analyze(string file, bool unsigned = false, bool ignoreSignature = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -171,19 +146,18 @@ public int Analyze([Argument(Description = &quot;The file path of the transactio
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_TxCommand_Help_Cocona_Help_ICoconaHelpMessageBuilder_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.TxCommand.Help(Cocona.Help.ICoconaHelpMessageBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_TxCommand_Help_ICoconaHelpMessageBuilder_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.TxCommand.Help(ICoconaHelpMessageBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Commands/TxCommand.cs/#L185">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Commands_TxCommand_Help_" data-uid="Libplanet.Extensions.Cocona.Commands.TxCommand.Help*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Commands_TxCommand_Help_Cocona_Help_ICoconaHelpMessageBuilder_" data-uid="Libplanet.Extensions.Cocona.Commands.TxCommand.Help(Cocona.Help.ICoconaHelpMessageBuilder)">Help(ICoconaHelpMessageBuilder)</h4>
+  <h4 id="Libplanet_Extensions_Cocona_Commands_TxCommand_Help_ICoconaHelpMessageBuilder_" data-uid="Libplanet.Extensions.Cocona.Commands.TxCommand.Help(ICoconaHelpMessageBuilder)">Help(ICoconaHelpMessageBuilder)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Show this help message.&quot;)]
-public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Help(ICoconaHelpMessageBuilder helpMessageBuilder)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -196,7 +170,7 @@ public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)</co
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Cocona.Help.ICoconaHelpMessageBuilder</span></td>
+        <td><span class="xref">ICoconaHelpMessageBuilder</span></td>
         <td><span class="parametername">helpMessageBuilder</span></td>
         <td></td>
       </tr>

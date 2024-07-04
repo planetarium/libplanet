@@ -77,6 +77,63 @@ interface and its implementations.  [<a href="https://github.com/planetarium/lib
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
+<p>The entire project is now defined by common properties in the
+<code>Directory.Build.props</code> file. The Directory.Build.props file is located at
+the root and in the src, tools, test path.</p>
+<p>The project structure and affected Directory.Build.props locations are shown
+below.</p>
+<pre><code class="lang-plain">┌ Directory.Build.props
+├ src
+│  ├ Directory.Build.props
+│  ├ Libplanet
+│  ├ Libplanet.Action
+│  ├ Libplanet.Common
+│  ├ Libplanet.Crypto.Secp256k1
+│  ├ Libplanet.Crypto
+│  ├ Libplanet.Net
+│  ├ Libplanet.RocksDBStore
+│  ├ Libplanet.Store.Remote
+│  ├ Libplanet.Store
+│  ├ Libplanet.Stun
+│  └ Libplanet.Types
+├ test
+│  ├ Directory.Build.props
+│  ├ Libplanet.Action.Tests
+│  ├ Libplanet.Analyzers.Tests
+│  ├ Libplanet.Crypto.Secp256k1.Tests
+│  ├ Libplanet.Explorer.Cocona.Tests
+│  ├ Libplanet.Explorer.Tests
+│  ├ Libplanet.Extensions.Cocona.Tests
+│  ├ Libplanet.Mocks
+│  ├ Libplanet.Net.Tests
+│  ├ Libplanet.RocksDBStore.Tests
+│  ├ Libplanet.Store.Remote.Tests
+│  ├ Libplanet.Stun.Tests
+│  └ Libplanet.Tests
+└ tools
+   ├ Directory.Build.props
+   ├ Libplanet.Analyzers
+   ├ Libplanet.Benchmarks
+   ├ Libplanet.Explorer.Cocona
+   ├ Libplanet.Explorer.Executable
+   ├ Libplanet.Explorer
+   ├ Libplanet.Extensions.Cocona
+   └ Libplanet.Tools
+</code></pre>
+<p>The default SDK version for the project has been bumped up to .NET 6.0.
+The list of supported SDKs is as follows</p>
+<ul>
+<li>netstandard2.0</li>
+<li>netstandard2.1</li>
+<li>netcoreapp3.1</li>
+<li>net6.0&quot;</li>
+</ul>
+<blockquote>
+<p>Support for <code>netstandard2.0</code> is coming to an end soon, please note that
+projects using <code>netstandard2.0</code> will be deprecated.</p>
+</blockquote>
+<p>The <code>VersionPrefix</code> property has been moved from the
+<em>src/Libplanet/Libplanet.csproj</em> file to the <code>Directory.Build.props</code> file.</p>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-500">Version 5.0.0</h2>
 <p>Released on July 2, 2024.</p>

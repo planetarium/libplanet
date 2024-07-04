@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TxMarshaler</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_TxMarshaler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class TxMarshaler</code></pre>
+    <pre><code class="lang-csharp hljs">public static class TxMarshaler : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -124,8 +100,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Transaction DeserializeTransactionWithoutVerification(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction DeserializeTransactionWithoutVerification(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,6 +136,53 @@ public static Transaction DeserializeTransactionWithoutVerification(byte[] bytes
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L172">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_" data-uid="Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx*"></a>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx(ImmutableArray{System.Byte})">DeserializeUnsignedTx(ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IUnsignedTx DeserializeUnsignedTx(ImmutableArray&lt;byte&gt; bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">bytes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -172,8 +194,7 @@ public static Transaction DeserializeTransactionWithoutVerification(byte[] bytes
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IUnsignedTx DeserializeUnsignedTx(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IUnsignedTx DeserializeUnsignedTx(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -209,54 +230,6 @@ public static IUnsignedTx DeserializeUnsignedTx(byte[] bytes)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L172">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_" data-uid="Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_DeserializeUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.TxMarshaler.DeserializeUnsignedTx(System.Collections.Immutable.ImmutableArray{System.Byte})">DeserializeUnsignedTx(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IUnsignedTx DeserializeUnsignedTx(ImmutableArray&lt;byte&gt; bytes)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">bytes</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxMarshaler_MarshalTransaction_Libplanet_Types_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxMarshaler.MarshalTransaction(Libplanet.Types.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -268,8 +241,7 @@ public static IUnsignedTx DeserializeUnsignedTx(ImmutableArray&lt;byte&gt; bytes
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Dictionary MarshalTransaction(this Transaction transaction)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Bencodex.Types.Dictionary MarshalTransaction(this Transaction transaction)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -316,8 +288,7 @@ public static Dictionary MarshalTransaction(this Transaction transaction)</code>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Dictionary MarshalTxInvoice(this ITxInvoice invoice)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Bencodex.Types.Dictionary MarshalTxInvoice(this ITxInvoice invoice)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -364,8 +335,7 @@ public static Dictionary MarshalTxInvoice(this ITxInvoice invoice)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Dictionary MarshalTxSigningMetadata(this ITxSigningMetadata metadata)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Bencodex.Types.Dictionary MarshalTxSigningMetadata(this ITxSigningMetadata metadata)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -412,8 +382,7 @@ public static Dictionary MarshalTxSigningMetadata(this ITxSigningMetadata metada
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Dictionary MarshalUnsignedTx(this IUnsignedTx unsignedTx)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Bencodex.Types.Dictionary MarshalUnsignedTx(this IUnsignedTx unsignedTx)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -460,8 +429,7 @@ public static Dictionary MarshalUnsignedTx(this IUnsignedTx unsignedTx)</code></
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static ImmutableArray&lt;byte&gt; SerializeUnsignedTx(this IUnsignedTx unsignedTx)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ImmutableArray&lt;byte&gt; SerializeUnsignedTx(this IUnsignedTx unsignedTx)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -490,7 +458,7 @@ public static ImmutableArray&lt;byte&gt; SerializeUnsignedTx(this IUnsignedTx un
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -503,13 +471,12 @@ public static ImmutableArray&lt;byte&gt; SerializeUnsignedTx(this IUnsignedTx un
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L146">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransaction_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransaction*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransaction_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransaction(Bencodex.Types.Dictionary)">UnmarshalTransaction(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransaction_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransaction(Bencodex.Types.Dictionary)">UnmarshalTransaction(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Transaction UnmarshalTransaction(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction UnmarshalTransaction(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -551,13 +518,12 @@ public static Transaction UnmarshalTransaction(Dictionary dictionary)</code></pr
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L138">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionSignature_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionSignature*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionSignature_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionSignature(Bencodex.Types.Dictionary)">UnmarshalTransactionSignature(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionSignature_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionSignature(Bencodex.Types.Dictionary)">UnmarshalTransactionSignature(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static ImmutableArray&lt;byte&gt;? UnmarshalTransactionSignature(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ImmutableArray&lt;byte&gt;? UnmarshalTransactionSignature(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -586,7 +552,7 @@ public static ImmutableArray&lt;byte&gt;? UnmarshalTransactionSignature(Dictiona
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -599,13 +565,12 @@ public static ImmutableArray&lt;byte&gt;? UnmarshalTransactionSignature(Dictiona
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionWithoutVerification_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionWithoutVerification*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionWithoutVerification_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionWithoutVerification(Bencodex.Types.Dictionary)">UnmarshalTransactionWithoutVerification(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTransactionWithoutVerification_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTransactionWithoutVerification(Bencodex.Types.Dictionary)">UnmarshalTransactionWithoutVerification(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static Transaction UnmarshalTransactionWithoutVerification(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction UnmarshalTransactionWithoutVerification(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -647,13 +612,12 @@ public static Transaction UnmarshalTransactionWithoutVerification(Dictionary dic
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxInvoice_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxInvoice*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxInvoice_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxInvoice(Bencodex.Types.Dictionary)">UnmarshalTxInvoice(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxInvoice_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxInvoice(Bencodex.Types.Dictionary)">UnmarshalTxInvoice(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static ITxInvoice UnmarshalTxInvoice(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ITxInvoice UnmarshalTxInvoice(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -695,13 +659,12 @@ public static ITxInvoice UnmarshalTxInvoice(Dictionary dictionary)</code></pre>
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxSigningMetadata_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxSigningMetadata*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxSigningMetadata_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)">UnmarshalTxSigningMetadata(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalTxSigningMetadata_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)">UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static ITxSigningMetadata UnmarshalTxSigningMetadata(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ITxSigningMetadata UnmarshalTxSigningMetadata(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -743,13 +706,12 @@ public static ITxSigningMetadata UnmarshalTxSigningMetadata(Dictionary dictionar
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxMarshaler.cs/#L132">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxMarshaler_UnmarshalUnsignedTx_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalUnsignedTx*"></a>
-  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalUnsignedTx_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalUnsignedTx(Bencodex.Types.Dictionary)">UnmarshalUnsignedTx(Dictionary)</h4>
+  <h4 id="Libplanet_Types_Tx_TxMarshaler_UnmarshalUnsignedTx_Bencodex_Types_Dictionary_" data-uid="Libplanet.Types.Tx.TxMarshaler.UnmarshalUnsignedTx(Bencodex.Types.Dictionary)">UnmarshalUnsignedTx(Bencodex.Types.Dictionary)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static UnsignedTx UnmarshalUnsignedTx(Dictionary dictionary)</code></pre>
+    <pre><code class="lang-csharp hljs">public static UnsignedTx UnmarshalUnsignedTx(Bencodex.Types.Dictionary dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

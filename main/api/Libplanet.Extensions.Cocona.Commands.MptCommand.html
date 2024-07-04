@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">MptCommand</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.Commands.html">Libplanet.Extensions.Cocona.Commands</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Commands_MptCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MptCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class MptCommand : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -124,8 +100,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Register an alias name to refer to a key-value store.&quot;)]
-public void Add([Argument(Name = &quot;ALIAS&quot;, Description = &quot;The alias to refer to the fully qualified key-value store URI.&quot;)] string alias, [Argument(Name = &quot;KV-STORE-URI&quot;, Description = &quot;&lt;kv-store-type&gt;://&lt;kv-store-path&gt; (e.g., rocksdb:///path/to/kv-store)&quot;)] string uri, [FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Add(string alias, string uri, IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -167,8 +142,7 @@ public void Add([Argument(Name = &quot;ALIAS&quot;, Description = &quot;The alia
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Compare two trees via root hash.&quot;)]
-public void Diff([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;The alias name registered through `planet mpt add&#39; command or the URI included the type of IKeyValueStore implementation and the path where it was used at. &lt;kv-store-type&gt;://&lt;kv-store-path&gt; (e.g., rocksdb:///path/to/kv-store)&quot;)] string kvStoreUri, [Argument(Name = &quot;STATE-ROOT-HASH&quot;, Description = &quot;The state root hash to compare.&quot;)] string stateRootHashHex, [Argument(Name = &quot;OTHER-KV-STORE&quot;, Description = &quot;The alias name registered through `planet mpt add&#39; command or the URI included the type of IKeyValueStore implementation and the path where it was used at. &lt;kv-store-type&gt;://&lt;kv-store-path&gt; (e.g., rocksdb:///path/to/kv-store)&quot;)] string otherKvStoreUri, [Argument(Name = &quot;OTHER-STATE-ROOT-HASH&quot;, Description = &quot;Another state root hash to compare.&quot;)] string otherStateRootHashHex, [FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Diff(string kvStoreUri, string stateRootHashHex, string otherKvStoreUri, string otherStateRootHashHex, IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -220,8 +194,7 @@ public void Diff([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;The 
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Export all states of the state root hash as JSON.&quot;)]
-public void Export([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;The alias name registered through `planet mpt add&#39; command or the URI included the type of IKeyValueStore implementation and the path where it was used at. &lt;kv-store-type&gt;://&lt;kv-store-path&gt; (e.g., rocksdb:///path/to/kv-store)&quot;)] string kvStoreUri, [Argument(Name = &quot;STATE-ROOT-HASH&quot;, Description = &quot;The state root hash to compare.&quot;)] string stateRootHashHex, [FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Export(string kvStoreUri, string stateRootHashHex, IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -252,19 +225,18 @@ public void Export([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;Th
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_MptCommand_Help_Cocona_Help_ICoconaHelpMessageBuilder_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.MptCommand.Help(Cocona.Help.ICoconaHelpMessageBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_MptCommand_Help_ICoconaHelpMessageBuilder_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.MptCommand.Help(ICoconaHelpMessageBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Commands/MptCommand.cs/#L243">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Commands_MptCommand_Help_" data-uid="Libplanet.Extensions.Cocona.Commands.MptCommand.Help*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Commands_MptCommand_Help_Cocona_Help_ICoconaHelpMessageBuilder_" data-uid="Libplanet.Extensions.Cocona.Commands.MptCommand.Help(Cocona.Help.ICoconaHelpMessageBuilder)">Help(ICoconaHelpMessageBuilder)</h4>
+  <h4 id="Libplanet_Extensions_Cocona_Commands_MptCommand_Help_ICoconaHelpMessageBuilder_" data-uid="Libplanet.Extensions.Cocona.Commands.MptCommand.Help(ICoconaHelpMessageBuilder)">Help(ICoconaHelpMessageBuilder)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[PrimaryCommand]
-public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Help(ICoconaHelpMessageBuilder helpMessageBuilder)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,7 +249,7 @@ public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)</co
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Cocona.Help.ICoconaHelpMessageBuilder</span></td>
+        <td><span class="xref">ICoconaHelpMessageBuilder</span></td>
         <td><span class="parametername">helpMessageBuilder</span></td>
         <td></td>
       </tr>
@@ -296,8 +268,7 @@ public void Help([FromService] ICoconaHelpMessageBuilder helpMessageBuilder)</co
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;List all aliases stored.&quot;)]
-public void List([FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void List(IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -329,8 +300,7 @@ public void List([FromService] IConfigurationService&lt;ToolConfiguration&gt; co
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query a state of the state key at the state root hash.  It will print the state as hexadecimal bytes string into stdout.  If it doesn&#39;t exist, it will not print anything.&quot;)]
-public void Query([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;The alias name registered through `planet mpt add&#39; command or the URI included the type of IKeyValueStore implementation and the path where it was used at. &lt;kv-store-type&gt;://&lt;kv-store-path&gt; (e.g., rocksdb:///path/to/kv-store)&quot;)] string kvStoreUri, [Argument(Name = &quot;STATE-ROOT-HASH&quot;, Description = &quot;The state root hash to compare.&quot;)] string stateRootHashHex, [Argument(Name = &quot;STATE-KEY&quot;, Description = &quot;The key of the state to query.&quot;)] string stateKey, [FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Query(string kvStoreUri, string stateRootHashHex, string stateKey, IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,8 +347,7 @@ public void Query([Argument(Name = &quot;KV-STORE&quot;, Description = &quot;The
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Deregister an alias to a key-value store.&quot;)]
-public void Remove([Argument(Name = &quot;ALIAS&quot;, Description = &quot;The alias name to deregister.&quot;)] string alias, [FromService] IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Remove(string alias, IConfigurationService&lt;ToolConfiguration&gt; configurationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

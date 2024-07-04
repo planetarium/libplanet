@@ -86,35 +86,11 @@ block that is not yet mined.</p>
     <div><a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html">IBlockContent</a></div>
     <div><a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Blocks.html">Libplanet.Types.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Blocks_BlockContent_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class BlockContent : IBlockContent, IBlockMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class BlockContent : object, IBlockContent, IBlockMetadata</code></pre>
   </div>
   <h5 id="Libplanet_Types_Blocks_BlockContent_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Unlike other model types like <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> or
@@ -124,13 +100,13 @@ block that is not yet mined.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.%23ctor(Libplanet.Types.Blocks.BlockMetadata%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.%23ctor(Libplanet.Types.Blocks.BlockMetadata%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockContent.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockContent__ctor_" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor(Libplanet.Types.Blocks.BlockMetadata,System.Collections.Generic.IEnumerable{Libplanet.Types.Tx.Transaction})">BlockContent(BlockMetadata, IEnumerable&lt;Transaction&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor(Libplanet.Types.Blocks.BlockMetadata,IEnumerable{Libplanet.Types.Tx.Transaction})">BlockContent(BlockMetadata, IEnumerable&lt;Transaction&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Blocks.BlockContent.html">BlockContent</a> instance with given
 <code data-dev-comment-type="paramref" class="paramref">metadata</code> and <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
 </div>
@@ -156,14 +132,14 @@ block that is not yet mined.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td><p>The transactions to include in the block.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_BlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Unlike other model types like <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> or
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>, this type is mutable.</p>
 </div>
@@ -202,12 +178,6 @@ by <see cref="!:Blockchain.BlockChain"></see>.</p>
         <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxGenesisHashException.html">InvalidTxGenesisHashException</a></td>
         <td><p>Thrown when transactions to set have
 inconsistent genesis hashes.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">transactions</code> is
-not ordered by <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a>s.</p>
 </td>
       </tr>
     </tbody>
@@ -271,13 +241,13 @@ not ordered by <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplan
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.%23ctor(Libplanet.Types.Blocks.IBlockMetadata%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.%23ctor(Libplanet.Types.Blocks.IBlockMetadata%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockContent.cs/#L47">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockContent__ctor_" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor(Libplanet.Types.Blocks.IBlockMetadata,System.Collections.Generic.IEnumerable{Libplanet.Types.Tx.Transaction})">BlockContent(IBlockMetadata, IEnumerable&lt;Transaction&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.#ctor(Libplanet.Types.Blocks.IBlockMetadata,IEnumerable{Libplanet.Types.Tx.Transaction})">BlockContent(IBlockMetadata, IEnumerable&lt;Transaction&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Blocks.BlockContent.html">BlockContent</a> instance filled with given
 <code data-dev-comment-type="paramref" class="paramref">metadata</code> and <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
 </div>
@@ -303,16 +273,16 @@ not ordered by <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplan
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td><p>The transactions to include in the block.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This creates a new instance of <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html">BlockMetadata</a> to check the validity
-of <code data-dev-comment-type="paramref" class="paramref">metadata</code>, hence throws any <span class="xref">System.Exception</span>s that may
+of <code data-dev-comment-type="paramref" class="paramref">metadata</code>, hence throws any <see cref="!:Exception"></see>s that may
 arise from a <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html">BlockMetadata</a>'s constructor in addition to the ones
 explicitly listed below.</p>
 </div>
@@ -355,7 +325,7 @@ inconsistent genesis hashes.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Blocks_BlockContent__ctor_Libplanet_Types_Blocks_IBlockMetadata_IEnumerable_Libplanet_Types_Tx_Transaction___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html">BlockMetadata</a></div>
   </div>
@@ -663,7 +633,7 @@ the previous protocol versions, the type of this is nullable.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -697,7 +667,7 @@ the previous protocol versions, the type of this is nullable.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -732,7 +702,7 @@ has no transactions.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -745,13 +715,13 @@ has no transactions.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent_DeriveTxHash_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.DeriveTxHash(System.Collections.Generic.IEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent_DeriveTxHash_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.DeriveTxHash(IEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockContent.cs/#L166">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockContent_DeriveTxHash_" data-uid="Libplanet.Types.Blocks.BlockContent.DeriveTxHash*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockContent_DeriveTxHash_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.DeriveTxHash(System.Collections.Generic.IEnumerable{Libplanet.Types.Tx.Transaction})">DeriveTxHash(IEnumerable&lt;Transaction&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_BlockContent_DeriveTxHash_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.BlockContent.DeriveTxHash(IEnumerable{Libplanet.Types.Tx.Transaction})">DeriveTxHash(IEnumerable&lt;Transaction&gt;)</h4>
   <div class="markdown level1 summary"><p>Derives <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_TxHash">TxHash</a> from given <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -770,7 +740,7 @@ has no transactions.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td><p>The transactions to derive
 <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_TxHash">TxHash</a> from.  This must be ordered by
@@ -789,39 +759,22 @@ has no transactions.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><p>The derived <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_TxHash">TxHash</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_BlockContent_DeriveTxHash_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Blocks_BlockContent_DeriveTxHash_IEnumerable_Libplanet_Types_Tx_Transaction___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Unlike other model types like <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> or
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>, this type is mutable.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">transactions</code> are
-not ordered by their <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockContent_Propose.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockContent.Propose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockContent.cs/#L197">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockContent.cs/#L202">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_BlockContent_Propose_" data-uid="Libplanet.Types.Blocks.BlockContent.Propose*"></a>
   <h4 id="Libplanet_Types_Blocks_BlockContent_Propose" data-uid="Libplanet.Types.Blocks.BlockContent.Propose">Propose()</h4>
@@ -881,7 +834,7 @@ block that is not yet mined.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -896,13 +849,6 @@ block that is not yet mined.</p>
   </div>
   <div>
       <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a>
-  </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html#Libplanet_Types_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Types_Blocks_IBlockMetadata_">IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata)</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html#Libplanet_Types_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Types_Blocks_IBlockMetadata_System_DateTimeOffset_">IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata, DateTimeOffset)</a>
   </div>
 </article>
           </div>

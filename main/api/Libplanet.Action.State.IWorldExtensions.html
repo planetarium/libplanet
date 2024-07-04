@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">IWorldExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.State.html">Libplanet.Action.State</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_State_IWorldExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class IWorldExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class IWorldExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -126,8 +102,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IWorld BurnAsset(this IWorld world, IActionContext context, Address owner, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWorld BurnAsset(this IWorld world, IActionContext context, Address owner, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -198,12 +173,6 @@ executing this method.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to zero.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">owner</code>
 has insufficient balance than <code data-dev-comment-type="paramref" class="paramref">value</code> to burn.</p>
@@ -225,8 +194,7 @@ has insufficient balance than <code data-dev-comment-type="paramref" class="para
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue GetBalance(this IWorldState worldState, Address address, Currency currency)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue GetBalance(this IWorldState worldState, Address address, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -307,8 +275,7 @@ regardless of the value of <a class="xref" href="Libplanet.Types.Assets.Currency
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Currency currency)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -364,8 +331,7 @@ public static FungibleAssetValue GetTotalSupply(this IWorldState worldState, Cur
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static ValidatorSet GetValidatorSet(this IWorldState worldState)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ValidatorSet GetValidatorSet(this IWorldState worldState)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -416,8 +382,7 @@ and give it to the <code data-dev-comment-type="paramref" class="paramref">recip
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IWorld MintAsset(this IWorld world, IActionContext context, Address recipient, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWorld MintAsset(this IWorld world, IActionContext context, Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -488,12 +453,6 @@ executing this method.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to 0.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Libplanet.Action.State.SupplyOverflowException.html">SupplyOverflowException</a></td>
         <td><p>Thrown when the sum of the
 <code data-dev-comment-type="paramref" class="paramref">value</code> to be minted and the current total supply amount of the
@@ -517,8 +476,7 @@ is less than or equal to 0.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IWorld SetValidatorSet(this IWorld world, ValidatorSet validatorSet)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWorld SetValidatorSet(this IWorld world, ValidatorSet validatorSet)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -576,8 +534,7 @@ from the <code data-dev-comment-type="paramref" class="paramref">sender</code> t
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static IWorld TransferAsset(this IWorld world, IActionContext context, Address sender, Address recipient, FungibleAssetValue value)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IWorld TransferAsset(this IWorld world, IActionContext context, Address sender, Address recipient, FungibleAssetValue value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -656,12 +613,6 @@ compatibility.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">value</code>
-is less than or equal to zero.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Action.State.InsufficientBalanceException.html">InsufficientBalanceException</a></td>
         <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">sender</code>

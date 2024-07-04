@@ -80,35 +80,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TransactionExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_TransactionExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class TransactionExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class TransactionExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -292,32 +268,15 @@ new instances of <a class="xref" href="Libplanet.Types.Tx.TxInvoice.html">TxInvo
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
-does not match the public key of <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_ITransaction__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable%7BLibplanet.Types.Tx.ITransaction%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TransactionExtensions_ValidateTxNonces_IEnumerable_Libplanet_Types_Tx_ITransaction__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TransactionExtensions.ValidateTxNonces(IEnumerable%7BLibplanet.Types.Tx.ITransaction%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TransactionExtensions.cs/#L29">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TransactionExtensions_ValidateTxNonces_" data-uid="Libplanet.Types.Tx.TransactionExtensions.ValidateTxNonces*"></a>
-  <h4 id="Libplanet_Types_Tx_TransactionExtensions_ValidateTxNonces_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_ITransaction__System_Int64_" data-uid="Libplanet.Types.Tx.TransactionExtensions.ValidateTxNonces(System.Collections.Generic.IEnumerable{Libplanet.Types.Tx.ITransaction},System.Int64)">ValidateTxNonces(IEnumerable&lt;ITransaction&gt;, Int64)</h4>
+  <h4 id="Libplanet_Types_Tx_TransactionExtensions_ValidateTxNonces_IEnumerable_Libplanet_Types_Tx_ITransaction__System_Int64_" data-uid="Libplanet.Types.Tx.TransactionExtensions.ValidateTxNonces(IEnumerable{Libplanet.Types.Tx.ITransaction},System.Int64)">ValidateTxNonces(IEnumerable&lt;ITransaction&gt;, Int64)</h4>
   <div class="markdown level1 summary"><p>Validates if <code data-dev-comment-type="paramref" class="paramref">transactions</code> has valid nonces.
 It assumes all given <code data-dev-comment-type="paramref" class="paramref">transactions</code> belong to a block together.</p>
 </div>
@@ -337,7 +296,7 @@ It assumes all given <code data-dev-comment-type="paramref" class="paramref">tra
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td><p>A list of transactions.  Their order does not matter.</p>
 </td>
@@ -379,13 +338,13 @@ inconsistent genesis hashes.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TransactionExtensions.Verify(Libplanet.Types.Tx.IUnsignedTx%2CSystem.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TransactionExtensions.Verify(Libplanet.Types.Tx.IUnsignedTx%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TransactionExtensions.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TransactionExtensions_Verify_" data-uid="Libplanet.Types.Tx.TransactionExtensions.Verify*"></a>
-  <h4 id="Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.TransactionExtensions.Verify(Libplanet.Types.Tx.IUnsignedTx,System.Collections.Immutable.ImmutableArray{System.Byte})">Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
+  <h4 id="Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.TransactionExtensions.Verify(Libplanet.Types.Tx.IUnsignedTx,ImmutableArray{System.Byte})">Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> instance by verifying a
 <code data-dev-comment-type="paramref" class="paramref">signature</code> of an <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
 </div>
@@ -412,7 +371,7 @@ inconsistent genesis hashes.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">signature</span></td>
         <td><p>The signature to combine with <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
 </td>

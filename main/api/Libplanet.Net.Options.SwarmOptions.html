@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">SwarmOptions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Options.html">Libplanet.Net.Options</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Options_SwarmOptions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SwarmOptions</code></pre>
+    <pre><code class="lang-csharp hljs">public class SwarmOptions : object</code></pre>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -138,7 +114,7 @@ to its peers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -173,7 +149,7 @@ to regular broadcasts determined by this option.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -317,7 +293,7 @@ using an approximated value.</p>
   </span>
   <a id="Libplanet_Net_Options_SwarmOptions_MessageTimestampBuffer_" data-uid="Libplanet.Net.Options.SwarmOptions.MessageTimestampBuffer*"></a>
   <h4 id="Libplanet_Net_Options_SwarmOptions_MessageTimestampBuffer" data-uid="Libplanet.Net.Options.SwarmOptions.MessageTimestampBuffer">MessageTimestampBuffer</h4>
-  <div class="markdown level1 summary"><p>The amount of difference in <span class="xref">System.TimeSpan</span> allowed from current local time for
+  <div class="markdown level1 summary"><p>The amount of difference in <see cref="!:TimeSpan"></see> allowed from current local time for
 a received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -335,7 +311,7 @@ a received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -413,7 +389,7 @@ It is 10 by default.</p>
   <a id="Libplanet_Net_Options_SwarmOptions_RefreshLifespan_" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshLifespan*"></a>
   <h4 id="Libplanet_Net_Options_SwarmOptions_RefreshLifespan" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshLifespan">RefreshLifespan</h4>
   <div class="markdown level1 summary"><p>The lifespan of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> in routing table.
-<a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_System_TimeSpan_System_Threading_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a></p>
+<a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_TimeSpan_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -430,7 +406,7 @@ It is 10 by default.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -444,7 +420,7 @@ It is 10 by default.</p>
   </span>
   <a id="Libplanet_Net_Options_SwarmOptions_RefreshPeriod_" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshPeriod*"></a>
   <h4 id="Libplanet_Net_Options_SwarmOptions_RefreshPeriod" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshPeriod">RefreshPeriod</h4>
-  <div class="markdown level1 summary"><p>The frequency of <a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_System_TimeSpan_System_Threading_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a>.</p>
+  <div class="markdown level1 summary"><p>The frequency of <a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_TimeSpan_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -461,7 +437,7 @@ It is 10 by default.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -494,7 +470,7 @@ The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s in the li
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -525,7 +501,7 @@ The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s in the li
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -661,7 +637,7 @@ peers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -693,13 +669,13 @@ to its peers.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Net_Options_SwarmOptions_TxBroadcastInterval_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Broadcasts are also made whenever <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> is staged in addition
+  <div class="markdown level1 remarks"><p>Broadcasts are also made whenever <see cref="!:Transaction"></see> is staged in addition
 to regular broadcasts determined by this option.</p>
 </div>
 </article>

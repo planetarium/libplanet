@@ -97,8 +97,7 @@ when evaluating <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IActionLoader ActionLoader { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IActionLoader ActionLoader { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,20 +118,19 @@ IActionLoader ActionLoader { get; }</code></pre>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/IActionEvaluator.cs/#L44">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionEvaluator_Evaluate_" data-uid="Libplanet.Action.IActionEvaluator.Evaluate*"></a>
-  <h4 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256}})">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256___" data-uid="Libplanet.Action.IActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{SHA256}})">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>The main entry point for evaluating a <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -151,7 +149,7 @@ IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock blo
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td><span class="parametername">baseStateRootHash</span></td>
         <td><p>The base state to use when evaluating
 <code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
@@ -169,15 +167,15 @@ IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock blo
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>&gt;</td>
         <td><p>The result of evaluating every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> related to
-<code data-dev-comment-type="paramref" class="paramref">block</code> as an <span class="xref">System.Collections.Generic.IReadOnlyList&lt;T&gt;</span> of
+<code data-dev-comment-type="paramref" class="paramref">block</code> as an <see cref="!:IReadOnlyList&lt;T>"></see> of
 <a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>s.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256____remarks">Remarks</h5>
+  <h5 id="Libplanet_Action_IActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>
 This has a side-effect of writing data to internally held <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
 </p>

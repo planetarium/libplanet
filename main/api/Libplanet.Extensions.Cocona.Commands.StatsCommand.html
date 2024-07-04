@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">StatsCommand</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.Commands.html">Libplanet.Extensions.Cocona.Commands</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Commands_StatsCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StatsCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class StatsCommand : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -124,8 +100,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Outputs a summary of a stored chain in a CSV format.&quot;)]
-public void Summary([Option(&#39;p&#39;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string path, [Option(&#39;r&#39;, Description = &quot;Whether to include header row&quot;)] bool header, [Option(&#39;o&#39;, Description = &quot;Starting index offset; supports negative indexing&quot;)] long offset = 0L, [Option(&#39;l&#39;, Description = &quot;Maximum number of results to return; no limit by default&quot;)] long? limit = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Summary(string path, bool header, long offset = null, long? limit = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

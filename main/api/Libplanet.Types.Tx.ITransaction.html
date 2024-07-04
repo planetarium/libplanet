@@ -98,9 +98,6 @@ with custom actions in a non-generic way.  Instead, they are represented as
       <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html#Libplanet_Types_Tx_ITxInvoice_GasLimit">ITxInvoice.GasLimit</a>
     </div>
     <div>
-      <span class="xref">System.IEquatable&lt;Libplanet.Types.Tx.ITxInvoice&gt;.Equals(Libplanet.Types.Tx.ITxInvoice)</span>
-    </div>
-    <div>
       <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_Nonce">ITxSigningMetadata.Nonce</a>
     </div>
     <div>
@@ -109,18 +106,12 @@ with custom actions in a non-generic way.  Instead, they are represented as
     <div>
       <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_PublicKey">ITxSigningMetadata.PublicKey</a>
     </div>
-    <div>
-      <span class="xref">System.IEquatable&lt;Libplanet.Types.Tx.ITxSigningMetadata&gt;.Equals(Libplanet.Types.Tx.ITxSigningMetadata)</span>
-    </div>
-    <div>
-      <span class="xref">System.IEquatable&lt;Libplanet.Types.Tx.IUnsignedTx&gt;.Equals(Libplanet.Types.Tx.IUnsignedTx)</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_ITransaction_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface ITransaction : IUnsignedTx, ITxInvoice, IEquatable&lt;ITxInvoice&gt;, ITxSigningMetadata, IEquatable&lt;ITxSigningMetadata&gt;, IEquatable&lt;IUnsignedTx&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public interface ITransaction : IUnsignedTx, ITxInvoice, ITxSigningMetadata</code></pre>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -208,7 +199,7 @@ signature.</p>
       <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Sign_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_">TransactionExtensions.Sign(IUnsignedTx, PrivateKey)</a>
   </div>
   <div>
-      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_System_Collections_Immutable_ImmutableArray_System_Byte__">TransactionExtensions.Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</a>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__">TransactionExtensions.Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalUnsignedTx_Libplanet_Types_Tx_IUnsignedTx_">TxMarshaler.MarshalUnsignedTx(IUnsignedTx)</a>

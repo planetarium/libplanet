@@ -80,52 +80,23 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">BlockLocator</span></div>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</div>
-    <div><span class="xref">System.Collections.IEnumerable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_BlockLocator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BlockLocator : IEnumerable&lt;BlockHash&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public class BlockLocator : IEnumerable&lt;BlockHash&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator__ctor_System_Collections_Generic_IEnumerable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.%23ctor(System.Collections.Generic.IEnumerable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.%23ctor(IEnumerable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L22">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockLocator__ctor_" data-uid="Libplanet.Blockchain.BlockLocator.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_BlockLocator__ctor_System_Collections_Generic_IEnumerable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockLocator.#ctor(System.Collections.Generic.IEnumerable{Libplanet.Types.Blocks.BlockHash})">BlockLocator(IEnumerable&lt;BlockHash&gt;)</h4>
+  <h4 id="Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockLocator.#ctor(IEnumerable{Libplanet.Types.Blocks.BlockHash})">BlockLocator(IEnumerable&lt;BlockHash&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> from <code data-dev-comment-type="paramref" class="paramref">hashes</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -144,25 +115,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><span class="parametername">hashes</span></td>
         <td><p>Enumerable of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es to convert from.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">hashes</code> is empty.</p>
 </td>
       </tr>
     </tbody>
@@ -171,13 +126,13 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_Create_System_Int64_System_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.Create(System.Int64%2CSystem.Func%7BSystem.Int64%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.Create(System.Int64%2CFunc%7BSystem.Int64%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockLocator_Create_" data-uid="Libplanet.Blockchain.BlockLocator.Create*"></a>
-  <h4 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_System_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_" data-uid="Libplanet.Blockchain.BlockLocator.Create(System.Int64,System.Func{System.Int64,System.Nullable{Libplanet.Types.Blocks.BlockHash}},System.Int64)">Create(Int64, Func&lt;Int64, Nullable&lt;BlockHash&gt;&gt;, Int64)</h4>
+  <h4 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_" data-uid="Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Types.Blocks.BlockHash}},System.Int64)">Create(Int64, Func&lt;Int64, Nullable&lt;BlockHash&gt;&gt;, Int64)</h4>
   <div class="markdown level1 summary"><p>
 Creates a new instance of <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> with an indexer
 function, sampling after <code data-dev-comment-type="paramref" class="paramref">sampleAfter</code> number of
@@ -205,7 +160,7 @@ is added at the end.
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BlockLocator Create(long startIndex, Func&lt;long, BlockHash?&gt; indexToBlockHash, long sampleAfter = 10L)</code></pre>
+    <pre><code class="lang-csharp hljs">public static BlockLocator Create(long startIndex, Func&lt;long, BlockHash?&gt; indexToBlockHash, long sampleAfter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,7 +179,7 @@ is added at the end.
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;&gt;</td>
+        <td><span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;&gt;</td>
         <td><span class="parametername">indexToBlockHash</span></td>
         <td><p>The function that converts an index to a
 <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.  This can be <span class="xref">null</span> which indicates
@@ -256,33 +211,10 @@ a missing <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> at 
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_System_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Returned <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> created by this factory method is guaranteed
 to have the <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> corresponding to index <code>0</code>.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">startIndex</code>
-is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when either <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> returned
-by <code data-dev-comment-type="paramref" class="paramref">indexToBlockHash</code> for index <code>0</code> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -309,52 +241,12 @@ by <code data-dev-comment-type="paramref" class="paramref">indexToBlockHash</cod
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><p>The enumerator.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="eii">Explicit Interface Implementations
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L121">View Source</a>
-  </span>
-  <a id="Libplanet_Blockchain_BlockLocator_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Blockchain.BlockLocator.System#Collections#IEnumerable#GetEnumerator*"></a>
-  <h4 id="Libplanet_Blockchain_BlockLocator_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Blockchain.BlockLocator.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
-  <div class="markdown level1 summary"><p>A class that contains <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es for a series of blocks.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">System.Collections.IEnumerable</span>
-  </div>
 </article>
           </div>
 

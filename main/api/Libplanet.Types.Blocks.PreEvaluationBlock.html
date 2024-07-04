@@ -89,47 +89,23 @@ hash.</p>
     <div><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></div>
     <div><a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Blocks.html">Libplanet.Types.Blocks</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Blocks_PreEvaluationBlock_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class PreEvaluationBlock : IPreEvaluationBlock, IBlockContent, IPreEvaluationBlockHeader, IBlockMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class PreEvaluationBlock : object, IPreEvaluationBlock, IBlockContent, IPreEvaluationBlockHeader, IBlockMetadata</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_PreEvaluationBlock__ctor_Libplanet_Types_Blocks_IPreEvaluationBlockHeader_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.PreEvaluationBlock.%23ctor(Libplanet.Types.Blocks.IPreEvaluationBlockHeader%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_PreEvaluationBlock__ctor_Libplanet_Types_Blocks_IPreEvaluationBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.PreEvaluationBlock.%23ctor(Libplanet.Types.Blocks.IPreEvaluationBlockHeader%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/PreEvaluationBlock.cs/#L21">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_PreEvaluationBlock__ctor_" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_PreEvaluationBlock__ctor_Libplanet_Types_Blocks_IPreEvaluationBlockHeader_System_Collections_Generic_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.#ctor(Libplanet.Types.Blocks.IPreEvaluationBlockHeader,System.Collections.Generic.IEnumerable{Libplanet.Types.Tx.Transaction})">PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable&lt;Transaction&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_PreEvaluationBlock__ctor_Libplanet_Types_Blocks_IPreEvaluationBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.#ctor(Libplanet.Types.Blocks.IPreEvaluationBlockHeader,IEnumerable{Libplanet.Types.Tx.Transaction})">PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable&lt;Transaction&gt;)</h4>
   <div class="markdown level1 summary"><p>A block candidate without evaluating actions (in its <a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlock.html#Libplanet_Types_Blocks_PreEvaluationBlock_Transactions">Transactions</a> and
 a possible <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see>) and state root
 hash.</p>
@@ -155,7 +131,7 @@ hash.</p>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td></td>
       </tr>
@@ -317,7 +293,7 @@ action evaluation).</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;</td>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -473,7 +449,7 @@ the previous protocol versions, the type of this is nullable.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -507,7 +483,7 @@ the previous protocol versions, the type of this is nullable.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -539,7 +515,7 @@ has no transactions.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -548,13 +524,13 @@ has no transactions.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.PreEvaluationBlock.Sign(Libplanet.Crypto.PrivateKey%2CLibplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.PreEvaluationBlock.Sign(Libplanet.Crypto.PrivateKey%2CLibplanet.Common.HashDigest%7BSHA256%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/PreEvaluationBlock.cs/#L104">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_PreEvaluationBlock_Sign_" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.Sign*"></a>
-  <h4 id="Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.Sign(Libplanet.Crypto.PrivateKey,Libplanet.Common.HashDigest{System.Security.Cryptography.SHA256})">Sign(PrivateKey, HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_SHA256__" data-uid="Libplanet.Types.Blocks.PreEvaluationBlock.Sign(Libplanet.Crypto.PrivateKey,Libplanet.Common.HashDigest{SHA256})">Sign(PrivateKey, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"><p>Signs the block content with the given <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -581,7 +557,7 @@ This must match to the block's <a class="xref" href="Libplanet.Types.Blocks.PreE
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA256</span>&gt;</td>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
         <td><span class="parametername">stateRootHash</span></td>
         <td><p>The state root hash to include to the input message to
 sign.</p>
@@ -605,36 +581,13 @@ sign.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA256___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Blocks_PreEvaluationBlock_Sign_Libplanet_Crypto_PrivateKey_Libplanet_Common_HashDigest_SHA256___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>As blocks have their signatures since the <a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlockHeader.html#Libplanet_Types_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> 2, it is not usable with blocks of
 the earlier <a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlockHeader.html#Libplanet_Types_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a>s than 2.
 To create a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> instance with <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_ProtocolVersion">ProtocolVersion</a>
 less than 2, use <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>'s constructors with <span class="xref">null</span>
 signatures.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.InvalidOperationException</span></td>
-        <td><p>Thrown when the block's
-<a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlockHeader.html#Libplanet_Types_Blocks_PreEvaluationBlockHeader_ProtocolVersion">ProtocolVersion</a> is less than 2.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>
-does not match to the block miner's <a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlock.html#Libplanet_Types_Blocks_PreEvaluationBlock_PublicKey">PublicKey</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="eii">Explicit Interface Implementations
 </h3>
   <span class="small pull-right mobile-hide">
@@ -663,7 +616,7 @@ does not match to the block miner's <a class="xref" href="Libplanet.Types.Blocks
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -680,13 +633,6 @@ does not match to the block miner's <a class="xref" href="Libplanet.Types.Blocks
   </div>
   <div>
       <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a>
-  </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html#Libplanet_Types_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Types_Blocks_IBlockMetadata_">IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata)</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html#Libplanet_Types_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Types_Blocks_IBlockMetadata_System_DateTimeOffset_">IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata, DateTimeOffset)</a>
   </div>
 </article>
           </div>

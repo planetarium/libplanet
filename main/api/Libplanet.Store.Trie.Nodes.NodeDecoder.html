@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NodeDecoder</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.Nodes.html">Libplanet.Store.Trie.Nodes</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Store.dll</h6>
   <h5 id="Libplanet_Store_Trie_Nodes_NodeDecoder_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class NodeDecoder</code></pre>
+    <pre><code class="lang-csharp hljs">public static class NodeDecoder : object</code></pre>
   </div>
   <h3 id="fields">Fields
 </h3>
@@ -123,7 +99,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType AnyNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType AnyNodeType = default(NodeDecoder.NodeType)</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,7 +128,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullChildNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullChildNodeType = default(NodeDecoder.NodeType)</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -181,7 +157,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullValueNodeType = NodeDecoder.NodeType.Null | NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Hash</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType FullValueNodeType = default(NodeDecoder.NodeType)</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,7 +186,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType HashEmbeddedNodeType = NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType HashEmbeddedNodeType = default(NodeDecoder.NodeType)</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -239,7 +215,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType ShortValueNodeType = NodeDecoder.NodeType.Value | NodeDecoder.NodeType.Short | NodeDecoder.NodeType.Full | NodeDecoder.NodeType.Hash</code></pre>
+    <pre><code class="lang-csharp hljs">public const NodeDecoder.NodeType ShortValueNodeType = default(NodeDecoder.NodeType)</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -260,13 +236,13 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue%2CLibplanet.Store.Trie.Nodes.NodeDecoder.NodeType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(IValue%2CLibplanet.Store.Trie.Nodes.NodeDecoder.NodeType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/Nodes/NodeDecoder.cs/#L56">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode*"></a>
-  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_Bencodex_Types_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(Bencodex.Types.IValue,Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)">Decode(IValue, NodeDecoder.NodeType)</h4>
+  <h4 id="Libplanet_Store_Trie_Nodes_NodeDecoder_Decode_IValue_Libplanet_Store_Trie_Nodes_NodeDecoder_NodeType_" data-uid="Libplanet.Store.Trie.Nodes.NodeDecoder.Decode(IValue,Libplanet.Store.Trie.Nodes.NodeDecoder.NodeType)">Decode(IValue, NodeDecoder.NodeType)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -284,7 +260,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>

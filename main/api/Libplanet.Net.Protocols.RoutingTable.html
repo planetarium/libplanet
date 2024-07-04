@@ -84,53 +84,29 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Net.Protocols.IRoutingTable.html">IRoutingTable</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Protocols.html">Libplanet.Net.Protocols</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Protocols_RoutingTable_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RoutingTable : IRoutingTable</code></pre>
+    <pre><code class="lang-csharp hljs">public class RoutingTable : object, IRoutingTable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Crypto_Address_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.%23ctor(Libplanet.Crypto.Address%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable__ctor_Address_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.%23ctor(Address%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Protocols/RoutingTable.cs/#L29">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable__ctor_" data-uid="Libplanet.Net.Protocols.RoutingTable.#ctor*"></a>
-  <h4 id="Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Crypto_Address_System_Int32_System_Int32_" data-uid="Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Crypto.Address,System.Int32,System.Int32)">RoutingTable(Address, Int32, Int32)</h4>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable__ctor_Address_System_Int32_System_Int32_" data-uid="Libplanet.Net.Protocols.RoutingTable.#ctor(Address,System.Int32,System.Int32)">RoutingTable(Address, Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates a Kademlia distributed hash table instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RoutingTable(Address address, int tableSize = 160, int bucketSize = 16)</code></pre>
+    <pre><code class="lang-csharp hljs">public RoutingTable(Address address, int tableSize = null, int bucketSize = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,9 +119,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="xref">Address</span></td>
         <td><span class="parametername">address</span></td>
-        <td><p><a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of this peer.</p>
+        <td><p><see cref="!:Address"></see> of this peer.</p>
 </td>
       </tr>
       <tr>
@@ -158,23 +134,6 @@
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">bucketSize</span></td>
         <td><p>The size of a single bucket.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">tableSize</code> or <code data-dev-comment-type="paramref" class="paramref">bucketSize</code> is
-less then or equal to 0.</p>
 </td>
       </tr>
     </tbody>
@@ -252,7 +211,7 @@ less then or equal to 0.</p>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_Peers_" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers*"></a>
   <h4 id="Libplanet_Net_Protocols_RoutingTable_Peers" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers">Peers</h4>
-  <div class="markdown level1 summary"><p>An <span class="xref">System.Collections.Generic.IReadOnlyList&lt;T&gt;</span> of peers in the table.</p>
+  <div class="markdown level1 summary"><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of peers in the table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -269,7 +228,7 @@ less then or equal to 0.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -283,7 +242,7 @@ less then or equal to 0.</p>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_PeerStates_" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates*"></a>
   <h4 id="Libplanet_Net_Protocols_RoutingTable_PeerStates" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates">PeerStates</h4>
-  <div class="markdown level1 summary"><p>An <span class="xref">System.Collections.Generic.IReadOnlyList&lt;T&gt;</span> of <a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a> of peers in the table.</p>
+  <div class="markdown level1 summary"><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of <a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a> of peers in the table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -300,7 +259,7 @@ less then or equal to 0.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -372,32 +331,15 @@ less then or equal to 0.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code>'s
-<a class="xref" href="Libplanet.Crypto.Address.html">Address</a> is equal to the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of self.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer%2CSystem.DateTimeOffset%2CSystem.DateTimeOffset)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer%2CDateTimeOffset%2CDateTimeOffset)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Protocols/RoutingTable.cs/#L209">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_Check_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check*"></a>
-  <h4 id="Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_System_DateTimeOffset_System_DateTimeOffset_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,System.DateTimeOffset,System.DateTimeOffset)">Check(BoundPeer, DateTimeOffset, DateTimeOffset)</h4>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,DateTimeOffset,DateTimeOffset)">Check(BoundPeer, DateTimeOffset, DateTimeOffset)</h4>
   <div class="markdown level1 summary"><p>Marks <code data-dev-comment-type="paramref" class="paramref">peer</code> checked and refreshes last checked time of the peer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -422,31 +364,15 @@ less then or equal to 0.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">start</span></td>
-        <td><p><span class="xref">System.DateTimeOffset</span> at the beginning of the check.</p>
+        <td><p><see cref="!:DateTimeOffset"></see> at the beginning of the check.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">end</span></td>
-        <td><p><span class="xref">System.DateTimeOffset</span> at the end of the check.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code> is <span class="xref">null</span>.</p>
+        <td><p><see cref="!:DateTimeOffset"></see> at the end of the check.</p>
 </td>
       </tr>
     </tbody>
@@ -520,14 +446,14 @@ an element with the specified key; otherwise, <span class="xref">false</span>.</
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_GetPeer_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_GetPeer_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.GetPeer(Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Protocols/RoutingTable.cs/#L143">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_GetPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.GetPeer*"></a>
-  <h4 id="Libplanet_Net_Protocols_RoutingTable_GetPeer_Libplanet_Crypto_Address_" data-uid="Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Crypto.Address)">GetPeer(Address)</h4>
-  <div class="markdown level1 summary"><p>Finds a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> matches with
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_GetPeer_Address_" data-uid="Libplanet.Net.Protocols.RoutingTable.GetPeer(Address)">GetPeer(Address)</h4>
+  <div class="markdown level1 summary"><p>Finds a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <see cref="!:Address"></see> matches with
 the given <code data-dev-comment-type="paramref" class="paramref">addr</code> if it exits.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -546,9 +472,9 @@ the given <code data-dev-comment-type="paramref" class="paramref">addr</code> if
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="xref">Address</span></td>
         <td><span class="parametername">addr</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to search.</p>
+        <td><p>The <see cref="!:Address"></see> to search.</p>
 </td>
       </tr>
     </tbody>
@@ -564,7 +490,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">addr</code> if
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> matches
+        <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <see cref="!:Address"></see> matches
 the given <code data-dev-comment-type="paramref" class="paramref">addr</code>.</p>
 </td>
       </tr>
@@ -572,17 +498,17 @@ the given <code data-dev-comment-type="paramref" class="paramref">addr</code>.</
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Crypto_Address_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Crypto.Address%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Neighbors_Address_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Neighbors(Address%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Protocols/RoutingTable.cs/#L180">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_RoutingTable_Neighbors_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors*"></a>
-  <h4 id="Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Crypto_Address_System_Int32_System_Boolean_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Crypto.Address,System.Int32,System.Boolean)">Neighbors(Address, Int32, Boolean)</h4>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Neighbors_Address_System_Int32_System_Boolean_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors(Address,System.Int32,System.Boolean)">Neighbors(Address, Int32, Boolean)</h4>
   <div class="markdown level1 summary"><p>Returns at most 2 * <code data-dev-comment-type="paramref" class="paramref">k</code> (2 * <code data-dev-comment-type="paramref" class="paramref">k</code> + 1 if
 <code data-dev-comment-type="paramref" class="paramref">includeTarget</code> is <span class="xref">true</span>) nearest peers to given
 parameter peer from routing table. Return value is sorted with respect to target.
-<a class="xref" href="Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_System_Collections_Generic_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Crypto_Address_">SortByDistance(IEnumerable&lt;BoundPeer&gt;, Address)</a></p>
+<a class="xref" href="Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_IEnumerable_Libplanet_Net_BoundPeer__Address_">SortByDistance(IEnumerable&lt;BoundPeer&gt;, Address)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -600,9 +526,9 @@ parameter peer from routing table. Return value is sorted with respect to target
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="xref">Address</span></td>
         <td><span class="parametername">target</span></td>
-        <td><p><a class="xref" href="Libplanet.Crypto.Address.html">Address</a> to look up.</p>
+        <td><p><see cref="!:Address"></see> to look up.</p>
 </td>
       </tr>
       <tr>
@@ -615,7 +541,7 @@ parameter peer from routing table. Return value is sorted with respect to target
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">includeTarget</span></td>
         <td><p>A boolean value indicates to include a peer with
-<a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
+<see cref="!:Address"></see> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
 </td>
       </tr>
     </tbody>
@@ -630,7 +556,7 @@ parameter peer from routing table. Return value is sorted with respect to target
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </td>
       </tr>
@@ -679,7 +605,7 @@ Return value is already sorted with respect to target.</p>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">includeTarget</span></td>
         <td><p>A boolean value indicates to include a peer with
-<a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
+<see cref="!:Address"></see> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
 </td>
       </tr>
     </tbody>
@@ -694,7 +620,7 @@ Return value is already sorted with respect to target.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </td>
       </tr>
@@ -747,23 +673,6 @@ Return value is already sorted with respect to target.</p>
         <td><span class="xref">System.Boolean</span></td>
         <td><p><span class="xref">true</span> if the <code data-dev-comment-type="paramref" class="paramref">peer</code> is successfully
 removed from <a class="xref" href="Libplanet.Net.Protocols.IRoutingTable.html">IRoutingTable</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">peer</code>'s
-<a class="xref" href="Libplanet.Crypto.Address.html">Address</a> is equal to the <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> of self.</p>
 </td>
       </tr>
     </tbody>

@@ -87,35 +87,11 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer.html">IRenderer</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AnonymousRenderer : IRenderer</code></pre>
+    <pre><code class="lang-csharp hljs">public class AnonymousRenderer : object, IRenderer</code></pre>
   </div>
   <h5 id="Libplanet_Blockchain_Renderers_AnonymousRenderer_examples"><strong>Examples</strong></h5>
   <p>With object initializers, you can easily make an one-use renderer:</p>
@@ -144,7 +120,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Action&lt;Block, Block&gt; BlockRenderer { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Action&lt;Block, Block&gt;? BlockRenderer { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,7 +132,7 @@ anonymous class) of <a class="xref" href="Libplanet.Blockchain.Renderers.IRender
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Action</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Libplanet.Action</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>

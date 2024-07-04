@@ -85,54 +85,30 @@ a single action.</p>
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.IActionEvaluation.html">IActionEvaluation</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_ActionEvaluation_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ActionEvaluation : IActionEvaluation</code></pre>
+    <pre><code class="lang-csharp hljs">public class ActionEvaluation : object, IActionEvaluation</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IWorld_System_Exception_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IWorld%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IWorld_System_Nullable_Exception__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.State.IWorld%2CSystem.Nullable%7BException%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/ActionEvaluation.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluation__ctor_" data-uid="Libplanet.Action.ActionEvaluation.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IWorld_System_Exception_" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IWorld,System.Exception)">ActionEvaluation(IAction, IActionContext, IWorld, Exception)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_State_IWorld_System_Nullable_Exception__" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.State.IWorld,System.Nullable{Exception})">ActionEvaluation(IAction, IActionContext, IWorld, Nullable&lt;Exception&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a> instance
 with filling properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IWorld outputState, Exception exception = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IWorld outputState, Exception? exception = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,7 +141,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Exception</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Exception</span>&gt;</td>
         <td><span class="parametername">exception</span></td>
         <td><p>An exception that has risen during evaluating a given
 <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
@@ -220,7 +196,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Exception Exception { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Exception? Exception { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,7 +208,7 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Exception</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Exception</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -333,7 +309,7 @@ a single action.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>

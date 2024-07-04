@@ -91,28 +91,6 @@ Libplanet-backed games/apps too.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">PrivateKey</span></div>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Crypto.dll</h6>
   <h5 id="Libplanet_Crypto_PrivateKey_syntax">Syntax</h5>
@@ -153,6 +131,50 @@ forge signatures.</p>
   <h5 id="Libplanet_Crypto_PrivateKey__ctor_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.%23ctor(IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L69">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.#ctor(IReadOnlyList{System.Byte})">PrivateKey(IReadOnlyList&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given <see cref="!:System.Byte"></see>s (i.e.,
+<code data-dev-comment-type="paramref" class="paramref">privateKey</code>), which encodes a valid
+<a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a> private key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrivateKey(IReadOnlyList&lt;byte&gt; privateKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>A valid <see cref="!:System.Byte"></see>s that encodes an ECDSA private key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array for a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> can be encoded
+using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a> property.</p>
+</div>
+  <h5 id="Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -215,67 +237,6 @@ forge signatures.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.%23ctor(System.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L69">View Source</a>
-  </span>
-  <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
-  <h4 id="Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.#ctor(System.Collections.Generic.IReadOnlyList{System.Byte})">PrivateKey(IReadOnlyList&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given <span class="xref">System.Byte</span>s (i.e.,
-<code data-dev-comment-type="paramref" class="paramref">privateKey</code>), which encodes a valid
-<a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a> private key.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PrivateKey(IReadOnlyList&lt;byte&gt; privateKey)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">privateKey</span></td>
-        <td><p>A valid <span class="xref">System.Byte</span>s that encodes an ECDSA private key.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <span class="xref">System.Byte</span> array for a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> can be encoded
-using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a> property.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">privateKey</code> is too short or too long.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -284,7 +245,7 @@ using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_Pr
   <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey__ctor_System_String_" data-uid="Libplanet.Crypto.PrivateKey.#ctor(System.String)">PrivateKey(String)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given hexadecimal
-<span class="xref">System.String</span> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
+<see cref="!:System.String"></see> (i.e.,<code data-dev-comment-type="paramref" class="paramref">hex</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -316,35 +277,6 @@ must be kept secret, if they are exposed, an attacker will be able to
 forge signatures.</p>
 <p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
-string is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the length of the given
-<code data-dev-comment-type="paramref" class="paramref">hex</code> string is too short or too long.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
-not a valid hexadecimal string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Crypto_PrivateKey__ctor_System_String__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
@@ -402,13 +334,12 @@ forge signatures.</p>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_ByteArray_" data-uid="Libplanet.Crypto.PrivateKey.ByteArray*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_ByteArray" data-uid="Libplanet.Crypto.PrivateKey.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>An encoded <span class="xref">System.Byte</span> array representation.</p>
+  <div class="markdown level1 summary"><p>An encoded <see cref="!:System.Byte"></see> array representation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -420,13 +351,13 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Crypto_PrivateKey_ByteArray_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>An encoded <span class="xref">System.Byte</span> array representation can be recovered to a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance again using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a>
+  <div class="markdown level1 remarks"><p>An encoded <see cref="!:System.Byte"></see> array representation can be recovered to a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance again using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a>
 constructor.</p>
 <p>As like <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instances, it also must be kept secret.
 In practice, this must not be sent over the network, and be securely stored in the file
@@ -439,7 +370,7 @@ method instead.</p>
   <h5 id="Libplanet_Crypto_PrivateKey_ByteArray_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ToByteArray">ToByteArray()</a></div>
-      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -487,6 +418,83 @@ forge signatures.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L298">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Decrypt_" data-uid="Libplanet.Crypto.PrivateKey.Decrypt*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Decrypt(ImmutableArray{System.Byte})">Decrypt(ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decrypts a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> which was encrypted with the corresponding
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to the original plain text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Decrypt(ImmutableArray&lt;byte&gt; ciphertext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">ciphertext</span></td>
+        <td><p>The encrypted message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><p>The decrypted original message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
+word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
+are <see cref="!:System.Byte"></see>s, not Unicode <see cref="!:System.String"></see>s.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.InvalidCiphertextException.html">InvalidCiphertextException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">ciphertext</code> is invalid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_ImmutableArray_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte__">Encrypt(ImmutableArray&lt;Byte&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -500,8 +508,7 @@ forge signatures.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] Decrypt(byte[] ciphertext)</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] Decrypt(byte[] ciphertext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -540,7 +547,7 @@ public byte[] Decrypt(byte[] ciphertext)</code></pre>
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <span class="xref">System.Byte</span>s, not Unicode <span class="xref">System.String</span>s.</p>
+are <see cref="!:System.Byte"></see>s, not Unicode <see cref="!:System.String"></see>s.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -562,84 +569,6 @@ are <span class="xref">System.Byte</span>s, not Unicode <span class="xref">Syste
   <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_System_Byte___">Encrypt(Byte[])</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L298">View Source</a>
-  </span>
-  <a id="Libplanet_Crypto_PrivateKey_Decrypt_" data-uid="Libplanet.Crypto.PrivateKey.Decrypt*"></a>
-  <h4 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Decrypt(System.Collections.Immutable.ImmutableArray{System.Byte})">Decrypt(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Decrypts a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> which was encrypted with the corresponding
-<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to the original plain text.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public ImmutableArray&lt;byte&gt; Decrypt(ImmutableArray&lt;byte&gt; ciphertext)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">ciphertext</span></td>
-        <td><p>The encrypted message.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><p>The decrypted original message.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
-word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> and a returned message
-are <span class="xref">System.Byte</span>s, not Unicode <span class="xref">System.String</span>s.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Crypto.InvalidCiphertextException.html">InvalidCiphertextException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">ciphertext</code> is invalid.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Collections_Immutable_ImmutableArray_System_Byte___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_System_Collections_Immutable_ImmutableArray_System_Byte__">Encrypt(ImmutableArray&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -712,13 +641,13 @@ forge signatures.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L192">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_Equals_" data-uid="Libplanet.Crypto.PrivateKey.Equals*"></a>
-  <h4 id="Libplanet_Crypto_PrivateKey_Equals_System_Object_" data-uid="Libplanet.Crypto.PrivateKey.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Crypto_PrivateKey_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Crypto.PrivateKey.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>A secret part of a key pair involved in
 <a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
 signature algorithm on which the Libplanet is based.  It can be used to
@@ -735,7 +664,7 @@ Libplanet-backed games/apps too.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -748,7 +677,7 @@ Libplanet-backed games/apps too.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -769,15 +698,13 @@ Libplanet-backed games/apps too.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Crypto_PrivateKey_Equals_System_Object__remarks">Remarks</h5>
+  <h5 id="Libplanet_Crypto_PrivateKey_Equals_System_Nullable_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
 must be kept secret, if they are exposed, an attacker will be able to
 forge signatures.</p>
 <p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
 </div>
-  <h5 id="Libplanet_Crypto_PrivateKey_Equals_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Crypto_PrivateKey_Equals_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
   </div>
@@ -801,8 +728,7 @@ agreed upon.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public SymmetricKey ExchangeKey(PublicKey publicKey)</code></pre>
+    <pre><code class="lang-csharp hljs">public SymmetricKey ExchangeKey(PublicKey publicKey)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -864,8 +790,7 @@ forge signatures.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static PrivateKey FromString(string hex)</code></pre>
+    <pre><code class="lang-csharp hljs">public static PrivateKey FromString(string hex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -908,35 +833,6 @@ must be kept secret, if they are exposed, an attacker will be able to
 forge signatures.</p>
 <p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
-string is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the length of the given
-<code data-dev-comment-type="paramref" class="paramref">hex</code> string is too short or too long.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
-not a valid hexadecimal string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Crypto_PrivateKey_FromString_System_String__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
@@ -983,8 +879,6 @@ Libplanet-backed games/apps too.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <h5 id="Libplanet_Crypto_PrivateKey_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
 must be kept secret, if they are exposed, an attacker will be able to
@@ -994,6 +888,76 @@ forge signatures.</p>
   <h5 id="Libplanet_Crypto_PrivateKey_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Sign(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L254">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Sign_" data-uid="Libplanet.Crypto.PrivateKey.Sign*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Sign(ImmutableArray{System.Byte})">Sign(ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a signature from the given <code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
+<p>A created signature can be verified by the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
+</p>
+<p>Signatures can be created by only the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> which corresponds
+a <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to verify these signatures.</p>
+<p>To sum up, a signature is used to guarantee:</p>
+<ul><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was created by someone possessing
+the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>,</li><li>that the possessor cannot deny having sent the
+<code data-dev-comment-type="paramref" class="paramref">message</code>, and</li><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was not forged in the middle of
+transit.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Sign(ImmutableArray&lt;byte&gt; message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message <see cref="!:System.Byte"></see>s to sign.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><p>A signature that proves the authenticity of the <code data-dev-comment-type="paramref" class="paramref">message</code>.
+It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a> method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
+must be kept secret, if they are exposed, an attacker will be able to
+forge signatures.</p>
+<p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
+</div>
+  <h5 id="Libplanet_Crypto_PrivateKey_Sign_ImmutableArray_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1041,7 +1005,7 @@ forged in the middle of transit.</li></ul>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">message</span></td>
-        <td><p>A message <span class="xref">System.Byte</span>s to sign.</p>
+        <td><p>A message <see cref="!:System.Byte"></see>s to sign.</p>
 </td>
       </tr>
     </tbody>
@@ -1058,7 +1022,7 @@ forged in the middle of transit.</li></ul>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><p>A signature that proves the authenticity of the <code data-dev-comment-type="paramref" class="paramref">message</code>.
-It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a> method.</p>
+It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a> method.</p>
 </td>
       </tr>
     </tbody>
@@ -1071,77 +1035,7 @@ forge signatures.</p>
 </div>
   <h5 id="Libplanet_Crypto_PrivateKey_Sign_System_Byte____seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Sign_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Sign(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Crypto/PrivateKey.cs/#L254">View Source</a>
-  </span>
-  <a id="Libplanet_Crypto_PrivateKey_Sign_" data-uid="Libplanet.Crypto.PrivateKey.Sign*"></a>
-  <h4 id="Libplanet_Crypto_PrivateKey_Sign_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PrivateKey.Sign(System.Collections.Immutable.ImmutableArray{System.Byte})">Sign(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a signature from the given <code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
-<p>A created signature can be verified by the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
-</p>
-<p>Signatures can be created by only the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> which corresponds
-a <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to verify these signatures.</p>
-<p>To sum up, a signature is used to guarantee:</p>
-<ul><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was created by someone possessing
-the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>,</li><li>that the possessor cannot deny having sent the
-<code data-dev-comment-type="paramref" class="paramref">message</code>, and</li><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was not forged in the middle of
-transit.</li></ul>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; Sign(ImmutableArray&lt;byte&gt; message)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">message</span></td>
-        <td><p>A message <span class="xref">System.Byte</span>s to sign.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><p>A signature that proves the authenticity of the <code data-dev-comment-type="paramref" class="paramref">message</code>.
-It can be verified using <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a> method.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Crypto_PrivateKey_Sign_System_Collections_Immutable_ImmutableArray_System_Byte___remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
-must be kept secret, if they are exposed, an attacker will be able to
-forge signatures.</p>
-<p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
-</div>
-  <h5 id="Libplanet_Crypto_PrivateKey_Sign_System_Collections_Immutable_ImmutableArray_System_Byte___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1152,14 +1046,13 @@ forge signatures.</p>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_ToByteArray_" data-uid="Libplanet.Crypto.PrivateKey.ToByteArray*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_ToByteArray" data-uid="Libplanet.Crypto.PrivateKey.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Encodes the private key into a corresponding mutable <span class="xref">System.Byte</span> array
+  <div class="markdown level1 summary"><p>Encodes the private key into a corresponding mutable <see cref="!:System.Byte"></see> array
 representation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1172,7 +1065,7 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>An encoded <span class="xref">System.Byte</span> array representation.  It guarantees that
+        <td><p>An encoded <see cref="!:System.Byte"></see> array representation.  It guarantees that
 returned arrays are never reused, and mutating on them does not affect
 <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance's internal states.</p>
 </td>
@@ -1180,7 +1073,7 @@ returned arrays are never reused, and mutating on them does not affect
     </tbody>
   </table>
   <h5 id="Libplanet_Crypto_PrivateKey_ToByteArray_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>An encoded <span class="xref">System.Byte</span> array representation can be recovered to a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance again using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a>
+  <div class="markdown level1 remarks"><p>An encoded <see cref="!:System.Byte"></see> array representation can be recovered to a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance again using <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a>
 constructor.</p>
 <p>As like <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instances, it also must be kept secret.
 In practice, this must not be sent over the network, and be securely stored in the file
@@ -1193,7 +1086,7 @@ property.</p>
   <h5 id="Libplanet_Crypto_PrivateKey_ToByteArray_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a></div>
-      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Collections_Generic_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_IReadOnlyList_System_Byte__">PrivateKey(IReadOnlyList&lt;Byte&gt;)</a></div>
   </div>
   <h3 id="operators">Operators
 </h3>
@@ -1344,10 +1237,6 @@ forge signatures.</p>
   <h5 id="Libplanet_Crypto_PrivateKey_op_Inequality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

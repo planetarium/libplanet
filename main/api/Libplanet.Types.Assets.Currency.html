@@ -80,35 +80,22 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>&gt;</div>
+    <div><span class="xref">ISerializable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Assets.html">Libplanet.Types.Assets</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Assets_Currency_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public readonly struct Currency : IEquatable&lt;Currency&gt;, ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly struct Currency</code></pre>
   </div>
   <h5 id="Libplanet_Types_Assets_Currency_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_examples"><strong>Examples</strong></h5>
   <p>Here is how US Dollar can be represented using <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a>:</p>
@@ -122,13 +109,13 @@ var twentyThreeBucks = 23 * USD;
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L104">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency__ctor_" data-uid="Libplanet.Types.Assets.Currency.#ctor*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Assets.Currency.#ctor(Bencodex.Types.IValue)">Currency(IValue)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency__ctor_IValue_" data-uid="Libplanet.Types.Assets.Currency.#ctor(IValue)">Currency(IValue)</h4>
   <div class="markdown level1 summary"><p>Deserializes a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> type from a Bencodex value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -147,7 +134,7 @@ var twentyThreeBucks = 23 * USD;
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">serialized</span></td>
         <td><p>The Bencodex value serialized by <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Serialize">Serialize()</a>
 method.</p>
@@ -155,35 +142,33 @@ method.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency__ctor_Bencodex_Types_IValue__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency__ctor_IValue__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 id="Libplanet_Types_Assets_Currency__ctor_Bencodex_Types_IValue__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency__ctor_IValue__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Serialize">Serialize()</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA1__System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.%23ctor(Libplanet.Common.HashDigest%7BSystem.Security.Cryptography.SHA1%7D%2CSystem.String%2CSystem.Byte%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Crypto.Address%7D%2CSystem.Boolean%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_SHA1__System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.%23ctor(Libplanet.Common.HashDigest%7BSHA1%7D%2CSystem.String%2CSystem.Byte%2CSystem.Nullable%7BIImmutableSet%7BLibplanet.Crypto.Address%7D%7D%2CSystem.Boolean%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L252">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L259">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency__ctor_" data-uid="Libplanet.Types.Assets.Currency.#ctor*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA1__System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.Currency.#ctor(Libplanet.Common.HashDigest{System.Security.Cryptography.SHA1},System.String,System.Byte,System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address},System.Boolean,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue})">Currency(HashDigest&lt;SHA1&gt;, String, Byte, IImmutableSet&lt;Address&gt;, Boolean, Nullable&lt;FungibleAssetValue&gt;)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_SHA1__System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__" data-uid="Libplanet.Types.Assets.Currency.#ctor(Libplanet.Common.HashDigest{SHA1},System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Crypto.Address}},System.Boolean,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue})">Currency(HashDigest&lt;SHA1&gt;, String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;, Boolean, Nullable&lt;FungibleAssetValue&gt;)</h4>
   <div class="markdown level1 summary"><p>An internal constructor for JSON deserialization.  Do not use this directly.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonConstructor]
-[Obsolete]
-public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt; minters, bool totalSupplyTrackable, FungibleAssetValue? maximumSupply)</code></pre>
+    <pre><code class="lang-csharp hljs">public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt;? minters, bool totalSupplyTrackable, FungibleAssetValue? maximumSupply)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -196,7 +181,7 @@ public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA1</span>&gt;</td>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA1</span>&gt;</td>
         <td><span class="parametername">hash</span></td>
         <td></td>
       </tr>
@@ -211,7 +196,7 @@ public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, 
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;&gt;</td>
         <td><span class="parametername">minters</span></td>
         <td></td>
       </tr>
@@ -227,15 +212,15 @@ public Currency(HashDigest&lt;SHA1&gt; hash, string ticker, byte decimalPlaces, 
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA1__System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_SHA1__System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_System_Security_Cryptography_SHA1__System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency__ctor_Libplanet_Common_HashDigest_SHA1__System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___System_Boolean_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -255,8 +240,7 @@ units (i.e., exponent)</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonInclude]
-public readonly byte DecimalPlaces</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly byte DecimalPlaces</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -278,53 +262,10 @@ public readonly byte DecimalPlaces</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_DecimalPlaces_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L83">View Source</a>
-  </span>
-  <h4 id="Libplanet_Types_Assets_Currency_Hash" data-uid="Libplanet.Types.Assets.Currency.Hash">Hash</h4>
-  <div class="markdown level1 summary"><p>The deterministic hash derived from other fields.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonInclude]
-public readonly HashDigest&lt;SHA1&gt; Hash</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">System.Security.Cryptography.SHA1</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Hash_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
-Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
-do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
-following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
-</div>
-  <h5 id="Libplanet_Types_Assets_Currency_Hash_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -342,8 +283,7 @@ If this is <span class="xref">null</span> <em>anyone</em> can mint the currency.
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonInclude]
-public readonly IImmutableSet&lt;Address&gt; Minters</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly IImmutableSet&lt;Address&gt;? Minters</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,7 +295,7 @@ public readonly IImmutableSet&lt;Address&gt; Minters</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -380,8 +320,7 @@ public readonly IImmutableSet&lt;Address&gt; Minters</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonInclude]
-public readonly string Ticker</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly string Ticker</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -403,8 +342,8 @@ public readonly string Ticker</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_Ticker_seealso">See Also</h5>
   <div class="seealso">
@@ -415,7 +354,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_TotalSupplyTrackable.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.TotalSupplyTrackable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L94">View Source</a>
   </span>
   <h4 id="Libplanet_Types_Assets_Currency_TotalSupplyTrackable" data-uid="Libplanet.Types.Assets.Currency.TotalSupplyTrackable">TotalSupplyTrackable</h4>
   <div class="markdown level1 summary"><p>Whether the total supply of this instance of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> is trackable.</p>
@@ -423,8 +362,7 @@ following.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonInclude]
-public readonly bool TotalSupplyTrackable</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly bool TotalSupplyTrackable</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -446,8 +384,8 @@ public readonly bool TotalSupplyTrackable</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_TotalSupplyTrackable_seealso">See Also</h5>
   <div class="seealso">
@@ -457,10 +395,53 @@ following.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L82">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Assets_Currency_Hash_" data-uid="Libplanet.Types.Assets.Currency.Hash*"></a>
+  <h4 id="Libplanet_Types_Assets_Currency_Hash" data-uid="Libplanet.Types.Assets.Currency.Hash">Hash</h4>
+  <div class="markdown level1 summary"><p>The deterministic hash derived from other fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly HashDigest&lt;SHA1&gt; Hash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA1</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_Currency_Hash_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
+Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
+do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
+following.</p>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+</div>
+  <h5 id="Libplanet_Types_Assets_Currency_Hash_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_MaximumSupply.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.MaximumSupply%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L445">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L460">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_MaximumSupply_" data-uid="Libplanet.Types.Assets.Currency.MaximumSupply*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_MaximumSupply" data-uid="Libplanet.Types.Assets.Currency.MaximumSupply">MaximumSupply</h4>
@@ -470,8 +451,7 @@ following.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(MaximumSupplyJsonConverter))]
-public readonly FungibleAssetValue? MaximumSupply { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly FungibleAssetValue? MaximumSupply { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -493,8 +473,8 @@ public readonly FungibleAssetValue? MaximumSupply { get; }</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_MaximumSupply_seealso">See Also</h5>
   <div class="seealso">
@@ -507,7 +487,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_AllowsToMint_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.AllowsToMint(Libplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L640">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L655">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_AllowsToMint_" data-uid="Libplanet.Types.Assets.Currency.AllowsToMint*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_AllowsToMint_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Assets.Currency.AllowsToMint(Libplanet.Crypto.Address)">AllowsToMint(Address)</h4>
@@ -518,8 +498,7 @@ to mint or burn assets of this currency.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly bool AllowsToMint(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly bool AllowsToMint(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -562,8 +541,8 @@ mint or burn assets of this currency.</p>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_AllowsToMint_Libplanet_Crypto_Address__seealso">See Also</h5>
   <div class="seealso">
@@ -571,13 +550,13 @@ following.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Capped(System.String%2CSystem.Byte%2CSystem.ValueTuple%7BSystem.Numerics.BigInteger%2CSystem.Numerics.BigInteger%7D%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Capped(System.String%2CSystem.Byte%2CSystem.ValueTuple%7BBigInteger%2CBigInteger%7D%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L536">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L551">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Capped_" data-uid="Libplanet.Types.Assets.Currency.Capped*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{System.Numerics.BigInteger,System.Numerics.BigInteger},Libplanet.Crypto.Address)">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},Libplanet.Crypto.Address)">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</h4>
   <div class="markdown level1 summary"><p>Define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> with a maximum supply limit.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -609,7 +588,7 @@ units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Numerics.BigInteger</span>, <span class="xref">System.Numerics.BigInteger</span>&gt;</td>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">BigInteger</span>, <span class="xref">BigInteger</span>&gt;</td>
         <td><span class="parametername">maximumSupply</span></td>
         <td><p>The uppermost quantity of currency allowed to exist. For
 example, the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> parameter in <code>Currency.Capped(&quot;ABC&quot;, 2,
@@ -620,7 +599,7 @@ example, the <code data-dev-comment-type="paramref" class="paramref">maximumSupp
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">minter</span></td>
         <td><p>The address who can mint the currency.  To specify multiple
-minters, use the <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
+minters, use the <see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger,BigInteger>,IImmutableSet&lt;Address>?)"></see>
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
 </td>
       </tr>
@@ -642,53 +621,33 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__Libplanet_Crypto_Address__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string, or when either the Major or the Minor values of
-<code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
-the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is too big for the given
-<code data-dev-comment-type="paramref" class="paramref">decimalPlaces</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__Libplanet_Crypto_Address__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Capped(System.String%2CSystem.Byte%2CSystem.ValueTuple%7BSystem.Numerics.BigInteger%2CSystem.Numerics.BigInteger%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__System_Nullable_IImmutableSet_Libplanet_Crypto_Address___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Capped(System.String%2CSystem.Byte%2CSystem.ValueTuple%7BBigInteger%2CBigInteger%7D%2CSystem.Nullable%7BIImmutableSet%7BLibplanet.Crypto.Address%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L506">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L521">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Capped_" data-uid="Libplanet.Types.Assets.Currency.Capped*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{System.Numerics.BigInteger,System.Numerics.BigInteger},System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address})">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__System_Nullable_IImmutableSet_Libplanet_Crypto_Address___" data-uid="Libplanet.Types.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},System.Nullable{IImmutableSet{Libplanet.Crypto.Address}})">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> with a maximum supply limit.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Currency Capped(string ticker, byte decimalPlaces, (BigInteger Major, BigInteger Minor) maximumSupply, IImmutableSet&lt;Address&gt; minters)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Currency Capped(string ticker, byte decimalPlaces, (BigInteger Major, BigInteger Minor) maximumSupply, IImmutableSet&lt;Address&gt;? minters)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -714,7 +673,7 @@ units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Numerics.BigInteger</span>, <span class="xref">System.Numerics.BigInteger</span>&gt;</td>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">BigInteger</span>, <span class="xref">BigInteger</span>&gt;</td>
         <td><span class="parametername">maximumSupply</span></td>
         <td><p>The uppermost quantity of currency allowed to exist. For
 example, the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> parameter in <code>Currency.Capped(&quot;ABC&quot;, 2,
@@ -722,7 +681,7 @@ example, the <code data-dev-comment-type="paramref" class="paramref">maximumSupp
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;&gt;</td>
         <td><span class="parametername">minters</span></td>
         <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es who can mint the currency.
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
@@ -746,35 +705,15 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__System_Nullable_IImmutableSet_Libplanet_Crypto_Address____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string, or when either the Major or the Minor values of
-<code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is a negative number, or when the given Minor unit for
-the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code> is too big for the given
-<code data-dev-comment-type="paramref" class="paramref">decimalPlaces</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__System_Nullable_IImmutableSet_Libplanet_Crypto_Address____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -783,7 +722,7 @@ the <code data-dev-comment-type="paramref" class="paramref">maximumSupply</code>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Equals_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Equals(Libplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L679">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L694">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Equals_" data-uid="Libplanet.Types.Assets.Currency.Equals*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_Equals_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Types.Assets.Currency.Equals(Libplanet.Types.Assets.Currency)">Equals(Currency)</h4>
@@ -795,8 +734,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly bool Equals(Currency other)</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Currency other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -835,8 +773,8 @@ public readonly bool Equals(Currency other)</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_Equals_Libplanet_Types_Assets_Currency__seealso">See Also</h5>
   <div class="seealso">
@@ -844,13 +782,13 @@ following.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L674">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L689">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Equals_" data-uid="Libplanet.Types.Assets.Currency.Equals*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_Equals_System_Object_" data-uid="Libplanet.Types.Assets.Currency.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Assets.Currency.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Represents a currency type.  Every single value of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> defines
 a distinct currency type.  To draw a parallel with real world monetary,
 each <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> value represents such currencies as USD (US Dollar) or
@@ -859,8 +797,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -873,7 +810,7 @@ public override readonly bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -894,17 +831,15 @@ public override readonly bool Equals(object obj)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Types_Assets_Currency_Equals_System_Object__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Equals_System_Nullable_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 id="Libplanet_Types_Assets_Currency_Equals_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Equals_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -913,7 +848,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L670">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L685">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_GetHashCode_" data-uid="Libplanet.Types.Assets.Currency.GetHashCode*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_GetHashCode" data-uid="Libplanet.Types.Assets.Currency.GetHashCode">GetHashCode()</h4>
@@ -925,8 +860,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly int GetHashCode()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -943,15 +877,13 @@ public override readonly int GetHashCode()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <h5 id="Libplanet_Types_Assets_Currency_GetHashCode_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
@@ -962,7 +894,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Legacy(System.String%2CSystem.Byte%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L624">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L639">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Legacy_" data-uid="Libplanet.Types.Assets.Currency.Legacy*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Assets.Currency.Legacy(System.String,System.Byte,Libplanet.Crypto.Address)">Legacy(String, Byte, Address)</h4>
@@ -975,8 +907,7 @@ internally compatible with the legacy version.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.&quot;)]
-public static Currency Legacy(string ticker, byte decimalPlaces, Address minter)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Currency Legacy(string ticker, byte decimalPlaces, Address minter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1005,7 +936,7 @@ units (i.e., exponent)</a>.</p>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">minter</span></td>
         <td><p>The address who can mint the currency.  To specify multiple
-minters, use the <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Legacy(String, Byte, IImmutableSet&lt;Address&gt;)</a>
+minters, use the <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Legacy(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a>
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
 </td>
       </tr>
@@ -1032,39 +963,22 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_Libplanet_Crypto_Address__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Legacy(String, Byte, IImmutableSet&lt;Address&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Legacy(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Legacy(System.String%2CSystem.Byte%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Legacy(System.String%2CSystem.Byte%2CSystem.Nullable%7BIImmutableSet%7BLibplanet.Crypto.Address%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L598">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L613">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Legacy_" data-uid="Libplanet.Types.Assets.Currency.Legacy*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Assets.Currency.Legacy(System.String,System.Byte,System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address})">Legacy(String, Byte, IImmutableSet&lt;Address&gt;)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___" data-uid="Libplanet.Types.Assets.Currency.Legacy(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Crypto.Address}})">Legacy(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p><strong>OBSOLETE! DO NOT USE.</strong><br><br>(unless you are upgrading your project from an old
 version of Libplanet that did not support total supply tracking for
 <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a> and had a legacy <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> defined.)
@@ -1074,8 +988,7 @@ internally compatible with the legacy version.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.&quot;)]
-public static Currency Legacy(string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt; minters)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Currency Legacy(string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt;? minters)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1101,7 +1014,7 @@ units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;&gt;</td>
         <td><span class="parametername">minters</span></td>
         <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es who can mint the currency.
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
@@ -1125,32 +1038,15 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -1159,7 +1055,7 @@ is an empty string.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L687">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L702">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Serialize_" data-uid="Libplanet.Types.Assets.Currency.Serialize*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_Serialize" data-uid="Libplanet.Types.Assets.Currency.Serialize">Serialize()</h4>
@@ -1168,8 +1064,7 @@ is an empty string.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public readonly IValue Serialize()</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly IValue Serialize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1181,7 +1076,7 @@ public readonly IValue Serialize()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><p>The serialized Bencodex value.</p>
 </td>
       </tr>
@@ -1192,8 +1087,8 @@ public readonly IValue Serialize()</code></pre>
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_Serialize_seealso">See Also</h5>
   <div class="seealso">
@@ -1204,7 +1099,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L666">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L681">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_ToString_" data-uid="Libplanet.Types.Assets.Currency.ToString*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_ToString" data-uid="Libplanet.Types.Assets.Currency.ToString">ToString()</h4>
@@ -1216,8 +1111,7 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override readonly string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1234,15 +1128,13 @@ public override readonly string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h5 id="Libplanet_Types_Assets_Currency_ToString_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
   <h5 id="Libplanet_Types_Assets_Currency_ToString_seealso">See Also</h5>
   <div class="seealso">
@@ -1253,7 +1145,7 @@ following.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Uncapped(System.String%2CSystem.Byte%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L575">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L590">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Uncapped_" data-uid="Libplanet.Types.Assets.Currency.Uncapped*"></a>
   <h4 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_" data-uid="Libplanet.Types.Assets.Currency.Uncapped(System.String,System.Byte,Libplanet.Crypto.Address)">Uncapped(String, Byte, Address)</h4>
@@ -1291,7 +1183,7 @@ units (i.e., exponent)</a>.</p>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">minter</span></td>
         <td><p>The address who can mint the currency.  To specify multiple
-minters, use the <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a>
+minters, use the <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a>
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
 </td>
       </tr>
@@ -1318,45 +1210,28 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Uncapped(System.String%2CSystem.Byte%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Crypto.Address%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.Uncapped(System.String%2CSystem.Byte%2CSystem.Nullable%7BIImmutableSet%7BLibplanet.Crypto.Address%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L555">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L570">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_Uncapped_" data-uid="Libplanet.Types.Assets.Currency.Uncapped*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__" data-uid="Libplanet.Types.Assets.Currency.Uncapped(System.String,System.Byte,System.Collections.Immutable.IImmutableSet{Libplanet.Crypto.Address})">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___" data-uid="Libplanet.Types.Assets.Currency.Uncapped(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Crypto.Address}})">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> without a maximum supply limit.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Currency Uncapped(string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt; minters)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Currency Uncapped(string ticker, byte decimalPlaces, IImmutableSet&lt;Address&gt;? minters)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1382,7 +1257,7 @@ units (i.e., exponent)</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;&gt;</td>
         <td><span class="parametername">minters</span></td>
         <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es who can mint the currency.
 See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Minters">Minters</a> field which corresponds to this.</p>
@@ -1406,32 +1281,15 @@ See also <a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Ty
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
 Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
 do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
 following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+<ul><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,IImmutableSet&lt;Address>?)"></see>
+</li><li><see cref="!:Capped(string,byte,ValueTuple&lt;BigInteger, BigInteger>,Address)"></see></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address___">Uncapped(String, Byte, Nullable&lt;IImmutableSet&lt;Address&gt;&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">ticker</code>
-is an empty string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Crypto_Address____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
@@ -1439,21 +1297,20 @@ is an empty string.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.op_Multiply(Libplanet.Types.Assets.Currency%2CSystem.Numerics.BigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_op_Multiply_BigInteger_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.op_Multiply(BigInteger%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L467">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L498">View Source</a>
   </span>
   <a id="Libplanet_Types_Assets_Currency_op_Multiply_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply(Libplanet.Types.Assets.Currency,System.Numerics.BigInteger)">Multiply(Currency, BigInteger)</h4>
+  <h4 id="Libplanet_Types_Assets_Currency_op_Multiply_BigInteger_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply(BigInteger,Libplanet.Types.Assets.Currency)">Multiply(BigInteger, Currency)</h4>
   <div class="markdown level1 summary"><p>Gets a fungible asset value with the given <code data-dev-comment-type="paramref" class="paramref">quantity</code> of the
 specified <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator *(Currency currency, BigInteger quantity)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator *(BigInteger quantity, Currency currency)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1466,75 +1323,7 @@ public static FungibleAssetValue operator *(Currency currency, BigInteger quanti
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
-        <td><span class="parametername">currency</span></td>
-        <td><p>The currency to get a value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
-        <td><span class="parametername">quantity</span></td>
-        <td><p>The major unit of the fungible asset value,
-i.e., digits <em>before</em> the decimal separator.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
-        <td><p>A fungible asset value with the given <code data-dev-comment-type="paramref" class="paramref">quantity</code> of the
-specified <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This cannot specify <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MinorUnit">MinorUnit</a> but only
-<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MajorUnit">MajorUnit</a>.  For more precision, directly use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>'s constructors instead.</p>
-</div>
-  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_System_Numerics_BigInteger__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.op_Multiply(System.Numerics.BigInteger%2CLibplanet.Types.Assets.Currency)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L483">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Assets_Currency_op_Multiply_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_Currency_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply(System.Numerics.BigInteger,Libplanet.Types.Assets.Currency)">Multiply(BigInteger, Currency)</h4>
-  <div class="markdown level1 summary"><p>Gets a fungible asset value with the given <code data-dev-comment-type="paramref" class="paramref">quantity</code> of the
-specified <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static FungibleAssetValue operator *(BigInteger quantity, Currency currency)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Numerics.BigInteger</span></td>
+        <td><span class="xref">BigInteger</span></td>
         <td><span class="parametername">quantity</span></td>
         <td><p>The major unit of the fungible asset value,
 i.e., digits <em>before</em> the decimal separator.</p>
@@ -1565,34 +1354,30 @@ specified <code data-dev-comment-type="paramref" class="paramref">currency</code
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_Currency__remarks">Remarks</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_BigInteger_Libplanet_Types_Assets_Currency__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This cannot specify <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MinorUnit">MinorUnit</a> but only
 <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MajorUnit">MajorUnit</a>.  For more precision, directly use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>'s constructors instead.</p>
 </div>
-  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_System_Numerics_BigInteger_Libplanet_Types_Assets_Currency__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_BigInteger_Libplanet_Types_Assets_Currency__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
-  <h3 id="eii">Explicit Interface Implementations
-</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.System%23Runtime%23Serialization%23ISerializable%23GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_BigInteger_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Assets.Currency.op_Multiply(Libplanet.Types.Assets.Currency%2CBigInteger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L644">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Assets/Currency.cs/#L482">View Source</a>
   </span>
-  <a id="Libplanet_Types_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_" data-uid="Libplanet.Types.Assets.Currency.System#Runtime#Serialization#ISerializable#GetObjectData*"></a>
-  <h4 id="Libplanet_Types_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Types.Assets.Currency.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">ISerializable.GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>Represents a currency type.  Every single value of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> defines
-a distinct currency type.  To draw a parallel with real world monetary,
-each <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> value represents such currencies as USD (US Dollar) or
-EUR (Euro), <em>not values</em> like $100 or €100.</p>
+  <a id="Libplanet_Types_Assets_Currency_op_Multiply_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply*"></a>
+  <h4 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_BigInteger_" data-uid="Libplanet.Types.Assets.Currency.op_Multiply(Libplanet.Types.Assets.Currency,BigInteger)">Multiply(Currency, BigInteger)</h4>
+  <div class="markdown level1 summary"><p>Gets a fungible asset value with the given <code data-dev-comment-type="paramref" class="paramref">quantity</code> of the
+specified <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FungibleAssetValue operator *(Currency currency, BigInteger quantity)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1605,35 +1390,51 @@ EUR (Euro), <em>not values</em> like $100 or €100.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
+        <td><a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency to get a value.</p>
+</td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><span class="xref">BigInteger</span></td>
+        <td><span class="parametername">quantity</span></td>
+        <td><p>The major unit of the fungible asset value,
+i.e., digits <em>before</em> the decimal separator.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>There are two types of <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currencies</a>: capped and uncapped.
-Capped currencies have a hard limit on the maximum minted amount, and uncapped currencies
-do not have the said limit. To define a <a class="xref" href="Libplanet.Types.Assets.Currency.html">Currency</a> you may call either of the
-following.</p>
-<ul><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Capped(String, Byte, (BigInteger Major, BigInteger Minor), IImmutableSet&lt;Address&gt;)</a>
-</li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_System_Numerics_BigInteger_System_Numerics_BigInteger__Libplanet_Crypto_Address_">Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_System_Collections_Immutable_IImmutableSet_Libplanet_Crypto_Address__">Uncapped(String, Byte, IImmutableSet&lt;Address&gt;)</a></li><li><a class="xref" href="Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Crypto_Address_">Uncapped(String, Byte, Address)</a></li></ul>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></td>
+        <td><p>A fungible asset value with the given <code data-dev-comment-type="paramref" class="paramref">quantity</code> of the
+specified <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_BigInteger__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This cannot specify <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MinorUnit">MinorUnit</a> but only
+<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html#Libplanet_Types_Assets_FungibleAssetValue_MajorUnit">MajorUnit</a>.  For more precision, directly use <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>'s constructors instead.</p>
 </div>
-  <h5 id="Libplanet_Types_Assets_Currency_System_Runtime_Serialization_ISerializable_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Assets_Currency_op_Multiply_Libplanet_Types_Assets_Currency_BigInteger__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a></div>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <span class="xref">ISerializable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

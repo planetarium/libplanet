@@ -83,32 +83,14 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Types.Consensus.IVoteMetadata.html">IVoteMetadata</a></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.VoteMetadata.html">VoteMetadata</a>&gt;</div>
-    <div><span class="xref">Bencodex.IBencodable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Consensus.VoteMetadata.html">VoteMetadata</a>&gt;</div>
+    <div><span class="xref">IBencodable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Consensus.html">Libplanet.Types.Consensus</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Consensus_VoteMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VoteMetadata : IVoteMetadata, IEquatable&lt;VoteMetadata&gt;, IBencodable</code></pre>
+    <pre><code class="lang-csharp hljs">public class VoteMetadata : object, IVoteMetadata</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -120,13 +102,13 @@
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Consensus/VoteMetadata.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Types_Consensus_VoteMetadata__ctor_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor*"></a>
-  <h4 id="Libplanet_Types_Consensus_VoteMetadata__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)">VoteMetadata(IValue)</h4>
+  <h4 id="Libplanet_Types_Consensus_VoteMetadata__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)">VoteMetadata(Bencodex.Types.IValue)</h4>
   <div class="markdown level1 summary"><p>Represents a vote metadata from a validator for consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public VoteMetadata(IValue bencoded)</code></pre>
+    <pre><code class="lang-csharp hljs">public VoteMetadata(Bencodex.Types.IValue bencoded)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,13 +129,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Nullable_System_Numerics_BigInteger__Libplanet_Types_Consensus_VoteFlag_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Types.Blocks.BlockHash%2CSystem.DateTimeOffset%2CLibplanet.Crypto.PublicKey%2CSystem.Nullable%7BSystem.Numerics.BigInteger%7D%2CLibplanet.Types.Consensus.VoteFlag)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Nullable_BigInteger__Libplanet_Types_Consensus_VoteFlag_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Types.Blocks.BlockHash%2CDateTimeOffset%2CLibplanet.Crypto.PublicKey%2CSystem.Nullable%7BBigInteger%7D%2CLibplanet.Types.Consensus.VoteFlag)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Consensus/VoteMetadata.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Types_Consensus_VoteMetadata__ctor_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor*"></a>
-  <h4 id="Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Nullable_System_Numerics_BigInteger__Libplanet_Types_Consensus_VoteFlag_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,System.Nullable{System.Numerics.BigInteger},Libplanet.Types.Consensus.VoteFlag)">VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable&lt;BigInteger&gt;, VoteFlag)</h4>
+  <h4 id="Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Nullable_BigInteger__Libplanet_Types_Consensus_VoteFlag_" data-uid="Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,DateTimeOffset,Libplanet.Crypto.PublicKey,System.Nullable{BigInteger},Libplanet.Types.Consensus.VoteFlag)">VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable&lt;BigInteger&gt;, VoteFlag)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Consensus.VoteMetadata.html">VoteMetadata</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -190,7 +172,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">timestamp</span></td>
         <td><p>The time at which the voting took place.</p>
 </td>
@@ -202,7 +184,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Numerics.BigInteger</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BigInteger</span>&gt;</td>
         <td><span class="parametername">validatorPower</span></td>
         <td><p>The voting power of the validator.</p>
 </td>
@@ -211,29 +193,6 @@
         <td><a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html">VoteFlag</a></td>
         <td><span class="parametername">flag</span></td>
         <td><p><a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html">VoteFlag</a> for the vote's status.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown for any of the following reasons:</p>
-<ul><li>
-    Either <code data-dev-comment-type="paramref" class="paramref">height</code> or <code data-dev-comment-type="paramref" class="paramref">round</code> is negative.
-</li><li>
-    Given <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is <span class="xref">null</span> when
-<code data-dev-comment-type="paramref" class="paramref">flag</code> is either <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types_Consensus_VoteFlag_Null">Null</a>
-or <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types_Consensus_VoteFlag_Unknown">Unknown</a>.
-</li></ul>
 </td>
       </tr>
     </tbody>
@@ -254,8 +213,7 @@ or <a class="xref" href="Libplanet.Types.Consensus.VoteFlag.html#Libplanet_Types
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonIgnore]
-public IValue Bencoded { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Bencodex.Types.IValue Bencoded { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -422,7 +380,7 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -453,7 +411,7 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Numerics.BigInteger</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BigInteger</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -541,19 +499,19 @@ public IValue Bencoded { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Consensus/VoteMetadata.cs/#L221">View Source</a>
   </span>
   <a id="Libplanet_Types_Consensus_VoteMetadata_Equals_" data-uid="Libplanet.Types.Consensus.VoteMetadata.Equals*"></a>
-  <h4 id="Libplanet_Types_Consensus_VoteMetadata_Equals_System_Object_" data-uid="Libplanet.Types.Consensus.VoteMetadata.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Consensus_VoteMetadata_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Consensus.VoteMetadata.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Represents a vote metadata from a validator for consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -566,7 +524,7 @@ public IValue Bencoded { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -587,8 +545,6 @@ public IValue Bencoded { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -620,8 +576,6 @@ public IValue Bencoded { get; }</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Consensus_VoteMetadata_Sign_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Consensus.VoteMetadata.Sign(Libplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -679,10 +633,10 @@ using given <code data-dev-comment-type="paramref" class="paramref">signer</code
       <a class="xref" href="Libplanet.Types.Consensus.IVoteMetadata.html">IVoteMetadata</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">Bencodex.IBencodable</span>
+      <span class="xref">IBencodable</span>
   </div>
 </article>
           </div>

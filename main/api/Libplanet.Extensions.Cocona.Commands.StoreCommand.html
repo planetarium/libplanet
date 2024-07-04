@@ -79,35 +79,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">StoreCommand</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.Commands.html">Libplanet.Extensions.Cocona.Commands</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Commands_StoreCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StoreCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class StoreCommand : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -124,8 +100,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query a block by hash.&quot;)]
-public void BlockByHash([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;BLOCK-HASH&quot;, Description = &quot;block hash&quot;)] string blockHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public void BlockByHash(string home, string blockHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,8 +137,7 @@ public void BlockByHash([Argument(&quot;STORE&quot;, Description = &quot;The URI
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query a block by index.&quot;)]
-public void BlockByIndex([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;BLOCK-INDEX&quot;, Description = &quot;block index&quot;)] int blockIndex)</code></pre>
+    <pre><code class="lang-csharp hljs">public void BlockByIndex(string home, int blockIndex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,8 +174,7 @@ public void BlockByIndex([Argument(&quot;STORE&quot;, Description = &quot;The UR
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query block hashes by transaction id.&quot;)]
-public void BlockHashesByTxId([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;TX-ID&quot;, Description = &quot;tx id&quot;)] string strTxId)</code></pre>
+    <pre><code class="lang-csharp hljs">public void BlockHashesByTxId(string home, string strTxId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,8 +211,7 @@ public void BlockHashesByTxId([Argument(&quot;STORE&quot;, Description = &quot;T
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query a list of blocks by transaction id.&quot;)]
-public void BlocksByTxId([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;TX-ID&quot;, Description = &quot;tx id&quot;)] string strTxId)</code></pre>
+    <pre><code class="lang-csharp hljs">public void BlocksByTxId(string home, string strTxId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,8 +248,7 @@ public void BlocksByTxId([Argument(&quot;STORE&quot;, Description = &quot;The UR
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Build an index for transaction id and block hash.&quot;)]
-public void BuildIndexTxBlock([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;OFFSET&quot;, Description = &quot;block index&quot;)] int offset, [Argument(&quot;LIMIT&quot;, Description = &quot;block index&quot;)] int limit)</code></pre>
+    <pre><code class="lang-csharp hljs">public void BuildIndexTxBlock(string home, int offset, int limit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -319,8 +290,7 @@ public void BuildIndexTxBlock([Argument(&quot;STORE&quot;, Description = &quot;T
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;List all chain IDs.&quot;)]
-public void ChainIds([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string storeUri, [Option(&quot;hash&quot;, null, Description = &quot;Show the hash of the chain tip.&quot;)] bool showHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public void ChainIds(string storeUri, bool showHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -357,8 +327,7 @@ public void ChainIds([Argument(&quot;STORE&quot;, Description = &quot;The URI de
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command]
-public void MigrateIndex(string storePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public void MigrateIndex(string storePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -390,8 +359,7 @@ public void MigrateIndex(string storePath)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query a transaction by tx id.&quot;)]
-public void TxById([Argument(&quot;STORE&quot;, Description = &quot;The URI denotes the type and path of concrete class for IStore.&lt;store-type&gt;://&lt;store-path&gt; (e.g., rocksdb+file:///path/to/store)&quot;)] string home, [Argument(&quot;TX-ID&quot;, Description = &quot;tx id&quot;)] string strTxId)</code></pre>
+    <pre><code class="lang-csharp hljs">public void TxById(string home, string strTxId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

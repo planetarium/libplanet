@@ -79,53 +79,28 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ApvCommand</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Extensions.Cocona.Commands.html">Libplanet.Extensions.Cocona.Commands</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Extensions.Cocona.dll</h6>
   <h5 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ApvCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class ApvCommand : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.String%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_Nullable_System_String__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable%7BSystem.String%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Commands/ApvCommand.cs/#L191">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_String_System_Boolean_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.String,System.Boolean)">Analyze(String, Boolean)</h4>
+  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_Nullable_System_String__System_Boolean_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable{System.String},System.Boolean)">Analyze(Nullable&lt;String&gt;, Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Parse and analyze a given app protocol version token.&quot;)]
-public void Analyze([Argument(Name = &quot;APV-TOKEN&quot;, Description = &quot;An app protocol version token to analyze.  Read from the standard input if omitted.&quot;)] string token = null, [Option(Description = &quot;Print information of given token as JSON.&quot;)] bool json = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Analyze(string? token = null, bool json = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -138,7 +113,7 @@ public void Analyze([Argument(Name = &quot;APV-TOKEN&quot;, Description = &quot;
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">token</span></td>
         <td></td>
       </tr>
@@ -162,8 +137,7 @@ public void Analyze([Argument(Name = &quot;APV-TOKEN&quot;, Description = &quot;
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Query app protocol version (a.k.a. APV) of target node.&quot;)]
-public void Query([Argument(Name = &quot;TARGET&quot;, Description = &quot;Comma separated peer information({pubkey},{host},{port}) of target node.  (E.g., 027bd36895d68681290e570692ad3736750ceaab37be402442ffb203967f98f7b6,9c.planetarium.dev,31236)&quot;)] string peerInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Query(string peerInfo)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,19 +158,18 @@ public void Query([Argument(Name = &quot;TARGET&quot;, Description = &quot;Comma
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_System_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_System_String___.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid%2CSystem.Int32%2CLibplanet.Extensions.Cocona.PassphraseParameters%2CSystem.String%2CSystem.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__System_String___.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid%2CSystem.Int32%2CLibplanet.Extensions.Cocona.PassphraseParameters%2CSystem.Nullable%7BSystem.String%7D%2CSystem.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Commands/ApvCommand.cs/#L21">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_System_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_System_String___" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,System.String[])">Sign(Guid, Int32, PassphraseParameters, String, String[])</h4>
+  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__System_String___" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String},System.String[])">Sign(Guid, Int32, PassphraseParameters, Nullable&lt;String&gt;, String[])</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Sign a new app protocol version.&quot;)]
-public void Sign([Argument(Name = &quot;KEY-ID&quot;, Description = &quot;A private key to use for signing.&quot;)] Guid keyId, [Argument(Name = &quot;VERSION&quot;, Description = &quot;A version number to sign.&quot;)] int version, PassphraseParameters passphrase, [Option(&#39;E&#39;, ValueName = &quot;FILE&quot;, Description = &quot;Bencodex file to use for extra data.  For standard input, use a hyphen (`-&#39;).  For an actual file named a hyphen, prepend `./&#39;, i.e., `./-&#39;.&quot;)] string extraFile = null, [Option(&#39;e&#39;, ValueName = &quot;KEY=VALUE&quot;, Description = &quot;Set a value to a key on extra Bencodex dictionary.  Can be applied multiple times (e.g., `-e foo=1 -e bar=baz&#39;).  This option implies the extra data to be a Bencodex dictionary, hence cannot be used together with -E/--extra-file option.&quot;)] string[] extra = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Sign(Guid keyId, int version, PassphraseParameters passphrase, string? extraFile = null, string[] extra = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -209,7 +182,7 @@ public void Sign([Argument(Name = &quot;KEY-ID&quot;, Description = &quot;A priv
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Guid</span></td>
+        <td><span class="xref">Guid</span></td>
         <td><span class="parametername">keyId</span></td>
         <td></td>
       </tr>
@@ -224,7 +197,7 @@ public void Sign([Argument(Name = &quot;KEY-ID&quot;, Description = &quot;A priv
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">extraFile</span></td>
         <td></td>
       </tr>
@@ -237,19 +210,18 @@ public void Sign([Argument(Name = &quot;KEY-ID&quot;, Description = &quot;A priv
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_String_Libplanet_Crypto_PublicKey___System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String%2CLibplanet.Crypto.PublicKey%5B%5D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_Nullable_System_String__PublicKey___System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable%7BSystem.String%7D%2CPublicKey%5B%5D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/tools/Libplanet.Extensions.Cocona/Commands/ApvCommand.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify*"></a>
-  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_String_Libplanet_Crypto_PublicKey___System_Boolean_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,Libplanet.Crypto.PublicKey[],System.Boolean)">Verify(String, PublicKey[], Boolean)</h4>
+  <h4 id="Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_Nullable_System_String__PublicKey___System_Boolean_" data-uid="Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable{System.String},PublicKey[],System.Boolean)">Verify(Nullable&lt;String&gt;, PublicKey[], Boolean)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Command(Description = &quot;Verify a given app protocol version token&#39;s signature.&quot;)]
-public void Verify([Argument(Name = &quot;APV-TOKEN&quot;, Description = &quot;An app protocol version token to verify.  Read from the standard input if omitted.&quot;)] string token = null, [Option(&#39;p&#39;, ValueName = &quot;PUBLIC-KEY&quot;, Description = &quot;Public key(s) to be used for verification.  Can be applied multiple times.&quot;)] PublicKey[] publicKeys = null, [Option(&#39;K&#39;, Description = &quot;Do not use any keys in the key store, but only -p/--public-key options.&quot;)] bool noKeyStore = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Verify(string? token = null, PublicKey[] publicKeys = null, bool noKeyStore = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -262,12 +234,12 @@ public void Verify([Argument(Name = &quot;APV-TOKEN&quot;, Description = &quot;A
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">token</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>[]</td>
+        <td><span class="xref">PublicKey</span>[]</td>
         <td><span class="parametername">publicKeys</span></td>
         <td></td>
       </tr>

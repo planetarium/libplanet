@@ -88,7 +88,7 @@
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -101,39 +101,24 @@
     <div>
       <a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">MessageContent.Id</a>
     </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Messages_ConsensusMsg_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ConsensusMsg : MessageContent, IEquatable&lt;ConsensusMsg&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class ConsensusMsg : MessageContent</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusMsg.%23ctor(Libplanet.Crypto.PublicKey%2CSystem.Int64%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusMsg__ctor_PublicKey_System_Int64_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusMsg.%23ctor(PublicKey%2CSystem.Int64%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/ConsensusMsg.cs/#L19">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusMsg__ctor_" data-uid="Libplanet.Net.Messages.ConsensusMsg.#ctor*"></a>
-  <h4 id="Libplanet_Net_Messages_ConsensusMsg__ctor_Libplanet_Crypto_PublicKey_System_Int64_System_Int32_" data-uid="Libplanet.Net.Messages.ConsensusMsg.#ctor(Libplanet.Crypto.PublicKey,System.Int64,System.Int32)">ConsensusMsg(PublicKey, Int64, Int32)</h4>
+  <h4 id="Libplanet_Net_Messages_ConsensusMsg__ctor_PublicKey_System_Int64_System_Int32_" data-uid="Libplanet.Net.Messages.ConsensusMsg.#ctor(PublicKey,System.Int64,System.Int32)">ConsensusMsg(PublicKey, Int64, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -152,9 +137,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="xref">PublicKey</span></td>
         <td><span class="parametername">validatorPublicKey</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the validator who made this message.</p>
+        <td><p>A <see cref="!:PublicKey"></see> of the validator who made this message.</p>
 </td>
       </tr>
       <tr>
@@ -244,7 +229,7 @@
   </span>
   <a id="Libplanet_Net_Messages_ConsensusMsg_ValidatorPublicKey_" data-uid="Libplanet.Net.Messages.ConsensusMsg.ValidatorPublicKey*"></a>
   <h4 id="Libplanet_Net_Messages_ConsensusMsg_ValidatorPublicKey" data-uid="Libplanet.Net.Messages.ConsensusMsg.ValidatorPublicKey">ValidatorPublicKey</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of the validator who made this message.</p>
+  <div class="markdown level1 summary"><p>A <see cref="!:PublicKey"></see> of the validator who made this message.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -261,7 +246,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="xref">PublicKey</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -323,19 +308,19 @@ otherwise, false.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusMsg_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusMsg.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusMsg_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusMsg.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/ConsensusMsg.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_ConsensusMsg_Equals_" data-uid="Libplanet.Net.Messages.ConsensusMsg.Equals*"></a>
-  <h4 id="Libplanet_Net_Messages_ConsensusMsg_Equals_System_Object_" data-uid="Libplanet.Net.Messages.ConsensusMsg.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Net_Messages_ConsensusMsg_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Net.Messages.ConsensusMsg.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>A abstract base class message for consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -348,7 +333,7 @@ otherwise, false.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -369,8 +354,6 @@ otherwise, false.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_ConsensusMsg_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.ConsensusMsg.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -402,11 +385,9 @@ otherwise, false.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
 </article>
           </div>

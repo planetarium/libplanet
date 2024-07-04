@@ -82,7 +82,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     <h5>Implements</h5>
     <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
     <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;&gt;</div>
-    <div><span class="xref">Bencodex.IBencodable</span></div>
+    <div><span class="xref">IBencodable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -101,9 +101,8 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
   <h5 id="Libplanet_Common_HashDigest_1_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[TypeConverter(typeof(HashDigestTypeConverter))]
-[JsonConverter(typeof(HashDigestJsonConverter))]
 [Serializable]
-public readonly struct HashDigest&lt;T&gt; : ISerializable, IEquatable&lt;HashDigest&lt;T&gt;&gt;, IBencodable where T : HashAlgorithm</code></pre>
+public readonly struct HashDigest&lt;T&gt; : ISerializable, IEquatable&lt;HashDigest&lt;T&gt;&gt; where T : HashAlgorithm</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -126,13 +125,72 @@ a digest.  This determines <a class="xref" href="Libplanet.Common.HashDigest-1.h
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1__ctor_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.%23ctor(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1__ctor_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.%23ctor(ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L103">View Source</a>
+  </span>
+  <a id="Libplanet_Common_HashDigest_1__ctor_" data-uid="Libplanet.Common.HashDigest`1.#ctor*"></a>
+  <h4 id="Libplanet_Common_HashDigest_1__ctor_ImmutableArray_System_Byte___" data-uid="Libplanet.Common.HashDigest`1.#ctor(ImmutableArray{System.Byte}@)">HashDigest(in ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts an immutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest(in ImmutableArray&lt;byte&gt; hashDigest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">hashDigest</span></td>
+        <td><p>An immutable <span class="xref">System.Byte</span> array that encodes
+a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <span class="xref">null</span>, and its
+<span class="xref">System.Array.Length</span> must be the same to <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <see cref="!:ImmutableArray&lt;T>.Length"></see> is not
+the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> the hash algorithm
+(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>) requires.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Common_HashDigest_1__ctor_ImmutableArray_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Common_HashDigest_1__ctor_" data-uid="Libplanet.Common.HashDigest`1.#ctor*"></a>
-  <h4 id="Libplanet_Common_HashDigest_1__ctor_Bencodex_Types_IValue_" data-uid="Libplanet.Common.HashDigest`1.#ctor(Bencodex.Types.IValue)">HashDigest(IValue)</h4>
+  <h4 id="Libplanet_Common_HashDigest_1__ctor_IValue_" data-uid="Libplanet.Common.HashDigest`1.#ctor(IValue)">HashDigest(IValue)</h4>
   <div class="markdown level1 summary"><p>A value type to represent digest bytes determined by a
 <span class="xref">System.Security.Cryptography.HashAlgorithm</span>.  For more type safety, it takes
 a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> of
@@ -154,13 +212,13 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">bencoded</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Common_HashDigest_1__ctor_Bencodex_Types_IValue__seealso">See Also</h5>
+  <h5 id="Libplanet_Common_HashDigest_1__ctor_IValue__seealso">See Also</h5>
   <div class="seealso">
       <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
   </div>
@@ -228,65 +286,6 @@ the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplan
     </tbody>
   </table>
   <h5 id="Libplanet_Common_HashDigest_1__ctor_System_Byte____seealso">See Also</h5>
-  <div class="seealso">
-      <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.%23ctor(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L103">View Source</a>
-  </span>
-  <a id="Libplanet_Common_HashDigest_1__ctor_" data-uid="Libplanet.Common.HashDigest`1.#ctor*"></a>
-  <h4 id="Libplanet_Common_HashDigest_1__ctor_System_Collections_Immutable_ImmutableArray_System_Byte___" data-uid="Libplanet.Common.HashDigest`1.#ctor(System.Collections.Immutable.ImmutableArray{System.Byte}@)">HashDigest(in ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Converts an immutable <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HashDigest(in ImmutableArray&lt;byte&gt; hashDigest)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">hashDigest</span></td>
-        <td><p>An immutable <span class="xref">System.Byte</span> array that encodes
-a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <span class="xref">null</span>, and its
-<span class="xref">System.Array.Length</span> must be the same to <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <span class="xref">System.Collections.Immutable.ImmutableArray`1.Length</span> is not
-the same to the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a> the hash algorithm
-(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>) requires.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Common_HashDigest_1__ctor_System_Collections_Immutable_ImmutableArray_System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
   </div>
@@ -361,7 +360,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -396,7 +395,7 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -411,6 +410,62 @@ a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref"
   </div>
   <h3 id="methods">Methods
 </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1_DeriveFrom_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.DeriveFrom(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L218">View Source</a>
+  </span>
+  <a id="Libplanet_Common_HashDigest_1_DeriveFrom_" data-uid="Libplanet.Common.HashDigest`1.DeriveFrom*"></a>
+  <h4 id="Libplanet_Common_HashDigest_1_DeriveFrom_ImmutableArray_System_Byte__" data-uid="Libplanet.Common.HashDigest`1.DeriveFrom(ImmutableArray{System.Byte})">DeriveFrom(ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Computes a hash digest of the algorithm <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> from the given
+<code data-dev-comment-type="paramref" class="paramref">input</code> bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public static HashDigest&lt;T&gt; DeriveFrom(ImmutableArray&lt;byte&gt; input)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The bytes to compute its hash.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;</td>
+        <td><p>The hash digest derived from <code data-dev-comment-type="paramref" class="paramref">input</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Common_HashDigest_1_DeriveFrom_ImmutableArray_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1_DeriveFrom_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.DeriveFrom(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -464,62 +519,6 @@ public static HashDigest&lt;T&gt; DeriveFrom(byte[] input)</code></pre>
     </tbody>
   </table>
   <h5 id="Libplanet_Common_HashDigest_1_DeriveFrom_System_Byte____seealso">See Also</h5>
-  <div class="seealso">
-      <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigest_1_DeriveFrom_System_Collections_Immutable_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigest%601.DeriveFrom(System.Collections.Immutable.ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L218">View Source</a>
-  </span>
-  <a id="Libplanet_Common_HashDigest_1_DeriveFrom_" data-uid="Libplanet.Common.HashDigest`1.DeriveFrom*"></a>
-  <h4 id="Libplanet_Common_HashDigest_1_DeriveFrom_System_Collections_Immutable_ImmutableArray_System_Byte__" data-uid="Libplanet.Common.HashDigest`1.DeriveFrom(System.Collections.Immutable.ImmutableArray{System.Byte})">DeriveFrom(ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Computes a hash digest of the algorithm <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> from the given
-<code data-dev-comment-type="paramref" class="paramref">input</code> bytes.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public static HashDigest&lt;T&gt; DeriveFrom(ImmutableArray&lt;byte&gt; input)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The bytes to compute its hash.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;T&gt;</td>
-        <td><p>The hash digest derived from <code data-dev-comment-type="paramref" class="paramref">input</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Common_HashDigest_1_DeriveFrom_System_Collections_Immutable_ImmutableArray_System_Byte___seealso">See Also</h5>
   <div class="seealso">
       <div><span class="xref">System.Security.Cryptography.HashAlgorithm</span></div>
   </div>
@@ -952,7 +951,7 @@ public override readonly string ToString()</code></pre>
       <span class="xref">System.IEquatable&lt;T&gt;</span>
   </div>
   <div>
-      <span class="xref">Bencodex.IBencodable</span>
+      <span class="xref">IBencodable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

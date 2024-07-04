@@ -83,35 +83,11 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TimeoutOptions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Options.html">Libplanet.Net.Options</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Options_TimeoutOptions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TimeoutOptions</code></pre>
+    <pre><code class="lang-csharp hljs">public class TimeoutOptions : object</code></pre>
   </div>
   <h3 id="fields">Fields
 </h3>
@@ -131,7 +107,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultDialTimeout = 1</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultDialTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -164,7 +140,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultGetBlockHashesTimeout = 30</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultGetBlockHashesTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,7 +173,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultGetBlocksBaseTimeout = 15</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultGetBlocksBaseTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,7 +206,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultGetBlocksPerBlockHashTimeout = 1</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultGetBlocksPerBlockHashTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -263,7 +239,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultGetTxsBaseTimeout = 3</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultGetTxsBaseTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -296,7 +272,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultGetTxsPerTxIdTimeout = 1</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultGetTxsPerTxIdTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -329,7 +305,7 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultMaxTimeout = 150</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultMaxTimeout = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,7 +353,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -415,7 +391,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -448,7 +424,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -466,7 +442,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
   </span>
   <a id="Libplanet_Net_Options_TimeoutOptions_GetBlocksPerBlockHashTimeout_" data-uid="Libplanet.Net.Options.TimeoutOptions.GetBlocksPerBlockHashTimeout*"></a>
   <h4 id="Libplanet_Net_Options_TimeoutOptions_GetBlocksPerBlockHashTimeout" data-uid="Libplanet.Net.Options.TimeoutOptions.GetBlocksPerBlockHashTimeout">GetBlocksPerBlockHashTimeout</h4>
-  <div class="markdown level1 summary"><p>The additional amount to wait for each <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> in
+  <div class="markdown level1 summary"><p>The additional amount to wait for each <see cref="!:BlockHash"></see> in
 <span class="xref">Libplanet.Net.Messages.GetBlocksMsg</span> to receive <span class="xref">Libplanet.Net.Messages.BlocksMsg</span> messages.
 Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet_Net_Options_TimeoutOptions_DefaultGetBlocksPerBlockHashTimeout">DefaultGetBlocksPerBlockHashTimeout</a> seconds by default.</p>
 </div>
@@ -485,7 +461,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -504,7 +480,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
   <a id="Libplanet_Net_Options_TimeoutOptions_GetTxsBaseTimeout_" data-uid="Libplanet.Net.Options.TimeoutOptions.GetTxsBaseTimeout*"></a>
   <h4 id="Libplanet_Net_Options_TimeoutOptions_GetTxsBaseTimeout" data-uid="Libplanet.Net.Options.TimeoutOptions.GetTxsBaseTimeout">GetTxsBaseTimeout</h4>
   <div class="markdown level1 summary"><p>The base timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetTxsMsg</span>
-to receive <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> messages.
+to receive <see cref="!:Transaction"></see> messages.
 Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet_Net_Options_TimeoutOptions_DefaultGetTxsBaseTimeout">DefaultGetTxsBaseTimeout</a> seconds by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -522,7 +498,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -540,8 +516,8 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
   </span>
   <a id="Libplanet_Net_Options_TimeoutOptions_GetTxsPerTxIdTimeout_" data-uid="Libplanet.Net.Options.TimeoutOptions.GetTxsPerTxIdTimeout*"></a>
   <h4 id="Libplanet_Net_Options_TimeoutOptions_GetTxsPerTxIdTimeout" data-uid="Libplanet.Net.Options.TimeoutOptions.GetTxsPerTxIdTimeout">GetTxsPerTxIdTimeout</h4>
-  <div class="markdown level1 summary"><p>The additional amount to wait for each <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> in <span class="xref">Libplanet.Net.Messages.GetTxsMsg</span>
-to receive <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> messages.
+  <div class="markdown level1 summary"><p>The additional amount to wait for each <see cref="!:TxId"></see> in <span class="xref">Libplanet.Net.Messages.GetTxsMsg</span>
+to receive <see cref="!:Transaction"></see> messages.
 Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet_Net_Options_TimeoutOptions_DefaultGetTxsPerTxIdTimeout">DefaultGetTxsPerTxIdTimeout</a> seconds by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -559,7 +535,7 @@ Set to <a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html#Libplanet
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -596,7 +572,7 @@ by default.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>

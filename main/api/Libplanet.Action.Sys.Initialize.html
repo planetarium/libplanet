@@ -84,36 +84,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.Sys.html">Libplanet.Action.Sys</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_Sys_Initialize_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[ActionType(2)]
-public sealed class Initialize : IAction</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Initialize : object, IAction</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -135,13 +110,13 @@ public sealed class Initialize : IAction</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Initialize.%23ctor(Libplanet.Types.Consensus.ValidatorSet%2CSystem.Collections.Immutable.IImmutableDictionary%7BLibplanet.Crypto.Address%2CBencodex.Types.IValue%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_IImmutableDictionary_Libplanet_Crypto_Address_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Initialize.%23ctor(Libplanet.Types.Consensus.ValidatorSet%2CIImmutableDictionary%7BLibplanet.Crypto.Address%2CIValue%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Sys/Initialize.cs/#L19">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Initialize__ctor_" data-uid="Libplanet.Action.Sys.Initialize.#ctor*"></a>
-  <h4 id="Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_System_Collections_Immutable_IImmutableDictionary_Libplanet_Crypto_Address_Bencodex_Types_IValue__" data-uid="Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,System.Collections.Immutable.IImmutableDictionary{Libplanet.Crypto.Address,Bencodex.Types.IValue})">Initialize(ValidatorSet, IImmutableDictionary&lt;Address, IValue&gt;)</h4>
+  <h4 id="Libplanet_Action_Sys_Initialize__ctor_Libplanet_Types_Consensus_ValidatorSet_IImmutableDictionary_Libplanet_Crypto_Address_IValue__" data-uid="Libplanet.Action.Sys.Initialize.#ctor(Libplanet.Types.Consensus.ValidatorSet,IImmutableDictionary{Libplanet.Crypto.Address,IValue})">Initialize(ValidatorSet, IImmutableDictionary&lt;Address, IValue&gt;)</h4>
   <div class="markdown level1 summary"><p>A system action that initializes the chain's beginning states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -165,7 +140,7 @@ public sealed class Initialize : IAction</code></pre>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">IValue</span>&gt;</td>
         <td><span class="parametername">states</span></td>
         <td></td>
       </tr>
@@ -199,7 +174,7 @@ public sealed class Initialize : IAction</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -218,7 +193,7 @@ public sealed class Initialize : IAction</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IImmutableDictionary&lt;Address, IValue&gt; States { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IImmutableDictionary&lt;Address, IValue&gt;? States { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,7 +205,7 @@ public sealed class Initialize : IAction</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">Bencodex.Types.IValue</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>, <span class="xref">IValue</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -261,7 +236,7 @@ public sealed class Initialize : IAction</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -349,13 +324,13 @@ public sealed class Initialize : IAction</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Initialize_LoadPlainValue_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Initialize_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Initialize.LoadPlainValue(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Sys/Initialize.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Initialize_LoadPlainValue_" data-uid="Libplanet.Action.Sys.Initialize.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Action_Sys_Initialize_LoadPlainValue_Bencodex_Types_IValue_" data-uid="Libplanet.Action.Sys.Initialize.LoadPlainValue(Bencodex.Types.IValue)">LoadPlainValue(IValue)</h4>
+  <h4 id="Libplanet_Action_Sys_Initialize_LoadPlainValue_IValue_" data-uid="Libplanet.Action.Sys.Initialize.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
   <div class="markdown level1 summary"><p>A system action that initializes the chain's beginning states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -374,7 +349,7 @@ public sealed class Initialize : IAction</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">plainValue</span></td>
         <td></td>
       </tr>

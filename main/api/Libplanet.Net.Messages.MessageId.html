@@ -75,110 +75,38 @@
   <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-    <div><span class="xref">System.IComparable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</div>
-    <div><span class="xref">System.IComparable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">ISerializable</span></div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>&gt;</div>
+    <div><span class="xref">IComparable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Messages_MessageId_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public struct MessageId : ISerializable, IComparable&lt;MessageId&gt;, IComparable</code></pre>
+    <pre><code class="lang-csharp hljs">public struct MessageId</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L42">View Source</a>
-  </span>
-  <a id="Libplanet_Net_Messages_MessageId__ctor_" data-uid="Libplanet.Net.Messages.MessageId.#ctor*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte___" data-uid="Libplanet.Net.Messages.MessageId.#ctor(System.Byte[])">MessageId(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a <span class="xref">System.Byte</span> array into a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MessageId(byte[] messageId)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">messageId</span></td>
-        <td><p>A <span class="xref">System.Byte</span> array that encodes
-a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.  It must not be <span class="xref">null</span>,
-and its <span class="xref">System.Array.Length</span> must be the same to
-<a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">messageId</code>'s <span class="xref">System.Array.Length</span> is not
-the same to the required <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte____seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageId__ctor_" data-uid="Libplanet.Net.Messages.MessageId.#ctor*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">MessageId(SerializationInfo, StreamingContext)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageId__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.#ctor(SerializationInfo,StreamingContext)">MessageId(SerializationInfo, StreamingContext)</h4>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -198,18 +126,59 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><span class="xref">SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><span class="xref">StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <h5 id="Libplanet_Net_Messages_MessageId__ctor_SerializationInfo_StreamingContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageId__ctor_" data-uid="Libplanet.Net.Messages.MessageId.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte___" data-uid="Libplanet.Net.Messages.MessageId.#ctor(System.Byte[])">MessageId(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Converts a <see cref="!:System.Byte"></see> array into a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessageId(byte[] messageId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">messageId</span></td>
+        <td><p>A <see cref="!:System.Byte"></see> array that encodes
+a <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.  It must not be <span class="xref">null</span>,
+and its <see cref="!:Array.Length"></see> must be the same to
+<a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageId__ctor_System_Byte____seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
   </div>
@@ -223,14 +192,14 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L28">View Source</a>
   </span>
   <h4 id="Libplanet_Net_Messages_MessageId_Size" data-uid="Libplanet.Net.Messages.MessageId.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The <span class="xref">System.Byte</span>s size that each <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> takes.</p>
-<p>As a message ID is a SHA-256 digest, it is 32 <span class="xref">System.Byte</span>s.
+  <div class="markdown level1 summary"><p>The <see cref="!:System.Byte"></see>s size that each <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> takes.</p>
+<p>As a message ID is a SHA-256 digest, it is 32 <see cref="!:System.Byte"></see>s.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Size = 32</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Size = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -262,7 +231,7 @@ and 64 characters in hexadecimal.
   </span>
   <a id="Libplanet_Net_Messages_MessageId_ByteArray_" data-uid="Libplanet.Net.Messages.MessageId.ByteArray*"></a>
   <h4 id="Libplanet_Net_Messages_MessageId_ByteArray" data-uid="Libplanet.Net.Messages.MessageId.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <span class="xref">System.Byte</span> array of
+  <div class="markdown level1 summary"><p>A bare immutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -280,7 +249,7 @@ this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -307,7 +276,7 @@ this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -354,24 +323,24 @@ and 64 characters in hexadecimal.
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.CompareTo(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_CompareTo_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.CompareTo(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L172">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageId_CompareTo_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Object_" data-uid="Libplanet.Net.Messages.MessageId.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Nullable_System_Object__" data-uid="Libplanet.Net.Messages.MessageId.CompareTo(System.Nullable{System.Object})">CompareTo(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CompareTo(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public int CompareTo(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -384,7 +353,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -405,7 +374,7 @@ and 64 characters in hexadecimal.
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Net_Messages_MessageId_CompareTo_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
   </div>
@@ -421,7 +390,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -468,24 +437,24 @@ and 64 characters in hexadecimal.
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageId_Equals_" data-uid="Libplanet.Net.Messages.MessageId.Equals*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageId_Equals_System_Object_" data-uid="Libplanet.Net.Messages.MessageId.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageId_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Net.Messages.MessageId.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -498,7 +467,7 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -519,9 +488,7 @@ and 64 characters in hexadecimal.
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Net_Messages_MessageId_Equals_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Net_Messages_MessageId_Equals_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
   </div>
@@ -577,35 +544,6 @@ This is usually made by <a class="xref" href="Libplanet.Net.Messages.MessageId.h
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code>
-string is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hex</code> is shorter or longer than 64 characters.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is
-not a valid hexadecimal string.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 id="Libplanet_Net_Messages_MessageId_FromHex_System_String__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_ToHex">ToHex()</a></div>
@@ -622,7 +560,7 @@ not a valid hexadecimal string.</p>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -646,25 +584,23 @@ and 64 characters in hexadecimal.
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.GetHashCode()</span></div>
   <h5 id="Libplanet_Net_Messages_MessageId_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageId_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageId.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Messages/MessageId.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageId_GetObjectData_" data-uid="Libplanet.Net.Messages.MessageId.GetObjectData*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageId_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Net.Messages.MessageId.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -684,18 +620,18 @@ and 64 characters in hexadecimal.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><span class="xref">SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><span class="xref">StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext__seealso">See Also</h5>
+  <h5 id="Libplanet_Net_Messages_MessageId_GetObjectData_SerializationInfo_StreamingContext__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
   </div>
@@ -708,14 +644,13 @@ and 64 characters in hexadecimal.
   </span>
   <a id="Libplanet_Net_Messages_MessageId_ToByteArray_" data-uid="Libplanet.Net.Messages.MessageId.ToByteArray*"></a>
   <h4 id="Libplanet_Net_Messages_MessageId_ToByteArray" data-uid="Libplanet.Net.Messages.MessageId.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <span class="xref">System.Byte</span> array of
+  <div class="markdown level1 summary"><p>Gets a bare mutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -728,7 +663,7 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>A new mutable <span class="xref">System.Byte</span> array of
+        <td><p>A new mutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to
@@ -755,8 +690,7 @@ the <a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a> o
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public string ToHex()</code></pre>
+    <pre><code class="lang-csharp hljs">public string ToHex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -792,8 +726,7 @@ public string ToHex()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -811,8 +744,6 @@ public override string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
   <h5 id="Libplanet_Net_Messages_MessageId_ToString_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageContent.html#Libplanet_Net_Messages_MessageContent_Id">Id</a></div>
@@ -831,7 +762,7 @@ public override string ToString()</code></pre>
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -893,7 +824,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Messages.MessageId.html">MessageId</a>, abbreviation of message identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <span class="xref">System.Byte</span>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_Size">Size</a> constant.)</p>
 </div>
@@ -945,13 +876,13 @@ and 64 characters in hexadecimal.
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <span class="xref">ISerializable</span>
   </div>
   <div>
-      <span class="xref">System.IComparable&lt;T&gt;</span>
+      <span class="xref">IComparable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IComparable</span>
+      <span class="xref">IComparable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

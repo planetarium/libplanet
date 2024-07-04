@@ -85,47 +85,23 @@ multiple <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActi
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.Loader.html">Libplanet.Action.Loader</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
   <h5 id="Libplanet_Action_Loader_IndexedActionLoader_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IndexedActionLoader : IActionLoader</code></pre>
+    <pre><code class="lang-csharp hljs">public class IndexedActionLoader : object, IActionLoader</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_IndexedActionLoader__ctor_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Int64_Libplanet_Action_Loader_IActionLoader___.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.IndexedActionLoader.%23ctor(System.Collections.Generic.IReadOnlyList%7BSystem.ValueTuple%7BSystem.Int64%2CLibplanet.Action.Loader.IActionLoader%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_IndexedActionLoader__ctor_IReadOnlyList_System_ValueTuple_System_Int64_Libplanet_Action_Loader_IActionLoader___.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.IndexedActionLoader.%23ctor(IReadOnlyList%7BSystem.ValueTuple%7BSystem.Int64%2CLibplanet.Action.Loader.IActionLoader%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Loader/IndexedActionLoader.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Action_Loader_IndexedActionLoader__ctor_" data-uid="Libplanet.Action.Loader.IndexedActionLoader.#ctor*"></a>
-  <h4 id="Libplanet_Action_Loader_IndexedActionLoader__ctor_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Int64_Libplanet_Action_Loader_IActionLoader___" data-uid="Libplanet.Action.Loader.IndexedActionLoader.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Int64,Libplanet.Action.Loader.IActionLoader}})">IndexedActionLoader(IReadOnlyList&lt;(Int64 StartIndex, IActionLoader Loader)&gt;)</h4>
+  <h4 id="Libplanet_Action_Loader_IndexedActionLoader__ctor_IReadOnlyList_System_ValueTuple_System_Int64_Libplanet_Action_Loader_IActionLoader___" data-uid="Libplanet.Action.Loader.IndexedActionLoader.#ctor(IReadOnlyList{System.ValueTuple{System.Int64,Libplanet.Action.Loader.IActionLoader}})">IndexedActionLoader(IReadOnlyList&lt;(Int64 StartIndex, IActionLoader Loader)&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.Loader.IndexedActionLoader.html">IndexedActionLoader</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -144,32 +120,9 @@ multiple <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Int64</span>, <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>&gt;&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Int64</span>, <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>&gt;&gt;</td>
         <td><span class="parametername">loaders</span></td>
         <td><p>A list of inner <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a>s to use.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown for any of the following reasons:</p>
-<ul><li>
-        If <code data-dev-comment-type="paramref" class="paramref">loaders</code> is empty.
-</li><li>
-    If <code data-dev-comment-type="paramref" class="paramref">loaders</code>&apos;s first starting index is not zero.
-</li><li>
-    If <code data-dev-comment-type="paramref" class="paramref">loaders</code>&apos;s starting indices are not strictly increasing.
-</li></ul>
 </td>
       </tr>
     </tbody>
@@ -178,13 +131,13 @@ multiple <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActi
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64%2CBencodex.Types.IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/Loader/IndexedActionLoader.cs/#L62">View Source</a>
   </span>
   <a id="Libplanet_Action_Loader_IndexedActionLoader_LoadAction_" data-uid="Libplanet.Action.Loader.IndexedActionLoader.LoadAction*"></a>
-  <h4 id="Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_Bencodex_Types_IValue_" data-uid="Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,Bencodex.Types.IValue)">LoadAction(Int64, IValue)</h4>
+  <h4 id="Libplanet_Action_Loader_IndexedActionLoader_LoadAction_System_Int64_IValue_" data-uid="Libplanet.Action.Loader.IndexedActionLoader.LoadAction(System.Int64,IValue)">LoadAction(Int64, IValue)</h4>
   <div class="markdown level1 summary"><p>Loads a concrete <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> from <code data-dev-comment-type="paramref" class="paramref">value</code>
 given <code data-dev-comment-type="paramref" class="paramref">index</code>.</p>
 </div>
@@ -211,9 +164,9 @@ given <code data-dev-comment-type="paramref" class="paramref">index</code>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Bencodex.Types.IValue</span></td>
+        <td><span class="xref">IValue</span></td>
         <td><span class="parametername">value</span></td>
-        <td><p>The <span class="xref">Bencodex.Types.IValue</span> to deserialize to
+        <td><p>The <see cref="!:IValue"></see> to deserialize to
 an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
 </td>
       </tr>

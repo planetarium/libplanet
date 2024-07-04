@@ -83,8 +83,8 @@
       <section></section>
       <h4><a class="xref" href="Libplanet.Net.BlockCandidateTable.html">BlockCandidateTable</a></h4>
       <section><p>
-A class for storing downloaded <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s as <span class="xref">System.Collections.Generic.Dictionary&lt;TKey, TValue&gt;</span>.
-A <a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a> is used as a key for storing downloading context.
+A class for storing downloaded <see cref="!:Block"></see>s as <see cref="!:Dictionary&lt;K, V>"></see>.
+A <see cref="!:BlockHeader"></see> is used as a key for storing downloading context.
 </p>
 <p>
 This is designed to be exception free.
@@ -136,7 +136,7 @@ As every peer can change its software by itself, this <a class="xref" href="Libp
 is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
 <p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
 has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
-<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
 is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.BlockDemand.html">BlockDemand</a></h4>

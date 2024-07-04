@@ -83,29 +83,14 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>&gt;</div>
-    <div><span class="xref">System.IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxInvoice.html">TxInvoice</a>&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxInvoice.html">TxInvoice</a>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
   <h5 id="Libplanet_Types_Tx_TxInvoice_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class TxInvoice : ITxInvoice, IEquatable&lt;ITxInvoice&gt;, IEquatable&lt;TxInvoice&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class TxInvoice : object, ITxInvoice</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -153,13 +138,13 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.%23ctor(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CSystem.DateTimeOffset%2CLibplanet.Types.Tx.TxActionList%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.%23ctor(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CDateTimeOffset%2CLibplanet.Types.Tx.TxActionList%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxInvoice.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxInvoice__ctor_" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor*"></a>
-  <h4 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})">TxInvoice(Nullable&lt;BlockHash&gt;, DateTimeOffset, TxActionList, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;)</h4>
+  <h4 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},DateTimeOffset,Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})">TxInvoice(Nullable&lt;BlockHash&gt;, DateTimeOffset, TxActionList, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.TxInvoice.html">TxInvoice</a> instance by filling data for its fields.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -184,7 +169,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">timestamp</span></td>
         <td><p>The value for <a class="xref" href="Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice_Timestamp">Timestamp</a>.</p>
 </td>
@@ -209,30 +194,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">updatedAddresses</code>
-or <code data-dev-comment-type="paramref" class="paramref">actions</code> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when <span class="xref">null</span>-ness of
-<code data-dev-comment-type="paramref" class="paramref">maxGasPrice</code> and <code data-dev-comment-type="paramref" class="paramref">gasLimit</code> are not the same.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__DateTimeOffset_Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
       <div><a class="xref" href="Libplanet.Types.Tx.TxSigningMetadata.html">TxSigningMetadata</a></div>
@@ -241,13 +203,13 @@ or <code data-dev-comment-type="paramref" class="paramref">actions</code> is <sp
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_System_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.%23ctor(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CLibplanet.Types.Tx.TxActionList%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.%23ctor(System.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CSystem.Nullable%7BDateTimeOffset%7D%2CLibplanet.Types.Tx.TxActionList%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxInvoice.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxInvoice__ctor_" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor*"></a>
-  <h4 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_System_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Nullable{System.DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})">TxInvoice(Nullable&lt;BlockHash&gt;, Nullable&lt;DateTimeOffset&gt;, TxActionList, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;)</h4>
+  <h4 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__" data-uid="Libplanet.Types.Tx.TxInvoice.#ctor(System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Nullable{DateTimeOffset},Libplanet.Types.Tx.TxActionList,System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64})">TxInvoice(Nullable&lt;BlockHash&gt;, Nullable&lt;DateTimeOffset&gt;, TxActionList, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.TxInvoice.html">TxInvoice</a> instance by filling data for its fields.  There
 are some default values for some fields.</p>
 </div>
@@ -273,7 +235,7 @@ are some default values for some fields.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTimeOffset</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
         <td><span class="parametername">timestamp</span></td>
         <td><p>The value for <a class="xref" href="Libplanet.Types.Tx.TxInvoice.html#Libplanet_Types_Tx_TxInvoice_Timestamp">Timestamp</a>.
 Time of creation by default.</p>
@@ -300,7 +262,7 @@ Time of creation by default.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_System_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64___seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Tx_TxInvoice__ctor_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Nullable_DateTimeOffset__Libplanet_Types_Tx_TxActionList_System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
       <div><a class="xref" href="Libplanet.Types.Tx.TxSigningMetadata.html">TxSigningMetadata</a></div>
@@ -323,8 +285,7 @@ Time of creation by default.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonConverter(typeof(TxActionListJsonConverter))]
-public TxActionList Actions { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TxActionList Actions { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -506,7 +467,7 @@ If not <span class="xref">null</span>, this value cannot be negative.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.DateTimeOffset</span></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -557,7 +518,7 @@ an &quot;unsigned transaction&quot;.  This is not recommended.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -585,8 +546,7 @@ an &quot;unsigned transaction&quot;.  This is not recommended.
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public bool Equals(TxInvoice other)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Equals(TxInvoice other)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -629,20 +589,19 @@ public bool Equals(TxInvoice other)</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxInvoice.cs/#L188">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxInvoice_Equals_" data-uid="Libplanet.Types.Tx.TxInvoice.Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_TxInvoice_Equals_System_Object_" data-uid="Libplanet.Types.Tx.TxInvoice.Equals(System.Object)">Equals(Object)</h4>
+  <h4 id="Libplanet_Types_Tx_TxInvoice_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Tx.TxInvoice.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
   <div class="markdown level1 summary"><p>A concrete implementation of <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -655,7 +614,7 @@ public override bool Equals(object obj)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Object</span></td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
         <td><span class="parametername">obj</span></td>
         <td></td>
       </tr>
@@ -676,9 +635,7 @@ public override bool Equals(object obj)</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
-  <h5 id="Libplanet_Types_Tx_TxInvoice_Equals_System_Object__seealso">See Also</h5>
+  <h5 id="Libplanet_Types_Tx_TxInvoice_Equals_System_Nullable_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
       <div><a class="xref" href="Libplanet.Types.Tx.TxSigningMetadata.html">TxSigningMetadata</a></div>
@@ -699,8 +656,7 @@ public override bool Equals(object obj)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override int GetHashCode()</code></pre>
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -717,8 +673,6 @@ public override int GetHashCode()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <h5 id="Libplanet_Types_Tx_TxInvoice_GetHashCode_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
@@ -740,8 +694,7 @@ public override int GetHashCode()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -758,67 +711,7 @@ public override string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
   <h5 id="Libplanet_Types_Tx_TxInvoice_ToString_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
-      <div><a class="xref" href="Libplanet.Types.Tx.TxSigningMetadata.html">TxSigningMetadata</a></div>
-      <div><a class="xref" href="Libplanet.Types.Tx.UnsignedTx.html">UnsignedTx</a></div>
-      <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a></div>
-  </div>
-  <h3 id="eii">Explicit Interface Implementations
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxInvoice_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxInvoice.System%23IEquatable%7BLibplanet%23Types%23Tx%23ITxInvoice%7D%23Equals(Libplanet.Types.Tx.ITxInvoice)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxInvoice.cs/#L170">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_TxInvoice_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_" data-uid="Libplanet.Types.Tx.TxInvoice.System#IEquatable{Libplanet#Types#Tx#ITxInvoice}#Equals*"></a>
-  <h4 id="Libplanet_Types_Tx_TxInvoice_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice_" data-uid="Libplanet.Types.Tx.TxInvoice.System#IEquatable{Libplanet#Types#Tx#ITxInvoice}#Equals(Libplanet.Types.Tx.ITxInvoice)">IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice)</h4>
-  <div class="markdown level1 summary"><p>A concrete implementation of <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-bool IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_TxInvoice_System_IEquatable_Libplanet_Types_Tx_ITxInvoice__Equals_Libplanet_Types_Tx_ITxInvoice__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
       <div><a class="xref" href="Libplanet.Types.Tx.TxSigningMetadata.html">TxSigningMetadata</a></div>
@@ -830,20 +723,10 @@ bool IEquatable&lt;ITxInvoice&gt;.Equals(ITxInvoice other)</code></pre>
       <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
-      <span class="xref">System.IEquatable&lt;T&gt;</span>
-  </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Combine_Libplanet_Types_Tx_ITxInvoice_Libplanet_Types_Tx_ITxSigningMetadata_">TransactionExtensions.Combine(ITxInvoice, ITxSigningMetadata)</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Sign_Libplanet_Types_Tx_ITxInvoice_Libplanet_Crypto_PrivateKey_System_Int64_">TransactionExtensions.Sign(ITxInvoice, PrivateKey, Int64)</a>
-  </div>
-  <div>
-      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalTxInvoice_Libplanet_Types_Tx_ITxInvoice_">TxMarshaler.MarshalTxInvoice(ITxInvoice)</a>
+      <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

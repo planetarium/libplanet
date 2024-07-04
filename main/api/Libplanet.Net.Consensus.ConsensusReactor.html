@@ -84,46 +84,25 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Net.Consensus.IReactor.html">IReactor</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Consensus.html">Libplanet.Net.Consensus</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_Consensus_ConsensusReactor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ConsensusReactor : IReactor, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class ConsensusReactor : object, IReactor</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.%23ctor(Libplanet.Net.Transports.ITransport%2CLibplanet.Blockchain.BlockChain%2CLibplanet.Crypto.PrivateKey%2CSystem.Collections.Immutable.ImmutableList%7BLibplanet.Net.BoundPeer%7D%2CSystem.Collections.Immutable.ImmutableList%7BLibplanet.Net.BoundPeer%7D%2CSystem.TimeSpan%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.%23ctor(Libplanet.Net.Transports.ITransport%2CLibplanet.Blockchain.BlockChain%2CPrivateKey%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CTimeSpan%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/ConsensusReactor.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor__ctor_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_Libplanet_Crypto_PrivateKey_System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_Collections_Immutable_ImmutableList_Libplanet_Net_BoundPeer__System_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,Libplanet.Crypto.PrivateKey,System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.Collections.Immutable.ImmutableList{Libplanet.Net.BoundPeer},System.TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)">ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList&lt;BoundPeer&gt;, ImmutableList&lt;BoundPeer&gt;, TimeSpan, ContextTimeoutOption)</h4>
+  <h4 id="Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)">ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList&lt;BoundPeer&gt;, ImmutableList&lt;BoundPeer&gt;, TimeSpan, ContextTimeoutOption)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Consensus.ConsensusReactor.html">ConsensusReactor</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -156,27 +135,27 @@ will be voted by consensus, and used for proposing a block.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="xref">PrivateKey</span></td>
         <td><span class="parametername">privateKey</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> for using in signing a block,
+        <td><p>A <see cref="!:PrivateKey"></see> for using in signing a block,
 message.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">ImmutableList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><span class="parametername">validatorPeers</span></td>
         <td><p>A list of validator's <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>, including
 itself.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Immutable.ImmutableList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">ImmutableList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><span class="parametername">seedPeers</span></td>
         <td><p>A list of seed's <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">newHeightDelay</span></td>
         <td><p>A time delay in starting the consensus for the next height
 block.</p>
@@ -265,7 +244,7 @@ changed by starting a consensus or appending a block.</p>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor_Validators_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.Validators*"></a>
   <h4 id="Libplanet_Net_Consensus_ConsensusReactor_Validators" data-uid="Libplanet.Net.Consensus.ConsensusReactor.Validators">Validators</h4>
-  <div class="markdown level1 summary"><p>An <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of the validators.</p>
+  <div class="markdown level1 summary"><p>An <see cref="!:IEnumerable&lt;BoundPeer>"></see> of the validators.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -282,7 +261,7 @@ changed by starting a consensus or appending a block.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -298,7 +277,7 @@ changed by starting a consensus or appending a block.</p>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor_Dispose_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.Dispose*"></a>
   <h4 id="Libplanet_Net_Consensus_ConsensusReactor_Dispose" data-uid="Libplanet.Net.Consensus.ConsensusReactor.Dispose">Dispose()</h4>
-  <div class="markdown level1 summary"><p><inheritdoc cref="M:System.IDisposable.Dispose"></inheritdoc></p>
+  <div class="markdown level1 summary"><p><inheritdoc cref="!:IDisposable.Dispose()"></inheritdoc></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -307,13 +286,13 @@ changed by starting a consensus or appending a block.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor_StartAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.StartAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor_StartAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.StartAsync(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/ConsensusReactor.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor_StartAsync_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StartAsync*"></a>
-  <h4 id="Libplanet_Net_Consensus_ConsensusReactor_StartAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StartAsync(System.Threading.CancellationToken)">StartAsync(CancellationToken)</h4>
+  <h4 id="Libplanet_Net_Consensus_ConsensusReactor_StartAsync_CancellationToken_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StartAsync(CancellationToken)">StartAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Starts the instance and joins into consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -332,7 +311,7 @@ changed by starting a consensus or appending a block.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -350,21 +329,21 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Returns the <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_StartAsync_System_Threading_CancellationToken_">StartAsync(CancellationToken)</a>.</p>
+        <td><span class="xref">Task</span></td>
+        <td><p>Returns the <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_StartAsync_CancellationToken_">StartAsync(CancellationToken)</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor_StopAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.StopAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor_StopAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.StopAsync(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/ConsensusReactor.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor_StopAsync_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StopAsync*"></a>
-  <h4 id="Libplanet_Net_Consensus_ConsensusReactor_StopAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StopAsync(System.Threading.CancellationToken)">StopAsync(CancellationToken)</h4>
+  <h4 id="Libplanet_Net_Consensus_ConsensusReactor_StopAsync_CancellationToken_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.StopAsync(CancellationToken)">StopAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Stops the instance and consensus.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -383,7 +362,7 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation Token.</p>
 </td>
@@ -400,8 +379,8 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Returns the <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_StopAsync_System_TimeSpan_System_Threading_CancellationToken_">StopAsync(TimeSpan, CancellationToken)</a>.</p>
+        <td><span class="xref">Task</span></td>
+        <td><p>Returns the <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_StopAsync_TimeSpan_CancellationToken_">StopAsync(TimeSpan, CancellationToken)</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -438,14 +417,12 @@ that this operation should be canceled.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Net.Consensus.IReactor.html">IReactor</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>
