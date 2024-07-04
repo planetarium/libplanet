@@ -492,6 +492,15 @@ namespace Libplanet.Net.Consensus
 
                 try
                 {
+                    if (!block.Proof.Equals(_lotSet.Maj23?.Proof))
+                    {
+                        throw new InvalidBlockProofException(
+                            $"Proof if given block is different from " +
+                            $"majority proof of consensus. " +
+                            $"Expected: {_lotSet.Maj23?.Proof}" +
+                            $"Actual: {block.Proof}");
+                    }
+
                     _blockChain.ValidateBlock(block);
                     _blockChain.ValidateBlockNonces(
                         block.Transactions
