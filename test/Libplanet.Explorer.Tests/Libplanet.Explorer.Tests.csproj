@@ -1,24 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
-        <IsPublishable>false</IsPublishable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Remove="Menees.Analyzers.2017" />
+    <PackageReference Remove="StyleCop.Analyzers" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\tools\Libplanet.Explorer\Libplanet.Explorer.csproj" />
-      <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
-      <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tools\Libplanet.Explorer\Libplanet.Explorer.csproj" />
+    <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
+    <ProjectReference Include="..\Libplanet.Mocks\Libplanet.Mocks.csproj" />
+  </ItemGroup>
 
 </Project>

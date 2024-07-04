@@ -59,9 +59,10 @@ for project in "${projects[@]}"; do
   if [[ "$version_suffix" = "" ]]; then
     dotnet_args="-p:Version=$version"
   else
-    dotnet_args="-p:VersionPrefix=$version_prefix" \
+    dotnet_args="-p:VersionPrefix=$version_prefix"
     dotnet_args="$dotnet_args --version-suffix=$version_suffix"
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
+    dotnet_args="$dotnet_args -p:_IsPacking=true"
   fi
   # shellcheck disable=SC2086
   dotnet build -c "$configuration" $dotnet_args || \

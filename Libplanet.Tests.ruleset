@@ -51,6 +51,7 @@
     <Rule Id="MEN009" Action="Warning" />
     <Rule Id="MEN010" Action="None" />
     <Rule Id="MEN011" Action="None" />
+    <Rule Id="MEN014" Action="None" />
   </Rules>
 
   <Rules AnalyzerId="SonarAnalyzer" RuleNamespace="SonarAnalyzer">

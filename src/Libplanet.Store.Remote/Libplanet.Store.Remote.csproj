@@ -1,35 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net6.0</TargetFrameworks>
+    <LangVersion>10</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
+    <PackageReference Remove="StyleCop.Analyzers" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Protobuf Include="**/*.proto" GrpcServices="Both"/>
-    </ItemGroup>
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="..\..\LICENSE">
-        <Pack>true</Pack>
-        <PackagePath>LICENSE.txt</PackagePath>
-        <Link>LICENSE</Link>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-        <Link>Menees.Analyzers.Settings.xml</Link>
-      </AdditionalFiles>
-    </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="**/*.proto" GrpcServices="Both"/>
+    <ProjectReference Include="..\Libplanet.Store\Libplanet.Store.csproj" />
+  </ItemGroup>
 
 </Project>

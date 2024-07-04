@@ -395,7 +395,7 @@ namespace Libplanet.Net
             )
             {
                 Interlocked.Increment(ref _taken);
-                TPeer peer;
+                TPeer? peer;
                 while (!_completions.TryDequeue(out peer))
                 {
                     Task[] tasks = _tasks.Values

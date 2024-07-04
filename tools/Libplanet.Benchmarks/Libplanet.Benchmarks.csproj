@@ -1,33 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <Nullable>disable</Nullable>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Libplanet.Benchmarks</RootNamespace>
     <IsPackable>false</IsPackable>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>7.1</LangVersion>
-    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\..\Menees.Analyzers.Settings.xml">
-      <Link>Menees.Analyzers.Settings.xml</Link>
-    </AdditionalFiles>
-    <AdditionalFiles Include="..\..\stylecop.json" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
-                             '$(BuildingByReSharper)'!='true'">
-    <TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="Menees.Analyzers.2017" />
+    <PackageReference Remove="StyleCop.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
   </ItemGroup>
 
   <ItemGroup>

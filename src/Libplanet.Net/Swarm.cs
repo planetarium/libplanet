@@ -737,8 +737,8 @@ namespace Libplanet.Net
         )
         {
             var sessionRandom = new System.Random();
-            int logSessionId = logSessionIds is (int i, _) ? i : sessionRandom.Next();
-            int subSessionId = logSessionIds is (_, int j) ? j : sessionRandom.Next();
+            int logSessionId = logSessionIds is(int i, _) ? i : sessionRandom.Next();
+            int subSessionId = logSessionIds is(_, int j) ? j : sessionRandom.Next();
             var request = new GetBlockHashesMsg(locator, stop);
 
             TimeSpan transportTimeout = timeout is { } t
