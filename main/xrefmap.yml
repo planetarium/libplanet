@@ -34282,6 +34282,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Consensus.IVoteMetadata.Timestamp
   nameWithType: IVoteMetadata.Timestamp
+- uid: Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.IVoteMetadata.html#Libplanet_Types_Consensus_IVoteMetadata_ValidatorPower
+  commentId: P:Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower
+  fullName: Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower
+  nameWithType: IVoteMetadata.ValidatorPower
+- uid: Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower*
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.IVoteMetadata.html#Libplanet_Types_Consensus_IVoteMetadata_ValidatorPower_
+  commentId: Overload:Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower
+  isSpec: "True"
+  fullName: Libplanet.Types.Consensus.IVoteMetadata.ValidatorPower
+  nameWithType: IVoteMetadata.ValidatorPower
 - uid: Libplanet.Types.Consensus.IVoteMetadata.ValidatorPublicKey
   name: ValidatorPublicKey
   href: api/Libplanet.Types.Consensus.IVoteMetadata.html#Libplanet_Types_Consensus_IVoteMetadata_ValidatorPublicKey
@@ -34929,6 +34942,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Consensus.Vote.ToString
   nameWithType: Vote.ToString
+- uid: Libplanet.Types.Consensus.Vote.ValidatorPower
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_ValidatorPower
+  commentId: P:Libplanet.Types.Consensus.Vote.ValidatorPower
+  fullName: Libplanet.Types.Consensus.Vote.ValidatorPower
+  nameWithType: Vote.ValidatorPower
+- uid: Libplanet.Types.Consensus.Vote.ValidatorPower*
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_ValidatorPower_
+  commentId: Overload:Libplanet.Types.Consensus.Vote.ValidatorPower
+  isSpec: "True"
+  fullName: Libplanet.Types.Consensus.Vote.ValidatorPower
+  nameWithType: Vote.ValidatorPower
 - uid: Libplanet.Types.Consensus.Vote.ValidatorPublicKey
   name: ValidatorPublicKey
   href: api/Libplanet.Types.Consensus.Vote.html#Libplanet_Types_Consensus_Vote_ValidatorPublicKey
@@ -34997,12 +35023,15 @@ references:
   commentId: M:Libplanet.Types.Consensus.VoteMetadata.#ctor(Bencodex.Types.IValue)
   fullName: Libplanet.Types.Consensus.VoteMetadata.VoteMetadata(Bencodex.Types.IValue)
   nameWithType: VoteMetadata.VoteMetadata(IValue)
-- uid: Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Types.Consensus.VoteFlag)
-  name: VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
-  href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_Libplanet_Types_Consensus_VoteFlag_
-  commentId: M:Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,Libplanet.Types.Consensus.VoteFlag)
-  fullName: Libplanet.Types.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, Libplanet.Types.Blocks.BlockHash, System.DateTimeOffset, Libplanet.Crypto.PublicKey, Libplanet.Types.Consensus.VoteFlag)
-  nameWithType: VoteMetadata.VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, VoteFlag)
+- uid: Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,System.Nullable{System.Numerics.BigInteger},Libplanet.Types.Consensus.VoteFlag)
+  name: VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable<BigInteger>, VoteFlag)
+  href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata__ctor_System_Int64_System_Int32_Libplanet_Types_Blocks_BlockHash_System_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Nullable_System_Numerics_BigInteger__Libplanet_Types_Consensus_VoteFlag_
+  commentId: M:Libplanet.Types.Consensus.VoteMetadata.#ctor(System.Int64,System.Int32,Libplanet.Types.Blocks.BlockHash,System.DateTimeOffset,Libplanet.Crypto.PublicKey,System.Nullable{System.Numerics.BigInteger},Libplanet.Types.Consensus.VoteFlag)
+  name.vb: VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable(Of BigInteger), VoteFlag)
+  fullName: Libplanet.Types.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, Libplanet.Types.Blocks.BlockHash, System.DateTimeOffset, Libplanet.Crypto.PublicKey, System.Nullable<System.Numerics.BigInteger>, Libplanet.Types.Consensus.VoteFlag)
+  fullName.vb: Libplanet.Types.Consensus.VoteMetadata.VoteMetadata(System.Int64, System.Int32, Libplanet.Types.Blocks.BlockHash, System.DateTimeOffset, Libplanet.Crypto.PublicKey, System.Nullable(Of System.Numerics.BigInteger), Libplanet.Types.Consensus.VoteFlag)
+  nameWithType: VoteMetadata.VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable<BigInteger>, VoteFlag)
+  nameWithType.vb: VoteMetadata.VoteMetadata(Int64, Int32, BlockHash, DateTimeOffset, PublicKey, Nullable(Of BigInteger), VoteFlag)
 - uid: Libplanet.Types.Consensus.VoteMetadata.#ctor*
   name: VoteMetadata
   href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata__ctor_
@@ -35133,6 +35162,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Consensus.VoteMetadata.Timestamp
   nameWithType: VoteMetadata.Timestamp
+- uid: Libplanet.Types.Consensus.VoteMetadata.ValidatorPower
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata_ValidatorPower
+  commentId: P:Libplanet.Types.Consensus.VoteMetadata.ValidatorPower
+  fullName: Libplanet.Types.Consensus.VoteMetadata.ValidatorPower
+  nameWithType: VoteMetadata.ValidatorPower
+- uid: Libplanet.Types.Consensus.VoteMetadata.ValidatorPower*
+  name: ValidatorPower
+  href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata_ValidatorPower_
+  commentId: Overload:Libplanet.Types.Consensus.VoteMetadata.ValidatorPower
+  isSpec: "True"
+  fullName: Libplanet.Types.Consensus.VoteMetadata.ValidatorPower
+  nameWithType: VoteMetadata.ValidatorPower
 - uid: Libplanet.Types.Consensus.VoteMetadata.ValidatorPublicKey
   name: ValidatorPublicKey
   href: api/Libplanet.Types.Consensus.VoteMetadata.html#Libplanet_Types_Consensus_VoteMetadata_ValidatorPublicKey
