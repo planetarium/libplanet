@@ -5,8 +5,13 @@
       "label": "Build",
       "type": "shell",
       "command": "dotnet",
-      "args": ["build"],
-      "group": "build",
+      "args": [
+        "build"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "presentation": {
         "reveal": "silent"
       },
@@ -16,7 +21,9 @@
       "label": "Test",
       "type": "shell",
       "command": "dotnet",
-      "args": ["test"],
+      "args": [
+        "test"
+      ],
       "group": "test",
       "presentation": {
         "reveal": "always",
