@@ -59,7 +59,7 @@ namespace Libplanet.Consensus
             Height = height;
             Round = round;
             LastProof = lastProof;
-            Encoded = Encode();
+            Encoded = Encode(height, round, lastProof);
         }
 
         public ConsensusInformation(IReadOnlyList<byte> encoded)
@@ -67,7 +67,7 @@ namespace Libplanet.Consensus
         {
         }
 
-        public ConsensusInformation(IValue bencoded)
+        private ConsensusInformation(IValue bencoded)
             : this(bencoded is Dictionary dict
                 ? dict
                 : throw new ArgumentException(
@@ -221,21 +221,21 @@ namespace Libplanet.Consensus
             => $"{nameof(ConsensusInformation)} " +
             $": Height {Height}, Round {Round}, LastProof {LastProof}";
 
-        private ImmutableArray<byte> Encode()
-            => _codec.Encode(Bencode()).ToImmutableArray();
-
-        private IValue Bencode()
+        private static IValue Bencode(long height, int round, Proof? lastProof)
         {
             Dictionary bencoded = Dictionary.Empty
-                    .Add(HeightKey, Height)
-                    .Add(RoundKey, Round);
+                .Add(HeightKey, height)
+                .Add(RoundKey, round);
 
-            if (LastProof is Proof lastProof)
+            if (lastProof is Proof lastProofNonNull)
             {
-                bencoded = bencoded.Add(LastProofKey, lastProof.ByteArray);
+                bencoded = bencoded.Add(LastProofKey, lastProofNonNull.ByteArray);
             }
 
             return bencoded;
         }
+
+        private static ImmutableArray<byte> Encode(long height, int round, Proof? lastProof)
+            => new Codec().Encode(Bencode(height, round, lastProof)).ToImmutableArray();
     }
 }

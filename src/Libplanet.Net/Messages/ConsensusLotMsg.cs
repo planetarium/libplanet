@@ -6,7 +6,7 @@ using Libplanet.Net.Consensus;
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="ConsensusStep.PrePropose"/>.
+    /// A message class for <see cref="ConsensusStep.Sortition"/>.
     /// </summary>
     public class ConsensusLotMsg : ConsensusMsg
     {
