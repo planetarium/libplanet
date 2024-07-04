@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -72,6 +73,7 @@ namespace Libplanet.Net.Tests.Consensus
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.ValidatorSet[i].PublicKey,
+                    TestUtils.ValidatorSet[i].Power,
                     VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(new ConsensusPreVoteMsg(expectedVotes[i]));
             }
@@ -86,6 +88,7 @@ namespace Libplanet.Net.Tests.Consensus
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.ValidatorSet[i].PublicKey,
+                    TestUtils.ValidatorSet[i].Power,
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(new ConsensusPreCommitMsg(expectedVotes[i]));
             }
@@ -175,9 +178,9 @@ namespace Libplanet.Net.Tests.Consensus
                 throw new Exception("Proposal is null.");
             }
 
-            foreach ((PrivateKey privateKey, BoundPeer peer)
+            foreach ((PrivateKey privateKey, BigInteger power)
                      in TestUtils.PrivateKeys.Zip(
-                         TestUtils.Peers,
+                         TestUtils.ValidatorSet.Validators.Select(v => v.Power),
                          (first, second) => (first, second)))
             {
                 if (privateKey == TestUtils.PrivateKeys[2])
@@ -194,12 +197,13 @@ namespace Libplanet.Net.Tests.Consensus
                             proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreVote).Sign(privateKey)));
             }
 
-            foreach ((PrivateKey privateKey, BoundPeer peer)
+            foreach ((PrivateKey privateKey, BigInteger power)
                      in TestUtils.PrivateKeys.Zip(
-                         TestUtils.Peers,
+                         TestUtils.ValidatorSet.Validators.Select(v => v.Power),
                          (first, second) => (first, second)))
             {
                 if (privateKey == TestUtils.PrivateKeys[2])
@@ -216,6 +220,7 @@ namespace Libplanet.Net.Tests.Consensus
                             proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
+                            power,
                             VoteFlag.PreCommit).Sign(privateKey)));
             }
 

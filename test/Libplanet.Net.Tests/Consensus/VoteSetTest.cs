@@ -24,7 +24,8 @@ namespace Libplanet.Net.Tests.Consensus
                 0,
                 blockHash,
                 DateTimeOffset.UtcNow,
-                TestUtils.PrivateKeys[0].PublicKey,
+                TestUtils.ValidatorSet[0].PublicKey,
+                TestUtils.ValidatorSet[0].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]));
             Assert.False(voteSet.HasOneThirdsAny());
             Assert.False(voteSet.HasTwoThirdsAny());
@@ -37,7 +38,8 @@ namespace Libplanet.Net.Tests.Consensus
                 0,
                 blockHash,
                 DateTimeOffset.UtcNow,
-                TestUtils.PrivateKeys[1].PublicKey,
+                TestUtils.ValidatorSet[1].PublicKey,
+                TestUtils.ValidatorSet[1].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[1]));
             Assert.True(voteSet.HasOneThirdsAny());
             Assert.False(voteSet.HasTwoThirdsAny());
@@ -50,7 +52,8 @@ namespace Libplanet.Net.Tests.Consensus
                 0,
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 DateTimeOffset.UtcNow,
-                TestUtils.PrivateKeys[2].PublicKey,
+                TestUtils.ValidatorSet[2].PublicKey,
+                TestUtils.ValidatorSet[2].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[2]));
             Assert.True(voteSet.HasOneThirdsAny());
             Assert.True(voteSet.HasTwoThirdsAny());
@@ -63,7 +66,8 @@ namespace Libplanet.Net.Tests.Consensus
                 0,
                 blockHash,
                 DateTimeOffset.UtcNow,
-                TestUtils.PrivateKeys[3].PublicKey,
+                TestUtils.ValidatorSet[3].PublicKey,
+                TestUtils.ValidatorSet[3].Power,
                 VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[3]));
             Assert.True(voteSet.HasOneThirdsAny());
             Assert.True(voteSet.HasTwoThirdsAny());

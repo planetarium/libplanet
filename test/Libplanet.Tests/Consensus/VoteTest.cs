@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Numerics;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
@@ -22,10 +23,25 @@ namespace Libplanet.Tests.Consensus
                 hash,
                 DateTimeOffset.UtcNow,
                 privateKey.PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit);
             Vote vote = voteMetadata.Sign(privateKey);
             Assert.True(
                 privateKey.PublicKey.Verify(_codec.Encode(voteMetadata.Bencoded), vote.Signature));
+
+            var nullPowerVoteMetadata = new VoteMetadata(
+                1,
+                2,
+                hash,
+                DateTimeOffset.UtcNow,
+                privateKey.PublicKey,
+                null,
+                VoteFlag.PreCommit);
+            Vote nullPowerVote = nullPowerVoteMetadata.Sign(privateKey);
+            Assert.True(
+                privateKey.PublicKey.Verify(
+                    _codec.Encode(nullPowerVoteMetadata.Bencoded),
+                    nullPowerVote.Signature));
         }
 
         [Fact]
@@ -40,6 +56,7 @@ namespace Libplanet.Tests.Consensus
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
                 validatorPublicKey: validatorPublicKey,
+                validatorPower: BigInteger.One,
                 flag: VoteFlag.PreCommit);
 
             // Cannot sign with Sign method
@@ -63,6 +80,7 @@ namespace Libplanet.Tests.Consensus
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
                 validatorPublicKey: key.PublicKey,
+                validatorPower: BigInteger.One,
                 flag: VoteFlag.PreVote);
             var preCommitMetadata = new VoteMetadata(
                 height: 2,
@@ -70,6 +88,7 @@ namespace Libplanet.Tests.Consensus
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
                 validatorPublicKey: key.PublicKey,
+                validatorPower: BigInteger.One,
                 flag: VoteFlag.PreCommit);
 
             // Works fine.
@@ -95,6 +114,7 @@ namespace Libplanet.Tests.Consensus
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
                 validatorPublicKey: key.PublicKey,
+                validatorPower: BigInteger.One,
                 flag: VoteFlag.Null);
             var unknownMetadata = new VoteMetadata(
                 height: 2,
@@ -102,6 +122,7 @@ namespace Libplanet.Tests.Consensus
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
                 validatorPublicKey: key.PublicKey,
+                validatorPower: BigInteger.One,
                 flag: VoteFlag.Unknown);
 
             // Works fine.
@@ -129,6 +150,7 @@ namespace Libplanet.Tests.Consensus
                 default,
                 DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit);
             Assert.Throws<ArgumentException>(() => new Vote(voteMetadata, default));
         }
@@ -144,6 +166,7 @@ namespace Libplanet.Tests.Consensus
                 hash,
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
+                BigInteger.One,
                 VoteFlag.PreCommit).Sign(key);
             var decoded = new Vote(expected.Bencoded);
             Assert.Equal(expected, decoded);

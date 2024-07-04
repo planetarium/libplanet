@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
@@ -30,6 +31,9 @@ namespace Libplanet.Types.Consensus
         private static readonly Binary ValidatorPublicKeyKey =
             new Binary(new byte[] { 0x50 }); // 'P'
 
+        private static readonly Binary ValidatorPowerKey =
+            new Binary(new byte[] { 0x70 }); // 'p'
+
         private static readonly Binary FlagKey =
             new Binary(new byte[] { 0x46 }); // 'F'
 
@@ -45,6 +49,7 @@ namespace Libplanet.Types.Consensus
         /// <param name="validatorPublicKey">
         /// <see cref="PublicKey"/> of the validator made the vote.
         /// </param>
+        /// <param name="validatorPower">The voting power of the validator.</param>
         /// <param name="flag"><see cref="VoteFlag"/> for the vote's status.</param>
         /// <exception cref="ArgumentException">Thrown for any of the following reasons:
         /// <list type="bullet">
@@ -64,6 +69,7 @@ namespace Libplanet.Types.Consensus
             BlockHash blockHash,
             DateTimeOffset timestamp,
             PublicKey validatorPublicKey,
+            BigInteger? validatorPower,
             VoteFlag flag)
         {
             if (height < 0)
@@ -75,6 +81,12 @@ namespace Libplanet.Types.Consensus
             {
                 throw new ArgumentException(
                     $"Given {nameof(round)} cannot be negative: {round}");
+            }
+            else if (validatorPower is { } power && power <= 0)
+            {
+                var msg = $"Given {nameof(validatorPower)} cannot be negative " +
+                          $"or equal to zero: {validatorPower}";
+                throw new ArgumentException(msg);
             }
             else if (
                 blockHash.Equals(default) && (flag == VoteFlag.Null || flag == VoteFlag.Unknown))
@@ -89,6 +101,7 @@ namespace Libplanet.Types.Consensus
             BlockHash = blockHash;
             Timestamp = timestamp;
             ValidatorPublicKey = validatorPublicKey;
+            ValidatorPower = validatorPower;
             Flag = flag;
         }
 
@@ -114,6 +127,9 @@ namespace Libplanet.Types.Consensus
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
                     ((Binary)bencoded[ValidatorPublicKeyKey]).ByteArray),
+                validatorPower: bencoded.ContainsKey(ValidatorPowerKey)
+                    ? (Integer)bencoded[ValidatorPowerKey]
+                    : (Integer?)null,
                 flag: (VoteFlag)(int)(Integer)bencoded[FlagKey])
         {
         }
@@ -133,6 +149,9 @@ namespace Libplanet.Types.Consensus
 
         /// <inheritdoc/>
         public PublicKey ValidatorPublicKey { get; }
+
+        /// <inheritdoc/>
+        public BigInteger? ValidatorPower { get; }
 
         /// <inheritdoc/>
         public VoteFlag Flag { get; }
@@ -155,6 +174,11 @@ namespace Libplanet.Types.Consensus
                 if (BlockHash is { } blockHash)
                 {
                     encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
+                }
+
+                if (ValidatorPower is { } power)
+                {
+                    encoded = encoded.Add(ValidatorPowerKey, power);
                 }
 
                 return encoded;
@@ -189,6 +213,7 @@ namespace Libplanet.Types.Consensus
                             TimestampFormat,
                             CultureInfo.InvariantCulture)) &&
                 ValidatorPublicKey.Equals(metadata.ValidatorPublicKey) &&
+                ValidatorPower == metadata.ValidatorPower &&
                 Flag == metadata.Flag;
         }
 

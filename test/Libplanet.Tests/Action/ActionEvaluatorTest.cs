@@ -457,7 +457,7 @@ namespace Libplanet.Tests.Action
                         new TxInvoice(
                             genesisHash: genesis.Hash,
                             updatedAddresses: new[] { addresses[4] }.ToImmutableHashSet(),
-                            timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(5),
                             actions: new TxActionList(new[]
                             {
                                 DumbAction.Create(
@@ -493,9 +493,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),     // Adds "F"
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),      // Adds "E"
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),    // Adds "D"
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -818,7 +818,7 @@ namespace Libplanet.Tests.Action
                 stateStore: _storeFx.StateStore,
                 actionLoader: new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: _storeFx.GenesisBlock,
-                privateKey: ChainPrivateKey);
+                privateKey: GenesisProposer);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(

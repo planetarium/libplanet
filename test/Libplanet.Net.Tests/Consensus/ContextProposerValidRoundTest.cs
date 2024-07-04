@@ -75,6 +75,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
+                    TestUtils.ValidatorSet[0].Power,
                     1,
                     round: 2,
                     hash: proposedBlock.Hash,
@@ -82,6 +83,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
+                    TestUtils.ValidatorSet[2].Power,
                     height: 1,
                     round: 2,
                     hash: proposedBlock.Hash,
@@ -94,6 +96,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
+                    TestUtils.ValidatorSet[0].Power,
                     height: 1,
                     round: 1,
                     hash: proposedBlock.Hash,
@@ -101,6 +104,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
+                    TestUtils.ValidatorSet[2].Power,
                     height: 1,
                     round: 1,
                     hash: proposedBlock.Hash,
@@ -108,6 +112,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
+                    TestUtils.ValidatorSet[3].Power,
                     1,
                     round: 1,
                     hash: proposedBlock.Hash,
@@ -189,16 +194,18 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
+                    TestUtils.ValidatorSet[0].Power,
                     height: 1,
                     round: 2,
-                    hash: proposedBlock!.Hash,
+                    hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
+                    TestUtils.ValidatorSet[2].Power,
                     height: 1,
                     round: 2,
-                    hash: proposedBlock!.Hash,
+                    hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
             await stateChangedToRoundTwoPropose.WaitAsync();
             Assert.Equal(2, context.Round);
@@ -215,9 +222,10 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
+                    TestUtils.ValidatorSet[3].Power,
                     height: 1,
                     round: 2,
-                    hash: proposedBlock!.Hash,
+                    hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
             await stateChangedToRoundTwoPreCommit.WaitAsync();
 
@@ -225,6 +233,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
+                    TestUtils.ValidatorSet[0].Power,
                     height: 1,
                     round: 3,
                     hash: differentBlock.Hash,
@@ -232,6 +241,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
+                    TestUtils.ValidatorSet[2].Power,
                     height: 1,
                     round: 3,
                     hash: differentBlock.Hash,
@@ -244,6 +254,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
+                    TestUtils.ValidatorSet[3].Power,
                     height: 1,
                     round: 3,
                     hash: differentBlock.Hash,

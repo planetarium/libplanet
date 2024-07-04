@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
 
@@ -34,6 +35,11 @@ namespace Libplanet.Types.Consensus
         /// The <see cref="PublicKey"/> of the validator that voted.
         /// </summary>
         PublicKey ValidatorPublicKey { get; }
+
+        /// <summary>
+        /// The voting power of the validator that voted.
+        /// </summary>
+        BigInteger? ValidatorPower { get; }
 
         /// <summary>
         /// The <see cref="VoteFlag"/> indicating the type of a <see cref="Vote"/>.
