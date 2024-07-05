@@ -177,13 +177,13 @@ namespace Libplanet.Tests.Action
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
                 actionEvaluations = actionEvaluator.Evaluate(stateRootBlockWithProof, null);
                 generatedRandomNumbersWithProof.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
-                            .GetState(txAddress));
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
             }
 
             for (int i = 1; i < generatedRandomNumbersWithProof.Count; ++i)
@@ -537,6 +537,7 @@ namespace Libplanet.Tests.Action
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
+
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =

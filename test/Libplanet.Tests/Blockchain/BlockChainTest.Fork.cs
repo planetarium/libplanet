@@ -231,7 +231,7 @@ namespace Libplanet.Tests.Blockchain
                 proof: CreateZeroRoundProof(_blockChain.Tip, miner));
             _blockChain.Append(b2, CreateBlockCommit(b2));
             var state = _blockChain
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address);
 
@@ -239,14 +239,14 @@ namespace Libplanet.Tests.Blockchain
 
             var forked = _blockChain.Fork(b1.Hash);
             state = forked
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address);
             Assert.Equal((Text)"foo", state);
 
             forked.Append(b2, CreateBlockCommit(b2));
             state = forked
-                .GetWorldState()
+                .GetNextWorldState()
                 .GetAccountState(ReservedAddresses.LegacyAccount)
                 .GetState(address);
             Assert.Equal((Text)"foo,bar", state);
@@ -368,7 +368,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 "item0.0",
                 (Text)chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_fx.Address1));
 
@@ -385,14 +385,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 new IValue[] { (Text)"item0.0,item1.0" },
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetStates(new[] { _fx.Address1 })
             );
             Assert.Equal(
                 "item0.0,item1.0",
                 (Text)chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_fx.Address1));
 
@@ -401,14 +401,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(
                 new IValue[] { (Text)"item0.0,item1.0" },
                 forked
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetStates(new[] { _fx.Address1 })
             );
             Assert.Equal(
                 "item0.0,item1.0",
                 (Text)forked
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_fx.Address1));
         }
@@ -607,7 +607,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(
                     (Integer)(totalBlockCount - 1),
                     (Integer)_blockChain
-                        .GetWorldState()
+                        .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
                         .GetState(minerAddress)
                 );

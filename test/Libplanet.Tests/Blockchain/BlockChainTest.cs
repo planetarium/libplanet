@@ -686,7 +686,9 @@ namespace Libplanet.Tests.Blockchain
                 }
 
                 Block extraBlock2 = chain2.ProposeBlock(
-                    key, lastCommit: CreateBlockCommit(chain2.Tip));
+                    key,
+                    lastCommit: CreateBlockCommit(chain2.Tip),
+                    proof: CreateZeroRoundProof(chain2.Tip, key));
                 chain2.Append(extraBlock2, CreateBlockCommit(extraBlock2));
 
                 Log.Logger.CompareBothChains(

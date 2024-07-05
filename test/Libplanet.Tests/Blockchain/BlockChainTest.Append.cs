@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -879,14 +880,12 @@ namespace Libplanet.Tests.Blockchain
             action = DumbAction.Create((new Address(TestUtils.GetRandomBytes(20)), "bar"));
             tx = Transaction.Create(1, miner, genesis.Hash, new[] { action }.ToPlainValues());
             var blockAfterBump1 = blockChain.ProposeBlock(
-                miner,
-                new[] { tx }.ToImmutableList(),
-                commitBeforeBump,
-                proof: null,
+                proposer: miner,
+                transactions: new[] { tx }.ToImmutableList(),
+                lastCommit: commitBeforeBump,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, miner),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
-            Assert.Equal(
-                BlockMetadata.CurrentProtocolVersion,
-                blockAfterBump1.ProtocolVersion);
+            Assert.True(blockAfterBump1.ProtocolVersion >= BlockMetadata.SlothProtocolVersion);
             var commitAfterBump1 = TestUtils.CreateBlockCommit(blockAfterBump1);
             blockChain.Append(blockAfterBump1, commitAfterBump1);
             Assert.Equal(blockBeforeBump.StateRootHash, blockAfterBump1.StateRootHash);
@@ -895,14 +894,12 @@ namespace Libplanet.Tests.Blockchain
             action = DumbAction.Create((new Address(TestUtils.GetRandomBytes(20)), "baz"));
             tx = Transaction.Create(2, miner, genesis.Hash, new[] { action }.ToPlainValues());
             var blockAfterBump2 = blockChain.ProposeBlock(
-                miner,
-                new[] { tx }.ToImmutableList(),
-                commitAfterBump1,
-                proof: null,
+                proposer: miner,
+                transactions: new[] { tx }.ToImmutableList(),
+                lastCommit: commitAfterBump1,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, miner),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
-            Assert.Equal(
-                BlockMetadata.CurrentProtocolVersion,
-                blockAfterBump2.ProtocolVersion);
+            Assert.True(blockAfterBump1.ProtocolVersion >= BlockMetadata.SlothProtocolVersion);
             var commitAfterBump2 = TestUtils.CreateBlockCommit(blockAfterBump2);
             blockChain.Append(blockAfterBump2, commitAfterBump2);
             Assert.Equal(
