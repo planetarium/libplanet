@@ -20,6 +20,7 @@ using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
 using Serilog.Events;
@@ -480,7 +481,8 @@ namespace Libplanet.Net.Tests
                 Block block = minerChain.ProposeBlock(
                     ChainPrivateKey,
                     new[] { tx }.ToImmutableList(),
-                    CreateBlockCommit(minerChain.Tip));
+                    CreateBlockCommit(minerChain.Tip),
+                    ImmutableArray<EvidenceBase>.Empty);
                 minerSwarm.BlockChain.Append(block, CreateBlockCommit(block), true);
 
                 await receiverSwarm.PreloadAsync();

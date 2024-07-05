@@ -528,7 +528,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            ImmutableArray<EvidenceBase>? evidence = null)
         {
             Skip.IfNot(
                 Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
@@ -541,7 +542,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 blockInterval,
                 protocolVersion,
-                lastCommit);
+                lastCommit,
+                evidence);
             return preEval.Sign(miner, stateRootHash);
         }
 

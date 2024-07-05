@@ -129,7 +129,12 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f"));
+                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f")
+                )
+                .Add(
+                    "evidence_hash",
+                    ParseHex("1620ee70e94cee1bbead145cd905181ec5a6f21d82a18abf5ca448f83296486f")
+                );
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData());
 
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
@@ -148,7 +153,11 @@ namespace Libplanet.Tests.Blocks
                     "transaction_fingerprint",
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
-                .Add("protocol_version", BlockMetadata.CurrentProtocolVersion);
+                .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
+                .Add(
+                    "evidence_hash",
+                    ParseHex("2fe13c69db80c99bb0dbd22cd30989fa6e843e780c531ef9a71ac68b8fabfba8")
+                );
             AssertBencodexEqual(
                 expectedBlock1,
                 Block1Metadata.MakeCandidateData());
@@ -169,7 +178,13 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     "transaction_fingerprint",
                     ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"))
+                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                    )
+                )
+                .Add(
+                    "evidence_hash",
+                    ParseHex("2fe13c69db80c99bb0dbd22cd30989fa6e843e780c531ef9a71ac68b8fabfba8")
+                )
                 .Add("protocol_version", 1);
             AssertBencodexEqual(expected, Block1MetadataPv1.MakeCandidateData());
         }
@@ -192,7 +207,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
-                FromHex("dd8247ae1782ff29f992099d2e2e339c44e67a0c2266fca265d26561fa85cda0"),
+                FromHex("57755b98998adeab81ea1f09702fd353fbc6947531a9259665ae8d6f01d8bbf2"),
                 hash.ByteArray);
         }
 

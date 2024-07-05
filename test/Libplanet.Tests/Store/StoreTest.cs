@@ -18,6 +18,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
@@ -1171,6 +1172,155 @@ namespace Libplanet.Tests.Store
 
                 fx.Store.DeleteBlockCommit(blockCommit.BlockHash);
                 Assert.Null(fx.Store.GetBlockCommit(blockCommit.BlockHash));
+            }
+        }
+
+        [SkippableFact]
+        public void IteratePendingEvidenceIds()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVoteOne = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block1.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block2.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer));
+                var duplicateVoteTwo = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        height: 2,
+                        round: 0,
+                        blockHash: fx.Block2.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        height: 2,
+                        round: 0,
+                        blockHash: fx.Block3.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer));
+
+                EvidenceBase[] evidence =
+                {
+                    new DuplicateVoteEvidence(
+                        duplicateVoteOne[0],
+                        duplicateVoteOne[1],
+                        TestUtils.ValidatorSet,
+                        duplicateVoteOne.Last().Timestamp),
+                    new DuplicateVoteEvidence(
+                        duplicateVoteTwo[0],
+                        duplicateVoteTwo[1],
+                        TestUtils.ValidatorSet,
+                        duplicateVoteTwo.Last().Timestamp),
+                };
+
+                foreach (var ev in evidence)
+                {
+                    fx.Store.PutPendingEvidence(ev);
+                }
+
+                IEnumerable<EvidenceId> ids = fx.Store.IteratePendingEvidenceIds();
+                Assert.Equal(evidence.Select(e => e.Id).ToHashSet(), ids.ToHashSet());
+            }
+        }
+
+        [SkippableFact]
+        public void ManipulatePendingEvidence()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVote = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block1.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block2.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer));
+                EvidenceBase evidence = new DuplicateVoteEvidence(
+                    duplicateVote[0],
+                    duplicateVote[1],
+                    TestUtils.ValidatorSet,
+                    duplicateVote.Last().Timestamp);
+
+                Assert.False(fx.Store.ContainsPendingEvidence(evidence.Id));
+
+                fx.Store.PutPendingEvidence(evidence);
+                EvidenceBase storedEvidence = fx.Store.GetPendingEvidence(evidence.Id);
+
+                Assert.Equal(evidence, storedEvidence);
+                Assert.True(fx.Store.ContainsPendingEvidence(evidence.Id));
+
+                fx.Store.DeletePendingEvidence(evidence.Id);
+                Assert.False(fx.Store.ContainsPendingEvidence(evidence.Id));
+            }
+        }
+
+        [SkippableFact]
+        public void ManipulateCommittedEvidence()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var signer = TestUtils.ValidatorPrivateKeys[0];
+                var duplicateVote = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block1.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer))
+                    .Add(new VoteMetadata(
+                        height: 1,
+                        round: 0,
+                        blockHash: fx.Block2.Hash,
+                        timestamp: DateTimeOffset.UtcNow,
+                        validatorPublicKey: signer.PublicKey,
+                        validatorPower: BigInteger.One,
+                        flag: VoteFlag.PreCommit).Sign(signer));
+                EvidenceBase evidence = new DuplicateVoteEvidence(
+                    duplicateVote[0],
+                    duplicateVote[1],
+                    TestUtils.ValidatorSet,
+                    duplicateVote.Last().Timestamp);
+
+                Assert.False(fx.Store.ContainsCommittedEvidence(evidence.Id));
+
+                fx.Store.PutCommittedEvidence(evidence);
+                EvidenceBase storedEvidence = fx.Store.GetCommittedEvidence(evidence.Id);
+
+                Assert.Equal(evidence, storedEvidence);
+                Assert.True(fx.Store.ContainsCommittedEvidence(evidence.Id));
+
+                fx.Store.DeleteCommittedEvidence(evidence.Id);
+                Assert.False(fx.Store.ContainsCommittedEvidence(evidence.Id));
             }
         }
 

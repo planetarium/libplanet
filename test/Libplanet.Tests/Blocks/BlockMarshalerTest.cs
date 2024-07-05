@@ -145,7 +145,9 @@ namespace Libplanet.Tests.Blocks
                         _content.Block1ContentPv1.PreviousHash?.ByteArray ?? default)
                     .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
                     .Add(MinerKey, _content.Block1ContentPv1.Miner.Bencoded)
-                    .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default),
+                    .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default)
+                    .Add(
+                        EvidenceKey, _content.Block1ContentPv1.EvidenceHash?.ByteArray ?? default),
                 BlockMarshaler.MarshalBlockMetadata(_content.Block1ContentPv1)
             );
         }

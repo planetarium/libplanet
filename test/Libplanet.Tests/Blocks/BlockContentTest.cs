@@ -42,6 +42,18 @@ namespace Libplanet.Tests.Blocks
                     transactions: new[] { Block1Tx0 },
                     evidence: Array.Empty<EvidenceBase>())
             );
+            Assert.Throws<InvalidBlockEvidenceHashException>(() =>
+                new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: Block1Content.Transactions,
+                    evidence: Array.Empty<EvidenceBase>())
+            );
+            Assert.Throws<InvalidBlockEvidenceHashException>(
+                () => new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: Block1Content.Transactions,
+                    evidence: Array.Empty<EvidenceBase>())
+            );
         }
 
         [Fact]
