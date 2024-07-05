@@ -9,6 +9,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
 using FAV = Libplanet.Types.Assets.FungibleAssetValue;
@@ -76,7 +77,7 @@ namespace Libplanet.Store
                         $"at block {blockHash}:\n" + string.Join("\n  ", missingTxIds));
                 }
 
-                return new Block(header, txs);
+                return new Block(header, txs, Array.Empty<EvidenceBase>());
             }
 
             return null;

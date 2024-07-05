@@ -9,6 +9,7 @@ using Libplanet.Action.Sys;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Xunit;
 
@@ -60,8 +61,10 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: GenesisKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
-                    lastCommit: null),
-                transactions: genTxs);
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: genTxs,
+                evidence: Array.Empty<EvidenceBase>());
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a");
@@ -118,8 +121,10 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: Block1Key.PublicKey,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
-                    lastCommit: null),
-                transactions: block1Transactions);
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: block1Transactions,
+                evidence: Array.Empty<EvidenceBase>());
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
@@ -133,8 +138,10 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: null,
                     previousHash: null,
                     txHash: null,
-                    lastCommit: null),
-                transactions: new List<Transaction>()); // Tweaked GenesisContent
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: new List<Transaction>(),
+                evidence: new List<EvidenceBase>()); // Tweaked GenesisContent
             GenesisMetadataPv0 = new BlockMetadata(GenesisContentPv0);
             Block1ContentPv1 = new BlockContent(
                 new BlockMetadata(
@@ -145,8 +152,10 @@ namespace Libplanet.Tests.Fixtures
                     publicKey: null,
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
-                    lastCommit: null),
-                transactions: block1Transactions); // Tweaked Block1Content
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: block1Transactions,
+                evidence: Array.Empty<EvidenceBase>()); // Tweaked Block1Content
             Block1MetadataPv1 = new BlockMetadata(Block1ContentPv1);
         }
 

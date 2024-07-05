@@ -398,7 +398,7 @@ namespace Libplanet.Blockchain
             if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 var preEval = new PreEvaluationBlock(
-                    genesisBlock.Header, genesisBlock.Transactions);
+                    genesisBlock.Header, genesisBlock.Transactions, genesisBlock.Evidence);
                 var computedStateRootHash =
                     actionEvaluator.Evaluate(preEval, null).Last().OutputState;
                 if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))

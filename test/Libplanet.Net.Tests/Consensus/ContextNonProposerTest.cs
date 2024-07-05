@@ -15,6 +15,7 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Nito.AsyncEx;
 using Serilog;
@@ -177,7 +178,8 @@ namespace Libplanet.Net.Tests.Consensus
                         publicKey: key.PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose(),
+                        lastCommit: null,
+                        evidenceHash: null)).Propose(),
                 key);
 
             context.StateChanged += (_, eventArgs) =>
@@ -275,7 +277,8 @@ namespace Libplanet.Net.Tests.Consensus
                         publicKey: TestUtils.PrivateKeys[1].PublicKey,
                         previousHash: blockChain.Tip.Hash,
                         txHash: null,
-                        lastCommit: null)).Propose(),
+                        lastCommit: null,
+                        evidenceHash: null)).Propose(),
                 TestUtils.PrivateKeys[1]);
 
             context.Start();
@@ -413,6 +416,7 @@ namespace Libplanet.Net.Tests.Consensus
             var invalidTx = new Transaction(
                 unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
             var txs = new[] { invalidTx };
+            var evs = Array.Empty<EvidenceBase>();
 
             var metadata = new BlockMetadata(
                 index: 1L,
@@ -420,10 +424,13 @@ namespace Libplanet.Net.Tests.Consensus
                 publicKey: TestUtils.PrivateKeys[1].PublicKey,
                 previousHash: blockChain.Genesis.Hash,
                 txHash: BlockContent.DeriveTxHash(txs),
-                lastCommit: null);
+                lastCommit: null,
+                evidenceHash: null);
             var preEval = new PreEvaluationBlock(
-                new PreEvaluationBlockHeader(metadata, metadata.DerivePreEvaluationHash()),
-                txs);
+                preEvaluationBlockHeader: new PreEvaluationBlockHeader(
+                    metadata, metadata.DerivePreEvaluationHash()),
+                transactions: txs,
+                evidence: evs);
             var invalidBlock = preEval.Sign(
                 TestUtils.PrivateKeys[1],
                 HashDigest<SHA256>.DeriveFrom(TestUtils.GetRandomBytes(1024)));

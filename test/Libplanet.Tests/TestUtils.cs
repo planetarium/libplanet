@@ -30,6 +30,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -446,8 +447,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs);
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: Array.Empty<EvidenceBase>());
             return content.Propose();
         }
 
@@ -484,12 +487,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
-            BlockCommit lastCommit = null)
+            BlockCommit lastCommit = null,
+            ImmutableArray<EvidenceBase>? evidence = null)
         {
             var txs = transactions is null
                 ? new List<Transaction>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
 
+            if (protocolVersion >= 5)
+            {
+                evidence = evidence ?? ImmutableArray<EvidenceBase>.Empty;
+            }
+
+            var evidenceHash = evidence != null
+                ? BlockContent.DeriveEvidenceHash(evidence)
+                : null;
             var content = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: protocolVersion,
@@ -500,8 +512,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: lastCommit),
-                transactions: txs);
+                    lastCommit: lastCommit,
+                    evidenceHash: evidenceHash),
+                transactions: txs,
+                evidence: Array.Empty<EvidenceBase>());
             var preEval = content.Propose();
             preEval.ValidateTimestamp();
             return preEval;

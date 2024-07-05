@@ -22,6 +22,7 @@ using Libplanet.Tests.Store;
 using Libplanet.Tests.Tx;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
 using Xunit;
@@ -74,6 +75,7 @@ namespace Libplanet.Tests.Action
                     actions: new[] { new ContextRecordingAction(txAddress, new Text("Foo")), }
                         .ToPlainValues()),
             };
+            var evs = Array.Empty<EvidenceBase>();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var noStateRootBlock = new BlockContent(
                 new BlockMetadata(
@@ -84,8 +86,10 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: evs).Propose();
             var actionEvaluator = new ActionEvaluator(
                 _ => null,
                 stateStore,
@@ -248,6 +252,7 @@ namespace Libplanet.Tests.Action
                 genesisHash: genesis.Hash,
                 actions: new[] { action }.ToPlainValues());
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<EvidenceBase>();
             PreEvaluationBlock block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
@@ -255,8 +260,10 @@ namespace Libplanet.Tests.Action
                     publicKey: new PrivateKey().PublicKey,
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: evs).Propose();
             IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
 
             Assert.Throws<OutOfMemoryException>(
@@ -550,6 +557,7 @@ namespace Libplanet.Tests.Action
             var tx =
                 Transaction.Create(0, _txFx.PrivateKey1, null, actions.ToPlainValues());
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<EvidenceBase>();
             var block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
@@ -557,8 +565,10 @@ namespace Libplanet.Tests.Action
                     publicKey: keys[0].PublicKey,
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs).Propose();
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: evs).Propose();
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IWorld world = new World(MockWorldState.CreateLegacy(stateStore)
                 .SetBalance(addresses[0], DumbAction.DumbCurrency * 100)
@@ -657,6 +667,7 @@ namespace Libplanet.Tests.Action
                 null,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction[] { tx };
+            var evs = Array.Empty<EvidenceBase>();
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
@@ -671,8 +682,10 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisProposer.PublicKey,
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: CreateBlockCommit(hash, 122, 0)),
-                transactions: txs).Propose();
+                    lastCommit: CreateBlockCommit(hash, 122, 0),
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: evs).Propose();
             IWorld previousState = stateStore.GetWorld(null);
             var nextState = actionEvaluator.EvaluateTx(
                 block: block,

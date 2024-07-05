@@ -30,6 +30,7 @@ namespace Libplanet.Tests.Blocks
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
+        private static readonly byte[] EvidenceKey = { 0x76 }; // 'v
 
         // Block fields:
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'

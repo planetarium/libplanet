@@ -11,6 +11,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Store
@@ -162,7 +163,7 @@ namespace Libplanet.Store
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
             IEnumerable<Transaction> txs = txids.Select(txid => _txs[txid]);
-            return new Block(header, txs);
+            return new Block(header, txs, Array.Empty<EvidenceBase>());
         }
 
         long? IStore.GetBlockIndex(BlockHash blockHash) =>

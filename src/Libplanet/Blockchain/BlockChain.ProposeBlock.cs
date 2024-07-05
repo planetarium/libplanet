@@ -10,6 +10,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Blockchain
@@ -62,7 +63,8 @@ namespace Libplanet.Blockchain
                     txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null,
                     evidenceHash: null),
-                transactions: transactions);
+                transactions: transactions,
+                evidence: Array.Empty<EvidenceBase>());
 
             PreEvaluationBlock preEval = content.Propose();
             stateRootHash ??= MerkleTrie.EmptyRootHash;
@@ -154,6 +156,7 @@ namespace Libplanet.Blockchain
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
             var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
+            var orderedEvidence = Array.Empty<EvidenceBase>();
             var blockContent = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
@@ -166,7 +169,7 @@ namespace Libplanet.Blockchain
                     lastCommit: lastCommit,
                     evidenceHash: null),
                 transactions: orderedTransactions,
-                evidence: null);
+                evidence: orderedEvidence);
             var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval, stateRootHash);
         }
