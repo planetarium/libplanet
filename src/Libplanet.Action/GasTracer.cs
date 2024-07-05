@@ -13,6 +13,8 @@ namespace Libplanet.Action
     {
         private static readonly AsyncLocal<GasMeter> GasMeter = new AsyncLocal<GasMeter>();
 
+        private static readonly AsyncLocal<bool> IsTrace = new AsyncLocal<bool>();
+
         /// <summary>
         /// The amount of gas used so far.
         /// </summary>
@@ -29,8 +31,28 @@ namespace Libplanet.Action
         /// <param name="gas">
         /// The amount of gas to use.
         /// </param>
-        public static void UseGas(long gas) => GasMeter.Value.UseGas(gas);
+        public static void UseGas(long gas)
+        {
+            if (IsTrace.Value)
+            {
+                GasMeter.Value.UseGas(gas);
+            }
+        }
 
-        internal static void Initialize(long gasLimit) => GasMeter.Value = new GasMeter(gasLimit);
+        internal static void Initialize(long gasLimit)
+        {
+            GasMeter.Value = new GasMeter(gasLimit);
+            IsTrace.Value = false;
+        }
+
+        internal static void StartTrace()
+        {
+            IsTrace.Value = true;
+        }
+
+        internal static void EndTrace()
+        {
+            IsTrace.Value = false;
+        }
     }
 }
