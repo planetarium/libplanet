@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,7 +77,7 @@ namespace Libplanet.Net
             }
         }
 
-        private void BroadcastEvidence(BoundPeer except, IEnumerable<EvidenceBase> evidence)
+        private void BroadcastEvidence(BoundPeer? except, IEnumerable<EvidenceBase> evidence)
         {
             List<EvidenceId> evidenceIds = evidence.Select(evidence => evidence.Id).ToList();
             _logger.Information("Broadcasting {Count} evidenceIds...", evidenceIds.Count);
@@ -151,7 +150,7 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        EvidenceBase ev = BlockChain.GetPendingEvidence(txid);
+                        EvidenceBase? ev = BlockChain.GetPendingEvidence(txid);
 
                         if (ev is null)
                         {

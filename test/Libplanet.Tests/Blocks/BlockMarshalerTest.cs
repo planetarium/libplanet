@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blocks
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
-        private static readonly byte[] EvidenceKey = { 0x76 }; // 'v
+        private static readonly byte[] EvidenceHashKey = { 0x76 }; // 'v
 
         // Block fields:
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
@@ -147,7 +147,8 @@ namespace Libplanet.Tests.Blocks
                     .Add(MinerKey, _content.Block1ContentPv1.Miner.Bencoded)
                     .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default)
                     .Add(
-                        EvidenceKey, _content.Block1ContentPv1.EvidenceHash?.ByteArray ?? default),
+                        EvidenceHashKey,
+                        _content.Block1ContentPv1.EvidenceHash?.ByteArray ?? default),
                 BlockMarshaler.MarshalBlockMetadata(_content.Block1ContentPv1)
             );
         }

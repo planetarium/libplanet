@@ -19,6 +19,7 @@ using Libplanet.Net.Options;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests.Blockchain.Evidence;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidence;
@@ -1092,6 +1093,49 @@ namespace Libplanet.Net.Tests
                 CleaningSwarm(receiver);
                 await mockTransport.StopAsync(TimeSpan.FromMilliseconds(10));
                 mockTransport.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BroadcastEvidence()
+        {
+            var cancellationTokenSource = new CancellationTokenSource(Timeout);
+            var minerA = new PrivateKey();
+            var validatorAddress = new PrivateKey().Address;
+            var swarmA = await CreateSwarm(minerA).ConfigureAwait(false);
+            var swarmB = await CreateSwarm().ConfigureAwait(false);
+            var swarmC = await CreateSwarm().ConfigureAwait(false);
+
+            var chainA = swarmA.BlockChain;
+            var chainB = swarmB.BlockChain;
+            var chainC = swarmC.BlockChain;
+
+            var evidence = new TestEvidence(0, validatorAddress, DateTimeOffset.UtcNow);
+            chainA.AddEvidence(evidence);
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                swarmA.BroadcastEvidence(new[] { evidence });
+
+                await swarmC.EvidenceReceived.WaitAsync(cancellationTokenSource.Token);
+                await swarmB.EvidenceReceived.WaitAsync(cancellationTokenSource.Token);
+
+                Assert.Equal(evidence, chainB.GetPendingEvidence(evidence.Id));
+                Assert.Equal(evidence, chainC.GetPendingEvidence(evidence.Id));
+            }
+            finally
+            {
+                CleaningSwarm(swarmA);
+                CleaningSwarm(swarmB);
+                CleaningSwarm(swarmC);
             }
         }
     }
