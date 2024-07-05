@@ -12,6 +12,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Blockchain
@@ -311,6 +312,15 @@ namespace Libplanet.Blockchain
                 {
                     throw new InvalidBlockLastCommitException(ibce.Message);
                 }
+            }
+
+            foreach (var ev in block.Evidence)
+            {
+                var stateRootHash = GetNextStateRootHash(ev.Height);
+                var worldState = GetWorldState(stateRootHash);
+                var validatorSet = worldState.GetValidatorSet();
+                var evidenceContext = new EvidenceContext(validatorSet);
+                ev.Verify(evidenceContext);
             }
         }
 

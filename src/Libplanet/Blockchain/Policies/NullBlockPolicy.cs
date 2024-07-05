@@ -1,4 +1,5 @@
 #nullable disable
+using System;
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -48,5 +49,7 @@ namespace Libplanet.Blockchain.Policies
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);
+
+        public long GetMaxEvidencePendingDuration(long index) => 10L;
     }
 }

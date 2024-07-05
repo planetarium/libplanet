@@ -1,6 +1,7 @@
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -114,5 +115,15 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
+
+        /// <summary>
+        /// Gets the maximum duration of <see cref="EvidenceBase"/> before to be committed.
+        /// </summary>
+        /// <param name="index">The <see cref="Block.Index"/> of the <see cref="Block"/>
+        /// for which this constraint should apply.</param>
+        /// <returns>The maximum duration of <see cref="EvidenceBase"/>s before to be committed.
+        /// </returns>
+        [Pure]
+        long GetMaxEvidencePendingDuration(long index);
     }
 }

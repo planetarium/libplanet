@@ -351,84 +351,85 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> GetBlockCommitHashes();
 
         /// <summary>
-        /// Gets every <see cref="EvidenceId"/>s of pending <see cref="Evidence"/>s from the store.
+        /// Gets every <see cref="EvidenceId"/>s of pending <see cref="EvidenceBase"/>s
+        /// from the store.
         /// </summary>
         /// <returns>Returns an <see cref="IEnumerable{T}"/> of <see cref="EvidenceId"/>s
-        /// of all pending <see cref="Evidence"/>s.</returns>
+        /// of all pending <see cref="EvidenceBase"/>s.</returns>
         IEnumerable<EvidenceId> IteratePendingEvidenceIds();
 
         /// <summary>
-        /// Gets every pending <see cref="Evidence"/> of given <paramref name="evidenceId"/>
+        /// Gets every pending <see cref="EvidenceBase"/> of given <paramref name="evidenceId"/>
         /// from the store.
         /// </summary>
         /// <param name="evidenceId">The <see cref="EvidenceId"/> of a pending
-        /// <see cref="Evidence"/> to retrieve.</param>
-        /// <returns>Returns <see cref="Evidence"/> if given <paramref name="evidenceId"/> is
+        /// <see cref="EvidenceBase"/> to retrieve.</param>
+        /// <returns>Returns <see cref="EvidenceBase"/> if given <paramref name="evidenceId"/> is
         /// stored, pending and available, otherwise returns <see langword="null"/>.</returns>
         EvidenceBase? GetPendingEvidence(EvidenceId evidenceId);
 
         /// <summary>
-        /// Gets every committed <see cref="Evidence"/> of given <paramref name="evidenceId"/>
+        /// Gets every committed <see cref="EvidenceBase"/> of given <paramref name="evidenceId"/>
         /// from the store.
         /// </summary>
         /// <param name="evidenceId">The <see cref="EvidenceId"/> of a committed
-        /// <see cref="Evidence"/> to retrieve.</param>
-        /// <returns>Returns <see cref="Evidence"/> if given <paramref name="evidenceId"/> is
+        /// <see cref="EvidenceBase"/> to retrieve.</param>
+        /// <returns>Returns <see cref="EvidenceBase"/> if given <paramref name="evidenceId"/> is
         /// stored, committed and available, otherwise returns <see langword="null"/>.</returns>
         EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId);
 
         /// <summary>
-        /// Puts a <see cref="Evidence"/> to the store as pending evidence.
+        /// Puts a <see cref="EvidenceBase"/> to the store as pending evidence.
         /// </summary>
-        /// <param name="evidence">A pending <see cref="Evidence"/> to store.</param>
+        /// <param name="evidence">A pending <see cref="EvidenceBase"/> to store.</param>
         void PutPendingEvidence(EvidenceBase evidence);
 
         /// <summary>
-        /// Puts a <see cref="Evidence"/> to the store as committed evidence.
+        /// Puts a <see cref="EvidenceBase"/> to the store as committed evidence.
         /// </summary>
-        /// <param name="evidence">A committed <see cref="Evidence"/> to store.</param>
+        /// <param name="evidence">A committed <see cref="EvidenceBase"/> to store.</param>
         void PutCommittedEvidence(EvidenceBase evidence);
 
         /// <summary>
-        /// Deletes a pending <see cref="Evidence"/> of given <paramref name="evidenceId"/>
+        /// Deletes a pending <see cref="EvidenceBase"/> of given <paramref name="evidenceId"/>
         /// from the store.
         /// </summary>
         /// <param name="evidenceId">The <see cref="EvidenceId"/> of a pending
-        /// <see cref="Evidence"/>
+        /// <see cref="EvidenceBase"/>
         /// to delete.</param>
         void DeletePendingEvidence(EvidenceId evidenceId);
 
         /// <summary>
-        /// Deletes a committed <see cref="Evidence"/> of given <paramref name="evidenceId"/>
+        /// Deletes a committed <see cref="EvidenceBase"/> of given <paramref name="evidenceId"/>
         /// from the store.
         /// </summary>
         /// <param name="evidenceId">The <see cref="EvidenceId"/> of a committed
-        /// <see cref="Evidence"/>
+        /// <see cref="EvidenceBase"/>
         /// to delete.</param>
         void DeleteCommittedEvidence(EvidenceId evidenceId);
 
         /// <summary>
-        /// Determines whether the <see cref="IStore"/> contains <see cref="Evidence"/>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="EvidenceBase"/>
         /// the specified <paramref name="evidenceId"/> as pending.
         /// </summary>
-        /// <param name="evidenceId">The <see cref="EvidenceId"/> of the <see cref="Evidence"/> to
-        /// check if it is in the <see cref="IStore"/> and pending.</param>
+        /// <param name="evidenceId">The <see cref="EvidenceId"/> of the <see cref="EvidenceBase"/>
+        /// to check if it is in the <see cref="IStore"/> and pending.</param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Evidence"/> with
-        /// the specified <paramref name="evidenceId"/> as pending; otherwise,
+        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="EvidenceBase"/>
+        /// with the specified <paramref name="evidenceId"/> as pending; otherwise,
         /// <see langword="false"/>.
         /// </returns>
         bool ContainsPendingEvidence(EvidenceId evidenceId);
 
         /// <summary>
-        /// Determines whether the <see cref="IStore"/> contains <see cref="Evidence"/>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="EvidenceBase"/>
         /// the specified <paramref name="evidenceId"/> as committed.
         /// </summary>
-        /// <param name="evidenceId">The <see cref="EvidenceId"/> of the <see cref="Evidence"/> to
-        /// check if it is in the <see cref="IStore"/> and committed.</param>
+        /// <param name="evidenceId">The <see cref="EvidenceId"/> of the <see cref="EvidenceBase"/>
+        /// to check if it is in the <see cref="IStore"/> and committed.</param>
         /// <returns>
-        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Evidence"/> with
-        /// the specified <paramref name="evidenceId"/> as committed; otherwise,
+        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="EvidenceBase"/>
+        /// with the specified <paramref name="evidenceId"/> as committed; otherwise,
         /// <see langword="false"/>.
         /// </returns>
         bool ContainsCommittedEvidence(EvidenceId evidenceId);

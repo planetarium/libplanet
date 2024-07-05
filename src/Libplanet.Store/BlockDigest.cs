@@ -33,7 +33,7 @@ namespace Libplanet.Store
         /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block"/>.</param>
         /// <param name="txIds"><see cref="Transaction"/> ids the <see cref="Block"/> has.
         /// </param>
-        /// <param name="evidenceIds"><see cref="Evidence"/> ids the <see cref="Block"/> has.
+        /// <param name="evidenceIds"><see cref="EvidenceBase"/> ids the <see cref="Block"/> has.
         /// </param>
         public BlockDigest(
             BlockHeader header,
@@ -124,7 +124,7 @@ namespace Libplanet.Store
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         /// <summary>
-        /// The <see cref="Evidence.Id"/>s of <see cref="Evidence"/>s in
+        /// The <see cref="Evidence.Id"/>s of <see cref="EvidenceBase"/>s in
         /// a <see cref="Block"/>.  This is <em>not</em> necessarily ordered by
         /// <see cref="Evidence.Id"/>.
         /// </summary>
