@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
@@ -62,7 +63,7 @@ namespace Libplanet.Blockchain
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null,
-                    proof: null,
+                    proof: new ConsensusInformation(0L, 0, null).Prove(privateKey),
                     evidenceHash: null),
                 transactions: transactions,
                 evidence: Array.Empty<EvidenceBase>());
