@@ -59,6 +59,12 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<Guid, BlockCommit> _chainCommits =
             new ConcurrentDictionary<Guid, BlockCommit>();
 
+        private readonly ConcurrentDictionary<EvidenceId, EvidenceBase> _pendingEvidence =
+            new ConcurrentDictionary<EvidenceId, EvidenceBase>();
+
+        private readonly ConcurrentDictionary<EvidenceId, EvidenceBase> _committedEvidence
+            = new ConcurrentDictionary<EvidenceId, EvidenceBase>();
+
         private Guid? _canonicalChainId;
 
         void IDisposable.Dispose()
@@ -163,7 +169,12 @@ namespace Libplanet.Store
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
             IEnumerable<Transaction> txs = txids.Select(txid => _txs[txid]);
-            return new Block(header, txs, Array.Empty<EvidenceBase>());
+            ImmutableArray<EvidenceId> evidenceIds = digest.EvidenceIds
+                .Select(b => new EvidenceId(b.ToBuilder().ToArray()))
+                .ToImmutableArray();
+            IEnumerable<EvidenceBase> evidence
+                = evidenceIds.Select(evId => _committedEvidence[evId]);
+            return new Block(header, txs, evidence);
         }
 
         long? IStore.GetBlockIndex(BlockHash blockHash) =>
@@ -180,9 +191,16 @@ namespace Libplanet.Store
                 _txs[tx.Id] = tx;
             }
 
+            var evidence = block.Evidence;
+            foreach (var ev in evidence)
+            {
+                _committedEvidence[ev.Id] = ev;
+            }
+
             _blocks[block.Hash] = new BlockDigest(
                 block.Header,
-                txs.Select(tx => tx.Id.ByteArray).ToImmutableArray()
+                txs.Select(tx => tx.Id.ByteArray).ToImmutableArray(),
+                evidence.Select(ev => ev.Id.ByteArray).ToImmutableArray()
             );
         }
 
@@ -301,6 +319,46 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
+
+        /// <inheritdoc/>
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+            => _pendingEvidence.Keys;
+
+        /// <inheritdoc/>
+        public EvidenceBase? GetPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidence.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutPendingEvidence(EvidenceBase evidence)
+            => _pendingEvidence[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeletePendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidence.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsPendingEvidence(EvidenceId evidenceId)
+            => _pendingEvidence.ContainsKey(evidenceId);
+
+        /// <inheritdoc/>
+        public EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidence.TryGetValue(evidenceId, out var evidence)
+            ? evidence
+            : null;
+
+        /// <inheritdoc/>
+        public void PutCommittedEvidence(EvidenceBase evidence)
+            => _committedEvidence[evidence.Id] = evidence;
+
+        /// <inheritdoc/>
+        public void DeleteCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidence.TryRemove(evidenceId, out _);
+
+        /// <inheritdoc/>
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId)
+            => _committedEvidence.ContainsKey(evidenceId);
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)

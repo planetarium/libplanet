@@ -68,6 +68,13 @@ namespace Libplanet.Store
                 Transaction[] txs = txids.Select(txid => GetTransaction(txid))
                                          .OfType<Transaction>()
                                          .ToArray();
+                var evidenceIds = blockDigest.EvidenceIds
+                                             .Select(bytes => new EvidenceId(bytes.ToArray()))
+                                             .OrderBy(evidenceId => evidenceId)
+                                             .ToArray();
+                var evidence = evidenceIds.Select(evidenceId => GetCommittedEvidence(evidenceId))
+                                           .OfType<EvidenceBase>()
+                                           .ToArray();
 
                 if (txids.Length != txs.Length)
                 {
@@ -77,7 +84,17 @@ namespace Libplanet.Store
                         $"at block {blockHash}:\n" + string.Join("\n  ", missingTxIds));
                 }
 
-                return new Block(header, txs, Array.Empty<EvidenceBase>());
+                if (evidenceIds.Length != evidence.Length)
+                {
+                    var missingEvidenceIds = evidenceIds.Except(evidence.Select(tx => tx.Id))
+                                                         .ToArray();
+                    throw new InvalidOperationException(
+                        $"Failed to find {missingEvidenceIds.Length} evidence(s) " +
+                        $"(out of {evidence.Length}) " +
+                        $"at block {blockHash}:\n" + string.Join("\n  ", missingEvidenceIds));
+                }
+
+                return new Block(header, txs, evidence);
             }
 
             return null;
@@ -187,6 +204,33 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void DeleteNextStateRootHash(BlockHash blockHash);
+
+        /// <inheritdoc/>
+        public abstract IEnumerable<EvidenceId> IteratePendingEvidenceIds();
+
+        /// <inheritdoc/>
+        public abstract EvidenceBase? GetPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract void PutPendingEvidence(EvidenceBase evidence);
+
+        /// <inheritdoc/>
+        public abstract void PutCommittedEvidence(EvidenceBase evidence);
+
+        /// <inheritdoc/>
+        public abstract void DeletePendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract void DeleteCommittedEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsPendingEvidence(EvidenceId evidenceId);
+
+        /// <inheritdoc/>
+        public abstract bool ContainsCommittedEvidence(EvidenceId evidenceId);
 
         protected static IValue SerializeTxExecution(TxExecution txExecution)
         {

@@ -21,6 +21,7 @@ namespace Libplanet.Store
         private static readonly Binary HeaderKey = new Binary(new byte[] { 0x48 });         // 'H'
 
         private static readonly Binary TransactionIdsKey = new Binary(new byte[] { 0x54 }); // 'T'
+        private static readonly Binary EvidenceIdsKey = new Binary(new byte[] { 0x56 });    // 'V'
 
         private readonly BlockMetadata _metadata;
         private readonly HashDigest<SHA256> _preEvaluationHash;
@@ -32,7 +33,12 @@ namespace Libplanet.Store
         /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block"/>.</param>
         /// <param name="txIds"><see cref="Transaction"/> ids the <see cref="Block"/> has.
         /// </param>
-        public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
+        /// <param name="evidenceIds"><see cref="Evidence"/> ids the <see cref="Block"/> has.
+        /// </param>
+        public BlockDigest(
+            BlockHeader header,
+            ImmutableArray<ImmutableArray<byte>> txIds,
+            ImmutableArray<ImmutableArray<byte>> evidenceIds)
         {
             _metadata = header.Header.Metadata;
             _preEvaluationHash = header.PreEvaluationHash;
@@ -40,6 +46,7 @@ namespace Libplanet.Store
             Signature = header.Signature;
             Hash = header.Hash;
             TxIds = txIds;
+            EvidenceIds = evidenceIds;
         }
 
         /// <summary>
@@ -60,6 +67,10 @@ namespace Libplanet.Store
             TxIds = dict.ContainsKey((Binary)TransactionIdsKey)
                 ? ((List)dict[TransactionIdsKey])
                     .Select(txId => ((Binary)txId).ByteArray).ToImmutableArray()
+                : ImmutableArray<ImmutableArray<byte>>.Empty;
+            EvidenceIds = dict.ContainsKey(EvidenceIdsKey)
+                ? ((List)dict[EvidenceIdsKey])
+                    .Select(evId => ((Binary)evId).ByteArray).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
@@ -113,6 +124,13 @@ namespace Libplanet.Store
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         /// <summary>
+        /// The <see cref="Evidence.Id"/>s of <see cref="Evidence"/>s in
+        /// a <see cref="Block"/>.  This is <em>not</em> necessarily ordered by
+        /// <see cref="Evidence.Id"/>.
+        /// </summary>
+        public ImmutableArray<ImmutableArray<byte>> EvidenceIds { get; }
+
+        /// <summary>
         /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block"/>.
         /// </summary>
         /// <param name="block">The block instance to get its digest.</param>
@@ -124,6 +142,9 @@ namespace Libplanet.Store
                 header: block.Header,
                 txIds: block.Transactions
                     .Select(tx => tx.Id.ByteArray)
+                    .ToImmutableArray(),
+                evidenceIds: block.Evidence
+                    .Select(ev => ev.Id.ByteArray)
                     .ToImmutableArray()
             );
         }
@@ -198,6 +219,13 @@ namespace Libplanet.Store
                 dict = dict.Add(
                     TransactionIdsKey,
                     new List(TxIds.Select(txId => txId.ToArray())));
+            }
+
+            if (EvidenceIds.Any())
+            {
+                dict = dict.Add(
+                    EvidenceIdsKey,
+                    new List(EvidenceIds.Select(evId => evId.ToArray())));
             }
 
             return dict;
