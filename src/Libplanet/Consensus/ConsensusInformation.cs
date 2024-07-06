@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -217,9 +218,17 @@ namespace Libplanet.Consensus
                 Round,
                 LastProof);
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
-            => $"{nameof(ConsensusInformation)} " +
-            $": Height {Height}, Round {Round}, LastProof {LastProof}";
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "height", Height },
+                { "round", Round },
+                { "lastProof", LastProof.ToString() ?? "Empty" },
+            };
+            return JsonSerializer.Serialize(dict);
+        }
 
         private static IValue Bencode(long height, int round, Proof? lastProof)
         {

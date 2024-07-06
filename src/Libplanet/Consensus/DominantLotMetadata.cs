@@ -101,7 +101,7 @@ namespace Libplanet.Consensus
         /// A Bencodex-encoded value of <see cref="DominantLotMetadata"/>.
         /// </summary>
         [JsonIgnore]
-        public Dictionary Encoded
+        public Dictionary Bencoded
         {
             get
             {
@@ -120,7 +120,7 @@ namespace Libplanet.Consensus
 
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public byte[] ToByteArray() => _codec.Encode(Encoded);
+        public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <summary>
         /// Signs given <see cref="DominantLotMetadata"/> with given <paramref name="signer"/>.

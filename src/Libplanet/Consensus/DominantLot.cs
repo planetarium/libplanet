@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -52,8 +53,8 @@ namespace Libplanet.Consensus
             }
         }
 
-        public DominantLot(byte[] marshaled)
-            : this((Dictionary)_codec.Decode(marshaled))
+        public DominantLot(IReadOnlyList<byte> marshaled)
+            : this((Dictionary)_codec.Decode(marshaled.ToArray()))
         {
         }
 
@@ -92,17 +93,17 @@ namespace Libplanet.Consensus
         /// A Bencodex-encoded value of <see cref="DominantLot"/>.
         /// </summary>
         [JsonIgnore]
-        public Dictionary Encoded =>
+        public Dictionary Bencoded =>
             !Signature.IsEmpty
-                ? _dominantLotMetadata.Encoded.Add(SignatureKey, Signature)
-                : _dominantLotMetadata.Encoded;
+                ? _dominantLotMetadata.Bencoded.Add(SignatureKey, Signature)
+                : _dominantLotMetadata.Bencoded;
 
         /// <summary>
         /// <see cref="byte"/> encoded <see cref="DominantLot"/> data.
         /// </summary>
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public byte[] ToByteArray() => _codec.Encode(Encoded);
+        public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <inheritdoc/>
         [Pure]

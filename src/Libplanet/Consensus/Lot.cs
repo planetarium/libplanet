@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
-using Bencodex.Misc;
 using Bencodex.Types;
 using Libplanet.Crypto;
 
@@ -117,11 +116,9 @@ namespace Libplanet.Consensus
         {
             var dict = new Dictionary<string, object>
             {
-                { "proof", Proof.ByteArray.Hex() },
-                { "height", ConsensusInformation.Height },
-                { "round", ConsensusInformation.Round },
-                { "lastProof", ConsensusInformation.LastProof?.ByteArray.Hex() ?? "Empty" },
+                { "proof", Proof },
                 { "public_key", PublicKey.ToString() },
+                { "consensus_information", ConsensusInformation },
             };
             return JsonSerializer.Serialize(dict);
         }
