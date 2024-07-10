@@ -26,7 +26,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Run benchmark
-      run: dotnet run -p Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
+      run: dotnet run --project tools/Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
     - name: Store benchmark result
       uses: planetarium/github-action-benchmark@v1

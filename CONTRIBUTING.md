@@ -354,7 +354,7 @@ In order to track performance improvements or regressions, we maintain a set of
 benchmarks and continuously measure them in the CI.  You can run benchmarks
 on your local environment too:
 
-    dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"
+    dotnet run --project tools/Libplanet.Benchmarks -c Release -- -j short -f "*"
 
 Note that there is `-j short`; without this a whole set of benchmarks takes
 quite a long time.  This will print like below:
@@ -367,7 +367,7 @@ quite a long time.  This will print like below:
 
 You can measure only part of benchmarks by `-f`/`--filter`ing them:
 
-    dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*MineBlock*"
+    dotnet run --project tools/Libplanet.Benchmarks -c Release -- -j short-f "*MineBlock*"
 
 All benchmark code is placed under *Libplanet.Benchmarks* project.
 As our benchmarks are based on [BenchmarkDotNet], please read their official
