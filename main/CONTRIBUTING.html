@@ -309,7 +309,7 @@ support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom
 <p>In order to track performance improvements or regressions, we maintain a set of
 benchmarks and continuously measure them in the CI.  You can run benchmarks
 on your local environment too:</p>
-<pre><code>dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f &quot;*&quot;
+<pre><code>dotnet run --project tools/Libplanet.Benchmarks -c Release -- -j short -f &quot;*&quot;
 </code></pre>
 <p>Note that there is <code>-j short</code>; without this a whole set of benchmarks takes
 quite a long time.  This will print like below:</p>
@@ -320,7 +320,7 @@ quite a long time.  This will print like below:</p>
 |                  ... |          ... |       ... |        ... |       ... |
 </code></pre>
 <p>You can measure only part of benchmarks by <code>-f</code>/<code>--filter</code>ing them:</p>
-<pre><code>dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f &quot;*MineBlock*&quot;
+<pre><code>dotnet run --project tools/Libplanet.Benchmarks -c Release -- -j short-f &quot;*MineBlock*&quot;
 </code></pre>
 <p>All benchmark code is placed under <em>Libplanet.Benchmarks</em> project.
 As our benchmarks are based on <a href="https://benchmarkdotnet.org/">BenchmarkDotNet</a>, please read their official
