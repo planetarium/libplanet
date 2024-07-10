@@ -1,0 +1,7 @@
+{
+  "type_id": "Bar",
+  "value": {
+    "call": "HelloWorld",
+    "args": ["Alice", "1000"]
+  }
+}
