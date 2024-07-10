@@ -13,6 +13,7 @@ namespace Libplanet.Net
     {
         private readonly NullableSemaphore _transferBlocksSemaphore;
         private readonly NullableSemaphore _transferTxsSemaphore;
+        private readonly NullableSemaphore _transferEvidenceSemaphore;
 
         private Task ProcessMessageHandlerAsync(Message message)
         {
@@ -75,8 +76,19 @@ namespace Libplanet.Net
                 case GetTxsMsg getTxs:
                     return TransferTxsAsync(message);
 
+                case GetEvidenceMsg getTxs:
+                    return TransferEvidenceAsync(message);
+
                 case TxIdsMsg txIds:
                     ProcessTxIds(message);
+                    return Transport.ReplyMessageAsync(
+                        new PongMsg(),
+                        message.Identity,
+                        default
+                    );
+
+                case EvidenceIdsMsg evidenceIds:
+                    ProcessEvidenceIds(message);
                     return Transport.ReplyMessageAsync(
                         new PongMsg(),
                         message.Identity,

@@ -12,6 +12,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using LruCacheNet;
 using RocksDbSharp;
@@ -96,6 +97,8 @@ namespace Libplanet.RocksDBStore
         private const string StatesKvPathDefault = "states";
         private const string BlockCommitDbName = "blockcommit";
         private const string NextStateRootHashDbName = "nextstateroothash";
+        private const string PendingEvidenceDbName = "evidencep";
+        private const string CommittedEvidenceDbName = "evidencec";
         private const int ForkWriteBatchSize = 100000;
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
@@ -114,6 +117,8 @@ namespace Libplanet.RocksDBStore
         private static readonly byte[] ChainBlockCommitKeyPrefix = { (byte)'M' };
         private static readonly byte[] BlockCommitKeyPrefix = { (byte)'m' };
         private static readonly byte[] NextStateRootHashKeyPrefix = { (byte)'s' };
+        private static readonly byte[] PendingEvidenceKeyPrefix = { (byte)'v' };
+        private static readonly byte[] CommittedEvidenceKeyPrefix = { (byte)'V' };
 
         private static readonly Codec Codec = new Codec();
 
@@ -121,6 +126,7 @@ namespace Libplanet.RocksDBStore
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
+        private readonly LruCache<EvidenceId, EvidenceBase> _evidenceCache;
 
         private readonly DbOptions _options;
         private readonly ColumnFamilyOptions _colOptions;
@@ -139,11 +145,14 @@ namespace Libplanet.RocksDBStore
         private readonly RocksDb _chainDb;
         private readonly RocksDb _blockCommitDb;
         private readonly RocksDb _nextStateRootHashDb;
+        private readonly RocksDb _pendingEvidenceDb;
+        private readonly RocksDb _committedEvidenceDb;
 
         private readonly ReaderWriterLockSlim _rwTxLock;
         private readonly ReaderWriterLockSlim _rwBlockLock;
         private readonly ReaderWriterLockSlim _rwBlockCommitLock;
         private readonly ReaderWriterLockSlim _rwNextStateRootHashLock;
+        private readonly ReaderWriterLockSlim _rwEvidenceLock;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
         private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
@@ -155,6 +164,7 @@ namespace Libplanet.RocksDBStore
         /// </param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
+        /// <param name="evidenceCacheSize">The capacity of the evidence cache.</param>
         /// <param name="maxTotalWalSize">The number to configure <c>max_total_wal_size</c> RocksDB
         /// option.</param>
         /// <param name="keepLogFileNum">The number to configure <c>keep_log_file_num</c> RocksDB
@@ -173,6 +183,7 @@ namespace Libplanet.RocksDBStore
             string path,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
+            int evidenceCacheSize = 1024,
             ulong? maxTotalWalSize = null,
             ulong? keepLogFileNum = null,
             ulong? maxLogFileSize = null,
@@ -198,6 +209,7 @@ namespace Libplanet.RocksDBStore
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
+            _evidenceCache = new LruCache<EvidenceId, EvidenceBase>(capacity: evidenceCacheSize);
             _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
 
             _path = path;
@@ -253,6 +265,10 @@ namespace Libplanet.RocksDBStore
             _nextStateRootHashDb =
                 RocksDBUtils.OpenRocksDb(
                     _options, RocksDbPath(NextStateRootHashDbName), type: _instanceType);
+            _pendingEvidenceDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(PendingEvidenceDbName));
+            _committedEvidenceDb =
+                RocksDBUtils.OpenRocksDb(_options, RocksDbPath(CommittedEvidenceDbName));
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
@@ -265,6 +281,7 @@ namespace Libplanet.RocksDBStore
             _rwBlockCommitLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwNextStateRootHashLock =
                 new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            _rwEvidenceLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _blockDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _blockDbCache.SetPreRemoveDataMethod(db =>
@@ -1102,6 +1119,8 @@ namespace Libplanet.RocksDBStore
                     _txDbCache.Clear();
                     _blockCommitDb?.Dispose();
                     _nextStateRootHashDb?.Dispose();
+                    _pendingEvidenceDb?.Dispose();
+                    _committedEvidenceDb?.Dispose();
 
                     foreach (var db in _blockDbCache.Values)
                     {
@@ -1454,12 +1473,221 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc/>
+        public override IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+        {
+            foreach (Iterator it in IterateDb(_pendingEvidenceDb, PendingEvidenceKeyPrefix))
+            {
+                byte[] key = it.Key();
+                byte[] idBytes = key.Skip(PendingEvidenceKeyPrefix.Length).ToArray();
+                yield return new EvidenceId(idBytes);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override EvidenceBase? GetPendingEvidence(EvidenceId evidenceId)
+        {
+            _rwEvidenceLock.EnterReadLock();
+
+            try
+            {
+                byte[] key = PendingEvidenceKey(evidenceId);
+                byte[] bytes = _pendingEvidenceDb.Get(key);
+                if (bytes is null)
+                {
+                    return null;
+                }
+
+                return EvidenceBase.Decode(Codec.Decode(bytes));
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetPendingEvidence), e);
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitReadLock();
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public override void PutPendingEvidence(EvidenceBase evidence)
+        {
+            if (_evidenceCache.ContainsKey(evidence.Id))
+            {
+                return;
+            }
+
+            byte[] key = PendingEvidenceKey(evidence.Id);
+
+            if (_pendingEvidenceDb.Get(key) is { })
+            {
+                return;
+            }
+
+            _rwEvidenceLock.EnterWriteLock();
+            try
+            {
+                byte[] value = Codec.Encode(EvidenceBase.Bencode(evidence));
+                _pendingEvidenceDb.Put(key, value);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutPendingEvidence), e);
+                throw;
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void DeletePendingEvidence(EvidenceId evidenceId)
+        {
+            byte[] key = PendingEvidenceKey(evidenceId);
+
+            if (!(_pendingEvidenceDb.Get(key) is { }))
+            {
+                return;
+            }
+
+            _rwEvidenceLock.EnterWriteLock();
+            try
+            {
+                _pendingEvidenceDb.Remove(key);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeletePendingEvidence), e);
+                throw;
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool ContainsPendingEvidence(EvidenceId evidenceId)
+        {
+            return _pendingEvidenceDb.Get(PendingEvidenceKey(evidenceId)) is { };
+        }
+
+        /// <inheritdoc/>
+        public override EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId)
+        {
+            if (_evidenceCache.TryGetValue(evidenceId, out EvidenceBase cachedEvidence))
+            {
+                return cachedEvidence;
+            }
+
+            _rwEvidenceLock.EnterReadLock();
+
+            try
+            {
+                byte[] key = CommittedEvidenceKey(evidenceId);
+                byte[] bytes = _committedEvidenceDb.Get(key);
+                if (bytes is null)
+                {
+                    return null;
+                }
+
+                return EvidenceBase.Decode(Codec.Decode(bytes));
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(GetCommittedEvidence), e);
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitReadLock();
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public override void PutCommittedEvidence(EvidenceBase evidence)
+        {
+            if (_evidenceCache.ContainsKey(evidence.Id))
+            {
+                return;
+            }
+
+            byte[] key = CommittedEvidenceKey(evidence.Id);
+
+            if (_committedEvidenceDb.Get(key) is { })
+            {
+                return;
+            }
+
+            _rwEvidenceLock.EnterWriteLock();
+            try
+            {
+                byte[] value = Codec.Encode(EvidenceBase.Bencode(evidence));
+                _committedEvidenceDb.Put(key, value);
+                _evidenceCache.AddOrUpdate(evidence.Id, evidence);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutCommittedEvidence), e);
+                throw;
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void DeleteCommittedEvidence(EvidenceId evidenceId)
+        {
+            _evidenceCache.Remove(evidenceId);
+
+            byte[] key = CommittedEvidenceKey(evidenceId);
+
+            if (!(_committedEvidenceDb.Get(key) is { }))
+            {
+                return;
+            }
+
+            _rwEvidenceLock.EnterWriteLock();
+            try
+            {
+                _committedEvidenceDb.Remove(key);
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(DeletePendingEvidence), e);
+                throw;
+            }
+            finally
+            {
+                _rwEvidenceLock.ExitWriteLock();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool ContainsCommittedEvidence(EvidenceId evidenceId)
+        {
+            if (_evidenceCache.ContainsKey(evidenceId))
+            {
+                return true;
+            }
+
+            return _committedEvidenceDb.Get(CommittedEvidenceKey(evidenceId)) is { };
+        }
+
         [StoreLoader("rocksdb+file")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
             int blockCacheSize = query.GetInt32("block-cache", 512);
             int txCacheSize = query.GetInt32("tx-cache", 1024);
+            int evidenceCacheSize = query.GetInt32("evidence-cache", 1024);
             ulong? maxTotalWalSize = query.GetUInt64("max-total-wal-size");
             ulong? keepLogFileNum = query.GetUInt64("keep-log-file-num");
             ulong? maxLogFileSize = query.GetUInt64("max-log-file-size");
@@ -1474,6 +1702,7 @@ namespace Libplanet.RocksDBStore
                 storeUri.LocalPath,
                 blockCacheSize,
                 txCacheSize,
+                evidenceCacheSize,
                 maxTotalWalSize,
                 keepLogFileNum,
                 maxLogFileSize,
@@ -1600,6 +1829,12 @@ namespace Libplanet.RocksDBStore
             third.CopyTo(result, first.Length + second.Length);
             return result;
         }
+
+        private static byte[] PendingEvidenceKey(in EvidenceId evidenceId) =>
+            PendingEvidenceKeyPrefix.Concat(evidenceId.ByteArray).ToArray();
+
+        private static byte[] CommittedEvidenceKey(in EvidenceId evidenceId) =>
+            CommittedEvidenceKeyPrefix.Concat(evidenceId.ByteArray).ToArray();
 
         private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {

@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Libplanet.Common;
 using Libplanet.Common.JsonConverters;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -29,6 +30,7 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         /// <param name="header">The block header.</param>
         /// <param name="transactions">The transactions to include.</param>
+        /// <param name="evidence">The evidence to include.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="header"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -50,9 +52,12 @@ namespace Libplanet.Types.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="header"/> has an invalid
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
-        public Block(IBlockHeader header, IEnumerable<Transaction> transactions)
+        public Block(
+            IBlockHeader header,
+            IEnumerable<Transaction> transactions,
+            IEnumerable<EvidenceBase> evidence)
             : this(
-                new PreEvaluationBlock(header, transactions),
+                new PreEvaluationBlock(header, transactions, evidence),
                 (header.StateRootHash, header.Signature, header.Hash))
         {
         }
@@ -122,6 +127,12 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlock.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public HashDigest<SHA256>? EvidenceHash => _preEvaluationBlock.EvidenceHash;
+
+        /// <inheritdoc cref="IBlockContent.Evidence"/>
+        public IReadOnlyList<EvidenceBase> Evidence => _preEvaluationBlock.Evidence;
 
         /// <inheritdoc cref="IBlockContent.Transactions"/>
         public IReadOnlyList<Transaction> Transactions => _preEvaluationBlock.Transactions;

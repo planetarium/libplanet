@@ -10,6 +10,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Blockchain
@@ -60,8 +61,10 @@ namespace Libplanet.Blockchain
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
-                    lastCommit: null),
-                transactions: transactions);
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: transactions,
+                evidence: Array.Empty<EvidenceBase>());
 
             PreEvaluationBlock preEval = content.Propose();
             stateRootHash ??= MerkleTrie.EmptyRootHash;
@@ -81,6 +84,8 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="evidence">The pending <see cref="EvidenceBase"/>s to be committed on the
+        /// <see cref="Block"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
@@ -89,6 +94,7 @@ namespace Libplanet.Blockchain
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
+            ImmutableArray<EvidenceBase>? evidence = null,
             IComparer<Transaction> txPriority = null)
         {
             long index = Count;
@@ -109,7 +115,8 @@ namespace Libplanet.Blockchain
             var block = ProposeBlock(
                 proposer,
                 transactions,
-                lastCommit);
+                lastCommit,
+                evidence ?? ImmutableArray<EvidenceBase>.Empty);
             _logger.Debug(
                 "Proposed block #{Index} {Hash} with previous hash {PreviousHash}",
                 block.Index,
@@ -125,7 +132,8 @@ namespace Libplanet.Blockchain
         /// list of <see cref="Transaction"/>s.
         /// </para>
         /// <para>
-        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, IComparer{Transaction})"/>,
+        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, ImmutableArray{EvidenceBase}?,
+        /// IComparer{Transaction})"/>,
         /// this may result in a <see cref="Block"/> that does not conform to the
         /// <see cref="Policy"/>.
         /// </para>
@@ -135,11 +143,13 @@ namespace Libplanet.Blockchain
         /// <param name="transactions">The list of <see cref="Transaction"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="evidence">The <see cref="EvidenceBase"/>s to be committed.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
         internal Block ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
-            BlockCommit lastCommit)
+            BlockCommit lastCommit,
+            ImmutableArray<EvidenceBase> evidence)
         {
             long index = Count;
             BlockHash prevHash = Store.IndexBlockHash(Id, index - 1)
@@ -153,6 +163,7 @@ namespace Libplanet.Blockchain
             // FIXME: Should use automated public constructor.
             // Manual internal constructor is used purely for testing custom timestamps.
             var orderedTransactions = transactions.OrderBy(tx => tx.Id).ToList();
+            var orderedEvidence = evidence.OrderBy(e => e.Id).ToList();
             var blockContent = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
@@ -162,8 +173,10 @@ namespace Libplanet.Blockchain
                     publicKey: proposer.PublicKey,
                     previousHash: prevHash,
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),
-                    lastCommit: lastCommit),
-                transactions: orderedTransactions);
+                    lastCommit: lastCommit,
+                    evidenceHash: BlockContent.DeriveEvidenceHash(orderedEvidence)),
+                transactions: orderedTransactions,
+                evidence: orderedEvidence);
             var preEval = blockContent.Propose();
             return ProposeBlock(proposer, preEval, stateRootHash);
         }

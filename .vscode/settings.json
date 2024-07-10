@@ -46,6 +46,7 @@
     "unrenders",
     "upstream's"
   ],
+  "cSpell.enabled": false,
   "dotnet-test-explorer.autoExpandTree": true,
   "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",

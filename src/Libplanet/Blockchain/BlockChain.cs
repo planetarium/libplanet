@@ -18,6 +18,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Serilog;
 
@@ -398,7 +399,7 @@ namespace Libplanet.Blockchain
             if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 var preEval = new PreEvaluationBlock(
-                    genesisBlock.Header, genesisBlock.Transactions);
+                    genesisBlock.Header, genesisBlock.Transactions, genesisBlock.Evidence);
                 var computedStateRootHash =
                     actionEvaluator.Evaluate(preEval, null).Last().OutputState;
                 if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
@@ -989,8 +990,26 @@ namespace Libplanet.Blockchain
                         Store.PutChainBlockCommit(Id, blockCommit);
                     }
 
+                    foreach (var ev in block.Evidence)
+                    {
+                        if (Store.GetPendingEvidence(ev.Id) != null)
+                        {
+                            Store.DeletePendingEvidence(ev.Id);
+                        }
+
+                        Store.PutCommittedEvidence(ev);
+                    }
+
                     Store.AppendIndex(Id, block.Hash);
                     _nextStateRootHash = null;
+
+                    foreach (var ev in GetPendingEvidence().ToArray())
+                    {
+                        if (IsEvidenceExpired(ev))
+                        {
+                            Store.DeletePendingEvidence(ev.Id);
+                        }
+                    }
                 }
                 finally
                 {
@@ -1181,11 +1200,29 @@ namespace Libplanet.Blockchain
                         Store.PutChainBlockCommit(Id, blockCommit);
                     }
 
+                    foreach (var evidence in block.Evidence)
+                    {
+                        if (Store.GetPendingEvidence(evidence.Id) != null)
+                        {
+                            Store.DeletePendingEvidence(evidence.Id);
+                        }
+
+                        Store.PutCommittedEvidence(evidence);
+                    }
+
                     Store.AppendIndex(Id, block.Hash);
                     _nextStateRootHash = block.StateRootHash;
                     IEnumerable<TxExecution> txExecutions =
                         MakeTxExecutions(block, actionEvaluations);
                     UpdateTxExecutions(txExecutions);
+
+                    foreach (var evidence in GetPendingEvidence().ToArray())
+                    {
+                        if (IsEvidenceExpired(evidence))
+                        {
+                            Store.DeletePendingEvidence(evidence.Id);
+                        }
+                    }
                 }
                 finally
                 {
@@ -1417,6 +1454,25 @@ namespace Libplanet.Blockchain
 
         internal HashDigest<SHA256>? GetNextStateRootHash(BlockHash blockHash) =>
             GetNextStateRootHash(this[blockHash]);
+
+        internal ValidatorSet GetValidatorSet(long index)
+        {
+            if (index == 0)
+            {
+                return GetNextWorldState().GetValidatorSet();
+            }
+
+            if (GetBlockCommit(index) is { } commit)
+            {
+                var validatorList = commit.Votes.Select(CreateValidator).ToList();
+                return new ValidatorSet(validatorList);
+            }
+
+            throw new ArgumentException("Cannot find a validator set for the given index.");
+
+            static Validator CreateValidator(Vote vote)
+                => new Validator(vote.ValidatorPublicKey, vote.ValidatorPower ?? 0);
+        }
 
         private HashDigest<SHA256>? GetNextStateRootHash(Block block)
         {

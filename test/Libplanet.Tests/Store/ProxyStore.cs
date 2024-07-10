@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Tests.Store
@@ -189,5 +190,32 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.GetBlockCommitHashes"/>
         public IEnumerable<BlockHash> GetBlockCommitHashes() =>
             Store.GetBlockCommitHashes();
+
+        public IEnumerable<EvidenceId> IteratePendingEvidenceIds() =>
+            Store.IteratePendingEvidenceIds();
+
+        public EvidenceBase GetPendingEvidence(EvidenceId evidenceId) =>
+            Store.GetPendingEvidence(evidenceId);
+
+        public EvidenceBase GetCommittedEvidence(EvidenceId evidenceId) =>
+            Store.GetCommittedEvidence(evidenceId);
+
+        public void PutPendingEvidence(EvidenceBase evidence) =>
+            Store.PutPendingEvidence(evidence);
+
+        public void PutCommittedEvidence(EvidenceBase evidence) =>
+            Store.PutCommittedEvidence(evidence);
+
+        public void DeletePendingEvidence(EvidenceId evidenceId) =>
+            Store.DeletePendingEvidence(evidenceId);
+
+        public void DeleteCommittedEvidence(EvidenceId evidenceId) =>
+            Store.DeleteCommittedEvidence(evidenceId);
+
+        public bool ContainsPendingEvidence(EvidenceId evidenceId) =>
+            Store.ContainsPendingEvidence(evidenceId);
+
+        public bool ContainsCommittedEvidence(EvidenceId evidenceId) =>
+            Store.ContainsCommittedEvidence(evidenceId);
     }
 }

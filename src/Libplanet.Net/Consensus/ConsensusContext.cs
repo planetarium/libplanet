@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action.State;
@@ -9,6 +10,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
+using Libplanet.Types.Evidence;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -37,8 +39,10 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly HashSet<ConsensusMsg> _pendingMessages;
-        private Context _currentContext;
+        private readonly EvidenceExceptionCollector _evidenceCollector
+            = new EvidenceExceptionCollector();
 
+        private Context _currentContext;
         private CancellationTokenSource? _newHeightCts;
 
         /// <summary>
@@ -446,6 +450,8 @@ namespace Libplanet.Net.Consensus
                     {
                         try
                         {
+                            HandleEvidenceExceptions();
+                            AddEvidenceToBlockChain(e.NewTip);
                             NewHeight(e.NewTip.Index + 1);
                         }
                         catch (Exception exc)
@@ -494,6 +500,36 @@ namespace Libplanet.Net.Consensus
                 validatorSet,
                 contextTimeoutOptions: _contextTimeoutOption);
             return context;
+        }
+
+        private void HandleEvidenceExceptions()
+        {
+            var evidenceExceptions = _currentContext.CollectEvidenceExceptions();
+            _evidenceCollector.AddRange(evidenceExceptions);
+        }
+
+        private void AddEvidenceToBlockChain(Block tip)
+        {
+            var height = tip.Index;
+            var evidenceExceptions
+                = _evidenceCollector.Flush().Where(item => item.Height <= height).ToArray();
+            foreach (var evidenceException in evidenceExceptions)
+            {
+                try
+                {
+                    var validatorSet = _blockChain.GetValidatorSet(evidenceException.Height);
+                    var evidenceContext = new EvidenceContext(validatorSet);
+                    var evidence = evidenceException.CreateEvidence(evidenceContext);
+                    _blockChain.AddEvidence(evidence);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        exception: e,
+                        messageTemplate: "Unexpected exception occurred during {FName}()",
+                        propertyValue: nameof(BlockChain.AddEvidence));
+                }
+            }
         }
     }
 }

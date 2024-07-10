@@ -6,6 +6,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Xunit;
 using Xunit.Abstractions;
@@ -25,14 +26,33 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CopyConstructors()
         {
-            var block1 = new BlockContent(Block1Metadata, Block1Content.Transactions);
+            var block1 = new BlockContent(
+                Block1Metadata, Block1Content.Transactions, Block1Content.Evidence);
             AssertBlockContentsEqual(Block1Content, block1);
 
             Assert.Throws<InvalidBlockTxHashException>(() =>
-                new BlockContent(Block1Metadata, Array.Empty<Transaction>())
+                new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: Array.Empty<Transaction>(),
+                    evidence: Array.Empty<EvidenceBase>())
             );
             Assert.Throws<InvalidBlockTxHashException>(
-                () => new BlockContent(Block1Metadata, new[] { Block1Tx0 })
+                () => new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: new[] { Block1Tx0 },
+                    evidence: Array.Empty<EvidenceBase>())
+            );
+            Assert.Throws<InvalidBlockEvidenceHashException>(() =>
+                new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: Block1Content.Transactions,
+                    evidence: Array.Empty<EvidenceBase>())
+            );
+            Assert.Throws<InvalidBlockEvidenceHashException>(
+                () => new BlockContent(
+                    metadata: Block1Metadata,
+                    transactions: Block1Content.Transactions,
+                    evidence: Array.Empty<EvidenceBase>())
             );
         }
 
@@ -57,6 +77,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
             var txs = new[] { tx2, Block1Tx0, Block1Tx1 }.OrderBy(tx => tx.Id).ToImmutableList();
+            var evs = Array.Empty<EvidenceBase>();
             var blockContent = new BlockContent(
                 new BlockMetadata(
                     index: Block1Content.Index,
@@ -64,8 +85,10 @@ namespace Libplanet.Tests.Blocks
                     publicKey: Block1Content.PublicKey,
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent.DeriveTxHash(txs),
-                    lastCommit: null),
-                transactions: txs);
+                    lastCommit: null,
+                    evidenceHash: null),
+                transactions: txs,
+                evidence: evs);
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
                 blockContent.Transactions.Select(tx => tx.Id).ToArray());
@@ -91,6 +114,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
             var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
+            var evs = Array.Empty<EvidenceBase>();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => new BlockContent(
                     new BlockMetadata(
@@ -99,8 +123,10 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
-                        lastCommit: null),
-                    transactions: txs));
+                        lastCommit: null,
+                        evidenceHash: null),
+                    transactions: txs,
+                    evidence: evs));
             Assert.Equal(Block1Tx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
             Assert.Equal(Block1Tx1.Nonce, e.ImproperNonce);
@@ -126,6 +152,7 @@ namespace Libplanet.Tests.Blocks
                 )
             );
             var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
+            var evs = Array.Empty<EvidenceBase>();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => new BlockContent(
                     new BlockMetadata(
@@ -134,8 +161,10 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(txs),
-                        lastCommit: null),
-                    transactions: txs));
+                        lastCommit: null,
+                        evidenceHash: null),
+                    transactions: txs,
+                    evidence: evs));
             Assert.Equal(dupTx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
             Assert.Equal(dupTx1.Nonce, e.ImproperNonce);
@@ -164,6 +193,7 @@ namespace Libplanet.Tests.Blocks
             );
             Transaction[] inconsistentTxs =
                 Block1Content.Transactions.Append(txWithDifferentGenesis).ToArray();
+            var evs = Array.Empty<EvidenceBase>();
             InvalidTxGenesisHashException e = Assert.Throws<InvalidTxGenesisHashException>(
                 () => new BlockContent(
                     new BlockMetadata(
@@ -172,8 +202,10 @@ namespace Libplanet.Tests.Blocks
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent.DeriveTxHash(inconsistentTxs),
-                        lastCommit: null),
-                    transactions: inconsistentTxs));
+                        lastCommit: null,
+                        evidenceHash: null),
+                    transactions: inconsistentTxs,
+                    evidence: evs));
             Assert.Equal(Block1Content.Transactions[0].GenesisHash, e.ExpectedGenesisHash);
             Assert.Equal(differentGenesisHash, e.ImproperGenesisHash);
         }

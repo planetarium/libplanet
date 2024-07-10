@@ -89,6 +89,9 @@ namespace Libplanet.Net
 
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer>(BlockChain, GetTxsAsync, BroadcastTxs);
+            EvidenceCompletion =
+                new EvidenceCompletion<BoundPeer>(
+                    BlockChain, GetEvidenceAsync, BroadcastEvidence);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
 
             // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
@@ -107,6 +110,8 @@ namespace Libplanet.Net
             _transferBlocksSemaphore =
                 new NullableSemaphore(taskRegulationOptions.MaxTransferBlocksTaskCount);
             _transferTxsSemaphore =
+                new NullableSemaphore(taskRegulationOptions.MaxTransferTxsTaskCount);
+            _transferEvidenceSemaphore =
                 new NullableSemaphore(taskRegulationOptions.MaxTransferTxsTaskCount);
 
             // Initialize consensus reactor.
@@ -183,7 +188,11 @@ namespace Libplanet.Net
 
         internal TxCompletion<BoundPeer> TxCompletion { get; }
 
+        internal EvidenceCompletion<BoundPeer> EvidenceCompletion { get; }
+
         internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
+
+        internal AsyncAutoResetEvent EvidenceReceived => EvidenceCompletion?.EvidenceReceived;
 
         internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
@@ -351,6 +360,7 @@ namespace Libplanet.Net
                         Options.RefreshLifespan,
                         _cancellationToken),
                     () => RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken),
+                    () => BroadcastEvidenceAsync(broadcastTxInterval, _cancellationToken),
                 };
 
                 if (_consensusReactor is { })

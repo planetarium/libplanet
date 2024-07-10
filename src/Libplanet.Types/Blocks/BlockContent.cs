@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -16,8 +17,9 @@ namespace Libplanet.Types.Blocks
     /// <see cref="Transaction"/>, this type is mutable.</remarks>
     public sealed class BlockContent : IBlockContent
     {
-        private BlockMetadata _blockMetadata;
-        private IReadOnlyList<Transaction> _transactions;
+        private readonly BlockMetadata _blockMetadata;
+        private readonly IReadOnlyList<Transaction> _transactions;
+        private readonly IReadOnlyList<EvidenceBase> _evidence;
 
         /// <summary>
         /// Creates a new <see cref="BlockContent"/> instance filled with given
@@ -31,6 +33,7 @@ namespace Libplanet.Types.Blocks
         /// </remarks>
         /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
         /// <param name="transactions">The transactions to include in the block.</param>
+        /// <param name="evidence">The evidence to include in the block.</param>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -44,8 +47,11 @@ namespace Libplanet.Types.Blocks
         /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
         /// <seealso cref="BlockMetadata"/>
-        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction> transactions)
-            : this(new BlockMetadata(metadata), transactions)
+        public BlockContent(
+            IBlockMetadata metadata,
+            IEnumerable<Transaction> transactions,
+            IEnumerable<EvidenceBase> evidence)
+            : this(new BlockMetadata(metadata), transactions, evidence)
         {
         }
 
@@ -59,7 +65,7 @@ namespace Libplanet.Types.Blocks
         /// <see lagnword="null"/>.</exception>
         public BlockContent(
             BlockMetadata metadata)
-            : this(metadata, new List<Transaction>())
+            : this(metadata, new List<Transaction>(), new List<EvidenceBase>())
         {
         }
 
@@ -69,6 +75,7 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
         /// <param name="transactions">The transactions to include in the block.</param>
+        /// <param name="evidence">The evidence to include in the block.</param>
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
         /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
@@ -85,7 +92,8 @@ namespace Libplanet.Types.Blocks
         /// not ordered by <see cref="Transaction.Id"/>s.</exception>
         public BlockContent(
             BlockMetadata metadata,
-            IEnumerable<Transaction> transactions)
+            IEnumerable<Transaction> transactions,
+            IEnumerable<EvidenceBase> evidence)
         {
             // Check if TxHash provided by metadata is valid.
             HashDigest<SHA256>? derivedTxHash = DeriveTxHash(transactions);
@@ -113,8 +121,11 @@ namespace Libplanet.Types.Blocks
                 prevId = tx.Id;
             }
 
+            ValidateEvidence(metadata, evidence);
+
             _blockMetadata = metadata;
             _transactions = transactions.ToImmutableList();
+            _evidence = evidence.ToImmutableList();
         }
 
         /// <summary>
@@ -145,6 +156,12 @@ namespace Libplanet.Types.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _blockMetadata.LastCommit;
+
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public HashDigest<SHA256>? EvidenceHash => _blockMetadata.EvidenceHash;
+
+        /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
+        public IReadOnlyList<EvidenceBase> Evidence => _evidence;
 
         /// <summary>
         /// Transactions belonging to the block.
@@ -199,9 +216,76 @@ namespace Libplanet.Types.Blocks
             return null;
         }
 
+        public static HashDigest<SHA256>? DeriveEvidenceHash(IEnumerable<EvidenceBase> evidence)
+        {
+            EvidenceId? prevId = null;
+            SHA256 hasher = SHA256.Create();
+
+            // Bencodex lists look like: l...e
+            hasher.TransformBlock(new byte[] { 0x6c }, 0, 1, null, 0);  // "l"
+            foreach (EvidenceBase ev in evidence)
+            {
+                if (prevId is { } prev && prev.CompareTo(ev.Id) > 0)
+                {
+                    throw new ArgumentException(
+                        $"Transactions must be ordered by their {nameof(Transaction.Id)}s.",
+                        nameof(evidence)
+                    );
+                }
+
+                byte[] payload = ev.Serialize();
+                hasher.TransformBlock(payload, 0, payload.Length, null, 0);
+                prevId = ev.Id;
+            }
+
+            if (prevId is null)
+            {
+                return null;
+            }
+
+            hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
+            if (hasher.Hash is { } hash)
+            {
+                return new HashDigest<SHA256>(hash);
+            }
+
+            return null;
+        }
+
         public PreEvaluationBlock Propose() =>
             new PreEvaluationBlock(
                 this,
                 _blockMetadata.DerivePreEvaluationHash());
+
+        private static void ValidateEvidence(
+            BlockMetadata metadata,
+            IEnumerable<EvidenceBase> evidence)
+        {
+            // Check if EvidenceHash provided by metadata is valid.
+            HashDigest<SHA256>? evidenceHash = metadata.EvidenceHash;
+            HashDigest<SHA256>? derivedEvidenceHash = DeriveEvidenceHash(evidence);
+            if (!((evidenceHash is { } e1 && derivedEvidenceHash is { } e2 && e1.Equals(e2)) ||
+                (evidenceHash is null && derivedEvidenceHash is null)))
+            {
+                throw new InvalidBlockEvidenceHashException(
+                    $"The block #{metadata.Index}'s {nameof(metadata.EvidenceHash)} is invalid.",
+                    metadata.EvidenceHash,
+                    derivedEvidenceHash);
+            }
+
+            // Check if transactions are ordered with valid nonces.
+            EvidenceId? evidenceId = null;
+            foreach (EvidenceBase ev in evidence)
+            {
+                if (evidenceId is { } prev && prev.CompareTo(ev.Id) > 0)
+                {
+                    throw new ArgumentException(
+                        $"Evidence must be ordered by their {nameof(EvidenceBase.Id)}s.",
+                        nameof(ev));
+                }
+
+                evidenceId = ev.Id;
+            }
+        }
     }
 }

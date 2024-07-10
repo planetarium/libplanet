@@ -12,6 +12,7 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using LiteDB;
 using LruCacheNet;
@@ -39,34 +40,37 @@ namespace Libplanet.Store
     /// <item>
     /// <term><c>journal</c></term>
     /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>journal</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>index-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>indexCacheSize</c> parameter.  50000 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>block-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>blockCacheSize</c> parameter.  512 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>tx-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>txCacheSize</c> parameter.  1024 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>flush</c></term>
     /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>flush</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
     /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
     /// <item>
@@ -91,6 +95,8 @@ namespace Libplanet.Store
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
         private static readonly UPath BlockCommitRootPath = UPath.Root / "blockcommit";
         private static readonly UPath NextStateRootHashRootPath = UPath.Root / "nextstateroothash";
+        private static readonly UPath PendingEvidenceRootPath = UPath.Root / "evidencep";
+        private static readonly UPath CommittedEvidenceRootPath = UPath.Root / "evidencec";
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -103,8 +109,11 @@ namespace Libplanet.Store
         private readonly SubFileSystem _blockPerceptions;
         private readonly SubFileSystem _blockCommits;
         private readonly SubFileSystem _nextStateRootHashes;
+        private readonly SubFileSystem _pendingEvidence;
+        private readonly SubFileSystem _committedEvidence;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
+        private readonly LruCache<EvidenceId, EvidenceBase> _evidenceCache;
 
         private readonly LiteDatabase _db;
 
@@ -121,6 +130,7 @@ namespace Libplanet.Store
         /// <param name="indexCacheSize">Max number of pages in the index cache.</param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
+        /// <param name="evidenceCacheSize">The capacity of the evidence cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
@@ -130,6 +140,7 @@ namespace Libplanet.Store
             int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
+            int evidenceCacheSize = 1024,
             bool flush = true,
             bool readOnly = false
         )
@@ -196,6 +207,9 @@ namespace Libplanet.Store
                 _db.Mapper.RegisterType(
                     commit => Codec.Encode(commit.Bencoded),
                     b => new BlockCommit(Codec.Decode(b)));
+                _db.Mapper.RegisterType(
+                    evidence => Codec.Encode(evidence.Bencoded),
+                    b => new EvidenceId(Codec.Decode(b)));
             }
 
             _root.CreateDirectory(TxRootPath);
@@ -213,9 +227,15 @@ namespace Libplanet.Store
             _root.CreateDirectory(NextStateRootHashRootPath);
             _nextStateRootHashes =
                 new SubFileSystem(_root, NextStateRootHashRootPath, owned: false);
+            _root.CreateDirectory(PendingEvidenceRootPath);
+            _pendingEvidence = new SubFileSystem(_root, PendingEvidenceRootPath, owned: false);
+            _root.CreateDirectory(CommittedEvidenceRootPath);
+            _committedEvidence = new SubFileSystem(_root, CommittedEvidenceRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
+            _evidenceCache = new LruCache<EvidenceId, EvidenceBase>(
+                capacity: evidenceCacheSize);
         }
 
         /// <inheritdoc/>
@@ -770,6 +790,175 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override IEnumerable<EvidenceId> IteratePendingEvidenceIds()
+        {
+            foreach (UPath path in _pendingEvidence.EnumerateFiles(UPath.Root))
+            {
+                EvidenceId evidenceId;
+                try
+                {
+                    var name = path.FullName.Split('/').LastOrDefault() ?? string.Empty;
+                    evidenceId = EvidenceId.Parse(name);
+                }
+                catch (Exception)
+                {
+                    // Skip if a filename does not match to the format.
+                    continue;
+                }
+
+                yield return evidenceId;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override EvidenceBase? GetPendingEvidence(EvidenceId evidenceId)
+        {
+            UPath path = PendingEvidencePath(evidenceId);
+            if (!_pendingEvidence.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
+            try
+            {
+                bytes = _pendingEvidence.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            try
+            {
+                EvidenceBase evidence = EvidenceBase.Decode(Codec.Decode(bytes));
+                return evidence;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PutPendingEvidence(EvidenceBase evidence)
+        {
+            if (_evidenceCache.ContainsKey(evidence.Id))
+            {
+                return;
+            }
+
+            if (_pendingEvidence.FileExists(PendingEvidencePath(evidence.Id)))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(
+                _pendingEvidence,
+                PendingEvidencePath(evidence.Id),
+                Codec.Encode(EvidenceBase.Bencode(evidence)));
+        }
+
+        /// <inheritdoc/>
+        public override void DeletePendingEvidence(EvidenceId evidenceId)
+        {
+            UPath path = PendingEvidencePath(evidenceId);
+            if (!_pendingEvidence.FileExists(path))
+            {
+                return;
+            }
+
+            _pendingEvidence.DeleteFile(path);
+        }
+
+        /// <inheritdoc/>
+        public override bool ContainsPendingEvidence(EvidenceId evidenceId)
+        {
+            return _pendingEvidence.FileExists(PendingEvidencePath(evidenceId));
+        }
+
+        /// <inheritdoc/>
+        public override EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId)
+        {
+            if (_evidenceCache.TryGetValue(evidenceId, out EvidenceBase cachedEvidence))
+            {
+                return cachedEvidence;
+            }
+
+            UPath path = CommittedEvidencePath(evidenceId);
+            if (!_committedEvidence.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
+            try
+            {
+                bytes = _committedEvidence.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            try
+            {
+                EvidenceBase evidence = EvidenceBase.Decode(Codec.Decode(bytes));
+                return evidence;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PutCommittedEvidence(EvidenceBase evidence)
+        {
+            if (_evidenceCache.ContainsKey(evidence.Id))
+            {
+                return;
+            }
+
+            if (_committedEvidence.FileExists(CommittedEvidencePath(evidence.Id)))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(
+                _committedEvidence,
+                CommittedEvidencePath(evidence.Id),
+                Codec.Encode(EvidenceBase.Bencode(evidence)));
+
+            _evidenceCache.AddOrUpdate(evidence.Id, evidence);
+        }
+
+        /// <inheritdoc/>
+        public override void DeleteCommittedEvidence(EvidenceId evidenceId)
+        {
+            _evidenceCache.Remove(evidenceId);
+
+            UPath path = CommittedEvidencePath(evidenceId);
+            if (!_committedEvidence.FileExists(path))
+            {
+                return;
+            }
+
+            _committedEvidence.DeleteFile(path);
+        }
+
+        /// <inheritdoc/>
+        public override bool ContainsCommittedEvidence(EvidenceId evidenceId)
+        {
+            if (_evidenceCache.ContainsKey(evidenceId))
+            {
+                return true;
+            }
+
+            return _committedEvidence.FileExists(CommittedEvidencePath(evidenceId));
+        }
+
+        /// <inheritdoc/>
         public override long CountBlocks()
         {
             // FIXME: This implementation is too inefficient.  Fortunately, this method seems
@@ -804,6 +993,7 @@ namespace Libplanet.Store
             int indexCacheSize = query.GetInt32("index-cache", 50000);
             int blockCacheSize = query.GetInt32("block-cache", 512);
             int txCacheSize = query.GetInt32("tx-cache", 1024);
+            int evidenceCacheSize = query.GetInt32("evidence-cache", 1024);
             bool flush = query.GetBoolean("flush", true);
             bool readOnly = query.GetBoolean("readonly");
             string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
@@ -813,6 +1003,7 @@ namespace Libplanet.Store
                 indexCacheSize,
                 blockCacheSize,
                 txCacheSize,
+                evidenceCacheSize,
                 flush,
                 readOnly);
             var stateStore = new TrieStateStore(
@@ -897,6 +1088,16 @@ namespace Libplanet.Store
         private UPath NextStateRootHashPath(in BlockHash blockHash)
         {
             return UPath.Root / blockHash.ToString();
+        }
+
+        private UPath PendingEvidencePath(in EvidenceId evidenceId)
+        {
+            return UPath.Combine(UPath.Root, evidenceId.ToString());
+        }
+
+        private UPath CommittedEvidencePath(in EvidenceId evidenceId)
+        {
+            return UPath.Combine(UPath.Root, evidenceId.ToString());
         }
 
         private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>

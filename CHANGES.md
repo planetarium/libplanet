@@ -14,12 +14,61 @@ To be released.
     [[#3737], [#3813]]
  -  (Libplanet.Types) Added `ValidatorPower` property to `IVoteMetadata`
     interface and its implementations.  [[#3737], [#3813]]
+ -  (Libplanet.Types) Added `IBlockMetadata.EvidenceHash` property and
+    the parameters required by the derived class's properties and constructors
+    have been added.
+    Affected classes are `Block`, `BlockContent`, `BlockHeader`,
+    `BlockMetadata`, `PreEvaluationBlockHeader`.  [[#3696]]
+ -  (Libplanet.Types) Added `IBlockContent.Evidence` property and the
+    parameters required by the derived class's properties and constructors
+    have been added.
+    Affected classes are `Block`, `BlockContent`, `BlockHeader`,
+    `PreEvaluationBlock`.  [[#3696]]
+ -  (Libplanet) Added `IBlockPolicy.GetMaxEvidencePendingDuration` method.
+    [[#3696]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Types) Added `InvalidBlockEvidenceHashException` class.
+    [[#3696]]
+ -  (Libplanet.Types) Added `InvalidBlockEvidencePendingDurationException`
+    class.  [[#3696]]
+ -  (Libplanet.Types) Added `EvidenceBase` abstract class.  [[#3696]]
+ -  (Libplanet.Types) Added `DuplicateVoteEvidence` class.  [[#3696]]
+ -  (Libplanet.Types) Added `DuplicateVoteException` class.  [[#3696]]
+ -  (Libplanet.Types) Added `EvidenceContext` class.  [[#3696]]
+ -  (Libplanet.Types) Added `EvidenceException` class.  [[#3696]]
+ -  (Libplanet.Types) Added `EvidenceId` class.  [[#3696]]
+ -  (Libplanet.Types) Added `IEvidenceContext` class.  [[#3696]]
+ -  (Libplanet.Types) Added `InvalidEvidenceException` class.  [[#3696]]
+ -  (Libplanet.Net) Added `EvidenceCompletion` class.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.IteratePendingEvidenceIds`. method.
+    [[#3696]]
+ -  (Libplanet.Store) Added `IStore.GetPendingEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.GetCommittedEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.PutPendingEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.PutCommittedEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.DeletePendingEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.DeleteCommittedEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.ContainsPendingEvidence`. method.  [[#3696]]
+ -  (Libplanet.Store) Added `IStore.ContainsCommittedEvidence`. method.
+    [[#3696]]
+ -  (Libplanet) Added `BlockChain.GetPendingEvidence`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.GetCommittedEvidence`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.AddEvidence`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.CommitEvidence`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.IsEvidencePending`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.IsEvidenceCommitted`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.IsEvidenceExpired`. method.  [[#3696]]
+ -  (Libplanet) Added `BlockChain.DeletePendingEvidence`. method.  [[#3696]]
+ -  (Libplanet.Action) Added `IActionContext.Evidence`. property.  [[#3696]]
+ -  (Libplanet.Net) Added `Swarm.BroadcastEvidence`. property.  [[#3696]]
+ -  (Libplanet.Net) Added `Context.CollectEvidenceExceptions`. property.
+    [[#3696]]
 
 ### Behavioral changes
 
@@ -89,6 +138,7 @@ The `VersionPrefix` property has been moved from the
 
 ### CLI tools
 
+[#3696]: https://github.com/planetarium/libplanet/pull/3696
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
 [#3813]: https://github.com/planetarium/libplanet/pull/3813
 

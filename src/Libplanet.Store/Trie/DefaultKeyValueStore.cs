@@ -23,34 +23,37 @@ namespace Libplanet.Store.Trie
     /// <item>
     /// <term><c>journal</c></term>
     /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>journal</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>index-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>indexCacheSize</c> parameter.  50000 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>block-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>blockCacheSize</c> parameter.  512 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>tx-cache</c></term>
-    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <description>Corresponds to
+    /// <see cref="DefaultStore(string,bool,int,int,int,int,bool,bool)"/>'s
     /// <c>txCacheSize</c> parameter.  1024 by default.</description>
     /// </item>
     /// <item>
     /// <term><c>flush</c></term>
     /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>flush</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
     /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
-    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
+    /// <see cref="DefaultStore(string, bool, int, int, int, int, bool, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
     /// <item>

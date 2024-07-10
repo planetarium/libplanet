@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -14,5 +15,7 @@ namespace Libplanet.Types.Blocks
         /// Transactions belonging to the block.
         /// </summary>
         IReadOnlyList<ITransaction> Transactions { get; }
+
+        IReadOnlyList<EvidenceBase> Evidence { get; }
     }
 }

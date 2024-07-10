@@ -6,6 +6,7 @@ using Bencodex;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Types.Blocks
@@ -22,7 +23,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 8;
+        public const int CurrentProtocolVersion = 9;
 
         /// <summary>
         /// <para>
@@ -91,6 +92,14 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         public const int SlothProtocolVersion = 8;
 
+        /// <summary>
+        /// The starting protocol version where evidence of the consensus process is detected and
+        /// stored.
+        /// In the consensus process, evidence of double signing is stored, and in the application
+        /// layer, you can define and use custom evidence.
+        /// </summary>
+        public const int EvidenceProtocolVersion = 9;
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
 
@@ -107,8 +116,9 @@ namespace Libplanet.Types.Blocks
         /// creating a copy.  This is a relatively heavy operation, so must be used sparingly.
         /// </para>
         /// <para>
-        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>.  Refer to the
+        /// This gets redirected to
+        /// <see cref="BlockMetadata(int, long, DateTimeOffset, Address, PublicKey?, BlockHash?,
+        /// HashDigest{SHA256}?, BlockCommit?, ImmutableArray{EvidenceBase}?)"/>.  Refer to the
         /// aforementioned constructor to see the full list of <see cref="Exception"/>s
         /// that may be thrown.
         /// </para>
@@ -117,7 +127,7 @@ namespace Libplanet.Types.Blocks
         /// an actual <see cref="BlockMetadata"/> instance, but can be any object which
         /// implements <see cref="IBlockMetadata"/>.</param>
         /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, HashDigest{SHA256}?)"/>
         public BlockMetadata(IBlockMetadata metadata)
             : this(
                 protocolVersion: metadata.ProtocolVersion,
@@ -127,7 +137,8 @@ namespace Libplanet.Types.Blocks
                 publicKey: metadata.PublicKey,
                 previousHash: metadata.PreviousHash,
                 txHash: metadata.TxHash,
-                lastCommit: metadata.LastCommit)
+                lastCommit: metadata.LastCommit,
+                evidenceHash: metadata.EvidenceHash)
         {
         }
 
@@ -142,15 +153,17 @@ namespace Libplanet.Types.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="evidenceHash">Goes to <see cref="IBlockMetadata.EvidenceHash"/>.</param>
         /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, HashDigest{SHA256}?)"/>
         public BlockMetadata(
             long index,
             DateTimeOffset timestamp,
             PublicKey publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit)
+            BlockCommit? lastCommit,
+            HashDigest<SHA256>? evidenceHash)
             : this(
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
@@ -159,7 +172,8 @@ namespace Libplanet.Types.Blocks
                 publicKey: publicKey,
                 previousHash: previousHash,
                 txHash: txHash,
-                lastCommit: lastCommit)
+                lastCommit: lastCommit,
+                evidenceHash: evidenceHash)
         {
         }
 
@@ -179,6 +193,7 @@ namespace Libplanet.Types.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="evidenceHash">Goes to <see cref="IBlockMetadata.EvidenceHash"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// <paramref name="protocolVersion"/> is less than zero or greater than
         /// <see cref="CurrentProtocolVersion"/>, the latest known protocol version.</exception>
@@ -206,7 +221,8 @@ namespace Libplanet.Types.Blocks
             PublicKey? publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit)
+            BlockCommit? lastCommit,
+            HashDigest<SHA256>? evidenceHash)
         {
             // Protocol version validity check.
             if (protocolVersion < 0)
@@ -293,6 +309,7 @@ namespace Libplanet.Types.Blocks
 
             TxHash = txHash;
             LastCommit = lastCommit;
+            EvidenceHash = evidenceHash;
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -317,6 +334,8 @@ namespace Libplanet.Types.Blocks
         public HashDigest<SHA256>? TxHash { get; private set; }
 
         public BlockCommit? LastCommit { get; set; }
+
+        public HashDigest<SHA256>? EvidenceHash { get; private set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -347,6 +366,11 @@ namespace Libplanet.Types.Blocks
             if (LastCommit is { } lastCommit)
             {
                 dict = dict.Add("last_commit", lastCommit.ToHash().ByteArray);
+            }
+
+            if (EvidenceHash is { } evidenceHash)
+            {
+                dict = dict.Add("evidence_hash", evidenceHash.ByteArray);
             }
 
             // As blocks hadn't been signed before ProtocolVersion <= 1, the PublicKey property
