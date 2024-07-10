@@ -94,7 +94,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L51">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest__ctor_" data-uid="Libplanet.Store.BlockDigest.#ctor*"></a>
   <h4 id="Libplanet_Store_BlockDigest__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Store.BlockDigest.#ctor(Bencodex.Types.Dictionary)">BlockDigest(Bencodex.Types.Dictionary)</h4>
@@ -126,20 +126,20 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest__ctor_Libplanet_Types_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.%23ctor(Libplanet.Types.Blocks.BlockHeader%2CImmutableArray%7BImmutableArray%7BSystem.Byte%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest__ctor_Libplanet_Types_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___ImmutableArray_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.%23ctor(Libplanet.Types.Blocks.BlockHeader%2CImmutableArray%7BImmutableArray%7BSystem.Byte%7D%7D%2CImmutableArray%7BImmutableArray%7BSystem.Byte%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L38">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest__ctor_" data-uid="Libplanet.Store.BlockDigest.#ctor*"></a>
-  <h4 id="Libplanet_Store_BlockDigest__ctor_Libplanet_Types_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.BlockDigest.#ctor(Libplanet.Types.Blocks.BlockHeader,ImmutableArray{ImmutableArray{System.Byte}})">BlockDigest(BlockHeader, ImmutableArray&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
+  <h4 id="Libplanet_Store_BlockDigest__ctor_Libplanet_Types_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___ImmutableArray_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.BlockDigest.#ctor(Libplanet.Types.Blocks.BlockHeader,ImmutableArray{ImmutableArray{System.Byte}},ImmutableArray{ImmutableArray{System.Byte}})">BlockDigest(BlockHeader, ImmutableArray&lt;ImmutableArray&lt;Byte&gt;&gt;, ImmutableArray&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a> instance from <a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a> and
 <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> ids the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> has.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockDigest(BlockHeader header, ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; txIds)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockDigest(BlockHeader header, ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; txIds, ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; evidenceIds)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,16 +163,87 @@
         <td><p><a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> ids the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> has.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td><span class="parametername">evidenceIds</span></td>
+        <td><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> ids the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> has.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_EvidenceHash.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.EvidenceHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L102">View Source</a>
+  </span>
+  <a id="Libplanet_Store_BlockDigest_EvidenceHash_" data-uid="Libplanet.Store.BlockDigest.EvidenceHash*"></a>
+  <h4 id="Libplanet_Store_BlockDigest_EvidenceHash" data-uid="Libplanet.Store.BlockDigest.EvidenceHash">EvidenceHash</h4>
+  <div class="markdown level1 summary"><p>Committing <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s of vote infraction
+that has been made on previous blocks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly HashDigest&lt;SHA256&gt;? EvidenceHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_EvidenceIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.EvidenceIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L131">View Source</a>
+  </span>
+  <a id="Libplanet_Store_BlockDigest_EvidenceIds_" data-uid="Libplanet.Store.BlockDigest.EvidenceIds*"></a>
+  <h4 id="Libplanet_Store_BlockDigest_EvidenceIds" data-uid="Libplanet.Store.BlockDigest.EvidenceIds">EvidenceIds</h4>
+  <div class="markdown level1 summary"><p>The <see cref="!:Evidence.Id"></see>s of <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s in
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <em>not</em> necessarily ordered by
+<see cref="!:Evidence.Id"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; EvidenceIds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Hash_" data-uid="Libplanet.Store.BlockDigest.Hash*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Hash" data-uid="Libplanet.Store.BlockDigest.Hash">Hash</h4>
@@ -203,7 +274,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Index.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Index%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L69">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Index_" data-uid="Libplanet.Store.BlockDigest.Index*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Index" data-uid="Libplanet.Store.BlockDigest.Index">Index</h4>
@@ -241,7 +312,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_LastCommit.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.LastCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L87">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_LastCommit_" data-uid="Libplanet.Store.BlockDigest.LastCommit*"></a>
   <h4 id="Libplanet_Store_BlockDigest_LastCommit" data-uid="Libplanet.Store.BlockDigest.LastCommit">LastCommit</h4>
@@ -272,7 +343,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Miner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L75">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Miner_" data-uid="Libplanet.Store.BlockDigest.Miner*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Miner" data-uid="Libplanet.Store.BlockDigest.Miner">Miner</h4>
@@ -303,7 +374,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_PreviousHash.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.PreviousHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_PreviousHash_" data-uid="Libplanet.Store.BlockDigest.PreviousHash*"></a>
   <h4 id="Libplanet_Store_BlockDigest_PreviousHash" data-uid="Libplanet.Store.BlockDigest.PreviousHash">PreviousHash</h4>
@@ -335,7 +406,7 @@ this must be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_ProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.ProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L66">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_ProtocolVersion_" data-uid="Libplanet.Store.BlockDigest.ProtocolVersion*"></a>
   <h4 id="Libplanet_Store_BlockDigest_ProtocolVersion" data-uid="Libplanet.Store.BlockDigest.ProtocolVersion">ProtocolVersion</h4>
@@ -393,7 +464,7 @@ This is used as a marker indicating when the data model should be migrated.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L78">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_PublicKey_" data-uid="Libplanet.Store.BlockDigest.PublicKey*"></a>
   <h4 id="Libplanet_Store_BlockDigest_PublicKey" data-uid="Libplanet.Store.BlockDigest.PublicKey">PublicKey</h4>
@@ -428,7 +499,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Signature_" data-uid="Libplanet.Store.BlockDigest.Signature*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Signature" data-uid="Libplanet.Store.BlockDigest.Signature">Signature</h4>
@@ -459,7 +530,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_StateRootHash.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.StateRootHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L97">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_StateRootHash_" data-uid="Libplanet.Store.BlockDigest.StateRootHash*"></a>
   <h4 id="Libplanet_Store_BlockDigest_StateRootHash" data-uid="Libplanet.Store.BlockDigest.StateRootHash">StateRootHash</h4>
@@ -490,7 +561,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L72">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L84">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Timestamp_" data-uid="Libplanet.Store.BlockDigest.Timestamp*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Timestamp" data-uid="Libplanet.Store.BlockDigest.Timestamp">Timestamp</h4>
@@ -524,7 +595,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_TxHash.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.TxHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L84">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_TxHash_" data-uid="Libplanet.Store.BlockDigest.TxHash*"></a>
   <h4 id="Libplanet_Store_BlockDigest_TxHash" data-uid="Libplanet.Store.BlockDigest.TxHash">TxHash</h4>
@@ -556,7 +627,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_TxIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.TxIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L109">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_TxIds_" data-uid="Libplanet.Store.BlockDigest.TxIds*"></a>
   <h4 id="Libplanet_Store_BlockDigest_TxIds" data-uid="Libplanet.Store.BlockDigest.TxIds">TxIds</h4>
@@ -591,7 +662,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Deserialize_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Deserialize(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L136">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Deserialize_" data-uid="Libplanet.Store.BlockDigest.Deserialize*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Deserialize_System_Byte___" data-uid="Libplanet.Store.BlockDigest.Deserialize(System.Byte[])">Deserialize(Byte[])</h4>
@@ -641,7 +712,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_FromBlock_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.FromBlock(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L139">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_FromBlock_" data-uid="Libplanet.Store.BlockDigest.FromBlock*"></a>
   <h4 id="Libplanet_Store_BlockDigest_FromBlock_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Store.BlockDigest.FromBlock(Libplanet.Types.Blocks.Block)">FromBlock(Block)</h4>
@@ -691,7 +762,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_GetHeader.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.GetHeader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L167">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L192">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_GetHeader_" data-uid="Libplanet.Store.BlockDigest.GetHeader*"></a>
   <h4 id="Libplanet_Store_BlockDigest_GetHeader" data-uid="Libplanet.Store.BlockDigest.GetHeader">GetHeader()</h4>
@@ -723,7 +794,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L158">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_Serialize_" data-uid="Libplanet.Store.BlockDigest.Serialize*"></a>
   <h4 id="Libplanet_Store_BlockDigest_Serialize" data-uid="Libplanet.Store.BlockDigest.Serialize">Serialize()</h4>
@@ -755,7 +826,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L179">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L204">View Source</a>
   </span>
   <a id="Libplanet_Store_BlockDigest_ToBencodex_" data-uid="Libplanet.Store.BlockDigest.ToBencodex*"></a>
   <h4 id="Libplanet_Store_BlockDigest_ToBencodex" data-uid="Libplanet.Store.BlockDigest.ToBencodex">ToBencodex()</h4>
@@ -802,7 +873,7 @@ a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.  This is <
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BlockDigest.md&amp;value=---%0Auid%3A%20Libplanet.Store.BlockDigest%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/BlockDigest.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

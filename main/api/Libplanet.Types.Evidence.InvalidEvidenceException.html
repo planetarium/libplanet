@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class BlockPolicyViolationException
+    <title>Class InvalidEvidenceException
  | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class BlockPolicyViolationException
+    <meta name="title" content="Class InvalidEvidenceException
  | Libplanet ">
   
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -67,49 +67,44 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException">
 
 
-  <h1 id="Libplanet_Types_Blocks_BlockPolicyViolationException" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException" class="text-break">Class BlockPolicyViolationException
+  <h1 id="Libplanet_Types_Evidence_InvalidEvidenceException" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException" class="text-break">Class InvalidEvidenceException
 </h1>
-  <div class="markdown level0 summary"><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> violates
-a <see cref="!:IBlockPolicy"></see>.</p>
+  <div class="markdown level0 summary"><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Types.Evidence.DuplicateVoteEvidence.html">DuplicateVoteEvidence</a>s'
+integrity and validity.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockException.html">InvalidBlockException</a></div>
-    <div class="level2"><span class="xref">BlockPolicyViolationException</span></div>
-      <div class="level3"><a class="xref" href="Libplanet.Blocks.InvalidBlockEvidencePendingDurationException.html">InvalidBlockEvidencePendingDurationException</a></div>
-      <div class="level3"><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockBytesLengthException.html">InvalidBlockBytesLengthException</a></div>
-      <div class="level3"><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxCountException.html">InvalidBlockTxCountException</a></div>
-      <div class="level3"><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.html">InvalidBlockTxCountPerSignerException</a></div>
+    <div class="level1"><span class="xref">InvalidEvidenceException</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Blocks.html">Libplanet.Types.Blocks</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Evidence.html">Libplanet.Types.Evidence</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
-  <h5 id="Libplanet_Types_Blocks_BlockPolicyViolationException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Types_Evidence_InvalidEvidenceException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BlockPolicyViolationException : InvalidBlockException</code></pre>
+    <pre><code class="lang-csharp hljs">public class InvalidEvidenceException : Exception</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockPolicyViolationException.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Evidence_InvalidEvidenceException__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.InvalidEvidenceException.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockPolicyViolationException.cs/#L24">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Evidence/InvalidEvidenceException.cs/#L19">View Source</a>
   </span>
-  <a id="Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor(SerializationInfo,StreamingContext)">BlockPolicyViolationException(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> violates
-a <see cref="!:IBlockPolicy"></see>.</p>
+  <a id="Libplanet_Types_Evidence_InvalidEvidenceException__ctor_" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_InvalidEvidenceException__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException.#ctor(SerializationInfo,StreamingContext)">InvalidEvidenceException(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Types.Evidence.DuplicateVoteEvidence.html">DuplicateVoteEvidence</a>s'
+integrity and validity.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BlockPolicyViolationException(SerializationInfo info, StreamingContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidEvidenceException(SerializationInfo info, StreamingContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,19 +130,20 @@ a <see cref="!:IBlockPolicy"></see>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockPolicyViolationException.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Evidence_InvalidEvidenceException__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.InvalidEvidenceException.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockPolicyViolationException.cs/#L19">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Evidence/InvalidEvidenceException.cs/#L13">View Source</a>
   </span>
-  <a id="Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_System_String_" data-uid="Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor(System.String)">BlockPolicyViolationException(String)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a> instance.</p>
+  <a id="Libplanet_Types_Evidence_InvalidEvidenceException__ctor_" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_InvalidEvidenceException__ctor_System_String_" data-uid="Libplanet.Types.Evidence.InvalidEvidenceException.#ctor(System.String)">InvalidEvidenceException(String)</h4>
+  <div class="markdown level1 summary"><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Types.Evidence.DuplicateVoteEvidence.html">DuplicateVoteEvidence</a>s'
+integrity and validity.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicyViolationException(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidEvidenceException(string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,9 +158,7 @@ a <see cref="!:IBlockPolicy"></see>.</p>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">message</span></td>
-        <td><p>A description for the reason of violation
-given by an implementation of <see cref="!:IBlockPolicy"></see>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -176,10 +170,10 @@ given by an implementation of <see cref="!:IBlockPolicy"></see>.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_BlockPolicyViolationException.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.BlockPolicyViolationException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Evidence_InvalidEvidenceException.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.InvalidEvidenceException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/BlockPolicyViolationException.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Evidence/InvalidEvidenceException.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

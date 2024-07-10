@@ -101,10 +101,118 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_ContainsCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.ContainsCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L360">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_ContainsCommittedEvidence_" data-uid="Libplanet.Store.MemoryStore.ContainsCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_ContainsCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.ContainsCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">ContainsCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as committed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ContainsCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of the <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and committed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as committed; otherwise,
+<span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_ContainsPendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.ContainsPendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L342">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_ContainsPendingEvidence_" data-uid="Libplanet.Store.MemoryStore.ContainsPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_ContainsPendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.ContainsPendingEvidence(Libplanet.Types.Evidence.EvidenceId)">ContainsPendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as pending.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ContainsPendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of the <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and pending.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as pending; otherwise,
+<span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L297">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L316">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_DeleteBlockCommit_" data-uid="Libplanet.Store.MemoryStore.DeleteBlockCommit*"></a>
   <h4 id="Libplanet_Store_MemoryStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)">DeleteBlockCommit(BlockHash)</h4>
@@ -136,10 +244,84 @@ to delete.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_DeleteCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.DeleteCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L356">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_DeleteCommittedEvidence_" data-uid="Libplanet.Store.MemoryStore.DeleteCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_DeleteCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.DeleteCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">DeleteCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Deletes a committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DeleteCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a committed
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_DeletePendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.DeletePendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L338">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_DeletePendingEvidence_" data-uid="Libplanet.Store.MemoryStore.DeletePendingEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_DeletePendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.DeletePendingEvidence(Libplanet.Types.Evidence.EvidenceId)">DeletePendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Deletes a pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DeletePendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a pending
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L129">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L136">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_ForkBlockIndexes_" data-uid="Libplanet.Store.MemoryStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_Store_MemoryStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.ForkBlockIndexes(Guid,Guid,Libplanet.Types.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
@@ -188,7 +370,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L287">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L306">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_GetBlockCommit_" data-uid="Libplanet.Store.MemoryStore.GetBlockCommit*"></a>
   <h4 id="Libplanet_Store_MemoryStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -242,7 +424,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetBlockCommitHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetBlockCommitHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L301">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L320">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_GetBlockCommitHashes_" data-uid="Libplanet.Store.MemoryStore.GetBlockCommitHashes*"></a>
   <h4 id="Libplanet_Store_MemoryStore_GetBlockCommitHashes" data-uid="Libplanet.Store.MemoryStore.GetBlockCommitHashes">GetBlockCommitHashes()</h4>
@@ -275,7 +457,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetChainBlockCommit_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetChainBlockCommit(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L278">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L297">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_GetChainBlockCommit_" data-uid="Libplanet.Store.MemoryStore.GetChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_MemoryStore_GetChainBlockCommit_Guid_" data-uid="Libplanet.Store.MemoryStore.GetChainBlockCommit(Guid)">GetChainBlockCommit(Guid)</h4>
@@ -325,10 +507,150 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L346">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_GetCommittedEvidence_" data-uid="Libplanet.Store.MemoryStore.GetCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_GetCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.GetCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">GetCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Gets every committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceBase GetCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a committed
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Returns <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> if given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> is
+stored, committed and available, otherwise returns <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_GetPendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.GetPendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L328">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_GetPendingEvidence_" data-uid="Libplanet.Store.MemoryStore.GetPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_GetPendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.MemoryStore.GetPendingEvidence(Libplanet.Types.Evidence.EvidenceId)">GetPendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Gets every pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceBase GetPendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a pending
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Returns <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> if given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> is
+stored, pending and available, otherwise returns <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_IteratePendingEvidenceIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.IteratePendingEvidenceIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L324">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_IteratePendingEvidenceIds_" data-uid="Libplanet.Store.MemoryStore.IteratePendingEvidenceIds*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_IteratePendingEvidenceIds" data-uid="Libplanet.Store.MemoryStore.IteratePendingEvidenceIds">IteratePendingEvidenceIds()</h4>
+  <div class="markdown level1 summary"><p>Gets every <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s of pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;EvidenceId&gt; IteratePendingEvidenceIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>&gt;</td>
+        <td><p>Returns an <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s
+of all pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L293">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L312">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_PutBlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutBlockCommit*"></a>
   <h4 id="Libplanet_Store_MemoryStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)">PutBlockCommit(BlockCommit)</h4>
@@ -362,7 +684,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutChainBlockCommit(Guid%2CLibplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L284">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L303">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_PutChainBlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_MemoryStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.MemoryStore.PutChainBlockCommit(Guid,Libplanet.Types.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
@@ -401,6 +723,74 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutCommittedEvidence_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutCommittedEvidence(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L352">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_PutCommittedEvidence_" data-uid="Libplanet.Store.MemoryStore.PutCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_PutCommittedEvidence_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Store.MemoryStore.PutCommittedEvidence(Libplanet.Types.Evidence.EvidenceBase)">PutCommittedEvidence(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to the store as committed evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PutCommittedEvidence(EvidenceBase evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>A committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_PutPendingEvidence_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.PutPendingEvidence(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L334">View Source</a>
+  </span>
+  <a id="Libplanet_Store_MemoryStore_PutPendingEvidence_" data-uid="Libplanet.Store.MemoryStore.PutPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_MemoryStore_PutPendingEvidence_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Store.MemoryStore.PutPendingEvidence(Libplanet.Types.Evidence.EvidenceBase)">PutPendingEvidence(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to the store as pending evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PutPendingEvidence(EvidenceBase evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>A pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="eii">Explicit Interface Implementations
 </h3>
   <span class="small pull-right mobile-hide">
@@ -408,7 +798,7 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23AppendIndex(Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#AppendIndex(Guid,Libplanet.Types.Blocks.BlockHash)">IStore.AppendIndex(Guid, BlockHash)</h4>
@@ -467,7 +857,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ContainsBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L191">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L210">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsBlock_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsBlock(Libplanet.Types.Blocks.BlockHash)">IStore.ContainsBlock(BlockHash)</h4>
@@ -521,7 +911,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ContainsTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L245">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L264">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsTransaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ContainsTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ContainsTransaction(Libplanet.Types.Tx.TxId)">IStore.ContainsTransaction(TxId)</h4>
@@ -575,7 +965,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23CountBlocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L248">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L267">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountBlocks_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountBlocks" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountBlocks">IStore.CountBlocks()</h4>
@@ -612,7 +1002,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23CountIndex(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L83">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountIndex_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountIndex(Guid)">IStore.CountIndex(Guid)</h4>
@@ -666,7 +1056,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23DeleteBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L188">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L207">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock(Libplanet.Types.Blocks.BlockHash)">IStore.DeleteBlock(BlockHash)</h4>
@@ -720,7 +1110,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23DeleteChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteChainId(Guid)">IStore.DeleteChainId(Guid)</h4>
@@ -759,7 +1149,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L217">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L236">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -803,7 +1193,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ForkTxNonces(Guid%2CGuid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L251">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L270">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ForkTxNonces(Guid,Guid)">IStore.ForkTxNonces(Guid, Guid)</h4>
@@ -847,7 +1237,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L153">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L160">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlock_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlock(Libplanet.Types.Blocks.BlockHash)">IStore.GetBlock(BlockHash)</h4>
@@ -901,7 +1291,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetBlockDigest(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L171">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockDigest_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockDigest(Libplanet.Types.Blocks.BlockHash)">IStore.GetBlockDigest(BlockHash)</h4>
@@ -955,7 +1345,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockIndex_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetBlockIndex(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L168">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L180">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetBlockIndex_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetBlockIndex(Libplanet.Types.Blocks.BlockHash)">IStore.GetBlockIndex(BlockHash)</h4>
@@ -1009,7 +1399,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetCanonicalChainId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L84">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetCanonicalChainId" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetCanonicalChainId">IStore.GetCanonicalChainId()</h4>
@@ -1046,7 +1436,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetFirstTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L207">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L226">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetFirstTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)">IStore.GetFirstTxIdBlockHashIndex(TxId)</h4>
@@ -1100,7 +1490,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L142">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L149">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTransaction(Libplanet.Types.Tx.TxId)">IStore.GetTransaction(TxId)</h4>
@@ -1154,7 +1544,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTxExecution(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L197">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L216">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxExecution_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxExecution(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId)">IStore.GetTxExecution(BlockHash, TxId)</h4>
@@ -1213,7 +1603,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23GetTxNonce(Guid%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L232">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L251">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#GetTxNonce(Guid,Libplanet.Crypto.Address)">IStore.GetTxNonce(Guid, Address)</h4>
@@ -1272,7 +1662,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IncreaseTxNonce(Guid%2CLibplanet.Crypto.Address%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L238">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L257">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IncreaseTxNonce(Guid,Libplanet.Crypto.Address,System.Int64)">IStore.IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1321,7 +1711,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L106">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IndexBlockHash(Guid,System.Int64)">IStore.IndexBlockHash(Guid, Int64)</h4>
@@ -1380,7 +1770,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IterateBlockHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L150">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L157">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateBlockHashes_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateBlockHashes" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateBlockHashes">IStore.IterateBlockHashes()</h4>
@@ -1417,7 +1807,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L88">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L95">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})">IStore.IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1481,7 +1871,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L212">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L231">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)">IStore.IterateTxIdBlockHashIndex(TxId)</h4>
@@ -1535,7 +1925,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ListChainIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListChainIds_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListChainIds" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListChainIds">IStore.ListChainIds()</h4>
@@ -1572,7 +1962,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23ListTxNonces(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L227">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L246">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_ListTxNonces_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#ListTxNonces(Guid)">IStore.ListTxNonces(Guid)</h4>
@@ -1626,7 +2016,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PruneOutdatedChains(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L259">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L278">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PruneOutdatedChains_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains(System.Boolean)">IStore.PruneOutdatedChains(Boolean)</h4>
@@ -1665,7 +2055,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutBlock(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L174">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L186">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock(Libplanet.Types.Blocks.Block)">IStore.PutBlock(Block)</h4>
@@ -1704,7 +2094,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_Libplanet_Types_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutTransaction(Libplanet.Types.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L154">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTransaction_Libplanet_Types_Tx_Transaction_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTransaction(Libplanet.Types.Tx.Transaction)">IStore.PutTransaction(Transaction)</h4>
@@ -1743,7 +2133,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutTxExecution(Libplanet.Types.Tx.TxExecution)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L194">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L213">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxExecution(Libplanet.Types.Tx.TxExecution)">IStore.PutTxExecution(TxExecution)</h4>
@@ -1782,7 +2172,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L200">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L219">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">IStore.PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -1826,7 +2216,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore.Libplanet%23Store%23IStore%23SetCanonicalChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L80">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_MemoryStore_Libplanet_Store_IStore_SetCanonicalChainId_Guid_" data-uid="Libplanet.Store.MemoryStore.Libplanet#Store#IStore#SetCanonicalChainId(Guid)">IStore.SetCanonicalChainId(Guid)</h4>
@@ -1878,7 +2268,7 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_MemoryStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.MemoryStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L29" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/MemoryStore.cs/#L30" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

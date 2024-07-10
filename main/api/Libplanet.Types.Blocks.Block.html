@@ -100,20 +100,20 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.%23ctor(Libplanet.Types.Blocks.IBlockHeader%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__IEnumerable_Libplanet_Types_Evidence_EvidenceBase__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.%23ctor(Libplanet.Types.Blocks.IBlockHeader%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D%2CIEnumerable%7BLibplanet.Types.Evidence.EvidenceBase%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block__ctor_" data-uid="Libplanet.Types.Blocks.Block.#ctor*"></a>
-  <h4 id="Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__" data-uid="Libplanet.Types.Blocks.Block.#ctor(Libplanet.Types.Blocks.IBlockHeader,IEnumerable{Libplanet.Types.Tx.Transaction})">Block(IBlockHeader, IEnumerable&lt;Transaction&gt;)</h4>
+  <h4 id="Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__IEnumerable_Libplanet_Types_Evidence_EvidenceBase__" data-uid="Libplanet.Types.Blocks.Block.#ctor(Libplanet.Types.Blocks.IBlockHeader,IEnumerable{Libplanet.Types.Tx.Transaction},IEnumerable{Libplanet.Types.Evidence.EvidenceBase})">Block(IBlockHeader, IEnumerable&lt;Transaction&gt;, IEnumerable&lt;EvidenceBase&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> instance by combining a block <code data-dev-comment-type="paramref" class="paramref">header</code>
 and <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block(IBlockHeader header, IEnumerable&lt;Transaction&gt; transactions)</code></pre>
+    <pre><code class="lang-csharp hljs">public Block(IBlockHeader header, IEnumerable&lt;Transaction&gt; transactions, IEnumerable&lt;EvidenceBase&gt; evidence)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,6 +135,12 @@ and <code data-dev-comment-type="paramref" class="paramref">transactions</code>.
         <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
         <td><span class="parametername">transactions</span></td>
         <td><p>The transactions to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>The evidence to include.</p>
 </td>
       </tr>
     </tbody>
@@ -204,7 +210,7 @@ its <code data-dev-comment-type="paramref" class="paramref">transactions</code>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_PreEvaluationBlock_System_ValueTuple_Libplanet_Common_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.%23ctor(Libplanet.Types.Blocks.PreEvaluationBlock%2CSystem.ValueTuple%7BLibplanet.Common.HashDigest%7BSHA256%7D%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%2CLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L69">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L74">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block__ctor_" data-uid="Libplanet.Types.Blocks.Block.#ctor*"></a>
   <h4 id="Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_PreEvaluationBlock_System_ValueTuple_Libplanet_Common_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Types.Blocks.Block.#ctor(Libplanet.Types.Blocks.PreEvaluationBlock,System.ValueTuple{Libplanet.Common.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Types.Blocks.BlockHash})">Block(PreEvaluationBlock, (HashDigest&lt;SHA256&gt; StateRootHash, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt; Signature, BlockHash Hash))</h4>
@@ -250,7 +256,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_CurrentProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.CurrentProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L21">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L22">View Source</a>
   </span>
   <h4 id="Libplanet_Types_Blocks_Block_CurrentProtocolVersion" data-uid="Libplanet.Types.Blocks.Block.CurrentProtocolVersion">CurrentProtocolVersion</h4>
   <div class="markdown level1 summary"><p>The latest protocol version.</p>
@@ -279,10 +285,73 @@ and the block hash.</p>
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Evidence.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Evidence%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L135">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Evidence_" data-uid="Libplanet.Types.Blocks.Block.Evidence*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Evidence" data-uid="Libplanet.Types.Blocks.Block.Evidence">Evidence</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;EvidenceBase&gt; Evidence { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_EvidenceHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.EvidenceHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L132">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_EvidenceHash_" data-uid="Libplanet.Types.Blocks.Block.EvidenceHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_EvidenceHash" data-uid="Libplanet.Types.Blocks.Block.EvidenceHash">EvidenceHash</h4>
+  <div class="markdown level1 summary"><p>Committing <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s of vote infraction
+that has been made on previous blocks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? EvidenceHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L97">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Hash_" data-uid="Libplanet.Types.Blocks.Block.Hash*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Hash" data-uid="Libplanet.Types.Blocks.Block.Hash">Hash</h4>
@@ -319,7 +388,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Header.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Header%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L85">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Header_" data-uid="Libplanet.Types.Blocks.Block.Header*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Header" data-uid="Libplanet.Types.Blocks.Block.Header">Header</h4>
@@ -350,7 +419,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Index.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Index%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L106">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L111">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Index_" data-uid="Libplanet.Types.Blocks.Block.Index*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Index" data-uid="Libplanet.Types.Blocks.Block.Index">Index</h4>
@@ -388,7 +457,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_LastCommit.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.LastCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L124">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L129">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_LastCommit_" data-uid="Libplanet.Types.Blocks.Block.LastCommit*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_LastCommit" data-uid="Libplanet.Types.Blocks.Block.LastCommit">LastCommit</h4>
@@ -419,7 +488,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Miner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L109">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Miner_" data-uid="Libplanet.Types.Blocks.Block.Miner*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Miner" data-uid="Libplanet.Types.Blocks.Block.Miner">Miner</h4>
@@ -450,7 +519,7 @@ and the block hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PreEvaluationHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PreEvaluationHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L100">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L105">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_PreEvaluationHash_" data-uid="Libplanet.Types.Blocks.Block.PreEvaluationHash*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_PreEvaluationHash" data-uid="Libplanet.Types.Blocks.Block.PreEvaluationHash">PreEvaluationHash</h4>
@@ -482,7 +551,7 @@ action evaluation).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PreviousHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PreviousHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L115">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_PreviousHash_" data-uid="Libplanet.Types.Blocks.Block.PreviousHash*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_PreviousHash" data-uid="Libplanet.Types.Blocks.Block.PreviousHash">PreviousHash</h4>
@@ -514,7 +583,7 @@ this must be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_ProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.ProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_ProtocolVersion_" data-uid="Libplanet.Types.Blocks.Block.ProtocolVersion*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_ProtocolVersion" data-uid="Libplanet.Types.Blocks.Block.ProtocolVersion">ProtocolVersion</h4>
@@ -572,7 +641,7 @@ This is used as a marker indicating when the data model should be migrated.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L112">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_PublicKey_" data-uid="Libplanet.Types.Blocks.Block.PublicKey*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_PublicKey" data-uid="Libplanet.Types.Blocks.Block.PublicKey">PublicKey</h4>
@@ -607,7 +676,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L100">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Signature_" data-uid="Libplanet.Types.Blocks.Block.Signature*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Signature" data-uid="Libplanet.Types.Blocks.Block.Signature">Signature</h4>
@@ -651,7 +720,7 @@ the property is type-wise, the block signature is mandatory since
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_StateRootHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.StateRootHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L103">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_StateRootHash_" data-uid="Libplanet.Types.Blocks.Block.StateRootHash*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_StateRootHash" data-uid="Libplanet.Types.Blocks.Block.StateRootHash">StateRootHash</h4>
@@ -683,7 +752,7 @@ a <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see> (if exists).
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L118">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Timestamp_" data-uid="Libplanet.Types.Blocks.Block.Timestamp*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Timestamp" data-uid="Libplanet.Types.Blocks.Block.Timestamp">Timestamp</h4>
@@ -717,7 +786,7 @@ a <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see> (if exists).
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Transactions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L127">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L138">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Transactions_" data-uid="Libplanet.Types.Blocks.Block.Transactions*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Transactions" data-uid="Libplanet.Types.Blocks.Block.Transactions">Transactions</h4>
@@ -748,7 +817,7 @@ a <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see> (if exists).
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_TxHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.TxHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L121">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_TxHash_" data-uid="Libplanet.Types.Blocks.Block.TxHash*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_TxHash" data-uid="Libplanet.Types.Blocks.Block.TxHash">TxHash</h4>
@@ -782,7 +851,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Equals_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Equals(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L153">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L164">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Equals_" data-uid="Libplanet.Types.Blocks.Block.Equals*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Equals_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.Equals(Libplanet.Types.Blocks.Block)">Equals(Block)</h4>
@@ -830,7 +899,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L164">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L175">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Equals_" data-uid="Libplanet.Types.Blocks.Block.Equals*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Blocks.Block.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
@@ -878,7 +947,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L168">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_GetHashCode_" data-uid="Libplanet.Types.Blocks.Block.GetHashCode*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_GetHashCode" data-uid="Libplanet.Types.Blocks.Block.GetHashCode">GetHashCode()</h4>
@@ -909,7 +978,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L172">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_ToString_" data-uid="Libplanet.Types.Blocks.Block.ToString*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_ToString" data-uid="Libplanet.Types.Blocks.Block.ToString">ToString()</h4>
@@ -942,7 +1011,7 @@ has no transactions.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_op_Equality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.op_Equality(Libplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L139">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L150">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_op_Equality_" data-uid="Libplanet.Types.Blocks.Block.op_Equality*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_op_Equality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.op_Equality(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block)">Equality(Block, Block)</h4>
@@ -999,7 +1068,7 @@ Otherwise <span class="xref">false</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_op_Inequality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.op_Inequality(Libplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L149">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L160">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_op_Inequality_" data-uid="Libplanet.Types.Blocks.Block.op_Inequality*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_op_Inequality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.op_Inequality(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block)">Inequality(Block, Block)</h4>
@@ -1058,7 +1127,7 @@ Otherwise <span class="xref">false</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Libplanet%23Types%23Blocks%23IBlockContent%23Transactions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L130">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L141">View Source</a>
   </span>
   <a id="Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions_" data-uid="Libplanet.Types.Blocks.Block.Libplanet#Types#Blocks#IBlockContent#Transactions*"></a>
   <h4 id="Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions" data-uid="Libplanet.Types.Blocks.Block.Libplanet#Types#Blocks#IBlockContent#Transactions">IBlockContent.Transactions</h4>
@@ -1121,7 +1190,7 @@ Otherwise <span class="xref">false</span>.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Blocks_Block.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Blocks/Block.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

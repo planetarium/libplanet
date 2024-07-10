@@ -87,7 +87,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.AppendIndex(Guid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L75">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L76">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_AppendIndex_" data-uid="Libplanet.Store.IStore.AppendIndex*"></a>
   <h4 id="Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.AppendIndex(Guid,Libplanet.Types.Blocks.BlockHash)">AppendIndex(Guid, BlockHash)</h4>
@@ -144,7 +144,7 @@ into the store.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ContainsBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L162">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L163">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ContainsBlock_" data-uid="Libplanet.Store.IStore.ContainsBlock*"></a>
   <h4 id="Libplanet_Store_IStore_ContainsBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.ContainsBlock(Libplanet.Types.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
@@ -194,10 +194,118 @@ the specified <code data-dev-comment-type="paramref" class="paramref">blockHash<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ContainsCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ContainsCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L435">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_ContainsCommittedEvidence_" data-uid="Libplanet.Store.IStore.ContainsCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_ContainsCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.ContainsCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">ContainsCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as committed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ContainsCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of the <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and committed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as committed; otherwise,
+<span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ContainsPendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ContainsPendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L422">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_ContainsPendingEvidence_" data-uid="Libplanet.Store.IStore.ContainsPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_ContainsPendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.ContainsPendingEvidence(Libplanet.Types.Evidence.EvidenceId)">ContainsPendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as pending.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ContainsPendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of the <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and pending.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> as pending; otherwise,
+<span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ContainsTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ContainsTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L269">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L270">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ContainsTransaction_" data-uid="Libplanet.Store.IStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_IStore_ContainsTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.IStore.ContainsTransaction(Libplanet.Types.Tx.TxId)">ContainsTransaction(TxId)</h4>
@@ -250,7 +358,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.CountBlocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L271">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L272">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_CountBlocks_" data-uid="Libplanet.Store.IStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_IStore_CountBlocks" data-uid="Libplanet.Store.IStore.CountBlocks">CountBlocks()</h4>
@@ -280,7 +388,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.CountIndex(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_CountIndex_" data-uid="Libplanet.Store.IStore.CountIndex*"></a>
   <h4 id="Libplanet_Store_IStore_CountIndex_Guid_" data-uid="Libplanet.Store.IStore.CountIndex(Guid)">CountIndex(Guid)</h4>
@@ -327,7 +435,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L150">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L151">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_DeleteBlock_" data-uid="Libplanet.Store.IStore.DeleteBlock*"></a>
   <h4 id="Libplanet_Store_IStore_DeleteBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.DeleteBlock(Libplanet.Types.Blocks.BlockHash)">DeleteBlock(BlockHash)</h4>
@@ -378,7 +486,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L343">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L344">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_DeleteBlockCommit_" data-uid="Libplanet.Store.IStore.DeleteBlockCommit*"></a>
   <h4 id="Libplanet_Store_IStore_DeleteBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.DeleteBlockCommit(Libplanet.Types.Blocks.BlockHash)">DeleteBlockCommit(BlockHash)</h4>
@@ -413,7 +521,7 @@ to delete.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L29">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_DeleteChainId_" data-uid="Libplanet.Store.IStore.DeleteChainId*"></a>
   <h4 id="Libplanet_Store_IStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.IStore.DeleteChainId(Guid)">DeleteChainId(Guid)</h4>
@@ -451,10 +559,84 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L409">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_DeleteCommittedEvidence_" data-uid="Libplanet.Store.IStore.DeleteCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_DeleteCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.DeleteCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">DeleteCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Deletes a committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void DeleteCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a committed
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeletePendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeletePendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L400">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_DeletePendingEvidence_" data-uid="Libplanet.Store.IStore.DeletePendingEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_DeletePendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.DeletePendingEvidence(Libplanet.Types.Evidence.EvidenceId)">DeletePendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Deletes a pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void DeletePendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a pending
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>
+to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L219">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L220">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.Store.IStore.DeleteTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -495,7 +677,7 @@ of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L89">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L90">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ForkBlockIndexes_" data-uid="Libplanet.Store.IStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_Store_IStore_ForkBlockIndexes_Guid_Guid_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.ForkBlockIndexes(Guid,Guid,Libplanet.Types.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
@@ -550,7 +732,7 @@ block indexes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ForkTxNonces(Guid%2CGuid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L282">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L283">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ForkTxNonces_" data-uid="Libplanet.Store.IStore.ForkTxNonces*"></a>
   <h4 id="Libplanet_Store_IStore_ForkTxNonces_Guid_Guid_" data-uid="Libplanet.Store.IStore.ForkTxNonces(Guid,Guid)">ForkTxNonces(Guid, Guid)</h4>
@@ -594,7 +776,7 @@ block indexes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlock_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlock(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L113">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetBlock_" data-uid="Libplanet.Store.IStore.GetBlock*"></a>
   <h4 id="Libplanet_Store_IStore_GetBlock_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.GetBlock(Libplanet.Types.Blocks.BlockHash)">GetBlock(BlockHash)</h4>
@@ -646,7 +828,7 @@ block indexes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L330">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L331">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetBlockCommit_" data-uid="Libplanet.Store.IStore.GetBlockCommit*"></a>
   <h4 id="Libplanet_Store_IStore_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -699,7 +881,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockCommitHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockCommitHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L350">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L351">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetBlockCommitHashes_" data-uid="Libplanet.Store.IStore.GetBlockCommitHashes*"></a>
   <h4 id="Libplanet_Store_IStore_GetBlockCommitHashes" data-uid="Libplanet.Store.IStore.GetBlockCommitHashes">GetBlockCommitHashes()</h4>
@@ -732,7 +914,7 @@ of all <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommi
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockDigest(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L134">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L135">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetBlockDigest_" data-uid="Libplanet.Store.IStore.GetBlockDigest*"></a>
   <h4 id="Libplanet_Store_IStore_GetBlockDigest_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.GetBlockDigest(Libplanet.Types.Blocks.BlockHash)">GetBlockDigest(BlockHash)</h4>
@@ -784,7 +966,7 @@ having such <code data-dev-comment-type="paramref" class="paramref">blockHash</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetBlockIndex_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlockIndex(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetBlockIndex_" data-uid="Libplanet.Store.IStore.GetBlockIndex*"></a>
   <h4 id="Libplanet_Store_IStore_GetBlockIndex_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.GetBlockIndex(Libplanet.Types.Blocks.BlockHash)">GetBlockIndex(BlockHash)</h4>
@@ -839,7 +1021,7 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetCanonicalChainId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L36">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetCanonicalChainId_" data-uid="Libplanet.Store.IStore.GetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_IStore_GetCanonicalChainId" data-uid="Libplanet.Store.IStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
@@ -875,7 +1057,7 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetChainBlockCommit_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetChainBlockCommit(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L309">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L310">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetChainBlockCommit_" data-uid="Libplanet.Store.IStore.GetChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_IStore_GetChainBlockCommit_Guid_" data-uid="Libplanet.Store.IStore.GetChainBlockCommit(Guid)">GetChainBlockCommit(Guid)</h4>
@@ -925,10 +1107,63 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L379">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_GetCommittedEvidence_" data-uid="Libplanet.Store.IStore.GetCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_GetCommittedEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.GetCommittedEvidence(Libplanet.Types.Evidence.EvidenceId)">GetCommittedEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Gets every committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">EvidenceBase GetCommittedEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a committed
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Returns <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> if given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> is
+stored, committed and available, otherwise returns <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L204">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_" data-uid="Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_IStore_GetFirstTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.IStore.GetFirstTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)">GetFirstTxIdBlockHashIndex(TxId)</h4>
@@ -976,10 +1211,63 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetPendingEvidence_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetPendingEvidence(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L369">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_GetPendingEvidence_" data-uid="Libplanet.Store.IStore.GetPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_GetPendingEvidence_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Store.IStore.GetPendingEvidence(Libplanet.Types.Evidence.EvidenceId)">GetPendingEvidence(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p>Gets every pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> of given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code>
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">EvidenceBase GetPendingEvidence(EvidenceId evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> of a pending
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Returns <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> if given <code data-dev-comment-type="paramref" class="paramref">evidenceId</code> is
+stored, pending and available, otherwise returns <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetTransaction_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetTransaction(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L91">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L92">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetTransaction_" data-uid="Libplanet.Store.IStore.GetTransaction*"></a>
   <h4 id="Libplanet_Store_IStore_GetTransaction_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.IStore.GetTransaction(Libplanet.Types.Tx.TxId)">GetTransaction(TxId)</h4>
@@ -1026,7 +1314,7 @@ stored and available, otherwise returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetTxExecution(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L186">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L187">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetTxExecution_" data-uid="Libplanet.Store.IStore.GetTxExecution*"></a>
   <h4 id="Libplanet_Store_IStore_GetTxExecution_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.IStore.GetTxExecution(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
@@ -1089,7 +1377,7 @@ execution to retrieve.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetTxNonce(Guid%2CLibplanet.Crypto.Address)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L245">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L246">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetTxNonce_" data-uid="Libplanet.Store.IStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Crypto_Address_" data-uid="Libplanet.Store.IStore.GetTxNonce(Guid,Libplanet.Crypto.Address)">GetTxNonce(Guid, Address)</h4>
@@ -1152,7 +1440,7 @@ previous <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction<
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IncreaseTxNonce(Guid%2CLibplanet.Crypto.Address%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L257">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L258">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IncreaseTxNonce_" data-uid="Libplanet.Store.IStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Crypto_Address_System_Int64_" data-uid="Libplanet.Store.IStore.IncreaseTxNonce(Guid,Libplanet.Crypto.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1205,7 +1493,7 @@ the counter.  1 by default.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L66">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L67">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IndexBlockHash_" data-uid="Libplanet.Store.IStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_IStore_IndexBlockHash_Guid_System_Int64_" data-uid="Libplanet.Store.IStore.IndexBlockHash(Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
@@ -1263,7 +1551,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateBlockHashes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L104">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L105">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IterateBlockHashes_" data-uid="Libplanet.Store.IStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_IStore_IterateBlockHashes" data-uid="Libplanet.Store.IStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1295,7 +1583,7 @@ it returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L56">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IterateIndexes_" data-uid="Libplanet.Store.IStore.IterateIndexes*"></a>
   <h4 id="Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.IStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1356,10 +1644,44 @@ order; the genesis block goes first, and the tip block goes last.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IteratePendingEvidenceIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IteratePendingEvidenceIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L359">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_IteratePendingEvidenceIds_" data-uid="Libplanet.Store.IStore.IteratePendingEvidenceIds*"></a>
+  <h4 id="Libplanet_Store_IStore_IteratePendingEvidenceIds" data-uid="Libplanet.Store.IStore.IteratePendingEvidenceIds">IteratePendingEvidenceIds()</h4>
+  <div class="markdown level1 summary"><p>Gets every <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s of pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s
+from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;EvidenceId&gt; IteratePendingEvidenceIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>&gt;</td>
+        <td><p>Returns an <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s
+of all pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L211">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L212">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.Store.IStore.IterateTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Types.Tx.TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
@@ -1409,7 +1731,7 @@ order; the genesis block goes first, and the tip block goes last.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ListChainIds%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L17">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L18">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ListChainIds_" data-uid="Libplanet.Store.IStore.ListChainIds*"></a>
   <h4 id="Libplanet_Store_IStore_ListChainIds" data-uid="Libplanet.Store.IStore.ListChainIds">ListChainIds()</h4>
@@ -1441,7 +1763,7 @@ order; the genesis block goes first, and the tip block goes last.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ListTxNonces(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L231">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L232">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ListTxNonces_" data-uid="Libplanet.Store.IStore.ListTxNonces*"></a>
   <h4 id="Libplanet_Store_IStore_ListTxNonces_Guid_" data-uid="Libplanet.Store.IStore.ListTxNonces(Guid)">ListTxNonces(Guid)</h4>
@@ -1498,7 +1820,7 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L299">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L300">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PruneOutdatedChains_" data-uid="Libplanet.Store.IStore.PruneOutdatedChains*"></a>
   <h4 id="Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_" data-uid="Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)">PruneOutdatedChains(Boolean)</h4>
@@ -1537,7 +1859,7 @@ there is no canonical chain.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutBlock_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutBlock(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L142">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L143">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutBlock_" data-uid="Libplanet.Store.IStore.PutBlock*"></a>
   <h4 id="Libplanet_Store_IStore_PutBlock_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Store.IStore.PutBlock(Libplanet.Types.Blocks.Block)">PutBlock(Block)</h4>
@@ -1572,7 +1894,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L336">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L337">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutBlockCommit_" data-uid="Libplanet.Store.IStore.PutBlockCommit*"></a>
   <h4 id="Libplanet_Store_IStore_PutBlockCommit_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.IStore.PutBlockCommit(Libplanet.Types.Blocks.BlockCommit)">PutBlockCommit(BlockCommit)</h4>
@@ -1606,7 +1928,7 @@ If the same block already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutChainBlockCommit(Guid%2CLibplanet.Types.Blocks.BlockCommit)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L320">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L321">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutChainBlockCommit_" data-uid="Libplanet.Store.IStore.PutChainBlockCommit*"></a>
   <h4 id="Libplanet_Store_IStore_PutChainBlockCommit_Guid_Libplanet_Types_Blocks_BlockCommit_" data-uid="Libplanet.Store.IStore.PutChainBlockCommit(Guid,Libplanet.Types.Blocks.BlockCommit)">PutChainBlockCommit(Guid, BlockCommit)</h4>
@@ -1647,10 +1969,78 @@ the <see cref="!:BlockChain"></see> to store <a class="xref" href="Libplanet.Typ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutCommittedEvidence_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutCommittedEvidence(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L391">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_PutCommittedEvidence_" data-uid="Libplanet.Store.IStore.PutCommittedEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_PutCommittedEvidence_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Store.IStore.PutCommittedEvidence(Libplanet.Types.Evidence.EvidenceBase)">PutCommittedEvidence(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to the store as committed evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void PutCommittedEvidence(EvidenceBase evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>A committed <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutPendingEvidence_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutPendingEvidence(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L385">View Source</a>
+  </span>
+  <a id="Libplanet_Store_IStore_PutPendingEvidence_" data-uid="Libplanet.Store.IStore.PutPendingEvidence*"></a>
+  <h4 id="Libplanet_Store_IStore_PutPendingEvidence_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Store.IStore.PutPendingEvidence(Libplanet.Types.Evidence.EvidenceBase)">PutPendingEvidence(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Puts a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to the store as pending evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void PutPendingEvidence(EvidenceBase evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>A pending <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutTransaction_Libplanet_Types_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutTransaction(Libplanet.Types.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L98">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutTransaction_" data-uid="Libplanet.Store.IStore.PutTransaction*"></a>
   <h4 id="Libplanet_Store_IStore_PutTransaction_Libplanet_Types_Tx_Transaction_" data-uid="Libplanet.Store.IStore.PutTransaction(Libplanet.Types.Tx.Transaction)">PutTransaction(Transaction)</h4>
@@ -1685,7 +2075,7 @@ already exists in the store it does nothing.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L174">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L175">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutTxExecution_" data-uid="Libplanet.Store.IStore.PutTxExecution*"></a>
   <h4 id="Libplanet_Store_IStore_PutTxExecution_Libplanet_Types_Tx_TxExecution_" data-uid="Libplanet.Store.IStore.PutTxExecution(Libplanet.Types.Tx.TxExecution)">PutTxExecution(TxExecution)</h4>
@@ -1728,7 +2118,7 @@ and <a class="xref" href="Libplanet.Types.Tx.TxExecution.html#Libplanet_Types_Tx
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L196">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L197">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.Store.IStore.PutTxIdBlockHashIndex*"></a>
   <h4 id="Libplanet_Store_IStore_PutTxIdBlockHashIndex_Libplanet_Types_Tx_TxId_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Store.IStore.PutTxIdBlockHashIndex(Libplanet.Types.Tx.TxId,Libplanet.Types.Blocks.BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
@@ -1770,7 +2160,7 @@ it overwrites the record silently.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.SetCanonicalChainId(Guid)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L43">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L44">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_SetCanonicalChainId_" data-uid="Libplanet.Store.IStore.SetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_IStore_SetCanonicalChainId_Guid_" data-uid="Libplanet.Store.IStore.SetCanonicalChainId(Guid)">SetCanonicalChainId(Guid)</h4>
@@ -1821,7 +2211,7 @@ it overwrites the record silently.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_IStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/IStore.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

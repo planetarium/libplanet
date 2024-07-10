@@ -70,10 +70,60 @@
 [<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
 <li>(Libplanet.Types) Added <code>ValidatorPower</code> property to <code>IVoteMetadata</code>
 interface and its implementations.  [<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
+<li>(Libplanet.Types) Added <code>IBlockMetadata.EvidenceHash</code> property and
+the parameters required by the derived class's properties and constructors
+have been added.
+Affected classes are <code>Block</code>, <code>BlockContent</code>, <code>BlockHeader</code>,
+<code>BlockMetadata</code>, <code>PreEvaluationBlockHeader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>IBlockContent.Evidence</code> property and the
+parameters required by the derived class's properties and constructors
+have been added.
+Affected classes are <code>Block</code>, <code>BlockContent</code>, <code>BlockHeader</code>,
+<code>PreEvaluationBlock</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.GetMaxEvidencePendingDuration</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.Types) Added <code>InvalidBlockEvidenceHashException</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>InvalidBlockEvidencePendingDurationException</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceBase</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>DuplicateVoteEvidence</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>DuplicateVoteException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceContext</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceId</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>IEvidenceContext</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>InvalidEvidenceException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>EvidenceCompletion</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.IteratePendingEvidenceIds</code>. method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.GetPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.GetCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.PutPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.PutCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.DeletePendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.DeleteCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.ContainsPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.ContainsCommittedEvidence</code>. method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.GetPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.GetCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.AddEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.CommitEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidencePending</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidenceCommitted</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidenceExpired</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.DeletePendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Action) Added <code>IActionContext.Evidence</code>. property.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>Swarm.BroadcastEvidence</code>. property.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.CollectEvidenceExceptions</code>. property.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
