@@ -4,9 +4,7 @@ Libplanet changelog
 Version 5.1.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on July 11, 2024.
 
 ### Backward-incompatible API changes
 
@@ -26,10 +24,6 @@ To be released.
     `PreEvaluationBlock`.  [[#3696]]
  -  (Libplanet) Added `IBlockPolicy.GetMaxEvidencePendingDuration` method.
     [[#3696]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -69,10 +63,6 @@ To be released.
  -  (Libplanet.Net) Added `Swarm.BroadcastEvidence`. property.  [[#3696]]
  -  (Libplanet.Net) Added `Context.CollectEvidenceExceptions`. property.
     [[#3696]]
-
-### Behavioral changes
-
-### Bug fixes
 
 ### Dependencies
 
@@ -135,8 +125,6 @@ projects using `netstandard2.0` will be deprecated.
 
 The `VersionPrefix` property has been moved from the
 *src/Libplanet/Libplanet.csproj* file to the `Directory.Build.props` file.
-
-### CLI tools
 
 [#3696]: https://github.com/planetarium/libplanet/pull/3696
 [#3737]: https://github.com/planetarium/libplanet/pull/3737
