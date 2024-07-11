@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
-using Libplanet.Action.State;
 using Libplanet.Blockchain;
 #if NETSTANDARD2_0
 using Libplanet.Common;
@@ -74,17 +73,6 @@ namespace Libplanet.Net
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
-
-            // Cache migration
-            var tip = blockChain.Tip;
-            if (tip.ProtocolVersion < BlockMetadata.CurrentProtocolVersion)
-            {
-                var stateStore = blockChain.StateStore;
-                var trie = stateStore.GetStateRoot(tip.StateRootHash);
-                var world = new World(new WorldBaseState(trie, stateStore));
-                _ = stateStore.MigrateWorld(world, BlockMetadata.CurrentProtocolVersion);
-            }
-
             LastSeenTimestamps =
                 new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             BlockHeaderReceived = new AsyncAutoResetEvent();
