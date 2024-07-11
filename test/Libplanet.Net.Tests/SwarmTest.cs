@@ -430,12 +430,11 @@ namespace Libplanet.Net.Tests
 
             try
             {
-                // swarms[1] is the round 0 proposer for height 1.
-                // swarms[2] is the round 1 proposer for height 2.
                 _ = swarms[0].StartAsync();
-                _ = swarms[3].StartAsync();
+                _ = swarms[1].StartAsync();
 
-                swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
+                swarms[0].ConsensusReactor.ConsensusContext.StateChanged
+                    += (_, eventArgs) =>
                 {
                     if (eventArgs.VoteCount == 2)
                     {
@@ -443,13 +442,13 @@ namespace Libplanet.Net.Tests
                     }
                 };
 
-                // Make sure both swarms time out and swarm[0] collects two PreVotes.
+                // Make sure both swarms time out and non-proposer swarm[0] collects two PreVotes.
                 await collectedTwoMessages[0].WaitAsync();
 
-                // Dispose swarm[3] to simulate shutdown during bootstrap.
-                swarms[3].Dispose();
+                // Dispose non-proposer swarm[1] to simulate shutdown during bootstrap.
+                swarms[1].Dispose();
 
-                // Bring swarm[2] online.
+                // Bring non-proposer swarm[2] online.
                 _ = swarms[2].StartAsync();
                 swarms[0].ConsensusReactor.ConsensusContext.StateChanged += (_, eventArgs) =>
                 {
@@ -466,38 +465,30 @@ namespace Libplanet.Net.Tests
                     }
                 };
 
-                // Since we already have swarm[3]'s PreVote, when swarm[2] times out,
-                // swarm[2] adds additional PreVote, making it possible to reach PreCommit.
+                // Since we already have non-proposer swarm[1]'s PreVote,
+                // when non-proposer swarm[2] times out,
+                // non-proposer swarm[0] adds additional PreVote,
+                // making it possible to reach PreCommit.
                 // Current network's context state should be:
                 // Proposal: null
-                // PreVote: swarm[0], swarm[2], swarm[3],
-                // PreCommit: swarm[0], swarm[2]
+                // PreVote: non-proposer swarm[0],[1],[2],
+                // PreCommit: non-proposer swarm[0],[2]
+                await Task.Delay(1500);
+
                 await Task.WhenAll(
-                    stepChangedToPreCommits[0].WaitAsync(), stepChangedToPreCommits[2].WaitAsync());
+                    stepChangedToPreCommits[0].WaitAsync(),
+                    stepChangedToPreCommits[2].WaitAsync());
 
-                // After swarm[1] comes online, eventually it'll catch up to vote PreCommit,
-                // at which point the round will move to 1 where swarm[2] is the proposer.
-                _ = swarms[1].StartAsync();
-                swarms[2].ConsensusReactor.ConsensusContext.MessagePublished += (_, eventArgs) =>
-                {
-                    if (eventArgs.Message is ConsensusProposalMsg proposalMsg &&
-                        proposalMsg.Round == 1 &&
-                        proposalMsg.ValidatorPublicKey.Equals(TestUtils.PrivateKeys[2].PublicKey))
-                    {
-                        roundOneProposed.Set();
-                    }
-                };
+                _ = swarms[3].StartAsync();
 
-                await roundOneProposed.WaitAsync();
-
-                await AssertThatEventually(() => swarms[0].BlockChain.Tip.Index == 1, int.MaxValue);
-                Assert.Equal(1, swarms[0].BlockChain.GetBlockCommit(1).Round);
+                await AssertThatEventually(
+                    () => swarms[0].BlockChain.Tip.Index == 1, int.MaxValue);
             }
             finally
             {
                 CleaningSwarm(swarms[0]);
-                CleaningSwarm(swarms[1]);
                 CleaningSwarm(swarms[2]);
+                CleaningSwarm(swarms[3]);
             }
         }
 

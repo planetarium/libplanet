@@ -58,6 +58,15 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             consensusContext.Start();
+            var lotSet = new LotSet(1L, 0, null, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 1L, 0, lot)));
+            }
+
             var block1 = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[1],
                 proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
@@ -95,6 +104,15 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext.HandleMessage(new ConsensusPreCommitMsg(expectedVotes[i]));
             }
 
+            lotSet = new LotSet(2L, 0, block1.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[2]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 2L, 0, lot)));
+            }
+
             await heightTwoProposalSent.WaitAsync();
             Assert.NotNull(proposal);
 
@@ -114,9 +132,11 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var codec = new Codec();
             ConsensusProposalMsg? proposal = null;
+            var heightTwoStepChangedToSortition = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
             var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
+            var heightThreeStepChangedToSortition = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
             var proposalSent = new AsyncAutoResetEvent();
@@ -160,7 +180,8 @@ namespace Libplanet.Net.Tests.Consensus
             };
             consensusContext.MessagePublished += (_, eventArgs) =>
             {
-                if (eventArgs.Message is ConsensusProposalMsg proposalMsg)
+                if (eventArgs.Message is ConsensusProposalMsg proposalMsg
+                && proposalMsg.Height == 2L)
                 {
                     proposal = proposalMsg;
                     proposalSent.Set();
@@ -173,6 +194,16 @@ namespace Libplanet.Net.Tests.Consensus
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1]));
+
+            var lotSet = new LotSet(2L, 0, block.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[2]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 2L, 0, lot)));
+            }
+
             await proposalSent.WaitAsync();
 
             Assert.Equal(2, consensusContext.Height);
@@ -238,6 +269,15 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.CreateBlockCommit(blockHeightTwo),
                 TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[3]));
 
+            lotSet = new LotSet(3L, 0, blockHeightTwo.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 3L, 0, lot)));
+            }
+
             // Message from higher height
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(blockHeightThree, TestUtils.PrivateKeys[3], 3));
@@ -274,11 +314,29 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             consensusContext.Start();
+            var lotSet = new LotSet(1L, 0, null, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 1L, 0, lot)));
+            }
+
             Block block = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[1],
                 proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             var createdLastCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, createdLastCommit);
+
+            lotSet = new LotSet(2L, 0, block.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[2]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 2L, 0, lot)));
+            }
 
             // Context for height #2 where node #2 is the proposer is automatically started
             // by watching blockchain's Tip.
@@ -296,7 +354,7 @@ namespace Libplanet.Net.Tests.Consensus
             // The maximum error margin. (macos-netcore-test)
             var timeError = 500;
             var heightOneEndCommit = new AsyncAutoResetEvent();
-            var heightTwoProposalSent = new AsyncAutoResetEvent();
+            var heightTwoSortitionStarted = new AsyncAutoResetEvent();
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
@@ -308,16 +366,22 @@ namespace Libplanet.Net.Tests.Consensus
                 {
                     heightOneEndCommit.Set();
                 }
-            };
-            consensusContext.MessagePublished += (_, eventArgs) =>
-            {
-                if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg)
+                else if (eventArgs.Height == 2 && eventArgs.Step == ConsensusStep.Sortition)
                 {
-                    heightTwoProposalSent.Set();
+                    heightTwoSortitionStarted.Set();
                 }
             };
 
             consensusContext.Start();
+            var lotSet = new LotSet(1L, 0, null, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 0, 1, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], 1L, 0, lot)));
+            }
+
             var block = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[1],
                 proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
@@ -330,15 +394,15 @@ namespace Libplanet.Net.Tests.Consensus
             await heightOneEndCommit.WaitAsync();
             var endCommitTime = DateTimeOffset.UtcNow;
 
-            await heightTwoProposalSent.WaitAsync();
-            var proposeTime = DateTimeOffset.UtcNow;
-            var difference = proposeTime - endCommitTime;
+            await heightTwoSortitionStarted.WaitAsync();
+            var sortitionTime = DateTimeOffset.UtcNow;
+            var difference = sortitionTime - endCommitTime;
 
             _logger.Debug("Difference: {Difference}", difference);
             // Check new height delay; slight margin of error is allowed as delay task
             // is run asynchronously from context events.
             Assert.True(
-                ((proposeTime - endCommitTime) - newHeightDelay).Duration() <
+                ((sortitionTime - endCommitTime) - newHeightDelay).Duration() <
                     TimeSpan.FromMilliseconds(timeError));
         }
     }

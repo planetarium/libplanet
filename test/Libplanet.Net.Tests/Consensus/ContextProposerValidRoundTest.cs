@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -37,13 +38,18 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
             var roundTwoVoteSent = new AsyncAutoResetEvent();
+            var stateChangedToRoundTwoSortition = new AsyncAutoResetEvent();
             var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
             bool timeoutProcessed = false;
 
-            var (_, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext(privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Sortition)
+                {
+                    stateChangedToRoundTwoSortition.Set();
+                }
+                else if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
@@ -66,6 +72,31 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             context.Start();
+            var lotSet = new LotSet(1, 0, null, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
+            context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[1],
+                        1,
+                        0,
+                        lot)));
+            context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[2],
+                        1,
+                        0,
+                        lot)));
+            context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[3],
+                        1,
+                        0,
+                        lot)));
+
+            await Task.Delay(1000);
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
             Block proposedBlock = BlockMarshaler.UnmarshalBlock(
@@ -88,6 +119,31 @@ namespace Libplanet.Net.Tests.Consensus
                     round: 2,
                     hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
+
+            await stateChangedToRoundTwoSortition.WaitAsync();
+            lotSet.SetRound(2, lot.Proof);
+            context.ProduceMessage(
+                 new ConsensusDominantLotMsg(
+                     TestUtils.CreateDominantLot(
+                         TestUtils.PrivateKeys[1],
+                         1,
+                         2,
+                         lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
+            context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[2],
+                        1,
+                        2,
+                        lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
+            context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[3],
+                        1,
+                        2,
+                        lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
+
             await stateChangedToRoundTwoPropose.WaitAsync();
             Assert.Equal(2, context.Round);
 
@@ -128,16 +184,23 @@ namespace Libplanet.Net.Tests.Consensus
         {
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
+            var stateChangedToRoundTwoSortition = new AsyncAutoResetEvent();
             var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
             var stateChangedToRoundTwoPreVote = new AsyncAutoResetEvent();
             var stateChangedToRoundTwoPreCommit = new AsyncAutoResetEvent();
+            var stateChangedToRoundThreeSortition = new AsyncAutoResetEvent();
             var stateChangedToRoundThreePropose = new AsyncAutoResetEvent();
             var roundThreeNilPreVoteSent = new AsyncAutoResetEvent();
             bool timeoutProcessed = false;
-            var (blockChain, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, eventArgs) =>
             {
-                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Sortition)
+                {
+                    stateChangedToRoundTwoSortition.Set();
+                }
+                else if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
@@ -148,6 +211,10 @@ namespace Libplanet.Net.Tests.Consensus
                 else if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.PreCommit)
                 {
                     stateChangedToRoundTwoPreCommit.Set();
+                }
+                else if (eventArgs.Round == 3 && eventArgs.Step == ConsensusStep.Sortition)
+                {
+                    stateChangedToRoundThreeSortition.Set();
                 }
                 else if (eventArgs.Round == 3 && eventArgs.Step == ConsensusStep.Propose)
                 {
@@ -187,6 +254,16 @@ namespace Libplanet.Net.Tests.Consensus
                 key);
 
             context.Start();
+            var lotSet = new LotSet(1, 0, null, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
+            foreach (int i in Enumerable.Range(1, 3))
+            {
+                context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[i], 1, 0, lot)));
+            }
+
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal);
             Block proposedBlock = BlockMarshaler.UnmarshalBlock(
@@ -209,6 +286,17 @@ namespace Libplanet.Net.Tests.Consensus
                     round: 2,
                     hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
+            await stateChangedToRoundTwoSortition.WaitAsync();
+            lotSet.SetRound(2, lot.Proof);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in Enumerable.Range(1, 3))
+            {
+                context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[i], 1, 2, lot)));
+            }
+
             await stateChangedToRoundTwoPropose.WaitAsync();
             Assert.Equal(2, context.Round);
             Assert.False(timeoutProcessed); // Assert no transition is due to timeout.
@@ -248,6 +336,17 @@ namespace Libplanet.Net.Tests.Consensus
                     round: 3,
                     hash: differentBlock.Hash,
                     flag: VoteFlag.PreVote)));
+            await stateChangedToRoundThreeSortition.WaitAsync();
+            lotSet.SetRound(3, lot.Proof);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in Enumerable.Range(1, 3))
+            {
+                context.ProduceMessage(
+                new ConsensusDominantLotMsg(
+                    TestUtils.CreateDominantLot(
+                        TestUtils.PrivateKeys[i], 1, 3, lot)));
+            }
+
             await stateChangedToRoundThreePropose.WaitAsync();
             Assert.Equal(3, context.Round);
 

@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.JsonDiffPatch.Xunit;
@@ -422,7 +423,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
-            int protocolVersion = Block.CurrentProtocolVersion
+            int protocolVersion = Block.CurrentProtocolVersion,
+            Proof? proof = null
         )
         {
             var txs = transactions?.ToList() ?? new List<Transaction>();
@@ -454,7 +456,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
-                    proof: null,
+                    proof: proof,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: Array.Empty<EvidenceBase>());
@@ -652,7 +654,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     txs,
                     validatorSet,
                     timestamp,
-                    protocolVersion);
+                    protocolVersion,
+                    new ConsensusInformation(0, 0, null).Prove(GenesisProposer));
                 var evaluatedSrh = actionEvaluator.Evaluate(preEval, null).Last().OutputState;
                 genesisBlock = protocolVersion < BlockMetadata.SignatureProtocolVersion
                     ? new Block(

@@ -63,6 +63,68 @@ namespace Libplanet.Net.Tests
 
         private static readonly Random Random = new Random();
 
+        public static List<PrivateKey> GetProposers(IEnumerable<(long Height, int Round)> sequence)
+        {
+            List<PrivateKey> proposers = new List<PrivateKey>();
+            (long Height, int Round, Proof? Proof) prev = (-1, 0, null);
+            foreach (var consensus in sequence)
+            {
+                if ((prev.Height < 0 || prev.Round < 0 || prev.Proof is null) &&
+                    (consensus.Height != 0 || consensus.Round != 0))
+                {
+                    throw new ArgumentException("First item of sequence have to be (0L, 0).");
+                }
+
+                if (prev.Height + prev.Round + 1 != consensus.Height + consensus.Round)
+                {
+                    throw new ArgumentException(
+                        "Height + Round of sequence have to be gradually increased by 1.");
+                }
+
+                var result = GetProposer(consensus.Height, consensus.Round, prev.Proof);
+                prev = (consensus.Height, consensus.Round, result.Proof);
+                proposers.Add(result.Proposer);
+            }
+
+            return proposers;
+        }
+
+        public static (PrivateKey Proposer, Proof Proof) GetProposer(
+            long height,
+            int round,
+            Proof? lastProof)
+            => GetProposer(height, round, lastProof, PrivateKeys, ValidatorSet);
+
+        public static (PrivateKey Proposer, Proof Proof) GetProposer(
+            long height,
+            int round,
+            Proof? lastProof,
+            IReadOnlyList<PrivateKey> privateKeys,
+            ValidatorSet validatorSet)
+        {
+            var lotSet = new LotSet(height, round, lastProof, validatorSet, 20);
+            foreach (var privateKey in privateKeys)
+            {
+                lotSet.AddLot(lotSet.Consensusinformation.ToLot(privateKey));
+            }
+
+            return (privateKeys.First(
+                pk => pk.PublicKey.Equals(lotSet.DominantLot!.Value.PublicKey)),
+                lotSet.DominantLot!.Value.Proof);
+        }
+
+        public static DominantLot CreateDominantLot(
+            PrivateKey privateKey,
+            long height,
+            int round,
+            Lot lot) =>
+            new DominantLotMetadata(
+                height,
+                round,
+                lot,
+                DateTimeOffset.Now,
+                privateKey.PublicKey).Sign(privateKey);
+
         public static Vote CreateVote(
             PrivateKey privateKey,
             BigInteger power,

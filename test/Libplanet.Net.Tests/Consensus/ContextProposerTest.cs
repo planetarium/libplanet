@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
@@ -98,7 +97,8 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusPreCommitMsg? preCommit = null;
             var preCommitSent = new AsyncAutoResetEvent();
 
-            var (_, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == ConsensusStep.PreCommit)
@@ -121,6 +121,17 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             context.Start();
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+            }
 
             // Wait for propose to process.
             await proposalSent.WaitAsync();
@@ -204,7 +215,7 @@ namespace Libplanet.Net.Tests.Consensus
             await roundChangedToOne.WaitAsync();
             Assert.Equal(1, context.Height);
             Assert.Equal(1, context.Round);
-            Assert.Equal(ConsensusStep.Propose, context.Step);
+            Assert.Equal(ConsensusStep.Sortition, context.Step);
         }
 
         [Fact(Timeout = Timeout)]
@@ -215,7 +226,8 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
 
-            var (_, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == ConsensusStep.PreCommit)
@@ -238,6 +250,17 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             context.Start();
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+            }
 
             // Wait for propose to process.
             await proposalSent.WaitAsync();
@@ -268,7 +291,7 @@ namespace Libplanet.Net.Tests.Consensus
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var (_, context) = TestUtils.CreateDummyContext(
-                height: 5,
+                height: 1,
                 validatorSet: Libplanet.Tests.TestUtils.ValidatorSet); // Peer1 should be a proposer
 
             context.StateChanged += (_, eventArgs) =>
@@ -289,7 +312,7 @@ namespace Libplanet.Net.Tests.Consensus
             context.Start();
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(ConsensusStep.PreVote, context.Step);
-            Assert.Equal(5, context.Height);
+            Assert.Equal(1, context.Height);
         }
 
         [Fact(Timeout = Timeout)]
@@ -301,7 +324,8 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusPreVoteMsg? preVote = null;
             var preVoteSent = new AsyncAutoResetEvent();
 
-            var (_, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.PrivateKeys[0]);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -325,6 +349,18 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             context.Start();
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+            }
+
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
@@ -333,65 +369,6 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(ConsensusStep.PreVote, context.Step);
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async void VoteNilOnSelfProposedInvalidBlock()
-        {
-            var privateKey = new PrivateKey();
-            ConsensusProposalMsg? proposal = null;
-            var proposalSent = new AsyncAutoResetEvent();
-            ConsensusPreVoteMsg? preVote = null;
-            var preVoteSent = new AsyncAutoResetEvent();
-
-            var blockChain = TestUtils.CreateDummyBlockChain();
-            var proposer1 = new PrivateKey();
-            var block1 = blockChain.ProposeBlock(
-                proposer1,
-                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer1));
-            var block1Commit = TestUtils.CreateBlockCommit(block1);
-            blockChain.Append(block1, block1Commit);
-            var proposer2 = new PrivateKey();
-            var block2 = blockChain.ProposeBlock(
-                proposer2,
-                block1Commit,
-                TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer2));
-            var block2Commit = TestUtils.CreateBlockCommit(block2);
-            blockChain.Append(block2, block2Commit);
-
-            var context = TestUtils.CreateDummyContext(
-                blockChain,
-                privateKey: TestUtils.PrivateKeys[2],
-                height: 2,
-                lastCommit: block2Commit,
-                validatorSet: TestUtils.ValidatorSet);
-            context.MessageToPublish += (_, message) =>
-            {
-                if (message is ConsensusProposalMsg proposalMsg)
-                {
-                    proposal = proposalMsg;
-                    proposalSent.Set();
-                }
-                else if (message is ConsensusPreVoteMsg preVoteMsg)
-                {
-                    preVote = preVoteMsg;
-                    preVoteSent.Set();
-                }
-            };
-
-            Assert.Equal(
-                TestUtils.PrivateKeys[2].PublicKey,
-                context.Proposer);
-
-            context.Start();
-            await proposalSent.WaitAsync();
-            Bencodex.Codec codec = new Bencodex.Codec();
-            var proposedBlock = BlockMarshaler.UnmarshalBlock(
-                (Bencodex.Types.Dictionary)codec.Decode(proposal?.Proposal.MarshaledBlock!));
-            Assert.Equal(context.Height + 1, proposedBlock.Index);
-            await preVoteSent.WaitAsync();
-            Assert.Equal(default(BlockHash), preVote?.BlockHash);
-            Assert.Equal(default(BlockHash), preVote?.PreVote.BlockHash);
         }
     }
 }
