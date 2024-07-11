@@ -1474,7 +1474,7 @@ namespace Libplanet.Tests.Action
 
             public IWorld Execute(IActionContext context)
             {
-                context.UseGas(GasUsage);
+                GasTracer.UseGas(GasUsage);
                 var state = context.PreviousState
                     .SetAccount(
                         ReservedAddresses.LegacyAccount,
