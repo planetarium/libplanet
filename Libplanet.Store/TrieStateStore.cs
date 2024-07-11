@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -17,8 +16,6 @@ namespace Libplanet.Store
     {
         private readonly ILogger _logger;
         private readonly HashNodeCache _cache;
-        private readonly Dictionary<(HashDigest<SHA256>, int), HashDigest<SHA256>> _migrationCache;
-
         private bool _disposed = false;
 
         /// <summary>
@@ -31,13 +28,9 @@ namespace Libplanet.Store
             StateKeyValueStore = stateKeyValueStore;
             _cache = new HashNodeCache();
             _logger = Log.ForContext<TrieStateStore>();
-            _migrationCache = new Dictionary<(HashDigest<SHA256>, int), HashDigest<SHA256>>();
         }
 
         public IKeyValueStore StateKeyValueStore { get; }
-
-        public Dictionary<(HashDigest<SHA256>, int), HashDigest<SHA256>> MigrationCache =>
-            _migrationCache;
 
         /// <summary>
         /// <para>

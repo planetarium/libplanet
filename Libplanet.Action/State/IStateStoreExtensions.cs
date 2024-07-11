@@ -8,7 +8,6 @@ using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
-using Serilog;
 
 namespace Libplanet.Action.State
 {
@@ -90,7 +89,6 @@ namespace Libplanet.Action.State
         /// <remarks>
         /// Migrated <see cref="IWorld"/> is automatically committed before returning.
         /// </remarks>
-#pragma warning disable MEN003
         internal static IWorld MigrateWorld(
             this IStateStore stateStore,
             IWorld world,
@@ -102,36 +100,6 @@ namespace Libplanet.Action.State
                     $"Given {nameof(world)} with version {world.Version} " +
                     $"cannot be migrated to a lower version {targetVersion}.");
             }
-
-            Log.Information(
-                "Migrating state root hash {SourceStateRootHash}/{SourceVersion} to " +
-                "version {TargetVersion}",
-                world.Trie.Hash,
-                world.Version,
-                targetVersion);
-            if (stateStore is TrieStateStore tss1)
-            {
-                var cache = tss1.MigrationCache;
-                if (cache.ContainsKey((world.Trie.Hash, targetVersion)))
-                {
-                    var migratedStateRootHash = cache[(world.Trie.Hash, targetVersion)];
-                    var migratedStateRoot = stateStore.GetStateRoot(migratedStateRootHash);
-                    if (migratedStateRoot.Recorded)
-                    {
-                        Log.Information(
-                            "Found migrated state root hash of " +
-                            "{SourceStateRootHash}/{SourceVersion} " +
-                            "in cache: {TargetStateRootHash}/{TargetVersion}",
-                            world.Trie.Hash,
-                            world.Version,
-                            migratedStateRoot.Hash,
-                            migratedStateRoot.GetMetadata()?.Version ?? 0);
-                        return new World(new WorldBaseState(migratedStateRoot, stateStore));
-                    }
-                }
-            }
-
-            var sourceWorld = world;
 
             // Migrate up to BlockMetadata.WorldStateProtocolVersion
             // if conditions are met.
@@ -294,32 +262,7 @@ namespace Libplanet.Action.State
                 world = new World(new WorldBaseState(worldTrie, stateStore));
             }
 
-            Log.Information(
-                "Finished migrating state root hash {SourceStateRootHash}/{SourceVersion} " +
-                "from {TargetStateRootHash}/{TargetVersion}",
-                sourceWorld.Trie.Hash,
-                sourceWorld.Version,
-                world.Trie.Hash,
-                world.Version);
-
-            if (stateStore is TrieStateStore tss2)
-            {
-                var cache = tss2.MigrationCache;
-                if (!cache.ContainsKey((sourceWorld.Trie.Hash, targetVersion)))
-                {
-                    Log.Information(
-                        "Adding migrated state root hash {TargetStateRootHash}/{TargetVersion} " +
-                        "of {SourceStateRootHash}/{SourceVersion} to cache",
-                        sourceWorld.Trie.Hash,
-                        sourceWorld.Version,
-                        world.Trie.Hash,
-                        world.Version);
-                    cache[(sourceWorld.Trie.Hash, targetVersion)] = world.Trie.Hash;
-                }
-            }
-
             return world;
         }
-#pragma warning restore MEN003
     }
 }
