@@ -141,7 +141,7 @@ namespace Libplanet.Types.Evidence
         public static IValue Bencode(EvidenceBase evidence)
         {
             Dictionary bencoded = Dictionary.Empty
-                .Add(TypeKey, evidence.GetType().AssemblyQualifiedName!)
+                .Add(TypeKey, GetTypeName(evidence))
                 .Add(DataKey, evidence.Bencoded);
             return bencoded;
         }
@@ -208,6 +208,23 @@ namespace Libplanet.Types.Evidence
             => obj is EvidenceBase other ? CompareTo(other: other) : 1;
 
         public void Verify(IEvidenceContext evidenceContext) => OnVerify(evidenceContext);
+
+        internal static string GetTypeName(Type evidenceType)
+        {
+            if (!typeof(EvidenceBase).IsAssignableFrom(evidenceType))
+            {
+                throw new ArgumentException(
+                    $"Given type {evidenceType} is not a subclass of {nameof(EvidenceBase)}.",
+                    nameof(evidenceType));
+            }
+
+            var typeName = evidenceType.FullName;
+            var assemblyName = evidenceType.Assembly.GetName().Name;
+            return $"{typeName}, {assemblyName}";
+        }
+
+        internal static string GetTypeName(EvidenceBase evidence)
+            => GetTypeName(evidence.GetType());
 
         protected abstract Dictionary OnBencoded(Dictionary dictionary);
 
