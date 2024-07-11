@@ -64,6 +64,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
     <PackageReference Include="Bencodex" Version="0.16.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
@@ -95,7 +96,7 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
