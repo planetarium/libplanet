@@ -73,7 +73,10 @@ namespace Libplanet.Net.Consensus
         {
             _consensusInformation = new ConsensusInformation(Height, Math.Max(round, 0), lastProof);
             _lots.Clear();
+            _dominantLot = null;
             _dominantLots.Clear();
+            _lotsPower.Clear();
+            Maj23 = null;
         }
 
         public Proof GenerateProof(PrivateKey privateKey)
@@ -168,7 +171,8 @@ namespace Libplanet.Net.Consensus
                 _validatorSet.TotalPower);
 
             if (!(_dominantLot is { } dominantLot
-                && drawn < dominantLot.Item2))
+                && (drawn < dominantLot.Item2
+                    || (drawn == dominantLot.Item2 && lot.Proof <= dominantLot.Item1.Proof))))
             {
                 _dominantLot = (lot, drawn);
             }

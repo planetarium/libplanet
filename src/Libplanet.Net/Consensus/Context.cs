@@ -141,6 +141,7 @@ namespace Libplanet.Net.Consensus
                 validators,
                 ConsensusStep.Default,
                 -1,
+                20,
                 128,
                 contextTimeoutOptions)
         {
@@ -154,6 +155,7 @@ namespace Libplanet.Net.Consensus
             ValidatorSet validators,
             ConsensusStep consensusStep,
             int round = -1,
+            int drawSize = 20,
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
@@ -185,7 +187,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
-            _lotSet = new LotSet(height, round, _lastProof, validators, 20);
+            _lotSet = new LotSet(height, round, _lastProof, validators, drawSize);
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
