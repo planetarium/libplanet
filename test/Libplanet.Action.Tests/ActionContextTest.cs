@@ -61,7 +61,6 @@ namespace Libplanet.Action.Tests
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: seed,
                     isPolicyAction: false,
-                    gasLimit: 0,
                     maxGasPrice: null
                 );
                 IRandom random = context.GetRandom();
@@ -82,7 +81,6 @@ namespace Libplanet.Action.Tests
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 isPolicyAction: false,
-                gasLimit: 0,
                 maxGasPrice: null
             );
 
@@ -96,7 +94,6 @@ namespace Libplanet.Action.Tests
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 isPolicyAction: false,
-                gasLimit: 0,
                 maxGasPrice: null
             );
 
@@ -110,7 +107,6 @@ namespace Libplanet.Action.Tests
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 1,
                 isPolicyAction: false,
-                gasLimit: 0,
                 maxGasPrice: null
             );
 
@@ -152,7 +148,6 @@ namespace Libplanet.Action.Tests
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: i,
                     isPolicyAction: false,
-                    gasLimit: 0,
                     maxGasPrice: null
                 );
                 var guid = context.GetRandom().GenerateRandomGuid().ToString();

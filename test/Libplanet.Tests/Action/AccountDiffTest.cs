@@ -83,7 +83,6 @@ namespace Libplanet.Tests.Action
                         new TrieStateStore(new MemoryKeyValueStore()))),
                 0,
                 true,
-                0,
                 null);
     }
 }

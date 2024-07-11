@@ -66,7 +66,6 @@ namespace Libplanet.Action.Tests
                     new World(MockWorldState.CreateModern()),
                     123,
                     false,
-                    0,
                     maxGasPrice: null),
                 world);
             var action = (DumbAction)evaluation.Action;
