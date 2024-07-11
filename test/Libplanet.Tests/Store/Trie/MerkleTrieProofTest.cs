@@ -161,6 +161,23 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
+        public void DifferentRootsProduceDifferentProofs()
+        {
+            var proof1 = ((MerkleTrie)FullTrie).GetProof(K00, V00);
+            var proof2 = ((MerkleTrie)HalfTrie).GetProof(K00, V00);
+            Assert.NotEqual(proof1.Count, proof2.Count);
+
+            Assert.True(
+                MerkleTrie.IsValidProof(FullTrieHash, proof1, K00, V00));
+            Assert.False(
+                MerkleTrie.IsValidProof(FullTrieHash, proof2, K00, V00));
+            Assert.False(
+                MerkleTrie.IsValidProof(HalfTrieHash, proof1, K00, V00));
+            Assert.True(
+                MerkleTrie.IsValidProof(HalfTrieHash, proof2, K00, V00));
+        }
+
+        [Fact]
         public void InvalidGetProofCalls()
         {
             Assert.Contains(
@@ -185,6 +202,52 @@ namespace Libplanet.Tests.Store.Trie
                 Assert.Throws<ArgumentException>(
                     () => ((MerkleTrie)FullTrie).GetProof(
                         KeyBytes.FromHex("0020"), V0000)).Message);
+        }
+
+        [Fact]
+        public void ValidateProof()
+        {
+            Assert.True(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K00, V00),
+                K00,
+                V00));
+            Assert.True(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K01, V01),
+                K01,
+                V01));
+            Assert.True(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K0000, V0000),
+                K0000,
+                V0000));
+            Assert.True(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K0010, V0010),
+                K0010,
+                V0010));
+
+            Assert.False(MerkleTrie.IsValidProof(
+                HalfTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K00, V00),
+                K00,
+                V00));  // Wrong hash
+            Assert.False(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K00, V00),
+                K00,
+                V01));  // Wrong value
+            Assert.False(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K00, V00),
+                K01,
+                V00));  // Wrong key
+            Assert.False(MerkleTrie.IsValidProof(
+                FullTrieHash,
+                ((MerkleTrie)FullTrie).GetProof(K00, V00),
+                K01,
+                V01));  // Wrong proof
         }
 
         private HashNode ToHashNode(INode node) =>
