@@ -42,7 +42,8 @@ namespace Libplanet.Net.Tests.Consensus
             var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
             bool timeoutProcessed = false;
 
-            var (_, context) = TestUtils.CreateDummyContext(privateKey: TestUtils.PrivateKeys[0]);
+            var (blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Round == 2 && eventArgs.Step == ConsensusStep.Sortition)
@@ -72,29 +73,15 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             context.Start();
-            var lotSet = new LotSet(1, 0, null, TestUtils.ValidatorSet, 20);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
             var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
-            context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[1],
-                        1,
-                        0,
-                        lot)));
-            context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[2],
-                        1,
-                        0,
-                        lot)));
-            context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[3],
-                        1,
-                        0,
-                        lot)));
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
 
             await Task.Delay(1000);
             await proposalSent.WaitAsync();
@@ -122,27 +109,13 @@ namespace Libplanet.Net.Tests.Consensus
 
             await stateChangedToRoundTwoSortition.WaitAsync();
             lotSet.SetRound(2, lot.Proof);
-            context.ProduceMessage(
-                 new ConsensusDominantLotMsg(
-                     TestUtils.CreateDominantLot(
-                         TestUtils.PrivateKeys[1],
-                         1,
-                         2,
-                         lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
-            context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[2],
-                        1,
-                        2,
-                        lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
-            context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[3],
-                        1,
-                        2,
-                        lotSet.GenerateLot(TestUtils.PrivateKeys[3]))));
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                context.ProduceMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
 
             await stateChangedToRoundTwoPropose.WaitAsync();
             Assert.Equal(2, context.Round);
@@ -254,14 +227,14 @@ namespace Libplanet.Net.Tests.Consensus
                 key);
 
             context.Start();
-            var lotSet = new LotSet(1, 0, null, TestUtils.ValidatorSet, 20);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
             var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[0]);
-            foreach (int i in Enumerable.Range(1, 3))
+            foreach (int i in new int[] { 1, 2, 3 })
             {
                 context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[i], 1, 0, lot)));
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
             }
 
             await proposalSent.WaitAsync();
@@ -289,12 +262,11 @@ namespace Libplanet.Net.Tests.Consensus
             await stateChangedToRoundTwoSortition.WaitAsync();
             lotSet.SetRound(2, lot.Proof);
             lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
-            foreach (int i in Enumerable.Range(1, 3))
+            foreach (int i in new int[] { 1, 2, 3 })
             {
                 context.ProduceMessage(
-                new ConsensusDominantLotMsg(
-                    TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[i], 1, 2, lot)));
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
             }
 
             await stateChangedToRoundTwoPropose.WaitAsync();
@@ -344,7 +316,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                 new ConsensusDominantLotMsg(
                     TestUtils.CreateDominantLot(
-                        TestUtils.PrivateKeys[i], 1, 3, lot)));
+                        TestUtils.PrivateKeys[i], lot)));
             }
 
             await stateChangedToRoundThreePropose.WaitAsync();

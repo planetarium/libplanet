@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests
             var lotSet = new LotSet(height, round, lastProof, validatorSet, 20);
             foreach (var privateKey in privateKeys)
             {
-                lotSet.AddLot(lotSet.Consensusinformation.ToLot(privateKey));
+                lotSet.AddLot(lotSet.ConsensusInformation.ToLot(privateKey));
             }
 
             return (privateKeys.First(
@@ -115,12 +115,8 @@ namespace Libplanet.Net.Tests
 
         public static DominantLot CreateDominantLot(
             PrivateKey privateKey,
-            long height,
-            int round,
             Lot lot) =>
             new DominantLotMetadata(
-                height,
-                round,
                 lot,
                 DateTimeOffset.Now,
                 privateKey.PublicKey).Sign(privateKey);

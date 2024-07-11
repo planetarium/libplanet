@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Consensus
             _signer = new PrivateKey();
             _lot = new ConsensusInformation(0, 0, null).ToLot(_prover);
             _dominantLotMetadata = new DominantLotMetadata(
-                0, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey);
+                _lot, DateTimeOffset.MinValue, _signer.PublicKey);
             _dominantLot = _dominantLotMetadata.Sign(_signer);
         }
 
@@ -65,18 +65,6 @@ namespace Libplanet.Tests.Consensus
             Assert.NotEqual(
                 _dominantLot,
                 new DominantLotMetadata(
-                    1, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey)
-                .Sign(_signer));
-            Assert.NotEqual(
-                _dominantLot,
-                new DominantLotMetadata(
-                    0, 1, _lot, DateTimeOffset.MinValue, _signer.PublicKey)
-                .Sign(_signer));
-            Assert.NotEqual(
-                _dominantLot,
-                new DominantLotMetadata(
-                    0,
-                    0,
                     new ConsensusInformation(0, 0, null).ToLot(new PrivateKey()),
                     DateTimeOffset.MinValue,
                     _signer.PublicKey)
@@ -84,13 +72,13 @@ namespace Libplanet.Tests.Consensus
             Assert.NotEqual(
                 _dominantLot,
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MaxValue, _signer.PublicKey)
+                    _lot, DateTimeOffset.MaxValue, _signer.PublicKey)
                 .Sign(_signer));
             var stranger = new PrivateKey();
             Assert.NotEqual(
                 _dominantLot,
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, stranger.PublicKey)
+                    _lot, DateTimeOffset.MinValue, stranger.PublicKey)
                 .Sign(stranger));
         }
 
@@ -104,18 +92,6 @@ namespace Libplanet.Tests.Consensus
             Assert.NotEqual(
                 _dominantLot.GetHashCode(),
                 new DominantLotMetadata(
-                    1, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey)
-                .Sign(_signer).GetHashCode());
-            Assert.NotEqual(
-                _dominantLot.GetHashCode(),
-                new DominantLotMetadata(
-                    0, 1, _lot, DateTimeOffset.MinValue, _signer.PublicKey)
-                .Sign(_signer).GetHashCode());
-            Assert.NotEqual(
-                _dominantLot.GetHashCode(),
-                new DominantLotMetadata(
-                    0,
-                    0,
                     new ConsensusInformation(0, 0, null).ToLot(new PrivateKey()),
                     DateTimeOffset.MinValue,
                     _signer.PublicKey)
@@ -123,13 +99,13 @@ namespace Libplanet.Tests.Consensus
             Assert.NotEqual(
                 _dominantLot.GetHashCode(),
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MaxValue, _signer.PublicKey)
+                    _lot, DateTimeOffset.MaxValue, _signer.PublicKey)
                 .Sign(_signer).GetHashCode());
             var stranger = new PrivateKey();
             Assert.NotEqual(
                 _dominantLot.GetHashCode(),
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, stranger.PublicKey)
+                    _lot, DateTimeOffset.MinValue, stranger.PublicKey)
                 .Sign(stranger).GetHashCode());
         }
     }

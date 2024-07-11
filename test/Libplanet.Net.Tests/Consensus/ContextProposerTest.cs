@@ -130,7 +130,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             // Wait for propose to process.
@@ -259,7 +259,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             // Wait for propose to process.
@@ -358,7 +358,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             await proposalSent.WaitAsync();

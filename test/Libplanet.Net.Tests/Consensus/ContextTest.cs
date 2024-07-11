@@ -78,7 +78,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             await Task.WhenAll(proposalSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
@@ -135,7 +135,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
@@ -229,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
@@ -307,7 +307,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             var block = blockChain.ProposeBlock(
@@ -437,7 +437,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             context.ProduceMessage(
@@ -596,7 +596,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            privateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            privateKeys[i], lot)));
             }
 
             await stepChanged.WaitAsync();
@@ -754,7 +754,7 @@ namespace Libplanet.Net.Tests.Consensus
                 context.ProduceMessage(
                     new ConsensusDominantLotMsg(
                         TestUtils.CreateDominantLot(
-                            TestUtils.PrivateKeys[i], blockChain.Tip.Index + 1, 0, lot)));
+                            TestUtils.PrivateKeys[i], lot)));
             }
 
             context.ProduceMessage(

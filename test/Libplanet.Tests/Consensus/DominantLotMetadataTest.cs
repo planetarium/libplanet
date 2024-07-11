@@ -18,23 +18,16 @@ namespace Libplanet.Tests.Consensus
             _signer = new PrivateKey();
             _lot = new ConsensusInformation(0, 0, null).ToLot(_prover);
             _dominantLotMetadata = new DominantLotMetadata(
-                0, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey);
+                _lot, DateTimeOffset.MinValue, _signer.PublicKey);
         }
 
         [Fact]
         public void Constructor()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new DominantLotMetadata(
-                    -1, 0, _lot, DateTimeOffset.UtcNow, _signer.PublicKey));
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => new DominantLotMetadata(
-                    0, -1, _lot, DateTimeOffset.UtcNow, _signer.PublicKey));
-
             var dominantLotMetadata = new DominantLotMetadata(
-                1, 2, _lot, DateTimeOffset.UtcNow, _signer.PublicKey);
-            Assert.Equal(1, dominantLotMetadata.Height);
-            Assert.Equal(2, dominantLotMetadata.Round);
+                _lot, DateTimeOffset.UtcNow, _signer.PublicKey);
+            Assert.Equal(0, dominantLotMetadata.Height);
+            Assert.Equal(0, dominantLotMetadata.Round);
             Assert.Equal(_lot, dominantLotMetadata.Lot);
             Assert.Equal(_signer.PublicKey, dominantLotMetadata.ValidatorPublicKey);
             Assert.Equal(
@@ -58,31 +51,21 @@ namespace Libplanet.Tests.Consensus
             Assert.Equal(
                 _dominantLotMetadata,
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey));
+                    _lot, DateTimeOffset.MinValue, _signer.PublicKey));
             Assert.NotEqual(
                 _dominantLotMetadata,
                 new DominantLotMetadata(
-                    1, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey));
-            Assert.NotEqual(
-                _dominantLotMetadata,
-                new DominantLotMetadata(
-                    0, 1, _lot, DateTimeOffset.MinValue, _signer.PublicKey));
-            Assert.NotEqual(
-                _dominantLotMetadata,
-                new DominantLotMetadata(
-                    0,
-                    0,
                     new ConsensusInformation(0, 0, null).ToLot(new PrivateKey()),
                     DateTimeOffset.MinValue,
                     _signer.PublicKey));
             Assert.NotEqual(
                 _dominantLotMetadata,
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MaxValue, _signer.PublicKey));
+                    _lot, DateTimeOffset.MaxValue, _signer.PublicKey));
             Assert.NotEqual(
                 _dominantLotMetadata,
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, new PrivateKey().PublicKey));
+                    _lot, DateTimeOffset.MinValue, new PrivateKey().PublicKey));
         }
 
         [Fact]
@@ -91,31 +74,21 @@ namespace Libplanet.Tests.Consensus
             Assert.Equal(
                 _dominantLotMetadata.GetHashCode(),
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey).GetHashCode());
+                    _lot, DateTimeOffset.MinValue, _signer.PublicKey).GetHashCode());
             Assert.NotEqual(
                 _dominantLotMetadata.GetHashCode(),
                 new DominantLotMetadata(
-                    1, 0, _lot, DateTimeOffset.MinValue, _signer.PublicKey).GetHashCode());
-            Assert.NotEqual(
-                _dominantLotMetadata.GetHashCode(),
-                new DominantLotMetadata(
-                    0, 1, _lot, DateTimeOffset.MinValue, _signer.PublicKey).GetHashCode());
-            Assert.NotEqual(
-                _dominantLotMetadata.GetHashCode(),
-                new DominantLotMetadata(
-                    0,
-                    0,
                     new ConsensusInformation(0, 0, null).ToLot(new PrivateKey()),
                     DateTimeOffset.MinValue,
                     _signer.PublicKey).GetHashCode());
             Assert.NotEqual(
                 _dominantLotMetadata.GetHashCode(),
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MaxValue, _signer.PublicKey).GetHashCode());
+                    _lot, DateTimeOffset.MaxValue, _signer.PublicKey).GetHashCode());
             Assert.NotEqual(
                 _dominantLotMetadata.GetHashCode(),
                 new DominantLotMetadata(
-                    0, 0, _lot, DateTimeOffset.MinValue, new PrivateKey().PublicKey).GetHashCode());
+                    _lot, DateTimeOffset.MinValue, new PrivateKey().PublicKey).GetHashCode());
         }
     }
 }
