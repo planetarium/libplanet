@@ -16,7 +16,10 @@ namespace Libplanet.Net.Messages
         /// <param name="dominantLot">A <see cref="Libplanet.Consensus.DominantLot"/>
         /// that represents dominant <see cref="Lot"/> of given height and round.</param>
         public ConsensusDominantLotMsg(DominantLot dominantLot)
-            : base(dominantLot.ValidatorPublicKey, dominantLot.Height, dominantLot.Round)
+            : base(
+                  dominantLot.ValidatorPublicKey,
+                  dominantLot.Lot.ConsensusInformation.Height,
+                  dominantLot.Lot.ConsensusInformation.Round)
         {
             DominantLot = dominantLot;
         }

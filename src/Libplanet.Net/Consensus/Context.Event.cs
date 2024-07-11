@@ -66,6 +66,9 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<(int Round, VoteFlag Flag, IEnumerable<Vote> Votes)>?
             VoteSetModified;
 
+        /// <summary>
+        /// An event that is invoked when the <see cref="LotSet"/> is modified.
+        /// </summary>
         internal event EventHandler<(
             ImmutableDictionary<PublicKey, Lot> Lots,
             ImmutableDictionary<PublicKey, DominantLot> DominantLots)>?

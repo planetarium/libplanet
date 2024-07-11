@@ -63,6 +63,11 @@ namespace Libplanet.Consensus
             Encoded = Encode(height, round, lastProof);
         }
 
+        /// <summary>
+        /// Instantiates <see cref="ConsensusInformation"/> with byte array encoded form
+        /// <paramref name="encoded"/>.
+        /// </summary>
+        /// <param name="encoded">Byte array encoded <see cref="ConsensusInformation"/>.</param>
         public ConsensusInformation(IReadOnlyList<byte> encoded)
             : this(_codec.Decode(encoded.ToArray()))
         {

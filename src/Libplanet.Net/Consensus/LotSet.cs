@@ -23,6 +23,18 @@ namespace Libplanet.Net.Consensus
         private ConcurrentDictionary<PublicKey, DominantLot> _dominantLots;
         private ConcurrentDictionary<Lot, BigInteger> _lotsPower;
 
+        /// <summary>
+        /// Instantiates a new <see cref="LotSet"/>.
+        /// </summary>
+        /// <param name="height">The height of the consensus.</param>
+        /// <param name="round">The round of the consensus.</param>
+        /// <param name="lastProof">The last <see cref="Proof"/>
+        /// that has been decided on last round.
+        /// if last round is zero, it represents <see cref="Proof"/> of the last block.</param>
+        /// <param name="validatorSet">The <see cref="ValidatorSet"/> of consensus.</param>
+        /// <param name="drawSize">The size of draw for selecting dominant lot.
+        /// if this value is too small, probability of selection can be close to even,
+        /// and influence of validator power can be reduced.</param>
         public LotSet(
             long height, int round, Proof? lastProof, ValidatorSet validatorSet, int drawSize)
             : this(
@@ -32,6 +44,14 @@ namespace Libplanet.Net.Consensus
         {
         }
 
+        /// <summary>
+        /// Instantiates a new <see cref="LotSet"/>.
+        /// </summary>
+        /// <param name="consensusInformation">The information of the consensus.</param>
+        /// <param name="validatorSet">The <see cref="ValidatorSet"/> of consensus.</param>
+        /// <param name="drawSize">The size of draw for selecting dominant lot.
+        /// if this value is too small, probability of selection can be close to even,
+        /// and influence of validator power can be reduced.</param>
         public LotSet(
             ConsensusInformation consensusInformation, ValidatorSet validatorSet, int drawSize)
         {
@@ -50,25 +70,56 @@ namespace Libplanet.Net.Consensus
             Maj23 = null;
         }
 
+        /// <summary>
+        /// The height of the consensus.
+        /// </summary>
         public long Height => _consensusInformation.Height;
 
+        /// <summary>
+        /// The round of the consensus.
+        /// </summary>
         public int Round => _consensusInformation.Round;
 
+        /// <summary>
+        /// The last <see cref="Proof"/> that has been decided on last round.
+        /// if last round is zero, it represents <see cref="Proof"/> of the last block.
+        /// </summary>
         public Proof? LastProof => _consensusInformation.LastProof;
 
-        public ConsensusInformation Consensusinformation => _consensusInformation;
+        /// <summary>
+        /// The information of the consensus.
+        /// </summary>
+        public ConsensusInformation ConsensusInformation => _consensusInformation;
 
+        /// <summary>
+        /// The <see cref="Lot"/> that has gain the majority +2/3 of the power of the validator set
+        /// by <see cref="Libplanet.Consensus.DominantLot"/>.
+        /// </summary>
         public Lot? Maj23 { get; private set; }
 
+        /// <summary>
+        /// The <see cref="Lot"/> that is dominant among the gathered.
+        /// </summary>
         public Lot? DominantLot
             => _dominantLot?.Item1;
 
+        /// <summary>
+        /// The <see cref="Lot"/>s that have been gathered.
+        /// </summary>
         public ImmutableDictionary<PublicKey, Lot> Lots
             => _lots.ToImmutableDictionary();
 
+        /// <summary>
+        /// The <see cref="Libplanet.Consensus.DominantLot"/>s that have been gathered.
+        /// </summary>
         public ImmutableDictionary<PublicKey, DominantLot> DominantLots
             => _dominantLots.ToImmutableDictionary();
 
+        /// <summary>
+        /// Sets the round of the <see cref="LotSet"/>.
+        /// </summary>
+        /// <param name="round">The round of the consensus.</param>
+        /// <param name="lastProof">The last proof that has been decided on the last round.</param>
         public void SetRound(int round, Proof? lastProof)
         {
             _consensusInformation = new ConsensusInformation(Height, Math.Max(round, 0), lastProof);
@@ -79,12 +130,31 @@ namespace Libplanet.Net.Consensus
             Maj23 = null;
         }
 
+        /// <summary>
+        /// Generate a <see cref="Proof"/> for the <see cref="ConsensusInformation"/>.
+        /// </summary>
+        /// <param name="privateKey">The prover of the <see cref="Proof"/>.</param>
+        /// <returns>A <see cref="Proof"/> that has been proved by <paramref name="privateKey"/>,
+        /// with the <see cref="ConsensusInformation"/>.</returns>
         public Proof GenerateProof(PrivateKey privateKey)
             => _consensusInformation.Prove(privateKey);
 
+        /// <summary>
+        /// Generate a <see cref="Lot"/> for the <see cref="ConsensusInformation"/>.
+        /// </summary>
+        /// <param name="privateKey">The prover of the <see cref="Lot"/>.</param>
+        /// <returns>A <see cref="Lot"/> that has been proved by <paramref name="privateKey"/>,
+        /// with the <see cref="ConsensusInformation"/>.</returns>
         public Lot GenerateLot(PrivateKey privateKey)
             => _consensusInformation.ToLot(privateKey);
 
+        /// <summary>
+        /// Add a <see cref="Lot"/> to the <see cref="LotSet"/>.
+        /// </summary>
+        /// <param name="lot">A <see cref="Lot"/> to be added.</param>
+        /// <exception cref="InvalidLotException">Thrown when <paramref name="lot"/>
+        /// is duplicated, or does not match with <see cref="ConsensusInformation"/>,
+        /// or prover does not belongs to the validator set.</exception>
         public void AddLot(Lot lot)
         {
             if (_lots.ContainsKey(lot.PublicKey))
@@ -99,6 +169,18 @@ namespace Libplanet.Net.Consensus
             CompeteLot(lot);
         }
 
+        /// <summary>
+        /// Add a <see cref="Libplanet.Consensus.DominantLot"/> to the <see cref="LotSet"/>.
+        /// </summary>
+        /// <param name="dominantLot">A <see cref="Libplanet.Consensus.DominantLot"/>
+        /// to be added.</param>
+        /// <exception cref="InvalidDominantLotException">Thrown when
+        /// <paramref name="dominantLot"/> is duplicated, or does not belongs to the
+        /// validator set.</exception>
+        /// <exception cref="InvalidLotException">Thrown when <see cref="Lot"/> of
+        /// <paramref name="dominantLot"/> does not match with
+        /// <see cref="ConsensusInformation"/>, or prover does not belongs to the validator set.
+        /// </exception>
         public void AddDominantLot(DominantLot dominantLot)
         {
             if (_dominantLots.ContainsKey(dominantLot.ValidatorPublicKey))
@@ -122,7 +204,7 @@ namespace Libplanet.Net.Consensus
             UpdateMaj23(dominantLot);
         }
 
-        public void UpdateMaj23(DominantLot dominantLot)
+        private void UpdateMaj23(DominantLot dominantLot)
         {
             BigInteger validatorPower = _validatorSet.GetValidatorsPower(
                 new List<PublicKey>() { dominantLot.ValidatorPublicKey });

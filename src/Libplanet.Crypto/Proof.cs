@@ -20,6 +20,12 @@ namespace Libplanet.Crypto
         private readonly ImmutableArray<byte> _piBytes;
         private readonly ImmutableArray<byte> _hash;
 
+        /// <summary>
+        /// Instantiates a new <see cref="Proof"/> with given <paramref name="piBytes"/>.
+        /// </summary>
+        /// <param name="piBytes">Byte array represents proof.</param>
+        /// <exception cref="InvalidProofException">Thrown when given <paramref name="piBytes"/>
+        /// is invalid.</exception>
         public Proof(IReadOnlyList<byte> piBytes)
         {
             try
@@ -36,6 +42,13 @@ namespace Libplanet.Crypto
             _piBytes = piBytes.ToImmutableArray();
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Proof"/> with given <paramref name="bencoded"/>
+        /// proof value.
+        /// </summary>
+        /// <param name="bencoded">Bencodex-encoded proof value.</param>
+        /// <exception cref="ArgumentException">Thrown when format of given
+        /// <paramref name="bencoded"/> is not <see cref="Binary"/>.</exception>
         public Proof(IValue bencoded)
             : this(bencoded is Binary piBytes
                   ? piBytes
@@ -46,6 +59,11 @@ namespace Libplanet.Crypto
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Proof"/> with given <paramref name="bencoded"/>
+        /// proof value.
+        /// </summary>
+        /// <param name="bencoded">Bencodex-encoded proof value.</param>
         public Proof(Binary bencoded)
             : this(bencoded.ByteArray)
         {

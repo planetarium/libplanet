@@ -220,8 +220,14 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
+        /// <summary>
+        /// A proposal block for this round. If the block is proposed, it will be stored here.
+        /// </summary>
         public Proposal? Proposal { get; private set; }
 
+        /// <summary>
+        /// The proposer of this round. Determined by the <see cref="LotSet.Maj23"/>.
+        /// </summary>
         public PublicKey? Proposer
             => _lotSet.Maj23?.PublicKey;
 
@@ -419,6 +425,12 @@ namespace Libplanet.Net.Consensus
                 round * _contextTimeoutOption.ProposeMultiplier);
         }
 
+        /// <summary>
+        /// Gets the timeout of <see cref="ConsensusStep.Sortition"/> with the given
+        /// round.
+        /// </summary>
+        /// <param name="round">A round to get the timeout.</param>
+        /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutSortition(long round)
         {
             return TimeSpan.FromSeconds(
@@ -426,6 +438,10 @@ namespace Libplanet.Net.Consensus
                 round * _contextTimeoutOption.SortitionMultiplier);
         }
 
+        /// <summary>
+        /// Gets the delay to gather <see cref="Lot"/>s to determine <see cref="DominantLot"/>.
+        /// </summary>
+        /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan DelayLotGather()
         {
             return TimeSpan.FromSeconds(_contextTimeoutOption.LotGatherSecond);

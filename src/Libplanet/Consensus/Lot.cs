@@ -76,9 +76,24 @@ namespace Libplanet.Consensus
         public PublicKey PublicKey { get; }
 
         /// <summary>
-        /// <see cref="ConsensusInformation"/> that has been proved by <see cref="PublicKey"/>.
+        /// <see cref="ConsensusInformation"/> that has been proven by <see cref="PublicKey"/>.
         /// </summary>
         public ConsensusInformation ConsensusInformation { get; }
+
+        /// <summary>
+        /// The height of the proven <see cref="ConsensusInformation"/>.
+        /// </summary>
+        public long Height => ConsensusInformation.Height;
+
+        /// <summary>
+        /// The round of the proven <see cref="ConsensusInformation"/>.
+        /// </summary>
+        public int Round => ConsensusInformation.Round;
+
+        /// <summary>
+        /// The last proof of the proven <see cref="ConsensusInformation"/>.
+        /// </summary>
+        public Proof? LastProof => ConsensusInformation.LastProof;
 
         [JsonIgnore]
         public IValue Bencoded

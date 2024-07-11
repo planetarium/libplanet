@@ -28,6 +28,7 @@ namespace Libplanet.Net.Consensus
             Round = round;
             RoundStarted?.Invoke(this, Round);
 
+            // TODO: Update last proof by peers.
             // Last proof is not a parameter of StartRound()
             // for its update by peers developed in future.
             // It's crucial, to prevent network partition.
@@ -51,9 +52,13 @@ namespace Libplanet.Net.Consensus
         /// If an invalid <see cref="ConsensusMsg"/> is given, this method throws
         /// an <see cref="InvalidConsensusMessageException"/> and handles it <em>internally</em>
         /// while invoking <see cref="ExceptionOccurred"/> event.
-        /// An <see cref="InvalidConsensusMessageException"/> can be thrown when
+        /// An <see cref="InvalidVoteException"/> can be thrown when
         /// the internal <see cref="HeightVoteSet"/> does not accept it, i.e.
         /// <see cref="HeightVoteSet.AddVote"/> returns <see langword="false"/>.
+        /// An <see cref="InvalidLotException"/> or <see cref="InvalidDominantLotException"/>
+        /// can be trown when the internal <see cref="LotSet"/> does not accept it, i.e.
+        /// <see cref="LotSet.AddLot"/> or <see cref="LotSet.AddDominantLot"/>
+        /// returns <see langword="false"/>.
         /// </remarks>
         /// <seealso cref="HeightVoteSet.AddVote"/>
         private bool AddMessage(ConsensusMsg message)
@@ -543,6 +548,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusDominantLotMsg"/>s were
+        /// not gathered in <see cref="TimeoutSortition"/> and is still in
+        /// <see cref="ConsensusStep.Sortition"/> step.
+        /// </summary>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutSortition(int round)
         {
             if (round == Round && Step == ConsensusStep.Sortition)

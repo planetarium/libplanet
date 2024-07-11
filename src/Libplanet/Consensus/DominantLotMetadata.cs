@@ -12,12 +12,6 @@ namespace Libplanet.Consensus
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
-        private static readonly Binary HeightKey =
-            new Binary(new byte[] { 0x48 }); // 'H'
-
-        private static readonly Binary RoundKey =
-            new Binary(new byte[] { 0x52 }); // 'R'
-
         private static readonly Binary LotKey =
             new Binary(new byte[] { 0x4C }); // 'L'
 
@@ -29,28 +23,18 @@ namespace Libplanet.Consensus
 
         private static readonly Codec _codec = new Codec();
 
+        /// <summary>
+        /// Creates a new instance of <see cref="DominantLotMetadata"/>.
+        /// </summary>
+        /// <param name="lot">The lot that is dominant.</param>
+        /// <param name="timestamp">The time at which the dominant lot selected.</param>
+        /// <param name="validatorPublicKey">
+        /// The <see cref="PublicKey"/> of the validator selected dominant lot.</param>
         public DominantLotMetadata(
-            long height,
-            int round,
             Lot lot,
             DateTimeOffset timestamp,
             PublicKey validatorPublicKey)
         {
-            if (height < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(height),
-                    "Height must be greater than or equal to 0.");
-            }
-            else if (round < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(round),
-                    "Round must be greater than or equal to 0.");
-            }
-
-            Height = height;
-            Round = round;
             Lot = lot;
             Timestamp = timestamp;
             ValidatorPublicKey = validatorPublicKey;
@@ -59,8 +43,6 @@ namespace Libplanet.Consensus
 #pragma warning disable SA1118 // The parameter spans multiple lines
         public DominantLotMetadata(Dictionary encoded)
             : this(
-                height: (Integer)encoded[HeightKey],
-                round: (Integer)encoded[RoundKey],
                 lot: new Lot(encoded[LotKey]),
                 timestamp: DateTimeOffset.ParseExact(
                     (Text)encoded[TimestampKey],
@@ -73,29 +55,29 @@ namespace Libplanet.Consensus
 #pragma warning restore SA1118
 
         /// <summary>
-        /// A height of consensus.
-        /// </summary>
-        public long Height { get; }
-
-        /// <summary>
-        /// A round of consensus.
-        /// </summary>
-        public int Round { get; }
-
-        /// <summary>
-        /// The <see cref="Lot"/> of vote claim.
+        /// The <see cref="Lot"/> that is dominant.
         /// </summary>
         public Lot Lot { get; }
 
         /// <summary>
-        /// The time at which the claim took place.
+        /// The time at which the dominant lot selected.
         /// </summary>
         public DateTimeOffset Timestamp { get; }
 
         /// <summary>
-        /// A <see cref="PublicKey"/> of claimant.
+        /// The <see cref="PublicKey"/> of the validator selected dominant lot.
         /// </summary>
         public PublicKey ValidatorPublicKey { get; }
+
+        /// <summary>
+        /// The height of the dominant lot.
+        /// </summary>
+        public long Height => Lot.Height;
+
+        /// <summary>
+        /// The round of the dominant lot.
+        /// </summary>
+        public int Round => Lot.Round;
 
         /// <summary>
         /// A Bencodex-encoded value of <see cref="DominantLotMetadata"/>.
@@ -106,8 +88,6 @@ namespace Libplanet.Consensus
             get
             {
                 Dictionary encoded = Bencodex.Types.Dictionary.Empty
-                    .Add(HeightKey, Height)
-                    .Add(RoundKey, Round)
                     .Add(LotKey, Lot.Bencoded)
                     .Add(
                         TimestampKey,
@@ -118,8 +98,17 @@ namespace Libplanet.Consensus
             }
         }
 
+        /// <summary>
+        /// An immutable byte array encoded value of <see cref="DominantLotMetadata"/>.
+        /// </summary>
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
+        /// <summary>
+        /// Retrieve a byte array encoded value of <see cref="DominantLotMetadata"/>.
+        /// </summary>
+        /// <returns>
+        /// A byte array encoded value of <see cref="DominantLotMetadata"/>.
+        /// </returns>
         public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <summary>

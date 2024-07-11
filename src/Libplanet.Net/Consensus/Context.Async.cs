@@ -194,6 +194,10 @@ namespace Libplanet.Net.Consensus
             _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
         }
 
+        /// <summary>
+        /// Schedule to vote for dominant lot after <see cref="DelayLotGather"/>
+        /// amount of time.
+        /// </summary>
         private async Task VoteLotAfterGathering()
         {
             TimeSpan delay = DelayLotGather();
@@ -201,8 +205,6 @@ namespace Libplanet.Net.Consensus
             if (_lotSet.DominantLot is { } lot)
             {
                 DominantLot dominantLot = new DominantLotMetadata(
-                    Height,
-                    Round,
                     lot,
                     DateTimeOffset.UtcNow,
                     _privateKey.PublicKey).Sign(_privateKey);
@@ -210,6 +212,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Schedule <see cref="ProcessTimeoutSortition"/> to be queued after
+        /// <see cref="TimeoutSortition"/> amount of time.
+        /// </summary>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
         private async Task OnTimeoutSortition(int round)
         {
             TimeSpan timeout = TimeoutSortition(round);
