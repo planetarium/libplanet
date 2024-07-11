@@ -649,9 +649,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),     // Adds "D"
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),      // Adds "E"
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),       // Adds "F"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -1324,7 +1324,7 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
                 maxGasPrice: FungibleAssetValue.FromRawValue(foo, 1),
-                gasLimit: 2,
+                gasLimit: 3,
                 actions: new[]
                 {
                     payGasAction,
@@ -1335,21 +1335,13 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 9),
-                chain
-                    .GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(address, foo));
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 1),
-                chain
-                    .GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(miner.Address, foo));
+            Assert.Equal(2, GasTracer.GasAvailable);
+            Assert.Equal(1, GasTracer.GasUsed);
         }
 
         [Fact]
@@ -1405,87 +1397,18 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.Store.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
             Assert.Equal(
                 typeof(GasLimitExceededException),
                 evaluations.Single().Exception?.InnerException?.GetType());
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 5),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(address, foo));
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 5),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(miner.Address, foo));
+            Assert.Equal(0, GasTracer.GasAvailable);
+            Assert.Equal(5, GasTracer.GasUsed);
         }
-
-        [Fact]
-        public void EvaluateThrowingInsufficientBalanceForGasFee()
-        {
-            var privateKey = new PrivateKey();
-            var address = privateKey.Address;
-            Currency foo = Currency.Uncapped(
-                "FOO",
-                18,
-                null
-            );
-
-            var freeGasAction = new UseGasAction()
-            {
-                GasUsage = 0,
-                Memo = "FREE",
-                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
-                Receiver = address,
-            };
-
-            var payGasAction = new UseGasAction()
-            {
-                GasUsage = 2,
-                Memo = "CHARGE",
-            };
-
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain(
-                policy: new BlockPolicy(),
-                actions: new[]
-                {
-                    freeGasAction,
-                },
-                store: store,
-                stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: privateKey,
-                genesisHash: chain.Genesis.Hash,
-                maxGasPrice: FungibleAssetValue.FromRawValue(foo, 10),
-                gasLimit: 5,
-                actions: new[]
-                {
-                    payGasAction,
-                }.ToPlainValues());
-
-            chain.StageTransaction(tx);
-            var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
-
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
-
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
-            Assert.Single(evaluations);
-            Assert.NotNull(evaluations.Single().Exception);
-            Assert.NotNull(evaluations.Single().Exception?.InnerException);
-            Assert.Equal(
-                typeof(InsufficientBalanceException),
-                evaluations.Single().Exception?.InnerException?.GetType());
-         }
 
         [Fact]
         public void GenerateRandomSeed()
@@ -1672,7 +1595,7 @@ namespace Libplanet.Tests.Action
 
             public IWorld Execute(IActionContext context)
             {
-                context.UseGas(GasUsage);
+                GasTracer.UseGas(GasUsage);
                 var state = context.PreviousState
                     .SetAccount(
                         ReservedAddresses.LegacyAccount,
