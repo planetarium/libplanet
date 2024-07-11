@@ -12,6 +12,15 @@ To be released.
 
  -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
     interface and its implementations.  [[#3762]]
+ -  (Libplanet.Action) Removed `IFeeCollector` interface
+    and its implementations.  [[#3867]]
+ -  (Libplanet.Action) Removed following methods from the
+    `IActionContext` interface.  [[#3868]]
+     -  Removed `IActionContext.UseGas(long)`.
+     -  Removed `IActionContext.GasUsed()`.
+     -  Removed `IActionContext.GasLimit()`.
+ -  (Libplanet.Action) Added `LastCommit` property to `IActionContext`
+    interface and its implementations.  [[#3912]]
  -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.  [[#3841]]
  -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`.
     [[#3913]]
@@ -42,6 +51,8 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Action) Added `GasTracer` static class.  [[#3868]]
+
 ### Behavioral changes
 
  -  Changed `BlockChain.FindBranchPoint()` to only check for the first
@@ -61,6 +72,9 @@ To be released.
 
 [#3762]: https://github.com/planetarium/libplanet/pull/3762
 [#3841]: https://github.com/planetarium/libplanet/pull/3841
+[#3867]: https://github.com/planetarium/libplanet/pull/3867
+[#3868]: https://github.com/planetarium/libplanet/pull/3868
+[#3912]: https://github.com/planetarium/libplanet/pull/3912
 [#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
