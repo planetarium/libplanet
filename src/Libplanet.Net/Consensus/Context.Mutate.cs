@@ -56,7 +56,7 @@ namespace Libplanet.Net.Consensus
         /// the internal <see cref="HeightVoteSet"/> does not accept it, i.e.
         /// <see cref="HeightVoteSet.AddVote"/> returns <see langword="false"/>.
         /// An <see cref="InvalidLotException"/> or <see cref="InvalidDominantLotException"/>
-        /// can be trown when the internal <see cref="LotSet"/> does not accept it, i.e.
+        /// can be thrown when the internal <see cref="LotSet"/> does not accept it, i.e.
         /// <see cref="LotSet.AddLot"/> or <see cref="LotSet.AddDominantLot"/>
         /// returns <see langword="false"/>.
         /// </remarks>
