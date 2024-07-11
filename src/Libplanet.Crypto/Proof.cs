@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using Bencodex;
@@ -90,6 +91,84 @@ namespace Libplanet.Crypto
                     : BitConverter.ToInt32(seed, 0);
             }
         }
+
+        /// <summary>
+        /// Tests if two values are equal.
+        /// </summary>
+        /// <param name="obj">A value.</param>
+        /// <param name="other">Another value.</param>
+        /// <returns><see langword="true"/> if two values are equal.
+        /// Otherwise <see langword="false"/>.</returns>
+        [Pure]
+        public static bool operator ==(Proof obj, Proof other) =>
+            obj.Equals(other);
+
+        /// <summary>
+        /// Tests if two values are unequal.
+        /// </summary>
+        /// <param name="obj">A value.</param>
+        /// <param name="other">Another value.</param>
+        /// <returns><see langword="false"/> if two values are equal.
+        /// Otherwise <see langword="true"/>.</returns>
+        [Pure]
+        public static bool operator !=(Proof obj, Proof other) =>
+            !(obj == other);
+
+        /// <summary>
+        /// Tests if the left operand (<paramref name="obj"/>) is less than the right operand
+        /// (<paramref name="other"/>).
+        /// </summary>
+        /// <param name="obj">The left operand to compare.</param>
+        /// <param name="other">The right operand to compare.</param>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than the right
+        /// operand (<paramref name="other"/>).  Otherwise (even if two operands are equal)
+        /// <see langword="false"/>.</returns>
+        [Pure]
+        public static bool operator <(Proof obj, Proof other) =>
+            obj.CompareTo(other) < 0;
+
+        /// <summary>
+        /// Tests if the left operand (<paramref name="obj"/>) is less than or equal to the right
+        /// operand (<paramref name="other"/>).
+        /// </summary>
+        /// <param name="obj">The left operand to compare.</param>
+        /// <param name="other">The right operand to compare.</param>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than or equal
+        /// to the right operand (<paramref name="other"/>).  Otherwise <see langword="false"/>.
+        /// </returns>
+        [Pure]
+        public static bool operator <=(Proof obj, Proof other) =>
+            obj.CompareTo(other) <= 0;
+
+        /// <summary>
+        /// Tests if the left operand (<paramref name="obj"/>) is greater than the right operand
+        /// (<paramref name="other"/>).
+        /// </summary>
+        /// <param name="obj">The left operand to compare.</param>
+        /// <param name="other">The right operand to compare.</param>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than
+        /// the right operand (<paramref name="other"/>).  Otherwise (even if two operands are
+        /// equal) <see langword="false"/>.</returns>
+        [Pure]
+        public static bool operator >(Proof obj, Proof other) =>
+            other < obj;
+
+        /// <summary>
+        /// Tests if the left operand (<paramref name="obj"/>) is greater than or equal to the right
+        /// operand (<paramref name="other"/>).
+        /// </summary>
+        /// <param name="obj">The left operand to compare.</param>
+        /// <param name="other">The right operand to compare.</param>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than or
+        /// equal to the right operand (<paramref name="other"/>).
+        /// Otherwise <see langword="false"/>.</returns>
+        [Pure]
+        public static bool operator >=(Proof obj, Proof other) =>
+            other <= obj;
 
         /// <summary>
         /// Gets a mutable byte array that represent this <see cref="Proof"/>.
