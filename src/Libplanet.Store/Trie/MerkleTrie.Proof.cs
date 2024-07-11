@@ -75,6 +75,7 @@ namespace Libplanet.Store.Trie
                 throw new InvalidOperationException(
                     $"A proof can only be retrieved from a non-null {nameof(Root)}");
 
+            // NOTE: Should never be thrown. A recorded non-null root must always be a HashNode.
             INode hashNode = root is HashNode h
                 ? h
                 : throw new InvalidOperationException(
@@ -91,46 +92,47 @@ namespace Libplanet.Store.Trie
 
                 if (resolved is { } r)
                 {
-                    if (r.NextNode is HashNode)
+                    switch (r.NextNode)
                     {
-                        hashNode = r.NextNode;
-                        cursor = r.NextCursor;
-                        continue;
-                    }
-                    else if (r.NextNode is ValueNode nextValueNode)
-                    {
-                        if (r.NextCursor.Offset == r.NextCursor.Length)
-                        {
-                            return nextValueNode.Value.Equals(value)
-                                ? proof.ToImmutableList()
-                                : throw new ArgumentException(
-                                    $"Given value {value} does not match " +
-                                    $"the actual value {nextValueNode.Value}" +
-                                    $"found at given key {key}",
-                                    nameof(value));
-                        }
-                        else
-                        {
-                            throw new ArgumentException(
-                                $"Given key {key} could not be resolved.",
-                                nameof(key));
-                        }
-                    }
-                    else
-                    {
-                        // NOTE: Should not be thrown.
-                        throw new ArgumentException("Failed to get a proof.");
+                        case HashNode _:
+                            hashNode = r.NextNode;
+                            cursor = r.NextCursor;
+                            continue;
+
+                        case ValueNode nextValueNode:
+                            if (r.NextCursor.Offset == r.NextCursor.Length)
+                            {
+                                return nextValueNode.Value.Equals(value)
+                                    ? proof.ToImmutableList()
+                                    : throw new ArgumentException(
+                                        $"Given value {value} does not match " +
+                                        $"the actual value {nextValueNode.Value}" +
+                                        $"found at given key {key}",
+                                        nameof(value));
+                            }
+                            else
+                            {
+                                throw new ArgumentException(
+                                    $"Given key {key} could not be fully resolved due to " +
+                                    $"prematurely encountering a {nameof(ValueNode)}",
+                                    nameof(key));
+                            }
+
+                        default:
+                            // NOTE: Should never be thrown. Non-null resolved next node is
+                            // expected to be either HashNode or ValueNode.
+                            throw new ArgumentException("Failed to get a proof.");
                     }
                 }
                 else
                 {
                     throw new ArgumentException(
-                        $"Given key {key} could not be resolved.",
+                        $"Given key {key} could not be properly resolved.",
                         nameof(key));
                 }
             }
 
-            // NOTE: Should not be thrown.
+            // NOTE: Should never be thrown.
             throw new ArgumentException("Something went wrong.");
         }
 
@@ -208,6 +210,7 @@ namespace Libplanet.Store.Trie
                     }
 
                 default:
+                    // NOTE: Should never be thrown.
                     throw new ArgumentException(
                         $"Encountered an unexpected node type {node.GetType()}");
             }
@@ -224,7 +227,7 @@ namespace Libplanet.Store.Trie
                 case HashNode hashNode:
                     return (hashNode, cursor);
 
-                case ValueNode valueNode:
+                case ValueNode _:
                     return null;
 
                 case ShortNode shortNode:
@@ -264,6 +267,7 @@ namespace Libplanet.Store.Trie
                     }
 
                 default:
+                    // NOTE: Should never be thrown.
                     throw new ArgumentException(
                         $"Encountered an unexpected node type {node.GetType()}");
             }
@@ -281,14 +285,7 @@ namespace Libplanet.Store.Trie
                     return (hashNode, cursor);
 
                 case ValueNode valueNode:
-                    if (cursor.Offset == cursor.Length)
-                    {
-                        return (valueNode, cursor);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return (valueNode, cursor);
 
                 case ShortNode shortNode:
                     if (cursor.RemainingNibblesStartWith(shortNode.Key))
@@ -304,6 +301,7 @@ namespace Libplanet.Store.Trie
                 case FullNode fullNode:
                     if (cursor.Offset == cursor.Length)
                     {
+                        // Note: FullNode.Value is either null, a HashNode, or a ValueNode.
                         if (fullNode.Value is INode n)
                         {
                             return (n, cursor);
@@ -327,6 +325,7 @@ namespace Libplanet.Store.Trie
                     }
 
                 default:
+                    // NOTE: Should never be thrown.
                     throw new ArgumentException(
                         $"Encountered an unexpected node type {node.GetType()}");
             }

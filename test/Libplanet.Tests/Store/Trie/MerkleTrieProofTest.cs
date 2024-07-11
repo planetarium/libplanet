@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -143,6 +144,47 @@ namespace Libplanet.Tests.Store.Trie
 
             proof = ((MerkleTrie)FullTrie).GetProof(K0010, V0010);
             Assert.Equal(P0010, proof);
+
+            KeyBytes k = KeyBytes.FromHex(string.Empty);
+            IValue v = new Text(string.Empty);
+            var trie = StateStore.Commit(EmptyTrie.Set(k, v));
+            proof = ((MerkleTrie)trie).GetProof(k, v);
+            Assert.Equal(v, Assert.IsType<ValueNode>(Assert.Single(proof)).Value);
+
+            trie = StateStore.Commit(FullTrie.Set(k, v));
+            proof = ((MerkleTrie)trie).GetProof(k, v);
+            Assert.Equal(
+                v,
+                Assert.IsType<ValueNode>(
+                    Assert.IsType<FullNode>(
+                        Assert.Single(proof)).Value).Value);
+        }
+
+        [Fact]
+        public void InvalidGetProofCalls()
+        {
+            Assert.Contains(
+                "recorded",
+                Assert.Throws<InvalidOperationException>(
+                    () => ((MerkleTrie)UncommittedTrie).GetProof(K00, V00)).Message);
+            Assert.Contains(
+                "non-null",
+                Assert.Throws<InvalidOperationException>(
+                    () => ((MerkleTrie)EmptyTrie).GetProof(K00, V00)).Message);
+            Assert.Contains(
+                "does not match",
+                Assert.Throws<ArgumentException>(
+                    () => ((MerkleTrie)FullTrie).GetProof(K00, V01)).Message);
+            Assert.Contains(
+                "could not be fully resolved",
+                Assert.Throws<ArgumentException>(
+                    () => ((MerkleTrie)FullTrie).GetProof(
+                        KeyBytes.FromHex("000000"), V0000)).Message);
+            Assert.Contains(
+                "could not be properly resolved",
+                Assert.Throws<ArgumentException>(
+                    () => ((MerkleTrie)FullTrie).GetProof(
+                        KeyBytes.FromHex("0020"), V0000)).Message);
         }
 
         private HashNode ToHashNode(INode node) =>
