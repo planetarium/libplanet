@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
@@ -16,6 +17,7 @@ namespace Libplanet.Action.State
     public class WorldBaseState : IWorldState
     {
         private readonly IStateStore _stateStore;
+        private readonly ActivitySource _activitySource;
 
         public WorldBaseState(ITrie trie, IStateStore stateStore)
         {
@@ -24,6 +26,7 @@ namespace Libplanet.Action.State
             Version = trie.GetMetadata() is { } value
                 ? value.Version
                 : 0;
+            _activitySource = new ActivitySource("Libplanet.Action.WorldBaseState");
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
@@ -38,6 +41,9 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IWorldState.GetAccountState"/>
         public IAccountState GetAccountState(Address address)
         {
+            using Activity? a = _activitySource
+                .StartActivity(ActivityKind.Internal)?
+                .AddTag("Address", address.ToString());
             if (Legacy)
             {
                 return address.Equals(ReservedAddresses.LegacyAccount)

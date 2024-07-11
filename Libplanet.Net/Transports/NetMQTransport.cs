@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -36,13 +35,14 @@ namespace Libplanet.Net.Transports
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
+        private ActivitySource _activitySource;
 
-        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)> _replyQueue;
+        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
 
-        private RouterSocket _router;
-        private NetMQPoller _routerPoller;
-        private TurnClient _turnClient;
-        private DnsEndPoint _hostEndPoint;
+        private RouterSocket? _router;
+        private NetMQPoller? _routerPoller;
+        private TurnClient? _turnClient;
+        private DnsEndPoint? _hostEndPoint;
 
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -93,6 +93,7 @@ namespace Libplanet.Net.Transports
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
+            _activitySource = new ActivitySource("Libplanet.Net.Transports.NetMQTransport");
             _requestCount = 0;
             CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
             _runtimeProcessor = Task.Factory.StartNew(
@@ -129,7 +130,7 @@ namespace Libplanet.Net.Transports
         /// <inheritdoc/>
         public BoundPeer AsPeer => _turnClient is TurnClient turnClient
             ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint, turnClient.PublicAddress)
-            : new BoundPeer(_privateKey.PublicKey, _hostEndPoint);
+            : new BoundPeer(_privateKey.PublicKey, _hostEndPoint!);
 
         /// <inheritdoc/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
@@ -202,12 +203,12 @@ namespace Libplanet.Net.Transports
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             _replyQueue = new NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>();
-            _routerPoller = new NetMQPoller { _router, _replyQueue };
+            _routerPoller = new NetMQPoller { _router!, _replyQueue };
 
-            _router.ReceiveReady += ReceiveMessage;
-            _replyQueue.ReceiveReady += DoReply;
+            _router!.ReceiveReady += ReceiveMessage!;
+            _replyQueue.ReceiveReady += DoReply!;
 
-            Task pollerTask = RunPoller(_routerPoller);
+            Task pollerTask = RunPoller(_routerPoller!);
             new Task(async () =>
             {
                 while (!_routerPoller.IsRunning)
@@ -236,10 +237,10 @@ namespace Libplanet.Net.Transports
             {
                 await Task.Delay(waitFor, cancellationToken);
 
-                _replyQueue.ReceiveReady -= DoReply;
-                _router.ReceiveReady -= ReceiveMessage;
+                _replyQueue!.ReceiveReady -= DoReply!;
+                _router!.ReceiveReady -= ReceiveMessage!;
 
-                if (_routerPoller.IsRunning)
+                if (_routerPoller!.IsRunning)
                 {
                     _routerPoller.Stop();
                 }
@@ -320,6 +321,11 @@ namespace Libplanet.Net.Transports
             {
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
+
+            using Activity? a = _activitySource
+                .StartActivity(ActivityKind.Producer)?
+                .AddTag("Message", content.Type)
+                .AddTag("Peer", peer.PeerString);
 
             using var timerCts = new CancellationTokenSource();
             if (timeout is { } timeoutNotNull)
@@ -429,6 +435,7 @@ namespace Libplanet.Net.Transports
                     reqId,
                     peer,
                     replies.Select(reply => reply.Content.Type));
+                a?.SetStatus(ActivityStatusCode.Ok);
                 return replies;
             }
             catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
@@ -438,6 +445,8 @@ namespace Libplanet.Net.Transports
                     return replies;
                 }
 
+                a?.SetStatus(ActivityStatusCode.Error);
+                a?.AddTag("Exception", nameof(TimeoutException));
                 throw WrapCommunicationFailException(
                     new TimeoutException(
                         $"The operation was canceled due to timeout {timeout!.ToString()}.",
@@ -456,12 +465,17 @@ namespace Libplanet.Net.Transports
                 _logger.Debug(
                     oce2, dbgMsg, nameof(SendMessageAsync), content, reqId, peer);
 
+                a?.SetStatus(ActivityStatusCode.Error);
+                a?.AddTag("Exception", nameof(TaskCanceledException));
+
                 // Wrapping to match the previous behavior of `SendMessageAsync()`.
                 throw new TaskCanceledException(dbgMsg, oce2);
             }
             catch (ChannelClosedException ce)
             {
-                throw WrapCommunicationFailException(ce.InnerException, peer, content, reqId);
+                a?.SetStatus(ActivityStatusCode.Error);
+                a?.AddTag("Exception", nameof(ChannelClosedException));
+                throw WrapCommunicationFailException(ce.InnerException ?? ce, peer, content, reqId);
             }
             catch (Exception e)
             {
@@ -470,6 +484,8 @@ namespace Libplanet.Net.Transports
                     "a reply to {Content} {RequestId} from {Peer}";
                 _logger.Error(
                     e, errMsg, nameof(SendMessageAsync), content, reqId, peer.Address);
+                a?.SetStatus(ActivityStatusCode.Error);
+                a?.AddTag("Exception", e.GetType().ToString());
                 throw;
             }
             finally
@@ -491,10 +507,15 @@ namespace Libplanet.Net.Transports
             Task.Run(
                 async () =>
                 {
+                    using Activity? a = _activitySource
+                        .StartActivity(ActivityKind.Producer)?
+                        .AddTag("Message", content.Type)
+                        .AddTag("Peers", boundPeers.Select(x => x.PeerString));
                     await boundPeers.ParallelForEachAsync(
                         peer => SendMessageAsync(peer, content, TimeSpan.FromSeconds(1), ct),
                         ct
                     );
+                    a?.SetStatus(ActivityStatusCode.Ok);
                 },
                 ct
             );
@@ -524,7 +545,7 @@ namespace Libplanet.Net.Transports
             _logger.Debug("Reply {Content} to {Identity}...", content, reqId);
 
             var ev = new AsyncManualResetEvent();
-            _replyQueue.Enqueue(
+            _replyQueue!.Enqueue(
                 (
                     ev,
                     _messageCodec.Encode(
@@ -582,7 +603,7 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
+        private void ReceiveMessage(object? sender, NetMQSocketEventArgs e)
         {
             try
             {
@@ -668,7 +689,7 @@ namespace Libplanet.Net.Transports
                                         diffVersion);
                                     await ReplyMessageAsync(
                                         diffVersion,
-                                        message.Identity,
+                                        message.Identity ?? new byte[] { },
                                         _runtimeCancellationTokenSource.Token
                                     );
                                 }
@@ -700,7 +721,7 @@ namespace Libplanet.Net.Transports
         }
 
         private void DoReply(
-            object sender,
+            object? sender,
             NetMQQueueEventArgs<(AsyncManualResetEvent, NetMQMessage)> e
         )
         {
@@ -711,7 +732,7 @@ namespace Libplanet.Net.Transports
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
             {
                 _logger.Debug(
                     "{Message} as a reply to {Identity} sent", messageType, reqId);

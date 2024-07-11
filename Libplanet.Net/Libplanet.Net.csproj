@@ -63,6 +63,7 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

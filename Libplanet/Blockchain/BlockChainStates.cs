@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using Libplanet.Action.State;
 using Libplanet.Common;
@@ -15,16 +16,23 @@ namespace Libplanet.Blockchain
     {
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
+        private readonly ActivitySource _activitySource;
 
         public BlockChainStates(IStore store, IStateStore stateStore)
         {
             _store = store;
             _stateStore = stateStore;
+            _activitySource = new ActivitySource("Libplanet.Blockchain.BlockChainStates");
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash)"/>
         public IWorldState GetWorldState(BlockHash offset)
-            => new WorldBaseState(GetTrie(offset), _stateStore);
+        {
+            using Activity? a = _activitySource
+                .StartActivity(ActivityKind.Internal)?
+                .AddTag("BlockHash", offset.ToString());
+            return new WorldBaseState(GetTrie(offset), _stateStore);
+        }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
         public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
@@ -56,12 +64,17 @@ namespace Libplanet.Blockchain
         /// </remarks>
         private ITrie GetTrie(BlockHash offset)
         {
+            using Activity? a = _activitySource
+                .StartActivity(ActivityKind.Internal)?
+                .AddTag("BlockHash", offset.ToString());
             if (_store.GetStateRootHash(offset) is { } stateRootHash)
             {
+                a?.SetStatus(ActivityStatusCode.Ok);
                 return GetTrie(stateRootHash);
             }
             else
             {
+                a?.SetStatus(ActivityStatusCode.Error);
                 throw new ArgumentException(
                     $"Could not find block hash {offset} in {nameof(IStore)}.",
                     nameof(offset));
