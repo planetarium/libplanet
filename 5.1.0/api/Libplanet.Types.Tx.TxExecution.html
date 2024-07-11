@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TxExecution
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TxExecution
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Tx.TxExecution">
+
+
+  <h1 id="Libplanet_Types_Tx_TxExecution" data-uid="Libplanet.Types.Tx.TxExecution" class="text-break">Class TxExecution
+</h1>
+  <div class="markdown level0 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> its
+result can vary depending on <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that it is executed within.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TxExecution</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Tx_TxExecution_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class TxExecution : object</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.%23ctor(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L66">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution__ctor_" data-uid="Libplanet.Types.Tx.TxExecution.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_IValue_" data-uid="Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,IValue)">TxExecution(BlockHash, TxId, IValue)</h4>
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> its
+result can vary depending on <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that it is executed within.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxExecution(BlockHash blockHash, TxId txId, IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_SHA256__Libplanet_Common_HashDigest_SHA256__List_System_Nullable_Exception___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.%23ctor(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId%2CSystem.Boolean%2CLibplanet.Common.HashDigest%7BSHA256%7D%2CLibplanet.Common.HashDigest%7BSHA256%7D%2CList%7BSystem.Nullable%7BException%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L28">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution__ctor_" data-uid="Libplanet.Types.Tx.TxExecution.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_SHA256__Libplanet_Common_HashDigest_SHA256__List_System_Nullable_Exception___" data-uid="Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{SHA256},Libplanet.Common.HashDigest{SHA256},List{System.Nullable{Exception}})">TxExecution(BlockHash, TxId, Boolean, HashDigest&lt;SHA256&gt;, HashDigest&lt;SHA256&gt;, List&lt;Nullable&lt;Exception&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> its
+result can vary depending on <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that it is executed within.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxExecution(BlockHash blockHash, TxId txId, bool fail, HashDigest&lt;SHA256&gt; inputState, HashDigest&lt;SHA256&gt; outputState, List&lt;Exception?&gt; exceptions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">fail</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">inputState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">outputState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">System.Nullable</span>&lt;<span class="xref">Exception</span>&gt;&gt;</td>
+        <td><span class="parametername">exceptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_SHA256__Libplanet_Common_HashDigest_SHA256__List_System_Nullable_System_String___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.%23ctor(Libplanet.Types.Blocks.BlockHash%2CLibplanet.Types.Tx.TxId%2CSystem.Boolean%2CLibplanet.Common.HashDigest%7BSHA256%7D%2CLibplanet.Common.HashDigest%7BSHA256%7D%2CList%7BSystem.Nullable%7BSystem.String%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L49">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution__ctor_" data-uid="Libplanet.Types.Tx.TxExecution.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution__ctor_Libplanet_Types_Blocks_BlockHash_Libplanet_Types_Tx_TxId_System_Boolean_Libplanet_Common_HashDigest_SHA256__Libplanet_Common_HashDigest_SHA256__List_System_Nullable_System_String___" data-uid="Libplanet.Types.Tx.TxExecution.#ctor(Libplanet.Types.Blocks.BlockHash,Libplanet.Types.Tx.TxId,System.Boolean,Libplanet.Common.HashDigest{SHA256},Libplanet.Common.HashDigest{SHA256},List{System.Nullable{System.String}})">TxExecution(BlockHash, TxId, Boolean, HashDigest&lt;SHA256&gt;, HashDigest&lt;SHA256&gt;, List&lt;Nullable&lt;String&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> its
+result can vary depending on <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that it is executed within.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxExecution(BlockHash blockHash, TxId txId, bool fail, HashDigest&lt;SHA256&gt; inputState, HashDigest&lt;SHA256&gt; outputState, List&lt;string?&gt; exceptionNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">fail</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">inputState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">outputState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="parametername">exceptionNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.BlockHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L151">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_BlockHash_" data-uid="Libplanet.Types.Tx.TxExecution.BlockHash*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_BlockHash" data-uid="Libplanet.Types.Tx.TxExecution.BlockHash">BlockHash</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Hash">Hash</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that
+the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> is executed within.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash BlockHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_ExceptionNames.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.ExceptionNames%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L191">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_ExceptionNames_" data-uid="Libplanet.Types.Tx.TxExecution.ExceptionNames*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_ExceptionNames" data-uid="Libplanet.Types.Tx.TxExecution.ExceptionNames">ExceptionNames</h4>
+  <div class="markdown level1 summary"><p>The list of <see cref="!:Exception"></see> names thrown by actions
+in the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.  A value of <span class="xref">null</span>
+as an element represents no <see cref="!:Exception"></see> being thrown for
+the action of the same index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string?&gt;? ExceptionNames { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">List</span>&lt;<span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_TxExecution_ExceptionNames_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is marked <span class="xref">null</span>-able for backward compatibility.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_Fail.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.Fail%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L164">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_Fail_" data-uid="Libplanet.Types.Tx.TxExecution.Fail*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_Fail" data-uid="Libplanet.Types.Tx.TxExecution.Fail">Fail</h4>
+  <div class="markdown level1 summary"><p>Whether <em>every</em> action in the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> was
+executed without throwing and <see cref="!:Exception"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Fail { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_InputState.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.InputState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L172">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_InputState_" data-uid="Libplanet.Types.Tx.TxExecution.InputState*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_InputState" data-uid="Libplanet.Types.Tx.TxExecution.InputState">InputState</h4>
+  <div class="markdown level1 summary"><p>The state before the execution of the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? InputState { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_TxExecution_InputState_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is marked <span class="xref">null</span>-able for backward compatibility.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_OutputState.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.OutputState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L180">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_OutputState_" data-uid="Libplanet.Types.Tx.TxExecution.OutputState*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_OutputState" data-uid="Libplanet.Types.Tx.TxExecution.OutputState">OutputState</h4>
+  <div class="markdown level1 summary"><p>The state after the execution of the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? OutputState { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_TxExecution_OutputState_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is marked <span class="xref">null</span>-able for backward compatibility.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.TxId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L157">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_TxId_" data-uid="Libplanet.Types.Tx.TxExecution.TxId*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_TxId" data-uid="Libplanet.Types.Tx.TxExecution.TxId">TxId</h4>
+  <div class="markdown level1 summary"><p>The executed <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxId TxId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution.ToBencodex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L193">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_TxExecution_ToBencodex_" data-uid="Libplanet.Types.Tx.TxExecution.ToBencodex*"></a>
+  <h4 id="Libplanet_Types_Tx_TxExecution_ToBencodex" data-uid="Libplanet.Types.Tx.TxExecution.ToBencodex">ToBencodex()</h4>
+  <div class="markdown level1 summary"><p>Summarizes an execution result of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+<p>Note that <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s cannot be executed without belonging to
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>, and even if it&apos;s the same <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> its
+result can vary depending on <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that it is executed within.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IValue ToBencodex()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.1.0/apiSpec/new?filename=Libplanet_Types_Tx_TxExecution.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxExecution%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.1.0/src/Libplanet.Types/Tx/TxExecution.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
