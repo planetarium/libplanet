@@ -29,6 +29,13 @@ Version DPoS
     and its implementations.  [[#3730]]
  -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
     interface and its implementations.  [[#3762]]
+ -  (Libplanet.Action) Removed `IFeeCollector` interface
+    and its implementations.  [[#3867]]
+ -  (Libplanet.Action) Removed following methods from the
+    `IActionContext` interface.  [[#3868]]
+     -  Removed `IActionContext.UseGas(long)`.
+     -  Removed `IActionContext.GasUsed()`.
+     -  Removed `IActionContext.GasLimit()`.
  -  (Libplanet.Explorer) Added `ValidatorPower` field to `VoteType`.
     [[#3737], [#3813]]
  -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.   [[#3841]]
@@ -42,6 +49,7 @@ Version DPoS
 ### Added APIs
 
  -  (Libplanet.Action) Added `PolicyActionsRegistry` class.  [[#3748]]
+ -  (Libplanet.Action) Added `GasTracer` static class.  [[#3868]]
 
 ### Behavioral changes
 
@@ -59,6 +67,8 @@ Version DPoS
 [#3764]: https://github.com/planetarium/libplanet/pull/3764
 [#3813]: https://github.com/planetarium/libplanet/pull/3813
 [#3841]: https://github.com/planetarium/libplanet/pull/3841
+[#3867]: https://github.com/planetarium/libplanet/pull/3867
+[#3868]: https://github.com/planetarium/libplanet/pull/3868
 
 
 Version 5.0.0
