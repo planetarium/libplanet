@@ -76,7 +76,7 @@ namespace Libplanet.Action
             ? _txs
             : ImmutableList<ITransaction>.Empty;
 
-       /// <inheritdoc cref="IActionContext.GetRandom"/>
+        /// <inheritdoc cref="IActionContext.GetRandom"/>
         public IRandom GetRandom() => new Random(RandomSeed);
     }
 }
