@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  `ValidatorSet.GetProposer()` has been removed.  [[#VRF]]
+
 ### Backward-incompatible API changes
 
 ### Backward-incompatible network protocol changes
@@ -32,20 +34,26 @@ To be released.
  -  `BlockMetadata.CurrentProtocolVersion` has been changed from 5 to 6.
     [[#VRF]]
  -  Added `IBlockMetadata.Proof` property.  [[#VRF]]
- -  Added `PreProposal` class as a content of message that suggests
-    `PreEvaluationBlock` as a `Proposal` candidate during
-    `ConsensusStep.PrePropose`.  [[#VRF]]
- -  Added `PreProposalMetadata` class as a metadata of `PreProposal`.  [[#VRF]]
- -  Added `ConsensusStep.PrePropose`.  [[#VRF]]
- -  Added `ConsensusPreProposalMsg` class as a `ConsensusMsg` broadcasted during
-    `ConsensusStep.PrePropose`.  [[#VRF]]
- -  Added `PreProposalSet` class as a `PreProposal` selector.
+ -  Added `Lot` class as a content of message that submits a `Proof`
+    to be a proposer candidate during `ConsensusStep.Sortition`.  [[#VRF]]
+ -  Added `DominantLot` class as a content of message that submits a vote for
+    dominant `Lot` during `ConsensusStep.Sortition`.  [[#VRF]]`
+ -  Added `ConsensusStep.Sortition`.  [[#VRF]]
+ -  Added `LotGatherSecond`, `SortitionSecondBase`, `SortitionMultiplier`
+    to `ContestTimeoutOption`.  [[#VRF]]
+ -  Added `ConsensusLotMsg` class as a `ConsensusMsg` broadcasted during
+    `ConsensusStep.Sortition`.  [[#VRF]]
+ -  Added `ConsensusDominantLotMsg` class as a `ConsensusMsg` broadcasted during
+    `ConsensusStep.Sortition`. after lot gathering delay.  [[#VRF]]
+ -  Added `LotSet` class as a `Lot` and `DominantLot` selector.  [[#VRF]]
 
 ### Behavioral changes
 
  -  `ActionEvaluator.EvaluateActions()` use `Proof.Seed` as a initial
     random seed instead of `PreEvaluationHash`, `signature` combined seed.
     [[#VRF]]
+ -  Proposer selection is now based on the VRF result.  [[#VRF]]
+ -  Consensus now starts with `ConsensusStep.Sortition`.  [[#VRF]]`
 
 ### Bug fixes
 
