@@ -35,7 +35,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/planetarium/libplanet.git",
-    "directory": "Libplanet.Tools"
+    "directory": "tools/Libplanet.Tools"
   },
   "keywords": [
     "planetarium",
@@ -49,5 +49,5 @@
   "bugs": {
     "url": "https://github.com/planetarium/libplanet/labels/tools"
   },
-  "homepage": "https://github.com/planetarium/libplanet/tree/main/Libplanet.Tools"
+  "homepage": "https://github.com/planetarium/libplanet/tree/main/tools/Libplanet.Tools"
 }
