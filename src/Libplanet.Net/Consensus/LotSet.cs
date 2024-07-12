@@ -122,6 +122,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="lastProof">The last proof that has been decided on the last round.</param>
         public void SetRound(int round, Proof? lastProof)
         {
+            if (round <= Round)
+            {
+                throw new ArgumentException(
+                    $"Parameter round must be greater than the current round {Round}.",
+                    nameof(round));
+            }
+
             _consensusInformation = new ConsensusInformation(Height, Math.Max(round, 0), lastProof);
             _lots.Clear();
             _dominantLot = null;

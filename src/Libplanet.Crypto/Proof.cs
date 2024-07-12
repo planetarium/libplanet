@@ -257,9 +257,7 @@ namespace Libplanet.Crypto
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(Proof other)
-            => other is Proof otherProof
-                ? (HashInt - otherProof.HashInt).Sign
-                : throw new ArgumentException($"Argument {nameof(other)} is null");
+            => (HashInt - other.HashInt).Sign;
 
         /// <inheritdoc cref="IComparable.CompareTo(object?)"/>
         public int CompareTo(object? obj)

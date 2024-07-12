@@ -10,7 +10,7 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
 {
-    public readonly struct Lot : IEquatable<Lot>, IBencodable
+    public readonly struct Lot : IBencodable, IEquatable<Lot>
     {
         private static readonly Binary ProofKey
             = new Binary(new byte[] { 0x50 }); // 'P'
