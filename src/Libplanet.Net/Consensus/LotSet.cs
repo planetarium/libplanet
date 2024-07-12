@@ -38,7 +38,7 @@ namespace Libplanet.Net.Consensus
         public LotSet(
             long height, int round, Proof? lastProof, ValidatorSet validatorSet, int drawSize)
             : this(
-                  new ConsensusInformation(height, Math.Max(round, 0), lastProof),
+                  new ConsensusInformation(height, round, lastProof),
                   validatorSet,
                   drawSize)
         {
@@ -129,7 +129,7 @@ namespace Libplanet.Net.Consensus
                     nameof(round));
             }
 
-            _consensusInformation = new ConsensusInformation(Height, Math.Max(round, 0), lastProof);
+            _consensusInformation = new ConsensusInformation(Height, round, lastProof);
             _lots.Clear();
             _dominantLot = null;
             _dominantLots.Clear();
