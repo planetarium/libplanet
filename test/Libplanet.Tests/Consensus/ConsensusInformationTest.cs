@@ -29,13 +29,27 @@ namespace Libplanet.Tests.Consensus
             Assert.Null(_genesisConsensusInformation.LastProof);
 
             Assert.Throws<ArgumentException>(() => new ConsensusInformation(-1, 0, null));
-            Assert.Throws<ArgumentException>(() => new ConsensusInformation(0, -1, null));
+            Assert.Throws<ArgumentException>(() => new ConsensusInformation(0, -2, null));
 
             var ci = new ConsensusInformation(1, 2, _genesisProof);
             Assert.Equal(1, ci.Height);
             Assert.Equal(2, ci.Round);
             Assert.Equal(_genesisProof, ci.LastProof);
             Assert.Equal(ci, new ConsensusInformation(ci.Encoded));
+        }
+
+        [Fact]
+        public void CannotProveOrVerifyWithNegativeRound()
+        {
+            var prover = new PrivateKey();
+            var negativeRoundConsensusInformation = new ConsensusInformation(0, -1, _genesisProof);
+            Assert.Throws<InvalidOperationException>(
+                () => negativeRoundConsensusInformation.Prove(prover));
+
+            var negativeRoundProof = prover.Prove(negativeRoundConsensusInformation.Encoded);
+            Assert.Throws<InvalidOperationException>(
+                () => negativeRoundConsensusInformation.Verify(
+                    negativeRoundProof, prover.PublicKey));
         }
 
         [Fact]
