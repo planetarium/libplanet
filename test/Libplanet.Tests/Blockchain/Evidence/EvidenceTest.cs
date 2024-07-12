@@ -35,12 +35,22 @@ namespace Libplanet.Tests.Blockchain.Evidence
             var bencoded = EvidenceBase.Bencode(evidence);
             if (bencoded is Dictionary dictionary)
             {
-                var typeName = typeof(InvalidEvidence).AssemblyQualifiedName;
+                var typeName = EvidenceBase.GetTypeName(typeof(InvalidEvidence));
                 bencoded = dictionary.SetItem("type", new Text(typeName));
             }
 
             Assert.Throws<NotSupportedException>(
                 testCode: () => EvidenceBase.Decode(bencoded));
+        }
+
+        [Fact]
+        public void GetTypeName_Test()
+        {
+            var evidenceType = typeof(InvalidEvidence);
+            var actualTypeName = EvidenceBase.GetTypeName(evidenceType);
+            var expectedTypeName
+                = $"{evidenceType.FullName}, {evidenceType.Assembly.GetName().Name}";
+            Assert.Equal(expectedTypeName, actualTypeName);
         }
 
         private sealed class InvalidEvidence : EvidenceBase
