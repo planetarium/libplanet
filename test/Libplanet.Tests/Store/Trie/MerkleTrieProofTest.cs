@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -99,20 +98,15 @@ namespace Libplanet.Tests.Store.Trie
             trie = StateStore.Commit(trie);
             FullTrie = trie;
 
-            ImmutableArray<INode> emptyChildren = Enumerable
-                .Range(0, FullNode.ChildrenCount)
-                .Select(_ => (INode)null)
-                .ToImmutableArray();
             Nibbles n0 = new Nibbles(new byte[] { 0 }.ToImmutableArray());
-            Nibbles n1 = new Nibbles(new byte[] { 1 }.ToImmutableArray());
 
             INode proofNode0010 = new ValueNode(V0010);
             INode proofNode001 = new ShortNode(n0, ToHashNode(proofNode0010));
-            INode proofNode00 = new FullNode(emptyChildren)
+            INode proofNode00 = FullNode.Empty
                 .SetChild(0, new ShortNode(n0, new ValueNode(V0000)))
                 .SetChild(1, ToHashNode(proofNode001))
                 .SetChild(FullNode.ChildrenCount - 1, new ValueNode(V00));
-            INode proofNode0 = new FullNode(emptyChildren)
+            INode proofNode0 = FullNode.Empty
                 .SetChild(0, ToHashNode(proofNode00))
                 .SetChild(1, new ValueNode(V01));
             INode proofRoot = new ShortNode(n0, ToHashNode(proofNode0));
@@ -178,7 +172,7 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [Fact]
-        public void InvalidGetProofCalls()
+        public void InvalidGenerateProofCalls()
         {
             Assert.Contains(
                 "recorded",

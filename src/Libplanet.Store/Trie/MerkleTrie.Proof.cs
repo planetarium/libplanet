@@ -49,28 +49,43 @@ namespace Libplanet.Store.Trie
                     return false;
                 }
 
-                if (!last)
+                var resolved = ResolveToNextCandidateNode(proofNode, cursor);
+                if (resolved is { } r)
                 {
-                    var resolved = ResolveToHashNode(proofNode, cursor);
-                    if (resolved is { } r)
+                    switch (r.NextNode)
                     {
-                        cursor = r.NextCursor;
-                        targetHash = r.NextNode.HashDigest;
-                        continue;
+                        case HashNode hashNode:
+                            if (!last)
+                            {
+                                cursor = r.NextCursor;
+                                targetHash = hashNode.HashDigest;
+                                continue;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+
+                        case ValueNode valueNode:
+                            if (last)
+                            {
+                                return r.NextCursor.Offset == r.NextCursor.Length &&
+                                    valueNode.Value.Equals(value);
+                            }
+                            else
+                            {
+                                return false;
+                            }
+
+                        default:
+                            // NOTE: Should never be reached. Non-null resolved next node is
+                            // expected to be either HashNode or ValueNode.
+                            return false;
                     }
                 }
                 else
                 {
-                    var resolved = ResolveToValueNode(proofNode, cursor);
-                    if (resolved is { } r)
-                    {
-                        return r.NextCursor.Offset == r.NextCursor.Length &&
-                            r.ValueNode.Value.Equals(value);
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
@@ -187,133 +202,14 @@ namespace Libplanet.Store.Trie
             return targetHash.Equals(HashDigest<SHA256>.DeriveFrom(bytes));
         }
 
-        private static (ValueNode ValueNode, PathCursor NextCursor)? ResolveToValueNode(
-            INode node,
-            PathCursor cursor)
-        {
-            switch (node)
-            {
-                case HashNode _:
-                    return null;
-
-                case ValueNode valueNode:
-                    if (cursor.Offset == cursor.Length)
-                    {
-                        return (valueNode, cursor);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
-                case ShortNode shortNode:
-                    if (cursor.RemainingNibblesStartWith(shortNode.Key))
-                    {
-                        return ResolveToValueNode(
-                            shortNode.Value, cursor.Next(shortNode.Key.Length));
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
-                case FullNode fullNode:
-                    if (cursor.Offset == cursor.Length)
-                    {
-                        if (fullNode.Value is ValueNode v)
-                        {
-                            return (v, cursor);
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        INode? nextNode = fullNode.Children[cursor.NextNibble];
-                        if (nextNode is INode n)
-                        {
-                            return ResolveToValueNode(n, cursor.Next(1));
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-
-                default:
-                    // NOTE: Should never be thrown.
-                    throw new ArgumentException(
-                        $"Encountered an unexpected node type {node.GetType()}");
-            }
-        }
-
-        private static (HashNode NextNode, PathCursor NextCursor)? ResolveToHashNode(
-            INode node,
-            PathCursor cursor)
-        {
-            switch (node)
-            {
-                // This operates under an assumption that the initial call to this method
-                // will not be called with a HashNode.
-                case HashNode hashNode:
-                    return (hashNode, cursor);
-
-                case ValueNode _:
-                    return null;
-
-                case ShortNode shortNode:
-                    if (cursor.RemainingNibblesStartWith(shortNode.Key))
-                    {
-                        return ResolveToHashNode(
-                            shortNode.Value, cursor.Next(shortNode.Key.Length));
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
-                case FullNode fullNode:
-                    if (cursor.Offset == cursor.Length)
-                    {
-                        if (fullNode.Value is HashNode h)
-                        {
-                            return (h, cursor);
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        INode? nextNode = fullNode.Children[cursor.NextNibble];
-                        if (nextNode is INode n)
-                        {
-                            return ResolveToHashNode(n, cursor.Next(1));
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-
-                default:
-                    // NOTE: Should never be thrown.
-                    throw new ArgumentException(
-                        $"Encountered an unexpected node type {node.GetType()}");
-            }
-        }
-
         private static (INode NextNode, PathCursor NextCursor)? ResolveToNextCandidateNode(
             INode node,
             PathCursor cursor)
         {
             switch (node)
             {
-                // This operates under an assumption that the initial call to this method
-                // will not be called with a HashNode.
+                // This operates under an assumption that the initial non-recursive
+                // call to this method will not be called with a HashNode.
                 case HashNode hashNode:
                     return (hashNode, cursor);
 
