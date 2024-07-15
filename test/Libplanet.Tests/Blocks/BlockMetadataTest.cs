@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add(
                     "evidence_hash",
-                    ParseHex("1620ee70e94cee1bbead145cd905181ec5a6f21d82a18abf5ca448f83296486f")
+                    ParseHex("bd1b6bc740c7d74fe39f8c78dd6860b7b5bf9c58336a703a583a5a59651a4af3")
                 );
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData());
 
@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
                 .Add(
                     "evidence_hash",
-                    ParseHex("2fe13c69db80c99bb0dbd22cd30989fa6e843e780c531ef9a71ac68b8fabfba8")
+                    ParseHex("e7198889cc4a82a8b7be4b7f428b6201400ef222709f756e540b32bc1e8d5d86")
                 );
             AssertBencodexEqual(
                 expectedBlock1,
@@ -183,7 +183,7 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add(
                     "evidence_hash",
-                    ParseHex("2fe13c69db80c99bb0dbd22cd30989fa6e843e780c531ef9a71ac68b8fabfba8")
+                    ParseHex("e7198889cc4a82a8b7be4b7f428b6201400ef222709f756e540b32bc1e8d5d86")
                 )
                 .Add("protocol_version", 1);
             AssertBencodexEqual(expected, Block1MetadataPv1.MakeCandidateData());
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
-                FromHex("57755b98998adeab81ea1f09702fd353fbc6947531a9259665ae8d6f01d8bbf2"),
+                FromHex("9ff328716814fed03de454dfc0a9d9aeb0077ad0c393513bf29895a45ded13aa"),
                 hash.ByteArray);
         }
 
