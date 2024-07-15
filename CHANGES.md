@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.1.1
 -------------
 
-To be released.
+Released on July 15, 2024.
 
  -  Fixed an issue with the evidence hash changing depending on the version.
     [[#3874]]
