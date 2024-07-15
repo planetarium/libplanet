@@ -36,7 +36,7 @@ namespace Libplanet.Net.Transports
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
-        private ActivitySource _activitySource;
+        private readonly ActivitySource _activitySource;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
 
@@ -691,7 +691,7 @@ namespace Libplanet.Net.Transports
                                         diffVersion);
                                     await ReplyMessageAsync(
                                         diffVersion,
-                                        message.Identity ?? new byte[] { },
+                                        message.Identity ?? Array.Empty<byte>(),
                                         _runtimeCancellationTokenSource.Token
                                     );
                                 }

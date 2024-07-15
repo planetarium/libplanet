@@ -1,3 +1,4 @@
+#nullable enable
 using System.Diagnostics;
 using System.Security.Cryptography;
 using Bencodex.Types;
