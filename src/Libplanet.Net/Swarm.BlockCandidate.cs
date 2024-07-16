@@ -146,16 +146,15 @@ namespace Libplanet.Net
             bool render,
             IProgress<BlockSyncState> progress)
         {
-            BlockChain workspace = blockChain;
+            BlockChain workspace;
             List<Guid> scope = new List<Guid>();
             bool forked = false;
 
-            Block oldTip = workspace.Tip;
+            Block oldTip = blockChain.Tip;
             Block newTip = candidate.Blocks.Last().Item1;
             List<(Block, BlockCommit)> blocks = candidate.Blocks.ToList();
             Block branchpoint = FindBranchpoint(
                  oldTip,
-                 newTip,
                  blocks.Select(pair => pair.Item1).ToList());
 
             if (branchpoint.Equals(oldTip))
@@ -163,8 +162,9 @@ namespace Libplanet.Net
                 _logger.Debug(
                     "No need to fork. at {MethodName}()",
                     nameof(AppendPreviousBlocks));
+                workspace = blockChain;
             }
-            else if (!workspace.ContainsBlock(branchpoint.Hash))
+            else if (!blockChain.ContainsBlock(branchpoint.Hash))
             {
                 // FIXME: This behavior can unexpectedly terminate the swarm (and the game
                 // app) if it encounters a peer having a different blockchain, and therefore
@@ -179,7 +179,7 @@ namespace Libplanet.Net
                 throw new InvalidGenesisBlockException(
                     msg,
                     branchpoint.Hash,
-                    workspace.Genesis.Hash);
+                    blockChain.Genesis.Hash);
             }
             else
             {
@@ -187,7 +187,7 @@ namespace Libplanet.Net
                     "Trying to fork... at {MethodName}()",
                     nameof(AppendPreviousBlocks)
                 );
-                workspace = workspace.Fork(branchpoint.Hash);
+                workspace = blockChain.Fork(branchpoint.Hash);
                 forked = true;
                 scope.Add(workspace.Id);
                 _logger.Debug(
@@ -274,8 +274,9 @@ namespace Libplanet.Net
             return workspace;
         }
 
-        private Block FindBranchpoint(Block oldTip, Block newTip, List<Block> newBlocks)
+        private Block FindBranchpoint(Block oldTip, List<Block> newBlocks)
         {
+            var newTip = newBlocks.Last();
             while (oldTip.Index > newTip.Index &&
                    oldTip.PreviousHash is { } aPrev)
             {
