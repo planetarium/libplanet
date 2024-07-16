@@ -421,6 +421,68 @@ to traverse the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_GenerateProof_Libplanet_Store_Trie_KeyBytes_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.GenerateProof(Libplanet.Store.Trie.KeyBytes%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/MerkleTrie.Proof.cs/#L114">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_MerkleTrie_GenerateProof_" data-uid="Libplanet.Store.Trie.MerkleTrie.GenerateProof*"></a>
+  <h4 id="Libplanet_Store_Trie_MerkleTrie_GenerateProof_Libplanet_Store_Trie_KeyBytes_IValue_" data-uid="Libplanet.Store.Trie.MerkleTrie.GenerateProof(Libplanet.Store.Trie.KeyBytes,IValue)">GenerateProof(KeyBytes, IValue)</h4>
+  <div class="markdown level1 summary"><p>Generates a proof of existence for <code data-dev-comment-type="paramref" class="paramref">value</code> at <code data-dev-comment-type="paramref" class="paramref">key</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;INode&gt; GenerateProof(KeyBytes key, IValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The path in <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> to search.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The <see cref="!:IValue"></see> to search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>&gt;</td>
+        <td><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>s
+that can prove <code data-dev-comment-type="paramref" class="paramref">key</code> and <code data-dev-comment-type="paramref" class="paramref">value</code> pair exists or not
+given an <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>'s <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_MerkleTrie_GenerateProof_Libplanet_Store_Trie_KeyBytes_IValue__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>In order to generate a valid proof, both a valid <code data-dev-comment-type="paramref" class="paramref">key</code> and
+a valid <code data-dev-comment-type="paramref" class="paramref">value</code> must be known beforehand.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -927,6 +989,80 @@ Stored <code data-dev-comment-type="paramref" class="paramref">value</code> is a
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.IStateStore.html#Libplanet_Store_IStateStore_Commit_Libplanet_Store_Trie_ITrie_">Commit</a>(<a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>)</div>
   </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_MerkleTrie_ValidateProof_Libplanet_Common_HashDigest_SHA256__IReadOnlyList_Libplanet_Store_Trie_Nodes_INode__Libplanet_Store_Trie_KeyBytes_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest%7BSHA256%7D%2CIReadOnlyList%7BLibplanet.Store.Trie.Nodes.INode%7D%2CLibplanet.Store.Trie.KeyBytes%2CIValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Store/Trie/MerkleTrie.Proof.cs/#L27">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_MerkleTrie_ValidateProof_" data-uid="Libplanet.Store.Trie.MerkleTrie.ValidateProof*"></a>
+  <h4 id="Libplanet_Store_Trie_MerkleTrie_ValidateProof_Libplanet_Common_HashDigest_SHA256__IReadOnlyList_Libplanet_Store_Trie_Nodes_INode__Libplanet_Store_Trie_KeyBytes_IValue_" data-uid="Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest{SHA256},IReadOnlyList{Libplanet.Store.Trie.Nodes.INode},Libplanet.Store.Trie.KeyBytes,IValue)">ValidateProof(HashDigest&lt;SHA256&gt;, IReadOnlyList&lt;INode&gt;, KeyBytes, IValue)</h4>
+  <div class="markdown level1 summary"><p>Checks whether given <code data-dev-comment-type="paramref" class="paramref">proof</code> is a valid proof
+for given <code data-dev-comment-type="paramref" class="paramref">key</code> and <code data-dev-comment-type="paramref" class="paramref">value</code> against
+given <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ValidateProof(HashDigest&lt;SHA256&gt; stateRootHash, IReadOnlyList&lt;INode&gt; proof, KeyBytes key, IValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">stateRootHash</span></td>
+        <td><p>A known <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash">Hash</a> of a <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
+to check <code data-dev-comment-type="paramref" class="paramref">proof</code> against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>&gt;</td>
+        <td><span class="parametername">proof</span></td>
+        <td><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of <a class="xref" href="Libplanet.Store.Trie.Nodes.INode.html">INode</a>s
+that acts as a proof of existence for <code data-dev-comment-type="paramref" class="paramref">value</code>
+at <code data-dev-comment-type="paramref" class="paramref">key</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The path in <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> to validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The <see cref="!:IValue"></see> to search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">proof</code> is valid,
+<span class="xref">false</span> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>

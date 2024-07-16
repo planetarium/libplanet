@@ -24908,6 +24908,19 @@ references:
   commentId: F:Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   fullName: Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   nameWithType: MerkleTrie.EmptyRootHash
+- uid: Libplanet.Store.Trie.MerkleTrie.GenerateProof(Libplanet.Store.Trie.KeyBytes,IValue)
+  name: GenerateProof(KeyBytes, IValue)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_GenerateProof_Libplanet_Store_Trie_KeyBytes_IValue_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.GenerateProof(Libplanet.Store.Trie.KeyBytes,IValue)
+  fullName: Libplanet.Store.Trie.MerkleTrie.GenerateProof(Libplanet.Store.Trie.KeyBytes, IValue)
+  nameWithType: MerkleTrie.GenerateProof(KeyBytes, IValue)
+- uid: Libplanet.Store.Trie.MerkleTrie.GenerateProof*
+  name: GenerateProof
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_GenerateProof_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.GenerateProof
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.GenerateProof
+  nameWithType: MerkleTrie.GenerateProof
 - uid: Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
   name: Get(IReadOnlyList<KeyBytes>)
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
@@ -25066,6 +25079,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Set
   nameWithType: MerkleTrie.Set
+- uid: Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest{SHA256},IReadOnlyList{Libplanet.Store.Trie.Nodes.INode},Libplanet.Store.Trie.KeyBytes,IValue)
+  name: ValidateProof(HashDigest<SHA256>, IReadOnlyList<INode>, KeyBytes, IValue)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_ValidateProof_Libplanet_Common_HashDigest_SHA256__IReadOnlyList_Libplanet_Store_Trie_Nodes_INode__Libplanet_Store_Trie_KeyBytes_IValue_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest{SHA256},IReadOnlyList{Libplanet.Store.Trie.Nodes.INode},Libplanet.Store.Trie.KeyBytes,IValue)
+  name.vb: ValidateProof(HashDigest(Of SHA256), IReadOnlyList(Of INode), KeyBytes, IValue)
+  fullName: Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest<SHA256>, IReadOnlyList<Libplanet.Store.Trie.Nodes.INode>, Libplanet.Store.Trie.KeyBytes, IValue)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.ValidateProof(Libplanet.Common.HashDigest(Of SHA256), IReadOnlyList(Of Libplanet.Store.Trie.Nodes.INode), Libplanet.Store.Trie.KeyBytes, IValue)
+  nameWithType: MerkleTrie.ValidateProof(HashDigest<SHA256>, IReadOnlyList<INode>, KeyBytes, IValue)
+  nameWithType.vb: MerkleTrie.ValidateProof(HashDigest(Of SHA256), IReadOnlyList(Of INode), KeyBytes, IValue)
+- uid: Libplanet.Store.Trie.MerkleTrie.ValidateProof*
+  name: ValidateProof
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_ValidateProof_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.ValidateProof
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.ValidateProof
+  nameWithType: MerkleTrie.ValidateProof
 - uid: Libplanet.Store.Trie.Nibbles
   name: Nibbles
   href: api/Libplanet.Store.Trie.Nibbles.html
