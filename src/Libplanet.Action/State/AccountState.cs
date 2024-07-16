@@ -1,4 +1,6 @@
+#nullable enable
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -14,17 +16,25 @@ namespace Libplanet.Action.State
     public class AccountState : IAccountState
     {
         private readonly ITrie _trie;
+        private readonly ActivitySource _activitySource;
 
         public AccountState(ITrie trie)
         {
             _trie = trie;
+            _activitySource = new ActivitySource("Libplanet.Action.State");
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
         public ITrie Trie => _trie;
 
         /// <inheritdoc cref="IAccountState.GetState"/>
-        public IValue? GetState(Address address) => Trie.Get(ToStateKey(address));
+        public IValue? GetState(Address address)
+        {
+            using Activity? a = _activitySource
+                .StartActivity(ActivityKind.Internal)?
+                .AddTag("Address", address.ToString());
+            return Trie.Get(ToStateKey(address));
+        }
 
         /// <inheritdoc cref="IAccountState.GetStates"/>
         public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
