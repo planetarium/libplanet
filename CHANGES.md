@@ -16,6 +16,9 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Store) Added `MerkleTrie.GenerateProof()` method.  [[#3870]]
+ -  (Libplanet.Store) Added `MerkleTrie.ValidateProof()` method.  [[#3870]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +26,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3870]: https://github.com/planetarium/libplanet/pull/3870
 
 
 Version 5.1.1
