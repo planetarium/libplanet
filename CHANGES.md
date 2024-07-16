@@ -6,6 +6,11 @@ Version 5.1.2
 
 To be released.
 
+ -  Fix an issue where currency does not work correctly in dotnet6.
+    [[#3880]]
+
+[#3880]: https://github.com/planetarium/libplanet/pull/3880
+
 
 Version 5.1.1
 -------------
