@@ -10,6 +10,24 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet) Removed `IBlockPolicy.BlockAction` property. [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.BeginBlockActions`. property. [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.EndBlockActions`. property. [[#3701]]
+ -  (Libplanet) Added `IBlockPolicy.BeginTxActions`. property. [[#3748]]
+ -  (Libplanet) Added `IBlockPolicy.EndTxActions`. property. [[#3748]]
+ -  (Libplanet) `BlockPolicy` constructor requires `beginBlockActions`,
+    `endBlockActions`, `beginTxActions` and `endTxActions` parameters
+    instead of the `blockAction` parameter.
+    [[#3701], [#3748]]
+ -  (Libplanet.Action) Renamed `PolicyBlockActionGetter` delegate to
+    `PolicyActionsGetter` and changed return type to
+    `ImmutableArray<IAction>`.  [[#3701], [#3748]]
+ -  (Libplanet.Action) `ActionEvaluator` constructor requires
+    `PolicyActionsRegistry` parameter instead of the
+    `policyBlockActionGetter` parameter.  [[#3701], [#3748]]
+ -  (Libplanet.Action) Renamed `IActionContext.BlockAction` property to
+    `IActionContext.IsBlockAction`.  [[#3764]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,6 +36,7 @@ To be released.
 
  -  (Libplanet.Store) Added `MerkleTrie.GenerateProof()` method.  [[#3870]]
  -  (Libplanet.Store) Added `MerkleTrie.ValidateProof()` method.  [[#3870]]
+ -  (Libplanet.Action) Added `PolicyActionsRegistry` class.  [[#3748]]
 
 ### Behavioral changes
 
@@ -28,6 +47,9 @@ To be released.
 ### CLI tools
 
 [#3870]: https://github.com/planetarium/libplanet/pull/3870
+[#3701]: https://github.com/planetarium/libplanet/pull/3701
+[#3748]: https://github.com/planetarium/libplanet/pull/3748
+[#3764]: https://github.com/planetarium/libplanet/pull/3764
 
 
 Version 5.1.2
