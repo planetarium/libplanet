@@ -457,7 +457,7 @@ namespace Libplanet.Net.Consensus
             try
             {
                 Block block = _blockChain.ProposeBlock(
-                    _privateKey, 
+                    _privateKey,
                     _lastCommit,
                     _lotSet.GenerateProof(_privateKey),
                     _blockChain.GetPendingEvidence());

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
