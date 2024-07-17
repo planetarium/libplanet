@@ -62,8 +62,8 @@ for project in "${projects[@]}"; do
     dotnet_args="-p:VersionPrefix=$version_prefix"
     dotnet_args="$dotnet_args --version-suffix=$version_suffix"
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
-    dotnet_args="$dotnet_args -p:_IsPacking=true"
   fi
+  dotnet_args="$dotnet_args -p:_IsPacking=true"
   # shellcheck disable=SC2086
   dotnet build -c "$configuration" $dotnet_args || \
     if [[ "$?" = "139" ]]; then
