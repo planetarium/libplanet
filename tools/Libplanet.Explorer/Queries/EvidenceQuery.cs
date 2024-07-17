@@ -18,7 +18,7 @@ namespace Libplanet.Explorer.Queries
             Description = "Retrieve evidence information.";
 
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<EvidenceType>>>>(
-                "evidence",
+                "committedEvidence",
                 arguments: new QueryArguments(
                     new QueryArgument<BlockHashType>
                     {
