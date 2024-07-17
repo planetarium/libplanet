@@ -15,7 +15,7 @@ namespace Libplanet.Crypto
     /// Represents a proof that validators submits to be a proposer.
     /// Once decided, it can be a source of random seed.
     /// </summary>
-    public readonly struct Proof : IBencodable, IEquatable<Proof>, IComparable<Proof>, IComparable
+    public class Proof : IBencodable, IEquatable<Proof>, IComparable<Proof>, IComparable
     {
         private readonly ImmutableArray<byte> _piBytes;
         private readonly ImmutableArray<byte> _hash;
@@ -248,23 +248,27 @@ namespace Libplanet.Crypto
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(Proof other)
-            => ByteArray.SequenceEqual(other.ByteArray);
+        public bool Equals(Proof? other)
+            => other is Proof proof
+            && ByteArray.SequenceEqual(proof.ByteArray);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj)
             => obj is Proof otherProof && Equals(otherProof);
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
-        public int CompareTo(Proof other)
-            => (HashInt - other.HashInt).Sign;
+        public int CompareTo(Proof? other)
+            => other is Proof proof
+            ? (HashInt - proof.HashInt).Sign
+            : throw new ArgumentException(
+                $"Argument {nameof(other)} cannot be null.", nameof(other));
 
         /// <inheritdoc cref="IComparable.CompareTo(object?)"/>
         public int CompareTo(object? obj)
             => obj is Proof otherProof
-                ? CompareTo(otherProof)
-                : throw new ArgumentException(
-                    $"Argument {nameof(obj)} is not an ${nameof(Proof)}.", nameof(obj));
+            ? CompareTo(otherProof)
+            : throw new ArgumentException(
+                $"Argument {nameof(obj)} is not an ${nameof(Proof)}.", nameof(obj));
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode()

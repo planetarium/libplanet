@@ -109,16 +109,16 @@ namespace Libplanet.Consensus
         [Pure]
         public bool Equals(DominantLot? other)
         {
-            return other is { } drawn &&
-                   _dominantLotMetadata.Equals(drawn._dominantLotMetadata) &&
-                   Signature.SequenceEqual(drawn.Signature);
+            return other is DominantLot dominantLot &&
+                _dominantLotMetadata.Equals(dominantLot._dominantLotMetadata) &&
+                Signature.SequenceEqual(dominantLot.Signature);
         }
 
         /// <inheritdoc/>
         [Pure]
         public override bool Equals(object? obj)
         {
-            return obj is Maj23 other && Equals(other);
+            return obj is DominantLot other && Equals(other);
         }
 
         /// <inheritdoc/>

@@ -312,20 +312,20 @@ namespace Libplanet.Blockchain
                 {
                     throw new InvalidBlockLastCommitException(ibce.Message);
                 }
+            }
 
-                if (block.Proof is { }
+            if (block.Proof is { }
                     && block.ProtocolVersion < BlockMetadata.VRFProtocolVersion)
-                {
-                    throw new InvalidBlockProofException(
-                        "Block of protocol version lower than 9 does not support proof.");
-                }
+            {
+                throw new InvalidBlockProofException(
+                    "Block of protocol version lower than 9 does not support proof.");
+            }
 
-                if (block.Proof is null
-                    && block.ProtocolVersion >= BlockMetadata.VRFProtocolVersion)
-                {
-                    throw new InvalidBlockProofException(
-                        "Block of protocol version higher than 9 must contain proof.");
-                }
+            if (block.Proof is null
+                && block.ProtocolVersion >= BlockMetadata.VRFProtocolVersion)
+            {
+                throw new InvalidBlockProofException(
+                    "Block of protocol version higher than 9 must contain proof.");
             }
 
             foreach (var ev in block.Evidence)

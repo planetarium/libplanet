@@ -97,7 +97,7 @@ namespace Libplanet.Blockchain
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
-            Proof? proof = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null,
             IComparer<Transaction> txPriority = null)
         {
@@ -155,7 +155,7 @@ namespace Libplanet.Blockchain
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
             BlockCommit lastCommit,
-            Proof? proof,
+            Proof proof,
             ImmutableArray<EvidenceBase> evidence)
         {
             long index = Count;

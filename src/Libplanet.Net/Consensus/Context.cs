@@ -510,7 +510,8 @@ namespace Libplanet.Net.Consensus
 
                 try
                 {
-                    if (!block.Proof.Equals(_lotSet.Maj23?.Proof))
+                    if (!(block.Proof is Proof proof
+                        && proof.Equals(_lotSet.Maj23?.Proof)))
                     {
                         throw new InvalidBlockProofException(
                             $"Proof if given block is different from " +

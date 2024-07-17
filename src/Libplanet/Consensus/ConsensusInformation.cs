@@ -14,7 +14,7 @@ namespace Libplanet.Consensus
     /// <see cref="Types.Blocks.Block.Proof"/> in the
     /// <see cref="Lot"/>.
     /// </summary>
-    public readonly struct ConsensusInformation : IEquatable<ConsensusInformation>
+    public class ConsensusInformation : IEquatable<ConsensusInformation>
     {
         private static readonly Binary HeightKey =
             new Binary(new byte[] { 0x48 }); // 'H'
@@ -89,7 +89,7 @@ namespace Libplanet.Consensus
                   (Integer)bencoded[HeightKey],
                   (Integer)bencoded[RoundKey],
                   bencoded.ContainsKey(LastProofKey)
-                    ? (Proof?)new Proof(bencoded[LastProofKey])
+                    ? new Proof(bencoded[LastProofKey])
                     : null)
         {
         }
@@ -180,10 +180,11 @@ namespace Libplanet.Consensus
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(ConsensusInformation other)
-            => Height == other.Height
-            && Round == other.Round
-            && LastProof.Equals(other.LastProof);
+        public bool Equals(ConsensusInformation? other)
+            => other is ConsensusInformation ci
+            && Height == ci.Height
+            && Round == ci.Round
+            && (LastProof?.Equals(ci.LastProof) ?? ci.LastProof is null);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj) =>
@@ -203,7 +204,7 @@ namespace Libplanet.Consensus
             {
                 { "height", Height },
                 { "round", Round },
-                { "lastProof", LastProof.ToString() ?? "Empty" },
+                { "lastProof", LastProof?.ToString() ?? "Empty" },
             };
             return JsonSerializer.Serialize(dict);
         }

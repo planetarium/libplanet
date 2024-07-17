@@ -10,7 +10,7 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
 {
-    public readonly struct Lot : IBencodable, IEquatable<Lot>
+    public class Lot : IBencodable, IEquatable<Lot>
     {
         private static readonly Binary ProofKey
             = new Binary(new byte[] { 0x50 }); // 'P'
@@ -110,10 +110,11 @@ namespace Libplanet.Consensus
         public byte[] ToByteArray() => _codec.Encode(Bencoded);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
-        public bool Equals(Lot other)
-            => Proof.Equals(other.Proof)
-            && PublicKey.Equals(other.PublicKey)
-            && ConsensusInformation.Equals(other.ConsensusInformation);
+        public bool Equals(Lot? other)
+            => other is Lot lot
+            && Proof.Equals(lot.Proof)
+            && PublicKey.Equals(lot.PublicKey)
+            && ConsensusInformation.Equals(lot.ConsensusInformation);
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object? obj)

@@ -55,7 +55,7 @@ namespace Libplanet.Net.Consensus
         /// </param>
         protected InvalidLotException(SerializationInfo info, StreamingContext context)
         {
-            Lot = info.GetValue(nameof(Lot), typeof(Lot)) as Lot? ??
+            Lot = info.GetValue(nameof(Lot), typeof(Lot)) as Lot ??
                 throw new SerializationException(
                     $"{nameof(Lot)} is expected to be a non-null {nameof(Lot)}.");
         }
