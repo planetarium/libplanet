@@ -27,4 +27,4 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - run: 'hooks/pre-commit'
-    - run: 'dotnet pack -p:SkipSonar=false'
+    - run: 'dotnet pack -p:SkipSonar=false -p:_IsPacking=true'
