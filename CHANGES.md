@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.1.2
 -------------
 
-To be released.
+Released on July 17, 2024.
 
  -  Fix an issue where currency does not work correctly in dotnet6.
     [[#3880]]
