@@ -423,7 +423,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block.CurrentProtocolVersion,
-            Proof? proof = null
+            Proof proof = null
         )
         {
             var txs = transactions?.ToList() ?? new List<Transaction>();
@@ -496,7 +496,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             BlockCommit lastCommit = null,
-            Proof? proof = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             var txs = transactions is null
@@ -539,7 +539,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
             BlockCommit lastCommit = null,
-            Proof? proof = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             Skip.IfNot(

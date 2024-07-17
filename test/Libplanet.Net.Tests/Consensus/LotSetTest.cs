@@ -110,12 +110,12 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Throws<InvalidLotException>(
                 () => _lotSet.AddLot(_consensusInformation.ToLot(TestUtils.PrivateKeys[0])));
             Assert.Single(_lotSet.Lots);
-            _lotSet.DominantLot.Equals(_lotSet.Lots[TestUtils.PrivateKeys[0].PublicKey]);
+            Assert.Equal(_lotSet.DominantLot, _lotSet.Lots[TestUtils.PrivateKeys[0].PublicKey]);
             _lotSet.AddLot(_consensusInformation.ToLot(TestUtils.PrivateKeys[1]));
             _lotSet.AddLot(_consensusInformation.ToLot(TestUtils.PrivateKeys[2]));
             _lotSet.AddLot(_consensusInformation.ToLot(TestUtils.PrivateKeys[3]));
             Assert.Equal(4, _lotSet.Lots.Count);
-            Lot dominantLot = (Lot)_lotSet.DominantLot!;
+            Lot dominantLot = _lotSet.DominantLot!;
             var nonDominantLots
                 = _lotSet.Lots.Remove(dominantLot.PublicKey).Select(e => e.Value);
             Assert.All(nonDominantLots, lot => Assert.True(FormerLotWins(dominantLot, lot)));

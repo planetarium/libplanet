@@ -821,11 +821,10 @@ namespace Libplanet.Net.Tests.Consensus
             await lotSent.WaitAsync();
             Assert.NotNull(lotPublished);
 
-            Lot lot = lotPublished.Value;
-            Assert.Equal(1L, lot.Height);
-            Assert.Equal(0, lot.Round);
-            Assert.Equal(blockChain.Tip.Proof, lot.LastProof);
-            Assert.Equal(TestUtils.PrivateKeys[0].PublicKey, lot.PublicKey);
+            Assert.Equal(1L, lotPublished.Height);
+            Assert.Equal(0, lotPublished.Round);
+            Assert.Equal(blockChain.Tip.Proof, lotPublished.LastProof);
+            Assert.Equal(TestUtils.PrivateKeys[0].PublicKey, lotPublished.PublicKey);
         }
 
         [Fact]

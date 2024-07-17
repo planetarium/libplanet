@@ -109,8 +109,8 @@ namespace Libplanet.Net.Tests
             }
 
             return (privateKeys.First(
-                pk => pk.PublicKey.Equals(lotSet.DominantLot!.Value.PublicKey)),
-                lotSet.DominantLot!.Value.Proof);
+                pk => pk.PublicKey.Equals(lotSet.DominantLot!.PublicKey)),
+                lotSet.DominantLot!.Proof);
         }
 
         public static DominantLot CreateDominantLot(
