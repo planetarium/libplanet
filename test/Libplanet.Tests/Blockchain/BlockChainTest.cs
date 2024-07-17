@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: _fx.GenesisBlock.Hash,
                         txHash: null,
                         lastCommit: null,
-                        proof: null,
+                        proof: TestUtils.CreateZeroRoundProof(_blockChain.Tip, _fx.Proposer),
                         evidenceHash: null)).Propose(),
                 _fx.Proposer);
         }
@@ -177,7 +177,9 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Single(_blockChain.BlockHashes);
 
-            Block b1 = _blockChain.ProposeBlock(key);
+            Block b1 = _blockChain.ProposeBlock(
+                key,
+                proof: CreateZeroRoundProof(_blockChain.Tip, key));
             _blockChain.Append(b1, CreateBlockCommit(b1));
             Assert.Equal(new[] { genesis.Hash, b1.Hash }, _blockChain.BlockHashes);
 

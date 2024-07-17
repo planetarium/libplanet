@@ -413,9 +413,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Proof CreateZeroRoundProof(
-            Block tip,
+            IBlockMetadata tip,
             PrivateKey proposerKey)
-            => new ConsensusInformation(tip.Index + 1, 0, tip.Proof).Prove(proposerKey);
+            => new ConsensusInformation((tip?.Index ?? -1) + 1, 0, tip?.Proof).Prove(proposerKey);
 
         public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,

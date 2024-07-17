@@ -99,7 +99,9 @@ namespace Libplanet.Net.Tests.Consensus
             // whether the lastCommit of height 1 is used for propose.  Note that Peer2
             // is the proposer for height 2.
             var blockChain = TestUtils.CreateDummyBlockChain();
-            Block heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            Block heightOneBlock = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
             blockChain.Append(heightOneBlock, lastCommit);
 

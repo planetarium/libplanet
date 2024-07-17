@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null,
-                    proof: null,
+                    proof: TestUtils.CreateZeroRoundProof(null, GenesisKey),
                     evidenceHash: BlockContent.DeriveEvidenceHash(genEvidence)),
                 transactions: genTxs,
                 evidence: genEvidence);
@@ -137,7 +137,7 @@ namespace Libplanet.Tests.Fixtures
                     previousHash: GenesisHash,
                     txHash: BlockContent.DeriveTxHash(block1Transactions),
                     lastCommit: null,
-                    proof: null,
+                    proof: TestUtils.CreateZeroRoundProof(GenesisMetadata, Block1Key),
                     evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidence)),
                 transactions: block1Transactions,
                 evidence: block1Evidence);

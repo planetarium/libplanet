@@ -81,7 +81,9 @@ namespace Libplanet.Tests.Blockchain
 
             // stage tx_0_0 -> mine tx_0_0 -> stage tx_0_1
             Assert.True(_blockChain.StageTransaction(tx_0_0));
-            var block = _blockChain.ProposeBlock(key);
+            var block = _blockChain.ProposeBlock(
+                key,
+                proof: TestUtils.CreateZeroRoundProof(_blockChain.Tip, key));
             _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Empty(_blockChain.GetStagedTransactionIds());
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));

@@ -114,22 +114,28 @@ namespace Libplanet.Tests.Store
                 GenesisBlock,
                 miner: Proposer,
                 stateRootHash: genesisNextSrh,
-                lastCommit: null);
+                lastCommit: null,
+                proof: TestUtils.CreateZeroRoundProof(GenesisBlock, Proposer));
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
             Block2 = TestUtils.ProposeNextBlock(
                 Block1,
                 miner: Proposer,
                 stateRootHash: genesisNextSrh,
-                lastCommit: TestUtils.CreateBlockCommit(Block1));
+                lastCommit: TestUtils.CreateBlockCommit(Block1),
+                proof: TestUtils.CreateZeroRoundProof(Block1, Proposer));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
             Block3 = TestUtils.ProposeNextBlock(
                 Block2,
                 miner: Proposer,
                 stateRootHash: genesisNextSrh,
-                lastCommit: TestUtils.CreateBlockCommit(Block2));
+                lastCommit: TestUtils.CreateBlockCommit(Block2),
+                proof: TestUtils.CreateZeroRoundProof(Block2, Proposer));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
             Block3Alt = TestUtils.ProposeNextBlock(
-                Block2, miner: Proposer, stateRootHash: genesisNextSrh);
+                Block2,
+                miner: Proposer,
+                stateRootHash: genesisNextSrh,
+                proof: TestUtils.CreateZeroRoundProof(Block2, Proposer));
             stateRootHashes[Block3Alt.Hash] = Block3Alt.StateRootHash;
             Block4 = TestUtils.ProposeNextBlock(
                 Block3, miner: Proposer, stateRootHash: genesisNextSrh);

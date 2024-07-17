@@ -24,7 +24,9 @@ namespace Libplanet.Net.Tests.Consensus
         public HeightVoteSetTest()
         {
             _blockChain = TestUtils.CreateDummyBlockChain();
-            var block = _blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = _blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(_blockChain.Tip, TestUtils.PrivateKeys[1]));
             _lastCommit = TestUtils.CreateBlockCommit(block);
             _heightVoteSet = new HeightVoteSet(2, TestUtils.ValidatorSet);
             _blockChain.Append(block, TestUtils.CreateBlockCommit(block));

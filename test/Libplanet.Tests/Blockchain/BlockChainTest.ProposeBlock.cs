@@ -207,8 +207,13 @@ namespace Libplanet.Tests.Blockchain
                         }.ToPlainValues()),
                 }.ToImmutableList();
 
+                var proposer = new PrivateKey();
                 var block = blockChain.ProposeBlock(
-                    new PrivateKey(), txs, null, null, ImmutableArray<EvidenceBase>.Empty);
+                    proposer,
+                    txs,
+                    null,
+                    CreateZeroRoundProof(_blockChain.Tip, proposer),
+                    ImmutableArray<EvidenceBase>.Empty);
                 Assert.Throws<InvalidTxNonceException>(
                     () => blockChain.Append(block, CreateBlockCommit(block)));
             }
@@ -325,7 +330,9 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
             }
 
-            Block block = _blockChain.ProposeBlock(keyA);
+            Block block = _blockChain.ProposeBlock(
+                keyA,
+                proof: CreateZeroRoundProof(_blockChain.Tip, keyA));
             _blockChain.Append(block, CreateBlockCommit(block));
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
@@ -425,7 +432,9 @@ namespace Libplanet.Tests.Blockchain
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
                 var proposer = new PrivateKey();
-                var block = blockChain.ProposeBlock(proposer);
+                var block = blockChain.ProposeBlock(
+                    proposer,
+                    proof: CreateZeroRoundProof(blockChain.Tip, proposer));
                 blockChain.Append(block, CreateBlockCommit(block));
 
                 var txs = block.Transactions.ToHashSet();
@@ -482,7 +491,10 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            Block block1 = _blockChain.ProposeBlock(new PrivateKey());
+            var proposer = new PrivateKey();
+            Block block1 = _blockChain.ProposeBlock(
+                proposer,
+                proof: CreateZeroRoundProof(_blockChain.Tip, proposer));
             _blockChain.Append(block1, CreateBlockCommit(block1));
 
             // Trying to propose with lower nonce (0) than expected.
@@ -497,7 +509,7 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            var proposer = new PrivateKey();
+            proposer = new PrivateKey();
             Block block2 = _blockChain.ProposeBlock(
                 proposer,
                 CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0),
@@ -657,7 +669,10 @@ namespace Libplanet.Tests.Blockchain
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txsA);
-            Block b1 = _blockChain.ProposeBlock(new PrivateKey());
+            var proposer = new PrivateKey();
+            Block b1 = _blockChain.ProposeBlock(
+                proposer,
+                proof: CreateZeroRoundProof(_blockChain.Tip, proposer));
             _blockChain.Append(b1, CreateBlockCommit(b1));
             Assert.Equal(
                 txsA,
@@ -675,7 +690,7 @@ namespace Libplanet.Tests.Blockchain
             StageTransactions(txsB);
 
             // Propose only txs having higher or equal with nonce than expected nonce.
-            var proposer = new PrivateKey();
+            proposer = new PrivateKey();
             Block b2 = _blockChain.ProposeBlock(
                 proposer,
                 CreateBlockCommit(b1),
@@ -696,7 +711,9 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txs);
-            Block b = _blockChain.ProposeBlock(privateKey);
+            Block b = _blockChain.ProposeBlock(
+                privateKey,
+                proof: CreateZeroRoundProof(_blockChain.Tip, privateKey));
             _blockChain.Append(b, CreateBlockCommit(b));
 
             Assert.Single(b.Transactions);

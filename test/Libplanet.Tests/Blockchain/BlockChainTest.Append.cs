@@ -748,7 +748,7 @@ namespace Libplanet.Tests.Blockchain
                 previousHash: _blockChain.Genesis.Hash,
                 txHash: BlockContent.DeriveTxHash(txs),
                 lastCommit: null,
-                proof: null,
+                proof: TestUtils.CreateZeroRoundProof(_blockChain.Tip, _fx.Proposer),
                 evidenceHash: null);
             var preEval = new PreEvaluationBlock(
                 preEvaluationBlockHeader: new PreEvaluationBlockHeader(
