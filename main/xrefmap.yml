@@ -28757,14 +28757,7 @@ references:
 - uid: Libplanet.Types.Assets.Currency.Hash
   name: Hash
   href: api/Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Hash
-  commentId: P:Libplanet.Types.Assets.Currency.Hash
-  fullName: Libplanet.Types.Assets.Currency.Hash
-  nameWithType: Currency.Hash
-- uid: Libplanet.Types.Assets.Currency.Hash*
-  name: Hash
-  href: api/Libplanet.Types.Assets.Currency.html#Libplanet_Types_Assets_Currency_Hash_
-  commentId: Overload:Libplanet.Types.Assets.Currency.Hash
-  isSpec: "True"
+  commentId: F:Libplanet.Types.Assets.Currency.Hash
   fullName: Libplanet.Types.Assets.Currency.Hash
   nameWithType: Currency.Hash
 - uid: Libplanet.Types.Assets.Currency.Legacy(System.String,System.Byte,Libplanet.Crypto.Address)
