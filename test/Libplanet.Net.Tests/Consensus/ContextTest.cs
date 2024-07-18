@@ -322,12 +322,10 @@ namespace Libplanet.Net.Tests.Consensus
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
 
             var policy = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            var fx = new MemoryStoreFixture(
-                policy.BeginBlockActions,
-                policy.EndBlockActions);
+            var fx = new MemoryStoreFixture(policy.PolicyActionsRegistry);
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy,
                 fx.Store,

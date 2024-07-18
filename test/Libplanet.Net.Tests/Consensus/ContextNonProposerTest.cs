@@ -304,8 +304,8 @@ namespace Libplanet.Net.Tests.Consensus
             var nilPreVoteSent = new AsyncAutoResetEvent();
             var invalidKey = new PrivateKey();
             var policy = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))),
                 getMaxTransactionsBytes: _ => 50 * 1024,
                 validateNextBlockTx: IsSignerValid);
 
@@ -377,8 +377,8 @@ namespace Libplanet.Net.Tests.Consensus
             var nilPreCommitSent = new AsyncAutoResetEvent();
             var txSigner = new PrivateKey();
             var policy = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))),
                 getMaxTransactionsBytes: _ => 50 * 1024);
 
             var (blockChain, context) = TestUtils.CreateDummyContext(
@@ -409,9 +409,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            using var fx = new MemoryStoreFixture(
-                policy.BeginBlockActions,
-                policy.EndBlockActions);
+            using var fx = new MemoryStoreFixture(policy.PolicyActionsRegistry);
 
             var unsignedInvalidTx = new UnsignedTx(
                 new TxInvoice(

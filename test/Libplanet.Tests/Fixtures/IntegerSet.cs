@@ -71,11 +71,7 @@ namespace Libplanet.Tests.Fixtures
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsRegistry(
-                    policy.BeginBlockActions,
-                    policy.EndBlockActions,
-                    policy.BeginTxActions,
-                    policy.EndTxActions),
+                policy.PolicyActionsRegistry,
                 StateStore,
                 new SingleActionLoader(typeof(Arithmetic)));
             Genesis = TestUtils.ProposeGenesisBlock(

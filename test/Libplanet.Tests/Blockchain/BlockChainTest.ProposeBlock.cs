@@ -145,11 +145,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 var policy = new BlockPolicy();
                 var actionEvaluator = new ActionEvaluator(
-                    new PolicyActionsRegistry(
-                        policy.BeginBlockActions,
-                        policy.EndBlockActions,
-                        policy.BeginTxActions,
-                        policy.EndTxActions),
+                    policy.PolicyActionsRegistry,
                     fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var genesis = BlockChain.ProposeGenesisBlock(
@@ -189,11 +185,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        new PolicyActionsRegistry(
-                            policy.BeginBlockActions,
-                            policy.EndBlockActions,
-                            policy.BeginTxActions,
-                            policy.EndTxActions),
+                        policy.PolicyActionsRegistry,
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var txs = new[]
@@ -418,11 +410,7 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     fx.GenesisBlock,
                     new ActionEvaluator(
-                        new PolicyActionsRegistry(
-                            policy.BeginBlockActions,
-                            policy.EndBlockActions,
-                            policy.BeginTxActions,
-                            policy.EndTxActions),
+                        policy.PolicyActionsRegistry,
                         stateStore: fx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
 
@@ -526,16 +514,11 @@ namespace Libplanet.Tests.Blockchain
             var privateKey2 = new PrivateKey();
             var address2 = privateKey2.Address;
 
-            var beginBlockActions = ImmutableArray.Create<IAction>(
-            );
-            var endBlockActions = ImmutableArray.Create<IAction>(
-                DumbAction.Create((address1, "foo"))
-            );
-
             var policy = new BlockPolicy(
-                beginBlockActions,
-                endBlockActions
-            );
+                new PolicyActionsRegistry(
+                    beginBlockActions: ImmutableArray<IAction>.Empty,
+                    endBlockActions: ImmutableArray.Create<IAction>(
+                        DumbAction.Create((address1, "foo")))));
             var blockChainStates = new BlockChainStates(_fx.Store, _fx.StateStore);
 
             var blockChain = new BlockChain(
@@ -546,11 +529,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 blockChainStates,
                 new ActionEvaluator(
-                    new PolicyActionsRegistry(
-                        policy.BeginBlockActions,
-                        policy.EndBlockActions,
-                        policy.BeginTxActions,
-                        policy.EndTxActions),
+                    policy.PolicyActionsRegistry,
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 

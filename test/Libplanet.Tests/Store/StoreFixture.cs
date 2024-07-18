@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -18,12 +17,7 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        protected StoreFixture(
-            ImmutableArray<IAction>? beginBlockActions = null,
-            ImmutableArray<IAction>? endBlockActions = null,
-            ImmutableArray<IAction>? beginTxActions = null,
-            ImmutableArray<IAction>? endTxActions = null
-        )
+        protected StoreFixture(PolicyActionsRegistry policyActionsRegistry = null)
         {
             Path = null;
 
@@ -107,11 +101,7 @@ namespace Libplanet.Tests.Store
                 proposer: Proposer.PublicKey,
                 validatorSet: TestUtils.ValidatorSet);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsRegistry(
-                    beginBlockActions,
-                    endBlockActions,
-                    beginTxActions,
-                    endTxActions),
+                policyActionsRegistry ?? new PolicyActionsRegistry(),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             GenesisBlock = preEval.Sign(
