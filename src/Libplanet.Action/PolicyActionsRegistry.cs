@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -6,44 +7,43 @@ namespace Libplanet.Action
     public class PolicyActionsRegistry
     {
         /// <summary>
-        /// A class containing delegators
-        /// to get policy actions to evaluate at each situation.
+        /// A class containing policy actions to evaluate at each situation.
         /// </summary>
-        /// <param name="beginBlockActionsGetter">A delegator to get policy block actions to
+        /// <param name="beginBlockActions">A list of block actions to
         /// evaluate at the beginning for each <see cref="IPreEvaluationBlock"/> that gets
         /// evaluated.
         /// Note the order of the returned list determines the execution order.
         /// </param>
-        /// <param name="endBlockActionsGetter">A delegator to get policy block actions to
+        /// <param name="endBlockActions">A list of block actions to
         /// evaluate at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.
         /// Note the order of the returned list determines the execution order.
         /// </param>
-        /// <param name="beginTxActionsGetter">A delegator to get policy block actions to
+        /// <param name="beginTxActions">A list of block actions to
         /// evaluate at the beginning for each <see cref="Transaction"/> that gets evaluated.
         /// Note the order of the returned list determines the execution order.
         /// </param>
-        /// <param name="endTxActionsGetter">A delegator to get policy block actions to
+        /// <param name="endTxActions">A list of block actions to
         /// evaluate at the end for each <see cref="Transaction"/> that gets evaluated.
         /// Note the order of the returned list determines the execution order.
         /// </param>
         public PolicyActionsRegistry(
-            PolicyActionsGetter beginBlockActionsGetter,
-            PolicyActionsGetter endBlockActionsGetter,
-            PolicyActionsGetter beginTxActionsGetter,
-            PolicyActionsGetter endTxActionsGetter)
+            ImmutableArray<IAction>? beginBlockActions = null,
+            ImmutableArray<IAction>? endBlockActions = null,
+            ImmutableArray<IAction>? beginTxActions = null,
+            ImmutableArray<IAction>? endTxActions = null)
         {
-            BeginBlockActionsGetter = beginBlockActionsGetter;
-            EndBlockActionsGetter = endBlockActionsGetter;
-            BeginTxActionsGetter = beginTxActionsGetter;
-            EndTxActionsGetter = endTxActionsGetter;
+            BeginBlockActions = beginBlockActions ?? ImmutableArray<IAction>.Empty;
+            EndBlockActions = endBlockActions ?? ImmutableArray<IAction>.Empty;
+            BeginTxActions = beginTxActions ?? ImmutableArray<IAction>.Empty;
+            EndTxActions = endTxActions ?? ImmutableArray<IAction>.Empty;
         }
 
-        public PolicyActionsGetter BeginBlockActionsGetter { get; }
+        public ImmutableArray<IAction> BeginBlockActions { get; }
 
-        public PolicyActionsGetter EndBlockActionsGetter { get; }
+        public ImmutableArray<IAction> EndBlockActions { get; }
 
-        public PolicyActionsGetter BeginTxActionsGetter { get; }
+        public ImmutableArray<IAction> BeginTxActions { get; }
 
-        public PolicyActionsGetter EndTxActionsGetter { get; }
+        public ImmutableArray<IAction> EndTxActions { get; }
     }
 }

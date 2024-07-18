@@ -195,10 +195,10 @@ If omitted (default) explorer only the local blockchain store.")]
                         blockChainStates,
                         new ActionEvaluator(
                             new PolicyActionsRegistry(
-                                _ => policy.BeginBlockActions,
-                                _ => policy.EndBlockActions,
-                                _ => policy.BeginTxActions,
-                                _ => policy.EndTxActions),
+                                policy.BeginBlockActions,
+                                policy.EndBlockActions,
+                                policy.BeginTxActions,
+                                policy.EndTxActions),
                             stateStore,
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;

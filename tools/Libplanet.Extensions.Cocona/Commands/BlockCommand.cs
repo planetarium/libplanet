@@ -162,10 +162,10 @@ public class BlockCommand
         var endTxActions = blockPolicyParams.GetEndTxActions();
         var actionEvaluator = new ActionEvaluator(
             new PolicyActionsRegistry(
-                _ => beginBlockActions,
-                _ => endBlockActions,
-                _ => beginTxActions,
-                _ => endTxActions),
+                beginBlockActions,
+                endBlockActions,
+                beginTxActions,
+                endTxActions),
             new TrieStateStore(new DefaultKeyValueStore(null)),
             new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(

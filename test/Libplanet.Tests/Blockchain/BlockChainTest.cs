@@ -69,10 +69,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => _policy.BeginBlockActions,
-                        _ => _policy.EndBlockActions,
-                        _ => _policy.BeginTxActions,
-                        _ => _policy.EndTxActions),
+                        _policy.BeginBlockActions,
+                        _policy.EndBlockActions,
+                        _policy.BeginTxActions,
+                        _policy.EndTxActions),
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
                 renderers: new[] { new LoggedActionRenderer(_renderer, Log.Logger) }
@@ -158,10 +158,10 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
-                        _ => policy.BeginTxActions,
-                        _ => policy.EndTxActions),
+                        policy.BeginBlockActions,
+                        policy.EndBlockActions,
+                        policy.BeginTxActions,
+                        policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -208,10 +208,10 @@ namespace Libplanet.Tests.Blockchain
                 typeof(BaseAction).Assembly, typeof(BaseAction));
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 actionLoader);
             var nonce = 0;
@@ -651,10 +651,10 @@ namespace Libplanet.Tests.Blockchain
             {
                 var actionEvaluator = new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => _policy.BeginBlockActions,
-                        _ => _policy.EndBlockActions,
-                        _ => _policy.BeginTxActions,
-                        _ => _policy.EndTxActions),
+                        _policy.BeginBlockActions,
+                        _policy.EndBlockActions,
+                        _policy.BeginTxActions,
+                        _policy.EndTxActions),
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var privateKey = new PrivateKey();
@@ -687,10 +687,10 @@ namespace Libplanet.Tests.Blockchain
                     genesis,
                     new ActionEvaluator(
                         new PolicyActionsRegistry(
-                            _ => _policy.BeginBlockActions,
-                            _ => _policy.EndBlockActions,
-                            _ => _policy.BeginTxActions,
-                            _ => _policy.EndTxActions),
+                            _policy.BeginBlockActions,
+                            _policy.EndBlockActions,
+                            _policy.BeginTxActions,
+                            _policy.EndTxActions),
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
                     renderers: new[] { renderer }
@@ -1138,10 +1138,10 @@ namespace Libplanet.Tests.Blockchain
             {
                 var actionEvaluator = new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => _policy.BeginBlockActions,
-                        _ => _policy.EndBlockActions,
-                        _ => _policy.BeginTxActions,
-                        _ => _policy.EndTxActions),
+                        _policy.BeginBlockActions,
+                        _policy.EndBlockActions,
+                        _policy.BeginTxActions,
+                        _policy.EndTxActions),
                     stateStore: fx2.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
                 Block genesis2 = ProposeGenesisBlock(
@@ -1202,10 +1202,10 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             Block genesisWithTx = ProposeGenesisBlock(
@@ -1248,10 +1248,10 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
-                        _ => policy.BeginTxActions,
-                        _ => policy.EndTxActions),
+                        policy.BeginBlockActions,
+                        policy.EndBlockActions,
+                        policy.BeginTxActions,
+                        policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1314,10 +1314,10 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
-                        _ => policy.BeginTxActions,
-                        _ => policy.EndTxActions),
+                        policy.BeginBlockActions,
+                        policy.EndBlockActions,
+                        policy.BeginTxActions,
+                        policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1419,10 +1419,10 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => policy.BeginBlockActions,
-                        _ => policy.EndBlockActions,
-                        _ => policy.BeginTxActions,
-                        _ => policy.EndTxActions),
+                        policy.BeginBlockActions,
+                        policy.EndBlockActions,
+                        policy.BeginTxActions,
+                        policy.EndTxActions),
                     _fx.StateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -1523,10 +1523,10 @@ namespace Libplanet.Tests.Blockchain
                     emptyFx.GenesisBlock,
                     new ActionEvaluator(
                         new PolicyActionsRegistry(
-                            _ => _blockChain.Policy.BeginBlockActions,
-                            _ => _blockChain.Policy.EndBlockActions,
-                            _ => _blockChain.Policy.BeginTxActions,
-                            _ => _blockChain.Policy.EndTxActions),
+                            _blockChain.Policy.BeginBlockActions,
+                            _blockChain.Policy.EndBlockActions,
+                            _blockChain.Policy.BeginTxActions,
+                            _blockChain.Policy.EndTxActions),
                         stateStore: emptyFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var fork = BlockChain.Create(
@@ -1537,10 +1537,10 @@ namespace Libplanet.Tests.Blockchain
                     forkFx.GenesisBlock,
                     new ActionEvaluator(
                         new PolicyActionsRegistry(
-                            _ => _blockChain.Policy.BeginBlockActions,
-                            _ => _blockChain.Policy.EndBlockActions,
-                            _ => _blockChain.Policy.BeginTxActions,
-                            _ => _blockChain.Policy.EndTxActions),
+                            _blockChain.Policy.BeginBlockActions,
+                            _blockChain.Policy.EndBlockActions,
+                            _blockChain.Policy.BeginTxActions,
+                            _blockChain.Policy.EndTxActions),
                         stateStore: forkFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 fork.Append(b1, CreateBlockCommit(b1));
@@ -1900,10 +1900,10 @@ namespace Libplanet.Tests.Blockchain
             var chainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => blockPolicy.BeginBlockActions,
-                    _ => blockPolicy.EndBlockActions,
-                    _ => blockPolicy.BeginTxActions,
-                    _ => blockPolicy.EndTxActions),
+                    blockPolicy.BeginBlockActions,
+                    blockPolicy.EndBlockActions,
+                    blockPolicy.BeginTxActions,
+                    blockPolicy.EndTxActions),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
             Block genesisBlock = ProposeGenesisBlock(
@@ -2144,10 +2144,10 @@ namespace Libplanet.Tests.Blockchain
                 storeFixture.Store, storeFixture.StateStore);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 storeFixture.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             BlockChain blockChain = BlockChain.Create(
@@ -2193,10 +2193,10 @@ namespace Libplanet.Tests.Blockchain
             var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlockA = BlockChain.ProposeGenesisBlock();
@@ -2280,10 +2280,10 @@ namespace Libplanet.Tests.Blockchain
                 List.Empty);
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisWithTx = ProposeGenesisBlock(
@@ -2353,10 +2353,10 @@ namespace Libplanet.Tests.Blockchain
 
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 storeFixture.StateStore,
                 new SingleActionLoader(typeof(SetValidator)));
             Block genesis = BlockChain.ProposeGenesisBlock(

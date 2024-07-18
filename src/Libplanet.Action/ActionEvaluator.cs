@@ -124,9 +124,7 @@ namespace Libplanet.Action
                 previousState = _stateStore.MigrateWorld(previousState, block.ProtocolVersion);
 
                 var evaluations = ImmutableList<ActionEvaluation>.Empty;
-                if (_policyActionsRegistry.BeginBlockActionsGetter(block) is
-                        { } beginBlockActions &&
-                    beginBlockActions.Length > 0)
+                if (_policyActionsRegistry.BeginBlockActions.Length > 0)
                 {
                     evaluations = evaluations.AddRange(EvaluatePolicyBeginBlockActions(
                         block, previousState
@@ -138,8 +136,7 @@ namespace Libplanet.Action
                     EvaluateBlock(block, previousState).ToImmutableList()
                 );
 
-                if (_policyActionsRegistry.EndBlockActionsGetter(block) is { } endBlockActions &&
-                    endBlockActions.Length > 0)
+                if (_policyActionsRegistry.EndBlockActions.Length > 0)
                 {
                     previousState = evaluations.Count > 0
                         ? evaluations.Last().OutputState
@@ -483,9 +480,7 @@ namespace Libplanet.Action
             IWorld previousState)
         {
             var evaluations = ImmutableList<ActionEvaluation>.Empty;
-            if (_policyActionsRegistry.BeginTxActionsGetter(block) is
-                    { } beginTxActions &&
-                beginTxActions.Length > 0)
+            if (_policyActionsRegistry.BeginTxActions.Length > 0)
             {
                 evaluations = evaluations.AddRange(
                     EvaluatePolicyBeginTxActions(block, tx, previousState));
@@ -503,9 +498,7 @@ namespace Libplanet.Action
                 isPolicyAction: false,
                 logger: _logger));
 
-            if (_policyActionsRegistry.EndTxActionsGetter(block) is
-                    { } endTxActions &&
-                endTxActions.Length > 0)
+            if (_policyActionsRegistry.EndTxActions.Length > 0)
             {
                 previousState = evaluations.Count > 0
                     ? evaluations.Last().OutputState
@@ -541,7 +534,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: null,
                 previousState: previousState,
-                actions: _policyActionsRegistry.BeginBlockActionsGetter(block),
+                actions: _policyActionsRegistry.BeginBlockActions,
                 stateStore: _stateStore,
                 isPolicyAction: true,
                 logger: _logger).ToArray();
@@ -571,7 +564,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: null,
                 previousState: previousState,
-                actions: _policyActionsRegistry.EndBlockActionsGetter(block),
+                actions: _policyActionsRegistry.EndBlockActions,
                 stateStore: _stateStore,
                 isPolicyAction: true,
                 logger: _logger).ToArray();
@@ -603,7 +596,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: transaction,
                 previousState: previousState,
-                actions: _policyActionsRegistry.BeginTxActionsGetter(block),
+                actions: _policyActionsRegistry.BeginTxActions,
                 stateStore: _stateStore,
                 isPolicyAction: true,
                 logger: _logger).ToArray();
@@ -635,7 +628,7 @@ namespace Libplanet.Action
                 block: block,
                 tx: transaction,
                 previousState: previousState,
-                actions: _policyActionsRegistry.EndTxActionsGetter(block),
+                actions: _policyActionsRegistry.EndTxActions,
                 stateStore: _stateStore,
                 isPolicyAction: true,
                 logger: _logger).ToArray();
