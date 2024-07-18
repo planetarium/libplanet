@@ -38,12 +38,24 @@ namespace Libplanet.Action
             EndTxActions = endTxActions ?? ImmutableArray<IAction>.Empty;
         }
 
+        /// <summary>
+        /// An array of <see cref="IAction"/> to execute and be rendered at the beginning
+        /// for every block, if any.</summary>
         public ImmutableArray<IAction> BeginBlockActions { get; }
 
+        /// <summary>
+        /// An array of <see cref="IAction"/> to execute and be rendered at the end
+        /// for every block, if any.</summary>
         public ImmutableArray<IAction> EndBlockActions { get; }
 
+        /// <summary>
+        /// An array of <see cref="IAction"/> to execute and be rendered at the beginning
+        /// for every transaction, if any.</summary>
         public ImmutableArray<IAction> BeginTxActions { get; }
 
+        /// <summary>
+        /// An array of <see cref="IAction"/> to execute and be rendered at the end
+        /// for every transaction, if any.</summary>
         public ImmutableArray<IAction> EndTxActions { get; }
     }
 }

@@ -59,36 +59,19 @@ namespace Libplanet.Tests.Action
                 .CreateLogger()
                 .ForContext<ActionEvaluatorTest>();
 
-            var beginBlockActions = new IAction[]
-            {
-                new UpdateValueAction(_beginBlockValueAddress, 1),
-            };
-            var endBlockActions = new IAction[]
-            {
-                new UpdateValueAction(_endBlockValueAddress, 1),
-            };
-            var beginTxActions = new IAction[]
-            {
-                new UpdateValueAction(_beginTxValueAddress, 1),
-            };
-            var endTxActions = new IAction[]
-            {
-                new UpdateValueAction(_endTxValueAddress, 1),
-            };
-
             _output = output;
             _policy = new BlockPolicy(
-                beginBlockActions: beginBlockActions.ToImmutableArray(),
-                endBlockActions: endBlockActions.ToImmutableArray(),
-                beginTxActions: beginTxActions.ToImmutableArray(),
-                endTxActions: endTxActions.ToImmutableArray(),
+                new PolicyActionsRegistry(
+                    beginBlockActions: ImmutableArray.Create<IAction>(
+                        new UpdateValueAction(_beginBlockValueAddress, 1)),
+                    endBlockActions: ImmutableArray.Create<IAction>(
+                        new UpdateValueAction(_endBlockValueAddress, 1)),
+                    beginTxActions: ImmutableArray.Create<IAction>(
+                        new UpdateValueAction(_beginTxValueAddress, 1)),
+                    endTxActions: ImmutableArray.Create<IAction>(
+                        new UpdateValueAction(_endTxValueAddress, 1))),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            _storeFx = new MemoryStoreFixture(
-                _policy.BeginBlockActions,
-                _policy.EndBlockActions,
-                _policy.BeginTxActions,
-                _policy.EndTxActions
-            );
+            _storeFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry);
             _txFx = new TxFixture(null);
         }
 
@@ -961,7 +944,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.BeginBlockActions,
+                chain.Policy.PolicyActionsRegistry.BeginBlockActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -977,7 +960,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.BeginBlockActions,
+                chain.Policy.PolicyActionsRegistry.BeginBlockActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1012,7 +995,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.EndBlockActions,
+                chain.Policy.PolicyActionsRegistry.EndBlockActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1029,7 +1012,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.EndBlockActions,
+                chain.Policy.PolicyActionsRegistry.EndBlockActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1065,7 +1048,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.BeginTxActions,
+                chain.Policy.PolicyActionsRegistry.BeginTxActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1083,7 +1066,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.BeginTxActions,
+                chain.Policy.PolicyActionsRegistry.BeginTxActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1120,7 +1103,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.EndTxActions,
+                chain.Policy.PolicyActionsRegistry.EndTxActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(
@@ -1138,7 +1121,7 @@ namespace Libplanet.Tests.Action
                 previousState);
 
             Assert.Equal<IAction>(
-                chain.Policy.EndTxActions,
+                chain.Policy.PolicyActionsRegistry.EndTxActions,
                 evaluations.Select(item => item.Action).ToImmutableArray());
             Assert.Single(evaluations);
             Assert.Equal(

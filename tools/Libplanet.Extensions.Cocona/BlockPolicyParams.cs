@@ -1,7 +1,6 @@
 namespace Libplanet.Extensions.Cocona;
 
 using System;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -71,17 +70,8 @@ public class BlockPolicyParams : ICommandParameterSet
     public object? GetBlockPolicy() =>
         GetBlockPolicy(LoadAssemblies());
 
-    public ImmutableArray<IAction> GetBeginBlockActions() =>
-        GetBeginBlockActions(LoadAssemblies());
-
-    public ImmutableArray<IAction> GetEndBlockActions() =>
-        GetEndBlockActions(LoadAssemblies());
-
-    public ImmutableArray<IAction> GetBeginTxActions() =>
-        GetBeginTxActions(LoadAssemblies());
-
-    public ImmutableArray<IAction> GetEndTxActions() =>
-        GetEndTxActions(LoadAssemblies());
+    public PolicyActionsRegistry GetPolicyActionsRegistry() =>
+        GetPolicyActionsRegistry(LoadAssemblies());
 
     [SuppressMessage(
         "Major Code Smell",
@@ -141,22 +131,22 @@ public class BlockPolicyParams : ICommandParameterSet
         );
     }
 
-    internal ImmutableArray<IAction> GetBeginBlockActions(Assembly[] assemblies)
+    internal PolicyActionsRegistry GetPolicyActionsRegistry(Assembly[] assemblies)
     {
         object? policy = GetBlockPolicy(assemblies);
         if (policy is null)
         {
-            return ImmutableArray<IAction>.Empty;
+            return new PolicyActionsRegistry();
         }
 
         PropertyInfo? propertyInfo = policy
             .GetType()
-            .GetProperty(nameof(IBlockPolicy.BeginBlockActions));
+            .GetProperty(nameof(IBlockPolicy.PolicyActionsRegistry));
         if (propertyInfo is null)
         {
             var message = $"The policy type "
                 + $"'{policy.GetType().FullName}' does not have a "
-                + $"'{nameof(IBlockPolicy.BeginBlockActions)}' property.";
+                + $"'{nameof(IBlockPolicy.PolicyActionsRegistry)}' property.";
             throw new InvalidOperationException(message);
         }
 
@@ -164,104 +154,11 @@ public class BlockPolicyParams : ICommandParameterSet
         if (value is null)
         {
             var message = $"The value of property "
-                + $"'{nameof(IBlockPolicy.BeginBlockActions)}' of type "
+                + $"'{nameof(IBlockPolicy.PolicyActionsRegistry)}' of type "
                 + $"'{policy.GetType().FullName}' cannot be null.";
             throw new InvalidOperationException(message);
         }
 
-        return (ImmutableArray<IAction>)value;
-    }
-
-    internal ImmutableArray<IAction> GetEndBlockActions(Assembly[] assemblies)
-    {
-        object? policy = GetBlockPolicy(assemblies);
-        if (policy is null)
-        {
-            return ImmutableArray<IAction>.Empty;
-        }
-
-        PropertyInfo? propertyInfo = policy
-            .GetType()
-            .GetProperty(nameof(IBlockPolicy.EndBlockActions));
-        if (propertyInfo is null)
-        {
-            var message = $"The policy type "
-                          + $"'{policy.GetType().FullName}' does not have a "
-                          + $"'{nameof(IBlockPolicy.EndBlockActions)}' property.";
-            throw new InvalidOperationException(message);
-        }
-
-        var value = propertyInfo.GetValue(policy);
-        if (value is null)
-        {
-            var message = $"The value of property "
-                          + $"'{nameof(IBlockPolicy.EndBlockActions)}' of type "
-                          + $"'{policy.GetType().FullName}' cannot be null.";
-            throw new InvalidOperationException(message);
-        }
-
-        return (ImmutableArray<IAction>)value;
-    }
-
-    internal ImmutableArray<IAction> GetBeginTxActions(Assembly[] assemblies)
-    {
-        object? policy = GetBlockPolicy(assemblies);
-        if (policy is null)
-        {
-            return ImmutableArray<IAction>.Empty;
-        }
-
-        PropertyInfo? propertyInfo = policy
-            .GetType()
-            .GetProperty(nameof(IBlockPolicy.BeginTxActions));
-        if (propertyInfo is null)
-        {
-            var message = $"The policy type "
-                          + $"'{policy.GetType().FullName}' does not have a "
-                          + $"'{nameof(IBlockPolicy.BeginTxActions)}' property.";
-            throw new InvalidOperationException(message);
-        }
-
-        var value = propertyInfo.GetValue(policy);
-        if (value is null)
-        {
-            var message = $"The value of property "
-                          + $"'{nameof(IBlockPolicy.BeginTxActions)}' of type "
-                          + $"'{policy.GetType().FullName}' cannot be null.";
-            throw new InvalidOperationException(message);
-        }
-
-        return (ImmutableArray<IAction>)value;
-    }
-
-    internal ImmutableArray<IAction> GetEndTxActions(Assembly[] assemblies)
-    {
-        object? policy = GetBlockPolicy(assemblies);
-        if (policy is null)
-        {
-            return ImmutableArray<IAction>.Empty;
-        }
-
-        PropertyInfo? propertyInfo = policy
-            .GetType()
-            .GetProperty(nameof(IBlockPolicy.EndTxActions));
-        if (propertyInfo is null)
-        {
-            var message = $"The policy type "
-                          + $"'{policy.GetType().FullName}' does not have a "
-                          + $"'{nameof(IBlockPolicy.EndTxActions)}' property.";
-            throw new InvalidOperationException(message);
-        }
-
-        var value = propertyInfo.GetValue(policy);
-        if (value is null)
-        {
-            var message = $"The value of property "
-                          + $"'{nameof(IBlockPolicy.EndTxActions)}' of type "
-                          + $"'{policy.GetType().FullName}' cannot be null.";
-            throw new InvalidOperationException(message);
-        }
-
-        return (ImmutableArray<IAction>)value;
+        return (PolicyActionsRegistry)value;
     }
 }

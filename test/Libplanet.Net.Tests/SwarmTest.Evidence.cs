@@ -25,8 +25,7 @@ namespace Libplanet.Net.Tests
         public async Task DuplicateVote_Test()
         {
             var policy = new NullBlockPolicy();
-            var genesisBlock = new MemoryStoreFixture(
-                policy.BeginBlockActions).GenesisBlock;
+            var genesisBlock = new MemoryStoreFixture(policy.PolicyActionsRegistry).GenesisBlock;
             var genesisProposer = Libplanet.Tests.TestUtils.GenesisProposer;
             var privateKeys = Libplanet.Tests.TestUtils.ValidatorPrivateKeys.ToArray();
             var count = privateKeys.Length;

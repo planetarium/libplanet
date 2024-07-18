@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using Libplanet.Action;
 using Libplanet.Store;
@@ -11,10 +10,8 @@ namespace Libplanet.Tests.Store
     {
         public DefaultStoreFixture(
             bool memory = true,
-            ImmutableArray<IAction>? beginBlockActions = null,
-            ImmutableArray<IAction>? endBlockActions = null
-        )
-            : base(beginBlockActions, endBlockActions)
+            PolicyActionsRegistry policyActionsRegistry = null)
+            : base(policyActionsRegistry)
         {
             if (memory)
             {

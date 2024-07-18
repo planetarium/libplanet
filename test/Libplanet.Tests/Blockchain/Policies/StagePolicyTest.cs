@@ -31,11 +31,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
-                    new PolicyActionsRegistry(
-                        _policy.BeginBlockActions,
-                        _policy.EndBlockActions,
-                        _policy.BeginTxActions,
-                        _policy.EndTxActions),
+                    _policy.PolicyActionsRegistry,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             _key = new PrivateKey();
