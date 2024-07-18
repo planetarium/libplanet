@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blockchain
                 actionEvaluator1);
 
             var policyWithBlockAction = new BlockPolicy(
-                beginBlockActions: ImmutableArray.Create<IAction>(
+                endBlockActions: ImmutableArray.Create<IAction>(
                     new SetStatesAtBlock(default, (Text)"foo", default, 0)),
                 blockInterval: policy.BlockInterval
             );

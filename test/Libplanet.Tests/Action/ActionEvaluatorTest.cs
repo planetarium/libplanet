@@ -243,25 +243,25 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)1,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
             Assert.Equal(
                 (Integer)1,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
             Assert.Equal(
                 (Integer)chain.Genesis.Transactions.Count,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(
                 (Integer)chain.Genesis.Transactions.Count,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
 
@@ -283,25 +283,25 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 (Integer)2,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginBlockValueAddress));
             Assert.Equal(
                 (Integer)2,
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endBlockValueAddress));
             Assert.Equal(
                 (Integer)(chain.Genesis.Transactions.Count + txs.Length),
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_beginTxValueAddress));
             Assert.Equal(
                 (Integer)(chain.Genesis.Transactions.Count + txs.Length),
                 chain
-                    .GetWorldState()
+                    .GetNextWorldState()
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetState(_endTxValueAddress));
         }
