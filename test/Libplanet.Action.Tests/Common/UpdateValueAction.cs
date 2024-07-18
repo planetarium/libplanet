@@ -18,35 +18,27 @@ namespace Libplanet.Action.Tests.Common
 
         public Address Address { get; set; }
 
-        public int Increment { get; set; }
+        public Integer Increment { get; set; }
 
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
             .Add("address", Address.Bencoded)
-            .Add("value", new Bencodex.Types.Integer(Increment));
+            .Add("value", Increment);
 
         public void LoadPlainValue(IValue plainValue)
         {
             Address = new Address(((Dictionary)plainValue)["address"]);
-            Increment = (int)(Bencodex.Types.Integer)((Dictionary)plainValue)["value"];
+            Increment = (Integer)((Dictionary)plainValue)["value"];
         }
 
         public IWorld Execute(IActionContext ctx)
         {
             IWorld states = ctx.PreviousState;
             IAccount account = states.GetAccount(ReservedAddresses.LegacyAccount);
-            int value = 0;
-            int increment = Increment;
+            Integer value = account.GetState(Address) is Integer integer
+                ? integer + Increment
+                : Increment;
 
-            if (account.GetState(Address) is Integer integer)
-            {
-                value = (int)integer.Value + increment;
-            }
-            else
-            {
-                value = increment;
-            }
-
-            account = account.SetState(Address, new Integer(value));
+            account = account.SetState(Address, value);
             return states.SetAccount(ReservedAddresses.LegacyAccount, account);
         }
     }
