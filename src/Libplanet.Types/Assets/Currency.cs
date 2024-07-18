@@ -80,12 +80,7 @@ namespace Libplanet.Types.Assets
         /// The deterministic hash derived from other fields.
         /// </summary>
         [JsonInclude]
-#if NETSTANDARD2_0_OR_GREATER
         public readonly HashDigest<SHA1> Hash;
-#else
-#pragma warning disable SA1201
-        public HashDigest<SHA1> Hash => GetHash();
-#endif
 
         /// <summary>
         /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
@@ -248,9 +243,7 @@ namespace Libplanet.Types.Assets
                 Minters = null;
             }
 
-#if NETSTANDARD2_0_OR_GREATER
-            Hash = GetHash();
-#endif // NETSTANDARD2_0_OR_GREATER
+            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -280,8 +273,8 @@ namespace Libplanet.Types.Assets
 #pragma warning restore SA1118
         {
             TotalSupplyTrackable = totalSupplyTrackable;
-#if NETSTANDARD2_0_OR_GREATER
-            HashDigest<SHA1> expectedHash = GetHash();
+            HashDigest<SHA1> expectedHash = GetHash(
+                Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
             if (!expectedHash.Equals(hash))
             {
                 var msg = $"Invalid currency hash; expected {expectedHash}, but got {hash}. " +
@@ -294,7 +287,6 @@ namespace Libplanet.Types.Assets
             }
 
             Hash = hash;
-#endif // NETSTANDARD2_0_OR_GREATER
         }
 
         private Currency(SerializationInfo info, StreamingContext context)
@@ -358,9 +350,7 @@ namespace Libplanet.Types.Assets
                 }
             }
 
-#if NETSTANDARD2_0_OR_GREATER
-            Hash = GetHash();
-#endif // NETSTANDARD2_0_OR_GREATER
+            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -408,9 +398,7 @@ namespace Libplanet.Types.Assets
                 _maximumSupply = maximumSupply;
             }
 
-#if NETSTANDARD2_0_OR_GREATER
-            Hash = GetHash();
-#endif // NETSTANDARD2_0_OR_GREATER
+            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -448,9 +436,7 @@ namespace Libplanet.Types.Assets
             DecimalPlaces = decimalPlaces;
             _maximumSupply = null;
             TotalSupplyTrackable = totalSupplyTrackable;
-#if NETSTANDARD2_0_OR_GREATER
-            Hash = GetHash();
-#endif // NETSTANDARD2_0_OR_GREATER
+            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -742,40 +728,40 @@ namespace Libplanet.Types.Assets
 #endif
         }
 
-        [Pure]
-        private IValue SerializeForHash()
-        {
-            IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => m.Bencoded))
-                : (IValue)Null.Value;
-
-            var serialized = Dictionary.Empty
-                .Add("ticker", Ticker)
-                .Add("decimals", (int)DecimalPlaces)
-                .Add("minters", minters);
-
-            if (_maximumSupply is var (major, minor))
-            {
-                serialized = serialized.Add("maximumSupplyMajor", new Integer(major))
-                    .Add("maximumSupplyMinor", new Integer(minor));
-            }
-
-            if (TotalSupplyTrackable)
-            {
-                serialized = serialized.Add("totalSupplyTrackable", true);
-            }
-
-            return serialized;
-        }
-
-        [Pure]
-        private HashDigest<SHA1> GetHash()
+        // NOTE: This uses a different serialization scheme from
+        // Serialize() due to backward compatibility issues.
+        private static HashDigest<SHA1> GetHash(
+            IImmutableSet<Address>? minters,
+            string ticker,
+            byte decimalPlaces,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
+            bool totalSupplyTrackable
+        )
         {
             using var buffer = new MemoryStream();
             using var sha1 = GetSHA1();
             using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
             var codec = new Codec();
-            codec.Encode(SerializeForHash(), stream);
+            IValue mintersValue = minters is ImmutableHashSet<Address> a
+                ? new List(a.OrderBy(m => m).Select(m => m.Bencoded))
+                : (IValue)Null.Value;
+            var serialized = Dictionary.Empty
+                .Add("ticker", ticker)
+                .Add("decimals", (int)decimalPlaces)
+                .Add("minters", mintersValue);
+
+            if (maximumSupply is var (major, minor))
+            {
+                serialized = serialized.Add("maximumSupplyMajor", new Integer(major))
+                    .Add("maximumSupplyMinor", new Integer(minor));
+            }
+
+            if (totalSupplyTrackable)
+            {
+                serialized = serialized.Add("totalSupplyTrackable", true);
+            }
+
+            codec.Encode(serialized, stream);
             stream.FlushFinalBlock();
             if (sha1.Hash is { } hash)
             {
