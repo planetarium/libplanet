@@ -45,10 +45,10 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.GenesisBlock,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => _policy.BeginBlockActions,
-                        _ => _policy.EndBlockActions,
-                        _ => _policy.BeginTxActions,
-                        _ => _policy.EndTxActions),
+                        _policy.BeginBlockActions,
+                        _policy.EndBlockActions,
+                        _policy.BeginTxActions,
+                        _policy.EndTxActions),
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
         }

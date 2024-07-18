@@ -70,10 +70,10 @@ namespace Libplanet.Net.Tests.Consensus
                     fx.GenesisBlock,
                     new ActionEvaluator(
                         policyActionsRegistry: new PolicyActionsRegistry(
-                            beginBlockActionsGetter: _ => TestUtils.Policy.BeginBlockActions,
-                            endBlockActionsGetter: _ => TestUtils.Policy.EndBlockActions,
-                            beginTxActionsGetter: _ => TestUtils.Policy.BeginTxActions,
-                            endTxActionsGetter: _ => TestUtils.Policy.EndTxActions),
+                            beginBlockActions: TestUtils.Policy.BeginBlockActions,
+                            endBlockActions: TestUtils.Policy.EndBlockActions,
+                            beginTxActions: TestUtils.Policy.BeginTxActions,
+                            endTxActions: TestUtils.Policy.EndTxActions),
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             }

@@ -188,10 +188,10 @@ namespace Libplanet.Tests.Blockchain
             IStore store1 = new MemoryStore();
             var actionEvaluator1 = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore1,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesisBlock = TestUtils.ProposeGenesisBlock(
@@ -214,10 +214,10 @@ namespace Libplanet.Tests.Blockchain
             IStore store2 = new MemoryStore();
             var actionEvaluator2 = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policyWithBlockAction.BeginBlockActions,
-                    _ => policyWithBlockAction.EndBlockActions,
-                    _ => policyWithBlockAction.BeginTxActions,
-                    _ => policyWithBlockAction.EndTxActions),
+                    policyWithBlockAction.BeginBlockActions,
+                    policyWithBlockAction.EndBlockActions,
+                    policyWithBlockAction.BeginTxActions,
+                    policyWithBlockAction.EndTxActions),
                 stateStore2,
                 new SingleActionLoader(typeof(DumbAction)));
             var chain2 = BlockChain.Create(
@@ -259,10 +259,10 @@ namespace Libplanet.Tests.Blockchain
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
@@ -312,10 +312,10 @@ namespace Libplanet.Tests.Blockchain
                 blockChainStates,
                 new ActionEvaluator(
                     new PolicyActionsRegistry(
-                        _ => policyWithBlockAction.BeginBlockActions,
-                        _ => policyWithBlockAction.EndBlockActions,
-                        _ => policyWithBlockAction.BeginTxActions,
-                        _ => policyWithBlockAction.EndTxActions),
+                        policyWithBlockAction.BeginBlockActions,
+                        policyWithBlockAction.EndBlockActions,
+                        policyWithBlockAction.BeginTxActions,
+                        policyWithBlockAction.EndTxActions),
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction))));
 
@@ -338,10 +338,10 @@ namespace Libplanet.Tests.Blockchain
             IStore store = new MemoryStore();
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                    policy.BeginBlockActions,
+                    policy.EndBlockActions,
+                    policy.BeginTxActions,
+                    policy.EndTxActions),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
@@ -771,10 +771,7 @@ namespace Libplanet.Tests.Blockchain
 
             var actionEvaluator = new ActionEvaluator(
                 new PolicyActionsRegistry(
-                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => policyWithBlockAction.EndBlockActions,
-                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    endBlockActions: policyWithBlockAction.EndBlockActions),
                 _blockChain.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
 
