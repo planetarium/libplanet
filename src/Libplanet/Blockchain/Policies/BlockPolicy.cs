@@ -39,22 +39,22 @@ namespace Libplanet.Blockchain.Policies
         /// </para>
         /// </summary>
         /// <param name="beginBlockActions">
-        /// Array of <see cref="IAction"/> to executed for the beginning of every
+        /// An array of <see cref="IAction"/> to be executed at the beginning of every
         /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="endBlockActions">
-        /// Array of <see cref="IAction"/> to executed for the end of every
+        /// An array of <see cref="IAction"/> to be executed at the end of every
         /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="beginTxActions">
-        /// Array of <see cref="IAction"/> to executed for the beginning of every
+        /// An array of <see cref="IAction"/> to be executed at the beginning of every
         /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
         /// <param name="endTxActions">
-        /// Array of <see cref="IAction"/> to executed for the end of every
+        /// An array of <see cref="IAction"/> to be executed at the end of every
         /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction"/>s.
         /// </param>
