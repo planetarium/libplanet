@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -13,7 +12,6 @@ using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 
 namespace Libplanet.Types.Assets
@@ -51,6 +49,8 @@ namespace Libplanet.Types.Assets
     [Serializable]
     public sealed class Currency : IEquatable<Currency>, ISerializable
     {
+        private static Codec _codec = new Codec();
+
         private readonly (BigInteger Major, BigInteger Minor)? _maximumSupply;
 
         private HashDigest<SHA1>? _hash;
@@ -151,65 +151,8 @@ namespace Libplanet.Types.Assets
         }
 
         private Currency(SerializationInfo info, StreamingContext context)
+            : this(_codec.Decode((byte[])info.GetValue("ByteEncoded", typeof(byte[]))!))
         {
-            Ticker = info.GetValue<string>(nameof(Ticker));
-            DecimalPlaces = info.GetValue<byte>(nameof(DecimalPlaces));
-
-            if (info.TryGetValue(nameof(Minters), out List<byte[]> minters))
-            {
-                Minters = minters.Select(m => new Address(m)).ToImmutableHashSet();
-            }
-            else
-            {
-                Minters = default;
-            }
-
-            TotalSupplyTrackable = false;
-            if (info.TryGetValue(nameof(TotalSupplyTrackable), out bool totalSupplyTrackable))
-            {
-                if (!totalSupplyTrackable)
-                {
-                    throw new ArgumentException(
-                        $"{nameof(TotalSupplyTrackable)} must be true if it exists in the"
-                        + "SerializationInfo.",
-                        nameof(TotalSupplyTrackable));
-                }
-
-                TotalSupplyTrackable = totalSupplyTrackable;
-            }
-
-            if (info.TryGetValue(nameof(MaximumSupply), out (BigInteger, BigInteger) maximumSupply))
-            {
-                if (!TotalSupplyTrackable)
-                {
-                    throw new ArgumentException(
-                        $"Maximum supply is not available for legacy untracked currencies.",
-                        nameof(info));
-                }
-
-                _maximumSupply = maximumSupply;
-            }
-            else
-            {
-                _maximumSupply = null;
-            }
-
-            if (_maximumSupply is var (major, minor))
-            {
-                if (major < 0 || minor < 0)
-                {
-                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
-                              + $" {nameof(maximumSupply)} must not be a negative number.";
-                    throw new ArgumentException(msg, nameof(maximumSupply));
-                }
-
-                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= DecimalPlaces)
-                {
-                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                              + $" big for the given decimal places {DecimalPlaces}.";
-                    throw new ArgumentException(msg, nameof(minor));
-                }
-            }
         }
 
         /// <summary>
@@ -455,23 +398,7 @@ namespace Libplanet.Types.Assets
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(nameof(Ticker), Ticker);
-            info.AddValue(nameof(DecimalPlaces), DecimalPlaces);
-
-            if (Minters is IImmutableSet<Address> minters)
-            {
-                info.AddValue(nameof(Minters), minters.Select(m => m.ToByteArray()).ToList());
-            }
-
-            if (_maximumSupply is { } maximumSupply)
-            {
-                info.AddValue(nameof(MaximumSupply), maximumSupply);
-            }
-
-            if (TotalSupplyTrackable)
-            {
-                info.AddValue(nameof(TotalSupplyTrackable), TotalSupplyTrackable);
-            }
+            info.AddValue("ByteEncoded", _codec.Encode(Serialize()));
         }
 
         /// <inheritdoc cref="object.ToString()"/>
