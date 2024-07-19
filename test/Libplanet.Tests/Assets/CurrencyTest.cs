@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Assets
             Assert.False(foo.TotalSupplyTrackable);
 
             var bar = Currency.Capped(
-                "\t BAR \n",
+                "BAR",
                 0,
                 (100, 0),
                 ImmutableHashSet.Create(AddressA, AddressB));
@@ -65,23 +65,19 @@ namespace Libplanet.Tests.Assets
             Assert.True(qux.TotalSupplyTrackable);
 
             Assert.Throws<ArgumentException>(() =>
-                Currency.Uncapped(string.Empty, 0, ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Uncapped(string.Empty, 0, ImmutableHashSet<Address>.Empty));
             Assert.Throws<ArgumentException>(() =>
-                Currency.Uncapped("   \n", 1, ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Uncapped("   \n", 1, ImmutableHashSet<Address>.Empty));
             Assert.Throws<ArgumentException>(() =>
-                Currency.Capped("TEST", 0, (100, 1), ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Uncapped("\t  Test  \n", 3, null));
             Assert.Throws<ArgumentException>(() =>
-                Currency.Capped("TEST", 1, (-100, 1), ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Capped("TEST", 0, (100, 1), ImmutableHashSet<Address>.Empty));
             Assert.Throws<ArgumentException>(() =>
-                Currency.Capped("TEST", 1, (100, -1), ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Capped("TEST", 1, (-100, 1), ImmutableHashSet<Address>.Empty));
             Assert.Throws<ArgumentException>(() =>
-                Currency.Capped("TEST", 1, (-100, -1), ImmutableHashSet<Address>.Empty)
-            );
+                Currency.Capped("TEST", 1, (100, -1), ImmutableHashSet<Address>.Empty));
+            Assert.Throws<ArgumentException>(() =>
+                Currency.Capped("TEST", 1, (-100, -1), ImmutableHashSet<Address>.Empty));
         }
 
         [Fact]
