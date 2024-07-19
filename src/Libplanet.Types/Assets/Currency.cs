@@ -231,11 +231,10 @@ namespace Libplanet.Types.Assets
                 maximumSupply is { } v
                     ? (v.MajorUnit, v.MinorUnit)
                     : ((BigInteger, BigInteger)?)null,
-                minters
-            )
+                minters,
+                totalSupplyTrackable)
 #pragma warning restore SA1118
         {
-            TotalSupplyTrackable = totalSupplyTrackable;
             HashDigest<SHA1> expectedHash = GetHash(
                 Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
             if (!expectedHash.Equals(hash))
@@ -313,35 +312,7 @@ namespace Libplanet.Types.Assets
         }
 
         /// <summary>
-        /// Private implementation to create a capped instance of <see cref="Currency"/> or
-        /// a deserialized instance.
-        /// </summary>
-        /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
-        /// <param name="decimalPlaces">The number of digits to treat as <a
-        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
-        /// units (i.e., exponent)</a>.</param>
-        /// <param name="maximumSupply">The uppermost quantity of currency allowed to exist. For
-        /// example, a <paramref name="maximumSupply"/> parameter of <c>(123, 45)</c> means that the
-        /// token of the currency can be minted up to <c>123.45</c>. See also
-        /// <see cref="MaximumSupply"/> field which corresponds to this.</param>
-        /// <param name="minters">The <see cref="Address"/>es who can mint the currency.
-        /// See also <see cref="Minters"/> field which corresponds to this.</param>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
-        /// is an empty string, or when either the Major or the Minor values of
-        /// <paramref name="maximumSupply"/> is a negative number, or when the given Minor unit for
-        /// the <paramref name="maximumSupply"/> is too big for the given
-        /// <paramref name="decimalPlaces"/>.</exception>
-        private Currency(
-            string ticker,
-            byte decimalPlaces,
-            (BigInteger Major, BigInteger Minor)? maximumSupply,
-            IImmutableSet<Address>? minters)
-            : this(ticker, decimalPlaces, maximumSupply, minters, true)
-        {
-        }
-
-        /// <summary>
-        /// Private implementation to create a general instance of <see cref="Currency"/>.
+        /// Private implementation to create an instance of <see cref="Currency"/>.
         /// </summary>
         /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
         /// <param name="decimalPlaces">The number of digits to treat as <a
@@ -361,32 +332,7 @@ namespace Libplanet.Types.Assets
             IImmutableSet<Address>? minters,
             bool totalSupplyTrackable)
         {
-            if (maximumSupply is var (major, minor))
-            {
-                if (major < 0 || minor < 0)
-                {
-                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
-                              + $" {nameof(maximumSupply)} must not be a negative number.";
-                    throw new ArgumentException(msg, nameof(maximumSupply));
-                }
-
-                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= decimalPlaces)
-                {
-                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                              + $" big for the given decimal places {decimalPlaces}.";
-                    throw new ArgumentException(msg, nameof(minor));
-                }
-            }
-
-            ticker = ticker.Trim();
-            if (string.IsNullOrEmpty(ticker))
-            {
-                throw new ArgumentException(
-                    "Currency ticker symbol cannot be empty.",
-                    nameof(ticker)
-                );
-            }
-
+            ValidateArguments(ticker, decimalPlaces, maximumSupply, minters, totalSupplyTrackable);
             Ticker = ticker;
             Minters = minters;
             DecimalPlaces = decimalPlaces;
@@ -502,7 +448,7 @@ namespace Libplanet.Types.Assets
             byte decimalPlaces,
             (BigInteger Major, BigInteger Minor) maximumSupply,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, maximumSupply, minters);
+            new Currency(ticker, decimalPlaces, maximumSupply, minters, true);
 
         /// <summary>
         /// Define a <see cref="Currency"/> with a maximum supply limit.
@@ -693,16 +639,67 @@ namespace Libplanet.Types.Assets
                 serialized = serialized.Add("totalSupplyTrackable", true);
                 if (MaximumSupply is { } maximumSupply)
                 {
-                    serialized = serialized.Add(
-                        "maximumSupplyMajor",
-                        (IValue)new Integer(maximumSupply.MajorUnit)
-                    ).Add(
-                        "maximumSupplyMinor",
-                        (IValue)new Integer(maximumSupply.MinorUnit));
+                    serialized = serialized
+                        .Add(
+                            "maximumSupplyMajor",
+                            new Integer(maximumSupply.MajorUnit))
+                        .Add(
+                            "maximumSupplyMinor",
+                            new Integer(maximumSupply.MinorUnit));
                 }
             }
 
             return serialized;
+        }
+
+        private static void ValidateArguments(
+            string ticker,
+            byte decimalPlaces,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
+            IImmutableSet<Address>? minters,
+            bool totalSupplyTrackable)
+        {
+            if (!ticker.Equals(ticker.Trim()))
+            {
+                throw new ArgumentException(
+                    $"Currency ticker should not have any leading and/or trailing white spaces.",
+                    nameof(ticker));
+            }
+
+            if (string.IsNullOrEmpty(ticker))
+            {
+                throw new ArgumentException(
+                    "Currency ticker symbol cannot be empty.",
+                    nameof(ticker));
+            }
+
+            if (maximumSupply is { } && !totalSupplyTrackable)
+            {
+                throw new ArgumentException(
+                    $"Either {nameof(totalSupplyTrackable)} {totalSupplyTrackable} and " +
+                    $"{nameof(maximumSupply)} {maximumSupply} " +
+                    $"should be both null or both non-null.",
+                    nameof(totalSupplyTrackable));
+            }
+
+            if (maximumSupply is { } supply)
+            {
+                if (supply.Major < 0 || supply.Minor < 0)
+                {
+                    var msg = $"Both the major value {supply.Major} and " +
+                              $"minor value {supply.Minor} of {nameof(maximumSupply)} " +
+                              $"cannot be a negative number.";
+                    throw new ArgumentException(msg, nameof(maximumSupply));
+                }
+
+                if (supply.Major > 0 &&
+                    Math.Floor(BigInteger.Log10(supply.Minor)) >= decimalPlaces)
+                {
+                    var msg = $"Given minor value {supply.Minor} of {nameof(maximumSupply)} is " +
+                              $"too big for given decimal places {decimalPlaces}.";
+                    throw new ArgumentException(msg, nameof(maximumSupply));
+                }
+            }
         }
 
         private static SHA1 GetSHA1()
