@@ -38,7 +38,7 @@ namespace Libplanet.Action.Tests
                     blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: seed,
-                    isBlockAction: false,
+                    isPolicyAction: false,
                     gasLimit: 0
                 );
                 IRandom random = context.GetRandom();
@@ -57,7 +57,7 @@ namespace Libplanet.Action.Tests
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
-                isBlockAction: false,
+                isPolicyAction: false,
                 gasLimit: 0
             );
 
@@ -69,7 +69,7 @@ namespace Libplanet.Action.Tests
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
-                isBlockAction: false,
+                isPolicyAction: false,
                 gasLimit: 0
             );
 
@@ -81,7 +81,7 @@ namespace Libplanet.Action.Tests
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 1,
-                isBlockAction: false,
+                isPolicyAction: false,
                 gasLimit: 0
             );
 
@@ -121,7 +121,7 @@ namespace Libplanet.Action.Tests
                     blockProtocolVersion: Block.CurrentProtocolVersion,
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: i,
-                    isBlockAction: false,
+                    isPolicyAction: false,
                     gasLimit: 0
                 );
                 var guid = context.GetRandom().GenerateRandomGuid().ToString();

@@ -41,7 +41,7 @@ namespace Libplanet.Action
         {
             _context = context;
             _gasPrice = gasPrice;
-            if (_context.BlockIndex == 0 || _context.IsBlockAction || _gasPrice is null)
+            if (_context.BlockIndex == 0 || _context.IsPolicyAction || _gasPrice is null)
             {
                 _state = FeeCollectState.CannotCollectible;
             }

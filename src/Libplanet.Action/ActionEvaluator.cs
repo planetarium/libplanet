@@ -192,8 +192,8 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
-        /// <param name="isBlockAction">
-        /// Flag indicates that whether the action is a block action.</param>
+        /// <param name="isPolicyAction">
+        /// Flag indicates that whether the action is a policy action.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -205,7 +205,7 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
-            bool isBlockAction,
+            bool isPolicyAction,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -221,7 +221,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: block.ProtocolVersion,
                     txs: block.Transactions,
                     previousState: prevState,
-                    isBlockAction: isBlockAction,
+                    isPolicyAction: isPolicyAction,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
                     evidence: block.Evidence);
@@ -243,7 +243,7 @@ namespace Libplanet.Action
                     context,
                     action,
                     stateStore,
-                    isBlockAction,
+                    isPolicyAction,
                     logger);
 
                 yield return result.Evaluation;
@@ -289,7 +289,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
-                    isBlockAction: isBlockAction,
+                    isPolicyAction: isBlockAction,
                     gasLimit: inputContext.GasLimit(),
                     txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
@@ -500,7 +500,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
-                isBlockAction: false,
+                isPolicyAction: false,
                 logger: _logger));
 
             if (_policyActionsRegistry.EndTxActionsGetter(block) is
@@ -543,7 +543,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginBlockActionsGetter(block),
                 stateStore: _stateStore,
-                isBlockAction: true,
+                isPolicyAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -573,7 +573,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndBlockActionsGetter(block),
                 stateStore: _stateStore,
-                isBlockAction: true,
+                isPolicyAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -605,7 +605,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.BeginTxActionsGetter(block),
                 stateStore: _stateStore,
-                isBlockAction: true,
+                isPolicyAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -637,7 +637,7 @@ namespace Libplanet.Action
                 previousState: previousState,
                 actions: _policyActionsRegistry.EndTxActionsGetter(block),
                 stateStore: _stateStore,
-                isBlockAction: true,
+                isPolicyAction: true,
                 logger: _logger).ToArray();
         }
 
@@ -666,7 +666,7 @@ namespace Libplanet.Action
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
-                        isBlockAction: evaluation.InputContext.IsBlockAction),
+                        isBlockAction: evaluation.InputContext.IsPolicyAction),
                     outputState: evaluation.OutputState.Trie.Recorded
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),
