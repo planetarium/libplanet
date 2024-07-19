@@ -10,18 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  (Libplanet) Removed `IBlockPolicy.BlockAction` property. [[#3701]]
- -  (Libplanet) Added `IBlockPolicy.BeginBlockActions`. property. [[#3701]]
- -  (Libplanet) Added `IBlockPolicy.EndBlockActions`. property. [[#3701]]
- -  (Libplanet) Added `IBlockPolicy.BeginTxActions`. property. [[#3748]]
- -  (Libplanet) Added `IBlockPolicy.EndTxActions`. property. [[#3748]]
- -  (Libplanet) `BlockPolicy` constructor requires `beginBlockActions`,
-    `endBlockActions`, `beginTxActions` and `endTxActions` parameters
-    instead of the `blockAction` parameter.
+ -  Removed `IBlockPolicy.BlockAction` property.  [[#3701]]
+ -  Added `IBlockPolicy.PolicyActionsRegistry` property.  [[#3701]]
+ -  `BlockPolicy` constructor now requires `policyActionsRegistry`
+    parameter instead of the `blockAction` parameter.  [[#3701], [#3748]]
+ -  (Libplanet.Action) Removed `PolicyBlockActionGetter` delegate.
     [[#3701], [#3748]]
- -  (Libplanet.Action) Renamed `PolicyBlockActionGetter` delegate to
-    `PolicyActionsGetter` and changed return type to
-    `ImmutableArray<IAction>`.  [[#3701], [#3748]]
  -  (Libplanet.Action) `ActionEvaluator` constructor requires
     `PolicyActionsRegistry` parameter instead of the
     `policyBlockActionGetter` parameter.  [[#3701], [#3748]]
